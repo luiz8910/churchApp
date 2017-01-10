@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
+use App\Models\User;
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Socialite;
 
 class RegisterController extends Controller
 {
@@ -66,6 +67,47 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
+            'imgProfile' => 'uploads/profile/noimage.png'
         ]);
+    }
+
+    /**
+     * Redirect the user to the Facebook authentication page.
+     *
+     * @return Response
+     */
+    public function redirectToProvider()
+    {
+        return Socialite::driver('facebook')->redirect();
+    }
+
+    /**
+     * Obtain the user information from Facebook.
+     *
+     * @return Response
+     */
+    public function handleProviderCallback()
+    {
+        $user = Socialite::driver('facebook')->user();
+
+        $member = User::where('facebook_id', $user->getId())->first();
+
+        if (!$member)
+        {
+            User::create([
+                'facebook_id' => $user->getId(),
+                'name' => $user->getName(),
+                'email' => $user->getEmail(),
+                'imgProfile' => $user->getAvatar()
+            ]);
+        }
+
+        auth()->login($member);
+
+        return redirect()->to('/');
+
+        //return $user->getAvatar();
+
+
     }
 }

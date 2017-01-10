@@ -295,8 +295,8 @@
                     <!-- BEGIN USER LOGIN DROPDOWN -->
                     <li class="dropdown dropdown-user dropdown-dark">
                         <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-                            <img alt="" class="img-circle" src="assets/layouts/layout3/img/avatar9.jpg">
-                            <span class="username username-hide-mobile">Pedro</span>
+                            <img alt="" class="img-circle" src="{{ Auth::getUser()->imgProfile }}">
+                            <span class="username username-hide-mobile">{{ Auth::getUser()->name }}</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-default">
                             <li>
@@ -309,7 +309,7 @@
                             </li>
                             <li class="divider"> </li>
                             <li>
-                                <a href="page_user_login_1.html">
+                                <a href="{{ Auth::logout() }}">
                                     <i class="icon-key"></i> Sair </a>
                             </li>
                         </ul>

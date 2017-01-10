@@ -11,11 +11,15 @@
 |
 */
 
-Route::get('/', 'DashboardController@index')->name('index');
+Route::group(['middleware' => 'auth'], function (){
+    Route::get('/', 'DashboardController@index')->name('index');
+});
+
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index');
 
-
-//Fazer index
+//Login Facebook
+Route::get('auth/facebook', 'Auth\RegisterController@redirectToProvider');
+Route::get('auth/facebook/callback', 'Auth\RegisterController@handleProviderCallback');

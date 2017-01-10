@@ -30,9 +30,15 @@ return [
     ],
 
     'stripe' => [
-        'model' => App\User::class,
+        'model' => App\Models\User::class,
         'key' => env('STRIPE_KEY'),
         'secret' => env('STRIPE_SECRET'),
+    ],
+
+    'facebook' => [
+      'client_id' => '359134241126376',
+        'client_secret' => '347f5ff94d6277f6a806955cf051b0fa',
+        'redirect' => 'http://localhost:8000/auth/facebook/callback',
     ],
 
 ];
