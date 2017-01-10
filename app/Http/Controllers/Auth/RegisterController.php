@@ -94,20 +94,114 @@ class RegisterController extends Controller
 
         if (!$member)
         {
-            User::create([
-                'facebook_id' => $user->getId(),
-                'name' => $user->getName(),
-                'email' => $user->getEmail(),
-                'imgProfile' => $user->getAvatar()
-            ]);
+            $email = User::where('email', $user->getEmail())->first();
+
+            if(count($email) == 0){
+                $member = User::create([
+                    'facebook_id' => $user->getId(),
+                    'name' => $user->getName(),
+                    'email' => $user->getEmail(),
+                    'imgProfile' => $user->getAvatar()
+                ]);
+            }
+            else{
+                \Session::flash('email.error', 'O email informado já existe');
+                return redirect()->route('login');
+            }
         }
 
         auth()->login($member);
 
-        return redirect()->to('/');
+        return redirect()->route('index');
+    }
 
-        //return $user->getAvatar();
+    /**
+     * Redirect the user to the Linkedin authentication page.
+     *
+     * @return Response
+     */
+    public function redirectToLinkedinProvider()
+    {
+        return Socialite::driver('linkedin')->redirect();
+    }
 
+    /**
+     * Obtain the user information from Linkedin.
+     *
+     * @return Response
+     */
+    public function handleLinkedinProviderCallback()
+    {
+        $user = Socialite::driver('linkedin')->user();
 
+        $member = User::where('linkedin_id', $user->getId())->first();
+
+        if(!$member){
+
+            $email = User::where('email', $user->getEmail())->first();
+
+            if(count($email) == 0){
+                $member = User::create([
+                    'linkedin_id' => $user->getId(),
+                    'name' => $user->getName(),
+                    'email' => $user->getEmail(),
+                    'imgProfile' => $user->getAvatar()
+                ]);
+
+            }else{
+                \Session::flash('email.error', 'O email informado já existe');
+                return redirect()->route('login');
+            }
+
+        }
+
+        auth()->login($member);
+
+        return redirect()->route('index');
+    }
+
+    /**
+     * Redirect the user to the Google authentication page.
+     *
+     * @return Response
+     */
+    public function redirectToGoogleProvider()
+    {
+        return Socialite::driver('google')->redirect();
+    }
+
+    /**
+     * Obtain the user information from Google.
+     *
+     * @return Response
+     */
+    public function handleGoogleProviderCallback()
+    {
+        $user = Socialite::driver('google')->user();
+
+        $member = User::where('google_id', $user->getId())->first();
+
+        if(!$member){
+
+            $email = User::where('email', $user->getEmail())->first();
+
+            if(count($email) == 0){
+                $member = User::create([
+                    'google_id' => $user->getId(),
+                    'name' => $user->getName(),
+                    'email' => $user->getEmail(),
+                    'imgProfile' => $user->getAvatar()
+                ]);
+
+            }else{
+                \Session::flash('email.error', 'O email informado já existe');
+                return redirect()->route('login');
+            }
+
+        }
+
+        auth()->login($member);
+
+        return redirect()->route('index');
     }
 }

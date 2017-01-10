@@ -23,3 +23,11 @@ Route::get('/home', 'HomeController@index');
 //Login Facebook
 Route::get('auth/facebook', 'Auth\RegisterController@redirectToProvider');
 Route::get('auth/facebook/callback', 'Auth\RegisterController@handleProviderCallback');
+
+//Login Linkedin
+Route::get('auth/linkedin', 'Auth\RegisterController@redirectToLinkedinProvider');
+Route::get('auth/linkedin/callback', 'Auth\RegisterController@handleLinkedinProviderCallback');
+
+//Login Google +
+Route::get('auth/google', 'Auth\RegisterController@redirectToGoogleProvider');
+Route::get('auth/google/callback', 'Auth\RegisterController@handleGoogleProviderCallback');

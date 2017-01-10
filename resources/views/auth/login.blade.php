@@ -42,6 +42,13 @@ License: You must have a valid license purchased only from themeforest(the above
             <button class="close" data-close="alert"></button>
             <span> Digite seu email e senha </span>
         </div>
+
+        @if(Session::has('email.error'))
+            <div class="alert alert-danger alert-dismissible" role="alert">
+                <button class="close" data-close="alert"></button>
+                <span> {{ Session::get('email.error') }} </span>
+            </div>
+        @endif
         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
             <!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
             <label class="control-label visible-ie8 visible-ie9">Email</label>
@@ -85,10 +92,10 @@ License: You must have a valid license purchased only from themeforest(the above
                     <a class="social-icon-color twitter" data-original-title="Twitter" href="javascript:;"></a>
                 </li>
                 <li>
-                    <a class="social-icon-color googleplus" data-original-title="Google Plus" href="javascript:;"></a>
+                    <a class="social-icon-color googleplus" data-original-title="Google Plus" href="{{ url('auth/google') }}"></a>
                 </li>
                 <li>
-                    <a class="social-icon-color linkedin" data-original-title="Linkedin" href="javascript:;"></a>
+                    <a class="social-icon-color linkedin" data-original-title="Linkedin" href="{{ url('auth/linkedin') }}"></a>
                 </li>
             </ul>
         </div>
