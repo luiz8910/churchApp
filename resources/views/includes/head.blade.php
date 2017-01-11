@@ -32,3 +32,6 @@
 <!-- BEGIN PAGE LEVEL PLUGINS -->
 <link href="assets/global/plugins/fullcalendar/fullcalendar.min.css" rel="stylesheet" type="text/css" />
 <!-- END PAGE LEVEL PLUGINS -->
+
+<!-- CSS Próprio -->
+<link href="css/style.css" rel="stylesheet" type="text/css" />

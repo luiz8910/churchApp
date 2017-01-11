@@ -13,6 +13,8 @@
 
 Route::group(['middleware' => 'auth'], function (){
     Route::get('/', 'DashboardController@index')->name('index');
+    Route::resource('users', 'UsersController');
+    Route::get('myAccount', 'UsersController@myAccount')->name('users.myAccount');
 });
 
 
@@ -31,3 +33,7 @@ Route::get('auth/linkedin/callback', 'Auth\RegisterController@handleLinkedinProv
 //Login Google +
 Route::get('auth/google', 'Auth\RegisterController@redirectToGoogleProvider');
 Route::get('auth/google/callback', 'Auth\RegisterController@handleGoogleProviderCallback');
+
+//Login Twitter
+//Route::get('auth/twitter', 'Auth\RegisterController@redirectToTwitterProvider');
+//Route::get('auth/twitter/callback', 'Auth\RegisterController@handleTwitterProviderCallback');

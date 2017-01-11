@@ -101,7 +101,9 @@ class RegisterController extends Controller
                     'facebook_id' => $user->getId(),
                     'name' => $user->getName(),
                     'email' => $user->getEmail(),
-                    'imgProfile' => $user->getAvatar()
+                    'church_id' => 1,
+                    'imgProfile' => $user->getAvatar(),
+                    'role' => 'membro'
                 ]);
             }
             else{
@@ -145,7 +147,9 @@ class RegisterController extends Controller
                     'linkedin_id' => $user->getId(),
                     'name' => $user->getName(),
                     'email' => $user->getEmail(),
-                    'imgProfile' => $user->getAvatar()
+                    'church_id' => 1,
+                    'imgProfile' => $user->getAvatar(),
+                    'role' => 'membro'
                 ]);
 
             }else{
@@ -190,7 +194,9 @@ class RegisterController extends Controller
                     'google_id' => $user->getId(),
                     'name' => $user->getName(),
                     'email' => $user->getEmail(),
-                    'imgProfile' => $user->getAvatar()
+                    'church_id' => 1,
+                    'imgProfile' => $user->getAvatar(),
+                    'role' => 'membro'
                 ]);
 
             }else{

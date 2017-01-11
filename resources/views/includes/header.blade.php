@@ -300,7 +300,7 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-default">
                             <li>
-                                <a href="page_user_profile_1.html">
+                                <a href="{{ route('users.myAccount') }}">
                                     <i class="icon-user"></i> Minha conta </a>
                             </li>
                             <li>
@@ -309,8 +309,13 @@
                             </li>
                             <li class="divider"> </li>
                             <li>
-                                <a href="{{ Auth::logout() }}">
-                                    <i class="icon-key"></i> Sair </a>
+                                <a href="{{ url('/logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                                    <i class="icon-key"></i> Sair
+                                </a>
+
+                                <form id="logout-form" action="{{ url('/logout') }}" method="POST">
+                                    {{ csrf_field() }}
+                                </form>
                             </li>
                         </ul>
                     </li>

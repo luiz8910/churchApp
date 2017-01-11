@@ -36,21 +36,21 @@ return [
     ],
 
     'facebook' => [
-        'client_id' => '359134241126376',
-        'client_secret' => '347f5ff94d6277f6a806955cf051b0fa',
-        'redirect' => 'http://localhost:8000/auth/facebook/callback',
+        'client_id' => '',
+        'client_secret' => '',
+        'redirect' => '',
     ],
 
     'linkedin' => [
-        'client_id' => '786yyi22axk8gc',
-        'client_secret' => 'K76rm0lANtIDO0Oj',
-        'redirect' => 'http://localhost:8000/auth/linkedin/callback',
+        'client_id' => '',
+        'client_secret' => '',
+        'redirect' => '',
     ],
 
     'google' => [
-        'client_id' => '453342020267-27prfvbe7p04cgcg9uj5r32dgci6o2q9.apps.googleusercontent.com',
-        'client_secret' => 'mqy1Ho5DLRwbl3lV70QVEPiY',
-        'redirect' => 'http://localhost:8000/auth/google/callback',
+        'client_id' => '',
+        'client_secret' => '',
+        'redirect' => '',
     ]
 
 ];
