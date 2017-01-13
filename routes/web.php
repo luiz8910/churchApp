@@ -13,8 +13,16 @@
 
 Route::group(['middleware' => 'auth'], function (){
     Route::get('/', 'DashboardController@index')->name('index');
+
     Route::resource('users', 'UsersController');
+
+    Route::resource('person', 'PersonController');
+
     Route::get('myAccount', 'UsersController@myAccount')->name('users.myAccount');
+    Route::post('imgProfile', 'UsersController@imgProfile')->name('users.imgProfile');
+    Route::post('changePass', 'UsersController@changePassword')->name('users.changePass');
+
+
 });
 
 

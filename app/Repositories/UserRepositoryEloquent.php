@@ -32,4 +32,23 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
     {
         $this->pushCriteria(app(RequestCriteria::class));
     }
+
+
+    public function changePassword($request)
+    {
+        $pass = \Auth::user()->password;
+
+        $id = \Auth::user()->id;
+
+        if (\Hash::check($request->old, $pass))
+        {
+            $new = bcrypt($request->new);
+
+            DB::table('users')->
+            where('id', $id)->
+            update(['password' => $new]);
+
+            return true;
+        }
+    }
 }

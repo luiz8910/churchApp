@@ -8,6 +8,7 @@ use App\Repositories\DateRepository;
 use App\Repositories\StateRepository;
 use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class UsersController extends Controller
 {
@@ -77,6 +78,47 @@ class UsersController extends Controller
         $this->repository->update($data, $id);
 
         $request->session()->flash('updateUser', 'Alterações realizadas com sucesso');
+
+        return redirect()->route('users.myAccount');
+    }
+
+    public function imgProfile(Request $request)
+    {
+        $file = $request->file('img');
+
+        $id = \Auth::user()->id;
+
+        $imgName = 'uploads/profile/' . $id . '-' . \Auth::user()->name . '.' .$file->getClientOriginalExtension();
+
+        $file->move('uploads/profile', $imgName);
+
+        DB::table('users')->
+        where('id', $id)->
+        update(['imgProfile' => $imgName]);
+
+        $request->session()->flash('updateUser', 'Alterações realizadas com sucesso');
+
+        return redirect()->route('users.myAccount');
+    }
+
+    public function changePassword(Request $request)
+    {
+        if($request->new == $request->confirmPassword)
+        {
+            $result = $this->repository->changePassword($request);
+
+            if($result)
+            {
+                $request->session()->flash('updateUser', 'Senha Alterada com sucesso');
+            }
+            else{
+                $request->session()->flash('updateUser', 'Sua senha original está incorreta');
+            }
+        }
+        else{
+            $request->session()->flash('updateUser', 'As senhas não combinam');
+        }
+
 
         return redirect()->route('users.myAccount');
     }

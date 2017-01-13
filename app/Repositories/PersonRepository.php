@@ -5,10 +5,10 @@ namespace App\Repositories;
 use Prettus\Repository\Contracts\RepositoryInterface;
 
 /**
- * Interface UserRepository
+ * Interface PersonRepository
  * @package namespace App\Repositories;
  */
-interface UserRepository extends RepositoryInterface
+interface PersonRepository extends RepositoryInterface
 {
-    public function changePassword($request);
+    //
 }

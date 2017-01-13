@@ -851,9 +851,8 @@ License: You must have a valid license purchased only from themeforest(the above
                                         <!-- END PERSONAL INFO TAB -->
                                         <!-- CHANGE AVATAR TAB -->
                                         <div class="tab-pane" id="tab_1_2">
-                                            <p> Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt
-                                                laborum eiusmod. </p>
-                                            <form action="#" role="form">
+                                            <p> Altere aqui sua foto do perfil </p>
+                                            {!! Form::open(['route' => 'users.imgProfile', 'method' => 'post', 'enctype' => 'multipart/form-data', 'role' => 'form']) !!}
                                                 <div class="form-group">
                                                     <div class="fileinput fileinput-new" data-provides="fileinput">
                                                         <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
@@ -861,41 +860,37 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"> </div>
                                                         <div>
                                                                                 <span class="btn default btn-file">
-                                                                                    <span class="fileinput-new"> Select image </span>
-                                                                                    <span class="fileinput-exists"> Change </span>
-                                                                                    <input type="file" name="..."> </span>
-                                                            <a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Remove </a>
+                                                                                    <span class="fileinput-new"> Escolher Imagem </span>
+                                                                                    <span class="fileinput-exists"> Alterar </span>
+                                                                                    <input type="file" name="img"> </span>
+                                                            <a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Remover </a>
                                                         </div>
-                                                    </div>
-                                                    <div class="clearfix margin-top-10">
-                                                        <span class="label label-danger">NOTE! </span>
-                                                        <span>Attached image thumbnail is supported in Latest Firefox, Chrome, Opera, Safari and Internet Explorer 10 only </span>
                                                     </div>
                                                 </div>
                                                 <div class="margin-top-10">
-                                                    <a href="javascript:;" class="btn green"> Submit </a>
-                                                    <a href="javascript:;" class="btn default"> Cancel </a>
+                                                    {!! Form::submit('Enviar', ['class' => 'btn green']) !!}
+                                                    <a href="javascript:;" class="btn default"> Cancelar </a>
                                                 </div>
                                             </form>
                                         </div>
                                         <!-- END CHANGE AVATAR TAB -->
                                         <!-- CHANGE PASSWORD TAB -->
                                         <div class="tab-pane" id="tab_1_3">
-                                            <form action="#">
-                                                <div class="form-group">
-                                                    <label class="control-label">Current Password</label>
-                                                    <input type="password" class="form-control" /> </div>
-                                                <div class="form-group">
-                                                    <label class="control-label">New Password</label>
-                                                    <input type="password" class="form-control" /> </div>
-                                                <div class="form-group">
-                                                    <label class="control-label">Re-type New Password</label>
-                                                    <input type="password" class="form-control" /> </div>
-                                                <div class="margin-top-10">
-                                                    <a href="javascript:;" class="btn green"> Change Password </a>
-                                                    <a href="javascript:;" class="btn default"> Cancel </a>
-                                                </div>
-                                            </form>
+                                            {!! Form::open(['route' => 'users.changePass', 'method' => 'post']) !!}
+                                            <div class="form-group">
+                                                <label class="control-label">Senha Atual</label>
+                                                <input type="password" class="form-control" name="old" /> </div>
+                                            <div class="form-group">
+                                                <label class="control-label">Nova Senha</label>
+                                                <input type="password" class="form-control" name="new" /> </div>
+                                            <div class="form-group">
+                                                <label class="control-label">Confirme sua nova Senha</label>
+                                                <input type="password" class="form-control" name="confirmPassword" /> </div>
+                                            <div class="margin-top-10">
+                                                {!! Form::submit('Alterar Senha', ['class' => 'btn green']) !!}
+                                                <a href="javascript:;" class="btn default"> Cancelar </a>
+                                            </div>
+                                            {!! Form::close() !!}
                                         </div>
                                         <!-- END CHANGE PASSWORD TAB -->
                                         <!-- PRIVACY SETTINGS TAB -->

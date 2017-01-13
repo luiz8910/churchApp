@@ -17,8 +17,10 @@
             <div class="top-menu">
                 <ul class="nav navbar-nav pull-right">
                     <!-- BEGIN NOTIFICATION DROPDOWN -->
-                    <li class="dropdown dropdown-extended dropdown-notification dropdown-dark" id="header_notification_bar">
-                        <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                    <li class="dropdown dropdown-extended dropdown-notification dropdown-dark"
+                        id="header_notification_bar">
+                        <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"
+                           data-close-others="true">
                             <i class="icon-bell"></i>
                             <span class="badge badge-default">7</span>
                         </a>
@@ -29,7 +31,8 @@
                                 <a href="app_todo.html">view all</a>
                             </li>
                             <li>
-                                <ul class="dropdown-menu-list scroller" style="height: 250px;" data-handle-color="#637283">
+                                <ul class="dropdown-menu-list scroller" style="height: 250px;"
+                                    data-handle-color="#637283">
                                     <li>
                                         <a href="javascript:;">
                                             <span class="time">just now</span>
@@ -118,7 +121,8 @@
                     <!-- END NOTIFICATION DROPDOWN -->
                     <!-- BEGIN TODO DROPDOWN -->
                     <li class="dropdown dropdown-extended dropdown-tasks dropdown-dark" id="header_task_bar">
-                        <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                        <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"
+                           data-close-others="true">
                             <i class="icon-calendar"></i>
                             <span class="badge badge-default">3</span>
                         </a>
@@ -129,7 +133,8 @@
                                 <a href="app_todo_2.html">view all</a>
                             </li>
                             <li>
-                                <ul class="dropdown-menu-list scroller" style="height: 275px;" data-handle-color="#637283">
+                                <ul class="dropdown-menu-list scroller" style="height: 275px;"
+                                    data-handle-color="#637283">
                                     <li>
                                         <a href="javascript:;">
                                                     <span class="task">
@@ -137,7 +142,9 @@
                                                         <span class="percent">30%</span>
                                                     </span>
                                                     <span class="progress">
-                                                        <span style="width: 40%;" class="progress-bar progress-bar-success" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">
+                                                        <span style="width: 40%;"
+                                                              class="progress-bar progress-bar-success"
+                                                              aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">
                                                             <span class="sr-only">40% Complete</span>
                                                         </span>
                                                     </span>
@@ -150,7 +157,9 @@
                                                         <span class="percent">65%</span>
                                                     </span>
                                                     <span class="progress">
-                                                        <span style="width: 65%;" class="progress-bar progress-bar-danger" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100">
+                                                        <span style="width: 65%;"
+                                                              class="progress-bar progress-bar-danger"
+                                                              aria-valuenow="65" aria-valuemin="0" aria-valuemax="100">
                                                             <span class="sr-only">65% Complete</span>
                                                         </span>
                                                     </span>
@@ -163,7 +172,9 @@
                                                         <span class="percent">98%</span>
                                                     </span>
                                                     <span class="progress">
-                                                        <span style="width: 98%;" class="progress-bar progress-bar-success" aria-valuenow="98" aria-valuemin="0" aria-valuemax="100">
+                                                        <span style="width: 98%;"
+                                                              class="progress-bar progress-bar-success"
+                                                              aria-valuenow="98" aria-valuemin="0" aria-valuemax="100">
                                                             <span class="sr-only">98% Complete</span>
                                                         </span>
                                                     </span>
@@ -176,7 +187,9 @@
                                                         <span class="percent">10%</span>
                                                     </span>
                                                     <span class="progress">
-                                                        <span style="width: 10%;" class="progress-bar progress-bar-warning" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">
+                                                        <span style="width: 10%;"
+                                                              class="progress-bar progress-bar-warning"
+                                                              aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">
                                                             <span class="sr-only">10% Complete</span>
                                                         </span>
                                                     </span>
@@ -189,7 +202,8 @@
                                                         <span class="percent">58%</span>
                                                     </span>
                                                     <span class="progress">
-                                                        <span style="width: 58%;" class="progress-bar progress-bar-info" aria-valuenow="58" aria-valuemin="0" aria-valuemax="100">
+                                                        <span style="width: 58%;" class="progress-bar progress-bar-info"
+                                                              aria-valuenow="58" aria-valuemin="0" aria-valuemax="100">
                                                             <span class="sr-only">58% Complete</span>
                                                         </span>
                                                     </span>
@@ -202,7 +216,9 @@
                                                         <span class="percent">85%</span>
                                                     </span>
                                                     <span class="progress">
-                                                        <span style="width: 85%;" class="progress-bar progress-bar-success" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100">
+                                                        <span style="width: 85%;"
+                                                              class="progress-bar progress-bar-success"
+                                                              aria-valuenow="85" aria-valuemin="0" aria-valuemax="100">
                                                             <span class="sr-only">85% Complete</span>
                                                         </span>
                                                     </span>
@@ -215,7 +231,9 @@
                                                         <span class="percent">38%</span>
                                                     </span>
                                                     <span class="progress progress-striped">
-                                                        <span style="width: 38%;" class="progress-bar progress-bar-important" aria-valuenow="18" aria-valuemin="0" aria-valuemax="100">
+                                                        <span style="width: 38%;"
+                                                              class="progress-bar progress-bar-important"
+                                                              aria-valuenow="18" aria-valuemin="0" aria-valuemax="100">
                                                             <span class="sr-only">38% Complete</span>
                                                         </span>
                                                     </span>
@@ -231,7 +249,8 @@
                     </li>
                     <!-- BEGIN INBOX DROPDOWN -->
                     <li class="dropdown dropdown-extended dropdown-inbox dropdown-dark" id="header_inbox_bar">
-                        <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                        <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"
+                           data-close-others="true">
                             <span class="circle">3</span>
                             <span class="corner"></span>
                         </a>
@@ -242,11 +261,13 @@
                                 <a href="app_inbox.html">ver todas</a>
                             </li>
                             <li>
-                                <ul class="dropdown-menu-list scroller" style="height: 275px;" data-handle-color="#637283">
+                                <ul class="dropdown-menu-list scroller" style="height: 275px;"
+                                    data-handle-color="#637283">
                                     <li>
                                         <a href="#">
                                                     <span class="photo">
-                                                        <img src="assets/layouts/layout3/img/avatar2.jpg" class="img-circle" alt=""> </span>
+                                                        <img src="assets/layouts/layout3/img/avatar2.jpg"
+                                                             class="img-circle" alt=""> </span>
                                                     <span class="subject">
                                                         <span class="from"> Ana Julia </span>
                                                         <span class="time">Agora </span>
@@ -257,7 +278,8 @@
                                     <li>
                                         <a href="#">
                                                     <span class="photo">
-                                                        <img src="assets/layouts/layout3/img/avatar3.jpg" class="img-circle" alt=""> </span>
+                                                        <img src="assets/layouts/layout3/img/avatar3.jpg"
+                                                             class="img-circle" alt=""> </span>
                                                     <span class="subject">
                                                         <span class="from"> Ricardo Fiorentino </span>
                                                         <span class="time">16 mins </span>
@@ -268,7 +290,8 @@
                                     <li>
                                         <a href="#">
                                                     <span class="photo">
-                                                        <img src="assets/layouts/layout3/img/avatar1.jpg" class="img-circle" alt=""> </span>
+                                                        <img src="assets/layouts/layout3/img/avatar1.jpg"
+                                                             class="img-circle" alt=""> </span>
                                                     <span class="subject">
                                                         <span class="from"> Ferdinando Milani </span>
                                                         <span class="time">2 hrs </span>
@@ -279,7 +302,8 @@
                                     <li>
                                         <a href="#">
                                                     <span class="photo">
-                                                        <img src="assets/layouts/layout3/img/avatar6.jpg" class="img-circle" alt=""> </span>
+                                                        <img src="assets/layouts/layout3/img/avatar6.jpg"
+                                                             class="img-circle" alt=""> </span>
                                                     <span class="subject">
                                                         <span class="from"> Gabrielle Benítez Aguilar </span>
                                                         <span class="time">2 dias </span>
@@ -294,7 +318,8 @@
                     <!-- END INBOX DROPDOWN -->
                     <!-- BEGIN USER LOGIN DROPDOWN -->
                     <li class="dropdown dropdown-user dropdown-dark">
-                        <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                        <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"
+                           data-close-others="true">
                             <img alt="" class="img-circle" src="{{ Auth::getUser()->imgProfile }}">
                             <span class="username username-hide-mobile">{{ Auth::getUser()->name }}</span>
                         </a>
@@ -307,9 +332,10 @@
                                 <a href="app_calendar.html">
                                     <i class="icon-calendar"></i> Eventos </a>
                             </li>
-                            <li class="divider"> </li>
+                            <li class="divider"></li>
                             <li>
-                                <a href="{{ url('/logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                                <a href="{{ url('/logout') }}"
+                                   onclick="event.preventDefault();document.getElementById('logout-form').submit();">
                                     <i class="icon-key"></i> Sair
                                 </a>
 
@@ -352,9 +378,23 @@
             <!-- DOC: Remove data-hover="dropdown" and data-close-others="true" attributes below to disable the dropdown opening on mouse hover -->
             <div class="hor-menu  ">
                 <ul class="nav navbar-nav">
-                    <li class="menu-dropdown classic-menu-dropdown active">
-                        <a href="javascript:;"> Usuários
+                    <li class="menu-dropdown classic-menu-dropdown ">
+                        <a href="javascript:;"> Pessoas
+                            <span class="arrow"></span>
                         </a>
+                        <ul class="dropdown-menu pull-left">
+                            <li class=" ">
+                                <a href="{{ route('person.index') }}" class="nav-link  ">
+                                    <i class="icon-bar-chart"></i> Adultos
+                                    <span class="badge badge-success">1</span> <!-- Qtde de Adultos cadastrados -->
+                                </a>
+                            </li>
+                            <li class=" ">
+                                <a href="dashboard_2.html" class="nav-link  ">
+                                    <i class="icon-bulb"></i> Jovens e Crianças
+                                    <span class="badge badge-success">1</span></a> <!-- Qtde de Crianças/Jovens cad.-->
+                            </li>
+                        </ul>
                     </li>
                     <li class="menu-dropdown mega-menu-dropdown  ">
                         <a href="javascript:;"> Jovens e Crianças
