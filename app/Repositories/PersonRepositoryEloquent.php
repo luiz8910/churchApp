@@ -2,11 +2,11 @@
 
 namespace App\Repositories;
 
+use Illuminate\Support\Facades\DB;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 use App\Repositories\PersonRepository;
 use App\Models\Person;
-use App\Validators\PersonValidator;
 
 /**
  * Class PersonRepositoryEloquent
@@ -14,6 +14,7 @@ use App\Validators\PersonValidator;
  */
 class PersonRepositoryEloquent extends BaseRepository implements PersonRepository
 {
+    use DateRepository;
     /**
      * Specify Model class name
      *
@@ -32,5 +33,33 @@ class PersonRepositoryEloquent extends BaseRepository implements PersonRepositor
     public function boot()
     {
         $this->pushCriteria(app(RequestCriteria::class));
+    }
+
+
+    /**
+     * Listagem de pessoas que possuem mais de 18 anos
+     *
+     * @param $person
+     * @return array
+     */
+    public function legalAge($person)
+    {
+        $adults = [];
+
+        $today = date("Y-m-d");
+
+        foreach ($person as $item){
+
+            $date = DB::select("SELECT DATEDIFF('$today', '$item->dateBirth')/365 AS DiffDate");
+
+            if ((int)$date[0]->DiffDate >= 18)
+            {
+                $item->dateBirth = $this->formatDateView($item->dateBirth);
+                array_push($adults, $item);
+            }
+
+        }
+
+        return $adults;
     }
 }

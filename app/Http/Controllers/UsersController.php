@@ -93,8 +93,8 @@ class UsersController extends Controller
         $file->move('uploads/profile', $imgName);
 
         DB::table('users')->
-        where('id', $id)->
-        update(['imgProfile' => $imgName]);
+            where('id', $id)->
+            update(['imgProfile' => $imgName]);
 
         $request->session()->flash('updateUser', 'Alterações realizadas com sucesso');
 

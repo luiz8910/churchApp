@@ -6,7 +6,7 @@
             <!-- BEGIN LOGO -->
             <div class="page-logo">
                 <a href="{{ route('index') }}">
-                    <img src="assets/layouts/layout3/img/logo-default.jpg" alt="logo" class="logo-default">
+                    <img src="../assets/layouts/layout3/img/logo-default.jpg" alt="logo" class="logo-default">
                 </a>
             </div>
             <!-- END LOGO -->
@@ -266,7 +266,7 @@
                                     <li>
                                         <a href="#">
                                                     <span class="photo">
-                                                        <img src="assets/layouts/layout3/img/avatar2.jpg"
+                                                        <img src="../assets/layouts/layout3/img/avatar2.jpg"
                                                              class="img-circle" alt=""> </span>
                                                     <span class="subject">
                                                         <span class="from"> Ana Julia </span>
@@ -278,7 +278,7 @@
                                     <li>
                                         <a href="#">
                                                     <span class="photo">
-                                                        <img src="assets/layouts/layout3/img/avatar3.jpg"
+                                                        <img src="../assets/layouts/layout3/img/avatar3.jpg"
                                                              class="img-circle" alt=""> </span>
                                                     <span class="subject">
                                                         <span class="from"> Ricardo Fiorentino </span>
@@ -290,7 +290,7 @@
                                     <li>
                                         <a href="#">
                                                     <span class="photo">
-                                                        <img src="assets/layouts/layout3/img/avatar1.jpg"
+                                                        <img src="../assets/layouts/layout3/img/avatar1.jpg"
                                                              class="img-circle" alt=""> </span>
                                                     <span class="subject">
                                                         <span class="from"> Ferdinando Milani </span>
@@ -302,7 +302,7 @@
                                     <li>
                                         <a href="#">
                                                     <span class="photo">
-                                                        <img src="assets/layouts/layout3/img/avatar6.jpg"
+                                                        <img src="../assets/layouts/layout3/img/avatar6.jpg"
                                                              class="img-circle" alt=""> </span>
                                                     <span class="subject">
                                                         <span class="from"> Gabrielle Benítez Aguilar </span>
@@ -320,7 +320,7 @@
                     <li class="dropdown dropdown-user dropdown-dark">
                         <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"
                            data-close-others="true">
-                            <img alt="" class="img-circle" src="{{ Auth::getUser()->imgProfile }}">
+                            <img alt="" class="img-circle" src="../{{ Auth::getUser()->imgProfile }}">
                             <span class="username username-hide-mobile">{{ Auth::getUser()->name }}</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-default">

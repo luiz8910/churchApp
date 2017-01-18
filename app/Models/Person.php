@@ -11,7 +11,7 @@ class Person extends Model implements Transformable
     use TransformableTrait;
 
     protected $fillable = [
-        'name', 'email', 'tel', 'cel', 'role', 'imgProfile', 'gender',
+        'name', 'lastName', 'email', 'tel', 'cel', 'role', 'imgProfile', 'gender',
         'dateBirth', 'cpf', 'rg', 'fatherName', 'motherName','mailing',
         'hasKids', 'street', 'neighborhood', 'city', 'zipCode', 'state'
     ];

@@ -18,11 +18,11 @@ class CreatePeopleTable extends Migration
 			$table->string('name');
 			$table->string('lastName');
 			$table->string('email')->nullable();
-			$table->string('role');
-			$table->string('imgProfile');
+			$table->string('role')->default('Membro');
+			$table->string('imgProfile')->nullable();
 			$table->string('tel')->nullable();
 			$table->string('cel')->nullable();
-			$table->string('gender');
+			$table->string('gender')->nullable();
 			$table->string('fatherName')->nullable();
 			$table->string('motherName')->nullable();
 			$table->string('cpf')->nullable();

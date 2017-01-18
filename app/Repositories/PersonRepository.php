@@ -10,5 +10,5 @@ use Prettus\Repository\Contracts\RepositoryInterface;
  */
 interface PersonRepository extends RepositoryInterface
 {
-    //
+    public function legalAge($person);
 }
