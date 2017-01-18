@@ -40,6 +40,15 @@ class PersonController extends Controller
         return view('people.index', compact('adults'));
     }
 
+    public function teenagers()
+    {
+        $person = $this->repository->all();
+
+        $teen = $this->repository->teen($person);
+
+        return view('people.teenagers', compact('teen'));
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -106,6 +115,8 @@ class PersonController extends Controller
 
                 $data['fatherName'] = $father->name . ' ' . $father->lastName;
 
+                $data['imgProfile'] = 'uploads/profile/noimage.png';
+
                 $this->repository->create($data);
             }
             else{
@@ -118,6 +129,8 @@ class PersonController extends Controller
                 $data['dateBirth'] = $this->formatDateBD($child['childDateBirth']);
 
                 $data['motherName'] = $mother->name . ' ' . $mother->lastName;
+
+                $data['imgProfile'] = 'uploads/profile/noimage.png';
 
                 $this->repository->create($data);
             }
@@ -145,6 +158,23 @@ class PersonController extends Controller
         //$request->session()->flash('updateUser', 'Alterações realizadas com sucesso');
     }
 
+    public function imgEditProfile(Request $request, $id)
+    {
+        $name = $this->repository->find($id)->name;
+
+        $file = $request->file('img');
+
+        $imgName = 'uploads/profile/' . $id . '-' . $name . '.' .$file->getClientOriginalExtension();
+
+        $file->move('uploads/profile', $imgName);
+
+        DB::table('people')->
+        where('id', $id)->
+        update(['imgProfile' => $imgName]);
+
+        return redirect()->back();
+    }
+
 
     /**
      * Display the specified resource.
@@ -165,7 +195,13 @@ class PersonController extends Controller
      */
     public function edit($id)
     {
-        //
+        $person = $this->repository->find($id);
+
+        $state = $this->stateRepository->all();
+
+        $person->dateBirth = $this->formatDateView($person->dateBirth);
+
+        return view('people.edit', compact('person', 'state'));
     }
 
     /**

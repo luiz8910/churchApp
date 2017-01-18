@@ -22,7 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('twitter_id')->unique()->nullable();
             $table->string('name');
             $table->string('email')->unique();
-            $table->string('password')->nullable();
+            $table->string('password');
             $table->string('imgProfile');
             $table->string('tel')->nullable();
             $table->string('role')->nullable();

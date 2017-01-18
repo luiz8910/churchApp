@@ -41,7 +41,7 @@ License: You must have a valid license purchased only from themeforest(the above
             <div class="container">
                 <!-- BEGIN PAGE TITLE -->
                 <div class="page-title">
-                    <h1>Adultos
+                    <h1>Crianças e Jovens
                         <small>membros e etc...</small>
                     </h1>
                 </div>
@@ -64,7 +64,7 @@ License: You must have a valid license purchased only from themeforest(the above
                         <i class="fa fa-circle"></i>
                     </li>
                     <li>
-                        <span>Adultos</span>
+                        <span>Crianças e Jovens</span>
                     </li>
                 </ul>
                 <!-- END PAGE BREADCRUMBS -->
@@ -134,7 +134,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                             </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach($adults as $item)
+                                                @foreach($teen as $item)
                                                     <tr>
                                                         <td> {{ $item->id }} </td>
                                                         <td> {{ $item->name }} {{ $item->lastName }}</td>

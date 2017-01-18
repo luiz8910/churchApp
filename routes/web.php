@@ -18,6 +18,10 @@ Route::group(['middleware' => 'auth'], function (){
 
     Route::resource('person', 'PersonController');
 
+    Route::get('teen', 'PersonController@teenagers')->name('person.teen');
+
+    Route::post('person-imgProfile/{id}', 'PersonController@imgEditProfile')->name('person.imgEditProfile');
+
     Route::get('myAccount', 'UsersController@myAccount')->name('users.myAccount');
     Route::post('imgProfile', 'UsersController@imgProfile')->name('users.imgProfile');
     Route::post('changePass', 'UsersController@changePassword')->name('users.changePass');
