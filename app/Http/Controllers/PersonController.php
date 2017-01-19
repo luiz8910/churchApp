@@ -201,7 +201,13 @@ class PersonController extends Controller
 
         $person->dateBirth = $this->formatDateView($person->dateBirth);
 
-        return view('people.edit', compact('person', 'state'));
+        $location = str_replace(' ', '+', $person->street);
+
+        $location .= '+' . $person->city . '+' . $person->state;
+
+        //dd($location);
+
+        return view('people.edit', compact('person', 'state', 'location'));
     }
 
     /**
@@ -213,7 +219,13 @@ class PersonController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = $request->all();
+
+        $data['dateBirth'] = $this->formatDateBD($data['dateBirth']);
+
+        $this->repository->update($data, $id);
+
+        return redirect()->route('person.index');
     }
 
     /**
