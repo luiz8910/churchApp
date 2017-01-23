@@ -13,4 +13,6 @@ interface PersonRepository extends RepositoryInterface
     public function legalAge($person);
 
     public function teen($person);
+
+    public function tag($dateBirth);
 }

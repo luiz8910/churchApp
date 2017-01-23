@@ -28,7 +28,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
 <body class="page-container-bg-solid page-boxed">
 <!-- BEGIN HEADER -->
-@include('includes.header')
+@include('includes.header-edit')
 <!-- END HEADER -->
 <!-- BEGIN CONTAINER -->
 <div class="page-container">
@@ -239,11 +239,11 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <label>Cargo</label>
                                                     <div class="input-icon input-icon-sm">
                                                         <i class="fa fa-briefcase"></i>
-                                                        <select class="form-control" name="role">
+                                                        <select class="form-control" name="role_id">
                                                             <option value="">Selecione</option>
-                                                            <option value="Administrador">Administrador</option>
-                                                            <option value="Lider">Lider</option>
-                                                            <option value="Membro">Membro</option>
+                                                            @foreach($roles as $role)
+                                                                <option value="{{ $role->id }}">{{ $role->name }}</option>
+                                                            @endforeach
                                                         </select>
                                                     </div>
                                                 </div>
@@ -275,7 +275,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             <span class="input-group-addon">
                                                                 <i class="fa fa-male font-blue"></i>
                                                             </span>
-                                                        <input type="text" class="form-control" name="fatherName"
+                                                        <input type="text" class="form-control" name="father_id"
                                                                placeholder="José da Silva">
                                                     </div>
 
@@ -288,7 +288,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             <span class="input-group-addon">
                                                                 <i class="fa fa-female font-red-pink"></i>
                                                             </span>
-                                                        <input type="text" name="motherName" class="form-control"
+                                                        <input type="text" name="mother_id" class="form-control"
                                                                placeholder="Maria das Dores">
                                                     </div>
                                                 </div>

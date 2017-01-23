@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\CountPersonRepository;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-    public function __construct()
-    {
-
-    }
+    use CountPersonRepository;
 
     public function index()
     {
-        return view('dashboard.index');
+        $countPerson[] = $this->countPerson();
+
+        return view('dashboard.index', compact('countPerson'));
     }
 }

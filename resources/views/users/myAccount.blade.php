@@ -824,24 +824,6 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 </div>
                                             </div>
 
-                                            <h3 class="form-section">Dados de Acesso</h3>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label>Senha</label>
-                                                        <input type="password" name="password" class="form-control">
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label>Confirmar Senha</label>
-                                                        <input type="password" name="password_confirmation"
-                                                               class="form-control">
-                                                    </div>
-                                                </div>
-                                            </div>
-
                                                 <div class="margiv-top-10">
                                                     {!! Form::submit('Salvar', ['class' => 'btn green']) !!}
                                                     <a href="javascript:;" class="btn default"> Cancelar </a>

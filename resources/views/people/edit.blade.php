@@ -87,7 +87,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                     <!-- SIDEBAR USER TITLE -->
                                     <div class="profile-usertitle">
                                         <div class="profile-usertitle-name"> {{ $person->name }} </div>
-                                        <div class="profile-usertitle-job"> {{ $person->role }} </div>
+                                        <div class="profile-usertitle-job"> {{ $person->role->name }} </div>
                                     </div>
                                     <!-- END SIDEBAR USER TITLE -->
 
@@ -135,7 +135,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                             </div>
                                             <div class="portlet-body">
                                                 <div id="map" style="height: 304px; width: 100%;"></div>
-                                                <input type="hidden" value="{{ $location }}" id="endereco">
+                                                <input type="hidden" value="{{ $location }}" id="location">
                                             </div>
                                         </div>
                                         <!-- END BASIC PORTLET-->
@@ -229,14 +229,13 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <div class="col-md-6">
                                                     {!! Form::FormGroup('role', $errors) !!}
                                                     <label class="control-label">Cargo</label>
-                                                    <select class="form-control" name="role"
+                                                    <select class="form-control" name="role_id"
                                                             data-placeholder="Selecione seu cargo"
                                                             tabindex="1">
                                                         <option value="">Selecione</option>
-                                                        <option value="Administrador" @if($person->role == "Administrador") selected @endif >Administrador</option>
-                                                        <option value="Financeiro" @if($person->role == "Financeiro") selected @endif >Financeiro</option>
-                                                        <option value="Lider" @if($person->role == "Lider") selected @endif >Lider</option>
-                                                        <option value="Membro" @if($person->role == "Membro") selected @endif >Membro</option>
+                                                        @foreach($roles as $role)
+                                                            <option value="{{ $role->id }}" @if($role->id == $person->role_id) selected @endif >{{ $role->name }}</option>
+                                                        @endforeach
                                                     </select>
                                                     {!! Form::error('role', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
@@ -252,6 +251,23 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     {!! Form::endFormGroup() !!}
                                                 </div>
                                             </div>
+
+                                            @if($person->tag != 'adult')
+
+                                                <h3 class="form-section">Observações</h3>
+
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        {!! Form::FormGroup('specialNeeds', $errors) !!}
+                                                        <label class="control-label">Anotações Gerais</label>
+                                                        <textarea class="form-control" name="specialNeeds" value="{{ $person->specialNeeds }}"
+                                                                  placeholder="Digite aqui observações importantes sobre a criança/adolescente"
+                                                                  rows="5"></textarea>
+                                                        {!! Form::error('specialNeeds', $errors) !!}
+                                                        {!! Form::endFormGroup() !!}
+                                                    </div>
+                                                </div>
+                                            @endif
 
                                             <h3 class="form-section">Endereço</h3>
 
@@ -1060,7 +1076,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
     function initMap() {
         //var infowindow = new google.maps.InfoWindow();
-        var location = $('#endereco').val();
+        var location = $('#location').val();
 
         var script = 'https://maps.googleapis.com/maps/api/geocode/json?address='+location+'&key=AIzaSyCz22xAk7gDzvTEXjqjL8Goxu_q12Gt_KU';
 

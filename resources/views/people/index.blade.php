@@ -77,13 +77,13 @@ License: You must have a valid license purchased only from themeforest(the above
                                 <div class="portlet-title">
                                     <div class="caption">
                                         <i class="icon-settings font-green"></i>
-                                        <span class="caption-subject font-green sbold uppercase">Membros - Adultos</span>
+                                        <span class="caption-subject font-green sbold uppercase">Adultos</span>
                                     </div>
                                     <div class="actions">
                                         <div class="btn-group btn-group-devided">
                                                 <a role="button" class="btn btn-info btn-circle" href="{{ route('person.create') }}" style="margin-top: 2px;">
                                                     <i class="fa fa-plus"></i>
-                                                    Novo Membro
+                                                    <span class="hidden-xs hidden-sm">Novo Membro</span>
                                                 </a>
 
                                         </div>
@@ -122,26 +122,39 @@ License: You must have a valid license purchased only from themeforest(the above
                                 </div>
                                 <div class="portlet-body">
                                     <div class="table-container">
-                                        <table class="table table-striped table-bordered table-hover" id="sample_3">
+                                        <table class="table table-striped table-hover" id="sample_3">
                                             <thead>
                                             <tr>
-                                                <th> # </th>
+                                                <th class="visible-xs"></th>
+                                                <th> Foto </th>
                                                 <th> Nome </th>
                                                 <th> CPF </th>
                                                 <th> Cargo </th>
                                                 <th> Data de Nasc. </th>
                                                 <th> Editar </th>
+                                                <th> Excluir </th>
                                             </tr>
                                             </thead>
                                             <tbody>
                                                 @foreach($adults as $item)
                                                     <tr>
-                                                        <td> {{ $item->id }} </td>
+                                                        <td class="visible-xs"></td>
+                                                        <td> <img src="{{ $item->imgProfile }}" style="width: 50px; height: 50px;"> </td>
                                                         <td> {{ $item->name }} {{ $item->lastName }}</td>
                                                         <td> {{ $item->cpf }} </td>
-                                                        <td> {{ $item->role }} </td>
+                                                        <td> {{ $item->role->name }} </td>
                                                         <td> {{ $item->dateBirth }} </td>
                                                         <td> <a href="{{ route('person.edit', ['person' => $item->id]) }}">Ver Perfil</a> </td>
+
+                                                             <?php $deleteForm = "delete-".$item->id; ?>
+                                                        <td id="{{ $deleteForm }}">
+                                                                {!! Form::open(['route' => ['person.destroy', 'person' => $item->id],
+                                                                        'method' => 'DELETE', 'id' => 'form-'.$deleteForm]) !!}
+
+                                                                <a href="" onclick='event.preventDefault();document.getElementById("form-{{ $deleteForm }}").submit();'>Excluir</a>
+
+                                                                 {!! Form::close() !!}
+                                                        </td>
                                                     </tr>
                                                 @endforeach
                                             </tbody>

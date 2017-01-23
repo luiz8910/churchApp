@@ -18,24 +18,29 @@ class CreatePeopleTable extends Migration
 			$table->string('name');
 			$table->string('lastName');
 			$table->string('email')->nullable();
-			$table->string('role')->default('Membro');
+			$table->integer('church_id')->nullable();
+			$table->integer('role_id')->nullable()->unsigned();
+            $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
 			$table->string('imgProfile')->nullable();
 			$table->string('tel')->nullable();
 			$table->string('cel')->nullable();
 			$table->string('gender')->nullable();
-			$table->string('fatherName')->nullable();
-			$table->string('motherName')->nullable();
+			$table->string('father_id')->nullable();
+			$table->string('mother_id')->nullable();
 			$table->string('cpf')->nullable();
 			$table->string('rg')->nullable();
 			$table->string('mailing')->nullable();
 			$table->string('dateBirth');
-			$table->string('hasKids')->default('0');
+			$table->string('hasKids')->nullable();
+            $table->string('tag')->nullable();
+            $table->string('specialNeeds')->nullable();
 			$table->string('street')->nullable();
 			$table->string('neighborhood')->nullable();
 			$table->string('city')->nullable();
 			$table->string('zipCode')->nullable();
 			$table->string('state')->nullable();
             $table->timestamps();
+            $table->softDeletes();
 		});
 	}
 

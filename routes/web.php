@@ -20,12 +20,19 @@ Route::group(['middleware' => 'auth'], function (){
 
     Route::get('teen', 'PersonController@teenagers')->name('person.teen');
 
+    Route::get('visitors', 'PersonController@visitors')->name('person.visitors');
+
+    Route::get('inactive', 'PersonController@inactive')->name('person.inactive');
+
+    Route::get('turnActive/{id}', 'PersonController@turnActive')->name('person.turnActive');
+
     Route::post('person-imgProfile/{id}', 'PersonController@imgEditProfile')->name('person.imgEditProfile');
 
     Route::get('myAccount', 'UsersController@myAccount')->name('users.myAccount');
     Route::post('imgProfile', 'UsersController@imgProfile')->name('users.imgProfile');
     Route::post('changePass', 'UsersController@changePassword')->name('users.changePass');
 
+    Route::resource('group', 'GroupController');
 
 });
 

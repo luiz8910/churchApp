@@ -83,4 +83,15 @@ class PersonRepositoryEloquent extends BaseRepository implements PersonRepositor
 
         return $teenagers;
     }
+
+    public function tag($dateBirth)
+    {
+        $today = date("Y-m-d");
+
+        $date = DB::select("SELECT DATEDIFF('$today', '$dateBirth')/365 AS DiffDate");
+
+        $date = (int)$date[0]->DiffDate;
+
+        return $date < 18 ? $date < 11 ? 'kid' : 'teen' : 'adult';
+    }
 }

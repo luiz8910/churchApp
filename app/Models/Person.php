@@ -3,17 +3,30 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
 class Person extends Model implements Transformable
 {
-    use TransformableTrait;
+    use TransformableTrait, SoftDeletes;
 
     protected $fillable = [
-        'name', 'lastName', 'email', 'tel', 'cel', 'role', 'imgProfile', 'gender',
-        'dateBirth', 'cpf', 'rg', 'fatherName', 'motherName','mailing',
-        'hasKids', 'street', 'neighborhood', 'city', 'zipCode', 'state'
+        'name', 'lastName', 'email', 'church_id', 'tel', 'cel', 'role_id', 'imgProfile', 'gender',
+        'dateBirth', 'cpf', 'rg', 'father_id', 'mother_id','mailing',
+        'hasKids', 'tag', 'specialNeeds', 'street', 'neighborhood', 'city', 'zipCode', 'state'
     ];
+
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = ['deleted_at'];
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
 
 }

@@ -2,15 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Person;
+use App\Repositories\CountPersonRepository;
 use App\Repositories\DateRepository;
 use App\Repositories\PersonRepository;
+use App\Repositories\RoleRepository;
 use App\Repositories\StateRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class PersonController extends Controller
 {
-    use DateRepository;
+    use DateRepository, CountPersonRepository;
     /**
      * @var PersonRepository
      */
@@ -19,11 +22,16 @@ class PersonController extends Controller
      * @var StateRepository
      */
     private $stateRepository;
+    /**
+     * @var RoleRepository
+     */
+    private $roleRepository;
 
-    public function __construct(PersonRepository $repository, StateRepository $stateRepository)
+    public function __construct(PersonRepository $repository, StateRepository $stateRepository, RoleRepository $roleRepository)
     {
         $this->repository = $repository;
         $this->stateRepository = $stateRepository;
+        $this->roleRepository = $roleRepository;
     }
 
     /**
@@ -33,20 +41,68 @@ class PersonController extends Controller
      */
     public function index()
     {
-        $person = $this->repository->all();
+        $adults = $this->repository->findWhere(['tag' => 'adult']);
 
-        $adults = $this->repository->legalAge($person);
+        foreach ($adults as $item)
+        {
+            $item->dateBirth = $this->formatDateView($item->dateBirth);
+        }
 
-        return view('people.index', compact('adults'));
+        $countPerson[] = $this->countPerson();
+
+
+        return view('people.index', compact('adults', 'countPerson'));
     }
 
     public function teenagers()
     {
-        $person = $this->repository->all();
+        $teen = $this->repository->findWhereNotIn('tag', ['adult']);
 
-        $teen = $this->repository->teen($person);
+        foreach ($teen as $item)
+        {
+            $item->dateBirth = $this->formatDateView($item->dateBirth);
+        }
 
-        return view('people.teenagers', compact('teen'));
+        $countPerson[] = $this->countPerson();
+
+        return view('people.teenagers', compact('teen', 'countPerson'));
+    }
+
+    public function visitors()
+    {
+        $visitors = $this->repository->findWhere(['role_id' => '3']);
+
+        foreach ($visitors as $item)
+        {
+            $item->dateBirth = $this->formatDateView($item->dateBirth);
+        }
+
+        $countPerson[] = $this->countPerson();
+
+        return view('people.visitors', compact('visitors', 'countPerson'));
+    }
+
+    public function inactive()
+    {
+        $inactive = Person::onlyTrashed()->get();
+
+        foreach ($inactive as $item)
+        {
+            $item->dateBirth = $this->formatDateView($item->dateBirth);
+        }
+
+        $countPerson[] = $this->countPerson();
+
+        return view('people.inactive', compact('inactive', 'countPerson'));
+    }
+
+    public function turnActive($id)
+    {
+        DB::table('people')->
+                where('id', $id)->
+                update(['deleted_at' => null]);
+
+        return redirect()->route('person.inactive');
     }
 
     /**
@@ -58,7 +114,11 @@ class PersonController extends Controller
     {
         $state = $this->stateRepository->all();
 
-        return view('people.create', compact('state'));
+        $roles = $this->roleRepository->all();
+
+        $countPerson[] = $this->countPerson();
+
+        return view('people.create', compact('state', 'roles', 'countPerson'));
     }
 
     /**
@@ -77,11 +137,9 @@ class PersonController extends Controller
 
         $data['dateBirth'] = $this->formatDateBD($data['dateBirth']);
 
-        //dd($file);
-
-        //unset($data['img']);
-
         $id = $this->repository->create($data)->id;
+
+        $this->tag($this->repository->tag($data['dateBirth']), $id);
 
         $this->imgProfile($file, $id, $data['name']);
 
@@ -96,44 +154,34 @@ class PersonController extends Controller
      * Atribui pais aos filhos
      *
      * @param $children
-     * @param $id
+     * @param $id (do pai ou mãe)
      * @param $gender
      */
     public function children($children, $id, $gender)
     {
         foreach ($children as $child)
         {
+            //$resp = $this->repository->find($id);
+
+            $data['name'] = $child['childName'];
+
+            $data['lastName'] = $child['childLastName'];
+
+            $data['dateBirth'] = $this->formatDateBD($child['childDateBirth']);
+
+            $data['imgProfile'] = 'uploads/profile/noimage.png';
+
             if($gender == 'M')
             {
-                $father = $this->repository->find($id);
-
-                $data['name'] = $child['childName'];
-
-                $data['lastName'] = $child['childLastName'];
-
-                $data['dateBirth'] = $this->formatDateBD($child['childDateBirth']);
-
-                $data['fatherName'] = $father->name . ' ' . $father->lastName;
-
-                $data['imgProfile'] = 'uploads/profile/noimage.png';
-
-                $this->repository->create($data);
+                $data['father_id'] = $id;
             }
             else{
-                $mother = $this->repository->find($id);
-
-                $data['name'] = $child['childName'];
-
-                $data['lastName'] = $child['childLastName'];
-
-                $data['dateBirth'] = $this->formatDateBD($child['childDateBirth']);
-
-                $data['motherName'] = $mother->name . ' ' . $mother->lastName;
-
-                $data['imgProfile'] = 'uploads/profile/noimage.png';
-
-                $this->repository->create($data);
+                $data['mother_id'] = $id;
             }
+
+            $idChild = $this->repository->create($data)->id;
+
+            $this->tag($this->repository->tag($data['dateBirth']), $idChild);
         }
     }
 
@@ -175,6 +223,13 @@ class PersonController extends Controller
         return redirect()->back();
     }
 
+    public function tag($tag, $id)
+    {
+        DB::table('people')->
+            where('id', $id)->
+            update(['tag' => $tag]);
+    }
+
 
     /**
      * Display the specified resource.
@@ -199,15 +254,25 @@ class PersonController extends Controller
 
         $state = $this->stateRepository->all();
 
+        $roles = $this->roleRepository->all();
+
         $person->dateBirth = $this->formatDateView($person->dateBirth);
 
-        $location = str_replace(' ', '+', $person->street);
+        if ($person->street)
+        {
+            $location = str_replace(' ', '+', $person->street);
 
-        $location .= '+' . $person->city . '+' . $person->state;
+            $location .= '+' . $person->city . '+' . $person->state;
 
-        //dd($location);
+            //dd($location);
+        }
+        else{
+            $location = null;
+        }
 
-        return view('people.edit', compact('person', 'state', 'location'));
+        $countPerson[] = $this->countPerson();
+
+        return view('people.edit', compact('person', 'state', 'location', 'roles', 'countPerson'));
     }
 
     /**
@@ -236,6 +301,8 @@ class PersonController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $this->repository->delete($id);
+
+        return redirect()->route('person.index');
     }
 }
