@@ -29,4 +29,14 @@ class Person extends Model implements Transformable
         return $this->belongsTo(Role::class);
     }
 
+    public function groups()
+    {
+        return $this->belongsToMany(Group::class);
+    }
+
+    public function user()
+    {
+        return $this->hasOne(User::class);
+    }
+
 }

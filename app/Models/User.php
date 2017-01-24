@@ -16,10 +16,8 @@ class User extends Authenticatable implements Transformable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'church_id', 'facebook_id',
-        'linkedin_id', 'google_id', 'twitter_id', 'imgProfile',
-        'tel', 'role', 'gender', 'dateBirth', 'cpf', 'street',
-        'neighborhood', 'city', 'zipCode', 'state'
+        'email', 'password', 'church_id', 'facebook_id',
+        'linkedin_id', 'google_id', 'twitter_id', 'person_id'
     ];
 
     /**
@@ -30,5 +28,10 @@ class User extends Authenticatable implements Transformable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function person()
+    {
+        return $this->belongsTo(Person::class);
+    }
 
 }

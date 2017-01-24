@@ -32,10 +32,23 @@ Route::group(['middleware' => 'auth'], function (){
     Route::post('imgProfile', 'UsersController@imgProfile')->name('users.imgProfile');
     Route::post('changePass', 'UsersController@changePassword')->name('users.changePass');
 
-    Route::resource('group', 'GroupController');
+
 
 });
 
+Route::group(["middleware" => "check.role:1"], function () {
+    Route::get('group', 'GroupController@index')->name('group.index');
+
+    Route::get('groups/create', 'GroupController@create')->name('group.create');
+
+    Route::get('group/{group}/edit', 'GroupController@edit')->name('group.edit');
+
+    Route::post('group/store', 'GroupController@store')->name('group.store');
+
+    Route::put('group/{group}', 'GroupController@update')->name('group.update');
+
+    Route::delete('group/{group}', 'GroupController@destroy')->name('group.destroy');
+});
 
 Auth::routes();
 

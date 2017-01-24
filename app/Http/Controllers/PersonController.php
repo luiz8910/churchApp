@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Person;
+use App\Models\User;
 use App\Repositories\CountPersonRepository;
 use App\Repositories\DateRepository;
 use App\Repositories\PersonRepository;
@@ -133,11 +134,18 @@ class PersonController extends Controller
 
         $file = $request->file('img');
 
-        $data = $request->except(['img']);
+        $email = $request->only('email');
+
+        $data = $request->except(['img', 'email']);
 
         $data['dateBirth'] = $this->formatDateBD($data['dateBirth']);
 
         $id = $this->repository->create($data)->id;
+
+        if($this->repository->isAdult($data['dateBirth']))
+        {
+            $this->createUserLogin($id, $email);
+        }
 
         $this->tag($this->repository->tag($data['dateBirth']), $id);
 
@@ -148,6 +156,21 @@ class PersonController extends Controller
         $this->children($children, $id, $data['gender']);
 
         return redirect()->route('person.index');
+    }
+
+
+    public function createUserLogin($id, $email)
+    {
+        User::create(
+            [
+                'church_id' => '1',
+                'person_id' => $id,
+                'email' => $email,
+                'password' => bcrypt('secret'),
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+            ]
+        );
     }
 
     /**

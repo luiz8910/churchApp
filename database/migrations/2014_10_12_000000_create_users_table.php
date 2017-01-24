@@ -16,24 +16,14 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('church_id');
+            $table->integer('person_id')->unique()->nullable()->unsigned();
+            $table->foreign('person_id')->references('id')->on('people')->onDelete('cascade');
             $table->string('facebook_id')->unique()->nullable();
             $table->string('linkedin_id')->unique()->nullable();
             $table->string('google_id')->unique()->nullable();
             $table->string('twitter_id')->unique()->nullable();
-            $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('imgProfile');
-            $table->string('tel')->nullable();
-            $table->string('role')->nullable();
-            $table->string('gender')->nullable();
-            $table->date('dateBirth')->nullable();
-            $table->string('cpf')->nullable();
-            $table->string('street')->nullable();
-            $table->string('neighborhood')->nullable();
-            $table->string('city')->nullable();
-            $table->string('zipCode')->nullable();
-            $table->string('state')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
