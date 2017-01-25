@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Repositories\CountPersonRepository;
 use App\Repositories\DateRepository;
+use App\Repositories\FormatGoogleMaps;
 use App\Repositories\GroupRepository;
 use App\Repositories\RoleRepository;
 use App\Repositories\StateRepository;
@@ -12,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 
 class GroupController extends Controller
 {
-    use DateRepository, CountPersonRepository;
+    use DateRepository, CountPersonRepository, FormatGoogleMaps;
     /**
      * @var GroupRepository
      */
@@ -42,9 +43,16 @@ class GroupController extends Controller
     {
         $groups = $this->repository->all();
 
-        $countPerson[] = $this->countPerson();
 
-        return view('groups.index', compact('groups', 'countPerson'));
+        foreach ($groups as $group)
+        {
+            $group->sinceOf = $this->formatDateView($group->sinceOf);
+            $countMembers[] = count($group->people->all());
+        }
+
+        $countPerson[] = $this->countPerson(); //dd($countMembers);
+
+        return view('groups.index', compact('groups', 'countPerson', 'countMembers'));
     }
 
     /**
@@ -109,7 +117,17 @@ class GroupController extends Controller
      */
     public function show($id)
     {
-        //
+        $group = $this->repository->find($id);
+
+        $countPerson[] = $this->countPerson();
+
+        $location = $this->formatGoogleMaps($group);
+
+        $people = $group->people->all();
+
+        //dd($people[0]->user->email);
+
+        return view('groups.show', compact('group', 'countPerson', 'location', 'people'));
     }
 
     /**
@@ -120,7 +138,19 @@ class GroupController extends Controller
      */
     public function edit($id)
     {
-        //
+        $group = $this->repository->find($id);
+
+        $countPerson[] = $this->countPerson();
+
+        $location = $this->formatGoogleMaps($group);
+
+        $people = $group->people->all();
+
+        $roles = $this->roleRepository->all();
+
+        $state = $this->stateRepository->all();
+
+        return view('groups.edit', compact('group', 'countPerson', 'location', 'people', 'roles', 'state'));
     }
 
     /**

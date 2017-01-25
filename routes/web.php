@@ -33,11 +33,14 @@ Route::group(['middleware' => 'auth'], function (){
     Route::post('changePass', 'UsersController@changePassword')->name('users.changePass');
 
 
+    Route::get('group', 'GroupController@index')->name('group.index');
+
+    Route::get('group/{group}', 'GroupController@show')->name('group.show');
 
 });
 
 Route::group(["middleware" => "check.role:1"], function () {
-    Route::get('group', 'GroupController@index')->name('group.index');
+
 
     Route::get('groups/create', 'GroupController@create')->name('group.create');
 

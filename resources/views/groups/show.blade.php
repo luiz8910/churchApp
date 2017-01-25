@@ -18,12 +18,15 @@ License: You must have a valid license purchased only from themeforest(the above
 <!-- BEGIN HEAD -->
 
 <head>
-    @include('includes.head-edit')
+    @include('includes.head')
 
     <!-- BEGIN PAGE LEVEL PLUGINS -->
-    <link href="../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet" type="text/css" />
-    <link href="../../assets/pages/css/profile.min.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/pages/css/profile.min.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/global/plugins/datatables/datatables.min.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css" rel="stylesheet" type="text/css" />
     <!-- END PAGE LEVEL PLUGINS -->
+
 </head>
 <!-- END HEAD -->
 
@@ -42,7 +45,7 @@ License: You must have a valid license purchased only from themeforest(the above
             <div class="container">
                 <!-- BEGIN PAGE TITLE -->
                 <div class="page-title">
-                    <h1>Perfil do Usuário
+                    <h1>Minha Conta
                         <small></small>
                     </h1>
                 </div>
@@ -81,13 +84,14 @@ License: You must have a valid license purchased only from themeforest(the above
                                 <div class="portlet light profile-sidebar-portlet ">
                                     <!-- SIDEBAR USERPIC -->
                                     <div class="profile-userpic">
-                                        <img src="../../{{ $person->imgProfile }}" class="img-responsive" alt="">
+                                        <img src="../{{ $group->imgProfile }}" class="img-responsive" alt="">
                                     </div>
                                     <!-- END SIDEBAR USERPIC -->
                                     <!-- SIDEBAR USER TITLE -->
                                     <div class="profile-usertitle">
-                                        <div class="profile-usertitle-name"> {{ $person->name }} {{ $person->lastName }}</div>
-                                        <div class="profile-usertitle-job"> {{ $person->role->name }} </div>
+                                        <div class="profile-usertitle-name"> {{ $group->name }}</div>
+                                        <div class="profile-usertitle-job"> {{ $group->frequency }} </div>
+                                        <div class="profile-usertitle-job"> {{ $group->sinceOf }} </div>
                                     </div>
                                     <!-- END SIDEBAR USER TITLE -->
 
@@ -110,7 +114,6 @@ License: You must have a valid license purchased only from themeforest(the above
 
                             </div>
                             <!-- END BEGIN PROFILE SIDEBAR -->
-                            <!-- BEGIN PROFILE CONTENT -->
                             <div class="profile-content">
                                 <div class="row">
                                     <div class="col-md-12">
@@ -149,6 +152,92 @@ License: You must have a valid license purchased only from themeforest(the above
 
                     <div class="row">
                         <div class="col-md-12">
+                            <!-- BEGIN EXAMPLE TABLE PORTLET-->
+                            <div class="portlet light ">
+                                <div class="portlet-title">
+                                    <div class="caption font-dark">
+                                        <i class="icon-settings font-dark"></i>
+                                        <span class="caption-subject bold uppercase"> Membros</span>
+                                    </div>
+                                    <div class="actions">
+                                        <div class="btn-group btn-group-devided" data-toggle="buttons">
+                                            <label class="btn btn-transparent dark btn-outline btn-circle btn-sm active">
+                                                <input type="radio" name="options" class="toggle" id="option1">Actions</label>
+                                            <label class="btn btn-transparent dark btn-outline btn-circle btn-sm">
+                                                <input type="radio" name="options" class="toggle" id="option2">Settings</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="portlet-body">
+                                    <div class="table-toolbar">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="btn-group">
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="btn-group pull-right">
+                                                    <button class="btn green  btn-outline dropdown-toggle" data-toggle="dropdown">Opções
+                                                        <i class="fa fa-angle-down"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu pull-right">
+                                                        <li>
+                                                            <a href="javascript:;">
+                                                                <i class="fa fa-print"></i> Print </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="javascript:;">
+                                                                <i class="fa fa-file-pdf-o"></i> Save as PDF </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="javascript:;">
+                                                                <i class="fa fa-file-excel-o"></i> Export to Excel </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <table class="table table-striped table-bordered table-hover table-checkable order-column" id="sample_1">
+                                        <thead>
+                                        <tr>
+                                            <th>
+                                                <input type="checkbox" class="group-checkable" data-set="#sample_1 .checkboxes" /> </th>
+                                            <th> Nome </th>
+                                            <th> Email </th>
+                                            <th> Telefone </th>
+                                            <th> Celular </th>
+                                            <th> Status </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($people as $person)
+                                                <tr class="odd gradeX">
+                                                    <td>
+                                                        <input type="checkbox" class="checkboxes" value="1" /> </td>
+                                                    <td> {{ $person->name }} {{ $person->lastName }}</td>
+                                                    <td>
+                                                        <a href="mailto:{{ $person->user->email or null }}"> {{ $person->user->email or null }} </a>
+                                                    </td>
+                                                    <td> {{ $person->tel }} </td>
+                                                    <td class="center"> {{ $person->cel }} </td>
+                                                    <td>
+                                                        <span class="label label-sm label-success"> Aprovado </span>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!-- END EXAMPLE TABLE PORTLET-->
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-12">
                             <div class="portlet light ">
                                 <div class="portlet-title tabbable-line">
                                     <div class="caption caption-md">
@@ -168,6 +257,9 @@ License: You must have a valid license purchased only from themeforest(the above
                                             <a href="#tab_1_2" data-toggle="tab">Alterar Foto</a>
                                         </li>
                                         <li>
+                                            <a href="#tab_1_3" data-toggle="tab">Mudar Senha</a>
+                                        </li>
+                                        <li>
                                             <a href="#tab_1_4" data-toggle="tab">Personalizar</a>
                                         </li>
                                     </ul>
@@ -176,13 +268,13 @@ License: You must have a valid license purchased only from themeforest(the above
                                     <div class="tab-content">
                                         <!-- PERSONAL INFO TAB -->
                                         <div class="tab-pane active" id="tab_1_1">
-                                            {!! Form::open(['route' => ['person.update', 'person' => $person->id], 'class' => 'horizontal-form', 'method' => 'PUT']) !!}
+                                            {!! Form::open(['route' => ['person.update', 'person' => Auth::getUser()->id], 'class' => 'horizontal-form', 'method' => 'PUT']) !!}
 
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     {!! Form::FormGroup('name', $errors) !!}
                                                     <label class="control-label">Nome</label>
-                                                    <input type="text" placeholder="João da Silva" name="name" value="{{ $person->name }}" class="form-control" />
+                                                    <input type="text" placeholder="João" name="name" value="{{ Auth::getUser()->person->name }}" class="form-control" />
                                                     {!! Form::error('name', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
                                                 </div>
@@ -190,7 +282,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <div class="col-md-6">
                                                     {!! Form::FormGroup('lastName', $errors) !!}
                                                     <label class="control-label">Nome</label>
-                                                    <input type="text" placeholder="João da Silva" name="lastName" value="{{ $person->lastName }}" class="form-control" />
+                                                    <input type="text" placeholder="da Silva" name="lastName" value="{{ Auth::getUser()->person->lastName }}" class="form-control" />
                                                     {!! Form::error('lastName', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
                                                 </div>
@@ -201,7 +293,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <div class="col-md-6">
                                                     {!! Form::FormGroup('tel', $errors) !!}
                                                     <label class="control-label">Telefone</label>
-                                                    <input type="text" placeholder="(15) 9123-1234" name="tel" value="{{ $person->tel }}" class="form-control" />
+                                                    <input type="text" placeholder="(15) 9123-1234" name="tel" value="{{ Auth::getUser()->person->tel }}" class="form-control" />
                                                     {!! Form::error('tel', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
                                                 </div>
@@ -209,7 +301,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <div class="col-md-6">
                                                     {!! Form::FormGroup('email', $errors) !!}
                                                     <label class="control-label">Email</label>
-                                                    <input type="email" placeholder="email@dominio.com" value="{{ $person->user->email }}" name="email" class="form-control" />
+                                                    <input type="email" placeholder="email@dominio.com" value="{{ Auth::getUser()->email }}" name="email" class="form-control" />
                                                     {!! Form::error('email', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
                                                 </div>
@@ -220,20 +312,17 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <div class="col-md-6">
                                                     {!! Form::FormGroup('dateBirth', $errors) !!}
                                                     <label class="control-label">Data de Nasc.</label>
-                                                    <input type="text" placeholder="dd/mm/aaaa" value="{{ $person->dateBirth }}" name="dateBirth" class="form-control" />
+                                                    <input type="text" placeholder="dd/mm/aaaa" value="" name="dateBirth" class="form-control" />
                                                     {!! Form::error('dateBirth', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
                                                 </div>
                                                 <div class="col-md-6">
                                                     {!! Form::FormGroup('role', $errors) !!}
                                                     <label class="control-label">Cargo</label>
-                                                    <select class="form-control" name="role_id"
+                                                    <select class="form-control" name="role"
                                                             data-placeholder="Selecione seu cargo"
                                                             tabindex="1">
                                                         <option value="">Selecione</option>
-                                                        @foreach($roles as $role)
-                                                            <option value="{{ $role->id }}" @if($role->id == $person->role_id) selected @endif >{{ $role->name }}</option>
-                                                        @endforeach
                                                     </select>
                                                     {!! Form::error('role', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
@@ -244,7 +333,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <div class="col-md-6">
                                                     {!! Form::FormGroup('cpf', $errors) !!}
                                                     <label class="control-label">CPF</label>
-                                                    <input type="text" placeholder="123.123.123-12" value="{{ $person->cpf }}" name="cpf" class="form-control" />
+                                                    <input type="text" placeholder="123.123.123-12" value="{{ Auth::getUser()->person->cpf }}" name="cpf" class="form-control" />
                                                     {!! Form::error('cpf', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
                                                 </div>
@@ -254,30 +343,13 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <label class="control-label">Gênero</label>
                                                     <select name="gender" class="form-control" required>
                                                         <option value="">Selecione</option>
-                                                        <option value="M" @if($person->gender == 'M') selected @endif >Masculino</option>
-                                                        <option value="F" @if($person->gender == 'F') selected @endif >Feminino</option>
+                                                        <option value="M" @if(Auth::getUser()->person->gender == 'M') selected @endif >Masculino</option>
+                                                        <option value="F" @if(Auth::getUser()->person->gender == 'F') selected @endif >Feminino</option>
                                                     </select>
                                                     {!! Form::error('gender', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
                                                 </div>
                                             </div>
-
-                                            @if($person->tag != 'adult')
-
-                                                <h3 class="form-section">Observações</h3>
-
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        {!! Form::FormGroup('specialNeeds', $errors) !!}
-                                                        <label class="control-label">Anotações Gerais</label>
-                                                        <textarea class="form-control" name="specialNeeds" value="{{ $person->specialNeeds }}"
-                                                                  placeholder="Digite aqui observações importantes sobre a criança/adolescente"
-                                                                  rows="5"></textarea>
-                                                        {!! Form::error('specialNeeds', $errors) !!}
-                                                        {!! Form::endFormGroup() !!}
-                                                    </div>
-                                                </div>
-                                            @endif
 
                                             <h3 class="form-section">Endereço</h3>
 
@@ -285,14 +357,14 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <div class="col-md-3">
                                                     {!! Form::FormGroup('zipCode', $errors) !!}
                                                     <label class="control-label">CEP</label>
-                                                    <input type="text" placeholder="12123-12" value="{{ $person->zipCode }}" name="zipCode" class="form-control" />
+                                                    <input type="text" placeholder="12123-12" value="{{ Auth::getUser()->person->zipCode }}" name="zipCode" class="form-control" />
                                                     {!! Form::error('zipCode', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
                                                 </div>
                                                 <div class="col-md-9">
                                                     {!! Form::FormGroup('street', $errors) !!}
                                                     <label class="control-label">Logradouro</label>
-                                                    <input type="text" placeholder="Rua dos Bobos, 0" value="{{ $person->street }}" name="street" class="form-control" />
+                                                    <input type="text" placeholder="Rua dos Bobos, 0" value="{{ Auth::getUser()->person->street }}" name="street" class="form-control" />
                                                     {!! Form::error('street', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
                                                 </div>
@@ -302,14 +374,14 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <div class="col-md-4">
                                                     {!! Form::FormGroup('neighborhood', $errors) !!}
                                                     <label class="control-label">Bairro</label>
-                                                    <input type="text" placeholder="Vila Progresso" value="{{ $person->neighborhood }}" name="neighborhood" class="form-control" />
+                                                    <input type="text" placeholder="Vila Progresso" value="{{ Auth::getUser()->person->neighborhood }}" name="neighborhood" class="form-control" />
                                                     {!! Form::error('neighborhood', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
                                                 </div>
                                                 <div class="col-md-4">
                                                     {!! Form::FormGroup('city', $errors) !!}
                                                     <label class="control-label">Cidade</label>
-                                                    <input type="text" placeholder="Sorocaba" name="city" value="{{ $person->city }}" class="form-control" />
+                                                    <input type="text" placeholder="Sorocaba" name="city" value="{{ Auth::getUser()->person->city }}" class="form-control" />
                                                     {!! Form::error('city', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
                                                 </div>
@@ -318,17 +390,12 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <label class="control-label">UF:</label>
                                                     <select name="state" class="form-control">
                                                         <option value="">Selecione</option>
-                                                        @foreach($state as $value)
-                                                            <option value="{{ $value->initials }}" @if($value->initials == $person->state) selected @endif >
-                                                                {{ $value->state }}
-                                                            </option>
-                                                        @endforeach
+
                                                     </select>
                                                     {!! Form::error('state', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
                                                 </div>
                                             </div>
-
 
                                                 <div class="margiv-top-10">
                                                     {!! Form::submit('Salvar', ['class' => 'btn green']) !!}
@@ -340,7 +407,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                         <!-- CHANGE AVATAR TAB -->
                                         <div class="tab-pane" id="tab_1_2">
                                             <p> Altere aqui sua foto do perfil </p>
-                                            {!! Form::open(['route' => ['person.imgEditProfile', $person->id], 'method' => 'post', 'enctype' => 'multipart/form-data', 'role' => 'form']) !!}
+                                            {!! Form::open(['route' => 'users.imgProfile', 'method' => 'post', 'enctype' => 'multipart/form-data', 'role' => 'form']) !!}
                                                 <div class="form-group">
                                                     <div class="fileinput fileinput-new" data-provides="fileinput">
                                                         <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
@@ -1070,20 +1137,34 @@ License: You must have a valid license purchased only from themeforest(the above
 </div>
 <!-- END INNER FOOTER -->
 <!-- END FOOTER -->
-@include('includes.core-scripts-edit')
+
 <!-- BEGIN PAGE LEVEL PLUGINS -->
-<script src="../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js" type="text/javascript"></script>
-<script src="../../assets/global/plugins/jquery.sparkline.min.js" type="text/javascript"></script>
-<script src="http://maps.google.com/maps/api/js?sensor=false" type="text/javascript"></script>
-<script src="../../assets/global/plugins/gmaps/gmaps.min.js" type="text/javascript"></script>
+@include('includes.core-scripts')
+<!-- BEGIN PAGE LEVEL PLUGINS -->
+<script src="../assets/global/scripts/datatable.js" type="text/javascript"></script>
+<script src="../assets/global/plugins/datatables/datatables.min.js" type="text/javascript"></script>
+<script src="../assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
+<!-- END PAGE LEVEL PLUGINS -->
 
-<script src="../../assets/pages/scripts/profile.min.js" type="text/javascript"></script>
-<script src="../../assets/pages/scripts/timeline.min.js" type="text/javascript"></script>
+<!-- BEGIN PAGE LEVEL SCRIPTS -->
+<script src="../assets/pages/scripts/table-datatables-managed.min.js" type="text/javascript"></script>
 <!-- END PAGE LEVEL SCRIPTS -->
+<!-- BEGIN THEME LAYOUT SCRIPTS -->
+<script src="../assets/layouts/layout3/scripts/layout.min.js" type="text/javascript"></script>
+<script src="../assets/layouts/layout3/scripts/demo.min.js" type="text/javascript"></script>
+<script src="../assets/layouts/global/scripts/quick-sidebar.min.js" type="text/javascript"></script>
+<!-- END THEME LAYOUT SCRIPTS -->
 
-<!-- Google maps function -->
+<script src="../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js" type="text/javascript"></script>
+<script src="../assets/global/plugins/jquery.sparkline.min.js" type="text/javascript"></script>
+<script src="http://maps.google.com/maps/api/js?sensor=false" type="text/javascript"></script>
+<script src="../assets/global/plugins/gmaps/gmaps.min.js" type="text/javascript"></script>
+
+<script src="../assets/pages/scripts/profile.min.js" type="text/javascript"></script>
+<script src="../assets/pages/scripts/timeline.min.js" type="text/javascript"></script>
+
+<!-- END PAGE LEVEL SCRIPTS -->
 <script>
-
     function initMap() {
         //var infowindow = new google.maps.InfoWindow();
         var location = $('#location').val();

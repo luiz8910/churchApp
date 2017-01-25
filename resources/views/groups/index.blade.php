@@ -128,23 +128,31 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <th class="visible-xs"></th>
                                                 <th> Foto </th>
                                                 <th> Nome </th>
-                                                <th> Email </th>
-                                                <th> Telefone </th>
-                                                <th> Celular </th>
-                                                <th> Editar </th>
-                                                <th> Excluir </th>
+                                                <th> Frequência </th>
+                                                <th> Inicio em </th>
+                                                <th> Membros </th>
+                                                @if(Auth::getUser()->person->role_id == 1)
+                                                    <th> Editar </th>
+                                                    <th> Excluir </th>
+                                                @else
+                                                    <th> Detalhes </th>
+                                                @endif
                                             </tr>
                                             </thead>
                                             <tbody>
+                                                <?php $i = 0; ?>
                                                 @foreach($groups as $item)
                                                     <tr>
                                                         <td class="visible-xs"></td>
                                                         <td> <img src="{{ $item->imgProfile }}" style="width: 50px; height: 50px;"> </td>
                                                         <td> {{ $item->name }}</td>
-                                                        <td> {{ $item->email }} </td>
-                                                        <td> {{ $item->tel }} </td>
-                                                        <td> {{ $item->cel }} </td>
-                                                        <td> <a href="{{ route('group.edit', ['group' => $item->id]) }}">Ver Perfil</a> </td>
+                                                        <td> {{ $item->frequency }} </td>
+                                                        <td> {{ $item->sinceOf }} </td>
+                                                        <td> {{ $countMembers[$i] }} participantes</td>
+
+                                                        @if(Auth::getUser()->person->role_id == 1)
+
+                                                        <td> <a href="{{ route('group.edit', ['group' => $item->id]) }}">Editar</a> </td>
 
                                                              <?php $deleteForm = "delete-".$item->id; ?>
                                                         <td id="{{ $deleteForm }}">
@@ -155,7 +163,12 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                                                  {!! Form::close() !!}
                                                         </td>
+
+                                                            @else
+                                                                <td> <a href="{{ route('group.show', ['group' => $item->id]) }}">Ver Detalhes</a> </td>
+                                                            @endif
                                                     </tr>
+                                                    <?php $i++; ?>
                                                 @endforeach
                                             </tbody>
                                         </table>

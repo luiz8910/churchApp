@@ -6,6 +6,7 @@ use App\Models\Person;
 use App\Models\User;
 use App\Repositories\CountPersonRepository;
 use App\Repositories\DateRepository;
+use App\Repositories\FormatGoogleMaps;
 use App\Repositories\PersonRepository;
 use App\Repositories\RoleRepository;
 use App\Repositories\StateRepository;
@@ -14,7 +15,7 @@ use Illuminate\Support\Facades\DB;
 
 class PersonController extends Controller
 {
-    use DateRepository, CountPersonRepository;
+    use DateRepository, CountPersonRepository, FormatGoogleMaps;
     /**
      * @var PersonRepository
      */
@@ -202,6 +203,8 @@ class PersonController extends Controller
                 $data['mother_id'] = $id;
             }
 
+            $data['role_id'] = 2;
+
             $idChild = $this->repository->create($data)->id;
 
             $this->tag($this->repository->tag($data['dateBirth']), $idChild);
@@ -281,17 +284,7 @@ class PersonController extends Controller
 
         $person->dateBirth = $this->formatDateView($person->dateBirth);
 
-        if ($person->street)
-        {
-            $location = str_replace(' ', '+', $person->street);
-
-            $location .= '+' . $person->city . '+' . $person->state;
-
-            //dd($location);
-        }
-        else{
-            $location = null;
-        }
+        $location = $this->formatGoogleMaps($person);
 
         $countPerson[] = $this->countPerson();
 
@@ -307,13 +300,26 @@ class PersonController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $data = $request->all();
+        $data = $request->except(['email']);
+
+        $email = $request->only('email');
+
+        $email = implode('=>', $email);
 
         $data['dateBirth'] = $this->formatDateBD($data['dateBirth']);
 
         $this->repository->update($data, $id);
 
+        $this->updateEmail($email, $id);
+
         return redirect()->route('person.index');
+    }
+
+    public function updateEmail($email, $id)
+    {
+        DB::table('users')
+            ->where('id', $id)
+            ->update(['email' => $email]);
     }
 
     /**

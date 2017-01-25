@@ -82,13 +82,13 @@ License: You must have a valid license purchased only from themeforest(the above
                                 <div class="portlet light profile-sidebar-portlet ">
                                     <!-- SIDEBAR USERPIC -->
                                     <div class="profile-userpic">
-                                        <img src="{{ Auth::getUser()->imgProfile }}" class="img-responsive" alt="">
+                                        <img src="{{ Auth::getUser()->person->imgProfile }}" class="img-responsive" alt="">
                                     </div>
                                     <!-- END SIDEBAR USERPIC -->
                                     <!-- SIDEBAR USER TITLE -->
                                     <div class="profile-usertitle">
-                                        <div class="profile-usertitle-name"> {{ Auth::getUser()->name }} </div>
-                                        <div class="profile-usertitle-job"> {{ Auth::getUser()->role }} </div>
+                                        <div class="profile-usertitle-name"> {{ Auth::getUser()->person->name }} {{ Auth::getUser()->person->lastName }}</div>
+                                        <div class="profile-usertitle-job"> {{ Auth::getUser()->person->role->name }} </div>
                                     </div>
                                     <!-- END SIDEBAR USER TITLE -->
 
@@ -697,14 +697,33 @@ License: You must have a valid license purchased only from themeforest(the above
                                     <div class="tab-content">
                                         <!-- PERSONAL INFO TAB -->
                                         <div class="tab-pane active" id="tab_1_1">
-                                            {!! Form::open(['route' => ['users.update', 'user' => Auth::getUser()->id], 'class' => 'horizontal-form', 'method' => 'PUT']) !!}
+                                            {!! Form::open(['route' => ['person.update', 'person' => Auth::getUser()->id], 'class' => 'horizontal-form', 'method' => 'PUT']) !!}
 
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     {!! Form::FormGroup('name', $errors) !!}
                                                     <label class="control-label">Nome</label>
-                                                    <input type="text" placeholder="João da Silva" name="name" value="{{ Auth::getUser()->name }}" class="form-control" />
+                                                    <input type="text" placeholder="João" name="name" value="{{ Auth::getUser()->person->name }}" class="form-control" />
                                                     {!! Form::error('name', $errors) !!}
+                                                    {!! Form::endFormGroup() !!}
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    {!! Form::FormGroup('lastName', $errors) !!}
+                                                    <label class="control-label">Nome</label>
+                                                    <input type="text" placeholder="da Silva" name="lastName" value="{{ Auth::getUser()->person->lastName }}" class="form-control" />
+                                                    {!! Form::error('lastName', $errors) !!}
+                                                    {!! Form::endFormGroup() !!}
+                                                </div>
+
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    {!! Form::FormGroup('tel', $errors) !!}
+                                                    <label class="control-label">Telefone</label>
+                                                    <input type="text" placeholder="(15) 9123-1234" name="tel" value="{{ Auth::getUser()->person->tel }}" class="form-control" />
+                                                    {!! Form::error('tel', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
                                                 </div>
 
@@ -716,27 +735,6 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     {!! Form::endFormGroup() !!}
                                                 </div>
 
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    {!! Form::FormGroup('tel', $errors) !!}
-                                                    <label class="control-label">Telefone</label>
-                                                    <input type="text" placeholder="(15) 9123-1234" name="tel" value="{{ Auth::getUser()->tel }}" class="form-control" />
-                                                    {!! Form::error('tel', $errors) !!}
-                                                    {!! Form::endFormGroup() !!}
-                                                </div>
-                                                <div class="col-md-6">
-                                                    {!! Form::FormGroup('gender', $errors) !!}
-                                                    <label class="control-label">Gênero</label>
-                                                    <select name="gender" class="form-control" required>
-                                                        <option value="">Selecione</option>
-                                                        <option value="M" @if(Auth::getUser()->gender == 'M') selected @endif >Masculino</option>
-                                                        <option value="F" @if(Auth::getUser()->gender == 'F') selected @endif >Feminino</option>
-                                                    </select>
-                                                    {!! Form::error('gender', $errors) !!}
-                                                    {!! Form::endFormGroup() !!}
-                                                </div>
                                             </div>
 
                                             <div class="row">
@@ -754,10 +752,11 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             data-placeholder="Selecione seu cargo"
                                                             tabindex="1">
                                                         <option value="">Selecione</option>
-                                                        <option value="Administrador" @if(Auth::getUser()->role == "Administrador") selected @endif >Administrador</option>
-                                                        <option value="Financeiro" @if(Auth::getUser()->role == "Financeiro") selected @endif >Financeiro</option>
-                                                        <option value="Lider" @if(Auth::getUser()->role == "Lider") selected @endif >Lider</option>
-                                                        <option value="Membro" @if(Auth::getUser()->role == "Membro") selected @endif >Membro</option>
+                                                        @foreach($roles as $role)
+                                                            <option value="{{  Auth::getUser()->person->role_id }}"
+                                                                @if(Auth::getUser()->person->role_id == $role->id) selected @endif>{{ $role->name }}
+                                                            </option>
+                                                        @endforeach
                                                     </select>
                                                     {!! Form::error('role', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
@@ -768,8 +767,20 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <div class="col-md-6">
                                                     {!! Form::FormGroup('cpf', $errors) !!}
                                                     <label class="control-label">CPF</label>
-                                                    <input type="text" placeholder="123.123.123-12" value="{{ Auth::getUser()->cpf }}" name="cpf" class="form-control" />
+                                                    <input type="text" placeholder="123.123.123-12" value="{{ Auth::getUser()->person->cpf }}" name="cpf" class="form-control" />
                                                     {!! Form::error('cpf', $errors) !!}
+                                                    {!! Form::endFormGroup() !!}
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    {!! Form::FormGroup('gender', $errors) !!}
+                                                    <label class="control-label">Gênero</label>
+                                                    <select name="gender" class="form-control" required>
+                                                        <option value="">Selecione</option>
+                                                        <option value="M" @if(Auth::getUser()->person->gender == 'M') selected @endif >Masculino</option>
+                                                        <option value="F" @if(Auth::getUser()->person->gender == 'F') selected @endif >Feminino</option>
+                                                    </select>
+                                                    {!! Form::error('gender', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
                                                 </div>
                                             </div>
@@ -780,14 +791,14 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <div class="col-md-3">
                                                     {!! Form::FormGroup('zipCode', $errors) !!}
                                                     <label class="control-label">CEP</label>
-                                                    <input type="text" placeholder="12123-12" value="{{ Auth::getUser()->zipCode }}" name="zipCode" class="form-control" />
+                                                    <input type="text" placeholder="12123-12" value="{{ Auth::getUser()->person->zipCode }}" name="zipCode" class="form-control" />
                                                     {!! Form::error('zipCode', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
                                                 </div>
                                                 <div class="col-md-9">
                                                     {!! Form::FormGroup('street', $errors) !!}
                                                     <label class="control-label">Logradouro</label>
-                                                    <input type="text" placeholder="Rua dos Bobos, 0" value="{{ Auth::getUser()->street }}" name="street" class="form-control" />
+                                                    <input type="text" placeholder="Rua dos Bobos, 0" value="{{ Auth::getUser()->person->street }}" name="street" class="form-control" />
                                                     {!! Form::error('street', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
                                                 </div>
@@ -797,14 +808,14 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <div class="col-md-4">
                                                     {!! Form::FormGroup('neighborhood', $errors) !!}
                                                     <label class="control-label">Bairro</label>
-                                                    <input type="text" placeholder="Vila Progresso" value="{{ Auth::getUser()->neighborhood }}" name="neighborhood" class="form-control" />
+                                                    <input type="text" placeholder="Vila Progresso" value="{{ Auth::getUser()->person->neighborhood }}" name="neighborhood" class="form-control" />
                                                     {!! Form::error('neighborhood', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
                                                 </div>
                                                 <div class="col-md-4">
                                                     {!! Form::FormGroup('city', $errors) !!}
                                                     <label class="control-label">Cidade</label>
-                                                    <input type="text" placeholder="Sorocaba" name="city" value="{{ Auth::getUser()->city }}" class="form-control" />
+                                                    <input type="text" placeholder="Sorocaba" name="city" value="{{ Auth::getUser()->person->city }}" class="form-control" />
                                                     {!! Form::error('city', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
                                                 </div>
@@ -814,7 +825,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <select name="state" class="form-control">
                                                         <option value="">Selecione</option>
                                                         @foreach($state as $value)
-                                                            <option value="{{ $value->initials }}" @if($value->initials == Auth::getUser()->state) selected @endif >
+                                                            <option value="{{ $value->initials }}" @if($value->initials == Auth::getUser()->person->state) selected @endif >
                                                                 {{ $value->state }}
                                                             </option>
                                                         @endforeach

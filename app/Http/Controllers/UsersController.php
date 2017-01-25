@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserCreateRequest;
 use App\Http\Requests\UserUpdateRequest;
+use App\Repositories\CountPersonRepository;
 use App\Repositories\DateRepository;
+use App\Repositories\RoleRepository;
 use App\Repositories\StateRepository;
 use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
@@ -12,7 +14,7 @@ use Illuminate\Support\Facades\DB;
 
 class UsersController extends Controller
 {
-    use DateRepository;
+    use DateRepository, CountPersonRepository;
     /**
      * @var UserRepository
      */
@@ -21,23 +23,28 @@ class UsersController extends Controller
      * @var StateRepository
      */
     private $stateRepository;
+    /**
+     * @var RoleRepository
+     */
+    private $roleRepository;
 
     /**
      * UsersController constructor.
      * @param UserRepository $repository
      * @param StateRepository $stateRepository
      */
-    public function __construct(UserRepository $repository, StateRepository $stateRepository)
+    public function __construct(UserRepository $repository, StateRepository $stateRepository, RoleRepository $roleRepository)
     {
         $this->repository = $repository;
         $this->stateRepository = $stateRepository;
+        $this->roleRepository = $roleRepository;
     }
 
     public function myAccount()
     {
         $state = $this->stateRepository->all();
 
-        $dateBirth = $this->formatDateView(\Auth::getUser()->dateBirth);
+        $dateBirth = $this->formatDateView(\Auth::getUser()->person->dateBirth);
 
         $changePass = true;
 
@@ -47,7 +54,11 @@ class UsersController extends Controller
             $changePass = false;
         }
 
-        return view('users.myAccount', compact('state', 'dateBirth', 'changePass'));
+        $countPerson[] = $this->countPerson();
+
+        $roles = $this->roleRepository->all();
+
+        return view('users.myAccount', compact('state', 'dateBirth', 'changePass', 'countPerson', 'roles'));
     }
 
     public function store(UserCreateRequest $request)
@@ -92,7 +103,7 @@ class UsersController extends Controller
 
         $file->move('uploads/profile', $imgName);
 
-        DB::table('users')->
+        DB::table('people')->
             where('id', $id)->
             update(['imgProfile' => $imgName]);
 

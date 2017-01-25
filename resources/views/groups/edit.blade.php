@@ -23,6 +23,8 @@ License: You must have a valid license purchased only from themeforest(the above
     <!-- BEGIN PAGE LEVEL PLUGINS -->
     <link href="../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet" type="text/css" />
     <link href="../../assets/pages/css/profile.min.css" rel="stylesheet" type="text/css" />
+    <link href="../../assets/global/plugins/datatables/datatables.min.css" rel="stylesheet" type="text/css" />
+    <link href="../../assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css" rel="stylesheet" type="text/css" />
     <!-- END PAGE LEVEL PLUGINS -->
 </head>
 <!-- END HEAD -->
@@ -81,13 +83,14 @@ License: You must have a valid license purchased only from themeforest(the above
                                 <div class="portlet light profile-sidebar-portlet ">
                                     <!-- SIDEBAR USERPIC -->
                                     <div class="profile-userpic">
-                                        <img src="../../{{ $person->imgProfile }}" class="img-responsive" alt="">
+                                        <img src="../../{{ $group->imgProfile }}" class="img-responsive" alt="">
                                     </div>
                                     <!-- END SIDEBAR USERPIC -->
                                     <!-- SIDEBAR USER TITLE -->
                                     <div class="profile-usertitle">
-                                        <div class="profile-usertitle-name"> {{ $person->name }} </div>
-                                        <div class="profile-usertitle-job"> {{ $person->role->name }} </div>
+                                        <div class="profile-usertitle-name"> {{ $group->name }}</div>
+                                        <div class="profile-usertitle-job"> {{ $group->frequency }} </div>
+                                        <div class="profile-usertitle-job"> {{ $group->sinceOf }} </div>
                                     </div>
                                     <!-- END SIDEBAR USER TITLE -->
 
@@ -144,6 +147,97 @@ License: You must have a valid license purchased only from themeforest(the above
 
                             </div>
                             <!-- END PROFILE CONTENT -->
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <!-- BEGIN EXAMPLE TABLE PORTLET-->
+                            <div class="portlet light ">
+                                <div class="portlet-title">
+                                    <div class="caption font-dark">
+                                        <i class="icon-settings font-dark"></i>
+                                        <span class="caption-subject bold uppercase"> Membros</span>
+                                    </div>
+                                    <div class="actions">
+                                        <div class="btn-group btn-group-devided" data-toggle="buttons">
+                                            <label class="btn btn-transparent dark btn-outline btn-circle btn-sm active">
+                                                <input type="radio" name="options" class="toggle" id="option1">Actions</label>
+                                            <label class="btn btn-transparent dark btn-outline btn-circle btn-sm">
+                                                <input type="radio" name="options" class="toggle" id="option2">Settings</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="portlet-body">
+                                    <div class="table-toolbar">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="btn-group">
+                                                    <button id="sample_editable_1_new" class="btn sbold green">
+                                                        <i class="fa fa-plus"></i> Novo
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="btn-group pull-right">
+                                                    <button class="btn green  btn-outline dropdown-toggle" data-toggle="dropdown">Opções
+                                                        <i class="fa fa-angle-down"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu pull-right">
+                                                        <li>
+                                                            <a href="javascript:;">
+                                                                <i class="fa fa-print"></i> Print </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="javascript:;">
+                                                                <i class="fa fa-file-pdf-o"></i> Save as PDF </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="javascript:;">
+                                                                <i class="fa fa-file-excel-o"></i> Export to Excel </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <table class="table table-striped table-bordered table-hover table-checkable order-column" id="sample_1">
+                                        <thead>
+                                        <tr>
+                                            <th>
+                                                <input type="checkbox" class="group-checkable" data-set="#sample_1 .checkboxes" /> </th>
+                                            <th> Nome </th>
+                                            <th> Email </th>
+                                            <th> Telefone </th>
+                                            <th> Celular </th>
+                                            <th> Status </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @foreach($people as $person)
+                                            <tr class="odd gradeX">
+                                                <td>
+                                                    <input type="checkbox" class="checkboxes" value="1" /> </td>
+                                                <td>
+                                                    <a href="{{ route('person.edit', ['person' => $person->id]) }}" >
+                                                        {{ $person->name }} {{ $person->lastName }}
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <a href="mailto:{{ $person->user->email or null }}"> {{ $person->user->email or null }} </a>
+                                                </td>
+                                                <td> {{ $person->tel }} </td>
+                                                <td class="center"> {{ $person->cel }} </td>
+                                                <td>
+                                                    <span class="label label-sm label-success"> Aprovado </span>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!-- END EXAMPLE TABLE PORTLET-->
                         </div>
                     </div>
 
@@ -1060,8 +1154,23 @@ License: You must have a valid license purchased only from themeforest(the above
 </div>
 <!-- END INNER FOOTER -->
 <!-- END FOOTER -->
+<!-- BEGIN PAGE LEVEL PLUGINS -->
 @include('includes.core-scripts-edit')
 <!-- BEGIN PAGE LEVEL PLUGINS -->
+<script src="../../assets/global/scripts/datatable.js" type="text/javascript"></script>
+<script src="../../assets/global/plugins/datatables/datatables.min.js" type="text/javascript"></script>
+<script src="../../assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
+<!-- END PAGE LEVEL PLUGINS -->
+
+<!-- BEGIN PAGE LEVEL SCRIPTS -->
+<script src="../../assets/pages/scripts/table-datatables-managed.min.js" type="text/javascript"></script>
+<!-- END PAGE LEVEL SCRIPTS -->
+<!-- BEGIN THEME LAYOUT SCRIPTS -->
+<script src="../../assets/layouts/layout3/scripts/layout.min.js" type="text/javascript"></script>
+<script src="../../assets/layouts/layout3/scripts/demo.min.js" type="text/javascript"></script>
+<script src="../../assets/layouts/global/scripts/quick-sidebar.min.js" type="text/javascript"></script>
+<!-- END THEME LAYOUT SCRIPTS -->
+
 <script src="../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js" type="text/javascript"></script>
 <script src="../../assets/global/plugins/jquery.sparkline.min.js" type="text/javascript"></script>
 <script src="http://maps.google.com/maps/api/js?sensor=false" type="text/javascript"></script>
@@ -1069,11 +1178,9 @@ License: You must have a valid license purchased only from themeforest(the above
 
 <script src="../../assets/pages/scripts/profile.min.js" type="text/javascript"></script>
 <script src="../../assets/pages/scripts/timeline.min.js" type="text/javascript"></script>
+
 <!-- END PAGE LEVEL SCRIPTS -->
-
-<!-- Google maps function -->
 <script>
-
     function initMap() {
         //var infowindow = new google.maps.InfoWindow();
         var location = $('#location').val();

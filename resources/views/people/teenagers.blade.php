@@ -77,7 +77,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                 <div class="portlet-title">
                                     <div class="caption">
                                         <i class="icon-settings font-green"></i>
-                                        <span class="caption-subject font-green sbold uppercase">Membros - Adultos</span>
+                                        <span class="caption-subject font-green sbold uppercase">Crianças e Jovens</span>
                                     </div>
                                     <div class="actions">
                                         <div class="btn-group btn-group-devided">
