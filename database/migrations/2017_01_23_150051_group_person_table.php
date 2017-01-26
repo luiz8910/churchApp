@@ -19,6 +19,9 @@ class GroupPersonTable extends Migration
 
             $table->integer('person_id')->unsigned();
             $table->foreign('person_id')->references('id')->on('people')->onDelete('cascade');
+
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 

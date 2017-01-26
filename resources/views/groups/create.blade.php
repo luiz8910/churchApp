@@ -129,6 +129,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             <option value="">Selecione</option>
                                                             <option value="Diário">Diário</option>
                                                             <option value="Semanal">Semanal</option>
+                                                            <option value="Quinzenal">Quinzenal</option>
                                                             <option value="Mensal">Mensal</option>
                                                         </select>
                                                     </div>

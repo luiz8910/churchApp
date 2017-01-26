@@ -247,169 +247,159 @@ License: You must have a valid license purchased only from themeforest(the above
                                 <div class="portlet-title tabbable-line">
                                     <div class="caption caption-md">
                                         <i class="icon-globe theme-font hide"></i>
-                                        <span class="caption-subject font-blue-madison bold uppercase">Seus Dados</span>
+                                        <span class="caption-subject font-blue-madison bold uppercase">Dados do Grupo</span>
                                     </div>
-                                    <ul class="nav nav-tabs">
-                                        <li class="active">
-                                            <a href="#tab_1_1" data-toggle="tab">
-                                                <span class="hidden-xs hidden-sm">
-                                                    Informações Pessoais
-                                                </span>
-                                                <span class="visible-xs visible-sm">Pessoal</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#tab_1_2" data-toggle="tab">Alterar Foto</a>
-                                        </li>
-                                        <li>
-                                            <a href="#tab_1_4" data-toggle="tab">Personalizar</a>
-                                        </li>
-                                    </ul>
+
                                 </div>
                                 <div class="portlet-body">
-                                    <div class="tab-content">
-                                        <!-- PERSONAL INFO TAB -->
-                                        <div class="tab-pane active" id="tab_1_1">
-                                            {!! Form::open(['route' => ['person.update', 'person' => $person->id], 'class' => 'horizontal-form', 'method' => 'PUT']) !!}
+                                            {!! Form::open(['route' => ['group.update', 'group' => $group->id], 'method' => 'PUT', 'class' => 'repeater', 'enctype' => 'multipart/form-data', 'role' => 'form']) !!}
+                                            <div class="form-body">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <br>
+                                                            <label>Nome</label>
+                                                            <div class="input-group">
+                                                            <span class="input-group-addon">
+                                                                <i class="fa fa-user font-blue"></i>
+                                                            </span>
+                                                                <input type="text" name="name" class="form-control"
+                                                                      value="{{ $group->name }}" placeholder="Grupo de Jovens">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group"><br>
+                                                            <label>Frequência</label>
+                                                            <div class="input-icon input-icon-sm">
+                                                                <i class="fa fa-briefcase"></i>
+                                                                <select class="form-control" name="frequency">
+                                                                    <option value="">Selecione</option>
+                                                                    <option value="Diário" @if($group->frequency == 'Diário') selected @endif >
+                                                                        Diário
+                                                                    </option>
+                                                                    <option value="Semanal" @if($group->frequency == 'Semanal') selected @endif >
+                                                                        Semanal
+                                                                    </option>
+                                                                    <option value="Quinzenal" @if($group->frequency == 'Quinzenal') selected @endif >
+                                                                        Quinzenal
+                                                                    </option>
+                                                                    <option value="Mensal" @if($group->frequency == 'Mensal') selected @endif >
+                                                                        Mensal
+                                                                    </option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
 
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    {!! Form::FormGroup('name', $errors) !!}
-                                                    <label class="control-label">Nome</label>
-                                                    <input type="text" placeholder="João da Silva" name="name" value="{{ $person->name }}" class="form-control" />
-                                                    {!! Form::error('name', $errors) !!}
-                                                    {!! Form::endFormGroup() !!}
+                                                    </div>
                                                 </div>
 
-                                                <div class="col-md-6">
-                                                    {!! Form::FormGroup('email', $errors) !!}
-                                                    <label class="control-label">Email</label>
-                                                    <input type="email" placeholder="email@dominio.com" value="{{ $person->email }}" name="email" class="form-control" />
-                                                    {!! Form::error('email', $errors) !!}
-                                                    {!! Form::endFormGroup() !!}
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label>Data de Criação</label>
+                                                            <div class="input-group">
+                                                            <span class="input-group-addon">
+                                                                <i class="fa fa-calendar font-blue"></i>
+                                                            </span>
+                                                                <input type="text" class="form-control" name="sinceOf"
+                                                                       value="{{ $group->sinceOf }}" placeholder="dd/mm/aaaa">
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
                                                 </div>
 
-                                            </div>
 
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    {!! Form::FormGroup('tel', $errors) !!}
-                                                    <label class="control-label">Telefone</label>
-                                                    <input type="text" placeholder="(15) 9123-1234" name="tel" value="{{ $person->tel }}" class="form-control" />
-                                                    {!! Form::error('tel', $errors) !!}
-                                                    {!! Form::endFormGroup() !!}
-                                                </div>
-                                                <div class="col-md-6">
-                                                    {!! Form::FormGroup('gender', $errors) !!}
-                                                    <label class="control-label">Gênero</label>
-                                                    <select name="gender" class="form-control" required>
-                                                        <option value="">Selecione</option>
-                                                        <option value="M" @if($person->gender == 'M') selected @endif >Masculino</option>
-                                                        <option value="F" @if($person->gender == 'F') selected @endif >Feminino</option>
-                                                    </select>
-                                                    {!! Form::error('gender', $errors) !!}
-                                                    {!! Form::endFormGroup() !!}
-                                                </div>
-                                            </div>
+                                                <h3>Endereço</h3>
 
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    {!! Form::FormGroup('dateBirth', $errors) !!}
-                                                    <label class="control-label">Data de Nasc.</label>
-                                                    <input type="text" placeholder="dd/mm/aaaa" value="{{ $person->dateBirth }}" name="dateBirth" class="form-control" />
-                                                    {!! Form::error('dateBirth', $errors) !!}
-                                                    {!! Form::endFormGroup() !!}
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label>CEP</label>
+                                                            <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-location-arrow font-purple"></i>
+                                                        </span>
+                                                                <input type="text" class="form-control" name="zipCode"
+                                                                       value="{{ $group->zipCode }}" placeholder="XXXXX-XXX">
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div class="col-md-6">
-                                                    {!! Form::FormGroup('role', $errors) !!}
-                                                    <label class="control-label">Cargo</label>
-                                                    <select class="form-control" name="role_id"
-                                                            data-placeholder="Selecione seu cargo"
-                                                            tabindex="1">
-                                                        <option value="">Selecione</option>
-                                                        @foreach($roles as $role)
-                                                            <option value="{{ $role->id }}" @if($role->id == $person->role_id) selected @endif >{{ $role->name }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                    {!! Form::error('role', $errors) !!}
-                                                    {!! Form::endFormGroup() !!}
+
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label>Logradouro</label>
+                                                            <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-home font-purple"></i>
+                                                    </span>
+                                                                <input class="form-control" name="street" type="text"
+                                                                       value="{{ $group->street }}" placeholder="Av. Antonio Carlos Comitre, 650">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label>Bairro</label>
+                                                            <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-home font-purple"></i>
+                                                    </span>
+                                                                <input class="form-control" name="neighborhood" type="text"
+                                                                       value="{{ $group->neighborhood }}" placeholder="Parque do Dolly">
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div>
 
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    {!! Form::FormGroup('cpf', $errors) !!}
-                                                    <label class="control-label">CPF</label>
-                                                    <input type="text" placeholder="123.123.123-12" value="{{ $person->cpf }}" name="cpf" class="form-control" />
-                                                    {!! Form::error('cpf', $errors) !!}
-                                                    {!! Form::endFormGroup() !!}
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label>Cidade</label>
+                                                            <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-building font-purple"></i>
+                                                    </span>
+                                                                <input class="form-control" name="city" type="text"
+                                                                       value="{{ $group->city }}" placeholder="Sorocaba">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label>Estado</label>
+                                                            <select name="state" class="form-control">
+                                                                <option value="">Selecione</option>
+                                                                @foreach($state as $item)
+                                                                    <option value="{{ $item->initials }}" @if($item->initials == $group->state) selected @endif >
+                                                                        {{ $item->state }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div>
-
-                                            @if($person->tag != 'adult')
-
-                                                <h3 class="form-section">Observações</h3>
 
                                                 <div class="row">
                                                     <div class="col-md-12">
-                                                        {!! Form::FormGroup('specialNeeds', $errors) !!}
-                                                        <label class="control-label">Anotações Gerais</label>
-                                                        <textarea class="form-control" name="specialNeeds" value="{{ $person->specialNeeds }}"
-                                                                  placeholder="Digite aqui observações importantes sobre a criança/adolescente"
-                                                                  rows="5"></textarea>
-                                                        {!! Form::error('specialNeeds', $errors) !!}
-                                                        {!! Form::endFormGroup() !!}
+                                                        <div class="form-group">
+                                                            <div class="fileinput fileinput-new" data-provides="fileinput">
+                                                                <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
+                                                                    <img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=foto+do+perfil" alt="" /> </div>
+                                                                <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"> </div>
+                                                                <div>
+                                                                <span class="btn default btn-file">
+                                                                    <span class="fileinput-new"> Escolher Imagem </span>
+                                                                    <span class="fileinput-exists"> Alterar </span>
+                                                                    <input type="file" name="img"> </span>
+                                                                    <a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Remover </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            @endif
-
-                                            <h3 class="form-section">Endereço</h3>
-
-                                            <div class="row">
-                                                <div class="col-md-3">
-                                                    {!! Form::FormGroup('zipCode', $errors) !!}
-                                                    <label class="control-label">CEP</label>
-                                                    <input type="text" placeholder="12123-12" value="{{ $person->zipCode }}" name="zipCode" class="form-control" />
-                                                    {!! Form::error('zipCode', $errors) !!}
-                                                    {!! Form::endFormGroup() !!}
-                                                </div>
-                                                <div class="col-md-9">
-                                                    {!! Form::FormGroup('street', $errors) !!}
-                                                    <label class="control-label">Logradouro</label>
-                                                    <input type="text" placeholder="Rua dos Bobos, 0" value="{{ $person->street }}" name="street" class="form-control" />
-                                                    {!! Form::error('street', $errors) !!}
-                                                    {!! Form::endFormGroup() !!}
-                                                </div>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    {!! Form::FormGroup('neighborhood', $errors) !!}
-                                                    <label class="control-label">Bairro</label>
-                                                    <input type="text" placeholder="Vila Progresso" value="{{ $person->neighborhood }}" name="neighborhood" class="form-control" />
-                                                    {!! Form::error('neighborhood', $errors) !!}
-                                                    {!! Form::endFormGroup() !!}
-                                                </div>
-                                                <div class="col-md-4">
-                                                    {!! Form::FormGroup('city', $errors) !!}
-                                                    <label class="control-label">Cidade</label>
-                                                    <input type="text" placeholder="Sorocaba" name="city" value="{{ $person->city }}" class="form-control" />
-                                                    {!! Form::error('city', $errors) !!}
-                                                    {!! Form::endFormGroup() !!}
-                                                </div>
-                                                <div class="col-md-4">
-                                                    {!! Form::FormGroup('state', $errors) !!}
-                                                    <label class="control-label">UF:</label>
-                                                    <select name="state" class="form-control">
-                                                        <option value="">Selecione</option>
-                                                        @foreach($state as $value)
-                                                            <option value="{{ $value->initials }}" @if($value->initials == $person->state) selected @endif >
-                                                                {{ $value->state }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                    {!! Form::error('state', $errors) !!}
-                                                    {!! Form::endFormGroup() !!}
                                                 </div>
                                             </div>
 
@@ -419,96 +409,9 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <a href="javascript:;" class="btn default"> Cancelar </a>
                                                 </div>
                                             {!! Form::close() !!}
-                                        </div>
-                                        <!-- END PERSONAL INFO TAB -->
-                                        <!-- CHANGE AVATAR TAB -->
-                                        <div class="tab-pane" id="tab_1_2">
-                                            <p> Altere aqui sua foto do perfil </p>
-                                            {!! Form::open(['route' => ['person.imgEditProfile', $person->id], 'method' => 'post', 'enctype' => 'multipart/form-data', 'role' => 'form']) !!}
-                                                <div class="form-group">
-                                                    <div class="fileinput fileinput-new" data-provides="fileinput">
-                                                        <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
-                                                            <img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=no+image" alt="" /> </div>
-                                                        <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"> </div>
-                                                        <div>
-                                                                                <span class="btn default btn-file">
-                                                                                    <span class="fileinput-new"> Escolher Imagem </span>
-                                                                                    <span class="fileinput-exists"> Alterar </span>
-                                                                                    <input type="file" name="img"> </span>
-                                                            <a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Remover </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="margin-top-10">
-                                                    {!! Form::submit('Enviar', ['class' => 'btn green']) !!}
-                                                    <a href="javascript:;" class="btn default"> Cancelar </a>
-                                                </div>
-                                            </form>
-                                        </div>
-                                        <!-- END CHANGE AVATAR TAB -->
-                                        <!-- CHANGE PASSWORD TAB -->
-                                        <div class="tab-pane" id="tab_1_3">
-                                            {!! Form::open(['route' => 'users.changePass', 'method' => 'post']) !!}
-                                            <div class="form-group">
-                                                <label class="control-label">Senha Atual</label>
-                                                <input type="password" class="form-control" name="old" /> </div>
-                                            <div class="form-group">
-                                                <label class="control-label">Nova Senha</label>
-                                                <input type="password" class="form-control" name="new" /> </div>
-                                            <div class="form-group">
-                                                <label class="control-label">Confirme sua nova Senha</label>
-                                                <input type="password" class="form-control" name="confirmPassword" /> </div>
-                                            <div class="margin-top-10">
-                                                {!! Form::submit('Alterar Senha', ['class' => 'btn green']) !!}
-                                                <a href="javascript:;" class="btn default"> Cancelar </a>
-                                            </div>
-                                            {!! Form::close() !!}
-                                        </div>
-                                        <!-- END CHANGE PASSWORD TAB -->
-                                        <!-- PRIVACY SETTINGS TAB -->
-                                        <div class="tab-pane" id="tab_1_4">
-                                            <form action="#">
-                                                <table class="table table-light table-hover">
-                                                    <tr>
-                                                        <td> Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus.. </td>
-                                                        <td>
-                                                            <label class="uniform-inline">
-                                                                <input type="radio" name="optionsRadios1" value="option1" /> Yes </label>
-                                                            <label class="uniform-inline">
-                                                                <input type="radio" name="optionsRadios1" value="option2" checked/> No </label>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td> Enim eiusmod high life accusamus terry richardson ad squid wolf moon </td>
-                                                        <td>
-                                                            <label class="uniform-inline">
-                                                                <input type="checkbox" value="" /> Yes </label>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td> Enim eiusmod high life accusamus terry richardson ad squid wolf moon </td>
-                                                        <td>
-                                                            <label class="uniform-inline">
-                                                                <input type="checkbox" value="" /> Yes </label>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td> Enim eiusmod high life accusamus terry richardson ad squid wolf moon </td>
-                                                        <td>
-                                                            <label class="uniform-inline">
-                                                                <input type="checkbox" value="" /> Yes </label>
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                                <!--end profile-settings-->
-                                                <div class="margin-top-10">
-                                                    <a href="javascript:;" class="btn red"> Save Changes </a>
-                                                    <a href="javascript:;" class="btn default"> Cancel </a>
-                                                </div>
-                                            </form>
-                                        </div>
-                                        <!-- END PRIVACY SETTINGS TAB -->
-                                    </div>
+
+
+
                                 </div>
                             </div>
                         </div>

@@ -41,4 +41,9 @@ trait CountPersonRepository
 
         return $qtde;
     }
+
+    public function countGroups()
+    {
+        return count(DB::table('groups')->get());
+    }
 }

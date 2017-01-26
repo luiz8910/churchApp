@@ -27,6 +27,7 @@ class CreateGroupsTable extends Migration
             $table->string('zipCode')->nullable();
             $table->string('state')->nullable();
             $table->timestamps();
+            $table->softDeletes();
 		});
 	}
 

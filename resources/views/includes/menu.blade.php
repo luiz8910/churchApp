@@ -55,7 +55,7 @@
                         <li>
                             <a href="{{ route('group.index') }}" class="nav-link">
                                 <i class="icon-user"></i> Todos
-                                <span class="badge badge-success">1</span>
+                                <span class="badge badge-success">{{ $countGroups }}</span>
                             </a>
                         </li>
                     </ul>

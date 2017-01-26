@@ -51,9 +51,9 @@ class PersonController extends Controller
         }
 
         $countPerson[] = $this->countPerson();
+        $countGroups = $this->countGroups();
 
-
-        return view('people.index', compact('adults', 'countPerson'));
+        return view('people.index', compact('adults', 'countPerson', 'countGroups'));
     }
 
     public function teenagers()
@@ -66,8 +66,9 @@ class PersonController extends Controller
         }
 
         $countPerson[] = $this->countPerson();
+        $countGroups = $this->countGroups();
 
-        return view('people.teenagers', compact('teen', 'countPerson'));
+        return view('people.teenagers', compact('teen', 'countPerson', 'countGroups'));
     }
 
     public function visitors()
@@ -80,8 +81,9 @@ class PersonController extends Controller
         }
 
         $countPerson[] = $this->countPerson();
+        $countGroups = $this->countGroups();
 
-        return view('people.visitors', compact('visitors', 'countPerson'));
+        return view('people.visitors', compact('visitors', 'countPerson', 'countGroups'));
     }
 
     public function inactive()
@@ -94,8 +96,9 @@ class PersonController extends Controller
         }
 
         $countPerson[] = $this->countPerson();
+        $countGroups = $this->countGroups();
 
-        return view('people.inactive', compact('inactive', 'countPerson'));
+        return view('people.inactive', compact('inactive', 'countPerson', 'countGroups'));
     }
 
     public function turnActive($id)
@@ -120,7 +123,9 @@ class PersonController extends Controller
 
         $countPerson[] = $this->countPerson();
 
-        return view('people.create', compact('state', 'roles', 'countPerson'));
+        $countGroups = $this->countGroups();
+
+        return view('people.create', compact('state', 'roles', 'countPerson', 'countGroups'));
     }
 
     /**
@@ -136,6 +141,8 @@ class PersonController extends Controller
         $file = $request->file('img');
 
         $email = $request->only('email');
+
+        $email = implode('=>', $email);
 
         $data = $request->except(['img', 'email']);
 
@@ -288,7 +295,9 @@ class PersonController extends Controller
 
         $countPerson[] = $this->countPerson();
 
-        return view('people.edit', compact('person', 'state', 'location', 'roles', 'countPerson'));
+        $countGroups = $this->countGroups();
+
+        return view('people.edit', compact('person', 'state', 'location', 'roles', 'countPerson', 'countGroups'));
     }
 
     /**

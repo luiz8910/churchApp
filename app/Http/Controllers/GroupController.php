@@ -43,16 +43,17 @@ class GroupController extends Controller
     {
         $groups = $this->repository->all();
 
-
         foreach ($groups as $group)
         {
             $group->sinceOf = $this->formatDateView($group->sinceOf);
             $countMembers[] = count($group->people->all());
         }
 
-        $countPerson[] = $this->countPerson(); //dd($countMembers);
+        $countPerson[] = $this->countPerson();
 
-        return view('groups.index', compact('groups', 'countPerson', 'countMembers'));
+        $countGroups = $this->countGroups();
+
+        return view('groups.index', compact('groups', 'countPerson', 'countMembers', 'countGroups'));
     }
 
     /**
@@ -64,11 +65,13 @@ class GroupController extends Controller
     {
         $countPerson[] = $this->countPerson();
 
+        $countGroups = $this->countGroups();
+
         $state = $this->stateRepository->all();
 
         $roles = $this->repository->all();
 
-        return view('groups.create', compact('countPerson', 'state', 'roles'));
+        return view('groups.create', compact('countPerson', 'countGroups', 'state', 'roles'));
     }
 
     /**
@@ -103,8 +106,8 @@ class GroupController extends Controller
         $file->move('uploads/group', $imgName);
 
         DB::table('groups')->
-        where('id', $id)->
-        update(['imgProfile' => $imgName]);
+            where('id', $id)->
+            update(['imgProfile' => $imgName]);
 
         //$request->session()->flash('updateUser', 'Alterações realizadas com sucesso');
     }
@@ -121,13 +124,15 @@ class GroupController extends Controller
 
         $countPerson[] = $this->countPerson();
 
+        $countGroups = $this->countGroups();
+
         $location = $this->formatGoogleMaps($group);
 
         $people = $group->people->all();
 
         //dd($people[0]->user->email);
 
-        return view('groups.show', compact('group', 'countPerson', 'location', 'people'));
+        return view('groups.show', compact('group', 'countPerson', 'countGroups', 'location', 'people'));
     }
 
     /**
@@ -142,6 +147,8 @@ class GroupController extends Controller
 
         $countPerson[] = $this->countPerson();
 
+        $countGroups = $this->countGroups();
+
         $location = $this->formatGoogleMaps($group);
 
         $people = $group->people->all();
@@ -150,7 +157,9 @@ class GroupController extends Controller
 
         $state = $this->stateRepository->all();
 
-        return view('groups.edit', compact('group', 'countPerson', 'location', 'people', 'roles', 'state'));
+        $group->sinceOf = $this->formatDateView($group->sinceOf);
+
+        return view('groups.edit', compact('group', 'countPerson', 'countGroups', 'location', 'people', 'roles', 'state'));
     }
 
     /**
@@ -162,7 +171,21 @@ class GroupController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $file = $request->file('img');
+
+        $data = $request->except(['img']);
+
+        $data['sinceOf'] = $this->formatDateBD($data['sinceOf']);
+
+        $data['active'] = 1;
+
+        $this->repository->update($data, $id);
+
+        if ($file){
+            $this->imgProfile($file, $id, $data['name']);
+        }
+
+        return redirect()->route('group.index');
     }
 
     /**

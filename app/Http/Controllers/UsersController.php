@@ -58,7 +58,9 @@ class UsersController extends Controller
 
         $roles = $this->roleRepository->all();
 
-        return view('users.myAccount', compact('state', 'dateBirth', 'changePass', 'countPerson', 'roles'));
+        $countGroups = $this->countGroups();
+
+        return view('users.myAccount', compact('state', 'dateBirth', 'changePass', 'countPerson', 'roles', 'countGroups'));
     }
 
     public function store(UserCreateRequest $request)

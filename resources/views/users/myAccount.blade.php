@@ -710,7 +710,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                                 <div class="col-md-6">
                                                     {!! Form::FormGroup('lastName', $errors) !!}
-                                                    <label class="control-label">Nome</label>
+                                                    <label class="control-label">Sobrenome</label>
                                                     <input type="text" placeholder="da Silva" name="lastName" value="{{ Auth::getUser()->person->lastName }}" class="form-control" />
                                                     {!! Form::error('lastName', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
