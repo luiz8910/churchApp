@@ -174,7 +174,9 @@ License: You must have a valid license purchased only from themeforest(the above
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="btn-group">
-                                                    <button data-toggle="modal" data-target=#myModal_autocomplete" id="sample_editable_1_new" class="btn sbold green">
+                                                    <!-- Button trigger modal -->
+                                                    <button type="button" class="btn sbold green" data-toggle="modal"
+                                                            id="sample_editable_1_new" data-target="#myModal_autocomplete">
                                                         <i class="fa fa-plus"></i> Novo
                                                     </button>
                                                 </div>

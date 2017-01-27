@@ -148,26 +148,33 @@ class PersonController extends Controller
 
         $data['dateBirth'] = $this->formatDateBD($data['dateBirth']);
 
+        $children = $request->get('group-a');
+
         $id = $this->repository->create($data)->id;
 
         if($this->repository->isAdult($data['dateBirth']))
         {
             $this->createUserLogin($id, $email);
+
+            if($children){
+                $this->children($children, $id, $data['gender']);
+            }
+
+        }
+        else{
+            $this->createUserLogin($id);
         }
 
         $this->tag($this->repository->tag($data['dateBirth']), $id);
 
         $this->imgProfile($file, $id, $data['name']);
 
-        $children = $request->get('group-a');
-
-        $this->children($children, $id, $data['gender']);
 
         return redirect()->route('person.index');
     }
 
 
-    public function createUserLogin($id, $email)
+    public function createUserLogin($id, $email = null)
     {
         User::create(
             [

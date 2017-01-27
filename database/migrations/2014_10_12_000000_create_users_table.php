@@ -22,7 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('linkedin_id')->unique()->nullable();
             $table->string('google_id')->unique()->nullable();
             $table->string('twitter_id')->unique()->nullable();
-            $table->string('email')->unique();
+            $table->string('email')->unique()->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
