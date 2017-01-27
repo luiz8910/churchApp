@@ -13,6 +13,8 @@ class DashboardController extends Controller
     {
         $countPerson[] = $this->countPerson();
 
-        return view('dashboard.index', compact('countPerson'));
+        $countGroups = $this->countGroups();
+
+        return view('dashboard.index', compact('countPerson', 'countGroups'));
     }
 }

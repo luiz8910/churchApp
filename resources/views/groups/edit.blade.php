@@ -20,11 +20,12 @@ License: You must have a valid license purchased only from themeforest(the above
 <head>
     @include('includes.head-edit')
 
-    <!-- BEGIN PAGE LEVEL PLUGINS -->
-    <link href="../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet" type="text/css" />
-    <link href="../../assets/pages/css/profile.min.css" rel="stylesheet" type="text/css" />
-    <link href="../../assets/global/plugins/datatables/datatables.min.css" rel="stylesheet" type="text/css" />
-    <link href="../../assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css" rel="stylesheet" type="text/css" />
+        <!-- BEGIN PAGE LEVEL PLUGINS -->
+        <link href="../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet" type="text/css" />
+        <link href="../../assets/pages/css/profile.min.css" rel="stylesheet" type="text/css" />
+        <link href="../../assets/global/plugins/datatables/datatables.min.css" rel="stylesheet" type="text/css" />
+        <link href="../../assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css" rel="stylesheet" type="text/css" />
+        <link href="../../assets/global/plugins/typeahead/typeahead.css" rel="stylesheet" type="text/css" />
     <!-- END PAGE LEVEL PLUGINS -->
 </head>
 <!-- END HEAD -->
@@ -173,11 +174,78 @@ License: You must have a valid license purchased only from themeforest(the above
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="btn-group">
-                                                    <button id="sample_editable_1_new" class="btn sbold green">
+                                                    <button data-toggle="modal" data-target=#myModal_autocomplete" id="sample_editable_1_new" class="btn sbold green">
                                                         <i class="fa fa-plus"></i> Novo
                                                     </button>
                                                 </div>
                                             </div>
+
+                                            <div id="myModal_autocomplete" class="modal fade" role="dialog" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                                            <h4 class="modal-title">Radio Switch in Modal</h4>
+                                                        </div>
+                                                        <div class="modal-body form">
+                                                            <form action="#" class="form-horizontal form-row-seperated">
+                                                                <div class="form-group">
+                                                                    <label class="col-sm-4 control-label">Basic Auto Complete</label>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="input-group">
+                                                                            <span class="input-group-addon">
+                                                                                <i class="fa fa-user"></i>
+                                                                            </span>
+                                                                            <input type="text" id="typeahead_example_modal_1" name="typeahead_example_modal_1" class="form-control" /> </div>
+                                                                        <p class="help-block"> E.g: metronic, keenthemes. </p>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label class="col-sm-4 control-label">Country Auto Complete</label>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="input-group">
+                                                                            <span class="input-group-addon">
+                                                                                <i class="fa fa-search"></i>
+                                                                            </span>
+                                                                            <input type="text" id="typeahead_example_modal_2" name="typeahead_example_modal_2" class="form-control" /> </div>
+                                                                        <p class="help-block"> E.g: USA, Malaysia. Prefetch from JSON source</code>
+                                                                        </p>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label class="col-sm-4 control-label">Custom Template</label>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="input-group">
+                                                                            <span class="input-group-addon">
+                                                                                <i class="fa fa-cogs"></i>
+                                                                            </span>
+                                                                            <input type="text" id="typeahead_example_modal_3" name="typeahead_example_modal_3" class="form-control" /> </div>
+                                                                        <p class="help-block"> Uses a precompiled template to customize look of suggestion.</code>
+                                                                        </p>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group last">
+                                                                    <label class="col-sm-4 control-label">Multiple Sections with Headers</label>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="input-group">
+                                                                            <span class="input-group-addon">
+                                                                                <i class="fa fa-check"></i>
+                                                                            </span>
+                                                                            <input type="text" id="typeahead_example_modal_4" name="typeahead_example_modal_4" class="form-control" /> </div>
+                                                                        <p class="help-block"> Two datasets that are prefetched, stored, and searched on the client. Highlighting is enabled. </p>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn grey-salsa btn-outline" data-dismiss="modal">Close</button>
+                                                            <button type="button" class="btn green">
+                                                                <i class="fa fa-check"></i> Save changes</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
                                             <div class="col-md-6">
                                                 <div class="btn-group pull-right">
                                                     <button class="btn green  btn-outline dropdown-toggle" data-toggle="dropdown">Opções
@@ -1057,9 +1125,8 @@ License: You must have a valid license purchased only from themeforest(the above
 </div>
 <!-- END INNER FOOTER -->
 <!-- END FOOTER -->
-<!-- BEGIN PAGE LEVEL PLUGINS -->
 @include('includes.core-scripts-edit')
-<!-- BEGIN PAGE LEVEL PLUGINS -->
+
 <script src="../../assets/global/scripts/datatable.js" type="text/javascript"></script>
 <script src="../../assets/global/plugins/datatables/datatables.min.js" type="text/javascript"></script>
 <script src="../../assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
@@ -1081,6 +1148,10 @@ License: You must have a valid license purchased only from themeforest(the above
 
 <script src="../../assets/pages/scripts/profile.min.js" type="text/javascript"></script>
 <script src="../../assets/pages/scripts/timeline.min.js" type="text/javascript"></script>
+
+<script src="../../assets/global/plugins/typeahead/handlebars.min.js" type="text/javascript"></script>
+<script src="../../assets/global/plugins/typeahead/typeahead.bundle.min.js" type="text/javascript"></script>
+<script src="../../assets/pages/scripts/components-typeahead.min.js" type="text/javascript"></script>
 
 <!-- END PAGE LEVEL SCRIPTS -->
 <script>
