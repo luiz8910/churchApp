@@ -18,11 +18,16 @@ $(function () {
         var member_id = $("#select_members").val();
         var member = $("#select_members option:selected").text();
 
-        $("#select_name").append(
-            "<a href=javascript:; class=list-group-item id=member-"+member_id+">"+member+"</a>"+
-            "<input hidden name=member-"+member_id+" value="+member_id+">"
+
+        $("#table_name tbody").append(
+              "<tr>"+
+                "<td>"+member_id+"</td>"+
+                "<td>"+member+"</td>"+
+                "<td><button type=button id=deleteMember class='btn btn-danger btn-sm'>Excluir</button></td>"+
+              "</tr>"
+
         );
-    });
+    });//"<input hidden name=member-"+member_id+" value="+member_id+">"
 
     $("#deleteMember").click(function () {
         $("#select_name a[id=member-"+selectedMember+"]").remove();

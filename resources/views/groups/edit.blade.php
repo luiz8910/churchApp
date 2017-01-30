@@ -26,6 +26,7 @@ License: You must have a valid license purchased only from themeforest(the above
         <link href="../../assets/global/plugins/datatables/datatables.min.css" rel="stylesheet" type="text/css" />
         <link href="../../assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css" rel="stylesheet" type="text/css" />
         <link href="../../assets/global/plugins/typeahead/typeahead.css" rel="stylesheet" type="text/css" />
+        <link href="../../assets/global/plugins/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" type="text/css" />
     <!-- END PAGE LEVEL PLUGINS -->
 </head>
 <!-- END HEAD -->
@@ -200,7 +201,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                             <span class="input-group-addon">
                                                                                 <i class="fa fa-user"></i>
                                                                             </span>
-                                                                            <select id="select_members" class="form-control">
+                                                                            <select id="select_members" class="bs-select form-control" data-live-search="true" data-size="8">
                                                                                 @foreach($members as $member)
                                                                                     <option value="{{ $member->id }}">{{ $member->name }} {{$member->lastName}}</option>
                                                                                 @endforeach
@@ -216,15 +217,33 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                     <label class="col-sm-3 control-label">Membros Escolhidos</label>
                                                                     <div class="col-sm-9">
                                                                         <div class="input-group">
-                                                                            <div class="list-group" id="select_name">
-                                                                                <a href="javascript:;" type="button" class="list-group-item" id="member-0">Cras justo odio</a>
+                                                                            <!-- BEGIN SAMPLE TABLE PORTLET-->
+                                                                            <div class="portlet light ">
+
+                                                                                <div class="portlet-body">
+                                                                                    <div class="table-scrollable">
+                                                                                        <table class="table table-hover" id="table_name">
+                                                                                            <thead>
+                                                                                            <tr>
+                                                                                                <th> # </th>
+                                                                                                <th> Nome </th>
+                                                                                                <th> </th>
+                                                                                            </tr>
+                                                                                            </thead>
+                                                                                            <tbody>
+
+                                                                                            </tbody>
+                                                                                        </table>
+                                                                                    </div>
+                                                                                </div>
                                                                             </div>
+                                                                            <!-- END SAMPLE TABLE PORTLET-->
 
                                                                             <!--<input type="text" id="typeahead_example_modal_2" name="typeahead_example_modal_2" class="form-control" />-->
                                                                         </div>
                                                                         <p class="help-block"> Para excluir selecione um membro e clique no botão abaixo </code>
                                                                             
-                                                                        </p><br> <button type="button" id="deleteMember" class="btn btn-danger btn-sm">Excluir</button>
+                                                                        </p><br>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -1168,7 +1187,35 @@ License: You must have a valid license purchased only from themeforest(the above
 </div>
 <!-- END INNER FOOTER -->
 <!-- END FOOTER -->
-@include('includes.core-scripts-edit')
+
+<!--[if lt IE 9]>
+<script src="../../assets/global/plugins/respond.min.js"></script>
+<script src="../../assets/global/plugins/excanvas.min.js"></script>
+<![endif]-->
+<!-- BEGIN CORE PLUGINS -->
+<script src="../../assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+<script src="../../assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="../../assets/global/plugins/js.cookie.min.js" type="text/javascript"></script>
+<script src="../../assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js" type="text/javascript"></script>
+<script src="../../assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+<script src="../../assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+<script src="../../assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+<script src="../../assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
+<!-- END CORE PLUGINS -->
+<!-- BEGIN PAGE LEVEL PLUGINS -->
+<script src="../../assets/global/plugins/bootstrap-select/js/bootstrap-select.min.js" type="text/javascript"></script>
+<!-- END PAGE LEVEL PLUGINS -->
+<!-- BEGIN THEME GLOBAL SCRIPTS -->
+<script src="../../assets/global/scripts/app.min.js" type="text/javascript"></script>
+<!-- END THEME GLOBAL SCRIPTS -->
+<!-- BEGIN PAGE LEVEL SCRIPTS -->
+<script src="../../assets/pages/scripts/components-bootstrap-select.min.js" type="text/javascript"></script>
+<!-- END PAGE LEVEL SCRIPTS -->
+<!-- BEGIN THEME../ LAYOUT SCRIPTS -->
+<script src="../../assets/layouts/layout3/scripts/layout.min.js" type="text/javascript"></script>
+<script src="../../assets/layouts/layout3/scripts/demo.min.js" type="text/javascript"></script>
+<script src="../../assets/layouts/global/scripts/quick-sidebar.min.js" type="text/javascript"></script>
+<!-- END THEME LAYOUT SCRIPTS -->
 
 <script src="../../assets/global/scripts/datatable.js" type="text/javascript"></script>
 <script src="../../assets/global/plugins/datatables/datatables.min.js" type="text/javascript"></script>
@@ -1186,6 +1233,11 @@ License: You must have a valid license purchased only from themeforest(the above
 
 <script src="../../assets/pages/scripts/profile.min.js" type="text/javascript"></script>
 <script src="../../assets/pages/scripts/timeline.min.js" type="text/javascript"></script>
+
+
+<script src="../../assets/pages/scripts/components-bootstrap-select.min.js" type="text/javascript"></script>
+
+<script src="../../js/script.js" type="text/javascript"></script>
 
 <!-- END PAGE LEVEL SCRIPTS -->
 <script>
