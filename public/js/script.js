@@ -1,5 +1,34 @@
 $(function () {
 
+    var selectedMember = '';
+
+    $("#select_name").change(function () {
+        $("#select_name button:selected").each(function () {
+            selectedMember = $( this ).id;
+        })
+    }).trigger('change');
+
+    $("#select_name a").click(function () {
+        selectedMember = $( this ).text();
+        alert(selectedMember);
+    });
+
+    $("#addMember").click(function () {
+
+        var member_id = $("#select_members").val();
+        var member = $("#select_members option:selected").text();
+
+        $("#select_name").append(
+            "<a href=javascript:; class=list-group-item id=member-"+member_id+">"+member+"</a>"+
+            "<input hidden name=member-"+member_id+" value="+member_id+">"
+        );
+    });
+
+    $("#deleteMember").click(function () {
+        $("#select_name a[id=member-"+selectedMember+"]").remove();
+    });
+
+
     function readURL(input) {
 
         if (input.files && input.files[0]) {

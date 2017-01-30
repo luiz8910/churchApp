@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Person;
 use App\Repositories\CountPersonRepository;
 use App\Repositories\DateRepository;
 use App\Repositories\FormatGoogleMaps;
 use App\Repositories\GroupRepository;
+use App\Repositories\PersonRepository;
 use App\Repositories\RoleRepository;
 use App\Repositories\StateRepository;
 use Illuminate\Http\Request;
@@ -26,13 +28,19 @@ class GroupController extends Controller
      * @var RoleRepository
      */
     private $roleRepository;
+    /**
+     * @var PersonRepository
+     */
+    private $personRepository;
 
-    public function __construct(GroupRepository $repository, StateRepository $stateRepository, RoleRepository $roleRepository)
+    public function __construct(GroupRepository $repository, StateRepository $stateRepository,
+                                RoleRepository $roleRepository, PersonRepository $personRepository)
     {
 
         $this->repository = $repository;
         $this->stateRepository = $stateRepository;
         $this->roleRepository = $roleRepository;
+        $this->personRepository = $personRepository;
     }
     /**
      * Exibe todos os grupos
@@ -153,13 +161,15 @@ class GroupController extends Controller
 
         $people = $group->people->all();
 
+        $members = $this->personRepository->findWhereNotIn('role_id', ['3']);
+
         $roles = $this->roleRepository->all();
 
         $state = $this->stateRepository->all();
 
         $group->sinceOf = $this->formatDateView($group->sinceOf);
 
-        return view('groups.edit', compact('group', 'countPerson', 'countGroups', 'location', 'people', 'roles', 'state'));
+        return view('groups.edit', compact('group', 'countPerson', 'countGroups', 'location', 'people', 'roles', 'state', 'members'));
     }
 
     /**
@@ -197,5 +207,10 @@ class GroupController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function addMembers(Request $request, $group)
+    {
+        dd($request->all());
     }
 }

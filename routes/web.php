@@ -41,7 +41,6 @@ Route::group(['middleware' => 'auth'], function (){
 
 Route::group(["middleware" => "check.role:1"], function () {
 
-
     Route::get('groups/create', 'GroupController@create')->name('group.create');
 
     Route::get('group/{group}/edit', 'GroupController@edit')->name('group.edit');
@@ -51,6 +50,8 @@ Route::group(["middleware" => "check.role:1"], function () {
     Route::put('group/{group}', 'GroupController@update')->name('group.update');
 
     Route::delete('group/{group}', 'GroupController@destroy')->name('group.destroy');
+
+    Route::post('groups/addMembers/{group}', 'GroupController@addMembers')->name('group.addMembers');
 });
 
 Auth::routes();

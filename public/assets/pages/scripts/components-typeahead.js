@@ -8,7 +8,7 @@ var ComponentsTypeahead = function () {
           datumTokenizer: function(d) { return Bloodhound.tokenizers.whitespace(d.num); },
           queryTokenizer: Bloodhound.tokenizers.whitespace,
           local: [
-            { num: 'metronic' },
+              { num: 'metronic' },
             { num: 'keenthemes' },
             { num: 'metronic theme' },
             { num: 'metronic template' },
@@ -136,26 +136,27 @@ var ComponentsTypeahead = function () {
         // Example #1
         // instantiate the bloodhound suggestion engine
         var numbers = new Bloodhound({
-          datumTokenizer: function(d) { return Bloodhound.tokenizers.whitespace(d.num); },
+          datumTokenizer: function(d) { return Bloodhound.tokenizers.whitespace(d.name); },
           queryTokenizer: Bloodhound.tokenizers.whitespace,
           local: [
-            { num: 'metronic' },
-            { num: 'keenthemes' },
-            { num: 'metronic theme' },
-            { num: 'metronic template' },
-            { num: 'keenthemes team' }
+
+              { id: 1, name: 'dog' },
+              { id: 2, name: 'pig' }
+
           ]
         });
          
         // initialize the bloodhound suggestion engine
-        numbers.initialize();
+        //numbers.initialize();
+
+        numbers.get(1);
          
         // instantiate the typeahead UI
         if (App.isRTL()) {
           $('#typeahead_example_modal_1').attr("dir", "rtl");  
         }
         $('#typeahead_example_modal_1').typeahead(null, {
-          displayKey: 'num',
+          displayKey: 'name',
           hint: (App.isRTL() ? false : true),
           source: numbers.ttAdapter()
         });

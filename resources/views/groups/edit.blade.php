@@ -176,77 +176,118 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <div class="btn-group">
                                                     <!-- Button trigger modal -->
                                                     <button type="button" class="btn sbold green" data-toggle="modal"
-                                                            id="sample_editable_1_new" data-target="#myModal_autocomplete">
+                                                            id="sample_editable_1_new" data-target="#myModal">
                                                         <i class="fa fa-plus"></i> Novo
                                                     </button>
                                                 </div>
                                             </div>
 
-                                            <div id="myModal_autocomplete" class="modal fade" role="dialog" aria-hidden="true">
+                                            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content form">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                            <h4 class="modal-title" id="myModalLabel">Atribuir membros a {{ $group->name }}</h4>
+                                                        </div>
+
+                                                        {!! Form::open(['route' => ['group.addMembers', 'group' => $group],
+                                                                'class' => 'form-horizontal form-row-seperated', 'method' => 'POST']) !!}
+                                                            <div class="modal-body form">
+                                                                <div class="form-group">
+                                                                    <label class="col-sm-3 control-label">Membros</label>
+                                                                    <div class="col-sm-9">
+                                                                        <div class="input-group">
+                                                                            <span class="input-group-addon">
+                                                                                <i class="fa fa-user"></i>
+                                                                            </span>
+                                                                            <select id="select_members" class="form-control">
+                                                                                @foreach($members as $member)
+                                                                                    <option value="{{ $member->id }}">{{ $member->name }} {{$member->lastName}}</option>
+                                                                                @endforeach
+                                                                            </select>
+
+                                                                        </div>
+                                                                        <p class="help-block"> Escolha um membro </p>
+
+                                                                        <button type="button" id="addMember" class="btn btn-primary pull-right">Incluir</button>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label class="col-sm-3 control-label">Membros Escolhidos</label>
+                                                                    <div class="col-sm-9">
+                                                                        <div class="input-group">
+                                                                            <div class="list-group" id="select_name">
+                                                                                <a href="javascript:;" type="button" class="list-group-item" id="member-0">Cras justo odio</a>
+                                                                            </div>
+
+                                                                            <!--<input type="text" id="typeahead_example_modal_2" name="typeahead_example_modal_2" class="form-control" />-->
+                                                                        </div>
+                                                                        <p class="help-block"> Para excluir selecione um membro e clique no botão abaixo </code>
+                                                                            
+                                                                        </p><br> <button type="button" id="deleteMember" class="btn btn-danger btn-sm">Excluir</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                                                            <button type="submit" class="btn btn-primary">Salvar</button>
+                                                        </div>
+                                                        {!! Form::close() !!}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!--<div id="myModal_autocomplete" class="modal fade" role="dialog" aria-hidden="true">
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
                                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                                                            <h4 class="modal-title">Radio Switch in Modal</h4>
+                                                            <h4 class="modal-title">Atribuir membros a </h4>
                                                         </div>
                                                         <div class="modal-body form">
                                                             <form action="#" class="form-horizontal form-row-seperated">
                                                                 <div class="form-group">
-                                                                    <label class="col-sm-4 control-label">Basic Auto Complete</label>
+                                                                    <label class="col-sm-4 control-label">Membros</label>
                                                                     <div class="col-sm-8">
                                                                         <div class="input-group">
                                                                             <span class="input-group-addon">
                                                                                 <i class="fa fa-user"></i>
                                                                             </span>
                                                                             <input type="text" id="typeahead_example_modal_1" name="typeahead_example_modal_1" class="form-control" /> </div>
-                                                                        <p class="help-block"> E.g: metronic, keenthemes. </p>
+                                                                        <p class="help-block"> Digite o nome do membro </p>
+
+
+
+                                                                        <button type="button" id="addMember" class="btn btn-primary pull-right">Incluir</button>
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group">
-                                                                    <label class="col-sm-4 control-label">Country Auto Complete</label>
-                                                                    <div class="col-sm-8">
+                                                                    <label class="col-sm-3 control-label">Membros Escolhidos</label>
+                                                                    <div class="col-sm-9">
                                                                         <div class="input-group">
                                                                             <span class="input-group-addon">
                                                                                 <i class="fa fa-search"></i>
                                                                             </span>
-                                                                            <input type="text" id="typeahead_example_modal_2" name="typeahead_example_modal_2" class="form-control" /> </div>
-                                                                        <p class="help-block"> E.g: USA, Malaysia. Prefetch from JSON source</code>
-                                                                        </p>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label class="col-sm-4 control-label">Custom Template</label>
-                                                                    <div class="col-sm-8">
-                                                                        <div class="input-group">
-                                                                            <span class="input-group-addon">
-                                                                                <i class="fa fa-cogs"></i>
-                                                                            </span>
-                                                                            <input type="text" id="typeahead_example_modal_3" name="typeahead_example_modal_3" class="form-control" /> </div>
-                                                                        <p class="help-block"> Uses a precompiled template to customize look of suggestion.</code>
-                                                                        </p>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="form-group last">
-                                                                    <label class="col-sm-4 control-label">Multiple Sections with Headers</label>
-                                                                    <div class="col-sm-8">
-                                                                        <div class="input-group">
-                                                                            <span class="input-group-addon">
-                                                                                <i class="fa fa-check"></i>
-                                                                            </span>
-                                                                            <input type="text" id="typeahead_example_modal_4" name="typeahead_example_modal_4" class="form-control" /> </div>
-                                                                        <p class="help-block"> Two datasets that are prefetched, stored, and searched on the client. Highlighting is enabled. </p>
+                                                                            <select name="name[]" multiple id="select_name" class="form-control">
+
+                                                                            </select>
+
+                                                                            <!--<input type="text" id="typeahead_example_modal_2" name="typeahead_example_modal_2" class="form-control" />-->
+                                                                        <!--</div>
+                                                                        <p class="help-block"> Selecione os membros do grupo </code>
+                                                                        </p> <button type="button" id="deleteMember" class="btn btn-danger btn-sm">Excluir</button>
                                                                     </div>
                                                                 </div>
                                                             </form>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="button" class="btn grey-salsa btn-outline" data-dismiss="modal">Close</button>
+                                                            <button type="button" class="btn grey-salsa btn-outline" data-dismiss="modal">Fechar</button>
                                                             <button type="button" class="btn green">
-                                                                <i class="fa fa-check"></i> Save changes</button>
+                                                                <i class="fa fa-check"></i> Salvar</button>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div>-->
 
                                             <div class="col-md-6">
                                                 <div class="btn-group pull-right">
@@ -1137,11 +1178,6 @@ License: You must have a valid license purchased only from themeforest(the above
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
 <script src="../../assets/pages/scripts/table-datatables-managed.min.js" type="text/javascript"></script>
 <!-- END PAGE LEVEL SCRIPTS -->
-<!-- BEGIN THEME LAYOUT SCRIPTS -->
-<script src="../../assets/layouts/layout3/scripts/layout.min.js" type="text/javascript"></script>
-<script src="../../assets/layouts/layout3/scripts/demo.min.js" type="text/javascript"></script>
-<script src="../../assets/layouts/global/scripts/quick-sidebar.min.js" type="text/javascript"></script>
-<!-- END THEME LAYOUT SCRIPTS -->
 
 <script src="../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js" type="text/javascript"></script>
 <script src="../../assets/global/plugins/jquery.sparkline.min.js" type="text/javascript"></script>
@@ -1150,10 +1186,6 @@ License: You must have a valid license purchased only from themeforest(the above
 
 <script src="../../assets/pages/scripts/profile.min.js" type="text/javascript"></script>
 <script src="../../assets/pages/scripts/timeline.min.js" type="text/javascript"></script>
-
-<script src="../../assets/global/plugins/typeahead/handlebars.min.js" type="text/javascript"></script>
-<script src="../../assets/global/plugins/typeahead/typeahead.bundle.min.js" type="text/javascript"></script>
-<script src="../../assets/pages/scripts/components-typeahead.min.js" type="text/javascript"></script>
 
 <!-- END PAGE LEVEL SCRIPTS -->
 <script>
