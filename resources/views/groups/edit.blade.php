@@ -222,7 +222,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                                                                 <div class="portlet-body">
                                                                                     <div class="table-scrollable">
-                                                                                        <table class="table table-hover" id="table_name">
+                                                                                        <table class="table table-hover table-striped" id="table_name">
                                                                                             <thead>
                                                                                             <tr>
                                                                                                 <th> # </th>
@@ -1201,6 +1201,7 @@ License: You must have a valid license purchased only from themeforest(the above
 <script src="../../assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
 <script src="../../assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
 <script src="../../assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
+<script src="../../js/script.js" type="text/javascript"></script>
 <!-- END CORE PLUGINS -->
 <!-- BEGIN PAGE LEVEL PLUGINS -->
 <script src="../../assets/global/plugins/bootstrap-select/js/bootstrap-select.min.js" type="text/javascript"></script>
@@ -1237,7 +1238,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
 <script src="../../assets/pages/scripts/components-bootstrap-select.min.js" type="text/javascript"></script>
 
-<script src="../../js/script.js" type="text/javascript"></script>
+
 
 <!-- END PAGE LEVEL SCRIPTS -->
 <script>

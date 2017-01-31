@@ -1,17 +1,11 @@
 $(function () {
 
+
     var selectedMember = '';
 
-    $("#select_name").change(function () {
-        $("#select_name button:selected").each(function () {
-            selectedMember = $( this ).id;
-        })
-    }).trigger('change');
-
-    $("#select_name a").click(function () {
-        selectedMember = $( this ).text();
-        alert(selectedMember);
-    });
+    //$('button').click(function (){
+      // alert('botao');
+    //});
 
     $("#addMember").click(function () {
 
@@ -20,17 +14,22 @@ $(function () {
 
 
         $("#table_name tbody").append(
-              "<tr>"+
+              "<tr id=tr-"+member_id+">"+
                 "<td>"+member_id+"</td>"+
                 "<td>"+member+"</td>"+
-                "<td><button type=button id=deleteMember class='btn btn-danger btn-sm'>Excluir</button></td>"+
+                "<td><button type=button id=deleteMember-"+member_id+" class='btn btn-danger btn-sm'>Excluir</button></td>"+
               "</tr>"
 
         );
     });//"<input hidden name=member-"+member_id+" value="+member_id+">"
 
-    $("#deleteMember").click(function () {
-        $("#select_name a[id=member-"+selectedMember+"]").remove();
+    $("#deleteMember-1").click(function () {
+
+        $("#tr-1").remove();
+    });
+
+    $("#deleteMember-1").on("click", function(){
+        alert('aqui');
     });
 
 
