@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Person;
 use App\Models\User;
-use App\Repositories\CountPersonRepository;
+use App\Repositories\CountRepository;
 use App\Repositories\DateRepository;
 use App\Repositories\FormatGoogleMaps;
 use App\Repositories\PersonRepository;
@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\DB;
 
 class PersonController extends Controller
 {
-    use DateRepository, CountPersonRepository, FormatGoogleMaps;
+    use DateRepository, CountRepository, FormatGoogleMaps;
     /**
      * @var PersonRepository
      */
@@ -51,7 +51,7 @@ class PersonController extends Controller
         }
 
         $countPerson[] = $this->countPerson();
-        $countGroups = $this->countGroups();
+        $countGroups[] = $this->countGroups();
 
         return view('people.index', compact('adults', 'countPerson', 'countGroups'));
     }
@@ -66,7 +66,7 @@ class PersonController extends Controller
         }
 
         $countPerson[] = $this->countPerson();
-        $countGroups = $this->countGroups();
+        $countGroups[] = $this->countGroups();
 
         return view('people.teenagers', compact('teen', 'countPerson', 'countGroups'));
     }
@@ -81,7 +81,7 @@ class PersonController extends Controller
         }
 
         $countPerson[] = $this->countPerson();
-        $countGroups = $this->countGroups();
+        $countGroups[] = $this->countGroups();
 
         return view('people.visitors', compact('visitors', 'countPerson', 'countGroups'));
     }
@@ -96,7 +96,7 @@ class PersonController extends Controller
         }
 
         $countPerson[] = $this->countPerson();
-        $countGroups = $this->countGroups();
+        $countGroups[] = $this->countGroups();
 
         return view('people.inactive', compact('inactive', 'countPerson', 'countGroups'));
     }
@@ -123,7 +123,7 @@ class PersonController extends Controller
 
         $countPerson[] = $this->countPerson();
 
-        $countGroups = $this->countGroups();
+        $countGroups[] = $this->countGroups();
 
         return view('people.create', compact('state', 'roles', 'countPerson', 'countGroups'));
     }
@@ -302,7 +302,7 @@ class PersonController extends Controller
 
         $countPerson[] = $this->countPerson();
 
-        $countGroups = $this->countGroups();
+        $countGroups[] = $this->countGroups();
 
         return view('people.edit', compact('person', 'state', 'location', 'roles', 'countPerson', 'countGroups'));
     }

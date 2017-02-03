@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\CountPersonRepository;
+use App\Repositories\CountRepository;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-    use CountPersonRepository;
+    use CountRepository;
 
     public function index()
     {
         $countPerson[] = $this->countPerson();
 
-        $countGroups = $this->countGroups();
+        $countGroups[] = $this->countGroups();
 
         return view('dashboard.index', compact('countPerson', 'countGroups'));
     }

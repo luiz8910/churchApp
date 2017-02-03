@@ -52,6 +52,8 @@ Route::group(["middleware" => "check.role:1"], function () {
     Route::delete('group/{group}', 'GroupController@destroy')->name('group.destroy');
 
     Route::post('groups/addMembers/{group}', 'GroupController@addMembers')->name('group.addMembers');
+
+    Route::delete('deleteMemberGroup/{group}/{member}', 'GroupController@deleteMember')->name('group.deleteMember');
 });
 
 Auth::routes();

@@ -19,7 +19,6 @@ class CreateGroupsTable extends Migration
             $table->string('frequency');
             $table->string('sinceOf');
             $table->string('imgProfile')->nullable();
-            $table->integer('active');
             $table->integer('owner_id')->unsigned();
             $table->string('street')->nullable();
             $table->string('neighborhood')->nullable();

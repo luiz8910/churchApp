@@ -76,6 +76,13 @@ License: You must have a valid license purchased only from themeforest(the above
                         {{ Session::get('updateUser') }}
                     </div>
                 @endif
+
+                @if(Session::has('group.deleteMember'))
+                    <div class="alert alert-success alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        {{ Session::get('group.deleteMember') }}
+                    </div>
+                @endif
                 <div class="page-content-inner">
                     <div class="row">
                         <div class="col-md-12">
@@ -202,8 +209,8 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                                 <i class="fa fa-user"></i>
                                                                             </span>
                                                                             <select id="select_members" class="bs-select form-control" data-live-search="true" data-size="8">
-                                                                                @foreach($members as $member)
-                                                                                    <option value="{{ $member->id }}">{{ $member->name }} {{$member->lastName}}</option>
+                                                                                @foreach($people as $person)
+                                                                                    <option value="{{ $person->id }}">{{ $person->name }} {{ $person->lastName}}</option>
                                                                                 @endforeach
                                                                             </select>
 
@@ -222,12 +229,10 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                                                                 <div class="portlet-body">
                                                                                     <div class="table-scrollable">
-                                                                                        <table class="table table-hover table-striped" id="table_name">
+                                                                                        <table class="table table-hover table-striped table-bordered" id="table_name">
                                                                                             <thead>
                                                                                             <tr>
-                                                                                                <th> # </th>
-                                                                                                <th> Nome </th>
-                                                                                                <th> </th>
+                                                                                                <th> Nome do Membro </th>
                                                                                             </tr>
                                                                                             </thead>
                                                                                             <tbody>
@@ -241,9 +246,15 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                                                             <!--<input type="text" id="typeahead_example_modal_2" name="typeahead_example_modal_2" class="form-control" />-->
                                                                         </div>
-                                                                        <p class="help-block"> Para excluir selecione um membro e clique no botão abaixo </code>
-                                                                            
-                                                                        </p><br>
+                                                                        <p class="help-block"> Para excluir, clique no nome do membro </code>
+                                                                        </p>
+
+                                                                        <br>
+
+                                                                        <div id="hidden-input">
+
+                                                                        </div>
+
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -340,11 +351,11 @@ License: You must have a valid license purchased only from themeforest(the above
                                             <th> Email </th>
                                             <th> Telefone </th>
                                             <th> Celular </th>
-                                            <th> Status </th>
+                                            <th> Opções </th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        @foreach($people as $person)
+                                        @foreach($members as $person)
                                             <tr class="odd gradeX">
                                                 <td>
                                                     <input type="checkbox" class="checkboxes" value="1" /> </td>
@@ -358,8 +369,19 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 </td>
                                                 <td> {{ $person->tel }} </td>
                                                 <td class="center"> {{ $person->cel }} </td>
-                                                <td>
-                                                    <span class="label label-sm label-success"> Aprovado </span>
+                                                    <!--<span class="label label-sm label-success"> Aprovado </span>-->
+
+                                                <?php $deleteForm = "delete-".$person->id; ?>
+                                                <td id="{{ $deleteForm }}">
+                                                    {!! Form::open(['route' => ['group.deleteMember', 'group' => $group->id, 'member' => $person->id],
+                                                            'method' => 'DELETE', 'id' => 'form-'.$deleteForm]) !!}
+
+                                                    <a href="" class="btn btn-danger btn-sm" title="Excluir membro do grupo"
+                                                       onclick='event.preventDefault();document.getElementById("form-{{ $deleteForm }}").submit();'>
+                                                        <i class="fa fa-close"></i>
+                                                    </a>
+
+                                                    {!! Form::close() !!}
                                                 </td>
                                             </tr>
                                         @endforeach

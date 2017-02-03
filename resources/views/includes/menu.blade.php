@@ -55,7 +55,19 @@
                         <li>
                             <a href="{{ route('group.index') }}" class="nav-link">
                                 <i class="icon-user"></i> Todos
-                                <span class="badge badge-success">{{ $countGroups }}</span>
+                                <span class="badge badge-success">{{ $countGroups[0][0] }}</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('group.index') }}" class="nav-link">
+                                <i class="icon-user"></i> Ativos
+                                <span class="badge badge-success">{{ $countGroups[0][1] }}</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('group.index') }}" class="nav-link">
+                                <i class="icon-user"></i> Inativos
+                                <span class="badge badge-success">{{ $countGroups[0][2] }}</span>
                             </a>
                         </li>
                     </ul>

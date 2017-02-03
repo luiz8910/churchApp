@@ -130,7 +130,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <th> Nome </th>
                                                 <th> Frequência </th>
                                                 <th> Inicio em </th>
-                                                <th> Membros </th>
+                                                <th> Quantidade </th>
                                                 @if(Auth::getUser()->person->role_id == 1)
                                                     <th> Editar </th>
                                                     <th> Excluir </th>
@@ -148,7 +148,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         <td> {{ $item->name }}</td>
                                                         <td> {{ $item->frequency }} </td>
                                                         <td> {{ $item->sinceOf }} </td>
-                                                        <td> {{ $countMembers[$i] }} participantes</td>
+                                                        <td> <span class="badge badge-success">{{ $countMembers[$i] }}</span></td>
 
                                                         @if(Auth::getUser()->person->role_id == 1)
 

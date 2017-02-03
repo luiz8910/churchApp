@@ -9,9 +9,10 @@
 namespace App\Repositories;
 
 
+use App\Models\Group;
 use Illuminate\Support\Facades\DB;
 
-trait CountPersonRepository
+trait CountRepository
 {
     public function countPerson()
     {
@@ -44,6 +45,18 @@ trait CountPersonRepository
 
     public function countGroups()
     {
-        return count(DB::table('groups')->get());
+        $all = count(Group::withTrashed()->get());
+
+        $active = count(DB::table('groups')
+                    ->where('deleted_at', '<>', null)->get());
+
+        $inactive = count(DB::table('groups')
+                    ->where('deleted_at', null)->get());
+
+        $qtde[] = $all;
+        $qtde[] = $active;
+        $qtde[] = $inactive;
+
+        return $qtde;
     }
 }

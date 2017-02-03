@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserCreateRequest;
 use App\Http\Requests\UserUpdateRequest;
-use App\Repositories\CountPersonRepository;
+use App\Repositories\CountRepository;
 use App\Repositories\DateRepository;
 use App\Repositories\RoleRepository;
 use App\Repositories\StateRepository;
@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\DB;
 
 class UsersController extends Controller
 {
-    use DateRepository, CountPersonRepository;
+    use DateRepository, CountRepository;
     /**
      * @var UserRepository
      */
@@ -58,7 +58,7 @@ class UsersController extends Controller
 
         $roles = $this->roleRepository->all();
 
-        $countGroups = $this->countGroups();
+        $countGroups[] = $this->countGroups();
 
         return view('users.myAccount', compact('state', 'dateBirth', 'changePass', 'countPerson', 'roles', 'countGroups'));
     }

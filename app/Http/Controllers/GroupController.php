@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Group;
 use App\Models\Person;
-use App\Repositories\CountPersonRepository;
+use App\Repositories\CountRepository;
 use App\Repositories\DateRepository;
 use App\Repositories\FormatGoogleMaps;
 use App\Repositories\GroupRepository;
@@ -15,7 +16,7 @@ use Illuminate\Support\Facades\DB;
 
 class GroupController extends Controller
 {
-    use DateRepository, CountPersonRepository, FormatGoogleMaps;
+    use DateRepository, CountRepository, FormatGoogleMaps;
     /**
      * @var GroupRepository
      */
@@ -49,7 +50,7 @@ class GroupController extends Controller
      */
     public function index()
     {
-        $groups = $this->repository->all();
+        $groups = Group::withTrashed()->get();
 
         foreach ($groups as $group)
         {
@@ -59,7 +60,7 @@ class GroupController extends Controller
 
         $countPerson[] = $this->countPerson();
 
-        $countGroups = $this->countGroups();
+        $countGroups[] = $this->countGroups();
 
         return view('groups.index', compact('groups', 'countPerson', 'countMembers', 'countGroups'));
     }
@@ -73,7 +74,7 @@ class GroupController extends Controller
     {
         $countPerson[] = $this->countPerson();
 
-        $countGroups = $this->countGroups();
+        $countGroups[] = $this->countGroups();
 
         $state = $this->stateRepository->all();
 
@@ -97,8 +98,6 @@ class GroupController extends Controller
         $data['sinceOf'] = $this->formatDateBD($data['sinceOf']);
 
         $data['owner_id'] = \Auth::getUser()->id;
-
-        $data['active'] = 1;
 
         $id = $this->repository->create($data)->id;
 
@@ -132,8 +131,9 @@ class GroupController extends Controller
 
         $countPerson[] = $this->countPerson();
 
-        $countGroups = $this->countGroups();
+        $countGroups[] = $this->countGroups();
 
+        //endereço formatado para api do google maps
         $location = $this->formatGoogleMaps($group);
 
         $people = $group->people->all();
@@ -155,13 +155,23 @@ class GroupController extends Controller
 
         $countPerson[] = $this->countPerson();
 
-        $countGroups = $this->countGroups();
+        $countGroups[] = $this->countGroups();
 
+        //endereço formatado para api do google maps
         $location = $this->formatGoogleMaps($group);
 
-        $people = $group->people->all();
+        //listagem de todos os membros do grupo
+        $members = $group->people->all();
 
-        $members = $this->personRepository->findWhereNotIn('role_id', ['3']);
+        $arr = [];
+
+        foreach ($members as $item)
+        {
+            $arr[] = $item->id;
+        }
+
+        //Listagem de todas as pessoas que não pertencem ao grupo
+        $people = $this->personRepository->findWhereNotIn('id', $arr);
 
         $roles = $this->roleRepository->all();
 
@@ -187,8 +197,6 @@ class GroupController extends Controller
 
         $data['sinceOf'] = $this->formatDateBD($data['sinceOf']);
 
-        $data['active'] = 1;
-
         $this->repository->update($data, $id);
 
         if ($file){
@@ -206,11 +214,40 @@ class GroupController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $this->repository->delete($id);
+
+        return redirect()->route('group.index');
     }
 
     public function addMembers(Request $request, $group)
     {
-        dd($request->all());
+        $arr = [];
+        $i = 0;
+
+        $gr = $this->repository->find($group);
+
+        foreach ($request->all() as $item) {
+            $arr[] = $item;
+
+            if($i > 0){
+                $gr->people()->attach($arr[$i]);
+            }
+
+            $i++;
+        }
+
+
+        return redirect()->route('group.edit', ['id' => $group]);
+    }
+
+    public function deleteMember($group, $member)
+    {
+        $gr = $this->repository->find($group);
+
+        $gr->people()->detach($member);
+
+        \Session::flash('group.deleteMember', 'Usuário excluido com sucesso');
+
+        return redirect()->route('group.edit', ['id' => $group]);
     }
 }

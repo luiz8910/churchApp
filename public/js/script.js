@@ -1,36 +1,78 @@
 $(function () {
 
+    member_id = '';
+    member = '';
+    members = [];
 
-    var selectedMember = '';
-
-    //$('button').click(function (){
-      // alert('botao');
-    //});
 
     $("#addMember").click(function () {
 
-        var member_id = $("#select_members").val();
-        var member = $("#select_members option:selected").text();
+        member_id = $("#select_members").val();
+        member = $("#select_members option:selected").text();
+
+        if(members.length > 0){
+            console.log(members.length);
+
+            var result = true;
+
+            for(var i = 0; i < members.length; i++)
+            {
+                if(members[i] == member_id)
+                {
+                    result = false;
+                }
+            }
 
 
-        $("#table_name tbody").append(
-              "<tr id=tr-"+member_id+">"+
-                "<td>"+member_id+"</td>"+
-                "<td>"+member+"</td>"+
-                "<td><button type=button id=deleteMember-"+member_id+" class='btn btn-danger btn-sm'>Excluir</button></td>"+
-              "</tr>"
+            if(result){
+                $("#table_name tbody").append("<tr id=tr-td-"+member_id+"></tr>");
 
-        );
-    });//"<input hidden name=member-"+member_id+" value="+member_id+">"
+                var $input = "<input hidden name=member-"+member_id+" id=memberInput-td-"+member_id+" value="+member_id+">";
 
-    $("#deleteMember-1").click(function () {
+                var tdDynamic = member;
+                var tdId = "td-"+member_id;
+                var $td = $("<td>", {
+                    "id" : tdId
+                }).html(tdDynamic).click(function () {
+                    $("#tr-"+this.id).remove();
+                    $("#memberInput-"+this.id).remove();
+                    var index = members.indexOf(member_id);
+                    members.splice(index, 1);
+                });
 
-        $("#tr-1").remove();
+                $("#tr-td-"+member_id).append($td);
+                $("#hidden-input").append($input);
+                members.push(member_id);
+            }
+        }
+
+        else{
+            $("#table_name tbody").append("<tr id=tr-td-"+member_id+"></tr>");
+
+            var $input = "<input hidden name=member-"+member_id+" id=memberInput-td-"+member_id+" value="+member_id+">";
+
+            var tdDynamic = member;
+            var tdId = "td-"+member_id;
+            var $td = $("<td>", {
+                "id" : tdId
+            }).html(tdDynamic).click(function () {
+                $("#tr-"+this.id).remove();
+                $("#memberInput-"+this.id).remove();
+                var index = members.indexOf(member_id);
+                members.splice(index, 1);
+            });
+
+            $("#tr-td-"+member_id).append($td);
+            $("#hidden-input").append($input);
+            members.push(member_id);
+        }
+
+
+
     });
 
-    $("#deleteMember-1").on("click", function(){
-        alert('aqui');
-    });
+    $("#tr-td-"+member_id).find("td:first").trigger("click");
+
 
 
     function readURL(input) {
