@@ -147,7 +147,29 @@ License: You must have a valid license purchased only from themeforest(the above
                                             </div>
                                             <div class="portlet-body">
                                                 <div id="map" style="height: 304px; width: 100%;"></div>
+
                                                 <input type="hidden" value="{{ $location }}" id="location">
+
+                                                <?php $i = 0; ?>
+
+                                                @foreach($address as $location)
+                                                    <input type="hidden" value="{{ $location }}" id="location-{{ $i }}">
+                                                    <?php $i++; ?>
+                                                @endforeach
+
+                                                <input type="hidden" value="{{ $i }}" id="qtdeMember">
+
+                                                <input type="hidden" id="lat">
+                                                <input type="hidden" id="lng">
+
+                                                <input type="hidden" id="person-0" value="{{ $group->name }}">
+
+                                                <?php $i = 1; ?>
+                                                @foreach($members as $person)
+                                                    <input type="hidden" value="{{ $person->name }} {{ $person->lastName }}"
+                                                           id="person-{{ $i }}">
+                                                    <?php $i++; ?>
+                                                @endforeach
                                             </div>
                                         </div>
                                         <!-- END BASIC PORTLET-->
@@ -1264,13 +1286,23 @@ License: You must have a valid license purchased only from themeforest(the above
 
 <!-- END PAGE LEVEL SCRIPTS -->
 <script>
-    function initMap() {
-        //var infowindow = new google.maps.InfoWindow();
+    $.ajaxSetup({
+        async: false
+    });
+
+    function initMap()
+    {
+        groupMap();
+        addressMembers();
+    }
+
+    function groupMap() {
+
         var location = $('#location').val();
 
-        var script = 'https://maps.googleapis.com/maps/api/geocode/json?address='+location+'&key=AIzaSyCz22xAk7gDzvTEXjqjL8Goxu_q12Gt_KU';
+        var script = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + location + '&key=AIzaSyCz22xAk7gDzvTEXjqjL8Goxu_q12Gt_KU';
 
-        $.getJSON(script, function(json){
+        $.getJSON(script, function (json) {
             var lat = json.results[0].geometry.location.lat;
             var lng = json.results[0].geometry.location.lng;
 
@@ -1284,15 +1316,104 @@ License: You must have a valid license purchased only from themeforest(the above
 
         var uluru = {lat: lat, lng: lng};
         var map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 16,
+            zoom: 11,
             center: uluru
         });
+
         var marker = new google.maps.Marker({
             position: uluru,
             map: map
         });
+
+
+        localStorage.setItem('lat', '');
+        localStorage.setItem('lng', '');
+
+        $("#lat").text(lat);
+        $("#lng").text(lng);
     }
 
+    function addressMembers()
+    {
+        var locations = [];
+        var qtde = parseInt($("#qtdeMember").val());
+        var lat = parseFloat($("#lat").text());
+        var lng = parseFloat($("#lng").text());
+
+        locations.push(lat);
+        locations.push(lng);
+
+        for(var i = 0; i < qtde; i++)
+        {
+            var address = $("#location-"+i).val();
+
+            var script = 'https://maps.googleapis.com/maps/api/geocode/json?address='+address+'&key=AIzaSyCz22xAk7gDzvTEXjqjL8Goxu_q12Gt_KU';
+            //alert('script: ' + script);
+
+            $.getJSON(script, function(json){
+                var lat = json.results[0].geometry.location.lat;
+                var lng = json.results[0].geometry.location.lng;
+
+                localStorage.setItem('lat', lat);
+                localStorage.setItem('lng', lng);
+
+                //alert('lat: ' + localStorage.getItem('lat'));
+
+            });
+
+            locations.push((localStorage.getItem('lat')));
+            locations.push((localStorage.getItem('lng')));
+        }
+        //alert('locations: ' + locations);
+
+        setMarkers(locations);
+
+    }
+    
+    function setMarkers(locations)
+    {
+        var lat = parseFloat($("#lat").text());
+        var lng = parseFloat($("#lng").text());
+        var infowindow = new google.maps.InfoWindow();
+        var k = 0;
+
+        //alert('lat: ' + lat + ' lng: ' + lng);
+        var uluru = {lat: lat, lng: lng};
+
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 11,
+            center: uluru
+        });
+
+        for(var i = 0; i < locations.length; i++)
+        {
+            var position = {lat: parseFloat(locations[i]), lng: parseFloat(locations[i + 1])};
+            var person = [];
+
+
+            var marker = new google.maps.Marker({
+                position: position,
+                map: map
+            });
+
+            alert($("#person-"+k).val() + " " + k);
+            google.maps.event.addListener(marker, 'click', (function(marker, k) {
+                return function() {
+                    infowindow.setContent($("#person-"+k).val());
+                    infowindow.open(map, marker);
+                }
+            })(marker, k));
+
+            i++;
+            k++;
+        }
+    }
+
+    //-23.5142994
+    //-47.4623199
+
+    //-23.5365557
+    //-47.4129715
 
 </script>
 

@@ -209,7 +209,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <div class="col-md-6">
                                                     {!! Form::FormGroup('email', $errors) !!}
                                                     <label class="control-label">Email</label>
-                                                    <input type="email" placeholder="email@dominio.com" value="{{ $person->user->email }}" name="email" class="form-control" />
+                                                    <input type="email" placeholder="email@dominio.com" value="{{ $person->user->email or null }}" name="email" class="form-control" />
                                                     {!! Form::error('email', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
                                                 </div>

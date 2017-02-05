@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Group;
-use App\Models\Person;
 use App\Repositories\CountRepository;
 use App\Repositories\DateRepository;
 use App\Repositories\FormatGoogleMaps;
@@ -157,17 +156,24 @@ class GroupController extends Controller
 
         $countGroups[] = $this->countGroups();
 
-        //endereço formatado para api do google maps
+        //Endereço do grupo formatado para api do google maps
         $location = $this->formatGoogleMaps($group);
 
-        //listagem de todos os membros do grupo
+        //Listagem de todos os membros do grupo
         $members = $group->people->all();
+
+        $address = [];
 
         $arr = [];
 
         foreach ($members as $item)
         {
+            //Separando a id de cada membro do grupo num array
             $arr[] = $item->id;
+
+            //Separando o endereço formatado para a api do google maps
+            //de cada membro do grupo num array
+            $address[] = $this->formatGoogleMaps($item);
         }
 
         //Listagem de todas as pessoas que não pertencem ao grupo
@@ -179,7 +185,7 @@ class GroupController extends Controller
 
         $group->sinceOf = $this->formatDateView($group->sinceOf);
 
-        return view('groups.edit', compact('group', 'countPerson', 'countGroups', 'location', 'people', 'roles', 'state', 'members'));
+        return view('groups.edit', compact('group', 'countPerson', 'countGroups', 'address', 'location', 'people', 'roles', 'state', 'members'));
     }
 
     /**
