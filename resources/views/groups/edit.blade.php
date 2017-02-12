@@ -10,23 +10,28 @@ Like: www.facebook.com/keenthemes
 Purchase: http://themeforest.net/item/metronic-responsive-admin-dashboard-template/4021469?ref=keenthemes
 License: You must have a valid license purchased only from themeforest(the above link) in order to legally use the theme for your project.
 -->
-<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
-<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
 <!--[if !IE]><!-->
 <html lang="en">
 <!--<![endif]-->
 <!-- BEGIN HEAD -->
 
 <head>
-    @include('includes.head-edit')
+@include('includes.head-edit')
 
-        <!-- BEGIN PAGE LEVEL PLUGINS -->
-        <link href="../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet" type="text/css" />
-        <link href="../../assets/pages/css/profile.min.css" rel="stylesheet" type="text/css" />
-        <link href="../../assets/global/plugins/datatables/datatables.min.css" rel="stylesheet" type="text/css" />
-        <link href="../../assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css" rel="stylesheet" type="text/css" />
-        <link href="../../assets/global/plugins/typeahead/typeahead.css" rel="stylesheet" type="text/css" />
-        <link href="../../assets/global/plugins/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" type="text/css" />
+<!-- BEGIN PAGE LEVEL PLUGINS -->
+    <link href="../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet"
+          type="text/css"/>
+    <link href="../../assets/pages/css/profile.min.css" rel="stylesheet" type="text/css"/>
+    <link href="../../assets/global/plugins/datatables/datatables.min.css" rel="stylesheet" type="text/css"/>
+    <link href="../../assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css" rel="stylesheet"
+          type="text/css"/>
+    <link href="../../assets/global/plugins/typeahead/typeahead.css" rel="stylesheet" type="text/css"/>
+    <link href="../../assets/global/plugins/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet"
+          type="text/css"/>
     <!-- END PAGE LEVEL PLUGINS -->
 </head>
 <!-- END HEAD -->
@@ -72,14 +77,16 @@ License: You must have a valid license purchased only from themeforest(the above
                 <!-- BEGIN PAGE CONTENT INNER -->
                 @if(Session::has('updateUser'))
                     <div class="alert alert-success alert-dismissible" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
                         {{ Session::get('updateUser') }}
                     </div>
                 @endif
 
                 @if(Session::has('group.deleteMember'))
                     <div class="alert alert-success alert-dismissible" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
                         {{ Session::get('group.deleteMember') }}
                     </div>
                 @endif
@@ -134,13 +141,16 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <span class="caption-subject font-red bold uppercase">Local do Evento</span>
                                                 </div>
                                                 <div class="actions">
-                                                    <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
+                                                    <a class="btn btn-circle btn-icon-only btn-default"
+                                                       href="javascript:;">
                                                         <i class="icon-cloud-upload"></i>
                                                     </a>
-                                                    <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
+                                                    <a class="btn btn-circle btn-icon-only btn-default"
+                                                       href="javascript:;">
                                                         <i class="icon-wrench"></i>
                                                     </a>
-                                                    <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
+                                                    <a class="btn btn-circle btn-icon-only btn-default"
+                                                       href="javascript:;">
                                                         <i class="icon-trash"></i>
                                                     </a>
                                                 </div>
@@ -166,8 +176,11 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                                 <?php $i = 1; ?>
                                                 @foreach($members as $person)
-                                                    <input type="hidden" value="{{ $person->name }} {{ $person->lastName }}"
+                                                    <input type="hidden"
+                                                           value="{{ $person->name }} {{ $person->lastName }}"
                                                            id="person-{{ $i }}">
+                                                    <input type="hidden" value="{{ $person->role_id }}"
+                                                           id="role-{{ $i }}">
                                                     <?php $i++; ?>
                                                 @endforeach
                                             </div>
@@ -193,7 +206,8 @@ License: You must have a valid license purchased only from themeforest(the above
                                     <div class="actions">
                                         <div class="btn-group btn-group-devided" data-toggle="buttons">
                                             <label class="btn btn-transparent dark btn-outline btn-circle btn-sm active">
-                                                <input type="radio" name="options" class="toggle" id="option1">Actions</label>
+                                                <input type="radio" name="options" class="toggle"
+                                                       id="option1">Actions</label>
                                             <label class="btn btn-transparent dark btn-outline btn-circle btn-sm">
                                                 <input type="radio" name="options" class="toggle" id="option2">Settings</label>
                                         </div>
@@ -210,78 +224,175 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         <i class="fa fa-plus"></i> Novo
                                                     </button>
                                                 </div>
+                                                <div class="btn-group">
+                                                    <!-- Button trigger modal -->
+                                                    <button type="button" class="btn btn-primary" data-toggle="modal"
+                                                            id="sample_editable_1_new" data-target="#addMemberModal">
+                                                        <i class="fa fa-user"></i> Novo Membro
+                                                    </button>
+                                                </div>
                                             </div>
 
-                                            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+
+                                            <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+                                                 aria-labelledby="myModalLabel">
                                                 <div class="modal-dialog" role="document">
                                                     <div class="modal-content form">
                                                         <div class="modal-header">
-                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                            <h4 class="modal-title" id="myModalLabel">Atribuir membros a {{ $group->name }}</h4>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close"><span
+                                                                        aria-hidden="true">&times;</span></button>
+                                                            <h4 class="modal-title" id="myModalLabel">Atribuir membros
+                                                                a {{ $group->name }}</h4>
                                                         </div>
 
                                                         {!! Form::open(['route' => ['group.addMembers', 'group' => $group],
                                                                 'class' => 'form-horizontal form-row-seperated', 'method' => 'POST']) !!}
-                                                            <div class="modal-body form">
-                                                                <div class="form-group">
-                                                                    <label class="col-sm-3 control-label">Membros</label>
-                                                                    <div class="col-sm-9">
-                                                                        <div class="input-group">
+                                                        <div class="modal-body form">
+                                                            <div class="form-group">
+                                                                <label class="col-sm-3 control-label">Membros</label>
+                                                                <div class="col-sm-9">
+                                                                    <div class="input-group">
                                                                             <span class="input-group-addon">
                                                                                 <i class="fa fa-user"></i>
                                                                             </span>
-                                                                            <select id="select_members" class="bs-select form-control" data-live-search="true" data-size="8">
-                                                                                @foreach($people as $person)
-                                                                                    <option value="{{ $person->id }}">{{ $person->name }} {{ $person->lastName}}</option>
-                                                                                @endforeach
-                                                                            </select>
-
-                                                                        </div>
-                                                                        <p class="help-block"> Escolha um membro </p>
-
-                                                                        <button type="button" id="addMember" class="btn btn-primary pull-right">Incluir</button>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label class="col-sm-3 control-label">Membros Escolhidos</label>
-                                                                    <div class="col-sm-9">
-                                                                        <div class="input-group">
-                                                                            <!-- BEGIN SAMPLE TABLE PORTLET-->
-                                                                            <div class="portlet light ">
-
-                                                                                <div class="portlet-body">
-                                                                                    <div class="table-scrollable">
-                                                                                        <table class="table table-hover table-striped table-bordered" id="table_name">
-                                                                                            <thead>
-                                                                                            <tr>
-                                                                                                <th> Nome do Membro </th>
-                                                                                            </tr>
-                                                                                            </thead>
-                                                                                            <tbody>
-
-                                                                                            </tbody>
-                                                                                        </table>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                            <!-- END SAMPLE TABLE PORTLET-->
-
-                                                                            <!--<input type="text" id="typeahead_example_modal_2" name="typeahead_example_modal_2" class="form-control" />-->
-                                                                        </div>
-                                                                        <p class="help-block"> Para excluir, clique no nome do membro </code>
-                                                                        </p>
-
-                                                                        <br>
-
-                                                                        <div id="hidden-input">
-
-                                                                        </div>
+                                                                        <select id="select_members"
+                                                                                class="bs-select form-control"
+                                                                                data-live-search="true" data-size="8">
+                                                                            @foreach($people as $person)
+                                                                                <option value="{{ $person->id }}">{{ $person->name }} {{ $person->lastName}}</option>
+                                                                            @endforeach
+                                                                        </select>
 
                                                                     </div>
+                                                                    <p class="help-block"> Escolha um membro </p>
+
+                                                                    <button type="button" id="addMember"
+                                                                            class="btn btn-primary pull-right">Incluir
+                                                                    </button>
                                                                 </div>
                                                             </div>
+                                                            <div class="form-group">
+                                                                <label class="col-sm-3 control-label">Membros
+                                                                    Escolhidos</label>
+                                                                <div class="col-sm-9">
+                                                                    <div class="input-group">
+                                                                        <!-- BEGIN SAMPLE TABLE PORTLET-->
+                                                                        <div class="portlet light ">
+
+                                                                            <div class="portlet-body">
+                                                                                <div class="table-scrollable">
+                                                                                    <table class="table table-hover table-striped table-bordered"
+                                                                                           id="table_name">
+                                                                                        <thead>
+                                                                                        <tr>
+                                                                                            <th> Nome do Membro</th>
+                                                                                        </tr>
+                                                                                        </thead>
+                                                                                        <tbody>
+
+                                                                                        </tbody>
+                                                                                    </table>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!-- END SAMPLE TABLE PORTLET-->
+
+                                                                        <!--<input type="text" id="typeahead_example_modal_2" name="typeahead_example_modal_2" class="form-control" />-->
+                                                                    </div>
+                                                                    <p class="help-block"> Para excluir, clique no nome
+                                                                        do membro </code>
+                                                                    </p>
+
+                                                                    <br>
+
+                                                                    <div id="hidden-input">
+
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                         <div class="modal-footer">
-                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                                                            <button type="button" class="btn btn-default"
+                                                                    data-dismiss="modal">Fechar
+                                                            </button>
+                                                            <button type="submit" class="btn btn-primary">Salvar
+                                                            </button>
+                                                        </div>
+                                                        {!! Form::close() !!}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="addMemberModal" tabindex="-1" role="dialog"
+                                                 aria-labelledby="addMemberModalLabel">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close"><span
+                                                                        aria-hidden="true">&times;</span></button>
+                                                            <h4 class="modal-title" id="myModalLabel">Adicionar novo
+                                                                Membro ao Grupo</h4>
+                                                        </div>
+
+                                                        {!! Form::open(['route' => ['group.newMember', 'group' => $group],
+                                                                'class' => 'form-horizontal form-row-seperated', 'method' => 'POST']) !!}
+                                                        <div class="modal-body" style="margin-left: 10px;">
+                                                            <div class="row">
+                                                                <div class="col-md-9">
+                                                                    <div class="form-group">
+                                                                        <br>
+                                                                        <label>Nome</label>
+                                                                        <div class="input-group">
+                                                                            <span class="input-group-addon">
+                                                                                <i class="fa fa-user font-blue"></i>
+                                                                            </span>
+                                                                            <input type="text" name="name"
+                                                                                   class="form-control"
+                                                                                   placeholder="Entre com o nome aqui">
+                                                                        </div>
+                                                                    </div>
+
+
+                                                                    <div class="form-group">
+                                                                        <br>
+                                                                        <label>Email</label>
+                                                                        <div class="input-group">
+                                                                            <span class="input-group-addon">
+                                                                                <i class="fa fa-envelope font-blue"></i>
+                                                                            </span>
+                                                                            <input type="email" name="email"
+                                                                                   class="form-control"
+                                                                                   placeholder="Entre com o email aqui">
+                                                                        </div>
+                                                                    </div>
+
+
+                                                                    <div class="form-group">
+                                                                        <br>
+                                                                        <label>Telefone</label>
+                                                                        <div class="input-group">
+                                                                            <span class="input-group-addon">
+                                                                                <i class="fa fa-phone font-blue"></i>
+                                                                            </span>
+                                                                            <input type="text" name="tel"
+                                                                                   class="form-control"
+                                                                                   placeholder="Entre com o telefone aqui">
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+
+
+                                                        </div>
+
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-default"
+                                                                    data-dismiss="modal">Fechar</button>
                                                             <button type="submit" class="btn btn-primary">Salvar</button>
                                                         </div>
                                                         {!! Form::close() !!}
@@ -289,61 +400,10 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 </div>
                                             </div>
 
-                                            <!--<div id="myModal_autocomplete" class="modal fade" role="dialog" aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                                                            <h4 class="modal-title">Atribuir membros a </h4>
-                                                        </div>
-                                                        <div class="modal-body form">
-                                                            <form action="#" class="form-horizontal form-row-seperated">
-                                                                <div class="form-group">
-                                                                    <label class="col-sm-4 control-label">Membros</label>
-                                                                    <div class="col-sm-8">
-                                                                        <div class="input-group">
-                                                                            <span class="input-group-addon">
-                                                                                <i class="fa fa-user"></i>
-                                                                            </span>
-                                                                            <input type="text" id="typeahead_example_modal_1" name="typeahead_example_modal_1" class="form-control" /> </div>
-                                                                        <p class="help-block"> Digite o nome do membro </p>
-
-
-
-                                                                        <button type="button" id="addMember" class="btn btn-primary pull-right">Incluir</button>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label class="col-sm-3 control-label">Membros Escolhidos</label>
-                                                                    <div class="col-sm-9">
-                                                                        <div class="input-group">
-                                                                            <span class="input-group-addon">
-                                                                                <i class="fa fa-search"></i>
-                                                                            </span>
-                                                                            <select name="name[]" multiple id="select_name" class="form-control">
-
-                                                                            </select>
-
-                                                                            <!--<input type="text" id="typeahead_example_modal_2" name="typeahead_example_modal_2" class="form-control" />-->
-                                                                        <!--</div>
-                                                                        <p class="help-block"> Selecione os membros do grupo </code>
-                                                                        </p> <button type="button" id="deleteMember" class="btn btn-danger btn-sm">Excluir</button>
-                                                                    </div>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn grey-salsa btn-outline" data-dismiss="modal">Fechar</button>
-                                                            <button type="button" class="btn green">
-                                                                <i class="fa fa-check"></i> Salvar</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>-->
-
                                             <div class="col-md-6">
                                                 <div class="btn-group pull-right">
-                                                    <button class="btn green  btn-outline dropdown-toggle" data-toggle="dropdown">Opções
+                                                    <button class="btn green  btn-outline dropdown-toggle"
+                                                            data-toggle="dropdown">Opções
                                                         <i class="fa fa-angle-down"></i>
                                                     </button>
                                                     <ul class="dropdown-menu pull-right">
@@ -364,25 +424,27 @@ License: You must have a valid license purchased only from themeforest(the above
                                             </div>
                                         </div>
                                     </div>
-                                    <table class="table table-striped table-bordered table-hover table-checkable order-column" id="sample_1">
+                                    <table class="table table-striped table-bordered table-hover table-checkable order-column"
+                                           id="sample_1">
                                         <thead>
                                         <tr>
                                             <th>
-                                                <input type="checkbox" class="group-checkable" data-set="#sample_1 .checkboxes" /> </th>
-                                            <th> Nome </th>
-                                            <th> Email </th>
-                                            <th> Telefone </th>
-                                            <th> Celular </th>
-                                            <th> Opções </th>
+                                                <input type="checkbox" class="group-checkable"
+                                                       data-set="#sample_1 .checkboxes"/></th>
+                                            <th> Nome</th>
+                                            <th> Email</th>
+                                            <th> Telefone</th>
+                                            <th> Celular</th>
+                                            <th> Opções</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         @foreach($members as $person)
                                             <tr class="odd gradeX">
                                                 <td>
-                                                    <input type="checkbox" class="checkboxes" value="1" /> </td>
+                                                    <input type="checkbox" class="checkboxes" value="1"/></td>
                                                 <td>
-                                                    <a href="{{ route('person.edit', ['person' => $person->id]) }}" >
+                                                    <a href="{{ route('person.edit', ['person' => $person->id]) }}">
                                                         {{ $person->name }} {{ $person->lastName }}
                                                     </a>
                                                 </td>
@@ -391,14 +453,15 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 </td>
                                                 <td> {{ $person->tel }} </td>
                                                 <td class="center"> {{ $person->cel }} </td>
-                                                    <!--<span class="label label-sm label-success"> Aprovado </span>-->
+                                                <!--<span class="label label-sm label-success"> Aprovado </span>-->
 
-                                                <?php $deleteForm = "delete-".$person->id; ?>
+                                                <?php $deleteForm = "delete-" . $person->id; ?>
                                                 <td id="{{ $deleteForm }}">
                                                     {!! Form::open(['route' => ['group.deleteMember', 'group' => $group->id, 'member' => $person->id],
                                                             'method' => 'DELETE', 'id' => 'form-'.$deleteForm]) !!}
 
-                                                    <a href="" class="btn btn-danger btn-sm" title="Excluir membro do grupo"
+                                                    <a href="" class="btn btn-danger btn-sm"
+                                                       title="Excluir membro do grupo"
                                                        onclick='event.preventDefault();document.getElementById("form-{{ $deleteForm }}").submit();'>
                                                         <i class="fa fa-close"></i>
                                                     </a>
@@ -426,164 +489,174 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                 </div>
                                 <div class="portlet-body">
-                                            {!! Form::open(['route' => ['group.update', 'group' => $group->id], 'method' => 'PUT', 'class' => 'repeater', 'enctype' => 'multipart/form-data', 'role' => 'form']) !!}
-                                            <div class="form-body">
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <br>
-                                                            <label>Nome</label>
-                                                            <div class="input-group">
+                                    {!! Form::open(['route' => ['group.update', 'group' => $group->id], 'method' => 'PUT', 'class' => 'repeater', 'enctype' => 'multipart/form-data', 'role' => 'form']) !!}
+                                    <div class="form-body">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <br>
+                                                    <label>Nome</label>
+                                                    <div class="input-group">
                                                             <span class="input-group-addon">
                                                                 <i class="fa fa-user font-blue"></i>
                                                             </span>
-                                                                <input type="text" name="name" class="form-control"
-                                                                      value="{{ $group->name }}" placeholder="Grupo de Jovens">
-                                                            </div>
-                                                        </div>
+                                                        <input type="text" name="name" class="form-control"
+                                                               value="{{ $group->name }}" placeholder="Grupo de Jovens">
                                                     </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group"><br>
-                                                            <label>Frequência</label>
-                                                            <div class="input-icon input-icon-sm">
-                                                                <i class="fa fa-briefcase"></i>
-                                                                <select class="form-control" name="frequency">
-                                                                    <option value="">Selecione</option>
-                                                                    <option value="Diário" @if($group->frequency == 'Diário') selected @endif >
-                                                                        Diário
-                                                                    </option>
-                                                                    <option value="Semanal" @if($group->frequency == 'Semanal') selected @endif >
-                                                                        Semanal
-                                                                    </option>
-                                                                    <option value="Quinzenal" @if($group->frequency == 'Quinzenal') selected @endif >
-                                                                        Quinzenal
-                                                                    </option>
-                                                                    <option value="Mensal" @if($group->frequency == 'Mensal') selected @endif >
-                                                                        Mensal
-                                                                    </option>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group"><br>
+                                                    <label>Frequência</label>
+                                                    <div class="input-icon input-icon-sm">
+                                                        <i class="fa fa-briefcase"></i>
+                                                        <select class="form-control" name="frequency">
+                                                            <option value="">Selecione</option>
+                                                            <option value="Diário"
+                                                                    @if($group->frequency == 'Diário') selected @endif >
+                                                                Diário
+                                                            </option>
+                                                            <option value="Semanal"
+                                                                    @if($group->frequency == 'Semanal') selected @endif >
+                                                                Semanal
+                                                            </option>
+                                                            <option value="Quinzenal"
+                                                                    @if($group->frequency == 'Quinzenal') selected @endif >
+                                                                Quinzenal
+                                                            </option>
+                                                            <option value="Mensal"
+                                                                    @if($group->frequency == 'Mensal') selected @endif >
+                                                                Mensal
+                                                            </option>
+                                                        </select>
                                                     </div>
                                                 </div>
 
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label>Data de Criação</label>
-                                                            <div class="input-group">
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Data de Criação</label>
+                                                    <div class="input-group">
                                                             <span class="input-group-addon">
                                                                 <i class="fa fa-calendar font-blue"></i>
                                                             </span>
-                                                                <input type="text" class="form-control" name="sinceOf"
-                                                                       value="{{ $group->sinceOf }}" placeholder="dd/mm/aaaa">
-                                                            </div>
-
-                                                        </div>
+                                                        <input type="text" class="form-control" name="sinceOf"
+                                                               value="{{ $group->sinceOf }}" placeholder="dd/mm/aaaa">
                                                     </div>
+
                                                 </div>
+                                            </div>
+                                        </div>
 
 
-                                                <h3>Endereço</h3>
+                                        <h3>Endereço</h3>
 
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label>CEP</label>
-                                                            <div class="input-group">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>CEP</label>
+                                                    <div class="input-group">
                                                         <span class="input-group-addon">
                                                             <i class="fa fa-location-arrow font-purple"></i>
                                                         </span>
-                                                                <input type="text" class="form-control" name="zipCode"
-                                                                       value="{{ $group->zipCode }}" placeholder="XXXXX-XXX">
-                                                            </div>
-                                                        </div>
+                                                        <input type="text" class="form-control" name="zipCode"
+                                                               value="{{ $group->zipCode }}" placeholder="XXXXX-XXX">
                                                     </div>
                                                 </div>
+                                            </div>
+                                        </div>
 
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label>Logradouro</label>
-                                                            <div class="input-group">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Logradouro</label>
+                                                    <div class="input-group">
                                                     <span class="input-group-addon">
                                                         <i class="fa fa-home font-purple"></i>
                                                     </span>
-                                                                <input class="form-control" name="street" type="text"
-                                                                       value="{{ $group->street }}" placeholder="Av. Antonio Carlos Comitre, 650">
-                                                            </div>
-                                                        </div>
+                                                        <input class="form-control" name="street" type="text"
+                                                               value="{{ $group->street }}"
+                                                               placeholder="Av. Antonio Carlos Comitre, 650">
                                                     </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label>Bairro</label>
-                                                            <div class="input-group">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Bairro</label>
+                                                    <div class="input-group">
                                                     <span class="input-group-addon">
                                                         <i class="fa fa-home font-purple"></i>
                                                     </span>
-                                                                <input class="form-control" name="neighborhood" type="text"
-                                                                       value="{{ $group->neighborhood }}" placeholder="Parque do Dolly">
-                                                            </div>
-                                                        </div>
+                                                        <input class="form-control" name="neighborhood" type="text"
+                                                               value="{{ $group->neighborhood }}"
+                                                               placeholder="Parque do Dolly">
                                                     </div>
                                                 </div>
+                                            </div>
+                                        </div>
 
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label>Cidade</label>
-                                                            <div class="input-group">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Cidade</label>
+                                                    <div class="input-group">
                                                     <span class="input-group-addon">
                                                         <i class="fa fa-building font-purple"></i>
                                                     </span>
-                                                                <input class="form-control" name="city" type="text"
-                                                                       value="{{ $group->city }}" placeholder="Sorocaba">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label>Estado</label>
-                                                            <select name="state" class="form-control">
-                                                                <option value="">Selecione</option>
-                                                                @foreach($state as $item)
-                                                                    <option value="{{ $item->initials }}" @if($item->initials == $group->state) selected @endif >
-                                                                        {{ $item->state }}
-                                                                    </option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
+                                                        <input class="form-control" name="city" type="text"
+                                                               value="{{ $group->city }}" placeholder="Sorocaba">
                                                     </div>
                                                 </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Estado</label>
+                                                    <select name="state" class="form-control">
+                                                        <option value="">Selecione</option>
+                                                        @foreach($state as $item)
+                                                            <option value="{{ $item->initials }}"
+                                                                    @if($item->initials == $group->state) selected @endif >
+                                                                {{ $item->state }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
 
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <div class="fileinput fileinput-new" data-provides="fileinput">
-                                                                <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
-                                                                    <img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=foto+do+perfil" alt="" /> </div>
-                                                                <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"> </div>
-                                                                <div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <div class="fileinput fileinput-new" data-provides="fileinput">
+                                                        <div class="fileinput-new thumbnail"
+                                                             style="width: 200px; height: 150px;">
+                                                            <img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=foto+do+perfil"
+                                                                 alt=""/></div>
+                                                        <div class="fileinput-preview fileinput-exists thumbnail"
+                                                             style="max-width: 200px; max-height: 150px;"></div>
+                                                        <div>
                                                                 <span class="btn default btn-file">
                                                                     <span class="fileinput-new"> Escolher Imagem </span>
                                                                     <span class="fileinput-exists"> Alterar </span>
                                                                     <input type="file" name="img"> </span>
-                                                                    <a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Remover </a>
-                                                                </div>
-                                                            </div>
+                                                            <a href="javascript:;" class="btn default fileinput-exists"
+                                                               data-dismiss="fileinput"> Remover </a>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
+                                        </div>
+                                    </div>
 
 
-                                                <div class="margiv-top-10">
-                                                    {!! Form::submit('Salvar', ['class' => 'btn green']) !!}
-                                                    <a href="javascript:;" class="btn default"> Cancelar </a>
-                                                </div>
-                                            {!! Form::close() !!}
-
+                                    <div class="margiv-top-10">
+                                        {!! Form::submit('Salvar', ['class' => 'btn green']) !!}
+                                        <a href="javascript:;" class="btn default"> Cancelar </a>
+                                    </div>
+                                    {!! Form::close() !!}
 
 
                                 </div>
@@ -642,7 +715,8 @@ License: You must have a valid license purchased only from themeforest(the above
             </ul>
             <div class="tab-content">
                 <div class="tab-pane active page-quick-sidebar-chat" id="quick_sidebar_tab_1">
-                    <div class="page-quick-sidebar-chat-users" data-rail-color="#ddd" data-wrapper-class="page-quick-sidebar-list">
+                    <div class="page-quick-sidebar-chat-users" data-rail-color="#ddd"
+                         data-wrapper-class="page-quick-sidebar-list">
                         <h3 class="list-heading">Staff</h3>
                         <ul class="media-list list-items">
                             <li class="media">
@@ -652,14 +726,14 @@ License: You must have a valid license purchased only from themeforest(the above
                                 <img class="media-object" src="../assets/layouts/layout/img/avatar3.jpg" alt="...">
                                 <div class="media-body">
                                     <h4 class="media-heading">Bob Nilson</h4>
-                                    <div class="media-heading-sub"> Project Manager </div>
+                                    <div class="media-heading-sub"> Project Manager</div>
                                 </div>
                             </li>
                             <li class="media">
                                 <img class="media-object" src="../assets/layouts/layout/img/avatar1.jpg" alt="...">
                                 <div class="media-body">
                                     <h4 class="media-heading">Nick Larson</h4>
-                                    <div class="media-heading-sub"> Art Director </div>
+                                    <div class="media-heading-sub"> Art Director</div>
                                 </div>
                             </li>
                             <li class="media">
@@ -669,14 +743,14 @@ License: You must have a valid license purchased only from themeforest(the above
                                 <img class="media-object" src="../assets/layouts/layout/img/avatar4.jpg" alt="...">
                                 <div class="media-body">
                                     <h4 class="media-heading">Deon Hubert</h4>
-                                    <div class="media-heading-sub"> CTO </div>
+                                    <div class="media-heading-sub"> CTO</div>
                                 </div>
                             </li>
                             <li class="media">
                                 <img class="media-object" src="../assets/layouts/layout/img/avatar2.jpg" alt="...">
                                 <div class="media-body">
                                     <h4 class="media-heading">Ella Wong</h4>
-                                    <div class="media-heading-sub"> CEO </div>
+                                    <div class="media-heading-sub"> CEO</div>
                                 </div>
                             </li>
                         </ul>
@@ -689,8 +763,8 @@ License: You must have a valid license purchased only from themeforest(the above
                                 <img class="media-object" src="../assets/layouts/layout/img/avatar6.jpg" alt="...">
                                 <div class="media-body">
                                     <h4 class="media-heading">Lara Kunis</h4>
-                                    <div class="media-heading-sub"> CEO, Loop Inc </div>
-                                    <div class="media-heading-small"> Last seen 03:10 AM </div>
+                                    <div class="media-heading-sub"> CEO, Loop Inc</div>
+                                    <div class="media-heading-small"> Last seen 03:10 AM</div>
                                 </div>
                             </li>
                             <li class="media">
@@ -701,15 +775,16 @@ License: You must have a valid license purchased only from themeforest(the above
                                 <div class="media-body">
                                     <h4 class="media-heading">Ernie Kyllonen</h4>
                                     <div class="media-heading-sub"> Project Manager,
-                                        <br> SmartBizz PTL </div>
+                                        <br> SmartBizz PTL
+                                    </div>
                                 </div>
                             </li>
                             <li class="media">
                                 <img class="media-object" src="../assets/layouts/layout/img/avatar8.jpg" alt="...">
                                 <div class="media-body">
                                     <h4 class="media-heading">Lisa Stone</h4>
-                                    <div class="media-heading-sub"> CTO, Keort Inc </div>
-                                    <div class="media-heading-small"> Last seen 13:10 PM </div>
+                                    <div class="media-heading-sub"> CTO, Keort Inc</div>
+                                    <div class="media-heading-small"> Last seen 13:10 PM</div>
                                 </div>
                             </li>
                             <li class="media">
@@ -719,14 +794,14 @@ License: You must have a valid license purchased only from themeforest(the above
                                 <img class="media-object" src="../assets/layouts/layout/img/avatar9.jpg" alt="...">
                                 <div class="media-body">
                                     <h4 class="media-heading">Deon Portalatin</h4>
-                                    <div class="media-heading-sub"> CFO, H&D LTD </div>
+                                    <div class="media-heading-sub"> CFO, H&D LTD</div>
                                 </div>
                             </li>
                             <li class="media">
                                 <img class="media-object" src="../assets/layouts/layout/img/avatar10.jpg" alt="...">
                                 <div class="media-body">
                                     <h4 class="media-heading">Irina Savikova</h4>
-                                    <div class="media-heading-sub"> CEO, Tizda Motors Inc </div>
+                                    <div class="media-heading-sub"> CEO, Tizda Motors Inc</div>
                                 </div>
                             </li>
                             <li class="media">
@@ -736,8 +811,8 @@ License: You must have a valid license purchased only from themeforest(the above
                                 <img class="media-object" src="../assets/layouts/layout/img/avatar11.jpg" alt="...">
                                 <div class="media-body">
                                     <h4 class="media-heading">Maria Gomez</h4>
-                                    <div class="media-heading-sub"> Manager, Infomatic Inc </div>
-                                    <div class="media-heading-small"> Last seen 03:10 AM </div>
+                                    <div class="media-heading-sub"> Manager, Infomatic Inc</div>
+                                    <div class="media-heading-small"> Last seen 03:10 AM</div>
                                 </div>
                             </li>
                         </ul>
@@ -750,7 +825,7 @@ License: You must have a valid license purchased only from themeforest(the above
                             </div>
                             <div class="page-quick-sidebar-chat-user-messages">
                                 <div class="post out">
-                                    <img class="avatar" alt="" src="../assets/layouts/layout/img/avatar3.jpg" />
+                                    <img class="avatar" alt="" src="../assets/layouts/layout/img/avatar3.jpg"/>
                                     <div class="message">
                                         <span class="arrow"></span>
                                         <a href="javascript:;" class="name">Bob Nilson</a>
@@ -759,7 +834,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                     </div>
                                 </div>
                                 <div class="post in">
-                                    <img class="avatar" alt="" src="../assets/layouts/layout/img/avatar2.jpg" />
+                                    <img class="avatar" alt="" src="../assets/layouts/layout/img/avatar2.jpg"/>
                                     <div class="message">
                                         <span class="arrow"></span>
                                         <a href="javascript:;" class="name">Ella Wong</a>
@@ -768,7 +843,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                     </div>
                                 </div>
                                 <div class="post out">
-                                    <img class="avatar" alt="" src="../assets/layouts/layout/img/avatar3.jpg" />
+                                    <img class="avatar" alt="" src="../assets/layouts/layout/img/avatar3.jpg"/>
                                     <div class="message">
                                         <span class="arrow"></span>
                                         <a href="javascript:;" class="name">Bob Nilson</a>
@@ -777,7 +852,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                     </div>
                                 </div>
                                 <div class="post in">
-                                    <img class="avatar" alt="" src="../assets/layouts/layout/img/avatar2.jpg" />
+                                    <img class="avatar" alt="" src="../assets/layouts/layout/img/avatar2.jpg"/>
                                     <div class="message">
                                         <span class="arrow"></span>
                                         <a href="javascript:;" class="name">Ella Wong</a>
@@ -786,7 +861,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                     </div>
                                 </div>
                                 <div class="post out">
-                                    <img class="avatar" alt="" src="../assets/layouts/layout/img/avatar3.jpg" />
+                                    <img class="avatar" alt="" src="../assets/layouts/layout/img/avatar3.jpg"/>
                                     <div class="message">
                                         <span class="arrow"></span>
                                         <a href="javascript:;" class="name">Bob Nilson</a>
@@ -795,7 +870,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                     </div>
                                 </div>
                                 <div class="post in">
-                                    <img class="avatar" alt="" src="../assets/layouts/layout/img/avatar2.jpg" />
+                                    <img class="avatar" alt="" src="../assets/layouts/layout/img/avatar2.jpg"/>
                                     <div class="message">
                                         <span class="arrow"></span>
                                         <a href="javascript:;" class="name">Ella Wong</a>
@@ -804,7 +879,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                     </div>
                                 </div>
                                 <div class="post out">
-                                    <img class="avatar" alt="" src="../assets/layouts/layout/img/avatar3.jpg" />
+                                    <img class="avatar" alt="" src="../assets/layouts/layout/img/avatar3.jpg"/>
                                     <div class="message">
                                         <span class="arrow"></span>
                                         <a href="javascript:;" class="name">Bob Nilson</a>
@@ -813,7 +888,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                     </div>
                                 </div>
                                 <div class="post in">
-                                    <img class="avatar" alt="" src="../assets/layouts/layout/img/avatar2.jpg" />
+                                    <img class="avatar" alt="" src="../assets/layouts/layout/img/avatar2.jpg"/>
                                     <div class="message">
                                         <span class="arrow"></span>
                                         <a href="javascript:;" class="name">Ella Wong</a>
@@ -822,7 +897,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                     </div>
                                 </div>
                                 <div class="post out">
-                                    <img class="avatar" alt="" src="../assets/layouts/layout/img/avatar3.jpg" />
+                                    <img class="avatar" alt="" src="../assets/layouts/layout/img/avatar3.jpg"/>
                                     <div class="message">
                                         <span class="arrow"></span>
                                         <a href="javascript:;" class="name">Bob Nilson</a>
@@ -866,7 +941,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                     </div>
                                 </div>
                                 <div class="col2">
-                                    <div class="date"> Just now </div>
+                                    <div class="date"> Just now</div>
                                 </div>
                             </li>
                             <li>
@@ -879,12 +954,12 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 </div>
                                             </div>
                                             <div class="cont-col2">
-                                                <div class="desc"> Finance Report for year 2013 has been released. </div>
+                                                <div class="desc"> Finance Report for year 2013 has been released.</div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col2">
-                                        <div class="date"> 20 mins </div>
+                                        <div class="date"> 20 mins</div>
                                     </div>
                                 </a>
                             </li>
@@ -897,12 +972,14 @@ License: You must have a valid license purchased only from themeforest(the above
                                             </div>
                                         </div>
                                         <div class="cont-col2">
-                                            <div class="desc"> You have 5 pending membership that requires a quick review. </div>
+                                            <div class="desc"> You have 5 pending membership that requires a quick
+                                                review.
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col2">
-                                    <div class="date"> 24 mins </div>
+                                    <div class="date"> 24 mins</div>
                                 </div>
                             </li>
                             <li>
@@ -921,7 +998,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                     </div>
                                 </div>
                                 <div class="col2">
-                                    <div class="date"> 30 mins </div>
+                                    <div class="date"> 30 mins</div>
                                 </div>
                             </li>
                             <li>
@@ -933,12 +1010,14 @@ License: You must have a valid license purchased only from themeforest(the above
                                             </div>
                                         </div>
                                         <div class="cont-col2">
-                                            <div class="desc"> You have 5 pending membership that requires a quick review. </div>
+                                            <div class="desc"> You have 5 pending membership that requires a quick
+                                                review.
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col2">
-                                    <div class="date"> 24 mins </div>
+                                    <div class="date"> 24 mins</div>
                                 </div>
                             </li>
                             <li>
@@ -957,7 +1036,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                     </div>
                                 </div>
                                 <div class="col2">
-                                    <div class="date"> 2 hours </div>
+                                    <div class="date"> 2 hours</div>
                                 </div>
                             </li>
                             <li>
@@ -970,12 +1049,12 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 </div>
                                             </div>
                                             <div class="cont-col2">
-                                                <div class="desc"> IPO Report for year 2013 has been released. </div>
+                                                <div class="desc"> IPO Report for year 2013 has been released.</div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col2">
-                                        <div class="date"> 20 mins </div>
+                                        <div class="date"> 20 mins</div>
                                     </div>
                                 </a>
                             </li>
@@ -1000,7 +1079,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                     </div>
                                 </div>
                                 <div class="col2">
-                                    <div class="date"> Just now </div>
+                                    <div class="date"> Just now</div>
                                 </div>
                             </li>
                             <li>
@@ -1013,12 +1092,12 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 </div>
                                             </div>
                                             <div class="cont-col2">
-                                                <div class="desc"> Finance Report for year 2013 has been released. </div>
+                                                <div class="desc"> Finance Report for year 2013 has been released.</div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col2">
-                                        <div class="date"> 20 mins </div>
+                                        <div class="date"> 20 mins</div>
                                     </div>
                                 </a>
                             </li>
@@ -1031,12 +1110,14 @@ License: You must have a valid license purchased only from themeforest(the above
                                             </div>
                                         </div>
                                         <div class="cont-col2">
-                                            <div class="desc"> You have 5 pending membership that requires a quick review. </div>
+                                            <div class="desc"> You have 5 pending membership that requires a quick
+                                                review.
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col2">
-                                    <div class="date"> 24 mins </div>
+                                    <div class="date"> 24 mins</div>
                                 </div>
                             </li>
                             <li>
@@ -1055,7 +1136,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                     </div>
                                 </div>
                                 <div class="col2">
-                                    <div class="date"> 30 mins </div>
+                                    <div class="date"> 30 mins</div>
                                 </div>
                             </li>
                             <li>
@@ -1067,12 +1148,14 @@ License: You must have a valid license purchased only from themeforest(the above
                                             </div>
                                         </div>
                                         <div class="cont-col2">
-                                            <div class="desc"> You have 5 pending membership that requires a quick review. </div>
+                                            <div class="desc"> You have 5 pending membership that requires a quick
+                                                review.
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col2">
-                                    <div class="date"> 24 mins </div>
+                                    <div class="date"> 24 mins</div>
                                 </div>
                             </li>
                             <li>
@@ -1091,7 +1174,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                     </div>
                                 </div>
                                 <div class="col2">
-                                    <div class="date"> 2 hours </div>
+                                    <div class="date"> 2 hours</div>
                                 </div>
                             </li>
                             <li>
@@ -1104,12 +1187,12 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 </div>
                                             </div>
                                             <div class="cont-col2">
-                                                <div class="desc"> IPO Report for year 2013 has been released. </div>
+                                                <div class="desc"> IPO Report for year 2013 has been released.</div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col2">
-                                        <div class="date"> 20 mins </div>
+                                        <div class="date"> 20 mins</div>
                                     </div>
                                 </a>
                             </li>
@@ -1121,15 +1204,23 @@ License: You must have a valid license purchased only from themeforest(the above
                         <h3 class="list-heading">General Settings</h3>
                         <ul class="list-items borderless">
                             <li> Enable Notifications
-                                <input type="checkbox" class="make-switch" checked data-size="small" data-on-color="success" data-on-text="ON" data-off-color="default" data-off-text="OFF"> </li>
+                                <input type="checkbox" class="make-switch" checked data-size="small"
+                                       data-on-color="success" data-on-text="ON" data-off-color="default"
+                                       data-off-text="OFF"></li>
                             <li> Allow Tracking
-                                <input type="checkbox" class="make-switch" data-size="small" data-on-color="info" data-on-text="ON" data-off-color="default" data-off-text="OFF"> </li>
+                                <input type="checkbox" class="make-switch" data-size="small" data-on-color="info"
+                                       data-on-text="ON" data-off-color="default" data-off-text="OFF"></li>
                             <li> Log Errors
-                                <input type="checkbox" class="make-switch" checked data-size="small" data-on-color="danger" data-on-text="ON" data-off-color="default" data-off-text="OFF"> </li>
+                                <input type="checkbox" class="make-switch" checked data-size="small"
+                                       data-on-color="danger" data-on-text="ON" data-off-color="default"
+                                       data-off-text="OFF"></li>
                             <li> Auto Sumbit Issues
-                                <input type="checkbox" class="make-switch" data-size="small" data-on-color="warning" data-on-text="ON" data-off-color="default" data-off-text="OFF"> </li>
+                                <input type="checkbox" class="make-switch" data-size="small" data-on-color="warning"
+                                       data-on-text="ON" data-off-color="default" data-off-text="OFF"></li>
                             <li> Enable SMS Alerts
-                                <input type="checkbox" class="make-switch" checked data-size="small" data-on-color="success" data-on-text="ON" data-off-color="default" data-off-text="OFF"> </li>
+                                <input type="checkbox" class="make-switch" checked data-size="small"
+                                       data-on-color="success" data-on-text="ON" data-off-color="default"
+                                       data-off-text="OFF"></li>
                         </ul>
                         <h3 class="list-heading">System Settings</h3>
                         <ul class="list-items borderless">
@@ -1141,17 +1232,22 @@ License: You must have a valid license purchased only from themeforest(the above
                                 </select>
                             </li>
                             <li> Failed Email Attempts
-                                <input class="form-control input-inline input-sm input-small" value="5" /> </li>
+                                <input class="form-control input-inline input-sm input-small" value="5"/></li>
                             <li> Secondary SMTP Port
-                                <input class="form-control input-inline input-sm input-small" value="3560" /> </li>
+                                <input class="form-control input-inline input-sm input-small" value="3560"/></li>
                             <li> Notify On System Error
-                                <input type="checkbox" class="make-switch" checked data-size="small" data-on-color="danger" data-on-text="ON" data-off-color="default" data-off-text="OFF"> </li>
+                                <input type="checkbox" class="make-switch" checked data-size="small"
+                                       data-on-color="danger" data-on-text="ON" data-off-color="default"
+                                       data-off-text="OFF"></li>
                             <li> Notify On SMTP Error
-                                <input type="checkbox" class="make-switch" checked data-size="small" data-on-color="warning" data-on-text="ON" data-off-color="default" data-off-text="OFF"> </li>
+                                <input type="checkbox" class="make-switch" checked data-size="small"
+                                       data-on-color="warning" data-on-text="ON" data-off-color="default"
+                                       data-off-text="OFF"></li>
                         </ul>
                         <div class="inner-content">
                             <button class="btn btn-success">
-                                <i class="icon-settings"></i> Save Changes</button>
+                                <i class="icon-settings"></i> Save Changes
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -1223,7 +1319,9 @@ License: You must have a valid license purchased only from themeforest(the above
 <!-- BEGIN INNER FOOTER -->
 <div class="page-footer">
     <div class="container"> 2014 &copy; Metronic by keenthemes.
-        <a href="http://themeforest.net/item/metronic-responsive-admin-dashboard-template/4021469?ref=keenthemes" title="Purchase Metronic just for 27$ and get lifetime updates for free" target="_blank">Purchase Metronic!</a>
+        <a href="http://themeforest.net/item/metronic-responsive-admin-dashboard-template/4021469?ref=keenthemes"
+           title="Purchase Metronic just for 27$ and get lifetime updates for free" target="_blank">Purchase
+            Metronic!</a>
     </div>
 </div>
 <div class="scroll-to-top">
@@ -1240,7 +1338,8 @@ License: You must have a valid license purchased only from themeforest(the above
 <script src="../../assets/global/plugins/jquery.min.js" type="text/javascript"></script>
 <script src="../../assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
 <script src="../../assets/global/plugins/js.cookie.min.js" type="text/javascript"></script>
-<script src="../../assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js" type="text/javascript"></script>
+<script src="../../assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"
+        type="text/javascript"></script>
 <script src="../../assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
 <script src="../../assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
 <script src="../../assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
@@ -1264,7 +1363,8 @@ License: You must have a valid license purchased only from themeforest(the above
 
 <script src="../../assets/global/scripts/datatable.js" type="text/javascript"></script>
 <script src="../../assets/global/plugins/datatables/datatables.min.js" type="text/javascript"></script>
-<script src="../../assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
+<script src="../../assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js"
+        type="text/javascript"></script>
 <!-- END PAGE LEVEL PLUGINS -->
 
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
@@ -1283,15 +1383,13 @@ License: You must have a valid license purchased only from themeforest(the above
 <script src="../../assets/pages/scripts/components-bootstrap-select.min.js" type="text/javascript"></script>
 
 
-
 <!-- END PAGE LEVEL SCRIPTS -->
 <script>
     $.ajaxSetup({
         async: false
     });
 
-    function initMap()
-    {
+    function initMap() {
         groupMap();
         addressMembers();
     }
@@ -1333,8 +1431,7 @@ License: You must have a valid license purchased only from themeforest(the above
         $("#lng").text(lng);
     }
 
-    function addressMembers()
-    {
+    function addressMembers() {
         var locations = [];
         var qtde = parseInt($("#qtdeMember").val());
         var lat = parseFloat($("#lat").text());
@@ -1343,14 +1440,13 @@ License: You must have a valid license purchased only from themeforest(the above
         locations.push(lat);
         locations.push(lng);
 
-        for(var i = 0; i < qtde; i++)
-        {
-            var address = $("#location-"+i).val();
+        for (var i = 0; i < qtde; i++) {
+            var address = $("#location-" + i).val();
 
-            var script = 'https://maps.googleapis.com/maps/api/geocode/json?address='+address+'&key=AIzaSyCz22xAk7gDzvTEXjqjL8Goxu_q12Gt_KU';
+            var script = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + address + '&key=AIzaSyCz22xAk7gDzvTEXjqjL8Goxu_q12Gt_KU';
             //alert('script: ' + script);
 
-            $.getJSON(script, function(json){
+            $.getJSON(script, function (json) {
                 var lat = json.results[0].geometry.location.lat;
                 var lng = json.results[0].geometry.location.lng;
 
@@ -1369,9 +1465,8 @@ License: You must have a valid license purchased only from themeforest(the above
         setMarkers(locations);
 
     }
-    
-    function setMarkers(locations)
-    {
+
+    function setMarkers(locations) {
         var lat = parseFloat($("#lat").text());
         var lng = parseFloat($("#lng").text());
         var infowindow = new google.maps.InfoWindow();
@@ -1385,21 +1480,21 @@ License: You must have a valid license purchased only from themeforest(the above
             center: uluru
         });
 
-        for(var i = 0; i < locations.length; i++)
-        {
+        for (var i = 0; i < locations.length; i++) {
             var position = {lat: parseFloat(locations[i]), lng: parseFloat(locations[i + 1])};
-            var person = [];
-
 
             var marker = new google.maps.Marker({
                 position: position,
-                map: map
+                map: map,
+                icon: $("#role-" + k).val() == 1 ?
+                        new google.maps.MarkerImage("http://maps.google.com/mapfiles/ms/icons/blue-dot.png")
+                        : ''
             });
 
-            alert($("#person-"+k).val() + " " + k);
-            google.maps.event.addListener(marker, 'click', (function(marker, k) {
-                return function() {
-                    infowindow.setContent($("#person-"+k).val());
+
+            google.maps.event.addListener(marker, 'click', (function (marker, k) {
+                return function () {
+                    infowindow.setContent($("#person-" + k).val());
                     infowindow.open(map, marker);
                 }
             })(marker, k));
@@ -1418,7 +1513,8 @@ License: You must have a valid license purchased only from themeforest(the above
 </script>
 
 
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjTs0nbQbEecUygnKpThLfzRKES8nKS0A&callback=initMap"></script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjTs0nbQbEecUygnKpThLfzRKES8nKS0A&callback=initMap"></script>
 </body>
 
 </html>

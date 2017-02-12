@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Group;
+use App\Models\User;
 use App\Repositories\CountRepository;
 use App\Repositories\DateRepository;
 use App\Repositories\FormatGoogleMaps;
@@ -10,12 +11,13 @@ use App\Repositories\GroupRepository;
 use App\Repositories\PersonRepository;
 use App\Repositories\RoleRepository;
 use App\Repositories\StateRepository;
+use App\Repositories\UserLoginRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class GroupController extends Controller
 {
-    use DateRepository, CountRepository, FormatGoogleMaps;
+    use DateRepository, CountRepository, FormatGoogleMaps, UserLoginRepository;
     /**
      * @var GroupRepository
      */
@@ -253,6 +255,23 @@ class GroupController extends Controller
         $gr->people()->detach($member);
 
         \Session::flash('group.deleteMember', 'Usuário excluido com sucesso');
+
+        return redirect()->route('group.edit', ['id' => $group]);
+    }
+
+    public function newMemberToGroup(Request $request, $group)
+    {
+        $user = $this->personRepository->create($request->except('email'));
+
+        $user->groups()->attach($group);
+
+        $email = $request->only('email');
+
+        $email = implode('=>', $email);
+
+        $this->createUserLogin($user->id, $email);
+
+        \Session::flash('group.deleteMember', 'Usuário criado com sucesso');
 
         return redirect()->route('group.edit', ['id' => $group]);
     }

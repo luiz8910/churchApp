@@ -10,12 +10,13 @@ use App\Repositories\FormatGoogleMaps;
 use App\Repositories\PersonRepository;
 use App\Repositories\RoleRepository;
 use App\Repositories\StateRepository;
+use App\Repositories\UserLoginRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class PersonController extends Controller
 {
-    use DateRepository, CountRepository, FormatGoogleMaps;
+    use DateRepository, CountRepository, FormatGoogleMaps, UserLoginRepository;
     /**
      * @var PersonRepository
      */
@@ -173,20 +174,6 @@ class PersonController extends Controller
         return redirect()->route('person.index');
     }
 
-
-    public function createUserLogin($id, $email = null)
-    {
-        User::create(
-            [
-                'church_id' => '1',
-                'person_id' => $id,
-                'email' => $email,
-                'password' => bcrypt('secret'),
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s'),
-            ]
-        );
-    }
 
     /**
      * Atribui pais aos filhos

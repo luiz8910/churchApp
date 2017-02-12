@@ -16,7 +16,7 @@ class CreatePeopleTable extends Migration
 		Schema::create('people', function(Blueprint $table) {
             $table->increments('id');
 			$table->string('name');
-			$table->string('lastName');
+			$table->string('lastName')->nullable();
 			$table->integer('church_id')->nullable();
 			$table->integer('role_id')->nullable()->unsigned();
             $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
@@ -29,7 +29,7 @@ class CreatePeopleTable extends Migration
 			$table->string('cpf')->nullable();
 			$table->string('rg')->nullable();
 			$table->string('mailing')->nullable();
-			$table->string('dateBirth');
+			$table->string('dateBirth')->nullable();
 			$table->string('hasKids')->nullable();
             $table->string('tag')->nullable();
             $table->string('specialNeeds')->nullable();
