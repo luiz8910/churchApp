@@ -1,86 +1,47 @@
 <!doctype html>
-
 <title>CodeMirror: TiddlyWiki mode</title>
-<meta charset="utf-8"/>
+<meta charset="utf-8" />
 <link rel=stylesheet href="../../doc/docs.css">
-
 <link rel="stylesheet" href="../../lib/codemirror.css">
 <link rel="stylesheet" href="tiddlywiki.css">
 <script src="../../lib/codemirror.js"></script>
 <script src="../../addon/edit/matchbrackets.js"></script>
 <script src="tiddlywiki.js"></script>
-<style type="text/css">.CodeMirror {border-top: 1px solid black; border-bottom: 1px solid black;}</style>
+<style type="text/css">
+    .CodeMirror {
+        border-top: 1px solid black;
+        border-bottom: 1px solid black;
+    }
+</style>
 <div id=nav>
-  <a href="http://codemirror.net"><h1>CodeMirror</h1><img id=logo src="../../doc/logo.png"></a>
-
-  <ul>
-    <li><a href="../../index.html">Home</a>
-    <li><a href="../../doc/manual.html">Manual</a>
-    <li><a href="https://github.com/codemirror/codemirror">Code</a>
-  </ul>
-  <ul>
-    <li><a href="../index.html">Language modes</a>
-    <li><a class=active href="#">TiddlyWiki</a>
-  </ul>
+    <a href="http://codemirror.net">
+        <h1>CodeMirror</h1>
+        <img id=logo src="../../doc/logo.png">
+    </a>
+    <ul>
+        <li>
+            <a href="../../index.html">Home</a>
+            <li>
+                <a href="../../doc/manual.html">Manual</a>
+                <li>
+                    <a href="https://github.com/codemirror/codemirror">Code</a>
+    </ul>
+    <ul>
+        <li>
+            <a href="../index.html">Language modes</a>
+            <li>
+                <a class=active href="#">TiddlyWiki</a>
+    </ul>
 </div>
-
 <article>
-<h2>TiddlyWiki mode</h2>
-
-
-<div><textarea id="code" name="code">
-!TiddlyWiki Formatting
-* Rendered versions can be found at: http://www.tiddlywiki.com/#Reference
-
-|!Option            | !Syntax            |
-|bold font          | ''bold''           |
-|italic type        | //italic//         |
-|underlined text    | __underlined__     |
-|strikethrough text | --strikethrough--  |
-|superscript text   | super^^script^^    |
-|subscript text     | sub~~script~~      |
-|highlighted text   | @@highlighted@@    |
-|preformatted text  | {{{preformatted}}} |
-
-!Block Elements
-<<<
-!Heading 1
-
-!!Heading 2
-
-!!!Heading 3
-
-!!!!Heading 4
-
-!!!!!Heading 5
-<<<
-
-!!Lists
-<<<
-* unordered list, level 1
-** unordered list, level 2
-*** unordered list, level 3
-
-# ordered list, level 1
-## ordered list, level 2
-### unordered list, level 3
-
-; definition list, term
-: definition list, description
-<<<
-
-!!Blockquotes
-<<<
-> blockquote, level 1
->> blockquote, level 2
->>> blockquote, level 3
-
-> blockquote
-<<<
-
-!!Preformatted Text
-<<<
-{{{
+    <h2>TiddlyWiki mode</h2>
+    <div>
+        <textarea id="code" name="code"> !TiddlyWiki Formatting * Rendered versions can be found at: http://www.tiddlywiki.com/#Reference |!Option | !Syntax | |bold font | ''bold'' | |italic type | //italic// | |underlined text | __underlined__ | |strikethrough text | --strikethrough--
+            | |superscript text | super^^script^^ | |subscript text | sub~~script~~ | |highlighted text | @@highlighted@@ | |preformatted text | {{{preformatted}}} | !Block Elements
+            <<< !Heading 1 !!Heading 2 !!!Heading 3 !!!!Heading 4 !!!!!Heading 5
+                <<< !!Lists <<< * unordered list, level 1 ** unordered list, level 2 *** unordered list, level 3 # ordered list, level 1 ## ordered list, level 2 ### unordered list, level 3 ; definition list, term : definition list, description <<< !!Blockquotes
+                <<<> blockquote, level 1 >> blockquote, level 2 >>> blockquote, level 3 > blockquote
+                <<< !!Preformatted Text <<< {{{
 preformatted (e.g. code)
 }}}
 <<<

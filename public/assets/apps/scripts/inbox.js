@@ -36,8 +36,6 @@ var AppInbox = function () {
                 if (Layout.fixContentHeight) {
                     Layout.fixContentHeight();
                 }
-
-                App.initUniform();
             },
             error: function(xhr, ajaxOptions, thrownError)
             {
@@ -53,7 +51,6 @@ var AppInbox = function () {
             jQuery(set).each(function () {
                 $(this).attr("checked", checked);
             });
-            jQuery.uniform.update(set);
         });
     }
 
@@ -89,7 +86,6 @@ var AppInbox = function () {
 
                 content.html(res);
                 Layout.fixContentHeight();
-                App.initUniform();
             },
             error: function(xhr, ajaxOptions, thrownError)
             {
@@ -160,7 +156,6 @@ var AppInbox = function () {
 
                 $('.inbox-wysihtml5').focus();
                 Layout.fixContentHeight();
-                App.initUniform();
             },
             error: function(xhr, ajaxOptions, thrownError)
             {
@@ -204,7 +199,6 @@ var AppInbox = function () {
                 initFileupload();
                 initWysihtml5();
                 Layout.fixContentHeight();
-                App.initUniform();
             },
             error: function(xhr, ajaxOptions, thrownError)
             {

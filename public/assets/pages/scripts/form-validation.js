@@ -25,6 +25,10 @@ var FormValidation = function () {
                         minlength: 2,
                         required: true
                     },
+                    input_group: {
+                        email: true,
+                        required: true
+                    },
                     email: {
                         required: true,
                         email: true
@@ -64,7 +68,17 @@ var FormValidation = function () {
                     App.scrollTo(error1, -200);
                 },
 
+                errorPlacement: function (error, element) { // render error placement for each input type
+                    var cont = $(element).parent('.input-group');
+                    if (cont) {
+                        cont.after(error);
+                    } else {
+                        element.after(error);
+                    }
+                },
+
                 highlight: function (element) { // hightlight error inputs
+
                     $(element)
                         .closest('.form-group').addClass('has-error'); // set error class to the control group
                 },
@@ -244,18 +258,24 @@ var FormValidation = function () {
                 },
 
                 errorPlacement: function (error, element) { // render error placement for each input type
-                    if (element.parent(".input-group").size() > 0) {
+                    if (element.parents('.mt-radio-list') || element.parents('.mt-checkbox-list')) {
+                        if (element.parents('.mt-radio-list')[0]) {
+                            error.appendTo(element.parents('.mt-radio-list')[0]);
+                        }
+                        if (element.parents('.mt-checkbox-list')[0]) {
+                            error.appendTo(element.parents('.mt-checkbox-list')[0]);
+                        }
+                    } else if (element.parents('.mt-radio-inline') || element.parents('.mt-checkbox-inline')) {
+                        if (element.parents('.mt-radio-inline')[0]) {
+                            error.appendTo(element.parents('.mt-radio-inline')[0]);
+                        }
+                        if (element.parents('.mt-checkbox-inline')[0]) {
+                            error.appendTo(element.parents('.mt-checkbox-inline')[0]);
+                        }
+                    } else if (element.parent(".input-group").size() > 0) {
                         error.insertAfter(element.parent(".input-group"));
                     } else if (element.attr("data-error-container")) { 
                         error.appendTo(element.attr("data-error-container"));
-                    } else if (element.parents('.radio-list').size() > 0) { 
-                        error.appendTo(element.parents('.radio-list').attr("data-error-container"));
-                    } else if (element.parents('.radio-inline').size() > 0) { 
-                        error.appendTo(element.parents('.radio-inline').attr("data-error-container"));
-                    } else if (element.parents('.checkbox-list').size() > 0) {
-                        error.appendTo(element.parents('.checkbox-list').attr("data-error-container"));
-                    } else if (element.parents('.checkbox-inline').size() > 0) { 
-                        error.appendTo(element.parents('.checkbox-inline').attr("data-error-container"));
                     } else {
                         error.insertAfter(element); // for other inputs, just perform default behavior
                     }

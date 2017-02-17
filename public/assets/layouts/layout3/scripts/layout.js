@@ -80,21 +80,6 @@ var Layout = function () {
             }
         });
 
-        // handle hover dropdown menu for desktop devices only
-        if (App.getViewPort().width >= resBreakpointMd) {
-            $('.hor-menu [data-hover="megamenu-dropdown"]').not('.hover-initialized').each(function() {   
-                $(this).dropdownHover(); 
-                $(this).addClass('hover-initialized'); 
-            });
-        } 
-
-        // handle auto scroll to selected sub menu node on mobile devices
-        $(document).on('click', '.hor-menu .menu-dropdown > a[data-hover="megamenu-dropdown"]', function() {
-            if (App.getViewPort().width < resBreakpointMd) {
-                App.scrollTo($(this));
-            }
-        });
-
         // close main menu on final link click for mobile mode
         $(".hor-menu li > a").on("click", function(e) {
             if (App.getViewPort().width < resBreakpointMd) {
@@ -133,8 +118,8 @@ var Layout = function () {
     };
 
     // Handle sidebar menu links
-    var handleMainMenuActiveLink = function(mode, el) {
-        var url = location.hash.toLowerCase();    
+    var handleMainMenuActiveLink = function(mode, el, $state) {
+        var url = encodeURI(location.hash).toLowerCase();    
 
         var menu = $('.hor-menu');
 
@@ -142,11 +127,22 @@ var Layout = function () {
             el = $(el);
         } else if (mode === 'match') {
             menu.find("li > a").each(function() {
-                var path = $(this).attr("href").toLowerCase();       
-                // url match condition         
-                if (path.length > 1 && url.substr(1, path.length - 1) == path.substr(1)) {
-                    el = $(this);
-                    return; 
+                var state = $(this).attr('ui-sref');
+                if ($state && state) {
+                    if ($state.is(state)) {
+                        el = $(this);
+                        return;
+                    }
+                } else {
+                    var path = $(this).attr('href');
+                    if (path) {
+                        // url match condition         
+                        path = path.toLowerCase();
+                        if (path.length > 1 && url.substr(1, path.length - 1) == path.substr(1)) {
+                            el = $(this);
+                            return;
+                        }
+                    }
                 }
             });
         }
@@ -155,9 +151,13 @@ var Layout = function () {
             return;
         }
 
-        if (el.attr('href').toLowerCase() === 'javascript:;' || el.attr('href').toLowerCase() === '#') {
+        if (el.attr('href') == 'javascript:;' ||
+            el.attr('ui-sref') == 'javascript:;' ||
+            el.attr('href') == '#' ||
+            el.attr('ui-sref') == '#'
+            ) {
             return;
-        }        
+        }      
 
         // disable active states
         menu.find('li.active').removeClass('active');
@@ -179,36 +179,15 @@ var Layout = function () {
         var width = App.getViewPort().width;
         var menu = $(".page-header-menu");
             
-        if (width >= resBreakpointMd && menu.data('breakpoint') !== 'desktop') { 
-            // reset active states
-            $('.hor-menu [data-toggle="dropdown"].active').removeClass('open');
-
-            menu.data('breakpoint', 'desktop');
-            $('.hor-menu [data-hover="megamenu-dropdown"]').not('.hover-initialized').each(function() {   
-                $(this).dropdownHover(); 
-                $(this).addClass('hover-initialized'); 
-            });
-            $('.hor-menu .navbar-nav li.open').removeClass('open');
+        if (width >= resBreakpointMd) { 
             $(".page-header-menu").css("display", "block");
-        } else if (width < resBreakpointMd && menu.data('breakpoint') !== 'mobile') {
-            // set active states as open
-            $('.hor-menu [data-toggle="dropdown"].active').addClass('open');
-            
-            menu.data('breakpoint', 'mobile');
-            // disable hover bootstrap dropdowns plugin
-            $('.hor-menu [data-hover="megamenu-dropdown"].hover-initialized').each(function() {   
-                $(this).unbind('hover');
-                $(this).parent().unbind('hover').find('.dropdown-submenu').each(function() {
-                    $(this).unbind('hover');
-                });
-                $(this).removeClass('hover-initialized');    
-            });
         } else if (width < resBreakpointMd) {
-            //$(".page-header-menu").css("display", "none");  
-        }
+            $(".page-header-menu").css("display", "none"); 
+        } 
     };
 
     var handleContentHeight = function() {
+        return;
         var height;
 
         if ($('body').height() < App.getViewPort().height) {            
@@ -259,13 +238,13 @@ var Layout = function () {
         // Main init methods to initialize the layout
         // IMPORTANT!!!: Do not modify the core handlers call order.
 
-        initHeader: function() {
+        initHeader: function($state) {
             handleHeader(); // handles horizontal menu    
             handleMainMenu(); // handles menu toggle for mobile
             App.addResizeHandler(handleMainMenuOnResize); // handle main menu on window resize
 
             if (App.isAngularJsApp()) {      
-                handleMainMenuActiveLink('match'); // init sidebar active links 
+                handleMainMenuActiveLink('match', null, $state); // init sidebar active links 
             }
         },
 
@@ -285,6 +264,10 @@ var Layout = function () {
 
         setMainMenuActiveLink: function(mode, el) {
             handleMainMenuActiveLink(mode, el);
+        },
+
+        setAngularJsMainMenuActiveLink: function(mode, el, $state) {
+            handleMainMenuActiveLink(mode, el, $state);
         },
 
         closeMainMenu: function() {

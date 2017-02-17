@@ -8699,7 +8699,7 @@ Calendar.defaults = {
 	nextDayThreshold: '09:00:00', // 9am
 
 	// display
-	defaultView: 'agendaWeek',
+	defaultView: 'month',
 	aspectRatio: 1.35,
 	header: {
 		left: 'title',
@@ -8733,11 +8733,11 @@ Calendar.defaults = {
 		next: "next",
 		prevYear: "prev year",
 		nextYear: "next year",
-		year: 'Ano', // TODO: locale files need to specify this
-		today: 'Hoje',
-		month: 'Mês',
-		week: 'Semana',
-		day: 'Dia'
+		year: 'year', // TODO: locale files need to specify this
+		today: 'today',
+		month: 'month',
+		week: 'week',
+		day: 'day'
 	},
 
 	buttonIcons: {
@@ -11147,7 +11147,7 @@ fcViews.agenda = {
 	'class': AgendaView,
 	defaults: {
 		allDaySlot: true,
-		allDayText: 'dia todo',
+		allDayText: 'all-day',
 		slotDuration: '00:30:00',
 		minTime: '00:00:00',
 		maxTime: '24:00:00',

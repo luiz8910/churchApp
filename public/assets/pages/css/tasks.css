@@ -48,8 +48,7 @@ Tasks Widget
 
 .tasks-widget .task-footer {
   margin-top: 5px; }
-  .tasks-widget .task-footer:before,
-  .tasks-widget .task-footer:after {
+  .tasks-widget .task-footer:before, .tasks-widget .task-footer:after {
     content: " ";
     display: table; }
   .tasks-widget .task-footer:after {

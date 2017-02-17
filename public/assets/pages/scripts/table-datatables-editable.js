@@ -139,7 +139,8 @@ var TableDatatablesEditable = function () {
 
         table.on('click', '.edit', function (e) {
             e.preventDefault();
-
+            nNew = false;
+            
             /* Get the row as a parent of the link that was clicked on */
             var nRow = $(this).parents('tr')[0];
 

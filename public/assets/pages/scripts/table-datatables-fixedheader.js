@@ -10,6 +10,8 @@ var TableDatatablesFixedHeader = function () {
             } 
         } else if ($('.page-header').hasClass('navbar-fixed-top')) {
             fixedHeaderOffset = $('.page-header').outerHeight(true);
+        } else if ($('body').hasClass('page-header-fixed')) {
+            fixedHeaderOffset = 64; // admin 5 fixed height
         }
 
         var oTable = table.dataTable({
@@ -68,6 +70,8 @@ var TableDatatablesFixedHeader = function () {
             } 
         } else if ($('.page-header').hasClass('navbar-fixed-top')) {
             fixedHeaderOffset = $('.page-header').outerHeight(true);
+        } else if ($('body').hasClass('page-header-fixed')) {
+            fixedHeaderOffset = 64; // admin 5 fixed height
         }
 
         var oTable = table.dataTable({

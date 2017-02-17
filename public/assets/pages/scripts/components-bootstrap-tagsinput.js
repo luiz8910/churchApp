@@ -81,11 +81,38 @@ var ComponentsBootstrapTagsinput = function() {
         });
     }
 
+    var handleDemo3 = function() {
+        var citynames = new Bloodhound({
+            datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+            prefetch: {
+                url: '../demo/typeahead_cities.json',
+                filter: function(list) {
+                    return $.map(list, function(cityname) {
+                        return { name: cityname }; 
+                    });
+                }
+            }
+        });
+
+        citynames.initialize();
+
+        $('#typeahead_demo').tagsinput({
+            typeaheadjs: {
+                name: 'citynames',
+                displayKey: 'name',
+                valueKey: 'name',
+                source: citynames.ttAdapter()
+            }
+        });
+    }
+
     return {
         //main function to initiate the module
         init: function() {
             handleDemo1();
             handleDemo2();
+            handleDemo3();
         }
     };
 

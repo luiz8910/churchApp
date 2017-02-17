@@ -4,8 +4,7 @@ Pricing Table 1
 ***/
 .pricing-content-1 {
   background-color: #fff; }
-  .pricing-content-1:before,
-  .pricing-content-1:after {
+  .pricing-content-1:before, .pricing-content-1:after {
     content: " ";
     display: table; }
   .pricing-content-1:after {
@@ -81,8 +80,9 @@ Pricing Table 1
     position: relative; }
     .pricing-content-1 .price-table-pricing > h3 > .price-sign {
       font-size: 24px;
-      position: absolute;
-      margin-left: -15px; }
+      margin-left: -15px;
+      vertical-align: top;
+      top: 15px; }
   .pricing-content-1 .price-table-pricing > p {
     margin-top: 0; }
   .pricing-content-1 .price-table-content {
@@ -192,8 +192,9 @@ Pricing Table 2
         font-weight: 600; }
         .pricing-content-2 .pricing-table-container .price-column-container > .price-table-pricing > h3 > .price-sign {
           font-size: 24px;
-          position: absolute;
-          margin-left: -15px; }
+          margin-left: -15px;
+          vertical-align: top;
+          top: 15px; }
       .pricing-content-2 .pricing-table-container .price-column-container > .price-table-pricing > p {
         margin-top: 0; }
       .pricing-content-2 .pricing-table-container .price-column-container > .price-table-content {

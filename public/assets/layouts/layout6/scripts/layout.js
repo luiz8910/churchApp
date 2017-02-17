@@ -81,10 +81,6 @@ var Layout = function() {
                 return;
             }
 
-            if ($(this).next().hasClass('sub-menu always-open')) {
-                return;
-            }
-
             var parent = $(this).parent().parent();
             var the = $(this);
             var menu = $('.page-sidebar-menu');

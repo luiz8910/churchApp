@@ -39,16 +39,17 @@
         margin-top: 80px;
         color: #a4aab2;
         font-size: 13px; }
-        .user-login-5 .login-container > .login-content > .login-form input {
+        .user-login-5 .login-container > .login-content > .login-form .form-control {
           width: 100%;
-          padding: 10px;
+          padding: 10px 0;
           border: none;
           border-bottom: 1px solid;
           border-color: #a0a9b4;
           color: #868e97;
           font-size: 14px;
-          margin-bottom: 30px; }
-          .user-login-5 .login-container > .login-content > .login-form input:focus {
+          margin-bottom: 30px;
+          border-radius: 0 !important; }
+          .user-login-5 .login-container > .login-content > .login-form .form-control:focus {
             outline: 0; }
         .user-login-5 .login-container > .login-content > .login-form .forgot-password,
         .user-login-5 .login-container > .login-content > .login-form .login-button {
@@ -118,6 +119,8 @@
 @media (max-width: 1023px) {
   .user-login-5 {
     min-height: 50vh; }
+    .user-login-5 .mt-login-5-bsfix {
+      width: 100%; }
     .user-login-5 .login-bg {
       min-height: 50vh; }
     .user-login-5 .login-logo.login-6 {

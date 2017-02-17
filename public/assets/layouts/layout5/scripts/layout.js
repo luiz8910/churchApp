@@ -9,6 +9,17 @@ var Layout = function() {
 
     var resBreakpointMd = App.getResponsiveBreakpoint('md');
 
+    // Set proper height for sidebar and content. The content and sidebar height must be synced always.
+    var handleContentHeight = function () {
+        var content = $('.page-content');
+        var copyright = $('.copyright');
+        var body = $('body');
+        var height;
+
+        var available_height = App.getViewPort().height - $('.copyright').outerHeight() - $('.page-header').outerHeight() - 50;
+        content.css('min-height', available_height);
+    };
+
     // handle on page scroll
     var handleHeaderOnScroll = function() {
         if ($(window).scrollTop() > 60) {
@@ -111,11 +122,11 @@ var Layout = function() {
     };
 
     return {
-
         // Main init methods to initialize the layout
         // IMPORTANT!!!: Do not modify the core handlers call order.
 
-        init: function () {            
+        init: function () {
+            handleContentHeight();            
             handleGo2Top();
             handleHeaderOnScroll();
             handleHeaderMenu();

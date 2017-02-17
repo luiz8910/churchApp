@@ -8,7 +8,7 @@ var ComponentsTypeahead = function () {
           datumTokenizer: function(d) { return Bloodhound.tokenizers.whitespace(d.num); },
           queryTokenizer: Bloodhound.tokenizers.whitespace,
           local: [
-              { num: 'metronic' },
+            { num: 'metronic' },
             { num: 'keenthemes' },
             { num: 'metronic theme' },
             { num: 'metronic template' },
@@ -58,7 +58,10 @@ var ComponentsTypeahead = function () {
         var custom = new Bloodhound({
           datumTokenizer: function(d) { return d.tokens; },
           queryTokenizer: Bloodhound.tokenizers.whitespace,
-          remote: '../demo/typeahead_custom.php?query=%QUERY'
+          remote: {
+            url: '../demo/typeahead_custom.php?query=%QUERY',
+            wildcard: '%QUERY'
+          }
         });
          
         custom.initialize();
@@ -136,27 +139,26 @@ var ComponentsTypeahead = function () {
         // Example #1
         // instantiate the bloodhound suggestion engine
         var numbers = new Bloodhound({
-          datumTokenizer: function(d) { return Bloodhound.tokenizers.whitespace(d.name); },
+          datumTokenizer: function(d) { return Bloodhound.tokenizers.whitespace(d.num); },
           queryTokenizer: Bloodhound.tokenizers.whitespace,
           local: [
-
-              { id: 1, name: 'dog' },
-              { id: 2, name: 'pig' }
-
+            { num: 'metronic' },
+            { num: 'keenthemes' },
+            { num: 'metronic theme' },
+            { num: 'metronic template' },
+            { num: 'keenthemes team' }
           ]
         });
          
         // initialize the bloodhound suggestion engine
-        //numbers.initialize();
-
-        numbers.get(1);
+        numbers.initialize();
          
         // instantiate the typeahead UI
         if (App.isRTL()) {
           $('#typeahead_example_modal_1').attr("dir", "rtl");  
         }
         $('#typeahead_example_modal_1').typeahead(null, {
-          displayKey: 'name',
+          displayKey: 'num',
           hint: (App.isRTL() ? false : true),
           source: numbers.ttAdapter()
         });

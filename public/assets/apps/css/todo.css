@@ -206,8 +206,7 @@ NEW TODO Page
       font-weight: 600;
       color: #4db3a4;
       text-transform: uppercase; }
-      #todo-task-modal > .modal-dialog .modal-content .todo-task-assign:hover,
-      #todo-task-modal > .modal-dialog .modal-content .todo-task-assign:focus {
+      #todo-task-modal > .modal-dialog .modal-content .todo-task-assign:hover, #todo-task-modal > .modal-dialog .modal-content .todo-task-assign:focus {
         text-decoration: none; }
     #todo-task-modal > .modal-dialog .modal-content > .todo-task-modal-body > .todo-task-modal-bg {
       background-color: #f7f9fa;

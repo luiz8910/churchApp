@@ -98,10 +98,8 @@ var FormEditable = function() {
         if (App.getURLParameter('mode') == 'inline') {
             $.fn.editable.defaults.mode = 'inline';
             $('#inline').attr("checked", true);
-            jQuery.uniform.update('#inline');
         } else {
             $('#inline').attr("checked", false);
-            jQuery.uniform.update('#inline');
         }
 
         //global settings 
@@ -225,14 +223,16 @@ var FormEditable = function() {
         });
 
         $('#fruits').on('shown', function(e, reason) {
-            App.initUniform();
+            
         });
 
         $('#tags').editable({
             inputclass: 'form-control input-medium',
             select2: {
-                tags: ['html', 'javascript', 'css', 'ajax'],
-                tokenSeparators: [",", " "]
+                data: ['html', 'javascript', 'css', 'ajax'],
+                tags: true,
+                tokenSeparators: [','], 
+                multiple: true
             }
         });
 

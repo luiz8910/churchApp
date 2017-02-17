@@ -8,7 +8,8 @@ var SessionTimeout = function () {
             redirUrl: 'page_user_lock_1.html',
             logoutUrl: 'page_user_login_1.html',
             warnAfter: 5000, //warn after 5 seconds
-            redirAfter: 10000, //redirect after 10 secons,
+            redirAfter: 15000, //redirect after 10 secons,
+            ignoreUserActivity: true,
             countdownMessage: 'Redirecting in {timer} seconds.',
             countdownBar: true
         });

@@ -12,6 +12,11 @@ var ComponentsDateTimePickers = function () {
         }
 
         /* Workaround to restrict daterange past date select: http://stackoverflow.com/questions/11933173/how-to-restrict-the-selectable-date-ranges-in-bootstrap-datepicker */
+    
+        // Workaround to fix datepicker position on window scroll
+        $( document ).scroll(function(){
+            $('#form_modal2 .date-picker').datepicker('place'); //#modal is the id of the modal
+        });
     }
 
     var handleTimePickers = function () {
@@ -25,7 +30,8 @@ var ComponentsDateTimePickers = function () {
 
             $('.timepicker-no-seconds').timepicker({
                 autoclose: true,
-                minuteStep: 5
+                minuteStep: 5,
+                defaultTime: false
             });
 
             $('.timepicker-24').timepicker({
@@ -39,6 +45,11 @@ var ComponentsDateTimePickers = function () {
             $('.timepicker').parent('.input-group').on('click', '.input-group-btn', function(e){
                 e.preventDefault();
                 $(this).parent('.input-group').find('.timepicker').timepicker('showWidget');
+            });
+
+            // Workaround to fix timepicker position on window scroll
+            $( document ).scroll(function(){
+                $('#form_modal4 .timepicker-default, #form_modal4 .timepicker-no-seconds, #form_modal4 .timepicker-24').timepicker('place'); //#modal is the id of the modal
             });
         }
     }
@@ -96,8 +107,8 @@ var ComponentsDateTimePickers = function () {
                 opens: (App.isRTL() ? 'left' : 'right'),
                 startDate: moment().subtract('days', 29),
                 endDate: moment(),
-                minDate: '01/01/2012',
-                maxDate: '12/31/2014',
+                //minDate: '01/01/2012',
+                //maxDate: '12/31/2014',
                 dateLimit: {
                     days: 60
                 },
@@ -170,6 +181,11 @@ var ComponentsDateTimePickers = function () {
         });
 
         $('body').removeClass("modal-open"); // fix bug when inline picker is used in modal
+
+        // Workaround to fix datetimepicker position on window scroll
+        $( document ).scroll(function(){
+            $('#form_modal1 .form_datetime, #form_modal1 .form_advance_datetime, #form_modal1 .form_meridian_datetime').datetimepicker('place'); //#modal is the id of the modal
+        });
     }
 
     var handleClockfaceTimePickers = function () {
@@ -203,6 +219,11 @@ var ComponentsDateTimePickers = function () {
         $('.clockface_3').clockface({
             format: 'H:mm'
         }).clockface('show', '14:30');
+
+        // Workaround to fix clockface position on window scroll
+        $( document ).scroll(function(){
+            $('#form_modal5 .clockface_1, #form_modal5 #clockface_2_modal').clockface('place'); //#modal is the id of the modal
+        });
     }
 
     return {

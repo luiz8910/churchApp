@@ -74,16 +74,16 @@ var Demo = function() {
 
                 // set header
                 $('.page-header > .page-header-inner').addClass("container");
-                var cont = $('body > .clearfix').after('<div class="container"></div>');
+                var cont = $('body > .page-wrapper > .clearfix').after('<div class="container"></div>');
 
                 // set content
-                $('.page-container').appendTo('body > .container');
+                $('.page-container').appendTo('body > .page-wrapper > .container');
 
                 // set footer
                 if (footerOption === 'fixed') {
                     $('.page-footer').html('<div class="container">' + $('.page-footer').html() + '</div>');
                 } else {
-                    $('.page-footer').appendTo('body > .container');
+                    $('.page-footer').appendTo('body > .page-wrapper > .container');
                 }
             }
 

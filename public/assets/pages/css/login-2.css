@@ -52,8 +52,7 @@ Login page
   border: 1px solid #6ba3c8;
   height: 43px;
   color: #d9ecf9; }
-  .login .content .form-control:focus,
-  .login .content .form-control:active {
+  .login .content .form-control:focus, .login .content .form-control:active {
     border: 1px solid #83b8db; }
   .login .content .form-control::-moz-placeholder {
     color: #d9ecf9;
@@ -158,8 +157,11 @@ Login page
 .login .content .rememberme {
   margin-top: 8px; }
 
-.login .content .check {
+.login .content .mt-checkbox {
   color: #c9dce9 !important; }
+
+.login .content .mt-checkbox > span:after {
+  border-color: #c9dce9 !important; }
 
 .login .content .create-account {
   text-align: center;

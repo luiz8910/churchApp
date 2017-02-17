@@ -110,7 +110,6 @@ var Datatable = function() {
 
                             if ($('.group-checkable', table).size() === 1) {
                                 $('.group-checkable', table).attr("checked", false);
-                                $.uniform.update($('.group-checkable', table));
                             }
 
                             if (tableOptions.onSuccess) {
@@ -143,7 +142,6 @@ var Datatable = function() {
                             tableInitialized = true; // set table initialized
                             table.show(); // display table
                         }
-                        App.initUniform($('input[type="checkbox"]', table)); // reinitialize uniform checkboxes on each table reload
                         countSelectedRecords(); // reset selected records indicator
 
                         // callback for ajax data load
@@ -190,7 +188,6 @@ var Datatable = function() {
                 $(set).each(function() {
                     $(this).prop("checked", checked);
                 });
-                $.uniform.update(set);
                 countSelectedRecords();
             });
 

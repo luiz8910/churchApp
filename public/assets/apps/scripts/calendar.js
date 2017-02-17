@@ -87,12 +87,12 @@ var AppCalendar = function() {
 
             //predefined events
             $('#event_box').html("");
-            addEvent("Meu Evento 1");
-            addEvent("Meu Evento 2");
-            addEvent("Meu Evento 3");
-            addEvent("Meu Evento 4");
-            addEvent("Meu Evento 5");
-            addEvent("Meu Evento 6");
+            addEvent("My Event 1");
+            addEvent("My Event 2");
+            addEvent("My Event 3");
+            addEvent("My Event 4");
+            addEvent("My Event 5");
+            addEvent("My Event 6");
 
             $('#calendar').fullCalendar('destroy'); // destroy the calendar
             $('#calendar').fullCalendar({ //re-initialize the calendar

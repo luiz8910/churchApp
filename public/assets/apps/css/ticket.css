@@ -6,7 +6,11 @@ Ticket Page
   overflow: hidden; }
   .app-ticket h3 {
     margin: 0 0 15px 0;
-    font-size: 18px; }
+    font-size: 14px;
+    font-weight: bold; }
+  .app-ticket h3 i {
+    color: #a1acb7;
+    margin-right: 5px; }
   .app-ticket p {
     margin: 0; }
 
