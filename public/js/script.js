@@ -5,6 +5,8 @@ $(function () {
     members = [];
 
 
+
+
     $("#addMember").click(function () {
 
         member_id = $("#select_members").val();
@@ -105,4 +107,20 @@ $(function () {
             '</tr>');
 
     });
+    
+    $("#maritalStatus").change(function () {
+        var status = $("#maritalStatus").val();
+
+        if (status == 'Casado')
+        {
+            $("#form-partner").attr('hidden', false);
+        }
+
+        else
+        {
+            $("#form-partner").attr('hidden', true);
+        }
+    })
+
+
 });

@@ -127,7 +127,9 @@ class PersonController extends Controller
 
         $countGroups[] = $this->countGroups();
 
-        return view('people.create', compact('state', 'roles', 'countPerson', 'countGroups'));
+        $adults = $this->repository->findWhere(['tag' => 'adult']);
+
+        return view('people.create', compact('state', 'roles', 'countPerson', 'countGroups', 'adults'));
     }
 
     /**
@@ -302,7 +304,9 @@ class PersonController extends Controller
 
         $countGroups[] = $this->countGroups();
 
-        return view('people.edit', compact('person', 'state', 'location', 'roles', 'countPerson', 'countGroups'));
+        $adults = $this->repository->findWhere(['tag' => 'adult']);
+
+        return view('people.edit', compact('person', 'state', 'location', 'roles', 'countPerson', 'countGroups', 'adults'));
     }
 
     /**
@@ -318,12 +322,26 @@ class PersonController extends Controller
 
         $email = $request->only('email');
 
+        //Formatação correta do email
         $email = implode('=>', $email);
 
+        //Formatação correta da data
         $data['dateBirth'] = $this->formatDateBD($data['dateBirth']);
+
+        /*
+         * Se a pessoa for casada e $data['partner'] = 0 então o parceiro é de fora da igreja
+         * Se a pessoa não for casada e $data['partner'] = 0 então não há parceiro para incluir
+         *
+        */
+        if($data['maritalStatus'] != 'Casado')
+        {
+            $data['partner'] = null;
+        }
+
 
         $myEmail = $user->findByField('person_id', $id);
 
+        //Verifica se o email mudou, se sim chama função para alterar
         if($myEmail[0]->email != $email)
         {
             $this->updateEmail($email, $id);

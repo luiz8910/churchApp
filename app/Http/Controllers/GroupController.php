@@ -211,6 +211,7 @@ class GroupController extends Controller
         //Quantidade de homens casados sem filhos
         $quantityMarriedMenNoKids = $this->quantityMarriedMenNoKids($arr);
 
+
         //Listagem de todas as pessoas que não pertencem ao grupo
         $people = $this->personRepository->findWhereNotIn('id', $arr);
 

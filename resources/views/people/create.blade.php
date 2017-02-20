@@ -22,6 +22,7 @@ License: You must have a valid license purchased only from themeforest(the above
 <head>
     @include('includes.head')
     <link href="../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/global/plugins/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" type="text/css"/>
     <link href="../assets/pages/css/profile.min.css" rel="stylesheet" type="text/css" />
 </head>
 <!-- END HEAD -->
@@ -255,7 +256,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="">Estado Civil</label>
-                                                    <select name="maritalStatus" id="" class="form-control">
+                                                    <select name="maritalStatus" id="maritalStatus" class="form-control">
                                                         <option value="">Selecione</option>
                                                         <option value="Casado">Casado</option>
                                                         <option value="Solteiro">Solteiro</option>
@@ -263,6 +264,21 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     </select>
                                                 </div>
                                             </div>
+
+                                            <div class="col-md-6">
+                                                <div class="form-group" id="form-partner" hidden>
+                                                    <label>Nome Cônjuge</label>
+                                                    <select name="partner" id="partner" class="selectpicker
+                                                          form-control"
+                                                            data-live-search="true" data-size="8">
+                                                        <option value="0">Parceiro(a) fora da igreja</option>
+                                                        @foreach($adults as $adult)
+                                                            <option value="{{ $adult->id }}">{{ $adult->name }} {{ $adult->lastName }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+
                                         </div>
 
                                         <div class="row">
@@ -1142,6 +1158,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
 @include('includes.core-scripts')
 <script src="../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js" type="text/javascript"></script>
+<script src="../assets/global/plugins/bootstrap-select/js/bootstrap-select.min.js" type="text/javascript"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.repeater/1.2.1/jquery.repeater.min.js"></script>
 <script>
     $(document).ready(function () {

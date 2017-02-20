@@ -689,6 +689,7 @@ var ChartsAmcharts = function() {
         });
     }
 
+
     var initChartSample7 = function() {
         var chart = AmCharts.makeChart("chart_7", {
             "type": "pie",
@@ -702,14 +703,14 @@ var ChartsAmcharts = function() {
                 "country": $("#singleMother_qty_chart_label").val(),
                 "value": $("#singleMother_qty_chart_value").val()
             }, {
-                "country": $("#singlefather_qty_chart_label").val(),
-                "value": $("#singlefather_qty_chart_value").val()
+                "country": $("#singleFather_qty_chart_label").val(),
+                "value": $("#singleFather_qty_chart_value").val()
             }, {
-                "country": $("#singlewomen_qty_chart_label").val(),
-                "value": $("#singlewomen_qty_chart_value").val()
+                "country": $("#singleWomen_qty_chart_label").val(),
+                "value": $("#singleWomen_qty_chart_value").val()
             }, {
                 "country": $("#singleMen_qty_chart_label").val(),
-                "value": $("#singlemen_qty_chart_value").val()
+                "value": $("#singleMen_qty_chart_value").val()
             }, {
                 "country": $("#marriedWomenNoKids_qty_chart_label").val(),
                 "value": $("#marriedWomenNoKids_qty_chart_value").val()

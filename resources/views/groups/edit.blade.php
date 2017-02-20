@@ -216,6 +216,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                             <a href="javascript:;" class="remove"> </a>
                                         </div>
 
+
                                         <input type="hidden" id="singleMother_qty_chart_label" value="Mulheres solteiras com filhos">
                                         <input type="hidden" id="singleMother_qty_chart_value" value="{{ $quantitySingleMother }}">
 
@@ -233,6 +234,9 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                         <input type="hidden" id="marriedMenNoKids_qty_chart_label" value="Homens casados sem filhos">
                                         <input type="hidden" id="marriedMenNoKids_qty_chart_value" value="{{ $quantityMarriedMenNoKids }}">
+
+
+
                                     </div>
                                     <div class="portlet-body">
                                         <div id="chart_7" class="chart" style="height: 400px;"> </div>
