@@ -6,7 +6,7 @@ use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 use App\Repositories\GroupRepository;
 use App\Models\Group;
-use App\Validators\GroupValidator;
+use App\Repositories\PersonRepository;
 
 /**
  * Class GroupRepositoryEloquent
@@ -33,4 +33,6 @@ class GroupRepositoryEloquent extends BaseRepository implements GroupRepository
     {
         $this->pushCriteria(app(RequestCriteria::class));
     }
+
+
 }

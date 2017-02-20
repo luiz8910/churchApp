@@ -25,7 +25,6 @@ class PersonRepositoryEloquent extends BaseRepository implements PersonRepositor
         return Person::class;
     }
 
-    
 
     /**
      * Boot up the repository, pushing criteria

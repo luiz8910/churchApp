@@ -262,6 +262,29 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 </div>
                                             </div>
 
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    {!! Form::FormGroup('maritalStatus', $errors) !!}
+                                                        <label class="control-label">Estado Civil</label>
+                                                        <select name="maritalStatus" id="" class="form-control" required>
+                                                            <option value="">Selecione</option>
+                                                            <option value="Casado" @if($person->maritalStatus == 'Casado') selected @endif >Casado</option>
+                                                            <option value="Solteiro" @if($person->maritalStatus == 'Solteiro') selected @endif >Solteiro</option>
+                                                            <option value="Divorciado" @if($person->maritalStatus == 'Divorciado') selected @endif >Divorciado</option>
+                                                        </select>
+                                                    {!! Form::error('maritalStatus', $errors) !!}
+                                                    {!! Form::endFormGroup() !!}
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    {!! Form::FormGroup('rg', $errors) !!}
+                                                    <label class="control-label">RG</label>
+                                                    <input type="text" placeholder="123.123.123-12" value="{{ $person->rg }}" name="rg" class="form-control" />
+                                                    {!! Form::error('rg', $errors) !!}
+                                                    {!! Form::endFormGroup() !!}
+                                                </div>
+                                            </div>
+
                                             @if($person->tag != 'adult')
 
                                                 <h3 class="form-section">Observações</h3>

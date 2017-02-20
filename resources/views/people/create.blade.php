@@ -254,6 +254,20 @@ License: You must have a valid license purchased only from themeforest(the above
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
+                                                    <label for="">Estado Civil</label>
+                                                    <select name="maritalStatus" id="" class="form-control">
+                                                        <option value="">Selecione</option>
+                                                        <option value="Casado">Casado</option>
+                                                        <option value="Solteiro">Solteiro</option>
+                                                        <option value="Divorciado">Divorciado</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
                                                     <div class="checkbox-list">
                                                         <br><br><label>
                                                             <input type="checkbox" name="mailing"> Enviar Email Semanal?

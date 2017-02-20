@@ -699,23 +699,23 @@ var ChartsAmcharts = function() {
             "color":    '#888',
 
             "dataProvider": [{
-                "country": "Lithuania",
-                "value": 260
+                "country": $("#singleMother_qty_chart_label").val(),
+                "value": $("#singleMother_qty_chart_value").val()
             }, {
-                "country": "Ireland",
-                "value": 201
+                "country": $("#singlefather_qty_chart_label").val(),
+                "value": $("#singlefather_qty_chart_value").val()
             }, {
-                "country": "Germany",
-                "value": 65
+                "country": $("#singlewomen_qty_chart_label").val(),
+                "value": $("#singlewomen_qty_chart_value").val()
             }, {
-                "country": "Australia",
-                "value": 39
+                "country": $("#singleMen_qty_chart_label").val(),
+                "value": $("#singlemen_qty_chart_value").val()
             }, {
-                "country": "UK",
-                "value": 19
+                "country": $("#marriedWomenNoKids_qty_chart_label").val(),
+                "value": $("#marriedWomenNoKids_qty_chart_value").val()
             }, {
-                "country": "Latvia",
-                "value": 10
+                "country": $("#marriedMenNoKids_qty_chart_label").val(),
+                "value": $("#marriedMenNoKids_qty_chart_value").val()
             }],
             "valueField": "value",
             "titleField": "country",

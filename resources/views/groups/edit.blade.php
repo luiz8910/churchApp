@@ -215,6 +215,24 @@ License: You must have a valid license purchased only from themeforest(the above
                                             <a href="javascript:;" class="fullscreen"> </a>
                                             <a href="javascript:;" class="remove"> </a>
                                         </div>
+
+                                        <input type="hidden" id="singleMother_qty_chart_label" value="Mulheres solteiras com filhos">
+                                        <input type="hidden" id="singleMother_qty_chart_value" value="{{ $quantitySingleMother }}">
+
+                                        <input type="hidden" id="singleFather_qty_chart_label" value="Homens solteiros com filhos">
+                                        <input type="hidden" id="singleFather_qty_chart_value" value="{{ $quantitySingleFather }}">
+
+                                        <input type="hidden" id="singleWomen_qty_chart_label" value="Mulheres solteiras">
+                                        <input type="hidden" id="singleWomen_qty_chart_value" value="{{ $quantitySingleWomen }}">
+
+                                        <input type="hidden" id="singleMen_qty_chart_label" value="Homens solteiros">
+                                        <input type="hidden" id="singleMen_qty_chart_value" value="{{ $quantitySingleMen }}">
+
+                                        <input type="hidden" id="marriedWomenNoKids_qty_chart_label" value="Mulheres casadas sem filhos">
+                                        <input type="hidden" id="marriedWomenNoKids_qty_chart_value" value="{{ $quantityMarriedWomenNoKids }}">
+
+                                        <input type="hidden" id="marriedMenNoKids_qty_chart_label" value="Homens casados sem filhos">
+                                        <input type="hidden" id="marriedMenNoKids_qty_chart_value" value="{{ $quantityMarriedMenNoKids }}">
                                     </div>
                                     <div class="portlet-body">
                                         <div id="chart_7" class="chart" style="height: 400px;"> </div>
@@ -1394,9 +1412,22 @@ License: You must have a valid license purchased only from themeforest(the above
 <!-- END CORE PLUGINS -->
 <!-- BEGIN PAGE LEVEL PLUGINS -->
 <script src="../../assets/global/plugins/bootstrap-select/js/bootstrap-select.min.js" type="text/javascript"></script>
+
+<script src="../../assets/global/plugins/amcharts/amcharts/amcharts.js" type="text/javascript"></script>
+<script src="../../assets/global/plugins/amcharts/amcharts/serial.js" type="text/javascript"></script>
+<script src="../../assets/global/plugins/amcharts/amcharts/pie.js" type="text/javascript"></script>
+<script src="../../assets/global/plugins/amcharts/amcharts/radar.js" type="text/javascript"></script>
+<script src="../../assets/global/plugins/amcharts/amcharts/themes/light.js" type="text/javascript"></script>
+<script src="../../assets/global/plugins/amcharts/amcharts/themes/patterns.js" type="text/javascript"></script>
+<script src="../../assets/global/plugins/amcharts/amcharts/themes/chalk.js" type="text/javascript"></script>
+<script src="../../assets/global/plugins/amcharts/ammap/ammap.js" type="text/javascript"></script>
+<script src="../../assets/global/plugins/amcharts/ammap/maps/js/worldLow.js" type="text/javascript"></script>
+<script src="../../assets/global/plugins/amcharts/amstockcharts/amstock.js" type="text/javascript"></script>
+
 <!-- END PAGE LEVEL PLUGINS -->
 <!-- BEGIN THEME GLOBAL SCRIPTS -->
 <script src="../../assets/global/scripts/app.min.js" type="text/javascript"></script>
+<script src="../../assets/pages/scripts/charts-amcharts.js" type="text/javascript"></script>
 <!-- END THEME GLOBAL SCRIPTS -->
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
 <script src="../../assets/pages/scripts/components-bootstrap-select.min.js" type="text/javascript"></script>
@@ -1405,6 +1436,7 @@ License: You must have a valid license purchased only from themeforest(the above
 <script src="../../assets/layouts/layout3/scripts/layout.min.js" type="text/javascript"></script>
 <script src="../../assets/layouts/layout3/scripts/demo.min.js" type="text/javascript"></script>
 <script src="../../assets/layouts/global/scripts/quick-sidebar.min.js" type="text/javascript"></script>
+<script src="../../assets/layouts/global/scripts/quick-nav.min.js" type="text/javascript"></script>
 <!-- END THEME LAYOUT SCRIPTS -->
 
 <script src="../../assets/global/scripts/datatable.js" type="text/javascript"></script>
@@ -1428,8 +1460,8 @@ License: You must have a valid license purchased only from themeforest(the above
 
 <script src="../../assets/pages/scripts/components-bootstrap-select.min.js" type="text/javascript"></script>
 
-<script src="../../assets/global/plugins/amcharts/amcharts/pie.js" type="text/javascript"></script>
-<script src="../../assets/pages/scripts/charts-amcharts.min.js" type="text/javascript"></script>
+
+
 
 
 <!-- END PAGE LEVEL SCRIPTS -->

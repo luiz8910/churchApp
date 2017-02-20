@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Models\Group;
 use App\Models\User;
 use App\Repositories\CountRepository;
@@ -35,6 +36,13 @@ class GroupController extends Controller
      */
     private $personRepository;
 
+    /**
+     * GroupController constructor.
+     * @param GroupRepository $repository
+     * @param StateRepository $stateRepository
+     * @param RoleRepository $roleRepository
+     * @param PersonRepository $personRepository
+     */
     public function __construct(GroupRepository $repository, StateRepository $stateRepository,
                                 RoleRepository $roleRepository, PersonRepository $personRepository)
     {
@@ -178,6 +186,31 @@ class GroupController extends Controller
             $address[] = $this->formatGoogleMaps($item);
         }
 
+        $quantitySingleMother = '';
+        $quantitySingleFather = '';
+        $quantitySingleWomen = '';
+        $quantitySingleMen = '';
+        $quantityMarriedWomenNoKids = '';
+        $quantityMarriedMenNoKids = '';
+
+        //Quantidade de todas as mulheres solteiras com filhos que pertencem ao grupo
+        $quantitySingleMother = $this->quantitySingleMother($arr);
+
+        //Quantidade de todos os homens solteiros com filhos que pertencem ao grupo
+        $quantitySingleFather = $this->quantitySingleMen($arr);
+
+        //Quantidade de todas as mulheres solteiras e adultas
+        $quantitySingleWomen = $this->quantitySingleWomen($arr);
+
+        //Quantidade de todos os homens solteiros e adultos
+        $quantitySingleMen = $this->quantitySingleMen($arr);
+
+        //Quantidade de mulheres casadas sem filhos
+        $quantityMarriedWomenNoKids = $this->quantityMarriedWomenNoKids($arr);
+
+        //Quantidade de homens casados sem filhos
+        $quantityMarriedMenNoKids = $this->quantityMarriedMenNoKids($arr);
+
         //Listagem de todas as pessoas que não pertencem ao grupo
         $people = $this->personRepository->findWhereNotIn('id', $arr);
 
@@ -187,8 +220,11 @@ class GroupController extends Controller
 
         $group->sinceOf = $this->formatDateView($group->sinceOf);
 
-        return view('groups.edit', compact('group', 'countPerson', 'countGroups', 'address', 'location', 'people', 'roles', 'state', 'members'));
+        return view('groups.edit', compact('group', 'countPerson', 'countGroups', 'address', 'location',
+            'people', 'roles', 'state', 'members', 'quantitySingleMother', 'quantitySingleFather', 'quantitySingleWomen',
+            'quantitySingleMen', 'quantityMarriedWomenNoKids', 'quantityMarriedMenNoKids'));
     }
+
 
     /**
      * Update the specified resource in storage.
@@ -274,5 +310,126 @@ class GroupController extends Controller
         \Session::flash('group.deleteMember', 'Usuário criado com sucesso');
 
         return redirect()->route('group.edit', ['id' => $group]);
+    }
+
+    /**
+     * Quantidade de todas as mulheres solteiras com filhos que pertencem ao grupo
+     * @param $members
+     * @return int
+     */
+    public function quantitySingleMother($members)
+    {
+        $qty = 0;
+
+        foreach ($members as $member)
+        {
+            $person = $this->personRepository->find($member);
+
+            if($person->gender == 'F' && $person->hasKids && $person->maritalStatus == 'Solteiro')
+            {
+                $qty++;
+            }
+        }
+
+        return $qty;
+    }
+
+    /**
+     * @param $members
+     * @return int
+     */
+    public function quantitySingleWomen($members)
+    {
+        $qty = 0;
+
+        foreach ($members as $member)
+        {
+            $person = $this->personRepository->find($member);
+
+            if($person->gender == 'F' && !$person->hasKids &&
+                $person->maritalStatus == 'Solteiro' && $person->tag == 'adult')
+            {
+                $qty++;
+            }
+        }
+
+        return $qty;
+    }
+
+    /**
+     * @param $members
+     * @return int
+     */
+    public function quantitySingleMen($members)
+    {
+        $qty = 0;
+
+        foreach ($members as $member)
+        {
+            $person = $this->personRepository->find($member);
+
+            if($person->gender == 'M' && !$person->hasKids &&
+                $person->maritalStatus == 'Solteiro' && $person->tag == 'adult')
+            {
+                $qty++;
+            }
+        }
+
+        return $qty;
+    }
+
+    /**
+     * @param $members
+     * @return int
+     */
+    public function quantitySingleFather($members)
+    {
+        $qty = 0;
+
+        foreach ($members as $member)
+        {
+            $person = $this->personRepository->find($member);
+
+            if($person->gender == 'M' && $person->hasKids && $person->maritalStatus == 'Solteiro')
+            {
+                $qty++;
+            }
+        }
+
+        return $qty;
+    }
+
+    public function quantityMarriedWomenNoKids($members)
+    {
+        $qty = 0;
+
+        foreach ($members as $member)
+        {
+            $person = $this->personRepository->find($member);
+
+            if($person->gender == 'F' && !$person->hasKids && $person->maritalStatus == 'Casado')
+            {
+                $qty++;
+            }
+        }
+
+        return $qty;
+    }
+
+    public function quantityMarriedMenNoKids($members)
+    {
+        $qty = 0;
+
+        foreach ($members as $member)
+        {
+            $person = $this->personRepository->find($member);
+
+            if($person->gender == 'M' && !$person->hasKids && $person->maritalStatus == 'Casado')
+            {
+                $qty++;
+            }
+        }
+
+        return $qty;
     }
 }

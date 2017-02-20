@@ -11,6 +11,7 @@ use App\Repositories\PersonRepository;
 use App\Repositories\RoleRepository;
 use App\Repositories\StateRepository;
 use App\Repositories\UserLoginRepository;
+use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -149,6 +150,8 @@ class PersonController extends Controller
 
         $data['dateBirth'] = $this->formatDateBD($data['dateBirth']);
 
+        $data['imgProfile'] = 'uploads/profile/noimage.png';
+
         $children = $request->get('group-a');
 
         $id = $this->repository->create($data)->id;
@@ -168,7 +171,9 @@ class PersonController extends Controller
 
         $this->tag($this->repository->tag($data['dateBirth']), $id);
 
-        $this->imgProfile($file, $id, $data['name']);
+        if($file){
+            $this->imgProfile($file, $id, $data['name']);
+        }
 
 
         return redirect()->route('person.index');
@@ -206,10 +211,16 @@ class PersonController extends Controller
 
             $data['role_id'] = 2;
 
+            $data['maritalStatus'] = 'Solteiro';
+
             $idChild = $this->repository->create($data)->id;
 
             $this->tag($this->repository->tag($data['dateBirth']), $idChild);
         }
+
+        DB::table("people")
+            ->where('id', $id)
+            ->update(['hasKids' => 'on']);
     }
 
 
@@ -301,7 +312,7 @@ class PersonController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id, UserRepository $user)
     {
         $data = $request->except(['email']);
 
@@ -311,9 +322,14 @@ class PersonController extends Controller
 
         $data['dateBirth'] = $this->formatDateBD($data['dateBirth']);
 
-        $this->repository->update($data, $id);
+        $myEmail = $user->findByField('person_id', $id);
 
-        $this->updateEmail($email, $id);
+        if($myEmail[0]->email != $email)
+        {
+            $this->updateEmail($email, $id);
+        }
+
+        $this->repository->update($data, $id);
 
         return redirect()->route('person.index');
     }

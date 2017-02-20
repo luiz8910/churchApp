@@ -28,6 +28,7 @@ class CreatePeopleTable extends Migration
 			$table->string('mother_id')->nullable();
 			$table->string('cpf')->nullable();
 			$table->string('rg')->nullable();
+			$table->string('maritalStatus')->nullable();
 			$table->string('mailing')->nullable();
 			$table->string('dateBirth')->nullable();
 			$table->string('hasKids')->nullable();
