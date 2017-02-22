@@ -235,7 +235,11 @@ License: You must have a valid license purchased only from themeforest(the above
                                         <input type="hidden" id="marriedMenNoKids_qty_chart_label" value="Homens casados sem filhos">
                                         <input type="hidden" id="marriedMenNoKids_qty_chart_value" value="{{ $quantityMarriedMenNoKids }}">
 
+                                        <input type="hidden" id="marriedMenOutsideChurch_qty_chart_label" value="Homens casados com parceira fora da igreja">
+                                        <input type="hidden" id="marriedMenOutsideChurch_qty_chart_value" value="{{ $quantityMarriedMenOutsideChurch }}">
 
+                                        <input type="hidden" id="marriedWomenOutsideChurch_qty_chart_label" value="Mulheres casadas com parceiro fora da igreja">
+                                        <input type="hidden" id="marriedWomenOutsideChurch_qty_chart_value" value="{{ $quantityMarriedWomenOutsideChurch }}">
 
                                     </div>
                                     <div class="portlet-body">

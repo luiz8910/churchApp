@@ -304,7 +304,9 @@ class PersonController extends Controller
 
         $countGroups[] = $this->countGroups();
 
-        $adults = $this->repository->findWhere(['tag' => 'adult']);
+        $gender = $person->gender == 'M' ? 'F' : 'M';
+
+        $adults = $this->repository->findWhere(['tag' => 'adult', 'gender' => $gender]);
 
         return view('people.edit', compact('person', 'state', 'location', 'roles', 'countPerson', 'countGroups', 'adults'));
     }
@@ -331,13 +333,16 @@ class PersonController extends Controller
         /*
          * Se a pessoa for casada e $data['partner'] = 0 então o parceiro é de fora da igreja
          * Se a pessoa não for casada e $data['partner'] = 0 então não há parceiro para incluir
+         * Se a pessoa for casada e $data['partner'] != "0" então a pessoa é casada com o id informado
          *
         */
         if($data['maritalStatus'] != 'Casado')
         {
             $data['partner'] = null;
         }
-
+        else if ($data['partner'] != "0"){
+            $this->updateMaritalStatus($data['partner'], $id);
+        }
 
         $myEmail = $user->findByField('person_id', $id);
 
@@ -357,6 +362,15 @@ class PersonController extends Controller
         DB::table('users')
             ->where('id', $id)
             ->update(['email' => $email]);
+    }
+
+    public function updateMaritalStatus($partner, $id)
+    {
+        DB::table('people')
+            ->where('id', $partner)
+            ->update(
+                ['partner' => $id, 'maritalStatus' => 'Casado']
+            );
     }
 
     /**

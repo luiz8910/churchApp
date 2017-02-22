@@ -717,6 +717,12 @@ var ChartsAmcharts = function() {
             }, {
                 "country": $("#marriedMenNoKids_qty_chart_label").val(),
                 "value": $("#marriedMenNoKids_qty_chart_value").val()
+            }, {
+                "country": $("#marriedMenOutsideChurch_qty_chart_label").val(),
+                "value": $("#marriedMenOutsideChurch_qty_chart_value").val()
+            }, {
+                "country": $("#marriedWomenOutsideChurch_qty_chart_label").val(),
+                "value": $("#marriedWomenOutsideChurch_qty_chart_value").val()
             }],
             "valueField": "value",
             "titleField": "country",

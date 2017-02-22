@@ -211,6 +211,11 @@ class GroupController extends Controller
         //Quantidade de homens casados sem filhos
         $quantityMarriedMenNoKids = $this->quantityMarriedMenNoKids($arr);
 
+        //Quantidade de homens com parceira fora da igreja
+        $quantityMarriedWomenOutsideChurch = $this->quantityMarriedWomenOutsideChurch($arr);
+
+        //Quantidade de mulheres com parceiro fora da igreja
+        $quantityMarriedMenOutsideChurch = $this->quantityMarriedMenOutsideChurch($arr);
 
         //Listagem de todas as pessoas que não pertencem ao grupo
         $people = $this->personRepository->findWhereNotIn('id', $arr);
@@ -223,7 +228,8 @@ class GroupController extends Controller
 
         return view('groups.edit', compact('group', 'countPerson', 'countGroups', 'address', 'location',
             'people', 'roles', 'state', 'members', 'quantitySingleMother', 'quantitySingleFather', 'quantitySingleWomen',
-            'quantitySingleMen', 'quantityMarriedWomenNoKids', 'quantityMarriedMenNoKids'));
+            'quantitySingleMen', 'quantityMarriedWomenNoKids', 'quantityMarriedMenNoKids',
+            'quantityMarriedWomenOutsideChurch', 'quantityMarriedMenOutsideChurch'));
     }
 
 
@@ -426,6 +432,40 @@ class GroupController extends Controller
             $person = $this->personRepository->find($member);
 
             if($person->gender == 'M' && !$person->hasKids && $person->maritalStatus == 'Casado')
+            {
+                $qty++;
+            }
+        }
+
+        return $qty;
+    }
+
+    public function quantityMarriedMenOutsideChurch($members)
+    {
+        $qty = 0;
+
+        foreach ($members as $member)
+        {
+            $person = $this->personRepository->find($member);
+
+            if($person->gender == 'M' && $person->maritalStatus == 'Casado' && $person->partner == 0)
+            {
+                $qty++;
+            }
+        }
+
+        return $qty;
+    }
+
+    public function quantityMarriedWomenOutsideChurch($members)
+    {
+        $qty = 0;
+
+        foreach ($members as $member)
+        {
+            $person = $this->personRepository->find($member);
+
+            if($person->gender == 'F' && $person->maritalStatus == 'Casado' && $person->partner == 0)
             {
                 $qty++;
             }
