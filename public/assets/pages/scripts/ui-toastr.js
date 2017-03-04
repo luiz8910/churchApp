@@ -23,74 +23,78 @@ var UIToastr = function () {
                     return msgs[i];
                 };
 
-            $('#showtoast').click(function () {
-                var shortCutFunction = $("#toastTypeGroup input:checked").val();
-                var msg = $('#message').val();
-                var title = $('#title').val() || '';
-                var $showDuration = $('#showDuration');
-                var $hideDuration = $('#hideDuration');
-                var $timeOut = $('#timeOut');
-                var $extendedTimeOut = $('#extendedTimeOut');
-                var $showEasing = $('#showEasing');
-                var $hideEasing = $('#hideEasing');
-                var $showMethod = $('#showMethod');
-                var $hideMethod = $('#hideMethod');
+            $('#input-badge-count').change(function () {
+                console.log("input-badge-count");
+
+                var shortCutFunction = "success";//$("#toastTypeGroup input:checked").val();
+                var msg = "Novo Usuário Registrado";
+                var title = "Atenção";
+                var $showDuration = 1000;
+                var $hideDuration = 1000;
+                var $timeOut = 5000;
+                var $extendedTimeOut = 1000;
+                var $showEasing = "swing";
+                var $hideEasing = "linear";
+                var $showMethod = "fadeIn";
+                var $hideMethod = "fadeOut";
                 var toastIndex = toastCount++;
 
                 toastr.options = {
-                    closeButton: $('#closeButton').prop('checked'),
-                    debug: $('#debugInfo').prop('checked'),
-                    positionClass: $('#positionGroup input:checked').val() || 'toast-top-right',
+                    closeButton: true,
+                    debug: true,
+                    positionClass: 'toast-top-right',
                     onclick: null
                 };
 
-                if ($('#addBehaviorOnToastClick').prop('checked')) {
+                /*if ($('#addBehaviorOnToastClick').prop('checked')) {
                     toastr.options.onclick = function () {
                         alert('You can perform some custom action after a toast goes away');
                     };
+                }*/
+
+                if ($showDuration) {
+                    toastr.options.showDuration = $showDuration;
                 }
 
-                if ($showDuration.val().length) {
-                    toastr.options.showDuration = $showDuration.val();
+                if ($hideDuration) {
+                    toastr.options.hideDuration = $hideDuration;
                 }
 
-                if ($hideDuration.val().length) {
-                    toastr.options.hideDuration = $hideDuration.val();
+                if ($timeOut) {
+                    toastr.options.timeOut = $timeOut;
                 }
 
-                if ($timeOut.val().length) {
-                    toastr.options.timeOut = $timeOut.val();
+                if ($extendedTimeOut) {
+                    toastr.options.extendedTimeOut = $extendedTimeOut;
                 }
 
-                if ($extendedTimeOut.val().length) {
-                    toastr.options.extendedTimeOut = $extendedTimeOut.val();
+                if ($showEasing) {
+                    toastr.options.showEasing = $showEasing;
                 }
 
-                if ($showEasing.val().length) {
-                    toastr.options.showEasing = $showEasing.val();
+                if ($hideEasing) {
+                    toastr.options.hideEasing = $hideEasing;
                 }
 
-                if ($hideEasing.val().length) {
-                    toastr.options.hideEasing = $hideEasing.val();
+                if ($showMethod) {
+                    toastr.options.showMethod = $showMethod;
                 }
 
-                if ($showMethod.val().length) {
-                    toastr.options.showMethod = $showMethod.val();
-                }
-
-                if ($hideMethod.val().length) {
-                    toastr.options.hideMethod = $hideMethod.val();
+                if ($hideMethod) {
+                    toastr.options.hideMethod = $hideMethod;
                 }
 
                 if (!msg) {
                     msg = getMessage();
                 }
 
-                $("#toastrOptions").text("Command: toastr[" + shortCutFunction + "](\"" + msg + (title ? "\", \"" + title : '') + "\")\n\ntoastr.options = " + JSON.stringify(toastr.options, null, 2));
+                toastr.info(msg, title);
+
+                //$("#toastrOptions").text("Command: toastr[" + shortCutFunction + "](\"" + msg + (title ? "\", \"" + title : '') + "\")\n\ntoastr.options = " + JSON.stringify(toastr.options, null, 2));
 
                 var $toast = toastr[shortCutFunction](msg, title); // Wire up an event handler to a button in the toast, if it exists
                 $toastlast = $toast;
-                if ($toast.find('#okBtn').length) {
+                /*if ($toast.find('#okBtn').length) {
                     $toast.delegate('#okBtn', 'click', function () {
                         alert('you clicked me. i was toast #' + toastIndex + '. goodbye!');
                         $toast.remove();
@@ -104,7 +108,7 @@ var UIToastr = function () {
 
                 $('#clearlasttoast').click(function () {
                     toastr.clear($toastlast);
-                });
+                });*/
             });
             $('#cleartoasts').click(function () {
                 toastr.clear();

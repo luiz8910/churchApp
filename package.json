@@ -14,5 +14,10 @@
     "lodash": "^4.16.2",
     "vue": "^2.0.1",
     "vue-resource": "^1.0.3"
+  },
+  "dependencies": {
+    "ioredis": "^2.5.0",
+    "socket.io": "^1.7.3",
+    "socket.io-client": "^1.7.3"
   }
 }

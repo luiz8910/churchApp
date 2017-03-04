@@ -25,11 +25,11 @@ require('vue-resource');
  * included with Laravel will automatically verify the header's value.
  */
 
-Vue.http.interceptors.push((request, next) => {
-    request.headers.set('X-CSRF-TOKEN', Laravel.csrfToken);
+//Vue.http.interceptors.push((request, next) => {
+//    request.headers.set('X-CSRF-TOKEN', Laravel.csrfToken);
 
-    next();
-});
+//    next();
+//});
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
@@ -37,9 +37,9 @@ Vue.http.interceptors.push((request, next) => {
  * allows your team to easily build robust real-time web applications.
  */
 
-// import Echo from "laravel-echo"
+//import Echo from "laravel-echo"
 
-// window.Echo = new Echo({
-//     broadcaster: 'pusher',
-//     key: 'your-pusher-key'
-// });
+//window.Echo = new Echo({
+//    broadcaster: 'pusher',
+//    key: '9f86933032dbae833b7d'
+//});

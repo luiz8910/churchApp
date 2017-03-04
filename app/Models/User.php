@@ -34,4 +34,11 @@ class User extends Authenticatable implements Transformable
         return $this->belongsTo(Person::class);
     }
 
+    public function routeNotificationForSlack()
+    {
+        //return $this->slack_webhook;
+        return "https://hooks.slack.com/services/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";
+    }
+
+
 }

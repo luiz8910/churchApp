@@ -31,7 +31,9 @@
 
 <!-- BEGIN PAGE LEVEL PLUGINS -->
 <link href="../assets/global/plugins/fullcalendar/fullcalendar.min.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.css">
 <!-- END PAGE LEVEL PLUGINS -->
 
 <!-- CSS Próprio -->
 <link href="../css/style.css" rel="stylesheet" type="text/css" />
+<meta name="csrf-token" content="{{ csrf_token() }}">

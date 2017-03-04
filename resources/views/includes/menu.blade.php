@@ -73,7 +73,7 @@
                     </ul>
                 </li>
                 <li class="menu-dropdown mega-menu-dropdown  ">
-                    <a href="javascript:;"> Agendas e Eventos
+                    <a href="{{ route('notify.user') }}"> Agendas e Eventos
                     </a>
                 </li>
                 <li class="menu-dropdown classic-menu-dropdown ">

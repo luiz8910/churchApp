@@ -37,6 +37,7 @@ Route::group(['middleware' => 'auth'], function (){
 
     Route::get('group/{group}', 'GroupController@show')->name('group.show');
 
+
 });
 
 Route::group(["middleware" => "check.role:1"], function () {
@@ -56,6 +57,12 @@ Route::group(["middleware" => "check.role:1"], function () {
     Route::delete('deleteMemberGroup/{group}/{member}', 'GroupController@deleteMember')->name('group.deleteMember');
 
     Route::post('newMember/{group}', 'GroupController@newMemberToGroup')->name('group.newMember');
+
+    Route::get('notify', 'PersonController@notify')->name('notify.user');
+
+    Route::get('pusher', function(){
+        return view('pusher');
+    });
 });
 
 Auth::routes();

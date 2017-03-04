@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\PersonEvent;
 use App\Models\Person;
 use App\Models\User;
+use App\Notifications\Notifications;
 use App\Repositories\CountRepository;
 use App\Repositories\DateRepository;
 use App\Repositories\FormatGoogleMaps;
@@ -14,6 +16,7 @@ use App\Repositories\UserLoginRepository;
 use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Notification;
 
 class PersonController extends Controller
 {
@@ -384,5 +387,28 @@ class PersonController extends Controller
         $this->repository->delete($id);
 
         return redirect()->route('person.index');
+    }
+
+    public function notify()
+    {
+        $user[] = \Auth::getUser();
+
+        $user[] = User::findOrFail(11);
+
+        //$user->notify(new Notifications('123'));
+
+        $person = $this->repository->find(1);
+
+        //dd($person);
+
+        event(new PersonEvent($person));
+
+        //event(new PersonEvent("teste"));
+
+        foreach ($user as $item) {
+            \Notification::send($item, new Notifications('teste usuário'));
+        }
+
+
     }
 }

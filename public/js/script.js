@@ -5,8 +5,6 @@ $(function () {
     members = [];
 
 
-
-
     $("#addMember").click(function () {
 
         member_id = $("#select_members").val();
@@ -120,7 +118,25 @@ $(function () {
         {
             $("#form-partner").attr('hidden', true);
         }
-    })
+    });
+
+
+    $("#input-badge-count").change(function () {
+
+        toastr.success("Clique aqui para ver Detalhes", "Novo Usuário Registrado", {
+            closeButton: true,
+            progressBar: true,
+            positionClass: "toast-top-right",
+            extendedTimeOut: 1000,
+            onclick: function () {
+                var id = parseInt($("#created_person_id").val());
+
+                window.location.href = "/person/"+id+"/edit";
+            }
+        });
+
+    });
+
 
 
 });
