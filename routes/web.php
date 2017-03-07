@@ -63,6 +63,14 @@ Route::group(["middleware" => "check.role:1"], function () {
     Route::get('pusher', function(){
         return view('pusher');
     });
+
+    //Eventos
+
+    Route::get('events/create', 'EventController@create')->name('event.create');
+
+    Route::get('events/create/{id}', 'EventController@create')->name('group.event.create');
+
+    Route::post('events/store', 'EventController@store')->name('event.store');
 });
 
 Auth::routes();

@@ -129,72 +129,204 @@ License: You must have a valid license purchased only from themeforest(the above
 
                             </div>
                             <!-- END BEGIN PROFILE SIDEBAR -->
-                            <!-- BEGIN PROFILE CONTENT -->
-                            <div class="profile-content">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <!-- BEGIN BASIC PORTLET-->
+
+
+                            <!-- BEGIN PAGE CONTENT INNER -->
+                            <div class="page-content-inner">
+                                <!--<div class="row">-->
+                                    <div class="col-md-8 col-sm-12 col-xs-12">
                                         <div class="portlet light portlet-fit ">
                                             <div class="portlet-title">
                                                 <div class="caption">
-                                                    <i class=" icon-layers font-red"></i>
-                                                    <span class="caption-subject font-red bold uppercase">Local do Evento</span>
+                                                    <i class="icon-directions font-green hide"></i>
+                                                    <span class="caption-subject bold font-dark uppercase "> Eventos</span>
+                                                    <span class="caption-helper"></span>
                                                 </div>
                                                 <div class="actions">
-                                                    <a class="btn btn-circle btn-icon-only btn-default"
-                                                       href="javascript:;">
-                                                        <i class="icon-cloud-upload"></i>
-                                                    </a>
-                                                    <a class="btn btn-circle btn-icon-only btn-default"
-                                                       href="javascript:;">
-                                                        <i class="icon-wrench"></i>
-                                                    </a>
-                                                    <a class="btn btn-circle btn-icon-only btn-default"
-                                                       href="javascript:;">
-                                                        <i class="icon-trash"></i>
-                                                    </a>
+                                                    <div class="btn-group">
+                                                        <a class="btn blue btn-outline btn-circle btn-sm" href="javascript:;" data-toggle="dropdown" data-hover="dropdown" data-close-others="true"> Actions
+                                                            <i class="fa fa-angle-down"></i>
+                                                        </a>
+                                                        <ul class="dropdown-menu pull-right">
+                                                            <li>
+                                                                <a href="javascript:;"> Action 1</a>
+                                                            </li>
+                                                            <li class="divider"> </li>
+                                                            <li>
+                                                                <a href="javascript:;">Action 2</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript:;">Action 3</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript:;">Action 4</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="portlet-body">
-                                                <div id="map" style="height: 304px; width: 100%;"></div>
+                                                <div class="cd-horizontal-timeline mt-timeline-horizontal" data-spacing="60">
+                                                    <div class="timeline">
+                                                        <div class="events-wrapper">
+                                                            <div class="events">
+                                                                <ol>
+                                                                    <?php $i = 0; ?>
+                                                                    @foreach($events as $event)
+                                                                        <li>
+                                                                            <a href="#0" data-date="{{ $event->eventDate }}"
+                                                                               class="border-after-red bg-after-red
+                                                                               @if($i == 0) selected @endif">{{ $event->eventDate }}</a>
+                                                                        </li>
+                                                                        <?php $i++; ?>
+                                                                    @endforeach
+                                                                </ol>
+                                                                <span class="filling-line bg-red" aria-hidden="true"></span>
+                                                            </div>
+                                                            <!-- .events -->
+                                                        </div>
+                                                        <!-- .events-wrapper -->
+                                                        <ul class="cd-timeline-navigation mt-ht-nav-icon">
+                                                            <li>
+                                                                <a href="#0" class="prev inactive btn btn-outline red md-skip">
+                                                                    <i class="fa fa-chevron-left"></i>
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="#0" class="next btn btn-outline red md-skip">
+                                                                    <i class="fa fa-chevron-right"></i>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                        <!-- .cd-timeline-navigation -->
+                                                    </div>
+                                                    <!-- .timeline -->
+                                                    <div class="events-content">
+                                                        <ol>
+                                                            <?php $i = 0; ?>
 
-                                                <input type="hidden" value="{{ $location }}" id="location">
+                                                            @foreach($events as $event)
+                                                                <li class="@if($i == 0) selected @endif" data-date="{{ $event->eventDate }}">
+                                                            <div class="mt-title">
+                                                                <h2 class="mt-content-title">{{ $event->name }}</h2>
+                                                            </div>
+                                                            <div class="mt-author">
+                                                                <div class="mt-avatar">
+                                                                    <img src="../../{{ \App\Models\User::findOrFail($event->createdBy_id)->person->imgProfile }}"
+                                                                         title="Criador do Evento" />
+                                                                </div>
+                                                                <div class="mt-author-name">
+                                                                    <a href="javascript:;" class="font-blue-madison">
+                                                                        {{ \App\Models\User::findOrFail($event->createdBy_id)->person->name }}
+                                                                        {{ \App\Models\User::findOrFail($event->createdBy_id)->person->lastName }}
+                                                                    </a>
+                                                                </div>
+                                                                @if($event->endEventDate == $event->eventDate)
+                                                                <div class="mt-author-datetime font-grey-mint">
+                                                                    Inicia-se em: {{ $event->eventDate }} - {{ $event->startTime }}h {{ $event->endTime or '' }}
+                                                                </div>
+                                                                @else
+                                                                    <div class="mt-author-datetime font-grey-mint">
+                                                                        Inicia-se em: {{ $event->eventDate }} - {{ $event->startTime }}h {{ $event->endTime or '' }}
+                                                                    </div>
+                                                                    <div class="mt-author-datetime font-grey-mint">
+                                                                        Termina em: {{ $event->endEventDate }} - {{ $event->endTime or '' }}
+                                                                    </div>
+                                                                @endif
 
-                                                <?php $i = 0; ?>
+                                                            </div>
+                                                            <div class="clearfix"></div>
+                                                            <div class="mt-content border-grey-steel">
+                                                                <p>{{ $event->description }}</p>
+                                                                <!--<a href="javascript:;" class="btn btn-circle red btn-outline">Read More</a>-->
+                                                                <a href="{{ route('group.event.create', ['id' => $group->id]) }}"
+                                                                   title="Novo Evento" class="btn btn-circle btn-icon-only blue">
+                                                                    <i class="fa fa-plus"></i>
+                                                                </a>
+                                                            </div>
+                                                        </li>
 
-                                                @foreach($address as $location)
-                                                    <input type="hidden" value="{{ $location }}" id="location-{{ $i }}">
-                                                    <?php $i++; ?>
-                                                @endforeach
-
-                                                <input type="hidden" value="{{ $i }}" id="qtdeMember">
-
-                                                <input type="hidden" id="lat">
-                                                <input type="hidden" id="lng">
-
-                                                <input type="hidden" id="person-0" value="{{ $group->name }}">
-
-                                                <?php $i = 1; ?>
-                                                @foreach($members as $person)
-                                                    <input type="hidden"
-                                                           value="{{ $person->name }} {{ $person->lastName }}"
-                                                           id="person-{{ $i }}">
-                                                    <input type="hidden" value="{{ $person->role_id }}"
-                                                           id="role-{{ $i }}">
-                                                    <?php $i++; ?>
-                                                @endforeach
+                                                                    <?php $i++; ?>
+                                                            @endforeach
+                                                        </ol>
+                                                    </div>
+                                                    <!-- .events-content -->
+                                                </div>
                                             </div>
                                         </div>
-                                        <!-- END BASIC PORTLET-->
                                     </div>
-                                </div>
 
+                                <!--</div> Fim div row -->
                             </div>
-                            <!-- END PROFILE CONTENT -->
-
+                            <!-- END PAGE CONTENT INNER -->
 
                         </div>
                     </div>
+
+
+
+                    <!-- BEGIN PROFILE CONTENT -->
+                    <div class="profile-content">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <!-- BEGIN BASIC PORTLET-->
+                                <div class="portlet light portlet-fit ">
+                                    <div class="portlet-title">
+                                        <div class="caption">
+                                            <i class=" icon-layers font-red"></i>
+                                            <span class="caption-subject font-red bold uppercase">Local do Evento</span>
+                                        </div>
+                                        <div class="actions">
+                                            <a class="btn btn-circle btn-icon-only btn-default"
+                                               href="javascript:;">
+                                                <i class="icon-cloud-upload"></i>
+                                            </a>
+                                            <a class="btn btn-circle btn-icon-only btn-default"
+                                               href="javascript:;">
+                                                <i class="icon-wrench"></i>
+                                            </a>
+                                            <a class="btn btn-circle btn-icon-only btn-default"
+                                               href="javascript:;">
+                                                <i class="icon-trash"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="portlet-body">
+                                        <div id="map" style="height: 304px; width: 100%;"></div>
+
+                                        <input type="hidden" value="{{ $location }}" id="location">
+
+                                        <?php $i = 0; ?>
+
+                                        @foreach($address as $location)
+                                            <input type="hidden" value="{{ $location }}" id="location-{{ $i }}">
+                                            <?php $i++; ?>
+                                        @endforeach
+
+                                        <input type="hidden" value="{{ $i }}" id="qtdeMember">
+
+                                        <input type="hidden" id="lat">
+                                        <input type="hidden" id="lng">
+
+                                        <input type="hidden" id="person-0" value="{{ $group->name }}">
+
+                                        <?php $i = 1; ?>
+                                        @foreach($members as $person)
+                                            <input type="hidden"
+                                                   value="{{ $person->name }} {{ $person->lastName }}"
+                                                   id="person-{{ $i }}">
+                                            <input type="hidden" value="{{ $person->role_id }}"
+                                                   id="role-{{ $i }}">
+                                            <?php $i++; ?>
+                                        @endforeach
+                                    </div>
+                                </div>
+                                <!-- END BASIC PORTLET-->
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- END PROFILE CONTENT -->
 
                     <!-- BEGIN PROFILE CONTENT -->
                     <div class="profile-content">
@@ -1436,6 +1568,7 @@ License: You must have a valid license purchased only from themeforest(the above
 <!-- BEGIN THEME GLOBAL SCRIPTS -->
 <script src="../../assets/global/scripts/app.min.js" type="text/javascript"></script>
 <script src="../../assets/pages/scripts/charts-amcharts.js" type="text/javascript"></script>
+<script src="../../assets/global/plugins/horizontal-timeline/horizontal-timeline.js" type="text/javascript"></script>
 <!-- END THEME GLOBAL SCRIPTS -->
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
 <script src="../../assets/pages/scripts/components-bootstrap-select.min.js" type="text/javascript"></script>

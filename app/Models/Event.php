@@ -7,25 +7,21 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
-class Group extends Model implements Transformable
+class Event extends Model implements Transformable
 {
     use TransformableTrait, SoftDeletes;
 
+    protected $dates = ['deleted_at'];
+
     protected $fillable = [
-        'name', 'frequency', 'sinceOf', 'imgProfile', 'active', 'owner_id',
+        'name', 'createdBy_id', 'eventDate', 'group_id', 'description',
+        'endEventDate', 'startTime', 'endTime',
         'street', 'neighborhood', 'city', 'zipCode', 'state'
     ];
 
-    protected $dates = ['deleted_at'];
-
-    public function people()
+    public function group()
     {
-        return $this->belongsToMany(Person::class);
-    }
-
-    public function events()
-    {
-        return $this->hasMany(Event::class);
+        return $this->belongsTo(Group::class);
     }
 
 }

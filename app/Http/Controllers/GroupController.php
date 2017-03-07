@@ -166,6 +166,8 @@ class GroupController extends Controller
 
         $countGroups[] = $this->countGroups();
 
+        $events = $this->listGroupEvents($group);
+
         //Endereço do grupo formatado para api do google maps
         $location = $this->formatGoogleMaps($group);
 
@@ -226,7 +228,7 @@ class GroupController extends Controller
 
         $group->sinceOf = $this->formatDateView($group->sinceOf);
 
-        return view('groups.edit', compact('group', 'countPerson', 'countGroups', 'address', 'location',
+        return view('groups.edit', compact('group', 'countPerson', 'countGroups', 'events','address', 'location',
             'people', 'roles', 'state', 'members', 'quantitySingleMother', 'quantitySingleFather', 'quantitySingleWomen',
             'quantitySingleMen', 'quantityMarriedWomenNoKids', 'quantityMarriedMenNoKids',
             'quantityMarriedWomenOutsideChurch', 'quantityMarriedMenOutsideChurch'));
@@ -472,5 +474,22 @@ class GroupController extends Controller
         }
 
         return $qty;
+    }
+
+    public function listGroupEvents($group)
+    {
+        $events = $group->events->all();
+
+        foreach ($events as $event) {
+            $event->eventDate = $this->formatDateView($event->eventDate);
+
+            if($event->endEventDate){
+                $event->endEventDate = $this->formatDateView($event->endEventDate);
+            }
+
+        }
+
+        //dd($events);
+        return $events;
     }
 }
