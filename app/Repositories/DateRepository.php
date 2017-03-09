@@ -30,7 +30,7 @@ trait DateRepository
 
         $mes = substr($date, 5, 2);
 
-        $dia = substr($date, 8);
+        $dia = substr($date, 8, 2);
 
         return $dia.'/'.$mes.'/'.$ano;
     }

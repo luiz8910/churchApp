@@ -151,16 +151,52 @@ License: You must have a valid license purchased only from themeforest(the above
                                     <div class="caption hidden-xs">
                                         <i class=" icon-layers font-green"></i>
                                         <span class="caption-subject font-green sbold uppercase ">Eventos</span>
+
+                                    </div>
+                                    <div class="actions" style="margin-bottom: 25px;">
+                                        <div class="btn-group">
+                                            <a class="btn blue btn-outline btn-circle btn-sm" href="javascript:;" data-toggle="dropdown"
+                                               data-hover="dropdown" data-close-others="true"> Ações
+                                                <i class="fa fa-angle-down"></i>
+                                            </a>
+                                            <ul class="dropdown-menu pull-right">
+                                                <li>
+                                                    <a href="{{ route('event.create') }}">
+                                                        <i class="fa fa-calendar" aria-hidden="true"></i>
+                                                        Novo Evento
+                                                    </a>
+                                                </li>
+                                                <li class="divider"> </li>
+                                                <li>
+                                                    <a href="javascript:;">
+                                                        <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+                                                        Exportar para Excel
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;">
+                                                        <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                                                        Exportar para .PDF
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;">
+                                                        <i class="fa fa-print" aria-hidden="true"></i>
+                                                        Imprimir
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;">
+                                                        <i class="fa fa-clipboard" aria-hidden="true"></i>
+                                                        Copiar
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="portlet-body">
                                     <div class="row">
-                                        <div id="events">
-                                            @foreach($events as $event)
-                                                <input type="hidden" value="{{ $event->name }}" id="name-{{ $event->id }}">
-                                                <input type="hidden" value="{{ $event->eventDate }}" id="eventDate-{{ $event->id }}">
-                                            @endforeach
-                                        </div>
 
                                         <div class="col-md-12">
                                             <div id="agenda"></div>

@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use App\Repositories\CountRepository;
 use App\Repositories\DateRepository;
 use App\Repositories\EventRepository;
+use App\Repositories\FormatGoogleMaps;
 use App\Repositories\StateRepository;
 use Illuminate\Http\Request;
 
 
 class EventController extends Controller
 {
-    use CountRepository, DateRepository;
+    use CountRepository, DateRepository, FormatGoogleMaps;
     /**
      * @var EventRepository
      */
@@ -29,7 +30,22 @@ class EventController extends Controller
 
     public function index()
     {
+        $countPerson[] = $this->countPerson();
 
+        $countGroups[] = $this->countGroups();
+
+        $state = $this->stateRepository->all();
+
+        $roles = $this->repository->all();
+
+        $events = $this->repository->all();
+
+        foreach ($events as $event) {
+            $event->eventDate = $this->formatDateView($event->eventDate);
+            //$event->created_at = $this->formatDateView($event->created_at);
+        }
+
+        return view('events.index', compact('countPerson', 'countGroups', 'state', 'roles', 'events'));
     }
 
     public function create($id = null)
@@ -77,6 +93,22 @@ class EventController extends Controller
     }
 
 
+    public function edit($id)
+    {
+        $countPerson[] = $this->countPerson();
+
+        $countGroups[] = $this->countGroups();
+
+        $state = $this->stateRepository->all();
+
+        $roles = $this->repository->all();
+
+        $event = $this->repository->find($id);
+
+        $location = $this->formatGoogleMaps($event);
+
+        return view('events.edit', compact('countPerson', 'countGroups', 'state', 'roles', 'event', 'location'));
+    }
 
 
 }

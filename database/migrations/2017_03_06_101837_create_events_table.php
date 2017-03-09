@@ -23,6 +23,8 @@ class CreateEventsTable extends Migration
             $table->string('endEventDate');
             $table->string('startTime');
             $table->string('endTime')->nullable();
+            $table->string('frequency')->nullable();
+            $table->boolean('allDay')->default(false);
             $table->text('description');
             $table->string('street')->nullable();
             $table->string('neighborhood')->nullable();

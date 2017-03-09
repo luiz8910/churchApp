@@ -144,12 +144,12 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 </div>
                                                 <div class="actions">
                                                     <div class="btn-group">
-                                                        <a class="btn blue btn-outline btn-circle btn-sm" href="javascript:;" data-toggle="dropdown" data-hover="dropdown" data-close-others="true"> Actions
+                                                        <a class="btn blue btn-outline btn-circle btn-sm" href="javascript:;" data-toggle="dropdown" data-hover="dropdown" data-close-others="true"> Ações
                                                             <i class="fa fa-angle-down"></i>
                                                         </a>
                                                         <ul class="dropdown-menu pull-right">
                                                             <li>
-                                                                <a href="javascript:;"> Action 1</a>
+                                                                <a href="{{ route('group.event.create', ['id' => $group->id]) }}">Novo Evento</a>
                                                             </li>
                                                             <li class="divider"> </li>
                                                             <li>
@@ -241,10 +241,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 <a href="javascript:;" class="btn btn-circle red btn-outline">
                                                                     <i class="fa fa-users"></i>Lista de Participantes
                                                                 </a>
-                                                                <a href="{{ route('group.event.create', ['id' => $group->id]) }}"
-                                                                   title="Novo Evento" class="btn btn-circle blue">
-                                                                    <i class="fa fa-plus"></i>Novo Evento
-                                                                </a>
+
                                                                 <a href="" class="btn btn-circle green">
                                                                     <i class="fa fa-sign-in"></i>Participar
                                                                 </a>
