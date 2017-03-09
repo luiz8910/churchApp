@@ -155,6 +155,19 @@ License: You must have a valid license purchased only from themeforest(the above
                                 </div>
                                 <div class="portlet-body">
                                     <div class="row">
+                                        <div id="events">
+                                            @foreach($events as $event)
+                                                <input type="hidden" value="{{ $event->name }}" id="name-{{ $event->id }}">
+                                                <input type="hidden" value="{{ $event->eventDate }}" id="eventDate-{{ $event->id }}">
+                                            @endforeach
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div id="agenda"></div>
+                                        </div>
+                                    </div>
+                                    <br><br>
+                                    <div class="row">
                                         <div class="col-md-3 col-sm-12">
                                             <!-- BEGIN DRAGGABLE EVENTS PORTLET-->
                                             <h3 class="event-form-title margin-bottom-20">Eventos Dinâmicos</h3>
@@ -1225,7 +1238,11 @@ License: You must have a valid license purchased only from themeforest(the above
 <script src="assets/global/plugins/morris/raphael-min.js" type="text/javascript"></script>
 <script src="assets/global/plugins/counterup/jquery.waypoints.min.js" type="text/javascript"></script>
 <script src="assets/global/plugins/counterup/jquery.counterup.min.js" type="text/javascript"></script>
+
+<script src="../js/events.js" type="text/javascript"></script>
+
 <script src="assets/global/plugins/fullcalendar/fullcalendar.min.js" type="text/javascript"></script>
+<script src="assets/global/plugins/fullcalendar/lang/pt-br.js" type="text/javascript"></script>
 <script src="assets/global/plugins/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
 
 <script src="assets/global/plugins/flot/jquery.flot.min.js" type="text/javascript"></script>
@@ -1233,6 +1250,7 @@ License: You must have a valid license purchased only from themeforest(the above
 <script src="assets/global/plugins/flot/jquery.flot.categories.min.js" type="text/javascript"></script>
 <script src="assets/global/plugins/jquery-easypiechart/jquery.easypiechart.min.js" type="text/javascript"></script>
 <script src="assets/global/plugins/jquery.sparkline.min.js" type="text/javascript"></script>
+
 
 
 @include('includes.charts')

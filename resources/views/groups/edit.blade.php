@@ -176,7 +176,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                         <li>
                                                                             <a href="#0" data-date="{{ $event->eventDate }}"
                                                                                class="border-after-red bg-after-red
-                                                                               @if($i == 0) selected @endif">{{ $event->eventDate }}</a>
+                                                                               @if($i == 0) selected @endif">{{ substr($event->eventDate, 0, 5) }}</a>
                                                                         </li>
                                                                         <?php $i++; ?>
                                                                     @endforeach
@@ -238,10 +238,15 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             <div class="clearfix"></div>
                                                             <div class="mt-content border-grey-steel">
                                                                 <p>{{ $event->description }}</p>
-                                                                <!--<a href="javascript:;" class="btn btn-circle red btn-outline">Read More</a>-->
+                                                                <a href="javascript:;" class="btn btn-circle red btn-outline">
+                                                                    <i class="fa fa-users"></i>Lista de Participantes
+                                                                </a>
                                                                 <a href="{{ route('group.event.create', ['id' => $group->id]) }}"
-                                                                   title="Novo Evento" class="btn btn-circle btn-icon-only blue">
-                                                                    <i class="fa fa-plus"></i>
+                                                                   title="Novo Evento" class="btn btn-circle blue">
+                                                                    <i class="fa fa-plus"></i>Novo Evento
+                                                                </a>
+                                                                <a href="" class="btn btn-circle green">
+                                                                    <i class="fa fa-sign-in"></i>Participar
                                                                 </a>
                                                             </div>
                                                         </li>

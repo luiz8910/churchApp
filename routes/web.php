@@ -71,6 +71,8 @@ Route::group(["middleware" => "check.role:1"], function () {
     Route::get('events/create/{id}', 'EventController@create')->name('group.event.create');
 
     Route::post('events/store', 'EventController@store')->name('event.store');
+
+    Route::get('json-events', 'EventController@json')->name('json-events');
 });
 
 Auth::routes();

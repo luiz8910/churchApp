@@ -8,6 +8,7 @@ use App\Repositories\EventRepository;
 use App\Repositories\StateRepository;
 use Illuminate\Http\Request;
 
+
 class EventController extends Controller
 {
     use CountRepository, DateRepository;
@@ -74,4 +75,8 @@ class EventController extends Controller
 
         return redirect()->route('index');
     }
+
+
+
+
 }
