@@ -146,5 +146,16 @@ $(function () {
         }
     });
 
+    $("#button-success").click(function () {
+        $("#alert-success").css("display", "none");
+    });
+
+    $("#button-info").click(function () {
+        $("#alert-info").css("display", "none");
+    });
+
+    $("#button-danger").click(function () {
+        $("#alert-danger").css("display", "none");
+    });
 
 });

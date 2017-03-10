@@ -175,6 +175,84 @@ License: You must have a valid license purchased only from themeforest(the above
 
                     <div class="row">
                         <div class="col-md-12">
+                            <!-- BEGIN EXAMPLE TABLE PORTLET-->
+                            <div class="portlet light ">
+                                <div class="portlet-title">
+                                    <div class="caption font-dark">
+                                        <i class="icon-settings font-dark"></i>
+                                        <span class="caption-subject bold uppercase"> Participantes</span>
+                                    </div>
+                                    <div class="actions">
+                                        <div class="btn-group btn-group-devided" data-toggle="buttons">
+                                            <label class="btn btn-transparent dark btn-outline btn-circle btn-sm active">
+                                                <input type="radio" name="options" class="toggle"
+                                                       id="option1">Actions</label>
+                                            <label class="btn btn-transparent dark btn-outline btn-circle btn-sm">
+                                                <input type="radio" name="options" class="toggle" id="option2">Settings</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="portlet-body">
+                                    <div class="table-toolbar">
+                                        <div class="row">
+
+                                            <div class="col-md-6">
+                                                <div class="btn-group pull-right">
+                                                    <button class="btn green  btn-outline dropdown-toggle"
+                                                            data-toggle="dropdown">Opções
+                                                        <i class="fa fa-angle-down"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu pull-right">
+                                                        <li>
+                                                            <a href="javascript:;">
+                                                                <i class="fa fa-print"></i> Print </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="javascript:;">
+                                                                <i class="fa fa-file-pdf-o"></i> Save as PDF </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="javascript:;">
+                                                                <i class="fa fa-file-excel-o"></i> Export to Excel </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <table class="table table-striped table-bordered table-hover table-checkable order-column"
+                                           id="sample_1">
+                                        <thead>
+                                        <tr>
+                                            <th>
+                                                <input type="checkbox" class="group-checkable"
+                                                       data-set="#sample_1 .checkboxes"/></th>
+                                            <th> Nome</th>
+                                            <th> Email</th>
+                                            <th> Telefone</th>
+                                            <th> Celular</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($event->people as $item)
+                                                <tr>
+                                                    <td>{{ $item->id }}</td>
+                                                    <td>{{ $item->name }}</td>
+                                                    <td>{{ $item->name }}</td>
+                                                    <td>{{ $item->name }}</td>
+                                                    <td>{{ $item->name }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!-- END EXAMPLE TABLE PORTLET-->
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
                             <div class="portlet light ">
                                 <div class="portlet-title tabbable-line">
                                     <div class="caption caption-md">
@@ -287,9 +365,9 @@ License: You must have a valid license purchased only from themeforest(the above
                                             <div class="col-md-6">
                                                 {!! Form::FormGroup('description', $errors) !!}
                                                 <label class="control-label">Descrição</label>
-                                                <textarea class="form-control" name="description" value=""
+                                                <textarea class="form-control" name="description"
                                                           placeholder="Digite aqui observações importantes sobre o evento"
-                                                          rows="5"></textarea>
+                                                          rows="5" >{{ $event->description }}</textarea>
                                                 {!! Form::error('description', $errors) !!}
                                                 {!! Form::endFormGroup() !!}
                                             </div>
@@ -371,7 +449,6 @@ License: You must have a valid license purchased only from themeforest(the above
                                     </div>
                                     <div class="form-actions">
                                         {!! Form::submit('Enviar', ['class' => 'btn blue']) !!}
-                                        <button type="button" class="btn default">Cancelar</button>
                                     </div>
                                     {!! Form::close() !!}
                                 </div>
@@ -1047,8 +1124,32 @@ License: You must have a valid license purchased only from themeforest(the above
 
 @include('includes.core-scripts-edit')
 
-    <script src="http://maps.google.com/maps/api/js?sensor=false" type="text/javascript"></script>
-    <script src="../../assets/global/plugins/gmaps/gmaps.min.js" type="text/javascript"></script>
+<script src="../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js" type="text/javascript"></script>
+<script src="../../assets/global/plugins/moment.min.js" type="text/javascript"></script>
+<!-- BEGIN PAGE LEVEL PLUGINS -->
+<script src="../../assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.js" type="text/javascript"></script>
+
+<script src="../../assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js" type="text/javascript"></script>
+
+<script src="../../assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js" type="text/javascript"></script>
+<script src="../../assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+<script src="../../assets/global/plugins/clockface/js/clockface.js" type="text/javascript"></script>
+<!-- END PAGE LEVEL PLUGINS -->
+<!-- BEGIN PAGE LEVEL SCRIPTS -->
+<script src="../../assets/pages/scripts/components-date-time-pickers.js" type="text/javascript"></script>
+<!-- END PAGE LEVEL SCRIPTS -->
+<script src="http://maps.google.com/maps/api/js?sensor=false" type="text/javascript"></script>
+<script src="../../assets/global/plugins/gmaps/gmaps.min.js" type="text/javascript"></script>
+
+<script src="../../assets/global/scripts/datatable.js" type="text/javascript"></script>
+<script src="../../assets/global/plugins/datatables/datatables.min.js" type="text/javascript"></script>
+<script src="../../assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js"
+        type="text/javascript"></script>
+<!-- END PAGE LEVEL PLUGINS -->
+
+<!-- BEGIN PAGE LEVEL SCRIPTS -->
+<script src="../../assets/pages/scripts/table-datatables-managed.min.js" type="text/javascript"></script>
+<!-- END PAGE LEVEL SCRIPTS -->
 
 <script>
     $.ajaxSetup({

@@ -55,10 +55,16 @@ class DashboardController extends Controller
                 $x = "";
             }
 
+            $event->allDay = $event->allDay == 1 ? "true" : "false";
+
+
             $json .= '{
                 "title" : '.'"'.$event->name.'"'.',
                 "id": '.'"'.$event->id.'"'.',
-                "start": '.'"'.$event->eventDate.'"'.'
+                "start": '.'"'.$event->eventDate."T".$event->startTime.'"'.',
+                "end": '.'"'.$event->endEventDate.'"'.',
+                "url": '.'"events/'.$event->id.'/edit"'.',
+                "allDay": '.'"'.$event->allDay.'"'.'
             }'.$x.'';
         }
 

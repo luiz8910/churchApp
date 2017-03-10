@@ -238,11 +238,12 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             <div class="clearfix"></div>
                                                             <div class="mt-content border-grey-steel">
                                                                 <p>{{ $event->description }}</p>
-                                                                <a href="javascript:;" class="btn btn-circle red btn-outline">
+                                                                <a href="{{ route('event.edit', ['event' => $event->id]) }}" class="btn btn-circle red btn-outline">
                                                                     <i class="fa fa-users"></i>Lista de Participantes
                                                                 </a>
 
-                                                                <a href="" class="btn btn-circle green">
+                                                                <a href="javascript:;" id="btn-sub-{{ $event->id }}"
+                                                                    class="btn btn-circle green">
                                                                     <i class="fa fa-sign-in"></i>Participar
                                                                 </a>
                                                             </div>
@@ -1604,7 +1605,39 @@ License: You must have a valid license purchased only from themeforest(the above
 <script src="../../assets/pages/scripts/components-bootstrap-select.min.js" type="text/javascript"></script>
 
 
+<script>
 
+    function signUp(id)
+    {
+        var request = $.ajax({
+            url: '/events/signUp/' + id,
+            method: 'POST',
+            data: id,
+            dataType: 'json'
+        });
+
+        request.done(function(e){
+            if(e.status)
+            {
+                //$("#alert-success").css('display', 'block');
+                $("#btn-unsub-"+id).css('display', 'block');
+                $("#btn-sub-"+id).css('display', 'none');
+            }
+            else{
+                $("#alert-info").css('display', 'block');
+                $("#btn-unsub-"+id).css('display', 'none');
+                $("#btn-sub-"+id).css('display', 'block');
+            }
+        });
+
+        request.fail(function (e) {
+            $("#alert-danger").css('display', 'block');
+        });
+
+        return false;
+    }
+
+</script>
 
 
 <!-- END PAGE LEVEL SCRIPTS -->

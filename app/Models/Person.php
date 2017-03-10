@@ -39,4 +39,9 @@ class Person extends Model implements Transformable
         return $this->hasOne(User::class);
     }
 
+    public function events()
+    {
+        return $this->belongsToMany(Event::class);
+    }
+
 }

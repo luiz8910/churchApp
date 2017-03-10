@@ -94,16 +94,32 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 </div>
                                             </div>
                                             <div class="col-lg-4 extra-buttons">
-                                                <button class="btn grey-steel uppercase bold" onclick="novoEvento()" type="button">Novo Evento</button>
+                                                <button class="btn grey-steel uppercase bold" onclick="newEvent()" type="button">Novo Evento</button>
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="alert alert-success alert-dismissible" id="alert-success" role="alert" style="display: none;">
+                                        <button type="button" class="close" id="button-success" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <strong>Sucesso</strong> Você está inscrito
+                                    </div>
+
+                                    <div class="alert alert-info alert-dismissible" id="alert-info" role="alert" style="display: none;">
+                                        <button type="button" class="close" id="button-info" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <strong>Atenção</strong> Você cancelou sua inscrição
+                                    </div>
+
+                                    <div class="alert alert-danger alert-dismissible" id="alert-danger" role="alert" style="display: none;">
+                                        <button type="button" class="close" id="button-danger" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <strong>Erro</strong> Sua solicitação foi recusada
+                                    </div>
+
                                     <div class="search-table table-responsive">
                                         <table class="table table-bordered table-striped table-condensed">
                                             <thead class="bg-blue">
                                             <tr>
                                                 <th>
-                                                    <a href="javascript:;">Status</a>
+                                                    <a href="javascript:;">Participantes</a>
                                                 </th>
                                                 <th>
                                                     <a href="javascript:;">Data</a>
@@ -115,18 +131,20 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <a href="javascript:;">Descrição</a>
                                                 </th>
                                                 <th>
-                                                    <a href="javascript:;">Participantes</a>
+                                                    <a href="javascript:;">Inscreva-se</a>
                                                 </th>
                                             </tr>
                                             </thead>
                                             <tbody>
+                                            <?php $i = 0; ?>
                                             @foreach($events as $event)
                                                 <tr>
-                                                    <td class="table-status">
-                                                        <a href="javascript:;">
-                                                            <i class="icon-arrow-right font-blue"></i>
+                                                    <td class="table-download">
+                                                        <a href="javascript:;" title="Clique para ver os participantes deste evento">
+                                                            <i class="fa fa-users font-green-soft"></i>
                                                         </a>
                                                     </td>
+
                                                     <td class="table-date font-blue">
                                                         <a href="javascript:;">{{ $event->eventDate }}</a>
                                                     </td>
@@ -162,13 +180,56 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <td class="table-desc">
                                                         {{ $event->description }}
                                                     </td>
-                                                    <td class="table-download">
-                                                        <a href="javascript:;" title="Clique para ver os participantes deste evento">
-                                                            <i class="fa fa-users font-green-soft"></i>
-                                                        </a>
-                                                    </td>
+
+                                                    @if(count($event_user[0]) == 0))
+                                                        <td class="table-status">
+                                                            <a href="javascript:;"
+                                                               id="btn-sub-{{ $event->id }}" onclick='signUp("{{ $event->id }}")'
+                                                               title="Clique aqui para se inscrever">
+                                                                <i class="icon-arrow-right font-blue"></i>
+                                                            </a>
+                                                            <a href="javascript:;" style="display: none;"
+                                                               id="btn-unsub-{{ $event->id }}" onclick='signUp("{{ $event->id }}")'
+                                                               title="Clique aqui para cancelar sua inscrição">
+                                                                <i class="icon-ban font-red"></i>
+                                                            </a>
+                                                        </td>
+
+                                                        @else
+                                                            <td class="table-status">
+                                                                <a href="javascript:;"
+                                                                   @if(isset($event_user[0][$i]) && $event_user[0][$i]["id"] == $event->id)
+                                                                   style="display: none"
+                                                                   @else
+
+                                                                   style="display: block;"
+
+                                                                   @endif
+
+                                                                   id="btn-sub-{{ $event->id }}" onclick='signUp("{{ $event->id }}")'
+                                                                   title="Clique aqui para se inscrever">
+                                                                    <i class="icon-arrow-right font-blue"></i>
+                                                                </a>
+                                                                <a href="javascript:;"
+                                                                   @if(isset($event_user[0][$i]) && $event_user[0][$i]["id"] == $event->id)
+                                                                   style="display: block"
+                                                                   @else
+                                                                   style="display: none;"
+
+                                                                   @endif
+
+                                                                   id="btn-unsub-{{ $event->id }}" onclick='signUp("{{ $event->id }}")'
+                                                                   title="Clique aqui para cancelar sua inscrição">
+                                                                    <i class="icon-ban font-red"></i>
+                                                                </a>
+                                                            </td>
+                                                    @endif
+
                                                 </tr>
+                                                <?php $i++; ?>
                                             @endforeach
+
+
                                             <tr>
                                                 <td class="table-status">
                                                     <a href="javascript:;">
@@ -1083,9 +1144,47 @@ License: You must have a valid license purchased only from themeforest(the above
 <!-- END PAGE LEVEL SCRIPTS -->
 
 <script>
-    function novoEvento() {
+    function newEvent()
+    {
         window.location.href = "/events/create";
     }
+
+    function closeButton()
+    {
+        $(this).css("display", "none");
+    }
+
+
+    function signUp(id)
+    {
+        var request = $.ajax({
+            url: '/events/signUp/' + id,
+            method: 'POST',
+            data: id,
+            dataType: 'json'
+        });
+
+        request.done(function(e){
+            if(e.status)
+            {
+                $("#alert-success").css('display', 'block');
+                $("#btn-unsub-"+id).css('display', 'block');
+                $("#btn-sub-"+id).css('display', 'none');
+            }
+            else{
+                $("#alert-info").css('display', 'block');
+                $("#btn-unsub-"+id).css('display', 'none');
+                $("#btn-sub-"+id).css('display', 'block');
+            }
+        });
+
+        request.fail(function (e) {
+            $("#alert-danger").css('display', 'block');
+        });
+
+        return false;
+    }
+
 </script>
 
 </body>

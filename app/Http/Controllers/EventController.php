@@ -7,6 +7,7 @@ use App\Repositories\DateRepository;
 use App\Repositories\EventRepository;
 use App\Repositories\FormatGoogleMaps;
 use App\Repositories\StateRepository;
+use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 
 
@@ -21,11 +22,16 @@ class EventController extends Controller
      * @var StateRepository
      */
     private $stateRepository;
+    /**
+     * @var UserRepository
+     */
+    private $userRepository;
 
-    public function __construct(EventRepository $repository, StateRepository $stateRepository)
+    public function __construct(EventRepository $repository, StateRepository $stateRepository, UserRepository $userRepository)
     {
         $this->repository = $repository;
         $this->stateRepository = $stateRepository;
+        $this->userRepository = $userRepository;
     }
 
     public function index()
@@ -45,7 +51,17 @@ class EventController extends Controller
             //$event->created_at = $this->formatDateView($event->created_at);
         }
 
-        return view('events.index', compact('countPerson', 'countGroups', 'state', 'roles', 'events'));
+        $user = $this->userRepository->find(\Auth::getUser()->id);
+
+        $event_user[] = $user->person->events->all();
+
+        //dd($event_user[0][1]["id"]);
+
+        //dd(isset($event_user[0][1]));
+
+        //dd(count($event_user[0]));
+
+        return view('events.index', compact('countPerson', 'countGroups', 'state', 'roles', 'events', 'event_user'));
     }
 
     public function create($id = null)
@@ -107,7 +123,38 @@ class EventController extends Controller
 
         $location = $this->formatGoogleMaps($event);
 
+        $event->eventDate = $this->formatDateView($event->eventDate);
+        $event->endEventDate = $this->formatDateView($event->endEventDate);
+
         return view('events.edit', compact('countPerson', 'countGroups', 'state', 'roles', 'event', 'location'));
+    }
+
+    public function joinEvent($id)
+    {
+        $event = $this->repository->find($id);
+
+        $subscribed = false;
+
+        $user = \Auth::getUser();
+
+        foreach ($event->people as $item)
+        {
+
+            if($item->id == $user->id)
+            {
+                $event->people()->detach($user->id);
+                $subscribed = true;
+            }
+        }
+
+        if ($subscribed)
+        {
+            echo json_encode(['status' => false]);
+        }
+        else{
+            $event->people()->attach($user->id);
+            echo json_encode(['status' => true]);
+        }
     }
 
 

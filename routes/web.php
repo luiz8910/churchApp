@@ -37,6 +37,23 @@ Route::group(['middleware' => 'auth'], function (){
 
     Route::get('group/{group}', 'GroupController@show')->name('group.show');
 
+    //Eventos
+
+    Route::get('events/create', 'EventController@create')->name('event.create');
+
+    Route::get('events', 'EventController@index')->name('event.index');
+
+    Route::get('events/{event}/edit', 'EventController@edit')->name('event.edit');
+
+    Route::get('events/create/{id}', 'EventController@create')->name('group.event.create');
+
+    Route::post('events/store', 'EventController@store')->name('event.store');
+
+    Route::put('events/{event}', 'EventController@update')->name('event.update');
+
+    Route::get('json-events', 'EventController@json')->name('json-events');
+
+    Route::post('/events/signUp/{id}', 'EventController@joinEvent')->name('event.joinEvent');
 
 });
 
@@ -64,21 +81,7 @@ Route::group(["middleware" => "check.role:1"], function () {
         return view('pusher');
     });
 
-    //Eventos
 
-    Route::get('events/create', 'EventController@create')->name('event.create');
-
-    Route::get('events', 'EventController@index')->name('event.index');
-
-    Route::get('events/{event}/edit', 'EventController@edit')->name('event.edit');
-
-    Route::get('events/create/{id}', 'EventController@create')->name('group.event.create');
-
-    Route::post('events/store', 'EventController@store')->name('event.store');
-
-    Route::put('events/{event}', 'EventController@update')->name('event.update');
-
-    Route::get('json-events', 'EventController@json')->name('json-events');
 });
 
 Auth::routes();

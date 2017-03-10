@@ -251,7 +251,7 @@
                                     <i class="icon-user"></i> Minha conta </a>
                             </li>
                             <li>
-                                <a href="app_calendar.html">
+                                <a href="{{ route('event.index') }}">
                                     <i class="icon-calendar"></i> Eventos </a>
                             </li>
                             <li class="divider"></li>

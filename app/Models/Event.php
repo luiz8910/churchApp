@@ -24,4 +24,9 @@ class Event extends Model implements Transformable
         return $this->belongsTo(Group::class);
     }
 
+    public function people()
+    {
+        return $this->belongsToMany(Person::class);
+    }
+
 }
