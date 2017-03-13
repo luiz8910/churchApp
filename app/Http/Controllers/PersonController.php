@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\AgendaEvent;
 use App\Events\PersonEvent;
+use App\Models\Event;
 use App\Models\Person;
 use App\Models\User;
+use App\Notifications\EventNotification;
 use App\Notifications\Notifications;
 use App\Repositories\CountRepository;
 use App\Repositories\DateRepository;
 use App\Repositories\FormatGoogleMaps;
+use App\Repositories\NotifyRepository;
 use App\Repositories\PersonRepository;
 use App\Repositories\RoleRepository;
 use App\Repositories\StateRepository;
@@ -20,7 +24,7 @@ use Notification;
 
 class PersonController extends Controller
 {
-    use DateRepository, CountRepository, FormatGoogleMaps, UserLoginRepository;
+    use DateRepository, CountRepository, FormatGoogleMaps, UserLoginRepository, NotifyRepository;
     /**
      * @var PersonRepository
      */
@@ -57,6 +61,7 @@ class PersonController extends Controller
 
         $countPerson[] = $this->countPerson();
         $countGroups[] = $this->countGroups();
+        //$notify[] = $this->notify();
 
         return view('people.index', compact('adults', 'countPerson', 'countGroups'));
     }
@@ -72,6 +77,7 @@ class PersonController extends Controller
 
         $countPerson[] = $this->countPerson();
         $countGroups[] = $this->countGroups();
+        $notify[] = $this->notify();
 
         return view('people.teenagers', compact('teen', 'countPerson', 'countGroups'));
     }
@@ -87,6 +93,7 @@ class PersonController extends Controller
 
         $countPerson[] = $this->countPerson();
         $countGroups[] = $this->countGroups();
+        $notify[] = $this->notify();
 
         return view('people.visitors', compact('visitors', 'countPerson', 'countGroups'));
     }
@@ -102,6 +109,7 @@ class PersonController extends Controller
 
         $countPerson[] = $this->countPerson();
         $countGroups[] = $this->countGroups();
+        $notify[] = $this->notify();
 
         return view('people.inactive', compact('inactive', 'countPerson', 'countGroups'));
     }
@@ -131,6 +139,8 @@ class PersonController extends Controller
         $countGroups[] = $this->countGroups();
 
         $adults = $this->repository->findWhere(['tag' => 'adult']);
+
+        $notify[] = $this->notify();
 
         return view('people.create', compact('state', 'roles', 'countPerson', 'countGroups', 'adults'));
     }
@@ -311,7 +321,10 @@ class PersonController extends Controller
 
         $adults = $this->repository->findWhere(['tag' => 'adult', 'gender' => $gender]);
 
-        return view('people.edit', compact('person', 'state', 'location', 'roles', 'countPerson', 'countGroups', 'adults'));
+        //$notify[] = $this->notify();
+
+        return view('people.edit', compact('person', 'state', 'location', 'roles', 'countPerson',
+            'countGroups', 'adults'));
     }
 
     /**
@@ -401,12 +414,16 @@ class PersonController extends Controller
 
         //dd($person);
 
-        event(new PersonEvent($person));
+        $event = Event::findOrFail(1);
+
+        //event(new AgendaEvent($event));
+
+        //event(new PersonEvent($person));
 
         //event(new PersonEvent("teste"));
 
         foreach ($user as $item) {
-            \Notification::send($item, new Notifications('teste usuário'));
+            \Notification::send($item, new Notification('novo Evento'));
         }
 
 

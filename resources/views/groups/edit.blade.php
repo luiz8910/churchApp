@@ -90,6 +90,22 @@ License: You must have a valid license purchased only from themeforest(the above
                         {{ Session::get('group.deleteMember') }}
                     </div>
                 @endif
+
+                <div class="alert alert-success alert-dismissible" id="alert-success" role="alert" style="display: none;">
+                    <button type="button" class="close" id="button-success" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <strong>Sucesso</strong> Você está inscrito
+                </div>
+
+                <div class="alert alert-info alert-dismissible" id="alert-info" role="alert" style="display: none;">
+                    <button type="button" class="close" id="button-info" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <strong>Atenção</strong> Você cancelou sua inscrição
+                </div>
+
+                <div class="alert alert-danger alert-dismissible" id="alert-danger" role="alert" style="display: none;">
+                    <button type="button" class="close" id="button-danger" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <strong>Erro</strong> Sua solicitação não foi processada
+                </div>
+
                 <div class="page-content-inner">
                     <div class="row">
                         <div class="col-md-12">
@@ -242,9 +258,18 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                     <i class="fa fa-users"></i>Lista de Participantes
                                                                 </a>
 
-                                                                <a href="javascript:;" id="btn-sub-{{ $event->id }}"
-                                                                    class="btn btn-circle green">
-                                                                    <i class="fa fa-sign-in"></i>Participar
+                                                                <a href="javascript:;" id="btn-sub-{{ $event->id }}" onclick="signUp('{{ $event->id }}')"
+                                                                   class="btn btn-circle
+                                                                    @if(isset($event_user[0][$i]) && $event_user[0][$i]["id"] == $event->id)
+                                                                           red">
+                                                                    <i class="fa fa-sign-in">
+                                                                    </i>Deixar de Participar
+                                                                    @else
+                                                                            green">
+                                                                            <i class="fa fa-sign-in">
+                                                                            </i>Participar
+                                                                    @endif
+
                                                                 </a>
                                                             </div>
                                                         </li>
@@ -277,7 +302,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                     <div class="portlet-title">
                                         <div class="caption">
                                             <i class=" icon-layers font-red"></i>
-                                            <span class="caption-subject font-red bold uppercase">Local do Evento</span>
+                                            <span class="caption-subject font-red bold uppercase">Endereços</span>
                                         </div>
                                         <div class="actions">
                                             <a class="btn btn-circle btn-icon-only btn-default"
@@ -1604,6 +1629,101 @@ License: You must have a valid license purchased only from themeforest(the above
 
 <script src="../../assets/pages/scripts/components-bootstrap-select.min.js" type="text/javascript"></script>
 
+<script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+<script src="https://js.pusher.com/4.0/pusher.min.js"></script>
+
+<script>
+
+    if($("#UserRole").val() == 1)
+    {
+        //instantiate a Pusher object with our Credential's key
+        var pusher = new Pusher('9f86933032dbae833b7d', {
+
+            encrypted: true
+        });
+
+        //Subscribe to the channel we specified in our Laravel Event
+        var channel = pusher.subscribe('my-channel');
+
+        var event = pusher.subscribe('new-event');
+
+        event.bind('App\\Events\\AgendaEvent', newEvent);
+
+        //Bind a function to a Event (the full Laravel class)
+        channel.bind('App\\Events\\PersonEvent', UserAdded);
+
+        badgeNotify = 0;
+
+        function newEvent(data) {
+            var li = '<li>' +
+                    '<a href="person/'+data.person[0]+'/edit">'+
+                    '<span class="time">Agora</span>'+
+                    '<span class="details">'+
+                    '<span class="label label-sm label-icon label-success">'+
+                    '<i class="fa fa-plus"></i>'+
+                    '</span> Novo Evento. </span>'+
+                    '</a>'+
+                    '</li>';
+
+
+
+            if($("#badge-notify").val() != "")
+            {
+                badgeNotify = parseInt($("#badge-notify").val());
+            }
+
+            badgeNotify++;
+
+            $("#badge-notify").text(badgeNotify);
+
+            $("#created_person_id").val(data.person[0]);
+
+            $("#input-badge-count").text(badgeNotify).trigger("change");
+
+            $("#qtdeNotify").text(badgeNotify + " Nova Notificação");
+
+            $("#eventNotify").prepend(li);
+
+            console.log($("#badge-notify").text());
+        }
+
+        function UserAdded(data) {
+            var li = '<li>' +
+                    '<a href="person/'+data.person[0]+'/edit">'+
+                    '<span class="time">Agora</span>'+
+                    '<span class="details">'+
+                    '<span class="label label-sm label-icon label-success">'+
+                    '<i class="fa fa-plus"></i>'+
+                    '</span> Novo Usuário Registrado. </span>'+
+                    '</a>'+
+                    '</li>';
+
+
+
+            if($("#badge-notify").val() != "")
+            {
+                badgeNotify = parseInt($("#badge-notify").val());
+            }
+
+            badgeNotify++;
+
+            $("#badge-notify").text(badgeNotify);
+
+            $("#created_person_id").val(data.person[0]);
+
+            $("#input-badge-count").text(badgeNotify).trigger("change");
+
+            $("#qtdeNotify").text(badgeNotify + " Nova Notificação");
+
+            $("#eventNotify").prepend(li);
+
+            console.log($("#badge-notify").text());
+        }
+    }
+
+</script>
+
 
 <script>
 
@@ -1619,14 +1739,16 @@ License: You must have a valid license purchased only from themeforest(the above
         request.done(function(e){
             if(e.status)
             {
-                //$("#alert-success").css('display', 'block');
-                $("#btn-unsub-"+id).css('display', 'block');
-                $("#btn-sub-"+id).css('display', 'none');
+                $("#alert-success").css('display', 'block');
+                $("#btn-sub-"+id).addClass('red')
+                                 .removeClass('green')
+                                 .html("<i class='fa fa-sign-in'></i>" + 'Deixar de Participar');
             }
             else{
                 $("#alert-info").css('display', 'block');
-                $("#btn-unsub-"+id).css('display', 'none');
-                $("#btn-sub-"+id).css('display', 'block');
+                $("#btn-sub-"+id).addClass('green')
+                        .removeClass('red')
+                        .html("<i class='fa fa-sign-in'></i>" + 'Participar');
             }
         });
 

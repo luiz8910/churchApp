@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Repositories\CountRepository;
 use App\Repositories\EventRepository;
+use App\Repositories\NotifyRepository;
 use Illuminate\Http\Request;
 use File;
 
 class DashboardController extends Controller
 {
-    use CountRepository;
+    use CountRepository, NotifyRepository;
 
     /**
      * @var EventRepository
@@ -31,7 +32,11 @@ class DashboardController extends Controller
 
         $this->json();
 
-        return view('dashboard.index', compact('countPerson', 'countGroups', 'events'));
+        $notify[] = $this->notify();
+
+        //dd($notify);
+
+        return view('dashboard.index', compact('countPerson', 'countGroups', 'events', 'notify'));
     }
 
     public function json()

@@ -26,6 +26,9 @@
                             <span class="badge badge-default" id="badge-notify"></span>
                             <input type="hidden" id="input-badge-count">
                             <input type="hidden" id="created_person_id">
+
+                            <input type="hidden" id="input-event">
+                            <input type="hidden" id="created_event_id">
                         </a>
                         <ul class="dropdown-menu">
                             <li class="external">
@@ -36,6 +39,8 @@
                                 <ul class="dropdown-menu-list scroller" style="height: 250px;"
                                     data-handle-color="#637283" id="eventNotify">
 
+
+                                    
 
                                 </ul>
                             </li>

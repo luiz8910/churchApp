@@ -6,8 +6,6 @@ $(function () {
 
     $.getJSON("js/events.json", function(json) {
 
-        console.log(json);
-
         $("#agenda").fullCalendar({
             eventSources: [
                 {

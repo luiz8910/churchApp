@@ -3,12 +3,11 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Messages\SlackMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class Notifications extends Notification
+class EventNotification extends Notification
 {
     use Queueable;
 
@@ -17,13 +16,14 @@ class Notifications extends Notification
      *
      * @return void
      */
-
     public $message;
 
+    public $link;
 
-    public function __construct($message)
+    public function __construct($message, $link)
     {
         $this->message = $message;
+        $this->link = $link;
     }
 
     /**
@@ -34,7 +34,6 @@ class Notifications extends Notification
      */
     public function via($notifiable)
     {
-        //dd($notifiable);
         return ['database', 'slack'];
     }
 
@@ -60,17 +59,9 @@ class Notifications extends Notification
      */
     public function toArray($notifiable)
     {
-        //dd($notifiable);
         return [
-             "id" => $this->message
+            "id" => $this->message,
+            "link" => $this->link
         ];
-    }
-
-    public function toSlack($notifiable)
-    {
-        return (new SlackMessage)
-            ->success()
-            ->content($this->message)
-        ;
     }
 }

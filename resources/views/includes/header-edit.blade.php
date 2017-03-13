@@ -1,3 +1,4 @@
+<input type="hidden" id="UserRole" value="{{ Auth::getUser()->person->role_id }}">
 <!-- BEGIN HEADER -->
 <div class="page-header">
     <!-- BEGIN HEADER TOP -->

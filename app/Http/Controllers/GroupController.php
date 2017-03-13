@@ -9,16 +9,18 @@ use App\Repositories\CountRepository;
 use App\Repositories\DateRepository;
 use App\Repositories\FormatGoogleMaps;
 use App\Repositories\GroupRepository;
+use App\Repositories\NotifyRepository;
 use App\Repositories\PersonRepository;
 use App\Repositories\RoleRepository;
 use App\Repositories\StateRepository;
 use App\Repositories\UserLoginRepository;
+use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class GroupController extends Controller
 {
-    use DateRepository, CountRepository, FormatGoogleMaps, UserLoginRepository;
+    use DateRepository, CountRepository, FormatGoogleMaps, UserLoginRepository, NotifyRepository;
     /**
      * @var GroupRepository
      */
@@ -35,6 +37,10 @@ class GroupController extends Controller
      * @var PersonRepository
      */
     private $personRepository;
+    /**
+     * @var UserRepository
+     */
+    private $userRepository;
 
     /**
      * GroupController constructor.
@@ -44,13 +50,15 @@ class GroupController extends Controller
      * @param PersonRepository $personRepository
      */
     public function __construct(GroupRepository $repository, StateRepository $stateRepository,
-                                RoleRepository $roleRepository, PersonRepository $personRepository)
+                                RoleRepository $roleRepository, PersonRepository $personRepository,
+                                UserRepository $userRepository)
     {
 
         $this->repository = $repository;
         $this->stateRepository = $stateRepository;
         $this->roleRepository = $roleRepository;
         $this->personRepository = $personRepository;
+        $this->userRepository = $userRepository;
     }
     /**
      * Exibe todos os grupos
@@ -71,7 +79,9 @@ class GroupController extends Controller
 
         $countGroups[] = $this->countGroups();
 
-        return view('groups.index', compact('groups', 'countPerson', 'countMembers', 'countGroups'));
+        $notify[] = $this->notify();
+
+        return view('groups.index', compact('groups', 'countPerson', 'countMembers', 'countGroups', 'notify'));
     }
 
     /**
@@ -89,7 +99,9 @@ class GroupController extends Controller
 
         $roles = $this->repository->all();
 
-        return view('groups.create', compact('countPerson', 'countGroups', 'state', 'roles'));
+        $notify[] = $this->notify();
+
+        return view('groups.create', compact('countPerson', 'countGroups', 'state', 'roles', 'notify'));
     }
 
     /**
@@ -228,10 +240,22 @@ class GroupController extends Controller
 
         $group->sinceOf = $this->formatDateView($group->sinceOf);
 
+        $user = $this->userRepository->find(\Auth::getUser()->id);
+
+        $event_user[] = $user->person->events->all();
+
+        $notify[] = $this->notify();
+
+        //dd($event_user[0][1]["id"]);
+
+        //dd(isset($event_user[0][1]));
+
+        //dd(count($event_user[0]));
+
         return view('groups.edit', compact('group', 'countPerson', 'countGroups', 'events','address', 'location',
             'people', 'roles', 'state', 'members', 'quantitySingleMother', 'quantitySingleFather', 'quantitySingleWomen',
             'quantitySingleMen', 'quantityMarriedWomenNoKids', 'quantityMarriedMenNoKids',
-            'quantityMarriedWomenOutsideChurch', 'quantityMarriedMenOutsideChurch'));
+            'quantityMarriedWomenOutsideChurch', 'quantityMarriedMenOutsideChurch', 'event_user', 'notify'));
     }
 
 

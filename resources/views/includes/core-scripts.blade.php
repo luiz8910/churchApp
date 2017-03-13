@@ -28,8 +28,6 @@
 
 <script>
 
-    if($("#UserRole").val() == 1)
-    {
         //instantiate a Pusher object with our Credential's key
         var pusher = new Pusher('9f86933032dbae833b7d', {
 
@@ -38,11 +36,49 @@
 
         //Subscribe to the channel we specified in our Laravel Event
         var channel = pusher.subscribe('my-channel');
+        var event = pusher.subscribe('new-event');
 
         //Bind a function to a Event (the full Laravel class)
         channel.bind('App\\Events\\PersonEvent', UserAdded);
+        event.bind('App\\Events\\AgendaEvent', newEvent);
 
         badgeNotify = 0;
+
+        function newEvent(data) {
+            console.log(data.event.name);
+            var li = '<li>' +
+                    '<a href="events/'+data.event.id+'/edit">'+
+                    '<span class="time">Agora</span>'+
+                    '<span class="details">'+
+                    '<span class="label label-sm label-icon label-success">'+
+                    '<i class="fa fa-plus"></i>'+
+                    '</span> Novo Evento. </span>'+
+                    '</a>'+
+                    '</li>';
+
+
+
+            if($("#badge-notify").val() != "")
+            {
+                badgeNotify = parseInt($("#badge-notify").val());
+            }
+
+            badgeNotify++;
+
+            $("#badge-notify").text(badgeNotify);
+
+            $("#created_event_id").val(data.event.id);
+
+            $("#input-event").trigger("change");
+
+            $("#input-badge-count").text(badgeNotify);
+
+            $("#qtdeNotify").text(badgeNotify + " Notificações");
+
+            $("#eventNotify").prepend(li);
+
+            console.log($("#badge-notify").text());
+        }
 
         function UserAdded(data) {
             var li = '<li>' +
@@ -70,12 +106,12 @@
 
             $("#input-badge-count").text(badgeNotify).trigger("change");
 
-            $("#qtdeNotify").text(badgeNotify + " Nova Notificação");
+            $("#qtdeNotify").text(badgeNotify + " Notificações");
 
             $("#eventNotify").prepend(li);
 
             console.log($("#badge-notify").text());
         }
-    }
+
 
 </script>

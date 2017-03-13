@@ -12,4 +12,25 @@
                 "end": "2017-03-12",
                 "url": "events/2/edit",
                 "allDay": "false"
+            },{
+                "title" : "Estudo da bíblia",
+                "id": "3",
+                "start": "2017-03-15T19:00",
+                "end": "2017-03-15",
+                "url": "events/3/edit",
+                "allDay": "false"
+            },{
+                "title" : "Encontro de Lideres",
+                "id": "4",
+                "start": "2017-03-16T18:00",
+                "end": "2017-03-16",
+                "url": "events/4/edit",
+                "allDay": "false"
+            },{
+                "title" : "Evento Grupo de Jovens",
+                "id": "5",
+                "start": "2017-03-22T18:00",
+                "end": "2017-03-22",
+                "url": "events/5/edit",
+                "allDay": "false"
             }]

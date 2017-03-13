@@ -137,6 +137,20 @@ $(function () {
 
     });
 
+    $("#input-event").change(function () {
+        toastr.success("Clique aqui para ver Detalhes", "Novo Evento", {
+            closeButton: true,
+            progressBar: true,
+            positionClass: "toast-top-right",
+            extendedTimeOut: 1000,
+            onclick: function () {
+                var id = parseInt($("#created_event_id").val());
+
+                window.location.href = "/events/"+id+"/edit";
+            }
+        });
+    });
+
     //called when key is pressed in input
     $(".time").keypress(function (e) {
         //if the letter is not digit then display error and don't type anything

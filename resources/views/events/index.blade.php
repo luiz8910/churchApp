@@ -111,7 +111,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                     <div class="alert alert-danger alert-dismissible" id="alert-danger" role="alert" style="display: none;">
                                         <button type="button" class="close" id="button-danger" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                        <strong>Erro</strong> Sua solicitação foi recusada
+                                        <strong>Erro</strong> Sua solicitação não foi processada
                                     </div>
 
                                     <div class="search-table table-responsive">
@@ -1180,6 +1180,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
         request.fail(function (e) {
             $("#alert-danger").css('display', 'block');
+            console.log(e);
         });
 
         return false;
