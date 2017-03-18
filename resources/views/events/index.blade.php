@@ -25,6 +25,7 @@ License: You must have a valid license purchased only from themeforest(the above
     <link href="../assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
     <link href="../assets/global/plugins/fancybox/source/jquery.fancybox.css" rel="stylesheet" type="text/css" />
     <link href="../assets/pages/css/search.min.css" rel="stylesheet" type="text/css" />
+    <script src="../js/ajax.js"></script>
 
 </head>
 <!-- END HEAD -->
@@ -109,346 +110,137 @@ License: You must have a valid license purchased only from themeforest(the above
                                         <strong>Atenção</strong> Você cancelou sua inscrição
                                     </div>
 
-                                    <div class="alert alert-danger alert-dismissible" id="alert-danger" role="alert" style="display: none;">
+                                    <div class="alert alert-danger alert-dismissible"  role="alert" style="display: none;">
                                         <button type="button" class="close" id="button-danger" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                         <strong>Erro</strong> Sua solicitação não foi processada
                                     </div>
 
-                                    <div class="search-table table-responsive">
-                                        <table class="table table-bordered table-striped table-condensed">
-                                            <thead class="bg-blue">
-                                            <tr>
-                                                <th>
-                                                    <a href="javascript:;">Participantes</a>
-                                                </th>
-                                                <th>
-                                                    <a href="javascript:;">Data</a>
-                                                </th>
-                                                <th>
-                                                    <a href="javascript:;">Nome</a>
-                                                </th>
-                                                <th>
-                                                    <a href="javascript:;">Descrição</a>
-                                                </th>
-                                                <th>
-                                                    <a href="javascript:;">Inscreva-se</a>
-                                                </th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <?php $i = 0; ?>
-                                            @foreach($events as $event)
-                                                <tr>
-                                                    <td class="table-download">
-                                                        <a href="javascript:;" title="Clique para ver os participantes deste evento">
-                                                            <i class="fa fa-users font-green-soft"></i>
-                                                        </a>
-                                                    </td>
+                                    @if(Session::has('event.deleted'))
+                                        <div class="alert alert-danger alert-dismissible" id="alert-danger" role="alert" style="display: block;">
+                                            <button type="button" class="close" id="button-danger" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <strong>Atenção</strong> {{ Session::get('event.deleted') }}
+                                        </div>
+                                    @endif
 
-                                                    <td class="table-date font-blue">
-                                                        <a href="javascript:;">{{ $event->eventDate }}</a>
-                                                    </td>
-                                                    <td class="table-title">
-                                                        <h3>
-                                                            <a href="{{ route('event.edit', ['event' => $event->id]) }}">
-                                                                {{ $event->name }}
-                                                            </a>
-                                                        </h3>
-                                                        <p>Criado por:
-                                                            <a
-                                                                    href="{{ route('person.edit',
-                                                                    ['person' => \App\Models\User::findOrFail($event->createdBy_id)->person->id]) }}">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <!-- BEGIN BORDERED TABLE PORTLET-->
+                                            <div class="portlet light portlet-fit ">
+                                                <div class="portlet-title">
+                                                    <div class="caption">
+                                                        <i class="icon-settings font-red"></i>
+                                                        <span class="caption-subject font-red sbold uppercase">Eventos</span>
+                                                    </div>
+                                                    <div class="actions">
+                                                        {!! Form::open(['route' => 'event.destroyMany', 'id' => 'form-destroyMany', 'method' => 'GET']) !!}
+                                                        <div class="btn-group btn-group-devided">
 
-                                                                {{ \App\Models\User::findOrFail($event->createdBy_id)->person->name }}
-                                                                {{ \App\Models\User::findOrFail($event->createdBy_id)->person->lastName }}
-                                                            </a> -
-                                                            <span class="font-grey-cascade">{{ $event->created_at }}</span>
+                                                            <div id="eventToDel">
 
-                                                        </p>
-                                                        <p>
-                                                            Grupo:
-                                                            
-                                                            @if($event->group_id)
-                                                                <a href="{{ route('group.edit', ['group' => $event->group_id]) }}">
-                                                                    {{ \App\Models\Group::findOrFail($event->group_id)->name }}
+                                                            </div>
+
+                                                                <a href=""
+                                                                   class="btn btn-danger btn-circle" id="btn-delete-event"
+                                                                   onclick="event.preventDefault();document.getElementById('form-destroyMany').submit();"
+                                                                   style="display: none;">
+                                                                    <i class="fa fa-close"></i>
+                                                                    Excluir selecionados
                                                                 </a>
-                                                            @else
-                                                                Sem Grupo
-                                                            @endif
-                                                        </p>
-                                                    </td>
-                                                    <td class="table-desc">
-                                                        {{ $event->description }}
-                                                    </td>
 
-                                                    @if(count($event_user[0]) == 0))
-                                                        <td class="table-status">
-                                                            <a href="javascript:;"
-                                                               id="btn-sub-{{ $event->id }}" onclick='signUp("{{ $event->id }}")'
-                                                               title="Clique aqui para se inscrever">
-                                                                <i class="icon-arrow-right font-blue"></i>
-                                                            </a>
-                                                            <a href="javascript:;" style="display: none;"
-                                                               id="btn-unsub-{{ $event->id }}" onclick='signUp("{{ $event->id }}")'
-                                                               title="Clique aqui para cancelar sua inscrição">
-                                                                <i class="icon-ban font-red"></i>
-                                                            </a>
-                                                        </td>
-
-                                                        @else
-                                                            <td class="table-status">
-                                                                <a href="javascript:;"
-                                                                   @if(isset($event_user[0][$i]) && $event_user[0][$i]["id"] == $event->id)
-                                                                   style="display: none"
-                                                                   @else
-
-                                                                   style="display: block;"
-
-                                                                   @endif
-
-                                                                   id="btn-sub-{{ $event->id }}" onclick='signUp("{{ $event->id }}")'
-                                                                   title="Clique aqui para se inscrever">
-                                                                    <i class="icon-arrow-right font-blue"></i>
+                                                                <a href="javascript:;" class="btn btn-primary btn-circle">
+                                                                    <i class="fa fa-plus"></i>
+                                                                    Novo Evento
                                                                 </a>
-                                                                <a href="javascript:;"
-                                                                   @if(isset($event_user[0][$i]) && $event_user[0][$i]["id"] == $event->id)
-                                                                   style="display: block"
-                                                                   @else
-                                                                   style="display: none;"
+                                                                <label class="btn grey-salsa btn-sm">
+                                                                    <input type="radio" name="options" class="toggle" id="option2">Settings</label>
+                                                        </div>
+                                                        {!! Form::close() !!}
+                                                    </div>
+                                                </div>
+                                                <div class="portlet-body">
+                                                    <div class="table-scrollable table-scrollable-borderless">
+                                                        <table class="table table-hover table-light">
+                                                            <thead>
+                                                            <tr class="uppercase">
+                                                                <th> # </th>
+                                                                <th> Nome </th>
+                                                                <th> Frequência </th>
+                                                                <th> Criado Por </th>
+                                                                <th> Grupo </th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            @foreach($events as $event)
+                                                                <tr>
+                                                                    <td>
+                                                                        @if(Auth::getUser()->person->role_id == 1)
+                                                                            <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                                                                <input type="checkbox" name="events" class="checkboxes check-event" id="check-{{ $event->id }}"
+                                                                                       value="{{ $event->id }}" />
+                                                                                <span></span>
+                                                                            </label>
+                                                                        @endif
+                                                                    </td>
+                                                                    <td>
+                                                                        <a href="{{ route('event.edit', ['event' => $event->id]) }}">
+                                                                            {{ $event->name }}
+                                                                        </a>
+                                                                    </td>
+                                                                    <td> {{ $event->frequency }} </td>
+                                                                    <td>
+                                                                        <a href="{{ route('person.edit',
+                                                                            ['person' => \App\Models\User::find($event->createdBy_id)->person->id]) }}">
+                                                                            {{ \App\Models\User::find($event->createdBy_id)->person->name }}
+                                                                        </a>
+                                                                    </td>
+                                                                    <td>
+                                                                        @if($event->group_id)
+                                                                            <a href="{{ route("group.edit", ['group' => $event->group_id]) }}">
+                                                                                {{ $event['group_name'] }}
+                                                                            </a>
+                                                                            @else Sem Grupo
+                                                                        @endif
+                                                                    </td>
 
-                                                                   @endif
+                                                                    @if(Auth::getUser()->person->role_id == 1)
+                                                                        <?php $deleteForm = "delete-" . $event->id; ?>
+                                                                        <td id="{{ $deleteForm }}">
+                                                                            {!! Form::open(['route' => ['event.destroy', 'event' => $event->id],
+                                                                                    'method' => 'DELETE', 'id' => 'form-'.$deleteForm]) !!}
 
-                                                                   id="btn-unsub-{{ $event->id }}" onclick='signUp("{{ $event->id }}")'
-                                                                   title="Clique aqui para cancelar sua inscrição">
-                                                                    <i class="icon-ban font-red"></i>
-                                                                </a>
-                                                            </td>
-                                                    @endif
+                                                                            <a href="" class="btn btn-danger btn-sm"
+                                                                               title="Excluir evento"
+                                                                               onclick='event.preventDefault();document.getElementById("form-{{ $deleteForm }}").submit();'>
+                                                                                <i class="fa fa-close"> Excluir</i>
+                                                                            </a>
 
-                                                </tr>
-                                                <?php $i++; ?>
-                                            @endforeach
+                                                                            {!! Form::close() !!}
+                                                                        </td>
+                                                                    @endif
+
+                                                                </tr>
+                                                            @endforeach
+
+                                                            </tbody>
+
+                                                        </table>
+                                                        <br>
+                                                        <div class="pull-right">
+                                                            {{ $events->links() }}
+                                                        </div>
 
 
-                                            <tr>
-                                                <td class="table-status">
-                                                    <a href="javascript:;">
-                                                        <i class="icon-arrow-right font-blue"></i>
-                                                    </a>
-                                                </td>
-                                                <td class="table-date font-blue">
-                                                    <a href="javascript:;">17, Out de 2015</a>
-                                                </td>
-                                                <td class="table-title">
-                                                    <h3>
-                                                        <a href="javascript:;">Lorem ipsum dolor</a>
-                                                    </h3>
-                                                    <p>Last Activity:
-                                                        <a href="javascript:;">Bob Robson</a> -
-                                                        <span class="font-grey-cascade">25 mins ago</span>
-                                                    </p>
-                                                </td>
-                                                <td class="table-desc"> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy sead euismod dolore tincidunt ut laoreet dolore dolor sit amet </td>
-                                                <td class="table-download">
-                                                    <a href="javascript:;">
-                                                        <i class="icon-doc font-green-soft"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="table-status">
-                                                    <a href="javascript:;">
-                                                        <i class="icon-check font-grey"></i>
-                                                    </a>
-                                                </td>
-                                                <td class="table-date font-blue">
-                                                    <a href="javascript:;">October 15, 2015</a>
-                                                </td>
-                                                <td class="table-title">
-                                                    <h3>
-                                                        <a href="javascript:;">Typi non habent</a>
-                                                    </h3>
-                                                    <p>Last Activity:
-                                                        <a href="javascript:;">Bob Robson</a> -
-                                                        <span class="font-grey-cascade">25 mins ago</span>
-                                                    </p>
-                                                </td>
-                                                <td class="table-desc"> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy sead euismod dolore tincidunt ut laoreet dolore dolor sit amet </td>
-                                                <td class="table-download">
-                                                    <a href="javascript:;">
-                                                        <i class="icon-doc font-green-soft"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="table-status">
-                                                    <a href="javascript:;">
-                                                        <i class="icon-arrow-right font-blue"></i>
-                                                    </a>
-                                                </td>
-                                                <td class="table-date font-blue">
-                                                    <a href="javascript:;">October 12, 2015</a>
-                                                </td>
-                                                <td class="table-title">
-                                                    <h3>
-                                                        <a href="javascript:;">Metronic Admin Search Result</a>
-                                                    </h3>
-                                                    <p>Last Activity:
-                                                        <a href="javascript:;">Bob Robson</a> -
-                                                        <span class="font-grey-cascade">25 mins ago</span>
-                                                    </p>
-                                                </td>
-                                                <td class="table-desc"> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy sead euismod dolore tincidunt ut laoreet dolore dolor sit amet </td>
-                                                <td class="table-download">
-                                                    <a href="javascript:;">
-                                                        <i class="icon-doc font-green-soft"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="table-status">
-                                                    <a href="javascript:;">
-                                                        <i class="icon-arrow-right font-blue"></i>
-                                                    </a>
-                                                </td>
-                                                <td class="table-date font-blue">
-                                                    <a href="javascript:;">October 11, 2015</a>
-                                                </td>
-                                                <td class="table-title">
-                                                    <h3>
-                                                        <a href="javascript:;">Mirum est notare</a>
-                                                    </h3>
-                                                    <p>Last Activity:
-                                                        <a href="javascript:;">Bob Robson</a> -
-                                                        <span class="font-grey-cascade">25 mins ago</span>
-                                                    </p>
-                                                </td>
-                                                <td class="table-desc"> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy sead euismod dolore tincidunt ut laoreet dolore dolor sit amet </td>
-                                                <td class="table-download">
-                                                    <a href="javascript:;">
-                                                        <i class="icon-doc font-green-soft"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="table-status">
-                                                    <a href="javascript:;">
-                                                        <i class="icon-check font-grey"></i>
-                                                    </a>
-                                                </td>
-                                                <td class="table-date font-blue">
-                                                    <a href="javascript:;">October 9, 2015</a>
-                                                </td>
-                                                <td class="table-title">
-                                                    <h3>
-                                                        <a href="javascript:;">Metronic Admin Reborn</a>
-                                                    </h3>
-                                                    <p>Last Activity:
-                                                        <a href="javascript:;">Bob Robson</a> -
-                                                        <span class="font-grey-cascade">25 mins ago</span>
-                                                    </p>
-                                                </td>
-                                                <td class="table-desc"> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy sead euismod dolore tincidunt ut laoreet dolore dolor sit amet </td>
-                                                <td class="table-download">
-                                                    <a href="javascript:;">
-                                                        <i class="icon-doc font-green-soft"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="table-status">
-                                                    <a href="javascript:;">
-                                                        <i class="icon-check font-grey"></i>
-                                                    </a>
-                                                </td>
-                                                <td class="table-date font-blue">
-                                                    <a href="javascript:;">October 9, 2015</a>
-                                                </td>
-                                                <td class="table-title">
-                                                    <h3>
-                                                        <a href="javascript:;">Metronic Admin Reborn</a>
-                                                    </h3>
-                                                    <p>Last Activity:
-                                                        <a href="javascript:;">Bob Robson</a> -
-                                                        <span class="font-grey-cascade">25 mins ago</span>
-                                                    </p>
-                                                </td>
-                                                <td class="table-desc"> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy sead euismod dolore tincidunt ut laoreet dolore dolor sit amet </td>
-                                                <td class="table-download">
-                                                    <a href="javascript:;">
-                                                        <i class="icon-doc font-green-soft"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="table-status">
-                                                    <a href="javascript:;">
-                                                        <i class="icon-arrow-right font-blue"></i>
-                                                    </a>
-                                                </td>
-                                                <td class="table-date font-blue">
-                                                    <a href="javascript:;">October 6, 2015</a>
-                                                </td>
-                                                <td class="table-title">
-                                                    <h3>
-                                                        <a href="javascript:;">Metronic Admin Reborn Progress</a>
-                                                    </h3>
-                                                    <p>Last Activity:
-                                                        <a href="javascript:;">Bob Robson</a> -
-                                                        <span class="font-grey-cascade">25 mins ago</span>
-                                                    </p>
-                                                </td>
-                                                <td class="table-desc"> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy sead euismod dolore tincidunt ut laoreet dolore dolor sit amet </td>
-                                                <td class="table-download">
-                                                    <a href="javascript:;">
-                                                        <i class="icon-doc font-green-soft"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="table-status">
-                                                    <a href="javascript:;">
-                                                        <i class="icon-arrow-right font-blue"></i>
-                                                    </a>
-                                                </td>
-                                                <td class="table-date font-blue">
-                                                    <a href="javascript:;">October 3, 2015</a>
-                                                </td>
-                                                <td class="table-title">
-                                                    <h3>
-                                                        <a href="javascript:;">Metronic Search Page 5</a>
-                                                    </h3>
-                                                    <p>Last Activity:
-                                                        <a href="javascript:;">Bob Robson</a> -
-                                                        <span class="font-grey-cascade">25 mins ago</span>
-                                                    </p>
-                                                </td>
-                                                <td class="table-desc"> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy sead euismod dolore tincidunt ut laoreet dolore dolor sit amet </td>
-                                                <td class="table-download">
-                                                    <a href="javascript:;">
-                                                        <i class="icon-doc font-green-soft"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+                                            <!-- END BORDERED TABLE PORTLET-->
+                                        </div>
                                     </div>
-                                    <div class="search-pagination pagination-rounded">
-                                        <ul class="pagination">
-                                            <li class="page-active">
-                                                <a href="javascript:;"> 1 </a>
-                                            </li>
-                                            <li>
-                                                <a href="javascript:;"> 2 </a>
-                                            </li>
-                                            <li>
-                                                <a href="javascript:;"> 3 </a>
-                                            </li>
-                                            <li>
-                                                <a href="javascript:;"> 4 </a>
-                                            </li>
-                                        </ul>
-                                    </div>
+
+
+
                                 </div>
                             </div>
                             <!-- END PAGE CONTENT INNER -->
@@ -1141,6 +933,7 @@ License: You must have a valid license purchased only from themeforest(the above
 <!-- END PAGE LEVEL PLUGINS -->
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
 <script src="../assets/pages/scripts/search.min.js" type="text/javascript"></script>
+
 <!-- END PAGE LEVEL SCRIPTS -->
 
 <script>
@@ -1152,38 +945,6 @@ License: You must have a valid license purchased only from themeforest(the above
     function closeButton()
     {
         $(this).css("display", "none");
-    }
-
-
-    function signUp(id)
-    {
-        var request = $.ajax({
-            url: '/events/signUp/' + id,
-            method: 'POST',
-            data: id,
-            dataType: 'json'
-        });
-
-        request.done(function(e){
-            if(e.status)
-            {
-                $("#alert-success").css('display', 'block');
-                $("#btn-unsub-"+id).css('display', 'block');
-                $("#btn-sub-"+id).css('display', 'none');
-            }
-            else{
-                $("#alert-info").css('display', 'block');
-                $("#btn-unsub-"+id).css('display', 'none');
-                $("#btn-sub-"+id).css('display', 'block');
-            }
-        });
-
-        request.fail(function (e) {
-            $("#alert-danger").css('display', 'block');
-            console.log(e);
-        });
-
-        return false;
     }
 
 </script>

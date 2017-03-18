@@ -32,11 +32,13 @@ class DashboardController extends Controller
 
         $this->json();
 
-        $notify[] = $this->notify();
+        $notify = $this->notify();
+
+        $qtde = count($notify);
 
         //dd($notify);
 
-        return view('dashboard.index', compact('countPerson', 'countGroups', 'events', 'notify'));
+        return view('dashboard.index', compact('countPerson', 'countGroups', 'events', 'notify', 'qtde'));
     }
 
     public function json()

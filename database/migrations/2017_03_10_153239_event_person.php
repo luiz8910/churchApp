@@ -20,8 +20,10 @@ class EventPerson extends Migration
             $table->integer('person_id')->unsigned();
             $table->foreign('person_id')->references('id')->on('people');
 
+            $table->string('eventDate');
+            $table->boolean('check-in')->default(false);
+
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

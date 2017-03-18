@@ -16,11 +16,24 @@ trait NotifyRepository
         $user = \Auth::getUser();
 
         $notify = [];
+        $verify = [];
 
         foreach($user->notifications as $notification)
         {
-            $notify[] = $notification->data;
+            if(count($notify) > 0)
+            {
+                if(!in_array($notification->data, $verify))
+                {
+                    $notify[] = $notification;
+                    $verify[] = $notification->data;
+                }
+            }else{
+                $notify[] = $notification;
+                $verify[] = $notification->data;
+            }
+
         }
+
 
         return $notify;
     }

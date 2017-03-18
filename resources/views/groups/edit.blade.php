@@ -320,7 +320,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                         </div>
                                     </div>
                                     <div class="portlet-body">
-                                        <div id="map" style="height: 304px; width: 100%;"></div>
+                                        <div id="map" style="height: 400px; width: 100%;"></div>
 
                                         <input type="hidden" value="{{ $location }}" id="location">
 

@@ -1,36 +1,29 @@
 [{
                 "title" : "Acampamento de Jovens",
                 "id": "1",
-                "start": "2017-03-10T08:00",
-                "end": "2017-03-10",
+                "start": "2017-03-16T09:00",
+                "end": "2017-03-16",
                 "url": "events/1/edit",
-                "allDay": "false"
+                "allDay": "true"
             },{
-                "title" : "Teste Evento",
-                "id": "2",
-                "start": "2017-03-11T06:00",
-                "end": "2017-03-12",
-                "url": "events/2/edit",
+                "title" : "Encontro da Opressão",
+                "id": "6",
+                "start": "2017-03-30T08:00",
+                "end": "2017-03-30",
+                "url": "events/6/edit",
                 "allDay": "false"
             },{
                 "title" : "Estudo da bíblia",
-                "id": "3",
-                "start": "2017-03-15T19:00",
-                "end": "2017-03-15",
-                "url": "events/3/edit",
-                "allDay": "false"
-            },{
-                "title" : "Encontro de Lideres",
-                "id": "4",
-                "start": "2017-03-16T18:00",
+                "id": "10",
+                "start": "2017-03-16T10:00",
                 "end": "2017-03-16",
-                "url": "events/4/edit",
-                "allDay": "false"
+                "url": "events/10/edit",
+                "allDay": "true"
             },{
-                "title" : "Evento Grupo de Jovens",
-                "id": "5",
-                "start": "2017-03-22T18:00",
-                "end": "2017-03-22",
-                "url": "events/5/edit",
-                "allDay": "false"
+                "title" : "Reunião de Líderes",
+                "id": "11",
+                "start": "2017-03-17T18:00",
+                "end": "2017-03-17",
+                "url": "events/11/edit",
+                "allDay": "true"
             }]

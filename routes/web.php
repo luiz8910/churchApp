@@ -55,6 +55,14 @@ Route::group(['middleware' => 'auth'], function (){
 
     Route::post('/events/signUp/{id}', 'EventController@joinEvent')->name('event.joinEvent');
 
+    Route::delete('events/delete/{id}', 'EventController@destroy')->name('event.destroy');
+
+    Route::get('events/deleteMany/', 'EventController@destroyMany')->name('event.destroyMany');
+
+    Route::get('events/test', 'EventController@testEventNotification');
+
+    Route::get('notify', 'PersonController@notify')->name('notify.user');
+
 });
 
 Route::group(["middleware" => "check.role:1"], function () {
@@ -75,7 +83,7 @@ Route::group(["middleware" => "check.role:1"], function () {
 
     Route::post('newMember/{group}', 'GroupController@newMemberToGroup')->name('group.newMember');
 
-    Route::get('notify', 'PersonController@notify')->name('notify.user');
+
 
     Route::get('pusher', function(){
         return view('pusher');

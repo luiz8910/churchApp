@@ -28,6 +28,8 @@ License: You must have a valid license purchased only from themeforest(the above
     <link href="../../assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css" rel="stylesheet" type="text/css" />
     <link href="../../assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
     <link href="../../assets/global/plugins/clockface/css/clockface.css" rel="stylesheet" type="text/css" />
+    <link href="../../assets/global/plugins/fancybox/source/jquery.fancybox.css" rel="stylesheet" type="text/css" />
+
 </head>
 <!-- END HEAD -->
 
@@ -126,12 +128,12 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-6" id="frequency">
                                                 <div class="form-group">
                                                     <label>Frequência</label>
                                                     <div class="input-icon input-icon-sm">
                                                         <i class="fa fa-briefcase"></i>
-                                                        <select class="form-control" name="frequency">
+                                                        <select class="form-control" id="select-frequency" name="frequency">
                                                             <option value="Encontro Único">Encontro Único</option>
                                                             <option value="Diário">Diário</option>
                                                             <option value="Semanal">Semanal</option>
@@ -140,14 +142,17 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         </select>
                                                     </div>
                                                 </div>
-
                                             </div>
+
+
+
+
                                         </div>
 
                                         <div class="row">
                                             <div class="col-md-6 col-sm-12">
                                                 <div class="form-group">
-                                                    <label>Data do Evento</label>
+                                                    <label>Data do Próximo/Primeiro Encontro</label>
                                                     <div class="input-group date date-picker" data-date-format="dd/mm/yyyy" data-date-start-date="+0d">
 
                                                         <span class="input-group-btn">
@@ -155,9 +160,16 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 <i class="fa fa-calendar"></i>
                                                             </button>
                                                         </span>
-                                                        <input type="text" class="form-control" name="eventDate" readonly>
+                                                        <input type="text" class="form-control" name="eventDate" id="eventDate" readonly>
                                                     </div>
-                                                    <span class="help-block"><input type="checkbox" class="checkbox-inline"> Evento Dia Inteiro</span>
+
+                                                    <span class="help-block">
+                                                        <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                                            <input type="checkbox" name="allDay" id="allDay" class="checkboxes" value="1" />
+                                                            <span></span>Dia Inteiro
+                                                        </label>
+                                                    </span>
+
                                                 </div>
                                             </div>
 
@@ -171,7 +183,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                     <i class="fa fa-calendar"></i>
                                                                 </button>
                                                             </span>
-                                                            <input type="text" class="form-control" name="endEventDate" readonly>
+                                                            <input type="text" class="form-control" name="endEventDate" id="endEventDate" readonly>
                                                         </div>
                                                         <!-- /input-group -->
                                                         <span class="help-block"> Deixe em branco se a data de término é a mesma da data de ínicio </span>
@@ -188,8 +200,33 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             <span class="input-group-addon">
                                                                 <i class="fa fa-clock-o font-blue"></i>
                                                             </span>
-                                                        <input type="text" name="startTime" class="form-control time"
-                                                               placeholder="Ex: 06:00" minlength="3" maxlength="5" required>
+                                                        <select name="startTime" class="form-control" required>
+                                                            <option value="">Selecione</option>
+                                                            <option value="00:00">00:00</option>
+                                                            <option value="01:00">01:00</option>
+                                                            <option value="02:00">02:00</option>
+                                                            <option value="03:00">03:00</option>
+                                                            <option value="04:00">04:00</option>
+                                                            <option value="05:00">05:00</option>
+                                                            <option value="06:00">06:00</option>
+                                                            <option value="07:00">07:00</option>
+                                                            <option value="08:00">08:00</option>
+                                                            <option value="09:00">09:00</option>
+                                                            <option value="10:00">10:00</option>
+                                                            <option value="11:00">11:00</option>
+                                                            <option value="12:00">12:00</option>
+                                                            <option value="13:00">13:00</option>
+                                                            <option value="14:00">14:00</option>
+                                                            <option value="15:00">15:00</option>
+                                                            <option value="16:00">16:00</option>
+                                                            <option value="17:00">17:00</option>
+                                                            <option value="18:00">18:00</option>
+                                                            <option value="19:00">19:00</option>
+                                                            <option value="20:00">20:00</option>
+                                                            <option value="21:00">21:00</option>
+                                                            <option value="22:00">22:00</option>
+                                                            <option value="23:00">23:00</option>
+                                                        </select>
                                                     </div>
                                                 </div>
                                             </div>
@@ -200,8 +237,33 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             <span class="input-group-addon">
                                                                 <i class="fa fa-clock-o font-blue"></i>
                                                             </span>
-                                                        <input type="text" name="endTime" class="form-control time"
-                                                               placeholder="Ex: 06:00" minlength="3" maxlength="5">
+                                                        <select name="endTime" class="form-control">
+                                                            <option value="">Selecione</option>
+                                                            <option value="00:00">00:00</option>
+                                                            <option value="01:00">01:00</option>
+                                                            <option value="02:00">02:00</option>
+                                                            <option value="03:00">03:00</option>
+                                                            <option value="04:00">04:00</option>
+                                                            <option value="05:00">05:00</option>
+                                                            <option value="06:00">06:00</option>
+                                                            <option value="07:00">07:00</option>
+                                                            <option value="08:00">08:00</option>
+                                                            <option value="09:00">09:00</option>
+                                                            <option value="10:00">10:00</option>
+                                                            <option value="11:00">11:00</option>
+                                                            <option value="12:00">12:00</option>
+                                                            <option value="13:00">13:00</option>
+                                                            <option value="14:00">14:00</option>
+                                                            <option value="15:00">15:00</option>
+                                                            <option value="16:00">16:00</option>
+                                                            <option value="17:00">17:00</option>
+                                                            <option value="18:00">18:00</option>
+                                                            <option value="19:00">19:00</option>
+                                                            <option value="20:00">20:00</option>
+                                                            <option value="21:00">21:00</option>
+                                                            <option value="22:00">22:00</option>
+                                                            <option value="23:00">23:00</option>
+                                                        </select>
                                                     </div>
                                                     <span class="help-block">Deixe em branco caso o término não esteja previsto</span>
                                                 </div>
@@ -209,7 +271,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                         </div>
 
                                         <div class="row">
-                                            <div class="col-md-6">
+                                            <div class="col-md-12">
                                                 {!! Form::FormGroup('description', $errors) !!}
                                                 <label class="control-label">Descrição</label>
                                                 <textarea class="form-control" name="description" value=""

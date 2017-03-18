@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\SlackMessage;
 use Illuminate\Notifications\Notification;
@@ -19,11 +20,16 @@ class Notifications extends Notification
      */
 
     public $message;
+    /**
+     * @var null
+     */
+    public $link;
 
 
-    public function __construct($message)
+    public function __construct($message, $link = null)
     {
         $this->message = $message;
+        $this->link = $link;
     }
 
     /**
@@ -61,8 +67,18 @@ class Notifications extends Notification
     public function toArray($notifiable)
     {
         //dd($notifiable);
+
+        if($this->link)
+        {
+            return [
+                "id" => $this->message,
+                "link" => $this->link,
+            ];
+        }
+
         return [
-             "id" => $this->message
+             "id" => $this->message,
+
         ];
     }
 

@@ -22,6 +22,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
     <!-- BEGIN PAGE LEVEL PLUGINS -->
     <link href="assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/global/plugins/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" type="text/css"/>
     <link href="assets/pages/css/profile.min.css" rel="stylesheet" type="text/css" />
     <!-- END PAGE LEVEL PLUGINS -->
 
@@ -697,7 +698,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                     <div class="tab-content">
                                         <!-- PERSONAL INFO TAB -->
                                         <div class="tab-pane active" id="tab_1_1">
-                                            {!! Form::open(['route' => ['person.update', 'person' => Auth::getUser()->id], 'class' => 'horizontal-form', 'method' => 'PUT']) !!}
+                                            {!! Form::open(['route' => ['users.update', 'user' => Auth::getUser()->id], 'class' => 'horizontal-form', 'method' => 'PUT']) !!}
 
                                             <div class="row">
                                                 <div class="col-md-6">
@@ -720,10 +721,10 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                             <div class="row">
                                                 <div class="col-md-6">
-                                                    {!! Form::FormGroup('tel', $errors) !!}
-                                                    <label class="control-label">Telefone</label>
-                                                    <input type="text" placeholder="(15) 9123-1234" name="tel" value="{{ Auth::getUser()->person->tel }}" class="form-control" />
-                                                    {!! Form::error('tel', $errors) !!}
+                                                    {!! Form::FormGroup('cel', $errors) !!}
+                                                    <label class="control-label">Celular</label>
+                                                    <input type="text" placeholder="(15) 9123-1234" name="cel" value="{{ Auth::getUser()->person->cel }}" class="form-control" />
+                                                    {!! Form::error('cel', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
                                                 </div>
 
@@ -736,6 +737,29 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 </div>
 
                                             </div>
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    {!! Form::FormGroup('tel', $errors) !!}
+                                                    <label class="control-label">Telefone</label>
+                                                    <input type="text" placeholder="(15) 9123-1234" name="tel" value="{{ Auth::getUser()->person->tel }}" class="form-control" />
+                                                    {!! Form::error('tel', $errors) !!}
+                                                    {!! Form::endFormGroup() !!}
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    {!! Form::FormGroup('gender', $errors) !!}
+                                                    <label class="control-label">Gênero</label>
+                                                    <select name="gender" class="form-control" required>
+                                                        <option value="">Selecione</option>
+                                                        <option value="M" @if(Auth::getUser()->person->gender == 'M') selected @endif >Masculino</option>
+                                                        <option value="F" @if(Auth::getUser()->person->gender == 'F') selected @endif >Feminino</option>
+                                                    </select>
+                                                    {!! Form::error('gender', $errors) !!}
+                                                    {!! Form::endFormGroup() !!}
+                                                </div>
+                                            </div>
+
 
                                             <div class="row">
                                                 <div class="col-md-6">
@@ -773,15 +797,46 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 </div>
 
                                                 <div class="col-md-6">
-                                                    {!! Form::FormGroup('gender', $errors) !!}
-                                                    <label class="control-label">Gênero</label>
-                                                    <select name="gender" class="form-control" required>
-                                                        <option value="">Selecione</option>
-                                                        <option value="M" @if(Auth::getUser()->person->gender == 'M') selected @endif >Masculino</option>
-                                                        <option value="F" @if(Auth::getUser()->person->gender == 'F') selected @endif >Feminino</option>
-                                                    </select>
-                                                    {!! Form::error('gender', $errors) !!}
+                                                    {!! Form::FormGroup('rg', $errors) !!}
+                                                    <label class="control-label">RG</label>
+                                                    <input type="text" placeholder="123.123.123-12" value="{{ Auth::getUser()->person->rg }}" name="rg" class="form-control" />
+                                                    {!! Form::error('rg', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
+                                                </div>
+
+
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    {!! Form::FormGroup('maritalStatus', $errors) !!}
+                                                    <label class="control-label">Estado Civil</label>
+                                                    <select name="maritalStatus" id="maritalStatus" class="form-control" required>
+                                                        <option value="">Selecione</option>
+                                                        <option value="Casado" @if(Auth::getUser()->person->maritalStatus == 'Casado') selected @endif >Casado</option>
+                                                        <option value="Solteiro" @if(Auth::getUser()->person->maritalStatus == 'Solteiro') selected @endif >Solteiro</option>
+                                                        <option value="Divorciado" @if(Auth::getUser()->person->maritalStatus == 'Divorciado') selected @endif >Divorciado</option>
+                                                    </select>
+                                                    {!! Form::error('maritalStatus', $errors) !!}
+                                                    {!! Form::endFormGroup() !!}
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group" id="form-partner"
+                                                         @if(Auth::getUser()->person->maritalStatus != 'Casado')
+                                                         hidden @endif >
+                                                        <label>Nome Cônjuge</label>
+                                                        <select name="partner" id="partner" class="selectpicker
+                                                          form-control"
+                                                                data-live-search="true" data-size="8">
+                                                            <option value="0">Parceiro(a) fora da igreja</option>
+                                                            @foreach($adults as $adult)
+                                                                <option value="{{ $adult->id }}"
+                                                                        @if($adult->id == Auth::getUser()->person->partner) selected @endif
+                                                                >{{ $adult->name }} {{ $adult->lastName }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
                                                 </div>
                                             </div>
 
@@ -845,7 +900,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                         <!-- CHANGE AVATAR TAB -->
                                         <div class="tab-pane" id="tab_1_2">
                                             <p> Altere aqui sua foto do perfil </p>
-                                            {!! Form::open(['route' => 'users.imgProfile', 'method' => 'post', 'enctype' => 'multipart/form-data', 'role' => 'form']) !!}
+                                            {!! Form::open(['route' => ['person.imgEditProfile', Auth::getUser()->person->id], 'method' => 'post', 'enctype' => 'multipart/form-data', 'role' => 'form']) !!}
                                                 <div class="form-group">
                                                     <div class="fileinput fileinput-new" data-provides="fileinput">
                                                         <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
@@ -1581,6 +1636,8 @@ License: You must have a valid license purchased only from themeforest(the above
 <script src="../assets/global/plugins/jquery.sparkline.min.js" type="text/javascript"></script>
 <script src="http://maps.google.com/maps/api/js?sensor=false" type="text/javascript"></script>
 <script src="../assets/global/plugins/gmaps/gmaps.min.js" type="text/javascript"></script>
+
+<script src="../assets/global/plugins/bootstrap-select/js/bootstrap-select.min.js" type="text/javascript"></script>
 
 <script src="../assets/pages/scripts/profile.min.js" type="text/javascript"></script>
 <script src="../assets/pages/scripts/timeline.min.js" type="text/javascript"></script>

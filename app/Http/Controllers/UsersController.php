@@ -6,6 +6,8 @@ use App\Http\Requests\UserCreateRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Repositories\CountRepository;
 use App\Repositories\DateRepository;
+use App\Repositories\NotifyRepository;
+use App\Repositories\PersonRepository;
 use App\Repositories\RoleRepository;
 use App\Repositories\StateRepository;
 use App\Repositories\UserRepository;
@@ -14,7 +16,7 @@ use Illuminate\Support\Facades\DB;
 
 class UsersController extends Controller
 {
-    use DateRepository, CountRepository;
+    use DateRepository, CountRepository, NotifyRepository;
     /**
      * @var UserRepository
      */
@@ -27,17 +29,23 @@ class UsersController extends Controller
      * @var RoleRepository
      */
     private $roleRepository;
+    /**
+     * @var PersonRepository
+     */
+    private $personRepository;
 
     /**
      * UsersController constructor.
      * @param UserRepository $repository
      * @param StateRepository $stateRepository
      */
-    public function __construct(UserRepository $repository, StateRepository $stateRepository, RoleRepository $roleRepository)
+    public function __construct(UserRepository $repository, StateRepository $stateRepository,
+                                RoleRepository $roleRepository, PersonRepository $personRepository)
     {
         $this->repository = $repository;
         $this->stateRepository = $stateRepository;
         $this->roleRepository = $roleRepository;
+        $this->personRepository = $personRepository;
     }
 
     public function myAccount()
@@ -60,7 +68,16 @@ class UsersController extends Controller
 
         $countGroups[] = $this->countGroups();
 
-        return view('users.myAccount', compact('state', 'dateBirth', 'changePass', 'countPerson', 'roles', 'countGroups'));
+        $notify = $this->notify();
+
+        $qtde = count($notify);
+
+        $gender = \Auth::getUser()->person->gender == 'M' ? 'F' : 'M';
+
+        $adults = $this->personRepository->findWhere(['tag' => 'adult', 'gender' => $gender]);
+
+        return view('users.myAccount', compact('state', 'dateBirth', 'changePass', 'countPerson', 'roles', 'countGroups',
+            'notify', 'qtde', 'adults'));
     }
 
     public function store(UserCreateRequest $request)
@@ -84,11 +101,33 @@ class UsersController extends Controller
 
     public function update(UserUpdateRequest $request, $id)
     {
-        $data = $request->all();
+        $data = $request->except('email');
+
+        $email = $request->only(['email']);
+
+        $email = $email["email"];
 
         $data['dateBirth'] = $this->formatDateBD($data['dateBirth']);
 
-        $this->repository->update($data, $id);
+        /*
+         * Se a pessoa for casada e $data['partner'] = 0 então o parceiro é de fora da igreja
+         * Se a pessoa não for casada e $data['partner'] = 0 então não há parceiro para incluir
+         * Se a pessoa for casada e $data['partner'] != "0" então a pessoa é casada com o id informado
+         *
+        */
+        if($data['maritalStatus'] != 'Casado')
+        {
+            $data['partner'] = null;
+        }
+        else if ($data['partner'] != "0"){
+            $this->updateMaritalStatus($data['partner'], $id);
+        }
+
+        $this->personRepository->update($data, $id);
+
+        DB::table('users')
+            ->where('id', $id)
+            ->update(['email' => $email]);
 
         $request->session()->flash('updateUser', 'Alterações realizadas com sucesso');
 
@@ -134,5 +173,14 @@ class UsersController extends Controller
 
 
         return redirect()->route('users.myAccount');
+    }
+
+    public function updateMaritalStatus($partner, $id)
+    {
+        DB::table('people')
+            ->where('id', $partner)
+            ->update(
+                ['partner' => $id, 'maritalStatus' => 'Casado']
+            );
     }
 }

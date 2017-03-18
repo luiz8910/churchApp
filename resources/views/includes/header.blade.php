@@ -18,34 +18,7 @@
             <div class="top-menu">
                 <ul class="nav navbar-nav pull-right">
                     <!-- BEGIN NOTIFICATION DROPDOWN -->
-                    <li class="dropdown dropdown-extended dropdown-notification dropdown-dark"
-                        id="header_notification_bar">
-                        <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"
-                           data-close-others="true">
-                            <i class="icon-bell"></i>
-                            <span class="badge badge-default" id="badge-notify"></span>
-                            <input type="hidden" id="input-badge-count">
-                            <input type="hidden" id="created_person_id">
-
-                            <input type="hidden" id="input-event">
-                            <input type="hidden" id="created_event_id">
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li class="external">
-                                <h3 id="qtdeNotify">Sem Notificações</h3>
-                                <a href="javascript:;">Marcar todas como lida</a>
-                            </li>
-                            <li>
-                                <ul class="dropdown-menu-list scroller" style="height: 250px;"
-                                    data-handle-color="#637283" id="eventNotify">
-
-
-                                    
-
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
+                    @include('includes.notifications')
                     <!-- END NOTIFICATION DROPDOWN -->
                     <!-- BEGIN TODO DROPDOWN -->
                     <li class="dropdown dropdown-extended dropdown-tasks dropdown-dark" id="header_task_bar">

@@ -79,9 +79,11 @@ class GroupController extends Controller
 
         $countGroups[] = $this->countGroups();
 
-        $notify[] = $this->notify();
+        $notify = $this->notify();
 
-        return view('groups.index', compact('groups', 'countPerson', 'countMembers', 'countGroups', 'notify'));
+        $qtde = count($notify);
+
+        return view('groups.index', compact('groups', 'countPerson', 'countMembers', 'countGroups', 'notify', 'qtde'));
     }
 
     /**
@@ -99,9 +101,11 @@ class GroupController extends Controller
 
         $roles = $this->repository->all();
 
-        $notify[] = $this->notify();
+        $notify = $this->notify();
 
-        return view('groups.create', compact('countPerson', 'countGroups', 'state', 'roles', 'notify'));
+        $qtde = count($notify);
+
+        return view('groups.create', compact('countPerson', 'countGroups', 'state', 'roles', 'notify', 'qtde'));
     }
 
     /**
@@ -244,7 +248,9 @@ class GroupController extends Controller
 
         $event_user[] = $user->person->events->all();
 
-        $notify[] = $this->notify();
+        $notify = $this->notify();
+
+        $qtde = count($notify);
 
         //dd($event_user[0][1]["id"]);
 
@@ -255,7 +261,7 @@ class GroupController extends Controller
         return view('groups.edit', compact('group', 'countPerson', 'countGroups', 'events','address', 'location',
             'people', 'roles', 'state', 'members', 'quantitySingleMother', 'quantitySingleFather', 'quantitySingleWomen',
             'quantitySingleMen', 'quantityMarriedWomenNoKids', 'quantityMarriedMenNoKids',
-            'quantityMarriedWomenOutsideChurch', 'quantityMarriedMenOutsideChurch', 'event_user', 'notify'));
+            'quantityMarriedWomenOutsideChurch', 'quantityMarriedMenOutsideChurch', 'event_user', 'notify', 'qtde'));
     }
 
 

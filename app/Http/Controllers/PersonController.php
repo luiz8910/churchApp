@@ -61,9 +61,10 @@ class PersonController extends Controller
 
         $countPerson[] = $this->countPerson();
         $countGroups[] = $this->countGroups();
-        //$notify[] = $this->notify();
+        $notify[] = $this->notify();
+        $qtde = count($notify);
 
-        return view('people.index', compact('adults', 'countPerson', 'countGroups'));
+        return view('people.index', compact('adults', 'countPerson', 'countGroups', 'notify', 'qtde'));
     }
 
     public function teenagers()
@@ -78,8 +79,9 @@ class PersonController extends Controller
         $countPerson[] = $this->countPerson();
         $countGroups[] = $this->countGroups();
         $notify[] = $this->notify();
+        $qtde = count($notify);
 
-        return view('people.teenagers', compact('teen', 'countPerson', 'countGroups'));
+        return view('people.teenagers', compact('teen', 'countPerson', 'countGroups', 'notify', 'qtde'));
     }
 
     public function visitors()
@@ -94,8 +96,9 @@ class PersonController extends Controller
         $countPerson[] = $this->countPerson();
         $countGroups[] = $this->countGroups();
         $notify[] = $this->notify();
+        $qtde = count($notify);
 
-        return view('people.visitors', compact('visitors', 'countPerson', 'countGroups'));
+        return view('people.visitors', compact('visitors', 'countPerson', 'countGroups', 'notify', 'qtde'));
     }
 
     public function inactive()
@@ -110,8 +113,9 @@ class PersonController extends Controller
         $countPerson[] = $this->countPerson();
         $countGroups[] = $this->countGroups();
         $notify[] = $this->notify();
+        $qtde = count($notify);
 
-        return view('people.inactive', compact('inactive', 'countPerson', 'countGroups'));
+        return view('people.inactive', compact('inactive', 'countPerson', 'countGroups', 'notify', 'qtde'));
     }
 
     public function turnActive($id)
@@ -142,7 +146,9 @@ class PersonController extends Controller
 
         $notify[] = $this->notify();
 
-        return view('people.create', compact('state', 'roles', 'countPerson', 'countGroups', 'adults'));
+        $qtde = count($notify);
+
+        return view('people.create', compact('state', 'roles', 'countPerson', 'countGroups', 'adults', 'notify', 'qtde'));
     }
 
     /**
@@ -321,10 +327,12 @@ class PersonController extends Controller
 
         $adults = $this->repository->findWhere(['tag' => 'adult', 'gender' => $gender]);
 
-        //$notify[] = $this->notify();
+        $notify[] = $this->notify();
+
+        $qtde = count($notify);
 
         return view('people.edit', compact('person', 'state', 'location', 'roles', 'countPerson',
-            'countGroups', 'adults'));
+            'countGroups', 'adults', 'notify', 'qtde'));
     }
 
     /**
@@ -341,7 +349,7 @@ class PersonController extends Controller
         $email = $request->only('email');
 
         //Formatação correta do email
-        $email = implode('=>', $email);
+        $email = $email["email"];
 
         //Formatação correta da data
         $data['dateBirth'] = $this->formatDateBD($data['dateBirth']);
@@ -404,7 +412,7 @@ class PersonController extends Controller
 
     public function notify()
     {
-        $user[] = \Auth::getUser();
+        $user[] = User::findOrFail(1);
 
         $user[] = User::findOrFail(11);
 
@@ -423,7 +431,7 @@ class PersonController extends Controller
         //event(new PersonEvent("teste"));
 
         foreach ($user as $item) {
-            \Notification::send($item, new Notification('novo Evento'));
+            \Notification::send($item, new Notifications('novo Evento'));
         }
 
 

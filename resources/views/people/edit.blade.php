@@ -345,7 +345,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <div class="col-md-9">
                                                     {!! Form::FormGroup('street', $errors) !!}
                                                     <label class="control-label">Logradouro</label>
-                                                    <input type="text" placeholder="Rua dos Bobos, 0" value="{{ $person->street }}" name="street" class="form-control" />
+                                                    <input type="text" placeholder="Rua dos Bobos, 0" value="{{ $person->street }}" id="street" name="street" class="form-control" />
                                                     {!! Form::error('street', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
                                                 </div>
@@ -1137,39 +1137,7 @@ License: You must have a valid license purchased only from themeforest(the above
 <!-- END PAGE LEVEL SCRIPTS -->
 
 <!-- Google maps function -->
-<script>
-
-    function initMap() {
-        //var infowindow = new google.maps.InfoWindow();
-        var location = $('#location').val();
-
-        var script = 'https://maps.googleapis.com/maps/api/geocode/json?address='+location+'&key=AIzaSyCz22xAk7gDzvTEXjqjL8Goxu_q12Gt_KU';
-
-        $.getJSON(script, function(json){
-            var lat = json.results[0].geometry.location.lat;
-            var lng = json.results[0].geometry.location.lng;
-
-            localStorage.setItem('lat', lat);
-            localStorage.setItem('lng', lng);
-
-        });
-
-        var lat = parseFloat(localStorage.getItem('lat'));
-        var lng = parseFloat(localStorage.getItem('lng'));
-
-        var uluru = {lat: lat, lng: lng};
-        var map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 16,
-            center: uluru
-        });
-        var marker = new google.maps.Marker({
-            position: uluru,
-            map: map
-        });
-    }
-
-
-</script>
+<script src="../../js/maps.js"></script>
 
 
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjTs0nbQbEecUygnKpThLfzRKES8nKS0A&callback=initMap"></script>
