@@ -41,11 +41,7 @@
                                 <i class="icon-bulb"></i> Visitantes
                                 <span class="badge badge-success">{{ $countPerson[0][2] }}</span></a> <!-- Qtde de Visitantes cad.-->
                         </li>
-                        <li class=" ">
-                            <a href="{{ route('person.inactive') }}" class="nav-link  ">
-                                <i class="icon-bulb"></i> Inativos
-                                <span class="badge badge-success">{{ $countPerson[0][3] }}</span></a> <!-- Qtde de Inativos cad.-->
-                        </li>
+
                     </ul>
                 </li>
                 <li class="menu-dropdown classic-menu-dropdown ">
@@ -54,22 +50,11 @@
                     <ul class="dropdown-menu pull-left">
                         <li>
                             <a href="{{ route('group.index') }}" class="nav-link">
-                                <i class="icon-user"></i> Todos
-                                <span class="badge badge-success">{{ $countGroups[0][0] }}</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('group.index') }}" class="nav-link">
                                 <i class="icon-user"></i> Ativos
                                 <span class="badge badge-success">{{ $countGroups[0][1] }}</span>
                             </a>
                         </li>
-                        <li>
-                            <a href="{{ route('group.index') }}" class="nav-link">
-                                <i class="icon-user"></i> Inativos
-                                <span class="badge badge-success">{{ $countGroups[0][2] }}</span>
-                            </a>
-                        </li>
+
                     </ul>
                 </li>
                 <li class="menu-dropdown mega-menu-dropdown  ">

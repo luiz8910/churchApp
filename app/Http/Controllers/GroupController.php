@@ -16,6 +16,7 @@ use App\Repositories\StateRepository;
 use App\Repositories\UserLoginRepository;
 use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 
 class GroupController extends Controller
@@ -67,7 +68,8 @@ class GroupController extends Controller
      */
     public function index()
     {
-        $groups = Group::withTrashed()->get();
+        //$groups = Group::withTrashed()->get();
+        $groups = $this->repository->paginate(10);
 
         foreach ($groups as $group)
         {
@@ -190,6 +192,8 @@ class GroupController extends Controller
         //Listagem de todos os membros do grupo
         $members = $group->people->all();
 
+        $pag = $this->paginate($group->people->all())->setPath('');
+
         $address = [];
 
         $arr = [];
@@ -261,7 +265,7 @@ class GroupController extends Controller
         return view('groups.edit', compact('group', 'countPerson', 'countGroups', 'events','address', 'location',
             'people', 'roles', 'state', 'members', 'quantitySingleMother', 'quantitySingleFather', 'quantitySingleWomen',
             'quantitySingleMen', 'quantityMarriedWomenNoKids', 'quantityMarriedMenNoKids',
-            'quantityMarriedWomenOutsideChurch', 'quantityMarriedMenOutsideChurch', 'event_user', 'notify', 'qtde'));
+            'quantityMarriedWomenOutsideChurch', 'quantityMarriedMenOutsideChurch', 'event_user', 'notify', 'qtde', 'pag'));
     }
 
 
@@ -508,7 +512,7 @@ class GroupController extends Controller
 
     public function listGroupEvents($group)
     {
-        $events = $group->events->all();
+        $events = $group->events()->orderBy('eventDate', 'asc')->get();
 
         foreach ($events as $event) {
             $event->eventDate = $this->formatDateView($event->eventDate);
@@ -521,5 +525,41 @@ class GroupController extends Controller
 
         //dd($events);
         return $events;
+    }
+
+    /**
+     * Create a length aware custom paginator instance.
+     *
+     * @param  Collection  $items
+     * @param  int  $perPage
+     * @return \Illuminate\Pagination\LengthAwarePaginator
+     */
+    protected function paginate($items, $perPage = 10)
+    {
+        //Get current page form url e.g. &page=1
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+
+        //Slice the collection to get the items to display in current page
+        $currentPageItems = array_slice($items, ($currentPage - 1) * $perPage, $perPage);
+
+        //Create our paginator and pass it to the view
+        return new LengthAwarePaginator($currentPageItems, count($items), $perPage);
+    }
+
+    public function destroyManyUsers(Request $request)
+    {
+        $i = 0;
+
+        $data = $request->all();
+
+        while($i < count($data['input']))
+        {
+            $this->repository->delete($data['input'][$i]);
+            $i++;
+        }
+
+        \Session::flash('member.deleted', 'Os usuários selecionados foram excluidos');
+
+        return redirect()->route('group.index');
     }
 }

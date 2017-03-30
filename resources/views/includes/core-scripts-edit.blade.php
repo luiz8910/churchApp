@@ -11,6 +11,7 @@
 <script src="../../assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
 <script src="../../assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
 <script src="../../assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
+<script src="../../assets/global/plugins/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
 <!-- END CORE PLUGINS -->
 <!-- BEGIN PAGE LEVEL PLUGINS -->
 
@@ -20,6 +21,15 @@
 <!-- END PAGE LEVEL PLUGINS -->
 <!-- BEGIN THEME GLOBAL SCRIPTS -->
 <script src="../../assets/global/scripts/app.min.js" type="text/javascript"></script>
+
+<script src="../../assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.js" type="text/javascript"></script>
+
+<script src="../../assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js" type="text/javascript"></script>
+
+<script src="../../assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js" type="text/javascript"></script>
+<script src="../../assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+<script src="../../assets/pages/scripts/components-date-time-pickers.js" type="text/javascript"></script>
+
 <!-- END THEME GLOBAL SCRIPTS -->
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
 <script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
@@ -30,6 +40,7 @@
 <!-- END THEME LAYOUT SCRIPTS -->
 <!-- CSS Próprio -->
 <script src="../../js/script.js" type="text/javascript"></script>
+<script src="../../js/screen.js"></script>
 <script src="https://js.pusher.com/4.0/pusher.min.js"></script>
 
 <script>

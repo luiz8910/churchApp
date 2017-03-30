@@ -120,25 +120,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label>Frequência</label>
-                                                    <div class="input-icon input-icon-sm">
-                                                        <i class="fa fa-briefcase"></i>
-                                                        <select class="form-control" name="frequency">
-                                                            <option value="">Selecione</option>
-                                                            <option value="Diário">Diário</option>
-                                                            <option value="Semanal">Semanal</option>
-                                                            <option value="Quinzenal">Quinzenal</option>
-                                                            <option value="Mensal">Mensal</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
 
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Data de Criação</label>

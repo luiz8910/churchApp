@@ -36,7 +36,9 @@ License: You must have a valid license purchased only from themeforest(the above
 </head>
 <!-- END HEAD -->
 
+
 <body class="page-container-bg-solid page-boxed">
+
 <!-- BEGIN HEADER -->
 @include('includes.header-edit')
 <!-- END HEADER -->
@@ -121,7 +123,6 @@ License: You must have a valid license purchased only from themeforest(the above
                                     <!-- SIDEBAR USER TITLE -->
                                     <div class="profile-usertitle">
                                         <div class="profile-usertitle-name"> {{ $group->name }}</div>
-                                        <div class="profile-usertitle-job"> {{ $group->frequency }} </div>
                                         <div class="profile-usertitle-job"> {{ $group->sinceOf }} </div>
                                     </div>
                                     <!-- END SIDEBAR USER TITLE -->
@@ -258,7 +259,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                     <i class="fa fa-users"></i>Lista de Participantes
                                                                 </a>
 
-                                                                <a href="javascript:;" id="btn-sub-{{ $event->id }}" onclick="signUp('{{ $event->id }}')"
+                                                                <a href="javascript:;" id="btn-sub-{{ $event->id }}" onclick="checkInEvent('{{ $event->id }}')"
                                                                    class="btn btn-circle
                                                                     @if(isset($event_user[0][$i]) && $event_user[0][$i]["id"] == $event->id)
                                                                            red">
@@ -404,19 +405,6 @@ License: You must have a valid license purchased only from themeforest(the above
                                     </div>
                                     <div class="portlet-body">
                                         <div id="chart_7" class="chart" style="height: 400px;"> </div>
-                                        <div class="well margin-top-20">
-                                            <div class="row">
-                                                <div class="col-sm-3">
-                                                    <label class="text-left">Top Radius:</label>
-                                                    <input class="chart_7_chart_input" data-property="topRadius" type="range" min="0" max="1.5" value="1" step="0.01" /> </div>
-                                                <div class="col-sm-3">
-                                                    <label class="text-left">Angle:</label>
-                                                    <input class="chart_7_chart_input" data-property="angle" type="range" min="0" max="89" value="30" step="1" /> </div>
-                                                <div class="col-sm-3">
-                                                    <label class="text-left">Depth:</label>
-                                                    <input class="chart_7_chart_input" data-property="depth3D" type="range" min="1" max="120" value="40" step="1" /> </div>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                                 <!-- END CHART PORTLET-->
@@ -428,285 +416,337 @@ License: You must have a valid license purchased only from themeforest(the above
 
                     <div class="row">
                         <div class="col-md-12">
-                            <!-- BEGIN EXAMPLE TABLE PORTLET-->
-                            <div class="portlet light ">
+                            <!-- BEGIN BORDERED TABLE PORTLET-->
+                            <div class="portlet light portlet-fit ">
                                 <div class="portlet-title">
-                                    <div class="caption font-dark">
-                                        <i class="icon-settings font-dark"></i>
-                                        <span class="caption-subject bold uppercase"> Membros</span>
+                                    <div class="caption">
+                                        <i class="icon-settings font-red"></i>
+                                        <span class="caption-subject font-red sbold uppercase">Membros do Grupo</span>
                                     </div>
+
                                     <div class="actions">
-                                        <div class="btn-group btn-group-devided" data-toggle="buttons">
-                                            <label class="btn btn-transparent dark btn-outline btn-circle btn-sm active">
-                                                <input type="radio" name="options" class="toggle"
-                                                       id="option1">Actions</label>
-                                            <label class="btn btn-transparent dark btn-outline btn-circle btn-sm">
-                                                <input type="radio" name="options" class="toggle" id="option2">Settings</label>
+
+                                        <div class="btn-group btn-group-devided">
+                                            {!! Form::open(['route' => ['group.destroyManyUsers', 'id' => $group->id], 'id' => 'form-destroyMany', 'method' => 'GET']) !!}
+                                            <div id="modelToDel"></div>
+
+                                            <a href=""
+                                               class="btn red btn-outline" id="btn-delete-model"
+                                               onclick="event.preventDefault();document.getElementById('form-destroyMany').submit();"
+                                               style="display: none;">
+                                                <i class="fa fa-close"></i>
+                                                Excluir
+                                            </a>
+                                            {!! Form::close() !!}
                                         </div>
+
+                                        <div class="btn-group">
+                                            <!-- Button trigger modal -->
+                                            <button type="button" class="btn sbold green" data-toggle="modal"
+                                                    id="sample_editable_1_new" data-target="#myModal">
+                                                <i class="fa fa-plus"></i> Novo
+                                            </button>
+                                        </div>
+                                        <div class="btn-group">
+                                            <!-- Button trigger modal -->
+                                            <button type="button" class="btn btn-primary" data-toggle="modal"
+                                                    id="sample_editable_1_new" data-target="#addMemberModal">
+                                                <i class="fa fa-user"></i> Novo Membro
+                                            </button>
+                                        </div>
+
+                                        <div class="btn-group">
+                                            <a class="btn blue btn-outline btn-circle btn-sm" href="javascript:;" data-toggle="dropdown" data-hover="dropdown" data-close-others="true"> Ações
+                                                <i class="fa fa-angle-down"></i>
+                                            </a>
+                                            <ul class="dropdown-menu pull-right">
+                                                <li>
+                                                    <a href="javascript:;" data-toggle="modal" data-target="#myModal">
+                                                        <i class="fa fa-users"></i> Novo
+                                                    </a>
+                                                </li>
+
+                                                <li>
+                                                    <a href="javascript:;" data-toggle="modal" data-target="#addMemberModal">
+                                                        <i class="fa fa-user"></i> Cadastro
+                                                    </a>
+                                                </li>
+
+                                                <li class="divider"> </li>
+
+                                                <li>
+                                                    <a href="javascript:;">
+                                                        <i class="fa fa-print"></i> Imprimir </a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;">
+                                                        <i class="fa fa-file-pdf-o"></i> Salvar como PDF </a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;">
+                                                        <i class="fa fa-file-excel-o"></i> Exportar para Excel </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+
+
+
                                     </div>
+
+
                                 </div>
                                 <div class="portlet-body">
-                                    <div class="table-toolbar">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="btn-group">
-                                                    <!-- Button trigger modal -->
-                                                    <button type="button" class="btn sbold green" data-toggle="modal"
-                                                            id="sample_editable_1_new" data-target="#myModal">
-                                                        <i class="fa fa-plus"></i> Novo
-                                                    </button>
-                                                </div>
-                                                <div class="btn-group">
-                                                    <!-- Button trigger modal -->
-                                                    <button type="button" class="btn btn-primary" data-toggle="modal"
-                                                            id="sample_editable_1_new" data-target="#addMemberModal">
-                                                        <i class="fa fa-user"></i> Novo Membro
-                                                    </button>
-                                                </div>
-                                            </div>
+                                    <div class="table-scrollable table-scrollable-borderless">
+                                        <table class="table table-hover table-light table-striped">
+                                            <thead>
+                                            <tr class="uppercase">
+                                                <th>
+                                                    <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                                        <input type="checkbox" name="events" class="checkboxes check-model" id="check-0"
+                                                               value="0" />
+                                                        <span></span>
+                                                    </label>
+                                                </th>
+                                                <th> Nome </th>
+                                                <th> Email </th>
+                                                <th> Telefone </th>
+                                                <th> Celular </th>
+                                                <th> Opções </th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($pag as $person)
+                                                    <tr class="odd gradeX">
+                                                        <td>
+                                                            <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                                                <input type="checkbox" name="events" class="checkboxes check-model" id="check-{{ $person->id }}"
+                                                                       value="{{ $person->id }}" />
+                                                                <span></span>
+                                                            </label>
+                                                        <td>
+                                                            <a href="{{ route('person.edit', ['person' => $person->id]) }}">
+                                                                {{ $person->name }} {{ $person->lastName }}
+                                                            </a>
+                                                        </td>
+                                                        <td>
+                                                            <a href="mailto:{{ $person->user->email or null }}"> {{ $person->user->email or null }} </a>
+                                                        </td>
+                                                        <td> {{ $person->tel }} </td>
+                                                        <td class="center"> {{ $person->cel }} </td>
+                                                        <!--<span class="label label-sm label-success"> Aprovado </span>-->
+
+                                                        <?php $deleteForm = "delete-" . $person->id; ?>
+                                                        <td id="{{ $deleteForm }}">
+                                                            {!! Form::open(['route' => ['group.deleteMember', 'group' => $group->id, 'member' => $person->id],
+                                                                    'method' => 'DELETE', 'id' => 'form-'.$deleteForm]) !!}
+
+                                                            <a href="" class="btn btn-danger btn-sm"
+                                                               title="Excluir membro do grupo"
+                                                               onclick='event.preventDefault();document.getElementById("form-{{ $deleteForm }}").submit();'>
+                                                                <i class="fa fa-close"></i>
+                                                            </a>
+
+                                                            {!! Form::close() !!}
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                        <br><br>
+                                        <div class="pull-right">
+                                            {{ $pag->links() }}
+                                            <!--<nav aria-label="Page navigation">
+                                                <ul class="pagination" id="pagination">
+                                                    <li>
+                                                        <a href="#" aria-label="Previous">
+                                                            <span aria-hidden="true">&laquo;</span>
+                                                        </a>
+                                                    </li>
+                                                    <li><a href="javascript:;">1</a></li>
+                                                    <li><a href="javascript:;">2</a></li>
+                                                    <li><a href="javascript:;">3</a></li>
+                                                    <li><a href="javascript:;">4</a></li>
+                                                    <li><a href="javascript:;">5</a></li>
+                                                    <li>
+                                                        <a href="#" aria-label="Next">
+                                                            <span aria-hidden="true">&raquo;</span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </nav>-->
+                                        </div>
 
 
-                                            <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
-                                                 aria-labelledby="myModalLabel">
-                                                <div class="modal-dialog" role="document">
-                                                    <div class="modal-content form">
-                                                        <div class="modal-header">
-                                                            <button type="button" class="close" data-dismiss="modal"
-                                                                    aria-label="Close"><span
-                                                                        aria-hidden="true">&times;</span></button>
-                                                            <h4 class="modal-title" id="myModalLabel">Atribuir membros
-                                                                a {{ $group->name }}</h4>
-                                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END BORDERED TABLE PORTLET-->
+                        </div>
+                    </div>
 
-                                                        {!! Form::open(['route' => ['group.addMembers', 'group' => $group],
-                                                                'class' => 'form-horizontal form-row-seperated', 'method' => 'POST']) !!}
-                                                        <div class="modal-body form">
-                                                            <div class="form-group">
-                                                                <label class="col-sm-3 control-label">Membros</label>
-                                                                <div class="col-sm-9">
-                                                                    <div class="input-group">
+                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+                         aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content form">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal"
+                                            aria-label="Close"><span
+                                                aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title" id="myModalLabel">Atribuir membros
+                                        a {{ $group->name }}</h4>
+                                </div>
+
+                                {!! Form::open(['route' => ['group.addMembers', 'group' => $group],
+                                        'class' => 'form-horizontal form-row-seperated', 'method' => 'POST']) !!}
+                                <div class="modal-body form">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">Membros</label>
+                                        <div class="col-sm-9">
+                                            <div class="input-group">
                                                                             <span class="input-group-addon">
                                                                                 <i class="fa fa-user"></i>
                                                                             </span>
-                                                                        <select id="select_members"
-                                                                                class="bs-select form-control"
-                                                                                data-live-search="true" data-size="8">
-                                                                            @foreach($people as $person)
-                                                                                <option value="{{ $person->id }}">{{ $person->name }} {{ $person->lastName}}</option>
-                                                                            @endforeach
-                                                                        </select>
+                                                <select id="select_members"
+                                                        class="bs-select form-control"
+                                                        data-live-search="true" data-size="8">
+                                                    @foreach($people as $person)
+                                                        <option value="{{ $person->id }}">{{ $person->name }} {{ $person->lastName}}</option>
+                                                    @endforeach
+                                                </select>
 
-                                                                    </div>
-                                                                    <p class="help-block"> Escolha um membro </p>
+                                            </div>
+                                            <p class="help-block"> Escolha um membro </p>
 
-                                                                    <button type="button" id="addMember"
-                                                                            class="btn btn-primary pull-right">Incluir
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label class="col-sm-3 control-label">Membros
-                                                                    Escolhidos</label>
-                                                                <div class="col-sm-9">
-                                                                    <div class="input-group">
-                                                                        <!-- BEGIN SAMPLE TABLE PORTLET-->
-                                                                        <div class="portlet light ">
+                                            <button type="button" id="addMember"
+                                                    class="btn btn-primary pull-right">Incluir
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">Membros
+                                            Escolhidos</label>
+                                        <div class="col-sm-9">
+                                            <div class="input-group">
+                                                <!-- BEGIN SAMPLE TABLE PORTLET-->
+                                                <div class="portlet light ">
 
-                                                                            <div class="portlet-body">
-                                                                                <div class="table-scrollable">
-                                                                                    <table class="table table-hover table-striped table-bordered"
-                                                                                           id="table_name">
-                                                                                        <thead>
-                                                                                        <tr>
-                                                                                            <th> Nome do Membro</th>
-                                                                                        </tr>
-                                                                                        </thead>
-                                                                                        <tbody>
+                                                    <div class="portlet-body">
+                                                        <div class="table-scrollable">
+                                                            <table class="table table-hover table-striped table-bordered"
+                                                                   id="table_name">
+                                                                <thead>
+                                                                <tr>
+                                                                    <th> Nome do Membro</th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody>
 
-                                                                                        </tbody>
-                                                                                    </table>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <!-- END SAMPLE TABLE PORTLET-->
-
-                                                                        <!--<input type="text" id="typeahead_example_modal_2" name="typeahead_example_modal_2" class="form-control" />-->
-                                                                    </div>
-                                                                    <p class="help-block"> Para excluir, clique no nome
-                                                                        do membro </code>
-                                                                    </p>
-
-                                                                    <br>
-
-                                                                    <div id="hidden-input">
-
-                                                                    </div>
-
-                                                                </div>
-                                                            </div>
+                                                                </tbody>
+                                                            </table>
                                                         </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-default"
-                                                                    data-dismiss="modal">Fechar
-                                                            </button>
-                                                            <button type="submit" class="btn btn-primary">Salvar
-                                                            </button>
-                                                        </div>
-                                                        {!! Form::close() !!}
                                                     </div>
                                                 </div>
+                                                <!-- END SAMPLE TABLE PORTLET-->
+
+                                                <!--<input type="text" id="typeahead_example_modal_2" name="typeahead_example_modal_2" class="form-control" />-->
+                                            </div>
+                                            <p class="help-block"> Para excluir, clique no nome
+                                                do membro </code>
+                                            </p>
+
+                                            <br>
+
+                                            <div id="hidden-input">
+
                                             </div>
 
-                                            <!-- Modal -->
-                                            <div class="modal fade" id="addMemberModal" tabindex="-1" role="dialog"
-                                                 aria-labelledby="addMemberModalLabel">
-                                                <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <button type="button" class="close" data-dismiss="modal"
-                                                                    aria-label="Close"><span
-                                                                        aria-hidden="true">&times;</span></button>
-                                                            <h4 class="modal-title" id="myModalLabel">Adicionar novo
-                                                                Membro ao Grupo</h4>
-                                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default"
+                                            data-dismiss="modal">Fechar
+                                    </button>
+                                    <button type="submit" class="btn btn-primary">Salvar
+                                    </button>
+                                </div>
+                                {!! Form::close() !!}
+                            </div>
+                        </div>
+                    </div>
 
-                                                        {!! Form::open(['route' => ['group.newMember', 'group' => $group],
-                                                                'class' => 'form-horizontal form-row-seperated', 'method' => 'POST']) !!}
-                                                        <div class="modal-body" style="margin-left: 10px;">
-                                                            <div class="row">
-                                                                <div class="col-md-9">
-                                                                    <div class="form-group">
-                                                                        <br>
-                                                                        <label>Nome</label>
-                                                                        <div class="input-group">
+                    <!-- Modal -->
+                    <div class="modal fade" id="addMemberModal" tabindex="-1" role="dialog"
+                         aria-labelledby="addMemberModalLabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal"
+                                            aria-label="Close"><span
+                                                aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title" id="myModalLabel">Adicionar novo
+                                        Membro ao Grupo</h4>
+                                </div>
+
+                                {!! Form::open(['route' => ['group.newMember', 'group' => $group],
+                                        'class' => 'form-horizontal form-row-seperated', 'method' => 'POST']) !!}
+                                <div class="modal-body" style="margin-left: 10px;">
+                                    <div class="row">
+                                        <div class="col-md-9">
+                                            <div class="form-group">
+                                                <br>
+                                                <label>Nome</label>
+                                                <div class="input-group">
                                                                             <span class="input-group-addon">
                                                                                 <i class="fa fa-user font-blue"></i>
                                                                             </span>
-                                                                            <input type="text" name="name"
-                                                                                   class="form-control"
-                                                                                   placeholder="Entre com o nome aqui">
-                                                                        </div>
-                                                                    </div>
+                                                    <input type="text" name="name"
+                                                           class="form-control"
+                                                           placeholder="Entre com o nome aqui">
+                                                </div>
+                                            </div>
 
 
-                                                                    <div class="form-group">
-                                                                        <br>
-                                                                        <label>Email</label>
-                                                                        <div class="input-group">
+                                            <div class="form-group">
+                                                <br>
+                                                <label>Email</label>
+                                                <div class="input-group">
                                                                             <span class="input-group-addon">
                                                                                 <i class="fa fa-envelope font-blue"></i>
                                                                             </span>
-                                                                            <input type="email" name="email"
-                                                                                   class="form-control"
-                                                                                   placeholder="Entre com o email aqui">
-                                                                        </div>
-                                                                    </div>
+                                                    <input type="email" name="email"
+                                                           class="form-control"
+                                                           placeholder="Entre com o email aqui">
+                                                </div>
+                                            </div>
 
 
-                                                                    <div class="form-group">
-                                                                        <br>
-                                                                        <label>Telefone</label>
-                                                                        <div class="input-group">
+                                            <div class="form-group">
+                                                <br>
+                                                <label>Telefone</label>
+                                                <div class="input-group">
                                                                             <span class="input-group-addon">
                                                                                 <i class="fa fa-phone font-blue"></i>
                                                                             </span>
-                                                                            <input type="text" name="tel"
-                                                                                   class="form-control"
-                                                                                   placeholder="Entre com o telefone aqui">
-                                                                        </div>
-                                                                    </div>
-
-                                                                </div>
-                                                            </div>
-
-
-                                                        </div>
-
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-default"
-                                                                    data-dismiss="modal">Fechar</button>
-                                                            <button type="submit" class="btn btn-primary">Salvar</button>
-                                                        </div>
-                                                        {!! Form::close() !!}
-                                                    </div>
+                                                    <input type="text" name="tel"
+                                                           class="form-control"
+                                                           placeholder="Entre com o telefone aqui">
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-6">
-                                                <div class="btn-group pull-right">
-                                                    <button class="btn green  btn-outline dropdown-toggle"
-                                                            data-toggle="dropdown">Opções
-                                                        <i class="fa fa-angle-down"></i>
-                                                    </button>
-                                                    <ul class="dropdown-menu pull-right">
-                                                        <li>
-                                                            <a href="javascript:;">
-                                                                <i class="fa fa-print"></i> Print </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="javascript:;">
-                                                                <i class="fa fa-file-pdf-o"></i> Save as PDF </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="javascript:;">
-                                                                <i class="fa fa-file-excel-o"></i> Export to Excel </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
                                         </div>
                                     </div>
-                                    <table class="table table-striped table-bordered table-hover table-checkable order-column"
-                                           id="sample_1">
-                                        <thead>
-                                        <tr>
-                                            <th>
-                                                <input type="checkbox" class="group-checkable"
-                                                       data-set="#sample_1 .checkboxes"/></th>
-                                            <th> Nome</th>
-                                            <th> Email</th>
-                                            <th> Telefone</th>
-                                            <th> Celular</th>
-                                            <th> Opções</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        @foreach($members as $person)
-                                            <tr class="odd gradeX">
-                                                <td>
-                                                    <input type="checkbox" class="checkboxes" value="1"/></td>
-                                                <td>
-                                                    <a href="{{ route('person.edit', ['person' => $person->id]) }}">
-                                                        {{ $person->name }} {{ $person->lastName }}
-                                                    </a>
-                                                </td>
-                                                <td>
-                                                    <a href="mailto:{{ $person->user->email or null }}"> {{ $person->user->email or null }} </a>
-                                                </td>
-                                                <td> {{ $person->tel }} </td>
-                                                <td class="center"> {{ $person->cel }} </td>
-                                                <!--<span class="label label-sm label-success"> Aprovado </span>-->
 
-                                                <?php $deleteForm = "delete-" . $person->id; ?>
-                                                <td id="{{ $deleteForm }}">
-                                                    {!! Form::open(['route' => ['group.deleteMember', 'group' => $group->id, 'member' => $person->id],
-                                                            'method' => 'DELETE', 'id' => 'form-'.$deleteForm]) !!}
 
-                                                    <a href="" class="btn btn-danger btn-sm"
-                                                       title="Excluir membro do grupo"
-                                                       onclick='event.preventDefault();document.getElementById("form-{{ $deleteForm }}").submit();'>
-                                                        <i class="fa fa-close"></i>
-                                                    </a>
-
-                                                    {!! Form::close() !!}
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                        </tbody>
-                                    </table>
                                 </div>
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default"
+                                            data-dismiss="modal">Fechar</button>
+                                    <button type="submit" class="btn btn-primary">Salvar</button>
+                                </div>
+                                {!! Form::close() !!}
                             </div>
-                            <!-- END EXAMPLE TABLE PORTLET-->
                         </div>
                     </div>
 
@@ -726,55 +766,26 @@ License: You must have a valid license purchased only from themeforest(the above
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <br>
                                                     <label>Nome</label>
                                                     <div class="input-group">
                                                             <span class="input-group-addon">
                                                                 <i class="fa fa-user font-blue"></i>
                                                             </span>
-                                                        <input type="text" name="name" class="form-control"
-                                                               value="{{ $group->name }}" placeholder="Grupo de Jovens">
+                                                        <input type="text" name="name" class="form-control" value="{{ $group->name }}"
+                                                               placeholder="Grupo de Jovens">
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group"><br>
-                                                    <label>Frequência</label>
-                                                    <div class="input-icon input-icon-sm">
-                                                        <i class="fa fa-briefcase"></i>
-                                                        <select class="form-control" name="frequency">
-                                                            <option value="">Selecione</option>
-                                                            <option value="Diário"
-                                                                    @if($group->frequency == 'Diário') selected @endif >
-                                                                Diário
-                                                            </option>
-                                                            <option value="Semanal"
-                                                                    @if($group->frequency == 'Semanal') selected @endif >
-                                                                Semanal
-                                                            </option>
-                                                            <option value="Quinzenal"
-                                                                    @if($group->frequency == 'Quinzenal') selected @endif >
-                                                                Quinzenal
-                                                            </option>
-                                                            <option value="Mensal"
-                                                                    @if($group->frequency == 'Mensal') selected @endif >
-                                                                Mensal
-                                                            </option>
-                                                        </select>
-                                                    </div>
-                                                </div>
 
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Data de Criação</label>
-                                                    <div class="input-group">
-                                                            <span class="input-group-addon">
+                                                    <div class="input-group date date-picker" data-date-format="dd/mm/yyyy" data-date-start-date="+0d">
+                                                            <span class="input-group-btn">
+                                                            <button class="btn default" type="button">
                                                                 <i class="fa fa-calendar font-blue"></i>
-                                                            </span>
+                                                            </button>
+                                                        </span>
                                                         <input type="text" class="form-control" name="sinceOf"
                                                                value="{{ $group->sinceOf }}" placeholder="dd/mm/aaaa">
                                                     </div>
@@ -1626,12 +1637,24 @@ License: You must have a valid license purchased only from themeforest(the above
 <script src="../../assets/pages/scripts/profile.min.js" type="text/javascript"></script>
 <script src="../../assets/pages/scripts/timeline.min.js" type="text/javascript"></script>
 
+<script src="../../assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.js" type="text/javascript"></script>
+
+<script src="../../assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js" type="text/javascript"></script>
+
+<script src="../../assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js" type="text/javascript"></script>
+<script src="../../assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+<script src="../../assets/pages/scripts/components-date-time-pickers.js" type="text/javascript"></script>
+
+<script src="../../js/script.js"></script>
+
 
 <script src="../../assets/pages/scripts/components-bootstrap-select.min.js" type="text/javascript"></script>
 
 <script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
 <script src="https://js.pusher.com/4.0/pusher.min.js"></script>
+
+
 
 <script>
 
@@ -1727,10 +1750,10 @@ License: You must have a valid license purchased only from themeforest(the above
 
 <script>
 
-    function signUp(id)
+    function checkInEvent(id)
     {
         var request = $.ajax({
-            url: '/events/signUp/' + id,
+            url: '/events/checkInEvent/' + id,
             method: 'POST',
             data: id,
             dataType: 'json'
@@ -1799,7 +1822,8 @@ License: You must have a valid license purchased only from themeforest(the above
 
         var marker = new google.maps.Marker({
             position: uluru,
-            map: map
+            map: map,
+            icon: 'http://maps.google.com/mapfiles/kml/pal2/icon10.png'
         });
 
 
@@ -1823,7 +1847,6 @@ License: You must have a valid license purchased only from themeforest(the above
             var address = $("#location-" + i).val();
 
             var script = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + address + '&key=AIzaSyCz22xAk7gDzvTEXjqjL8Goxu_q12Gt_KU';
-            //alert('script: ' + script);
 
             $.getJSON(script, function (json) {
                 var lat = json.results[0].geometry.location.lat;
@@ -1832,14 +1855,11 @@ License: You must have a valid license purchased only from themeforest(the above
                 localStorage.setItem('lat', lat);
                 localStorage.setItem('lng', lng);
 
-                //alert('lat: ' + localStorage.getItem('lat'));
-
             });
 
             locations.push((localStorage.getItem('lat')));
             locations.push((localStorage.getItem('lng')));
         }
-        //alert('locations: ' + locations);
 
         setMarkers(locations);
 
@@ -1851,11 +1871,10 @@ License: You must have a valid license purchased only from themeforest(the above
         var infowindow = new google.maps.InfoWindow();
         var k = 0;
 
-        //alert('lat: ' + lat + ' lng: ' + lng);
         var uluru = {lat: lat, lng: lng};
 
         var map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 11,
+            zoom: 13,
             center: uluru
         });
 
@@ -1865,9 +1884,7 @@ License: You must have a valid license purchased only from themeforest(the above
             var marker = new google.maps.Marker({
                 position: position,
                 map: map,
-                icon: $("#role-" + k).val() == 1 ?
-                        new google.maps.MarkerImage("http://maps.google.com/mapfiles/ms/icons/blue-dot.png")
-                        : ''
+                icon: icons(k)
             });
 
 
@@ -1883,11 +1900,21 @@ License: You must have a valid license purchased only from themeforest(the above
         }
     }
 
-    //-23.5142994
-    //-47.4623199
+    function icons(num)
+    {
+        if(num == 0)
+        {
+            return new google.maps.MarkerImage("http://maps.google.com/mapfiles/kml/pal2/icon10.png");
+        }
+        else{
+            if($("#role-" + num).val() == 1)
+            {
+                return new google.maps.MarkerImage("http://maps.google.com/mapfiles/ms/icons/blue-dot.png");
+            }
+        }
 
-    //-23.5365557
-    //-47.4129715
+        return '';
+    }
 
 </script>
 

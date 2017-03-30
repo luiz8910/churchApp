@@ -53,7 +53,7 @@ Route::group(['middleware' => 'auth'], function (){
 
     Route::get('json-events', 'EventController@json')->name('json-events');
 
-    Route::post('/events/signUp/{id}', 'EventController@joinEvent')->name('event.joinEvent');
+    Route::post('/events/checkInEvent/{id}', 'EventController@checkInEvent')->name('event.checkInEvent');
 
     Route::delete('events/delete/{id}', 'EventController@destroy')->name('event.destroy');
 
@@ -62,6 +62,8 @@ Route::group(['middleware' => 'auth'], function (){
     Route::get('events/test', 'EventController@testEventNotification');
 
     Route::get('notify', 'PersonController@notify')->name('notify.user');
+
+    Route::get('/events/check/{id}', 'EventController@checkInEvent');
 
 });
 
@@ -82,6 +84,8 @@ Route::group(["middleware" => "check.role:1"], function () {
     Route::delete('deleteMemberGroup/{group}/{member}', 'GroupController@deleteMember')->name('group.deleteMember');
 
     Route::post('newMember/{group}', 'GroupController@newMemberToGroup')->name('group.newMember');
+
+    Route::get('group/deleteManyUsers/{id}', 'GroupController@destroyManyUsers')->name('group.destroyManyUsers');
 
 
 

@@ -73,8 +73,6 @@ $(function () {
 
     $("#tr-td-"+member_id).find("td:first").trigger("click");
 
-
-
     function readURL(input) {
 
         if (input.files && input.files[0]) {
@@ -88,8 +86,6 @@ $(function () {
 
         }
     }
-
-
 
     $("#file-upload").change(function(){
 
@@ -119,7 +115,6 @@ $(function () {
             $("#form-partner").attr('hidden', true);
         }
     });
-
 
     $("#input-badge-count").change(function () {
 
@@ -160,9 +155,10 @@ $(function () {
         }
     });
 
-    $(".check-event").click(function () {
+    $(".check-model").click(function () {
 
-        var n = $( ".check-event:checked" ).length;
+
+        var n = $( ".check-model:checked" ).length;
 
 
         if(n > 0)
@@ -171,8 +167,8 @@ $(function () {
             {
                 var input = "<input type='hidden' value='"+this.value+"' id='inputId-"+this.value+"' name='input[]'/>";
 
-                $("#btn-delete-event").css('display', 'block');
-                $("#eventToDel").append(input);
+                $("#btn-delete-model").css('display', 'block');
+                $("#modelToDel").append(input);
             }
             else{
                 $("#inputId-"+this.value).remove();
@@ -181,9 +177,20 @@ $(function () {
         }
         else{
             $("#inputId-"+this.value).remove();
-            $("#btn-delete-event").css('display', 'none');
+            $("#btn-delete-model").css('display', 'none');
         }
 
+    });
+
+    $("#check-0").click(function () {
+        if($("#check-0").is(':checked'))
+        {
+            $('.check-model').prop('checked', true);
+        }
+        else{
+            $('.check-model').prop('checked', false);
+            $("#btn-delete-model").css('display', 'none');
+        }
     });
 
     $("#button-success").click(function () {
@@ -320,6 +327,8 @@ $(function () {
     $("#allDay").click(function () {
 
         allDay();
-    })
+    });
+
+
 
 });

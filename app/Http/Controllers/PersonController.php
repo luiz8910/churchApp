@@ -52,16 +52,22 @@ class PersonController extends Controller
      */
     public function index()
     {
-        $adults = $this->repository->findWhere(['tag' => 'adult']);
+        $adults = DB::table("people")
+            ->where([
+                'tag' => 'adult',
+                'deleted_at' => null,
+            ])->paginate(5);
+
 
         foreach ($adults as $item)
         {
             $item->dateBirth = $this->formatDateView($item->dateBirth);
+            $item->role = $this->roleRepository->find($item->role_id)->name;
         }
 
         $countPerson[] = $this->countPerson();
         $countGroups[] = $this->countGroups();
-        $notify[] = $this->notify();
+        $notify = $this->notify();
         $qtde = count($notify);
 
         return view('people.index', compact('adults', 'countPerson', 'countGroups', 'notify', 'qtde'));
@@ -69,16 +75,21 @@ class PersonController extends Controller
 
     public function teenagers()
     {
-        $teen = $this->repository->findWhereNotIn('tag', ['adult']);
+        $teen = DB::table("people")
+            ->where([
+                ['tag', '<>', 'adult'],
+                'deleted_at' => null,
+            ])->paginate(5);
 
         foreach ($teen as $item)
         {
             $item->dateBirth = $this->formatDateView($item->dateBirth);
+            $item->role = $this->roleRepository->find($item->role_id)->name;
         }
 
         $countPerson[] = $this->countPerson();
         $countGroups[] = $this->countGroups();
-        $notify[] = $this->notify();
+        $notify = $this->notify();
         $qtde = count($notify);
 
         return view('people.teenagers', compact('teen', 'countPerson', 'countGroups', 'notify', 'qtde'));
@@ -86,16 +97,21 @@ class PersonController extends Controller
 
     public function visitors()
     {
-        $visitors = $this->repository->findWhere(['role_id' => '3']);
+        $visitors = DB::table("people")
+            ->where([
+                'role_id' => 3,
+                'deleted_at' => null,
+            ])->paginate(5);
 
         foreach ($visitors as $item)
         {
             $item->dateBirth = $this->formatDateView($item->dateBirth);
+            $item->role = $this->roleRepository->find($item->role_id)->name;
         }
 
         $countPerson[] = $this->countPerson();
         $countGroups[] = $this->countGroups();
-        $notify[] = $this->notify();
+        $notify = $this->notify();
         $qtde = count($notify);
 
         return view('people.visitors', compact('visitors', 'countPerson', 'countGroups', 'notify', 'qtde'));
@@ -112,7 +128,7 @@ class PersonController extends Controller
 
         $countPerson[] = $this->countPerson();
         $countGroups[] = $this->countGroups();
-        $notify[] = $this->notify();
+        $notify = $this->notify();
         $qtde = count($notify);
 
         return view('people.inactive', compact('inactive', 'countPerson', 'countGroups', 'notify', 'qtde'));
@@ -144,7 +160,7 @@ class PersonController extends Controller
 
         $adults = $this->repository->findWhere(['tag' => 'adult']);
 
-        $notify[] = $this->notify();
+        $notify = $this->notify();
 
         $qtde = count($notify);
 
@@ -327,7 +343,7 @@ class PersonController extends Controller
 
         $adults = $this->repository->findWhere(['tag' => 'adult', 'gender' => $gender]);
 
-        $notify[] = $this->notify();
+        $notify = $this->notify();
 
         $qtde = count($notify);
 
@@ -410,7 +426,7 @@ class PersonController extends Controller
         return redirect()->route('person.index');
     }
 
-    public function notify()
+    /*public function notify()
     {
         $user[] = User::findOrFail(1);
 
@@ -435,5 +451,5 @@ class PersonController extends Controller
         }
 
 
-    }
+    }*/
 }

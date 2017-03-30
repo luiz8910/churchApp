@@ -727,9 +727,9 @@ var ChartsAmcharts = function() {
             "valueField": "value",
             "titleField": "country",
             "outlineAlpha": 0.4,
-            "depth3D": 15,
+            "depth3D": 0,
             "balloonText": "[[title]]<br><span style='font-size:14px'><b>[[value]]</b> ([[percents]]%)</span>",
-            "angle": 30,
+            "angle": 0,
             "exportConfig": {
                 menuItems: [{
                     icon: '/lib/3/images/export.png',

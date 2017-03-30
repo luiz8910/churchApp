@@ -23,6 +23,8 @@ class EventPerson extends Migration
             $table->string('eventDate');
             $table->boolean('check-in')->default(false);
 
+            $table->boolean('show')->default(false);
+
             $table->timestamps();
         });
     }

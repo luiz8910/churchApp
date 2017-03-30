@@ -12,3 +12,99 @@
     padding: 6px 12px;
     cursor: pointer;
 }
+
+.small-button{
+    width: 70px !important;
+}
+
+.green{
+    color: #269224;
+}
+
+.desktop span{
+    margin-left: 100px;
+    font-weight: 800;
+}
+
+.tbody-agenda-desktop tr td label{
+    margin-bottom: 50px;
+}
+
+.tbody-agenda-desktop tr td label:hover{
+    cursor: pointer;
+}
+
+.tbody-agenda-desktop tr td h6{
+    text-align: right;
+}
+
+.tbody-agenda-desktop tr td h5{
+    margin-top: -40px;
+    margin-bottom: 80px;
+}
+
+.thead-agenda tr th{
+    text-align: center;
+}
+
+.desktop a{
+    margin-top: -30px;
+}
+
+.panel-mobile{
+    margin-bottom: -1px;
+}
+
+.day-panel-mobile{
+    margin-top: -10px;
+}
+
+.today-back{
+    background-color: #ffffcc;
+}
+
+.agenda{
+    transition: all 1s linear;
+}
+
+.hidden {
+    display: none;
+}
+
+.visuallyhidden {
+    opacity: 0;
+}
+
+.check-hidden{
+    visibility: hidden;
+}
+
+.ui-loader{
+    display: none;
+}
+
+#input-search{
+    width: 60px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: white;
+    /*background-image: url('../uploads/icons/searchicon.png');*/
+    background-position: 10px 10px;
+    background-repeat: no-repeat;
+    padding: 12px 20px 12px 40px;
+    -webkit-transition: width 0.4s ease-in-out;
+    transition: width 0.4s ease-in-out;
+}
+
+#input-search:focus{
+    width: 100%;
+}
+
+.search{
+    width: 10px;
+    height: 10px;
+
+    position: relative;
+}

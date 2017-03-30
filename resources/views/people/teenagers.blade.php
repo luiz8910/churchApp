@@ -72,8 +72,8 @@ License: You must have a valid license purchased only from themeforest(the above
                 <div class="page-content-inner">
                     <div class="row">
                         <div class="col-md-12">
-                            <!-- Begin: life time stats -->
-                            <div class="portlet light portlet-fit portlet-datatable ">
+                            <!-- BEGIN BORDERED TABLE PORTLET-->
+                            <div class="portlet light portlet-fit ">
                                 <div class="portlet-title">
                                     <div class="caption">
                                         <i class="icon-settings font-green"></i>
@@ -81,10 +81,10 @@ License: You must have a valid license purchased only from themeforest(the above
                                     </div>
                                     <div class="actions">
                                         <div class="btn-group btn-group-devided">
-                                                <a role="button" class="btn btn-info btn-circle" href="{{ route('person.create') }}" style="margin-top: 2px;">
-                                                    <i class="fa fa-plus"></i>
-                                                    Novo Membro
-                                                </a>
+                                            <a role="button" class="btn btn-info btn-circle" href="{{ route('person.create') }}" style="margin-top: 2px;">
+                                                <i class="fa fa-plus"></i>
+                                                <span class="hidden-xs hidden-sm">Novo Membro</span>
+                                            </a>
 
                                         </div>
                                         <div class="btn-group">
@@ -114,54 +114,61 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <a href="javascript:;" data-action="4" class="tool-action">
                                                         <i class="icon-cloud-upload"></i> CSV</a>
                                                 </li>
-
-                                                </li>
                                             </ul>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="portlet-body">
-                                    <div class="table-container">
-                                        <table class="table table-striped table-hover" id="sample_3">
+                                    <div class="table-scrollable table-scrollable-borderless">
+                                        <table class="table table-hover table-light">
                                             <thead>
-                                            <tr>
-                                                <th class="visible-xs"></th>
+                                            <tr class="uppercase">
                                                 <th> Foto </th>
                                                 <th> Nome </th>
                                                 <th> CPF </th>
                                                 <th> Cargo </th>
                                                 <th> Data de Nasc. </th>
-                                                <th> Editar </th>
-                                                <th> Excluir </th>
+                                                <th> Opções </th>
                                             </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach($teen as $item)
-                                                    <tr>
-                                                        <td class="visible-xs"></td>
-                                                        <td> <img src="{{ $item->imgProfile }}" class="img-responsive" style="width: 50px; height: 50px;"> </td>
-                                                        <td> {{ $item->name }} {{ $item->lastName }}</td>
-                                                        <td> {{ $item->cpf }} </td>
-                                                        <td> {{ $item->role->name }} </td>
-                                                        <td> {{ $item->dateBirth }} </td>
-                                                        <td> <a href="{{ route('person.edit', ['person' => $item->id]) }}">Ver Perfil</a> </td>
-                                                        <?php $deleteForm = "delete-".$item->id; ?>
-                                                        <td id="{{ $deleteForm }}">
-                                                            {!! Form::open(['route' => ['person.destroy', 'person' => $item->id],
-                                                                    'method' => 'DELETE', 'id' => 'form-'.$deleteForm]) !!}
+                                            @foreach($teen as $item)
+                                                <tr>
+                                                    <td class="visible-xs"></td>
+                                                    <td> <img src="{{ $item->imgProfile }}" style="width: 50px; height: 50px;"> </td>
+                                                    <td>
+                                                        <a href="{{ route('person.edit', ['person' => $item->id]) }}">
+                                                            {{ $item->name }} {{ $item->lastName }}</a>
+                                                    </td>
+                                                    <td> {{ $item->cpf }} </td>
+                                                    <td> {{ $item->role }} </td>
+                                                    <td> {{ $item->dateBirth }} </td>
 
-                                                            <a href="" onclick='event.preventDefault();document.getElementById("form-{{ $deleteForm }}").submit();'>Excluir</a>
+                                                    <?php $deleteForm = "delete-".$item->id; ?>
+                                                    <td id="{{ $deleteForm }}">
+                                                        {!! Form::open(['route' => ['person.destroy', 'person' => $item->id],
+                                                                'method' => 'DELETE', 'id' => 'form-'.$deleteForm]) !!}
 
-                                                            {!! Form::close() !!}
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
+                                                        <a href="" class="btn btn-danger btn-sm"
+                                                           onclick='event.preventDefault();document.getElementById("form-{{ $deleteForm }}").submit();'>
+                                                            <i class="fa fa-close"></i>
+                                                            Excluir
+                                                        </a>
+
+                                                        {!! Form::close() !!}
+                                                    </td>
+                                                </tr>
+                                            @endforeach
                                             </tbody>
                                         </table>
+                                        <br>
+                                        <div class="pull-right">
+                                            {{ $teen->links() }}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <!-- End: life time stats -->
+                            <!-- END BORDERED TABLE PORTLET-->
                         </div>
                     </div>
                 </div>

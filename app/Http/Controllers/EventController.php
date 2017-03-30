@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Events\AgendaEvent;
 use App\Models\Event;
 use App\Models\User;
+use App\Services\AgendaServices;
 use App\Services\EventServices;
 use App\Notifications\EventNotification;
 use App\Notifications\Notifications;
@@ -64,8 +65,6 @@ class EventController extends Controller
 
         $state = $this->stateRepository->all();
 
-        $roles = $this->repository->all();
-
         $events = $this->repository->paginate(5);
 
 
@@ -88,13 +87,98 @@ class EventController extends Controller
 
         $qtde = count($notify);
 
-        //dd($event_user[0][1]["id"]);
+        $days = AgendaServices::findWeek();
 
-        //dd(isset($event_user[0][1]));
+        $nextWeek = AgendaServices::findWeek('next');
 
-        //dd(count($event_user[0]));
+        $prevWeek = AgendaServices::findWeek('prev');
 
-        return view('events.index', compact('countPerson', 'countGroups', 'state', 'roles', 'events', 'event_user', 'notify', 'qtde'));
+        $twoWeeks = AgendaServices::findWeek('2 weeks');
+
+        $allEvents = EventServices::allEvents();
+
+        for($i = 0; $i < 7; $i++) { array_push($days, $nextWeek[$i]); }
+
+        for($i = 0; $i < 7; $i++) { array_push($days, $twoWeeks[$i]); }
+
+        foreach ($days as $day) { array_push($prevWeek, $day); }
+
+        $days = $prevWeek;
+
+        $nextMonth = [];
+        $nextMonth2 = [];
+        $nextMonth3 = [];
+        $nextMonth4 = [];
+        $nextMonth5 = [];
+        $nextMonth6 = [];
+
+        $prevMonth = [];
+        $prevMonth2 = [];
+        $prevMonth3 = [];
+        $prevMonth4 = [];
+        $prevMonth5 = [];
+        $prevMonth6 = [];
+
+        $prevMonth = array_merge($prevMonth, AgendaServices::findMonth(-1));
+        $prevMonth = array_merge($prevMonth, AgendaServices::findMonth(-1, 'next'));
+        $prevMonth = array_merge($prevMonth, AgendaServices::findMonth(-1, '2 weeks'));
+
+        $prevMonth2 = array_merge($prevMonth2, AgendaServices::findMonth(-2));
+        $prevMonth2 = array_merge($prevMonth2, AgendaServices::findMonth(-2, 'next'));
+        $prevMonth2 = array_merge($prevMonth2, AgendaServices::findMonth(-2, '2 weeks'));
+
+        $prevMonth3 = array_merge($prevMonth3, AgendaServices::findMonth(-3));
+        $prevMonth3 = array_merge($prevMonth3, AgendaServices::findMonth(-3, 'next'));
+        $prevMonth3 = array_merge($prevMonth3, AgendaServices::findMonth(-3, '2 weeks'));
+
+        $prevMonth4 = array_merge($prevMonth4, AgendaServices::findMonth(-4));
+        $prevMonth4 = array_merge($prevMonth4, AgendaServices::findMonth(-4, 'next'));
+        $prevMonth4 = array_merge($prevMonth4, AgendaServices::findMonth(-4, '2 weeks'));
+
+        $prevMonth5 = array_merge($prevMonth5, AgendaServices::findMonth(-5));
+        $prevMonth5 = array_merge($prevMonth5, AgendaServices::findMonth(-5, 'next'));
+        $prevMonth5 = array_merge($prevMonth5, AgendaServices::findMonth(-5, '2 weeks'));
+
+        $prevMonth6 = array_merge($prevMonth6, AgendaServices::findMonth(-6));
+        $prevMonth6 = array_merge($prevMonth6, AgendaServices::findMonth(-6, 'next'));
+        $prevMonth6 = array_merge($prevMonth6, AgendaServices::findMonth(-6, '2 weeks'));
+
+        //$p = AgendaServices::findMonth(1, 'prev');
+
+        $nextMonth = array_merge($nextMonth, AgendaServices::findMonth(1));
+        $nextMonth = array_merge($nextMonth, AgendaServices::findMonth(1, 'next'));
+        $nextMonth = array_merge($nextMonth, AgendaServices::findMonth(1, '2 weeks'));
+
+        $nextMonth2 = array_merge($nextMonth2, AgendaServices::findMonth(2));
+        $nextMonth2 = array_merge($nextMonth2, AgendaServices::findMonth(2, 'next'));
+        $nextMonth2 = array_merge($nextMonth2, AgendaServices::findMonth(2, '2 weeks'));
+
+        $nextMonth3 = array_merge($nextMonth3, AgendaServices::findMonth(3));
+        $nextMonth3 = array_merge($nextMonth3, AgendaServices::findMonth(3, 'next'));
+        $nextMonth3 = array_merge($nextMonth3, AgendaServices::findMonth(3, '2 weeks'));
+
+        $nextMonth4 = array_merge($nextMonth4, AgendaServices::findMonth(4));
+        $nextMonth4 = array_merge($nextMonth4, AgendaServices::findMonth(4, 'next'));
+        $nextMonth4 = array_merge($nextMonth4, AgendaServices::findMonth(4, '2 weeks'));
+
+        $nextMonth5 = array_merge($nextMonth5, AgendaServices::findMonth(5));
+        $nextMonth5 = array_merge($nextMonth5, AgendaServices::findMonth(5, 'next'));
+        $nextMonth5 = array_merge($nextMonth5, AgendaServices::findMonth(5, '2 weeks'));
+
+        $nextMonth6 = array_merge($nextMonth6, AgendaServices::findMonth(6));
+        $nextMonth6 = array_merge($nextMonth6, AgendaServices::findMonth(6, 'next'));
+        $nextMonth6 = array_merge($nextMonth6, AgendaServices::findMonth(6, '2 weeks'));
+
+        $allMonths = AgendaServices::allMonths();
+
+        $allDays = AgendaServices::allDaysName();
+
+        //dd(count($days));
+
+        return view('events.index', compact('countPerson', 'countGroups', 'state', 'allEvents',
+            'events', 'event_user', 'notify', 'qtde', 'days', 'nextMonth', 'nextMonth2',
+            'nextMonth3', 'nextMonth4', 'nextMonth5', 'nextMonth6', 'prevMonth', 'prevMonth2',
+            'prevMonth3', 'prevMonth4', 'prevMonth5', 'prevMonth6','allMonths', 'allDays'));
     }
 
     public function create($id = null)
@@ -157,7 +241,12 @@ class EventController extends Controller
 
         $this->sendNotification($data, $event);
 
-        return redirect()->route('events.index');
+        if($data["frequency"] != "Encontro Unico")
+        {
+            EventServices::newEventDays($event->id, $data['eventDate'], $data['frequency']);
+        }
+
+        return redirect()->route('event.index');
     }
 
     public function sendNotification($data, $event)
@@ -239,7 +328,7 @@ class EventController extends Controller
         }
 
 
-        //dd($userFrequency);
+        //dd($eventPeople);
 
 
         return view('events.edit', compact('countPerson', 'countGroups', 'state', 'roles', 'event', 'location',
@@ -268,9 +357,9 @@ class EventController extends Controller
 
         return redirect()->route('event.index');
     }
-    
 
-    public function joinEvent($id)
+
+    public function check($id)
     {
         $event = $this->repository->find($id);
 
@@ -306,8 +395,60 @@ class EventController extends Controller
         }
 
         //date_add($date, date_interval_create_from_date_string("2 days"));
+    }
 
 
+
+    public function checkInEvent($id)
+    {
+        $user = \Auth::getUser();
+
+        $date = date_create(date('Y-m-d'));
+
+        $event_person = DB::table('event_person')
+            ->where([
+                'event_id' => $id,
+                'person_id' => $user->person_id,
+                'eventDate' => date_format($date, "Y-m-d"),
+                'check-in' => 0
+            ])->get();
+
+        if(count($event_person) > 0)
+        {
+            DB::table('event_person')
+                ->where([
+                    'event_id' => $id,
+                    'person_id' => $user->person_id,
+                    'eventDate' => date_format($date, "Y-m-d"),
+                    'check-in' => 0
+                ])->update([
+                    'check-in' => 1,
+                    'show' => 1
+                    ]);
+        }
+        else{
+            $days = EventServices::eventDays($id);
+
+            $today = date("Y-m-d");
+
+            for($i = 0; $i < count($days); $i++)
+            {
+                $check = $days[$i]->eventDate == $today ? 1 : 0;
+
+                DB::table('event_person')
+                    ->insert([
+                        'event_id' => $id,
+                        'person_id' => $user->person_id,
+                        'eventDate' => $days[$i]->eventDate,
+                        'check-in' => $check,
+                        'show' => 1
+                ]);
+            }
+
+
+        }
+
+        echo json_encode(['status' => true]);
     }
 
 

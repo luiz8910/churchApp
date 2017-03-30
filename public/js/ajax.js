@@ -1,9 +1,9 @@
 
 
-    function checkIn(id)
+    function checkInEvent(id)
     {
         var request = $.ajax({
-            url: '/events/signUp/' + id,
+            url: '/events/checkInEvent/' + id,
             method: 'POST',
             data: id,
             dataType: 'json'
@@ -12,6 +12,7 @@
         request.done(function(e){
             if(e.status)
             {
+                window.location.href = '/events/'+id+'/edit';
                 $("#alert-success").css('display', 'block');
 
                 $("#i-checkIn").remove();
@@ -41,5 +42,5 @@
             console.log(e);
         });
 
-        return false;
+
     }

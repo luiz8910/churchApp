@@ -72,8 +72,8 @@ License: You must have a valid license purchased only from themeforest(the above
                 <div class="page-content-inner">
                     <div class="row">
                         <div class="col-md-12">
-                            <!-- Begin: life time stats -->
-                            <div class="portlet light portlet-fit portlet-datatable ">
+                            <!-- BEGIN BORDERED TABLE PORTLET-->
+                            <div class="portlet light portlet-fit ">
                                 <div class="portlet-title">
                                     <div class="caption">
                                         <i class="icon-settings font-green"></i>
@@ -81,10 +81,10 @@ License: You must have a valid license purchased only from themeforest(the above
                                     </div>
                                     <div class="actions">
                                         <div class="btn-group btn-group-devided">
-                                                <a role="button" class="btn btn-info btn-circle" href="{{ route('group.create') }}" style="margin-top: 2px;">
-                                                    <i class="fa fa-plus"></i>
-                                                    <span class="hidden-xs hidden-sm">Novo Grupo</span>
-                                                </a>
+                                            <a role="button" class="btn btn-info btn-circle" href="{{ route('group.create') }}" style="margin-top: 2px;">
+                                                <i class="fa fa-plus"></i>
+                                                <span class="hidden-xs hidden-sm">Novo Grupo</span>
+                                            </a>
 
                                         </div>
                                         <div class="btn-group">
@@ -121,63 +121,60 @@ License: You must have a valid license purchased only from themeforest(the above
                                     </div>
                                 </div>
                                 <div class="portlet-body">
-                                    <div class="table-container">
-                                        <table class="table table-striped table-hover" id="sample_3">
+                                    <div class="table-scrollable table-scrollable-borderless">
+                                        <table class="table table-hover table-light">
                                             <thead>
-                                            <tr>
-                                                <th class="visible-xs"></th>
+                                            <tr class="uppercase">
                                                 <th> Foto </th>
                                                 <th> Nome </th>
-                                                <th> Frequência </th>
                                                 <th> Inicio em </th>
                                                 <th> Quantidade </th>
-                                                @if(Auth::getUser()->person->role_id == 1)
-                                                    <th> Editar </th>
-                                                    <th> Excluir </th>
-                                                @else
-                                                    <th> Detalhes </th>
-                                                @endif
+                                                <th> Opções </th>
                                             </tr>
                                             </thead>
                                             <tbody>
-                                                <?php $i = 0; ?>
-                                                @foreach($groups as $item)
-                                                    <tr>
-                                                        <td class="visible-xs"></td>
-                                                        <td> <img src="{{ $item->imgProfile }}" style="width: 50px; height: 50px;"> </td>
-                                                        <td> {{ $item->name }}</td>
-                                                        <td> {{ $item->frequency }} </td>
-                                                        <td> {{ $item->sinceOf }} </td>
-                                                        <td> <span class="badge badge-success">{{ $countMembers[$i] }}</span></td>
+                                            <?php $i = 0; ?>
+                                            @foreach($groups as $item)
+                                                <tr>
+                                                    <td> <img src="{{ $item->imgProfile }}" style="width: 50px; height: 50px;"> </td>
+                                                    <td> <a href="{{ route('group.edit', ['group' => $item->id]) }}"> {{ $item->name }}</a></td>
+                                                    <td> {{ $item->sinceOf }} </td>
+                                                    <td> <span class="badge badge-success">{{ $countMembers[$i] }}</span></td>
 
-                                                        @if(Auth::getUser()->person->role_id == 1)
+                                                    @if(Auth::getUser()->person->role_id == 1)
 
-                                                        <td> <a href="{{ route('group.edit', ['group' => $item->id]) }}">Editar</a> </td>
-
-                                                             <?php $deleteForm = "delete-".$item->id; ?>
+                                                        <?php $deleteForm = "delete-".$item->id; ?>
                                                         <td id="{{ $deleteForm }}">
-                                                                {!! Form::open(['route' => ['group.destroy', 'group' => $item->id],
-                                                                        'method' => 'DELETE', 'id' => 'form-'.$deleteForm]) !!}
+                                                            {!! Form::open(['route' => ['group.destroy', 'group' => $item->id],
+                                                                    'method' => 'DELETE', 'id' => 'form-'.$deleteForm]) !!}
 
-                                                                <a href="" onclick='event.preventDefault();document.getElementById("form-{{ $deleteForm }}").submit();'>Excluir</a>
+                                                            <a href="" class="btn btn-danger btn-sm" title="Excluir grupo"
+                                                               onclick='event.preventDefault();document.getElementById("form-{{ $deleteForm }}").submit();'>
+                                                                <i class="fa fa-close"></i>
+                                                                Excluir
+                                                            </a>
 
-                                                                 {!! Form::close() !!}
+                                                            {!! Form::close() !!}
                                                         </td>
 
-                                                            @else
-                                                                <td> <a href="{{ route('group.show', ['group' => $item->id]) }}">Ver Detalhes</a> </td>
-                                                            @endif
-                                                    </tr>
-                                                    <?php $i++; ?>
-                                                @endforeach
+                                                    @endif
+
+                                                </tr>
+                                                <?php $i++; ?>
+                                            @endforeach
                                             </tbody>
                                         </table>
+                                        <br>
+                                        <div class="pull-right">
+                                            {{ $groups->links() }}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <!-- End: life time stats -->
+                            <!-- END BORDERED TABLE PORTLET-->
                         </div>
                     </div>
+
                 </div>
                 <!-- END PAGE CONTENT INNER -->
             </div>
