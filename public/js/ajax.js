@@ -44,3 +44,74 @@
 
 
     }
+
+    $("#recoverPassword").submit(function () {
+
+        if(!$("#btnSend").attr('disabled'))
+        {
+            var email = $("#recoverEmail").val();
+            var request = $.ajax({
+                url: "/sendPassword/" + email,
+                method: "POST",
+                //data: email,
+                dataType: "json"
+            });
+
+            request.done(function (e) {
+
+                if(e.status)
+                {
+                    $("#emailSent").css("display", "block");
+                }
+                else{
+                    $("#emailNotSent").css("display", "block");
+                }
+            });
+
+            request.fail(function (e) {
+                console.log("fail");
+                console.log(e);
+                $("#emailNotSent").css("display", "block");
+            })
+        }
+
+        return false;
+    });
+
+    $("#recoverEmail").change(function () {
+        console.log("email");
+
+        if(validateEmail(this.value))
+        {
+            var request = $.ajax({
+                url: "/emailTest/" + this.value,
+                method: "GET",
+                //data: this.value,
+                dataType: "json"
+            });
+
+            request.done(function(e){
+                if(e.status)
+                {
+                    $("#btnSend").attr("disabled", null);
+                    $("#emailNotFound").css("display", "none");
+                }
+                else{
+                    $("#emailNotFound").css("display", "block");
+                    $("#btnSend").attr("disabled", true);
+                }
+            });
+
+            request.fail(function (e) {
+                console.log(e);
+            })
+        }
+        else{
+            alert("entre com um email válido");
+        }
+    });
+
+    function validateEmail(email) {
+        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(email);
+    }

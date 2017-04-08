@@ -41,6 +41,9 @@
 <!-- CSS Próprio -->
 <script src="../../js/script.js" type="text/javascript"></script>
 <script src="../../js/screen.js"></script>
+<script src="../../js/cep.js"></script>
+<script src="../../js/cpf.js"></script>
+<script src="../../js/maskbrphone.js"></script>
 <script src="https://js.pusher.com/4.0/pusher.min.js"></script>
 
 <script>

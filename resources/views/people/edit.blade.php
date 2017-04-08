@@ -202,7 +202,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <div class="col-md-6">
                                                     {!! Form::FormGroup('cel', $errors) !!}
                                                     <label class="control-label">Celular</label>
-                                                    <input type="text" placeholder="(15) 9123-1234" name="cel" value="{{ $person->cel }}" class="form-control" />
+                                                    <input type="text" placeholder="(15) 9123-1234" name="cel" value="{{ $person->cel }}" class="form-control tel" />
                                                     {!! Form::error('cel', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
                                                 </div>
@@ -221,7 +221,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <div class="col-md-6">
                                                     {!! Form::FormGroup('tel', $errors) !!}
                                                     <label class="control-label">Telefone</label>
-                                                    <input type="text" placeholder="(15) 9123-1234" name="tel" value="{{ $person->tel }}" class="form-control" />
+                                                    <input type="text" placeholder="(15) 9123-1234" name="tel" value="{{ $person->tel }}" class="form-control tel" />
                                                     {!! Form::error('tel', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
                                                 </div>
@@ -244,7 +244,13 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <div class="col-md-6">
                                                     {!! Form::FormGroup('dateBirth', $errors) !!}
                                                     <label class="control-label">Data de Nasc.</label>
-                                                    <input type="text" placeholder="dd/mm/aaaa" value="{{ $person->dateBirth }}" name="dateBirth" class="form-control" />
+                                                    <div class="input-group date date-picker" data-date-format="dd/mm/yyyy">
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-calendar font-blue"></i>
+                                                        </span>
+                                                        <input type="text" placeholder="dd/mm/aaaa" value="{{ $person->dateBirth }}"
+                                                               name="dateBirth" class="form-control input-date" />
+                                                    </div>
                                                     {!! Form::error('dateBirth', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
                                                 </div>
@@ -267,8 +273,18 @@ License: You must have a valid license purchased only from themeforest(the above
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     {!! Form::FormGroup('cpf', $errors) !!}
-                                                    <label class="control-label">CPF</label>
-                                                    <input type="text" placeholder="123.123.123-12" value="{{ $person->cpf }}" name="cpf" class="form-control" />
+                                                    <label>CPF (Sem pontos ou traços)</label>
+                                                    <div class="input-group input-icon right">
+                                                            <span class="input-group-addon">
+                                                                <i class="fa fa-user"></i>
+                                                            </span>
+                                                        <input type="text" name="cpf" id="cpf" maxlength="11" class="form-control"
+                                                               placeholder="XXXXXXXXXXX" value="{{ $person->cpf }}">
+                                                        <i class="fa fa-check font-green" id="icon-success" style="display: none;"></i>
+                                                        <i class="fa fa-exclamation font-red" id="icon-error" style="display: none;"></i>
+
+                                                    </div>
+                                                    <div class="help-block small-error">CPF Inválido</div>
                                                     {!! Form::error('cpf', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
                                                 </div>
@@ -334,18 +350,21 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                             <h3 class="form-section">Endereço</h3>
 
+                                            <div class="loader"></div>
                                             <div class="row">
                                                 <div class="col-md-3">
                                                     {!! Form::FormGroup('zipCode', $errors) !!}
                                                     <label class="control-label">CEP</label>
-                                                    <input type="text" placeholder="12123-12" value="{{ $person->zipCode }}" name="zipCode" class="form-control" />
+                                                    <input type="text" placeholder="12123-12" value="{{ $person->zipCode }}"
+                                                           name="zipCode" class="form-control" id="zipCode" />
                                                     {!! Form::error('zipCode', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
                                                 </div>
                                                 <div class="col-md-9">
                                                     {!! Form::FormGroup('street', $errors) !!}
                                                     <label class="control-label">Logradouro</label>
-                                                    <input type="text" placeholder="Rua dos Bobos, 0" value="{{ $person->street }}" id="street" name="street" class="form-control" />
+                                                    <input type="text" placeholder="Rua dos Bobos, 0" value="{{ $person->street }}" id="street"
+                                                           name="street" class="form-control" />
                                                     {!! Form::error('street', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
                                                 </div>
@@ -355,21 +374,23 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <div class="col-md-4">
                                                     {!! Form::FormGroup('neighborhood', $errors) !!}
                                                     <label class="control-label">Bairro</label>
-                                                    <input type="text" placeholder="Vila Progresso" value="{{ $person->neighborhood }}" name="neighborhood" class="form-control" />
+                                                    <input type="text" placeholder="Vila Progresso" value="{{ $person->neighborhood }}"
+                                                           id="neighborhood" name="neighborhood" class="form-control" />
                                                     {!! Form::error('neighborhood', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
                                                 </div>
                                                 <div class="col-md-4">
                                                     {!! Form::FormGroup('city', $errors) !!}
                                                     <label class="control-label">Cidade</label>
-                                                    <input type="text" placeholder="Sorocaba" name="city" value="{{ $person->city }}" class="form-control" />
+                                                    <input type="text" placeholder="Sorocaba" name="city" value="{{ $person->city }}"
+                                                           class="form-control" id="city"/>
                                                     {!! Form::error('city', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
                                                 </div>
                                                 <div class="col-md-4">
                                                     {!! Form::FormGroup('state', $errors) !!}
                                                     <label class="control-label">UF:</label>
-                                                    <select name="state" class="form-control">
+                                                    <select name="state" class="form-control" id="state">
                                                         <option value="">Selecione</option>
                                                         @foreach($state as $value)
                                                             <option value="{{ $value->initials }}" @if($value->initials == $person->state) selected @endif >
@@ -385,7 +406,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                                 <div class="margiv-top-10">
                                                     {!! Form::submit('Salvar', ['class' => 'btn green']) !!}
-                                                    <a href="javascript:;" class="btn default"> Cancelar </a>
+
                                                 </div>
                                             {!! Form::close() !!}
                                         </div>
@@ -397,7 +418,13 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <div class="form-group">
                                                     <div class="fileinput fileinput-new" data-provides="fileinput">
                                                         <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
-                                                            <img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=no+image" alt="" /> </div>
+                                                            <img src=@if($person->imgProfile == "uploads/profile/noimage.png")
+                                                                        "http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=no+image"
+                                                                        @else
+                                                                            "../../{{ $person->imgProfile }}"
+                                                                    @endif
+
+                                                                 alt="" /> </div>
                                                         <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"> </div>
                                                         <div>
                                                                                 <span class="btn default btn-file">
@@ -410,7 +437,6 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 </div>
                                                 <div class="margin-top-10">
                                                     {!! Form::submit('Enviar', ['class' => 'btn green']) !!}
-                                                    <a href="javascript:;" class="btn default"> Cancelar </a>
                                                 </div>
                                             </form>
                                         </div>
@@ -429,7 +455,6 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <input type="password" class="form-control" name="confirmPassword" /> </div>
                                             <div class="margin-top-10">
                                                 {!! Form::submit('Alterar Senha', ['class' => 'btn green']) !!}
-                                                <a href="javascript:;" class="btn default"> Cancelar </a>
                                             </div>
                                             {!! Form::close() !!}
                                         </div>

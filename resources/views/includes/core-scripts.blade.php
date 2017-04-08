@@ -14,6 +14,7 @@
 <script src="../assets/global/plugins/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
 
 <!-- END CORE PLUGINS -->
+<script src="../assets/global/scripts/app.min.js" type="text/javascript"></script>
 
 <script src="../assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.js" type="text/javascript"></script>
 
@@ -24,7 +25,7 @@
 <script src="../assets/pages/scripts/components-date-time-pickers.js" type="text/javascript"></script>
 
 
-<script src="../assets/global/scripts/app.min.js" type="text/javascript"></script>
+
 <!--<script src="../assets/pages/scripts/ui-toastr.js" type="text/javascript"></script>-->
 <script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 <!-- BEGIN THEME LAYOUT SCRIPTS -->
@@ -36,6 +37,9 @@
 <!-- JS Próprio -->
 <script src="../js/script.js" type="text/javascript"></script>
 <script src="../js/screen.js"></script>
+<script src="../js/cep.js"></script>
+<script src="../js/cpf.js"></script>
+<script src="../js/maskbrphone.js"></script>
 <script src="https://js.pusher.com/4.0/pusher.min.js"></script>
 
 <script>

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserCreateRequest;
 use App\Http\Requests\UserUpdateRequest;
+use App\Mail\resetPassword;
+use App\Models\User;
 use App\Repositories\CountRepository;
 use App\Repositories\DateRepository;
 use App\Repositories\NotifyRepository;
@@ -12,7 +14,9 @@ use App\Repositories\RoleRepository;
 use App\Repositories\StateRepository;
 use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class UsersController extends Controller
 {
@@ -123,7 +127,9 @@ class UsersController extends Controller
             $this->updateMaritalStatus($data['partner'], $id);
         }
 
-        $this->personRepository->update($data, $id);
+        $person_id = $this->repository->find($id)->person_id;
+
+        $this->personRepository->update($data, $person_id);
 
         DB::table('users')
             ->where('id', $id)
@@ -182,5 +188,71 @@ class UsersController extends Controller
             ->update(
                 ['partner' => $id, 'maritalStatus' => 'Casado']
             );
+    }
+
+    public function passResetView($email)
+    {
+        return view("auth.passwords.new", compact('email'));
+    }
+
+    public function passReset(Request $request)
+    {
+        $email = $request->get('email');
+
+        $password = $request->get("password");
+
+        DB::table('users')
+            ->where('email', $email)
+            ->update(['password' => bcrypt($password)]);
+
+        $user = $this->repository->findByField('email', $email);
+
+        Auth::loginUsingId($user->first()->id, true);
+
+        return redirect()->route('index');
+
+    }
+
+    public function sendPassword($email)
+    {
+        $user = User::where("email", $email)->get();
+
+        $url = env('APP_URL');
+
+        $today = date("d/m/Y");
+
+        $time = date("H:i");
+
+        //dd($today);
+
+        if(count($user) > 0)
+        {
+
+            Mail::to(User::find($user->first()->id))
+                ->send(new resetPassword(
+                    User::find($user->first()->id), $url, $today, $time
+                ));
+
+            return json_encode(['status' => true]);
+        }
+
+        return json_encode(['status' => false]);
+    }
+
+    public function hasEmail($email)
+    {
+        $email = $this->repository->findByField('email', $email);
+
+        if(count($email) > 0)
+        {
+            return json_encode(['status' => true]);
+        }
+
+        return json_encode(['status' => false]);
+    }
+
+    public function forgotPassword()
+    {
+        return view("auth.passwords.forgot");
     }
 }

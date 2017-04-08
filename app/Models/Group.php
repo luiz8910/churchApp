@@ -12,7 +12,7 @@ class Group extends Model implements Transformable
     use TransformableTrait, SoftDeletes;
 
     protected $fillable = [
-        'name', 'frequency', 'sinceOf', 'imgProfile', 'active', 'owner_id',
+        'name', 'sinceOf', 'imgProfile', 'active', 'owner_id',
         'street', 'neighborhood', 'city', 'zipCode', 'state'
     ];
 

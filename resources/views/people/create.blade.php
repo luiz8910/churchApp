@@ -158,7 +158,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <span class="input-group-addon">
                                                         <i class="fa fa-mobile font-blue"></i>
                                                     </span>
-                                                        <input type="text" class="form-control" name="cel"
+                                                        <input type="text" class="form-control tel" name="cel"
                                                                id="exampleInputPassword1" placeholder="(15) 9231413423">
                                                     </div>
                                                 </div>
@@ -173,7 +173,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <span class="input-group-addon">
                                                         <i class="fa fa-phone font-green"></i>
                                                     </span>
-                                                        <input type="text" class="form-control" name="tel"
+                                                        <input type="text" class="form-control tel" name="tel"
                                                                id="exampleInputPassword1" placeholder="(15) 1231413423">
                                                     </div>
                                                 </div>
@@ -198,26 +198,30 @@ License: You must have a valid license purchased only from themeforest(the above
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Data de Nasc.</label>
-                                                    <div class="input-group">
+                                                    <div class="input-group date date-picker" data-date-format="dd/mm/yyyy">
                                                             <span class="input-group-addon">
                                                                 <i class="fa fa-calendar font-blue"></i>
                                                             </span>
-                                                        <input type="text" class="form-control" name="dateBirth"
-                                                               placeholder="dd/mm/aaaa">
+                                                        <input type="text" class="form-control input-date" name="dateBirth"
+                                                               placeholder="dd/mm/aaaa" maxlength="10">
                                                     </div>
 
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label>CPF</label>
-                                                    <div class="input-group">
+                                                <div class="form-group" id="form-cpf">
+                                                    <label>CPF (Sem pontos ou traços)</label>
+                                                    <div class="input-group input-icon right">
                                                             <span class="input-group-addon">
-                                                                <i class="fa fa-user"></i>
+                                                                <i class="fa fa-user font-blue"></i>
                                                             </span>
-                                                        <input type="text" name="cpf" class="form-control"
-                                                               placeholder="XXX.XXX.XXX-XX">
+                                                        <input type="text" name="cpf" id="cpf" maxlength="11" class="form-control"
+                                                               placeholder="XXXXXXXXXXX">
+                                                        <i class="fa fa-check font-green" id="icon-success" style="display: none;"></i>
+                                                        <i class="fa fa-exclamation font-red" id="icon-error" style="display: none;"></i>
+
                                                     </div>
+                                                    <div class="help-block small-error">CPF Inválido</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -225,12 +229,12 @@ License: You must have a valid license purchased only from themeforest(the above
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label>RG</label>
+                                                    <label>RG (Sem pontos ou traços)</label>
                                                     <div class="input-group">
                                                             <span class="input-group-addon">
                                                                 <i class="fa fa-user font-green"></i>
                                                             </span>
-                                                        <input type="text" name="rg" class="form-control"
+                                                        <input type="text" id="rg" name="rg" class="form-control"
                                                                placeholder="XX.XXX.XXX-X">
                                                     </div>
                                                 </div>
@@ -279,18 +283,6 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 </div>
                                             </div>
 
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <div class="checkbox-list">
-                                                        <br><br><label>
-                                                            <input type="checkbox" name="mailing"> Enviar Email Semanal?
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
                                         </div>
 
                                         <br>
@@ -360,16 +352,16 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                             </div>
 
                                                                             <br>
-                                                                            <div class="input-group">
+                                                                            <div class="input-group date date-picker" data-date-format="dd/mm/yyyy">
                                                                                 <span class="input-group-addon">
                                                                                     <i class="fa fa-calendar"></i>
                                                                                 </span>
 
                                                                                 <input type="text" name="childDateBirth"
-                                                                                       class="form-control"
+                                                                                       class="form-control input-date"
                                                                                        placeholder="data de Nasc. (dd/mm/aaaa)"/>
 
-                                                                                </div>
+                                                                            </div>
 
                                                                         </td>
                                                                         <td>
@@ -396,15 +388,17 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                         <h3>Endereço</h3>
 
+                                        <div class="loader"></div>
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label>CEP</label>
+                                                    <label>CEP (sem traços)</label>
                                                     <div class="input-group">
                                                         <span class="input-group-addon">
                                                             <i class="fa fa-location-arrow font-purple"></i>
                                                         </span>
-                                                        <input type="text" class="form-control" name="zipCode" placeholder="XXXXX-XXX">
+                                                        <input type="text" id="zipCode" class="form-control"
+                                                               name="zipCode" placeholder="XXXXXXXX" maxlength="8">
                                                     </div>
                                                 </div>
                                             </div>
@@ -418,7 +412,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <span class="input-group-addon">
                                                         <i class="fa fa-home font-purple"></i>
                                                     </span>
-                                                        <input class="form-control" name="street" type="text" placeholder="Av. Antonio Carlos Comitre, 650">
+                                                        <input class="form-control" name="street" id="street" type="text" placeholder="Av. Antonio Carlos Comitre, 650">
                                                     </div>
                                                 </div>
                                             </div>
@@ -429,7 +423,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <span class="input-group-addon">
                                                         <i class="fa fa-home font-purple"></i>
                                                     </span>
-                                                        <input class="form-control" name="neighborhood" type="text" placeholder="Parque do Dolly">
+                                                        <input class="form-control" name="neighborhood"  id="neighborhood" type="text" placeholder="Parque do Dolly">
                                                     </div>
                                                 </div>
                                             </div>
@@ -443,14 +437,14 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <span class="input-group-addon">
                                                         <i class="fa fa-building font-purple"></i>
                                                     </span>
-                                                        <input class="form-control" name="city" type="text" placeholder="Sorocaba">
+                                                        <input class="form-control" name="city" id="city" type="text" placeholder="Sorocaba">
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Estado</label>
-                                                    <select name="state" class="form-control">
+                                                    <select name="state" class="form-control" id="state">
                                                         <option value="">Selecione</option>
                                                         @foreach($state as $item)
                                                             <option value="{{ $item->initials }}">{{ $item->state }}</option>
@@ -481,7 +475,6 @@ License: You must have a valid license purchased only from themeforest(the above
                                     </div>
                                     <div class="form-actions">
                                         {!! Form::submit('Enviar', ['class' => 'btn blue']) !!}
-                                        <button type="button" class="btn default">Cancelar</button>
                                     </div>
                                     {!! Form::close() !!}
                                 </div>

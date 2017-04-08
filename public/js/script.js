@@ -329,6 +329,45 @@ $(function () {
         allDay();
     });
 
+    $(".input-date").keypress(function (e) {
+
+        if(e.which < 48 || e.which > 57)
+        {
+            return false;
+        }
+
+        var v = this.value;
+        if (v.match(/^\d{2}$/) !== null) {
+            this.value = v + '/';
+        } else if (v.match(/^\d{2}\/\d{2}$/) !== null) {
+            this.value = v + '/';
+        }
+
+    });
+
+    $("#zipCode").keypress(function (e) {
+        if(e.which < 48 || e.which > 57)
+        {
+            return false;
+        }
+
+    });
+
+    $("#rg").keypress(function (e) {
+        if(e.which < 48 || e.which > 57){
+            if(e.which != 88 && e.which != 120){
+                return false;
+            }
+        }
+    });
+
+
+    $(".tel").maskbrphone({
+        useDdd: true,
+        useDddParenthesis: true,
+        dddSeparator: ' ',
+        numberSeparator:'-'
+    })
 
 
 });

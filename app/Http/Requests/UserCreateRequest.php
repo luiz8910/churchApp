@@ -26,7 +26,7 @@ class UserCreateRequest extends FormRequest
         return [
             'name' => 'required|max:255',
             'email' => 'required|exists:users|email',
-            'tel' => 'required|numeric',
+            'tel' => 'required',
             'gender' => 'required',
             'dateBirth' => 'date_format:"d/m/Y"|required',
             'occupation' => 'required',

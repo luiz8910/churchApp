@@ -193,7 +193,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                         <li>
                                                                             <a href="#0" data-date="{{ $event->eventDate }}"
                                                                                class="border-after-red bg-after-red
-                                                                               @if($i == 0) selected @endif">{{ substr($event->eventDate, 0, 5) }}</a>
+                                                                               @if($i == 0)selected @endif">{{ substr($event->eventDate, 0, 5) }}</a>
                                                                         </li>
                                                                         <?php $i++; ?>
                                                                     @endforeach
@@ -780,13 +780,13 @@ License: You must have a valid license purchased only from themeforest(the above
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Data de Criação</label>
-                                                    <div class="input-group date date-picker" data-date-format="dd/mm/yyyy" data-date-start-date="+0d">
+                                                    <div class="input-group date date-picker" data-date-format="dd/mm/yyyy">
                                                             <span class="input-group-btn">
                                                             <button class="btn default" type="button">
                                                                 <i class="fa fa-calendar font-blue"></i>
                                                             </button>
                                                         </span>
-                                                        <input type="text" class="form-control" name="sinceOf"
+                                                        <input type="text" class="form-control input-date" name="sinceOf"
                                                                value="{{ $group->sinceOf }}" placeholder="dd/mm/aaaa">
                                                     </div>
 
@@ -797,6 +797,8 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                         <h3>Endereço</h3>
 
+                                        <div class="loader"></div>
+
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
@@ -805,7 +807,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         <span class="input-group-addon">
                                                             <i class="fa fa-location-arrow font-purple"></i>
                                                         </span>
-                                                        <input type="text" class="form-control" name="zipCode"
+                                                        <input type="text" class="form-control" id="zipCode" name="zipCode"
                                                                value="{{ $group->zipCode }}" placeholder="XXXXX-XXX">
                                                     </div>
                                                 </div>
@@ -822,7 +824,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     </span>
                                                         <input class="form-control" name="street" type="text"
                                                                value="{{ $group->street }}"
-                                                               placeholder="Av. Antonio Carlos Comitre, 650">
+                                                               placeholder="Av. Antonio Carlos Comitre, 650" id="street">
                                                     </div>
                                                 </div>
                                             </div>
@@ -835,7 +837,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     </span>
                                                         <input class="form-control" name="neighborhood" type="text"
                                                                value="{{ $group->neighborhood }}"
-                                                               placeholder="Parque do Dolly">
+                                                               placeholder="Parque do Dolly" id="neighborhood">
                                                     </div>
                                                 </div>
                                             </div>
@@ -850,14 +852,14 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         <i class="fa fa-building font-purple"></i>
                                                     </span>
                                                         <input class="form-control" name="city" type="text"
-                                                               value="{{ $group->city }}" placeholder="Sorocaba">
+                                                               value="{{ $group->city }}" placeholder="Sorocaba" id="city">
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Estado</label>
-                                                    <select name="state" class="form-control">
+                                                    <select name="state" class="form-control" id="state">
                                                         <option value="">Selecione</option>
                                                         @foreach($state as $item)
                                                             <option value="{{ $item->initials }}"
@@ -876,8 +878,13 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <div class="fileinput fileinput-new" data-provides="fileinput">
                                                         <div class="fileinput-new thumbnail"
                                                              style="width: 200px; height: 150px;">
-                                                            <img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=foto+do+perfil"
-                                                                 alt=""/></div>
+                                                            <img src=@if($group->imgProfile == "uploads/profile/noimage.png")
+                                                                    "http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=no+image"
+                                                            @else
+                                                                "../../{{ $group->imgProfile }}"
+                                                            @endif
+
+                                                            alt="" /></div>
                                                         <div class="fileinput-preview fileinput-exists thumbnail"
                                                              style="max-width: 200px; max-height: 150px;"></div>
                                                         <div>
@@ -897,7 +904,6 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                     <div class="margiv-top-10">
                                         {!! Form::submit('Salvar', ['class' => 'btn green']) !!}
-                                        <a href="javascript:;" class="btn default"> Cancelar </a>
                                     </div>
                                     {!! Form::close() !!}
 
@@ -1646,6 +1652,8 @@ License: You must have a valid license purchased only from themeforest(the above
 <script src="../../assets/pages/scripts/components-date-time-pickers.js" type="text/javascript"></script>
 
 <script src="../../js/script.js"></script>
+<script src="../../js/cep.js"></script>
+<script src="../../js/maskbrphone.js"></script>
 
 
 <script src="../../assets/pages/scripts/components-bootstrap-select.min.js" type="text/javascript"></script>
@@ -1909,7 +1917,7 @@ License: You must have a valid license purchased only from themeforest(the above
         else{
             if($("#role-" + num).val() == 1)
             {
-                return new google.maps.MarkerImage("http://maps.google.com/mapfiles/ms/icons/blue-dot.png");
+                return new google.maps.MarkerImage("http://maps.google.com/mapfiles/ms/icons/yellow-dot.png");
             }
         }
 

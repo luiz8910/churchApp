@@ -655,16 +655,18 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                         <h3>Endereço</h3>
 
+                                        <div class="loader"></div>
+
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label>CEP</label>
+                                                    <label>CEP (sem traços)</label>
                                                     <div class="input-group">
                                                         <span class="input-group-addon">
                                                             <i class="fa fa-location-arrow font-purple"></i>
                                                         </span>
                                                         <input type="text" class="form-control" name="zipCode"
-                                                               value="{{ $event->zipCode }}" placeholder="XXXXX-XXX">
+                                                               value="{{ $event->zipCode }}" id="zipCode" placeholder="XXXXX-XXX">
                                                     </div>
                                                 </div>
                                             </div>
@@ -690,7 +692,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <span class="input-group-addon">
                                                         <i class="fa fa-home font-purple"></i>
                                                     </span>
-                                                        <input class="form-control" name="neighborhood" type="text"
+                                                        <input class="form-control" name="neighborhood" id="neighborhood" type="text"
                                                                value="{{ $event->neighborhood }}" placeholder="Parque do Dolly">
                                                     </div>
                                                 </div>
@@ -705,7 +707,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <span class="input-group-addon">
                                                         <i class="fa fa-building font-purple"></i>
                                                     </span>
-                                                        <input class="form-control" name="city" type="text"
+                                                        <input class="form-control" name="city" id="city" type="text"
                                                                value="{{ $event->city }}" placeholder="Sorocaba">
                                                     </div>
                                                 </div>
@@ -713,7 +715,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Estado</label>
-                                                    <select name="state" class="form-control">
+                                                    <select name="state" class="form-control" id="state">
                                                         <option value="">Selecione</option>
                                                         @foreach($state as $item)
                                                             <option value="{{ $item->initials }}"

@@ -306,14 +306,14 @@ License: You must have a valid license purchased only from themeforest(the above
                                             <div class="panel panel-default" id="prevMonth6" style="display: none;">
                                                 <div class="panel-heading desktop">
                                                     <?php $i = 0; ?>
-                                                    <h5>Próximos Eventos -
-                                                        @while($i < count($allMonths))
-                                                            @if($i == (int) substr($days[0], 5, 2))
-                                                                {{ $allMonths[$i] }}
-                                                            @endif
-                                                            <?php $i++; ?>
-                                                        @endwhile
-                                                    </h5>
+                                                        <h5>Próximos Eventos -
+                                                            @while($i < count($allMonths))
+                                                                @if($i == (int) substr(end($prevMonth6), 5, 2))
+                                                                    {{ $allMonths[$i] }}
+                                                                @endif
+                                                                <?php $i++; ?>
+                                                            @endwhile
+                                                        </h5>
                                                     <a href="javascript:;" id="btnPrevRight6" class="btn btn-default btn-sm btn-circle pull-right">
                                                         <i class="fa fa-arrow-right"></i>
                                                     </a>
@@ -497,14 +497,14 @@ License: You must have a valid license purchased only from themeforest(the above
                                             <div class="panel panel-default" id="prevMonth5" style="display:none;">
                                                 <div class="panel-heading desktop">
                                                     <?php $i = 0; ?>
-                                                    <h5>Próximos Eventos -
-                                                        @while($i < count($allMonths))
-                                                            @if($i == (int) substr($days[0], 5, 2))
-                                                                {{ $allMonths[$i] }}
-                                                            @endif
-                                                            <?php $i++; ?>
-                                                        @endwhile
-                                                    </h5>
+                                                        <h5>Próximos Eventos -
+                                                            @while($i < count($allMonths))
+                                                                @if($i == (int) substr(end($prevMonth5), 5, 2))
+                                                                    {{ $allMonths[$i] }}
+                                                                @endif
+                                                                <?php $i++; ?>
+                                                            @endwhile
+                                                        </h5>
                                                     <a href="javascript:;" id="btnPrevRight5" class="btn btn-default btn-sm btn-circle pull-right">
                                                         <i class="fa fa-arrow-right"></i>
                                                     </a>
@@ -688,14 +688,14 @@ License: You must have a valid license purchased only from themeforest(the above
                                             <div class="panel panel-default" id="prevMonth4" style="display:none;">
                                                 <div class="panel-heading desktop">
                                                     <?php $i = 0; ?>
-                                                    <h5>Próximos Eventos -
-                                                        @while($i < count($allMonths))
-                                                            @if($i == (int) substr($days[0], 5, 2))
-                                                                {{ $allMonths[$i] }}
-                                                            @endif
-                                                            <?php $i++; ?>
-                                                        @endwhile
-                                                    </h5>
+                                                        <h5>Próximos Eventos -
+                                                            @while($i < count($allMonths))
+                                                                @if($i == (int) substr(end($prevMonth4), 5, 2))
+                                                                    {{ $allMonths[$i] }}
+                                                                @endif
+                                                                <?php $i++; ?>
+                                                            @endwhile
+                                                        </h5>
                                                     <a href="javascript:;" id="btnPrevRight4" class="btn btn-default btn-sm btn-circle pull-right">
                                                         <i class="fa fa-arrow-right"></i>
                                                     </a>
@@ -879,14 +879,14 @@ License: You must have a valid license purchased only from themeforest(the above
                                             <div class="panel panel-default" id="prevMonth3" style="display:none;">
                                                 <div class="panel-heading desktop">
                                                     <?php $i = 0; ?>
-                                                    <h5>Próximos Eventos -
-                                                        @while($i < count($allMonths))
-                                                            @if($i == (int) substr($days[0], 5, 2))
-                                                                {{ $allMonths[$i] }}
-                                                            @endif
-                                                            <?php $i++; ?>
-                                                        @endwhile
-                                                    </h5>
+                                                        <h5>Próximos Eventos -
+                                                            @while($i < count($allMonths))
+                                                                @if($i == (int) substr(end($prevMonth3), 5, 2))
+                                                                    {{ $allMonths[$i] }}
+                                                                @endif
+                                                                <?php $i++; ?>
+                                                            @endwhile
+                                                        </h5>
                                                     <a href="javascript:;" id="btnPrevRight3" class="btn btn-default btn-sm btn-circle pull-right">
                                                         <i class="fa fa-arrow-right"></i>
                                                     </a>
@@ -1070,14 +1070,14 @@ License: You must have a valid license purchased only from themeforest(the above
                                             <div class="panel panel-default" id="prevMonth2" style="display:none;">
                                                 <div class="panel-heading desktop">
                                                     <?php $i = 0; ?>
-                                                    <h5>Próximos Eventos -
-                                                        @while($i < count($allMonths))
-                                                            @if($i == (int) substr($days[0], 5, 2))
-                                                                {{ $allMonths[$i] }}
-                                                            @endif
-                                                            <?php $i++; ?>
-                                                        @endwhile
-                                                    </h5>
+                                                        <h5>Próximos Eventos -
+                                                            @while($i < count($allMonths))
+                                                                @if($i == (int) substr(end($prevMonth2), 5, 2))
+                                                                    {{ $allMonths[$i] }}
+                                                                @endif
+                                                                <?php $i++; ?>
+                                                            @endwhile
+                                                        </h5>
                                                     <a href="javascript:;" id="btnPrevRight2" class="btn btn-default btn-sm btn-circle pull-right">
                                                         <i class="fa fa-arrow-right"></i>
                                                     </a>
@@ -1263,7 +1263,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <?php $i = 0; ?>
                                                     <h5>Próximos Eventos -
                                                         @while($i < count($allMonths))
-                                                            @if($i == (int) substr($days[0], 5, 2))
+                                                            @if($i == (int) substr(end($prevMonth), 5, 2))
                                                                 {{ $allMonths[$i] }}
                                                             @endif
                                                             <?php $i++; ?>
@@ -1454,7 +1454,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <?php $i = 0; ?>
                                                     <h5>Próximos Eventos -
                                                         @while($i < count($allMonths))
-                                                            @if($i == (int) substr($days[0], 5, 2))
+                                                            @if($i == (int) substr(end($days), 5, 2))
                                                                 {{ $allMonths[$i] }}
                                                             @endif
                                                                 <?php $i++; ?>
@@ -1643,14 +1643,14 @@ License: You must have a valid license purchased only from themeforest(the above
                                             <div class="panel panel-default" id="nextMonth" style="display: none;">
                                                 <div class="panel-heading desktop">
                                                     <?php $i = 0; ?>
-                                                    <h5>Próximos Eventos -
-                                                        @while($i < count($allMonths))
-                                                            @if($i == (int) substr($days[0], 5, 2))
-                                                                {{ $allMonths[$i] }}
-                                                            @endif
-                                                            <?php $i++; ?>
-                                                        @endwhile
-                                                    </h5>
+                                                        <h5>Próximos Eventos -
+                                                            @while($i < count($allMonths))
+                                                                @if($i == (int) substr(end($nextMonth), 5, 2))
+                                                                    {{ $allMonths[$i] }}
+                                                                @endif
+                                                                <?php $i++; ?>
+                                                            @endwhile
+                                                        </h5>
                                                     <a href="javascript:;" id="btnNextRight" class="btn btn-default btn-sm btn-circle pull-right">
                                                         <i class="fa fa-arrow-right"></i>
                                                     </a>
@@ -1834,14 +1834,14 @@ License: You must have a valid license purchased only from themeforest(the above
                                             <div class="panel panel-default" id="nextMonth2" style="display: none;">
                                                 <div class="panel-heading desktop">
                                                     <?php $i = 0; ?>
-                                                    <h5>Próximos Eventos -
-                                                        @while($i < count($allMonths))
-                                                            @if($i == (int) substr($days[0], 5, 2))
-                                                                {{ $allMonths[$i] }}
-                                                            @endif
-                                                            <?php $i++; ?>
-                                                        @endwhile
-                                                    </h5>
+                                                        <h5>Próximos Eventos -
+                                                            @while($i < count($allMonths))
+                                                                @if($i == (int) substr(end($nextMonth2), 5, 2))
+                                                                    {{ $allMonths[$i] }}
+                                                                @endif
+                                                                <?php $i++; ?>
+                                                            @endwhile
+                                                        </h5>
                                                     <a href="javascript:;" id="btnNextRight2" class="btn btn-default btn-sm btn-circle pull-right">
                                                         <i class="fa fa-arrow-right"></i>
                                                     </a>
@@ -2025,14 +2025,14 @@ License: You must have a valid license purchased only from themeforest(the above
                                             <div class="panel panel-default" id="nextMonth3" style="display: none;">
                                                 <div class="panel-heading desktop">
                                                     <?php $i = 0; ?>
-                                                    <h5>Próximos Eventos -
-                                                        @while($i < count($allMonths))
-                                                            @if($i == (int) substr($days[0], 5, 2))
-                                                                {{ $allMonths[$i] }}
-                                                            @endif
-                                                            <?php $i++; ?>
-                                                        @endwhile
-                                                    </h5>
+                                                        <h5>Próximos Eventos -
+                                                            @while($i < count($allMonths))
+                                                                @if($i == (int) substr(end($nextMonth3), 5, 2))
+                                                                    {{ $allMonths[$i] }}
+                                                                @endif
+                                                                <?php $i++; ?>
+                                                            @endwhile
+                                                        </h5>
                                                     <a href="javascript:;" id="btnNextRight3" class="btn btn-default btn-sm btn-circle pull-right">
                                                         <i class="fa fa-arrow-right"></i>
                                                     </a>
@@ -2218,7 +2218,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <?php $i = 0; ?>
                                                     <h5>Próximos Eventos -
                                                         @while($i < count($allMonths))
-                                                            @if($i == (int) substr($days[0], 5, 2))
+                                                            @if($i == (int) substr(end($nextMonth4), 5, 2))
                                                                 {{ $allMonths[$i] }}
                                                             @endif
                                                             <?php $i++; ?>
@@ -2407,14 +2407,14 @@ License: You must have a valid license purchased only from themeforest(the above
                                             <div class="panel panel-default" id="nextMonth5" style="display: none;">
                                                 <div class="panel-heading desktop">
                                                     <?php $i = 0; ?>
-                                                    <h5>Próximos Eventos -
-                                                        @while($i < count($allMonths))
-                                                            @if($i == (int) substr($days[0], 5, 2))
-                                                                {{ $allMonths[$i] }}
-                                                            @endif
-                                                            <?php $i++; ?>
-                                                        @endwhile
-                                                    </h5>
+                                                        <h5>Próximos Eventos -
+                                                            @while($i < count($allMonths))
+                                                                @if($i == (int) substr(end($nextMonth5), 5, 2))
+                                                                    {{ $allMonths[$i] }}
+                                                                @endif
+                                                                <?php $i++; ?>
+                                                            @endwhile
+                                                        </h5>
                                                     <a href="javascript:;" id="btnNextRight5" class="btn btn-default btn-sm btn-circle pull-right">
                                                         <i class="fa fa-arrow-right"></i>
                                                     </a>
@@ -2598,14 +2598,14 @@ License: You must have a valid license purchased only from themeforest(the above
                                             <div class="panel panel-default" id="nextMonth6" style="display: none;">
                                                 <div class="panel-heading desktop">
                                                     <?php $i = 0; ?>
-                                                    <h5>Próximos Eventos -
-                                                        @while($i < count($allMonths))
-                                                            @if($i == (int) substr($days[0], 5, 2))
-                                                                {{ $allMonths[$i] }}
-                                                            @endif
-                                                            <?php $i++; ?>
-                                                        @endwhile
-                                                    </h5>
+                                                        <h5>Próximos Eventos -
+                                                            @while($i < count($allMonths))
+                                                                @if($i == (int) substr(end($nextMonth6), 5, 2))
+                                                                    {{ $allMonths[$i] }}
+                                                                @endif
+                                                                <?php $i++; ?>
+                                                            @endwhile
+                                                        </h5>
                                                     <a href="javascript:;" class="btn btn-default btn-sm btn-circle pull-right">
                                                         <i class="fa fa-arrow-right"></i>
                                                     </a>

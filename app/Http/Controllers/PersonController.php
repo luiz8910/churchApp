@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Events\AgendaEvent;
 use App\Events\PersonEvent;
+use App\Mail\teste;
 use App\Models\Event;
 use App\Models\Person;
 use App\Models\User;
@@ -19,7 +20,9 @@ use App\Repositories\StateRepository;
 use App\Repositories\UserLoginRepository;
 use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Notification;
 
 class PersonController extends Controller
@@ -452,4 +455,11 @@ class PersonController extends Controller
 
 
     }*/
+
+
+    public function email()
+    {
+        $person = Person::find(1);
+        Mail::to(User::find(1))->send(new teste($person));
+    }
 }

@@ -23,7 +23,7 @@ class UserUpdateRequest extends FormRequest
         return [
             'name' => 'required|max:255',
             //'email' => "required|unique:people,name,$id|email",
-            'tel' => 'required|numeric',
+            'tel' => 'required',
             'gender' => 'required',
             'dateBirth' => 'date_format:"d/m/Y"|required',
             'role' => 'required',

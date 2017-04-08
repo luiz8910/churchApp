@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Models\Event;
 use App\Models\Group;
 use App\Models\User;
 use App\Repositories\CountRepository;
@@ -15,6 +16,7 @@ use App\Repositories\RoleRepository;
 use App\Repositories\StateRepository;
 use App\Repositories\UserLoginRepository;
 use App\Repositories\UserRepository;
+use App\Services\GroupServices;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
@@ -42,6 +44,10 @@ class GroupController extends Controller
      * @var UserRepository
      */
     private $userRepository;
+    /**
+     * @var GroupServices
+     */
+    private $groupServices;
 
     /**
      * GroupController constructor.
@@ -52,7 +58,7 @@ class GroupController extends Controller
      */
     public function __construct(GroupRepository $repository, StateRepository $stateRepository,
                                 RoleRepository $roleRepository, PersonRepository $personRepository,
-                                UserRepository $userRepository)
+                                UserRepository $userRepository, GroupServices $groupServices)
     {
 
         $this->repository = $repository;
@@ -60,6 +66,7 @@ class GroupController extends Controller
         $this->roleRepository = $roleRepository;
         $this->personRepository = $personRepository;
         $this->userRepository = $userRepository;
+        $this->groupServices = $groupServices;
     }
     /**
      * Exibe todos os grupos
@@ -170,6 +177,7 @@ class GroupController extends Controller
         return view('groups.show', compact('group', 'countPerson', 'countGroups', 'location', 'people'));
     }
 
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -184,7 +192,9 @@ class GroupController extends Controller
 
         $countGroups[] = $this->countGroups();
 
-        $events = $this->listGroupEvents($group);
+        //$events = $this->groupServices->listGroupEvents($group);
+
+        $events = $this->groupServices->listGroupEvents($group);
 
         //Endereço do grupo formatado para api do google maps
         $location = $this->formatGoogleMaps($group);
@@ -250,7 +260,8 @@ class GroupController extends Controller
 
         $user = $this->userRepository->find(\Auth::getUser()->id);
 
-        $event_user[] = $user->person->events->all();
+        //Eventos que o usuário está inscrito
+        $event_user[] = $user->person->events->all();//dd($event_user);
 
         $notify = $this->notify();
 
@@ -262,7 +273,7 @@ class GroupController extends Controller
 
         //dd(count($event_user[0]));
 
-        return view('groups.edit', compact('group', 'countPerson', 'countGroups', 'events','address', 'location',
+        return view('groups.edit', compact('group', 'countPerson', 'countGroups', 'events', 'address', 'location',
             'people', 'roles', 'state', 'members', 'quantitySingleMother', 'quantitySingleFather', 'quantitySingleWomen',
             'quantitySingleMen', 'quantityMarriedWomenNoKids', 'quantityMarriedMenNoKids',
             'quantityMarriedWomenOutsideChurch', 'quantityMarriedMenOutsideChurch', 'event_user', 'notify', 'qtde', 'pag'));
@@ -508,23 +519,6 @@ class GroupController extends Controller
         }
 
         return $qty;
-    }
-
-    public function listGroupEvents($group)
-    {
-        $events = $group->events()->orderBy('eventDate', 'asc')->get();
-
-        foreach ($events as $event) {
-            $event->eventDate = $this->formatDateView($event->eventDate);
-
-            if($event->endEventDate){
-                $event->endEventDate = $this->formatDateView($event->endEventDate);
-            }
-
-        }
-
-        //dd($events);
-        return $events;
     }
 
     /**

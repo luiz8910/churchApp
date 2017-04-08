@@ -65,6 +65,8 @@ Route::group(['middleware' => 'auth'], function (){
 
     Route::get('/events/check/{id}', 'EventController@checkInEvent');
 
+    Route::get("email", "PersonController@email");
+
 });
 
 Route::group(["middleware" => "check.role:1"], function () {
@@ -88,7 +90,6 @@ Route::group(["middleware" => "check.role:1"], function () {
     Route::get('group/deleteManyUsers/{id}', 'GroupController@destroyManyUsers')->name('group.destroyManyUsers');
 
 
-
     Route::get('pusher', function(){
         return view('pusher');
     });
@@ -96,9 +97,20 @@ Route::group(["middleware" => "check.role:1"], function () {
 
 });
 
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index');
+
+Route::get("/passResetView/{email}", "UsersController@passResetView");
+
+Route::post("/passReset", "UsersController@passReset")->name('password.reset');
+
+Route::post("/sendPassword/{email}", "UsersController@sendPassword")->name('recover.password');
+
+Route::get("/emailTest/{email}", "UsersController@hasEmail");
+
+Route::get("/forgotPassword", "UsersController@forgotPassword")->name("forgot.password");
 
 //Login Facebook
 Route::get('auth/facebook', 'Auth\RegisterController@redirectToProvider');

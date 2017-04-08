@@ -285,15 +285,18 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                         <h3>Endereço</h3>
 
+                                        <div class="loader"></div>
+
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label>CEP</label>
+                                                    <label>CEP (sem traços)</label>
                                                     <div class="input-group">
                                                         <span class="input-group-addon">
                                                             <i class="fa fa-location-arrow font-purple"></i>
                                                         </span>
-                                                        <input type="text" class="form-control" name="zipCode" placeholder="XXXXX-XXX">
+                                                        <input type="text" class="form-control" name="zipCode"
+                                                               id="zipCode" placeholder="XXXXX-XXX">
                                                     </div>
                                                 </div>
                                             </div>
@@ -307,7 +310,8 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <span class="input-group-addon">
                                                         <i class="fa fa-home font-purple"></i>
                                                     </span>
-                                                        <input class="form-control" name="street" type="text" placeholder="Av. Antonio Carlos Comitre, 650">
+                                                        <input class="form-control" name="street" id="street"
+                                                               type="text" placeholder="Av. Antonio Carlos Comitre, 650">
                                                     </div>
                                                 </div>
                                             </div>
@@ -318,7 +322,8 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <span class="input-group-addon">
                                                         <i class="fa fa-home font-purple"></i>
                                                     </span>
-                                                        <input class="form-control" name="neighborhood" type="text" placeholder="Parque do Dolly">
+                                                        <input class="form-control" name="neighborhood" id="neighborhood"
+                                                               type="text" placeholder="Parque do Dolly">
                                                     </div>
                                                 </div>
                                             </div>
@@ -332,14 +337,15 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <span class="input-group-addon">
                                                         <i class="fa fa-building font-purple"></i>
                                                     </span>
-                                                        <input class="form-control" name="city" type="text" placeholder="Sorocaba">
+                                                        <input class="form-control" name="city" id="city"
+                                                               type="text" placeholder="Sorocaba">
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Estado</label>
-                                                    <select name="state" class="form-control">
+                                                    <select name="state" class="form-control" id="state">
                                                         <option value="">Selecione</option>
                                                         @foreach($state as $item)
                                                             <option value="{{ $item->initials }}">{{ $item->state }}</option>
@@ -351,7 +357,6 @@ License: You must have a valid license purchased only from themeforest(the above
                                     </div>
                                     <div class="form-actions">
                                         {!! Form::submit('Enviar', ['class' => 'btn blue']) !!}
-                                        <button type="button" class="btn default">Cancelar</button>
                                     </div>
                                     {!! Form::close() !!}
                                 </div>
@@ -1030,16 +1035,10 @@ License: You must have a valid license purchased only from themeforest(the above
 <script src="../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js" type="text/javascript"></script>
 <script src="../../assets/global/plugins/moment.min.js" type="text/javascript"></script>
 <!-- BEGIN PAGE LEVEL PLUGINS -->
-<script src="../../assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.js" type="text/javascript"></script>
 
-<script src="../../assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js" type="text/javascript"></script>
-
-<script src="../../assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js" type="text/javascript"></script>
-<script src="../../assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
-<script src="../../assets/global/plugins/clockface/js/clockface.js" type="text/javascript"></script>
 <!-- END PAGE LEVEL PLUGINS -->
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
-<script src="../../assets/pages/scripts/components-date-time-pickers.js" type="text/javascript"></script>
+
 <!-- END PAGE LEVEL SCRIPTS -->
 
 </body>
