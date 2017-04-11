@@ -4,12 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Laravel\Scout\Searchable;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
 class Person extends Model implements Transformable
 {
-    use TransformableTrait, SoftDeletes;
+    use TransformableTrait, SoftDeletes, Searchable;
 
     protected $fillable = [
         'name', 'lastName', 'email', 'church_id', 'tel', 'cel', 'role_id', 'imgProfile', 'gender',

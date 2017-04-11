@@ -172,6 +172,7 @@ return [
         Prettus\Repository\Providers\RepositoryServiceProvider::class,
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
+        Laravel\Scout\ScoutServiceProvider::class,
         //
 
         /*

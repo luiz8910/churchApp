@@ -152,3 +152,17 @@
     color: red;
     display: none;
 }
+
+.ul-search{
+    display: none;
+    list-style-type: none;
+}
+
+.ul-search li a{
+    color: #a2abb7;
+}
+
+.ul-search li a:hover{
+    color: #373E47 !important;
+}
+

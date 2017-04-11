@@ -367,7 +367,6 @@ $(function () {
         useDddParenthesis: true,
         dddSeparator: ' ',
         numberSeparator:'-'
-    })
-
+    });
 
 });

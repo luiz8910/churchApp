@@ -102,6 +102,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index');
 
+//Recuperação de Senha
 Route::get("/passResetView/{email}", "UsersController@passResetView");
 
 Route::post("/passReset", "UsersController@passReset")->name('password.reset');
@@ -111,6 +112,15 @@ Route::post("/sendPassword/{email}", "UsersController@sendPassword")->name('reco
 Route::get("/emailTest/{email}", "UsersController@hasEmail");
 
 Route::get("/forgotPassword", "UsersController@forgotPassword")->name("forgot.password");
+
+//Teste Search
+Route::get('teste', function(){
+    $event = \App\Models\Event::search('encontro')->get();
+
+    return $event;
+});
+
+Route::get('/search/{text}', "SearchController@search");
 
 //Login Facebook
 Route::get('auth/facebook', 'Auth\RegisterController@redirectToProvider');

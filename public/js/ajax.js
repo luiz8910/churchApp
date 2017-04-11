@@ -115,3 +115,89 @@
         var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return re.test(email);
     }
+
+
+    $("#search-results").keyup(function () {
+
+        if(this.value == ""){
+            $(".ul-search").css("display", "none");
+            $(".ul-search li").remove();
+        }
+        else{
+
+            if(this.value.length > 2)
+            {
+                $(".ul-search").css("display", "block");
+                search(this.value);
+            }
+
+        }
+
+    });
+
+
+    function search(text)
+    {
+        var request = $.ajax({
+            url: "/search/" + text,
+            method: "GET",
+            dataType: "json"
+        });
+
+        request.done(function (e) {
+            console.log("done");
+
+            console.log(e);
+
+
+
+            var ul = $(".ul-search");
+
+
+            for(var i = 0; i < e.length; i++)
+            {
+                if(i == 0)
+                {
+                    $(".ul-search li").remove();
+                }
+
+                var model;
+
+                if(e[i].lastName != undefined)
+                {
+                    model = "person";
+                }
+
+                else if(e[i].eventDate != undefined)
+                {
+                    model = "events";
+                }
+
+                else if(e[i].owner_id != undefined)
+                {
+                    model = "group";
+                }
+
+                console.log(model);
+
+                var li =
+                    '<li class="dropdown dropdown-extended dropdown-notification dropdown-dark">' +
+                        '<a href="/'+model+'/'+e[i].id+'/edit" class="dropdown-toggle"'+
+                        'data-close-others="true">'+
+                        '<i class="fa fa-calendar font-grey"></i>'+
+                        e[i].name
+                        +'</a>'+
+                    '</li>';
+
+                ul.append(li);
+
+                model = "";
+            }
+
+        });
+
+        request.fail(function (e) {
+            console.log("fail");
+            console.log(e);
+        })
+    }

@@ -16,7 +16,9 @@
         "guzzlehttp/guzzle": "^6.2",
         "predis/predis": "^1.1",
         "pusher/pusher-php-server": "^2.6",
-        "aws/aws-sdk-php": "~3.0"
+        "aws/aws-sdk-php": "~3.0",
+        "laravel/scout": "^2.0",
+        "algolia/algoliasearch-client-php": "^1.17"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

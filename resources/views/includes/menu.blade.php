@@ -2,15 +2,28 @@
 <div class="page-header-menu">
     <div class="container">
         <!-- BEGIN HEADER SEARCH BOX -->
-        <form class="search-form" action="page_general_search.html" method="GET">
+        <form class="search-form" action="" method="GET">
             <div class="input-group">
-                <input type="text" class="form-control" placeholder="Pesquisar" name="query">
+                <input type="text" class="form-control" id="search-results" placeholder="Pesquisar" name="query">
                 <span class="input-group-btn">
-                                <a href="javascript:;" class="btn submit">
-                                    <i class="icon-magnifier"></i>
-                                </a>
-                            </span>
+                    <a href="javascript:;" class="btn submit">
+                        <i class="icon-magnifier"></i>
+                    </a>
+                </span>
+
             </div>
+            <div class="top-menu">
+                <ul class="nav navbar-nav ul-search">
+                    <li class="dropdown dropdown-extended dropdown-notification dropdown-dark">
+                        <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"
+                           data-close-others="true">
+                            <i class="fa fa-calendar font-white"></i>
+                            Teste
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
         </form>
         <!-- END HEADER SEARCH BOX -->
         <!-- BEGIN MEGA MENU -->

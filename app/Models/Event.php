@@ -4,12 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Laravel\Scout\Searchable;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
 class Event extends Model implements Transformable
 {
-    use TransformableTrait, SoftDeletes;
+    use TransformableTrait, SoftDeletes, Searchable;
 
     protected $dates = ['deleted_at'];
 
@@ -28,5 +29,4 @@ class Event extends Model implements Transformable
     {
         return $this->belongsToMany(Person::class);
     }
-
 }

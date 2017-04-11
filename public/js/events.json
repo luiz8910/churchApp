@@ -47,4 +47,11 @@
                 "end": "2017-03-30",
                 "url": "events/14/edit",
                 "allDay": "false"
+            },{
+                "title" : "Teste Evento ",
+                "id": "15",
+                "start": "2017-04-14T18:00",
+                "end": "2017-04-14",
+                "url": "events/15/edit",
+                "allDay": "true"
             }]
