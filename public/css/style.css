@@ -166,3 +166,16 @@
     color: #373E47 !important;
 }
 
+#ul-results{
+    list-style-type: none;
+}
+
+#ul-results li{
+    margin-top: 10px;
+}
+
+#ul-results li a{
+
+}
+
+

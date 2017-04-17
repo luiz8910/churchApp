@@ -65,4 +65,9 @@ class SearchController extends Controller
 
         return false;
     }
+
+    public function searchEvents($text)
+    {
+        return $this->event->search($text)->get();
+    }
 }

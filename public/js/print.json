@@ -1,0 +1,15 @@
+{
+              "content": [
+                {
+                  "table": {
+                    "headerRows": 1,
+                    "widths": [ "*", "auto", 100, "*" ],
+            
+                    "body":[
+                      ["Nome", "Frequência", "Criado Por", "Grupo"],
+                      ["Acampamento de Jovens","Semanal","Luiz","Grupo de Jovens"],["Encontro da Opressão","Encontro Único","Josefina","Sem Grupo"],["Estudo da bíblia","Semanal","Luiz","Sem Grupo"],["Reunião de Líderes","Semanal","Luiz","Sem Grupo"],["Aconselhamento Matrimonial","Semanal","Luiz","Grupo de Jovens"],["Escola Dominical","Semanal","Corvo Jubileu","Grupo de Jovens"],["Teatro","Mensal","Luiz","Sem Grupo"],["Teste Evento ","Semanal","Luiz","Sem Grupo"]
+                    ]
+                  }
+                }
+              ]
+            }

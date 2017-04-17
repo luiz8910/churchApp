@@ -162,36 +162,38 @@
                 }
 
                 var model;
+                var icon;
 
                 if(e[i].lastName != undefined)
                 {
                     model = "person";
+                    icon = "user";
                 }
 
                 else if(e[i].eventDate != undefined)
                 {
                     model = "events";
+                    icon = "calendar";
                 }
 
                 else if(e[i].owner_id != undefined)
                 {
                     model = "group";
+                    icon = "users";
                 }
 
-                console.log(model);
+                //console.log(model);
 
                 var li =
                     '<li class="dropdown dropdown-extended dropdown-notification dropdown-dark">' +
                         '<a href="/'+model+'/'+e[i].id+'/edit" class="dropdown-toggle"'+
                         'data-close-others="true">'+
-                        '<i class="fa fa-calendar font-grey"></i>'+
+                        '<i class="fa fa-'+icon+' font-grey"></i>'+
                         e[i].name
                         +'</a>'+
                     '</li>';
 
                 ul.append(li);
-
-                model = "";
             }
 
         });
@@ -201,3 +203,98 @@
             console.log(e);
         })
     }
+
+
+    $("#search-input-mobile").keyup(function () {
+        if(this.value != "")
+        {
+            $("#ul-results-mobile").css("display", "block");
+
+            var request = $.ajax({
+                url: "/search-events/" + this.value,
+                method: "GET",
+                dataType: "json"
+            });
+
+            request.done(function (e) {
+                console.log("done");
+                console.log(e);
+
+
+                for(var i = 0; i < e.length; i++)
+                {
+                    if(i == 0)
+                    {
+                        $("#ul-results-mobile li").remove();
+                    }
+
+                    var li = '<li><a rel="external" href="events/'+e[i].id+'/edit">'+e[i].name+'</a></li>';
+
+                    $("#ul-results-mobile").append(li);
+                }
+
+
+            });
+
+            request.fail(function (e) {
+                console.log("fail");
+                console.log(e);
+            })
+        }
+        else{
+            $("#ul-results-mobile").css("display", "none");
+            $("#ul-results-mobile li").remove();
+        }
+
+    }).focus(function () {
+        var pos = $(this).offset();
+        var top = $(window).scrollTop();
+
+        if(top < 50)
+        {
+            window.scrollTo(0, pos.top);
+        }
+    });
+
+    $("#search-input").keyup(function () {
+
+        if(this.value != "")
+        {
+            $("#ul-results").css("display", "block");
+
+            var request = $.ajax({
+                url: "/search-events/" + this.value,
+                method: "GET",
+                dataType: "json"
+            });
+
+            request.done(function (e) {
+                console.log("done");
+                console.log(e);
+
+
+                for(var i = 0; i < e.length; i++)
+                {
+                    if(i == 0)
+                    {
+                        $("#ul-results li").remove();
+                    }
+
+                    var li = '<li><a rel="external" href="events/'+e[i].id+'/edit">'+e[i].name+'</a></li>';
+
+                    $("#ul-results").append(li);
+                }
+
+
+            });
+
+            request.fail(function (e) {
+                console.log("fail");
+                console.log(e);
+            })
+        }
+        else{
+            $("#ul-results").css("display", "none");
+            $("#ul-results li").remove();
+        }
+    });

@@ -20,6 +20,7 @@ use App\Repositories\StateRepository;
 use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 
 
 class EventController extends Controller
@@ -483,6 +484,70 @@ class EventController extends Controller
         \Session::flash('event.deleted', 'Os eventos selecionados foram excluidos');
 
         return redirect()->route('event.index');
+    }
+
+    public function getListEvents()
+    {
+        $events = $this->repository->all();
+
+        $header[] = 'Nome';
+        $header[] = 'Frequência';
+        $header[] = 'Criado Por';
+        $header[] = 'Grupo';
+
+        $i = 0;
+
+        $text = "";
+
+        while($i < count($events))
+        {
+            $events[$i]->createdBy_id = $this->userRepository->find($events[$i]->createdBy_id)->person->name;
+
+            if($events[$i]->group_id)
+            {
+                $events[$i]->group_id = $this->groupRepository->find($events[$i]->group_id)->name;
+            }
+            else{
+                $events[$i]->group_id = "Sem Grupo";
+            }
+
+            $x = ",";
+
+            if($i == (count($events) - 1))
+            {
+                $x = "";
+            }
+
+            $text .= '["'.$events[$i]->name.'","'.''.$events[$i]->frequency.''.'","'.''.$events[$i]->createdBy_id.''.'","'.''.$events[$i]->group_id.'"'.']'.$x.'';
+            $i++;
+        }
+
+        //$text = '["'.$events[0]->name.'","'.''.$events[0]->frequency.''.'","'.''.$events[0]->createdBy_id.''.'","'.''.$events[0]->group_id.'"'.'],';
+
+        $json = '{
+              "content": [
+                {
+                  "table": {
+                    "headerRows": 1,
+                    "widths": [ "*", "auto", 100, "*" ],
+            
+                    "body":[
+                      ["'.$header[0].'", "'.$header[1].'", "'.$header[2].'", "'.$header[3].'"],
+                      '.$text.'
+                    ]
+                  }
+                }
+              ]
+            }';
+
+        if (env('APP_ENV') == "local")
+        {
+            File::put(public_path('js/print.json'), $json);
+        }
+        else{
+            File::put(getcwd() . '/js/print.json', $json);
+        }
+
     }
 
 

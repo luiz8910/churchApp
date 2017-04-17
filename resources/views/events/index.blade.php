@@ -89,16 +89,21 @@ License: You must have a valid license purchased only from themeforest(the above
                                         <div class="row">
                                             <div class="col-lg-8">
                                                 <div class="input-group ">
-                                                    <input type="text" class="form-control" placeholder="Pesquisar Eventos">
+                                                    <input type="text" class="form-control" id="search-input-mobile" placeholder="Pesquisar Eventos">
                                                     <span class="input-group-btn">
-                                                    <button class="btn green-soft uppercase bold small-button" type="button">
-                                                        <i class="fa fa-search"></i>
-                                                    </button>
-                                                </span>
+                                                        <button class="btn green-soft uppercase bold small-button" type="button">
+                                                            <i class="fa fa-search"></i>
+                                                        </button>
+                                                    </span>
                                                 </div>
+
+                                                <ul id="ul-results-mobile">
+
+                                                </ul>
                                             </div>
                                         </div>
                                     </div>
+
 
 
                                     <div class="alert alert-success alert-dismissible" id="alert-success" role="alert" style="display: none;">
@@ -122,6 +127,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                             <strong>Atenção</strong> {{ Session::get('event.deleted') }}
                                         </div>
                                     @endif
+
 
                                     <div class="row">
                                         <div class="col-md-12">
@@ -169,15 +175,18 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 </a>
                                                                 <ul class="dropdown-menu pull-right" id="sample_3_tools">
                                                                     <li>
-                                                                        <a href="javascript:;" data-action="0" class="tool-action">
-                                                                            <i class="icon-printer"></i> Imprimir</a>
+                                                                        <a href="javascript:;" id="print" onclick="printDiv('printable-table')"
+                                                                           data-action="0" class="tool-action">
+                                                                            <i class="icon-printer"></i> Imprimir
+                                                                        </a>
                                                                     </li>
                                                                     <li>
                                                                         <a href="javascript:;" data-action="1" class="tool-action">
                                                                             <i class="icon-check"></i> Copiar</a>
                                                                     </li>
                                                                     <li>
-                                                                        <a href="javascript:;" data-action="2" class="tool-action">
+                                                                        <a href="javascript:;" data-action="2"
+                                                                           onclick="printDiv('printable-table', 'pdf')" class="tool-action">
                                                                             <i class="icon-doc"></i> PDF</a>
                                                                     </li>
                                                                     <li>
@@ -206,8 +215,13 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                     <i class="fa fa-search"></i>
                                                                 </a>-->
 
-                                                                <input type="text" class="form-control" placeholder="Pesquisar Eventos">
+                                                                <input type="text" class="form-control" id="search-input" placeholder="Pesquisar Eventos">
+
+                                                                <ul id="ul-results">
+
+                                                                </ul>
                                                             </div>
+
                                                         </div>
                                                     </div>
                                                     <div class="table-scrollable table-scrollable-borderless">
@@ -221,15 +235,18 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                         <span></span>
                                                                     </label>
                                                                 </th>
-                                                                <th> Nome </th>
-                                                                <th> Frequência </th>
-                                                                <th> Criado Por </th>
-                                                                <th> Grupo </th>
+                                                                <th class="printable-table-header"> Nome </th>
+                                                                <th class="printable-table-header"> Frequência </th>
+                                                                <th class="printable-table-header"> Criado Por </th>
+                                                                <th class="printable-table-header"> Grupo </th>
                                                             </tr>
                                                             </thead>
+
+
+
                                                             <tbody>
                                                             @foreach($events as $event)
-                                                                <tr>
+                                                                <tr class="printable-table-tr">
                                                                     <td>
                                                                         @if(Auth::getUser()->person->role_id == 1)
                                                                             <fieldset>
@@ -243,20 +260,20 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                         @endif
                                                                     </td>
                                                                     <td>
-                                                                        <a href="{{ route('event.edit', ['event' => $event->id]) }}" rel="external">
+                                                                        <a href="{{ route('event.edit', ['event' => $event->id]) }}" rel="external" class="printable-table">
                                                                             {{ $event->name }}
                                                                         </a>
                                                                     </td>
-                                                                    <td> {{ $event->frequency }} </td>
+                                                                    <td class="printable-table"> {{ $event->frequency }} </td>
                                                                     <td>
                                                                         <a href="{{ route('person.edit',
-                                                                            ['person' => \App\Models\User::find($event->createdBy_id)->person->id]) }}" rel="external">
+                                                                            ['person' => \App\Models\User::find($event->createdBy_id)->person->id]) }}" rel="external" class="printable-table">
                                                                             {{ \App\Models\User::find($event->createdBy_id)->person->name }}
                                                                         </a>
                                                                     </td>
                                                                     <td>
                                                                         @if($event->group_id)
-                                                                            <a href="{{ route("group.edit", ['group' => $event->group_id]) }}" rel="external">
+                                                                            <a href="{{ route("group.edit", ['group' => $event->group_id]) }}" rel="external" class="printable-table">
                                                                                 {{ $event['group_name'] }}
                                                                             </a>
                                                                             @else Sem Grupo

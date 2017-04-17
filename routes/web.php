@@ -43,6 +43,8 @@ Route::group(['middleware' => 'auth'], function (){
 
     Route::get('events', 'EventController@index')->name('event.index');
 
+
+
     Route::get('events/{event}/edit', 'EventController@edit')->name('event.edit');
 
     Route::get('events/create/{id}', 'EventController@create')->name('group.event.create');
@@ -102,6 +104,8 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index');
 
+Route::get('/events-ajax', 'EventController@getListEvents');
+
 //Recuperação de Senha
 Route::get("/passResetView/{email}", "UsersController@passResetView");
 
@@ -113,14 +117,11 @@ Route::get("/emailTest/{email}", "UsersController@hasEmail");
 
 Route::get("/forgotPassword", "UsersController@forgotPassword")->name("forgot.password");
 
-//Teste Search
-Route::get('teste', function(){
-    $event = \App\Models\Event::search('encontro')->get();
-
-    return $event;
-});
-
+//Instant Search
 Route::get('/search/{text}', "SearchController@search");
+
+//Instant Search na tabela de eventos
+Route::get('/search-events/{text}', 'SearchController@searchEvents');
 
 //Login Facebook
 Route::get('auth/facebook', 'Auth\RegisterController@redirectToProvider');

@@ -369,4 +369,11 @@ $(function () {
         numberSeparator:'-'
     });
 
+
+
+     /*function setFocusResults() {
+        $("#input-results").focus();
+    }*/
+
+
 });

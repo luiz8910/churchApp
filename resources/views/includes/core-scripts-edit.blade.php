@@ -29,6 +29,8 @@
 <script src="../../assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js" type="text/javascript"></script>
 <script src="../../assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
 <script src="../../assets/pages/scripts/components-date-time-pickers.js" type="text/javascript"></script>
+<script src="../../assets/pages/scripts/pdfmake.min.js" type="text/javascript"></script>
+<script src="../../assets/pages/scripts/vfs_fonts.js" type="text/javascript"></script>
 
 <!-- END THEME GLOBAL SCRIPTS -->
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
@@ -45,6 +47,7 @@
 <script src="../../js/cpf.js"></script>
 <script src="../../js/maskbrphone.js"></script>
 <script src="../../js/ajax.js"></script>
+<script src="../../js/print.js"></script>
 <script src="https://js.pusher.com/4.0/pusher.min.js"></script>
 
 <script>
