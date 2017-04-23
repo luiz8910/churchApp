@@ -666,6 +666,8 @@ License: You must have a valid license purchased only from themeforest(the above
                         </div>
                     </div>
 
+                    <input type="hidden" value="{{ Auth::getUser()->id }}" id="personId">
+
                     <div class="row">
                         <div class="col-md-12">
                             <div class="portlet light ">
@@ -731,7 +733,30 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <div class="col-md-6">
                                                     {!! Form::FormGroup('email', $errors) !!}
                                                     <label class="control-label">Email</label>
-                                                    <input type="email" placeholder="email@dominio.com" value="{{ Auth::getUser()->email }}" name="email" class="form-control" />
+                                                    <div class="input-group input-icon right">
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-envelope font-blue" id="icon-email"></i>
+                                                        </span>
+                                                        <input type="email" placeholder="email@dominio.com" value="{{ Auth::getUser()->email }}"
+                                                               name="email" id="email-edit" class="form-control" />
+
+                                                        <i class="fa fa-check font-green" id="icon-success-email" style="display: none;"></i>
+                                                        <i class="fa fa-exclamation font-red" id="icon-error-email" style="display: none;"></i>
+                                                    </div>
+
+                                                    <span class="help-block" id="emailExists" style="display: none; color: red;">
+                                                        <i class="fa fa-block"></i>
+                                                        Já existe uma conta associada a este email
+                                                    </span>
+                                                    <span class="help-block" id="invalidEmail" style="display: none; color: red;">
+                                                        <i class="fa fa-block"></i>
+                                                        Email em formato incorreto
+                                                    </span>
+                                                    <span class="help-block" id="validEmail" style="display: none; color: green;">
+                                                        <i class="fa fa-check"></i>
+                                                        Email Válido
+                                                    </span>
+
                                                     {!! Form::error('email', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
                                                 </div>

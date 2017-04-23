@@ -106,6 +106,24 @@ Route::get('/home', 'HomeController@index');
 
 Route::get('/events-ajax', 'EventController@getListEvents');
 
+Route::get('/events-excel/{format}', 'EventController@excel')->name('events.excel');
+
+Route::get('/group-ajax', 'GroupController@getListGroups');
+
+Route::get('/group-excel/{format}', 'GroupController@excel')->name('group.excel');
+
+Route::get('/person-ajax', 'PersonController@getListPeople');
+
+Route::get('/teen-ajax', 'PersonController@getListTeen');
+
+Route::get('/visitors-ajax', 'PersonController@getListVisitors');
+
+Route::get('/person-excel/{format}', 'PersonController@PersonExcel')->name('person.excel');
+
+Route::get('/teen-excel/{format}', 'PersonController@teenExcel')->name('teen.excel');
+
+Route::get('/visitors-excel/{format}', 'PersonController@visitorsExcel')->name('visitors.excel');
+
 //Recuperação de Senha
 Route::get("/passResetView/{email}", "UsersController@passResetView");
 
@@ -114,6 +132,8 @@ Route::post("/passReset", "UsersController@passReset")->name('password.reset');
 Route::post("/sendPassword/{email}", "UsersController@sendPassword")->name('recover.password');
 
 Route::get("/emailTest/{email}", "UsersController@hasEmail");
+
+Route::get("/emailTest-edit/{email}/{id}", "UsersController@emailTestEdit");
 
 Route::get("/forgotPassword", "UsersController@forgotPassword")->name("forgot.password");
 

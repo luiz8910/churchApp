@@ -298,3 +298,116 @@
             $("#ul-results li").remove();
         }
     });
+
+    $("#email").change(function () {
+        if(validateEmail(this.value))
+        {
+            var request = $.ajax({
+                url: "/emailTest/" + this.value,
+                method: "GET",
+                //data: this.value,
+                dataType: "json"
+            });
+
+            request.done(function(e){
+                if(!e.status)
+                {
+                    validEmail();
+                }
+                else{
+                    emailExists();
+                }
+            });
+
+            request.fail(function (e) {
+                console.log(e);
+            })
+        }else{
+            invalidEmail();
+        }
+    });
+
+
+    $("#email-edit").change(function () {
+
+       if(validateEmail(this.value))
+       {
+           var request = $.ajax({
+               url: "/emailTest-edit/" + this.value + "/" + $("#personId").val(),
+               method: "GET",
+               //data: this.value,
+               dataType: "json"
+           });
+
+           request.done(function(e){
+               if(e.status){
+                   validEmail();
+               }
+               else{
+                   emailExists();
+               }
+           });
+
+           request.fail(function (e){
+               console.log("fail");
+               console.log(e);
+           });
+
+       }else{
+           invalidEmail();
+       }
+    });
+
+    function validEmail()
+    {
+        $("#form-email")
+            .removeClass("has-error")
+            .addClass("has-success");
+
+        $("#icon-email")
+            .removeClass("font-red")
+            .addClass("font-blue");
+
+        $("#icon-success-email").css("display", "block");
+        $("#icon-error-email").css("display", "none");
+        $("#emailExists").css("display", "none");
+        $("#validEmail").css("display", "block");
+        $("#invalidEmail").css("display", "none");
+    }
+
+    function emailExists()
+    {
+        $("#form-email")
+            .removeClass("has-success")
+            .addClass("has-error");
+
+        $("#icon-email")
+            .removeClass("font-blue")
+            .addClass("font-red");
+
+
+        $("#icon-success-email").css("display", "none");
+        $("#icon-error-email").css("display", "block");
+        $("#emailExists").css("display", "block");
+        $("#validEmail").css("display", "none");
+        $("#invalidEmail").css("display", "none");
+    }
+
+    function invalidEmail()
+    {
+        $("#form-email")
+            .removeClass("has-success")
+            .addClass("has-error");
+
+        $("#icon-email")
+            .removeClass("font-blue")
+            .addClass("font-red");
+
+
+        $("#icon-success-email").css("display", "none");
+        $("#icon-error-email").css("display", "block");
+        $("#emailExists").css("display", "none");
+        $("#validEmail").css("display", "none");
+        $("#invalidEmail").css("display", "block");
+    }
+

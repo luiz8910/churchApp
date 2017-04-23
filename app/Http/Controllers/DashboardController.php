@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\CountRepository;
-use App\Repositories\DateRepository;
+use App\Traits\CountRepository;
+use App\Traits\DateRepository;
 use App\Repositories\EventRepository;
-use App\Repositories\FormatGoogleMaps;
+use App\Traits\FormatGoogleMaps;
 use App\Repositories\GroupRepository;
-use App\Repositories\NotifyRepository;
+use App\Traits\NotifyRepository;
 use App\Repositories\PersonRepository;
 use Illuminate\Http\Request;
 use File;

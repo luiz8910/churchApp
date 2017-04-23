@@ -6,7 +6,7 @@
  * Time: 13:03
  */
 
-namespace App\Repositories;
+namespace App\Traits;
 
 
 trait DateRepository

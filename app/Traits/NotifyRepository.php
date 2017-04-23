@@ -6,7 +6,7 @@
  * Time: 17:41
  */
 
-namespace App\Repositories;
+namespace App\Traits;
 
 
 trait NotifyRepository

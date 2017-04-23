@@ -68,6 +68,14 @@ License: You must have a valid license purchased only from themeforest(the above
                 </ul>
                 <!-- END PAGE BREADCRUMBS -->
                 <!-- BEGIN PAGE CONTENT INNER -->
+
+                @if(Session::has("email.exists"))
+                    <div class="alert alert-danger alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <strong>Erro!</strong> {{ Session::get("email.exists") }}
+                    </div>
+                @endif
+
                 <div class="page-content-inner">
                     <div class="row">
                         <div class="col-md-12 ">
@@ -117,7 +125,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 <i class="fa fa-user font-blue"></i>
                                                             </span>
                                                         <input type="text" name="name" class="form-control"
-                                                               placeholder="José">
+                                                               placeholder="José" value="{{ old('name') }}" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -129,7 +137,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 <i class="fa fa-user font-blue"></i>
                                                             </span>
                                                         <input type="text" name="lastName" class="form-control"
-                                                               placeholder="da Silva">
+                                                               placeholder="da Silva" value="{{ old('lastName') }}" required>
                                                     </div>
                                                 </div>
 
@@ -139,15 +147,29 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                         <div class="row">
                                             <div class="col-md-6">
-                                                <div class="form-group">
+                                                <div class="form-group" id="form-email">
                                                     <label>Email</label>
-                                                    <div class="input-group">
+                                                    <div class="input-group input-icon right">
                                                             <span class="input-group-addon">
-                                                                <i class="fa fa-envelope font-red"></i>
+                                                                <i class="fa fa-envelope font-blue" id="icon-email"></i>
                                                             </span>
-                                                        <input type="text" name="email" class="form-control"
-                                                               placeholder="email@dominio.com">
+                                                        <input type="text" name="email" id="email" class="form-control"
+                                                               placeholder="email@dominio.com" value="{{ old('email') }}" required>
+                                                        <i class="fa fa-check font-green" id="icon-success-email" style="display: none;"></i>
+                                                        <i class="fa fa-exclamation font-red" id="icon-error-email" style="display: none;"></i>
                                                     </div>
+                                                    <span class="help-block" id="emailExists" style="display: none; color: red;">
+                                                        <i class="fa fa-block"></i>
+                                                        Já existe uma conta associada a este email
+                                                    </span>
+                                                    <span class="help-block" id="invalidEmail" style="display: none; color: red;">
+                                                        <i class="fa fa-block"></i>
+                                                        Email em formato incorreto
+                                                    </span>
+                                                    <span class="help-block" id="validEmail" style="display: none; color: green;">
+                                                        <i class="fa fa-check"></i>
+                                                        Email Válido
+                                                    </span>
                                                 </div>
                                             </div>
 
@@ -159,7 +181,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         <i class="fa fa-mobile font-blue"></i>
                                                     </span>
                                                         <input type="text" class="form-control tel" name="cel"
-                                                               id="exampleInputPassword1" placeholder="(15) 9231413423">
+                                                               id="exampleInputPassword1" value="{{ old('cel') }}" placeholder="(15) 9231413423">
                                                     </div>
                                                 </div>
                                             </div>
@@ -174,7 +196,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         <i class="fa fa-phone font-green"></i>
                                                     </span>
                                                         <input type="text" class="form-control tel" name="tel"
-                                                               id="exampleInputPassword1" placeholder="(15) 1231413423">
+                                                               id="exampleInputPassword1" value="{{ old('tel') }}" placeholder="(15) 1231413423">
                                                     </div>
                                                 </div>
 
@@ -183,7 +205,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <div class="form-group">
                                                     <label>Gênero</label>
                                                     <div class="input-icon input-icon-lg">
-                                                        <select class="form-control" name="gender">
+                                                        <select class="form-control" name="gender" required>
                                                             <option value="">Selecione</option>
                                                             <option value="M">Masculino</option>
                                                             <option value="F">Feminino</option>
@@ -203,7 +225,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 <i class="fa fa-calendar font-blue"></i>
                                                             </span>
                                                         <input type="text" class="form-control input-date" name="dateBirth"
-                                                               placeholder="dd/mm/aaaa" maxlength="10">
+                                                               placeholder="dd/mm/aaaa" maxlength="10" value="{{ old('dateBirth') }}" required>
                                                     </div>
 
                                                 </div>
@@ -216,9 +238,9 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 <i class="fa fa-user font-blue"></i>
                                                             </span>
                                                         <input type="text" name="cpf" id="cpf" maxlength="11" class="form-control"
-                                                               placeholder="XXXXXXXXXXX">
-                                                        <i class="fa fa-check font-green" id="icon-success" style="display: none;"></i>
-                                                        <i class="fa fa-exclamation font-red" id="icon-error" style="display: none;"></i>
+                                                               placeholder="XXXXXXXXXXX" value="{{ old('cpf') }}">
+                                                        <i class="fa fa-check font-green" id="icon-success-cpf" style="display: none;"></i>
+                                                        <i class="fa fa-exclamation font-red" id="icon-error-cpf" style="display: none;"></i>
 
                                                     </div>
                                                     <div class="help-block small-error">CPF Inválido</div>
@@ -235,7 +257,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 <i class="fa fa-user font-green"></i>
                                                             </span>
                                                         <input type="text" id="rg" name="rg" class="form-control"
-                                                               placeholder="XX.XXX.XXX-X">
+                                                               placeholder="XX.XXX.XXX-X" value="{{ old('rg') }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -244,7 +266,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <label>Cargo</label>
                                                     <div class="input-icon input-icon-sm">
                                                         <i class="fa fa-briefcase"></i>
-                                                        <select class="form-control" name="role_id">
+                                                        <select class="form-control" name="role_id" required>
                                                             <option value="">Selecione</option>
                                                             @foreach($roles as $role)
                                                                 <option value="{{ $role->id }}">{{ $role->name }}</option>
@@ -260,7 +282,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="">Estado Civil</label>
-                                                    <select name="maritalStatus" id="maritalStatus" class="form-control">
+                                                    <select name="maritalStatus" id="maritalStatus" class="form-control" required>
                                                         <option value="">Selecione</option>
                                                         <option value="Casado">Casado</option>
                                                         <option value="Solteiro">Solteiro</option>
@@ -298,7 +320,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 <i class="fa fa-male font-blue"></i>
                                                             </span>
                                                         <input type="text" class="form-control" name="father_id"
-                                                               placeholder="José da Silva">
+                                                               placeholder="José da Silva" value="{{ old('father_id') }}">
                                                     </div>
 
                                                 </div>
@@ -311,7 +333,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 <i class="fa fa-female font-red-pink"></i>
                                                             </span>
                                                         <input type="text" name="mother_id" class="form-control"
-                                                               placeholder="Maria das Dores">
+                                                               placeholder="Maria das Dores" value="{{ old('mother_id') }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -398,7 +420,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             <i class="fa fa-location-arrow font-purple"></i>
                                                         </span>
                                                         <input type="text" id="zipCode" class="form-control"
-                                                               name="zipCode" placeholder="XXXXXXXX" maxlength="8">
+                                                               name="zipCode" placeholder="XXXXXXXX" maxlength="8" value="{{ old('zipCode') }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -412,7 +434,8 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <span class="input-group-addon">
                                                         <i class="fa fa-home font-purple"></i>
                                                     </span>
-                                                        <input class="form-control" name="street" id="street" type="text" placeholder="Av. Antonio Carlos Comitre, 650">
+                                                        <input class="form-control" name="street" id="street" type="text"
+                                                               value="{{ old('street') }}" placeholder="Av. Antonio Carlos Comitre, 650">
                                                     </div>
                                                 </div>
                                             </div>
@@ -423,7 +446,8 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <span class="input-group-addon">
                                                         <i class="fa fa-home font-purple"></i>
                                                     </span>
-                                                        <input class="form-control" name="neighborhood"  id="neighborhood" type="text" placeholder="Parque do Dolly">
+                                                        <input class="form-control" name="neighborhood"
+                                                               value="{{ old('neighborhood') }}" id="neighborhood" type="text" placeholder="Parque do Dolly">
                                                     </div>
                                                 </div>
                                             </div>
@@ -437,7 +461,8 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <span class="input-group-addon">
                                                         <i class="fa fa-building font-purple"></i>
                                                     </span>
-                                                        <input class="form-control" name="city" id="city" type="text" placeholder="Sorocaba">
+                                                        <input class="form-control" name="city" id="city"
+                                                               value="{{ old('city') }}" type="text" placeholder="Sorocaba">
                                                     </div>
                                                 </div>
                                             </div>
@@ -472,9 +497,56 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <h3>Senha</h3>
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="">Senha</label>
+                                                    <div class="input-group input-icon right">
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-lock font-blue" id="icon-password"></i>
+                                                        </span>
+
+                                                        <input type="password" name="password" id="password"
+                                                               placeholder="Digite sua senha" class="form-control" minlength="6" required>
+
+                                                        <i class="fa fa-check font-green" id="icon-success-password" style="display: none;"></i>
+                                                        <i class="fa fa-exclamation font-red" id="icon-error-password" style="display: none;"></i>
+
+                                                    </div>
+
+                                                    <span class="help-block" id="passDontMatch" style="display: none; color: red;">
+                                                            <i class="fa fa-ban font-red"></i>
+                                                            As senhas não combinam
+                                                        </span>
+
+                                                    <span class="help-block" id="passMatch" style="display: none; color: #3598DC;">
+                                                            <i class="fa fa-check font-blue"></i>
+                                                            Senha válida
+                                                        </span>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="">Confirme sua Senha</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-lock font-blue"></i>
+                                                        </span>
+
+                                                        <input type="password" id="confirm-password" name="confirm-password"
+                                                               placeholder="Confirme sua senha" class="form-control" required>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="form-actions">
-                                        {!! Form::submit('Enviar', ['class' => 'btn blue']) !!}
+                                        {!! Form::submit('Enviar', ['class' => 'btn blue', 'id' => 'btn-submit']) !!}
                                     </div>
                                     {!! Form::close() !!}
                                 </div>

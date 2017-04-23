@@ -6,8 +6,8 @@
                     "widths": [ "*", "auto", 100, "*" ],
             
                     "body":[
-                      ["Nome", "Frequência", "Criado Por", "Grupo"],
-                      ["Acampamento de Jovens","Semanal","Luiz","Grupo de Jovens"],["Encontro da Opressão","Encontro Único","Josefina","Sem Grupo"],["Estudo da bíblia","Semanal","Luiz","Sem Grupo"],["Reunião de Líderes","Semanal","Luiz","Sem Grupo"],["Aconselhamento Matrimonial","Semanal","Luiz","Grupo de Jovens"],["Escola Dominical","Semanal","Corvo Jubileu","Grupo de Jovens"],["Teatro","Mensal","Luiz","Sem Grupo"],["Teste Evento ","Semanal","Luiz","Sem Grupo"]
+                      ["Nome", "CPF", "Cargo", "Data de Nasc."],
+                      ["Luiz Sanches","38418189860","Lider","26/05/1989"],["José da Silva","1234567561423","Membro","15/12/1985"],["Teste ","","Membro","//"],["dollynho ","","Visitante","//"],["dollynho ","","Membro","//"],["Maria  Oliveira","23423534655454","Membro","15/12/1945"],["Mary  Doe","23423534655454","Membro","15/12/1967"],["Ronald McDonald","1234567561423","Membro","15/10/1967"],["Josefina da Silva","23423534655454","Membro","15/12/1967"],["Zoraide Santos","23423534655454","Membro","15/12/1985"],["Corvo Jubileu da Silva","23423534655454","Lider","26/05/1989"],["Jandira Campos","23423534655454","Membro","15/12/1967"],["Jair Bolsonaro","23423534655454","Membro","15/12/1967"],["Teste da silva","28262392108","Visitante","20/04/1990"],["Teste da silva","28262392108","Visitante","20/04/1990"]
                     ]
                   }
                 }

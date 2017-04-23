@@ -369,7 +369,41 @@ $(function () {
         numberSeparator:'-'
     });
 
+    $("#password").change(function(){
+        password(this.value, 'confirm-password');
+    });
 
+    $("#confirm-password").change(function () {
+       password(this.value, 'password');
+    });
+
+    function password(password, id) {
+        var pass = $("#"+id).val();
+
+        if(pass != "" && pass != password)
+        {
+            $("#icon-password")
+                .removeClass("font-blue")
+                .addClass("font-red");
+
+            $("#icon-success-password").css("display", "none");
+            $("#icon-error-password").css("display", "block");
+            $("#passDontMatch").css("display", "block");
+            $("#passMatch").css("display", "none");
+            $("#btn-submit").attr("disabled", true);
+        }
+        else if(pass == password){
+            $("#icon-password")
+                .removeClass("font-red")
+                .addClass("font-blue");
+
+            $("#icon-success-password").css("display", "block");
+            $("#icon-error-password").css("display", "none");
+            $("#passDontMatch").css("display", "none");
+            $("#passMatch").css("display", "block");
+            $("#btn-submit").attr("disabled", null);
+        }
+    }
 
      /*function setFocusResults() {
         $("#input-results").focus();

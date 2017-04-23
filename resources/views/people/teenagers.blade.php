@@ -69,6 +69,11 @@ License: You must have a valid license purchased only from themeforest(the above
                 </ul>
                 <!-- END PAGE BREADCRUMBS -->
                 <!-- BEGIN PAGE CONTENT INNER -->
+
+
+                <?php $route = basename($_SERVER['PHP_SELF'], '.php');?>
+
+
                 <div class="page-content-inner">
                     <div class="row">
                         <div class="col-md-12">
@@ -95,25 +100,32 @@ License: You must have a valid license purchased only from themeforest(the above
                                             </a>
                                             <ul class="dropdown-menu pull-right" id="sample_3_tools">
                                                 <li>
-                                                    <a href="javascript:;" data-action="0" class="tool-action">
-                                                        <i class="icon-printer"></i> Imprimir</a>
+                                                    <a href="javascript:;" id="print" onclick="printDiv('printable-table')"
+                                                       data-action="0" class="tool-action">
+                                                        <i class="icon-printer"></i> Imprimir
+                                                    </a>
                                                 </li>
-                                                <li>
+                                                <!--<li>
                                                     <a href="javascript:;" data-action="1" class="tool-action">
                                                         <i class="icon-check"></i> Copiar</a>
-                                                </li>
+                                                </li>-->
                                                 <li>
-                                                    <a href="javascript:;" data-action="2" class="tool-action">
+                                                    <a href="javascript:;" data-action="2"
+                                                       onclick="printDiv('printable-table', 'pdf')" class="tool-action">
                                                         <i class="icon-doc"></i> PDF</a>
                                                 </li>
                                                 <li>
-                                                    <a href="javascript:;" data-action="3" class="tool-action">
+                                                    <a href="{{ route($route.'.excel', ['format' => 'xls']) }}"
+                                                       data-action="3" target="_blank"
+                                                       class="tool-action">
                                                         <i class="icon-paper-clip"></i> Excel</a>
                                                 </li>
                                                 <li>
-                                                    <a href="javascript:;" data-action="4" class="tool-action">
+                                                    <a href="{{ route($route.'.excel', ['format' => 'csv']) }}"
+                                                       data-action="4" target="_blank" class="tool-action">
                                                         <i class="icon-cloud-upload"></i> CSV</a>
                                                 </li>
+
                                             </ul>
                                         </div>
                                     </div>

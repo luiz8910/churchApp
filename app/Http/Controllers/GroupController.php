@@ -6,20 +6,22 @@ namespace App\Http\Controllers;
 use App\Models\Event;
 use App\Models\Group;
 use App\Models\User;
-use App\Repositories\CountRepository;
-use App\Repositories\DateRepository;
-use App\Repositories\FormatGoogleMaps;
+use App\Traits\CountRepository;
+use App\Traits\DateRepository;
+use App\Traits\FormatGoogleMaps;
 use App\Repositories\GroupRepository;
-use App\Repositories\NotifyRepository;
+use App\Traits\NotifyRepository;
 use App\Repositories\PersonRepository;
 use App\Repositories\RoleRepository;
 use App\Repositories\StateRepository;
-use App\Repositories\UserLoginRepository;
+use App\Traits\UserLoginRepository;
 use App\Repositories\UserRepository;
 use App\Services\GroupServices;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
+use File;
+use Maatwebsite\Excel\Facades\Excel;
 
 class GroupController extends Controller
 {
@@ -553,6 +555,92 @@ class GroupController extends Controller
         }
 
         \Session::flash('member.deleted', 'Os usuários selecionados foram excluidos');
+
+        return redirect()->route('group.index');
+    }
+
+
+    public function getListGroups()
+    {
+        $groups = $this->repository->all();
+
+        $header[] = "Nome";
+        $header[] = "Início";
+        $header[] = "Quantidade";
+
+        $i = 0;
+
+        $text = "";
+
+        while($i < count($groups))
+        {
+            $groups[$i]->sinceOf = $this->formatDateView($groups[$i]->sinceOf);
+
+            $groups[$i]->qtde = count($groups[$i]->people->all());
+
+            $x = $i == (count($groups) - 1) ? "" : ",";
+
+            $text .= '["'.$groups[$i]->name.'","'.''.$groups[$i]->sinceOf.''.'","'.''.$groups[$i]->qtde.'"'.']'.$x.'';
+
+            $i++;
+        }
+
+        $json = '{
+              "content": [
+                {
+                  "table": {
+                    "headerRows": 1,
+                    "widths": [ "*", "auto", 100 ],
+            
+                    "body":[
+                      ["'.$header[0].'", "'.$header[1].'", "'.$header[2].'"],
+                      '.$text.'
+                    ]
+                  }
+                }
+              ]
+            }';
+
+        if (env('APP_ENV') == "local")
+        {
+            File::put(public_path('js/print.json'), $json);
+        }
+        else{
+            File::put(getcwd() . '/js/print.json', $json);
+        }
+    }
+
+    public function excel($format)
+    {
+        $data = $this->repository->all();
+
+        $info = [];
+
+        for($i = 0; $i < count($data); $i++)
+        {
+            $info[$i]["Nome"] = $data[$i]->name;
+
+            $info[$i]["Desde"] = $this->formatDateView($data[$i]->sinceOf);
+
+            $info[$i]["Quantidade"] = count($data[$i]->people);
+        }
+
+
+        //dd($info);
+
+        Excel::create('Grupos', function($excel) use ($info) {
+
+            // Set the title
+            //$excel->setTitle('Our new awesome title');
+
+            // Call them separately
+            //$excel->setDescription('A demonstration to change the file properties');
+
+            $excel->sheet('Grupos', function ($sheet) use ($info){
+                $sheet->fromArray($info);
+            });
+
+        })->export($format);
 
         return redirect()->route('group.index');
     }

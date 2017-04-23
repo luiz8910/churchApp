@@ -57,16 +57,16 @@ $("#cpf").keypress(function (e) {
                 .removeClass('has-error')
                 .addClass('has-success');
 
-            $("#icon-error").css("display", "none");
-            $("#icon-success").css("display", "block");
+            $("#icon-error-cpf").css("display", "none");
+            $("#icon-success-cpf").css("display", "block");
             $(".small-error").css("display", "none");
         } else{
             $("#form-cpf")
                 .removeClass("has-success")
                 .addClass("has-error");
 
-            $("#icon-success").css("display", "none");
-            $("#icon-error").css("display", "block");
+            $("#icon-success-cpf").css("display", "none");
+            $("#icon-error-cpf").css("display", "block");
             $(".small-error").css("display", "block");
         }
     }

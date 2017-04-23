@@ -4,30 +4,36 @@ namespace App\Http\Controllers;
 
 use App\Events\AgendaEvent;
 use App\Events\PersonEvent;
-use App\Mail\teste;
+use App\Http\Requests\PersonCreateRequest;
 use App\Models\Event;
 use App\Models\Person;
+use App\Models\Role;
 use App\Models\User;
 use App\Notifications\EventNotification;
 use App\Notifications\Notifications;
-use App\Repositories\CountRepository;
-use App\Repositories\DateRepository;
-use App\Repositories\FormatGoogleMaps;
-use App\Repositories\NotifyRepository;
+use App\Traits\CountRepository;
+use App\Traits\DateRepository;
+use App\Traits\EmailTrait;
+use App\Traits\FormatGoogleMaps;
+use App\Traits\NotifyRepository;
 use App\Repositories\PersonRepository;
 use App\Repositories\RoleRepository;
 use App\Repositories\StateRepository;
-use App\Repositories\UserLoginRepository;
+use App\Traits\UserLoginRepository;
 use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
+use Maatwebsite\Excel\Facades\Excel;
 use Notification;
+use File;
 
 class PersonController extends Controller
 {
-    use DateRepository, CountRepository, FormatGoogleMaps, UserLoginRepository, NotifyRepository;
+    use DateRepository, CountRepository, FormatGoogleMaps, UserLoginRepository, NotifyRepository, EmailTrait;
     /**
      * @var PersonRepository
      */
@@ -40,12 +46,18 @@ class PersonController extends Controller
      * @var RoleRepository
      */
     private $roleRepository;
+    /**
+     * @var UserRepository
+     */
+    private $userRepository;
 
-    public function __construct(PersonRepository $repository, StateRepository $stateRepository, RoleRepository $roleRepository)
+    public function __construct(PersonRepository $repository, StateRepository $stateRepository, RoleRepository $roleRepository,
+                                UserRepository $userRepository)
     {
         $this->repository = $repository;
         $this->stateRepository = $stateRepository;
         $this->roleRepository = $roleRepository;
+        $this->userRepository = $userRepository;
     }
 
     /**
@@ -62,8 +74,7 @@ class PersonController extends Controller
             ])->paginate(5);
 
 
-        foreach ($adults as $item)
-        {
+        foreach ($adults as $item) {
             $item->dateBirth = $this->formatDateView($item->dateBirth);
             $item->role = $this->roleRepository->find($item->role_id)->name;
         }
@@ -84,8 +95,7 @@ class PersonController extends Controller
                 'deleted_at' => null,
             ])->paginate(5);
 
-        foreach ($teen as $item)
-        {
+        foreach ($teen as $item) {
             $item->dateBirth = $this->formatDateView($item->dateBirth);
             $item->role = $this->roleRepository->find($item->role_id)->name;
         }
@@ -106,8 +116,7 @@ class PersonController extends Controller
                 'deleted_at' => null,
             ])->paginate(5);
 
-        foreach ($visitors as $item)
-        {
+        foreach ($visitors as $item) {
             $item->dateBirth = $this->formatDateView($item->dateBirth);
             $item->role = $this->roleRepository->find($item->role_id)->name;
         }
@@ -124,8 +133,7 @@ class PersonController extends Controller
     {
         $inactive = Person::onlyTrashed()->get();
 
-        foreach ($inactive as $item)
-        {
+        foreach ($inactive as $item) {
             $item->dateBirth = $this->formatDateView($item->dateBirth);
         }
 
@@ -140,8 +148,8 @@ class PersonController extends Controller
     public function turnActive($id)
     {
         DB::table('people')->
-                where('id', $id)->
-                update(['deleted_at' => null]);
+        where('id', $id)->
+        update(['deleted_at' => null]);
 
         return redirect()->route('person.inactive');
     }
@@ -173,20 +181,45 @@ class PersonController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PersonCreateRequest $request)
     {
-        //dd($request->get('group-a'));
-
         $file = $request->file('img');
 
-        $email = $request->only('email');
+        $email = $request->only(['email']);
 
-        $email = implode('=>', $email);
+        $password = $request->only(['password']);
 
-        $data = $request->except(['img', 'email']);
+        $confirmPass = $request->only(['confirm-password']);
+
+        $password = implode('=>', $password);
+
+        $confirmPass = implode('=>', $confirmPass);
+
+
+        if(!$password){
+            \Session::flash("email.exists", "Escolha uma senha");
+            return redirect()->route("person.create");
+        }
+        elseif($password != $confirmPass){
+            \Session::flash("email.exists", "As senhas não combinam");
+
+            return redirect()->route("person.create");
+        }
+
+        $email = $email["email"];
+
+        $user = User::select('id')->where('email', $email)->first() or null;
+
+        if($user)
+        {
+            \Session::flash("email.exists", "Existe uma conta associada para o email informado (" .$email. ")");
+            return redirect()->route("person.create");
+        }
+
+        $data = $request->except(['img', 'email', 'password', 'confirm-password']);
 
         $data['dateBirth'] = $this->formatDateBD($data['dateBirth']);
 
@@ -196,22 +229,18 @@ class PersonController extends Controller
 
         $id = $this->repository->create($data)->id;
 
-        if($this->repository->isAdult($data['dateBirth']))
-        {
-            $this->createUserLogin($id, $email);
+        if ($this->repository->isAdult($data['dateBirth'])) {
+            $this->createUserLogin($id, $password, $email);
 
-            if($children){
+            if ($children) {
                 $this->children($children, $id, $data['gender']);
             }
 
         }
-        else{
-            $this->createUserLogin($id);
-        }
 
         $this->tag($this->repository->tag($data['dateBirth']), $id);
 
-        if($file){
+        if ($file) {
             $this->imgProfile($file, $id, $data['name']);
         }
 
@@ -229,8 +258,7 @@ class PersonController extends Controller
      */
     public function children($children, $id, $gender)
     {
-        foreach ($children as $child)
-        {
+        foreach ($children as $child) {
             //$resp = $this->repository->find($id);
 
             $data['name'] = $child['childName'];
@@ -241,11 +269,9 @@ class PersonController extends Controller
 
             $data['imgProfile'] = 'uploads/profile/noimage.png';
 
-            if($gender == 'M')
-            {
+            if ($gender == 'M') {
                 $data['father_id'] = $id;
-            }
-            else{
+            } else {
                 $data['mother_id'] = $id;
             }
 
@@ -273,13 +299,13 @@ class PersonController extends Controller
      */
     public function imgProfile($file, $id, $name)
     {
-        $imgName = 'uploads/profile/' . $id . '-' . $name . '.' .$file->getClientOriginalExtension();
+        $imgName = 'uploads/profile/' . $id . '-' . $name . '.' . $file->getClientOriginalExtension();
 
         $file->move('uploads/profile', $imgName);
 
         DB::table('people')->
-            where('id', $id)->
-            update(['imgProfile' => $imgName]);
+        where('id', $id)->
+        update(['imgProfile' => $imgName]);
 
         //$request->session()->flash('updateUser', 'Alterações realizadas com sucesso');
     }
@@ -290,7 +316,7 @@ class PersonController extends Controller
 
         $file = $request->file('img');
 
-        $imgName = 'uploads/profile/' . $id . '-' . $name . '.' .$file->getClientOriginalExtension();
+        $imgName = 'uploads/profile/' . $id . '-' . $name . '.' . $file->getClientOriginalExtension();
 
         $file->move('uploads/profile', $imgName);
 
@@ -304,15 +330,15 @@ class PersonController extends Controller
     public function tag($tag, $id)
     {
         DB::table('people')->
-            where('id', $id)->
-            update(['tag' => $tag]);
+        where('id', $id)->
+        update(['tag' => $tag]);
     }
 
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -323,7 +349,7 @@ class PersonController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -357,11 +383,11 @@ class PersonController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id, UserRepository $user)
+    public function update(Request $request, $id)
     {
         $data = $request->except(['email']);
 
@@ -379,20 +405,20 @@ class PersonController extends Controller
          * Se a pessoa for casada e $data['partner'] != "0" então a pessoa é casada com o id informado
          *
         */
-        if($data['maritalStatus'] != 'Casado')
-        {
+        if ($data['maritalStatus'] != 'Casado') {
             $data['partner'] = null;
-        }
-        else if ($data['partner'] != "0"){
+        } else if ($data['partner'] != "0") {
             $this->updateMaritalStatus($data['partner'], $id);
         }
 
-        $myEmail = $user->findByField('person_id', $id);
+        $user = $this->userRepository->findByField('person_id', $id)->first();
 
-        //Verifica se o email mudou, se sim chama função para alterar
-        if($myEmail[0]->email != $email)
-        {
-            $this->updateEmail($email, $id);
+        if($this->emailTestEditTrait($email, $user->id)){
+            $this->updateEmail($email, $user->id);
+        }
+        else{
+            \Session::flash("email.exists", "Existe uma conta associada para o email informado " . "(".$email.")");
+            return redirect()->route("person.edit", ['person' => $id]);
         }
 
         $this->repository->update($data, $id);
@@ -419,7 +445,7 @@ class PersonController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
@@ -461,5 +487,130 @@ class PersonController extends Controller
     {
         $person = Person::find(1);
         Mail::to(User::find(1))->send(new teste($person));
+    }
+
+
+    public function getList($tag)
+    {
+        $people = "";
+
+        if ($tag == "person") {
+            $people = $this->repository->findByField('tag', 'adult');
+        } elseif ($tag == "teen") {
+            $people = $this->repository->findWhere([
+                ['tag', '<>', 'adult']
+            ]);
+        } elseif ($tag == "visitors") {
+            $role = $this->roleRepository->findByField('name', 'Visitante')->first();
+
+            $people = $this->repository->findByField('role_id', $role->id);
+        }
+
+        $header[] = "Nome";
+        $header[] = "CPF";
+        $header[] = "Cargo";
+        $header[] = "Data de Nasc.";
+
+        $i = 0;
+
+        $text = "";
+
+        while ($i < count($people)) {
+            $people[$i]->dateBirth = $this->formatDateView($people[$i]->dateBirth);
+
+            $people[$i]->role_id = $people[$i]->role->name;
+
+            $x = $i == (count($people) - 1) ? "" : ",";
+
+            $text .= '["' . $people[$i]->name . ' ' . $people[$i]->lastName . '","' . '' . $people[$i]->cpf . '' . '","' . '' . $people[$i]->role_id . '' . '","' . '' . $people[$i]->dateBirth . '"' . ']' . $x . '';
+
+            $i++;
+        }
+
+
+        $json = '{
+              "content": [
+                {
+                  "table": {
+                    "headerRows": 1,
+                    "widths": [ "*", "auto", 100, "*" ],
+            
+                    "body":[
+                      ["' . $header[0] . '", "' . $header[1] . '", "' . $header[2] . '", "' . $header[3] . '"],
+                      ' . $text . '
+                    ]
+                  }
+                }
+              ]
+            }';
+
+        if (env('APP_ENV') == "local") {
+            File::put(public_path('js/print.json'), $json);
+        } else {
+            File::put(getcwd() . '/js/print.json', $json);
+        }
+    }
+
+    public function getListPeople()
+    {
+        return $this->getList("person");
+    }
+
+    public function getListTeen()
+    {
+        return $this->getList("teen");
+    }
+
+    public function getListVisitors()
+    {
+        return $this->getList("visitors");
+    }
+
+    public function personExcel($format)
+    {
+        return $this->excel($format, "person");
+    }
+
+    public function teenExcel($format)
+    {
+        return $this->excel($format, "teen");
+    }
+
+    public function visitorsExcel($format)
+    {
+        return $this->excel($format, 'visitors');
+    }
+
+    public function excel($format, $tag)
+    {
+        $data = "";
+
+        if ($tag == "person") {
+            $data = $this->repository->findByField('tag', 'adult');
+        } elseif ($tag == "teen") {
+            $data = $this->repository->findWhere([
+                ['tag', '<>', 'adult']
+            ]);
+        } elseif ($tag == "visitors") {
+            $role = $this->roleRepository->findByField('name', 'Visitante')->first();
+
+            $data = $this->repository->findByField('role_id', $role->id);
+        }
+
+        $info = [];
+
+        for ($i = 0; $i < count($data); $i++) {
+            $info[$i]["Nome"] = $data[$i]->name;
+            $info[$i]["CPF"] = $data[$i]->cpf;
+            $info[$i]["Cargo"] = $data[$i]->role->name;
+            $info[$i]["Data de Nasc."] = $this->formatDateView($data[$i]->dateBirth);
+        }
+
+        Excel::create("Pessoas", function ($excel) use ($info){
+
+            $excel->sheet("Pessoas", function ($sheet) use ($info){
+                $sheet->fromArray($info);
+            });
+        })->export($format);
     }
 }

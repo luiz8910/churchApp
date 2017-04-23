@@ -9,18 +9,19 @@ use App\Services\AgendaServices;
 use App\Services\EventServices;
 use App\Notifications\EventNotification;
 use App\Notifications\Notifications;
-use App\Repositories\CountRepository;
-use App\Repositories\DateRepository;
+use App\Traits\CountRepository;
+use App\Traits\DateRepository;
 use App\Repositories\EventRepository;
-use App\Repositories\FormatGoogleMaps;
+use App\Traits\FormatGoogleMaps;
 use App\Repositories\GroupRepository;
-use App\Repositories\NotifyRepository;
+use App\Traits\NotifyRepository;
 use App\Repositories\PersonRepository;
 use App\Repositories\StateRepository;
 use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Maatwebsite\Excel\Facades\Excel;
 
 
 class EventController extends Controller
@@ -488,6 +489,7 @@ class EventController extends Controller
 
     public function getListEvents()
     {
+
         $events = $this->repository->all();
 
         $header[] = 'Nome';
@@ -503,26 +505,14 @@ class EventController extends Controller
         {
             $events[$i]->createdBy_id = $this->userRepository->find($events[$i]->createdBy_id)->person->name;
 
-            if($events[$i]->group_id)
-            {
-                $events[$i]->group_id = $this->groupRepository->find($events[$i]->group_id)->name;
-            }
-            else{
-                $events[$i]->group_id = "Sem Grupo";
-            }
+            $events[$i]->group_id = $events[$i]->group_id ? $this->groupRepository->find($events[$i]->group_id)->name : "Sem Grupo";
 
-            $x = ",";
-
-            if($i == (count($events) - 1))
-            {
-                $x = "";
-            }
+            $x = $i == (count($events) - 1) ? "" : ",";
 
             $text .= '["'.$events[$i]->name.'","'.''.$events[$i]->frequency.''.'","'.''.$events[$i]->createdBy_id.''.'","'.''.$events[$i]->group_id.'"'.']'.$x.'';
+
             $i++;
         }
-
-        //$text = '["'.$events[0]->name.'","'.''.$events[0]->frequency.''.'","'.''.$events[0]->createdBy_id.''.'","'.''.$events[0]->group_id.'"'.'],';
 
         $json = '{
               "content": [
@@ -551,4 +541,63 @@ class EventController extends Controller
     }
 
 
+    public function excel($format)
+    {
+        $data = $this->repository->all(['name', 'group_id', 'createdBy_id', 'eventDate', 'endEventDate', 'startTime',
+            'endTime', 'frequency', 'day', 'allDay', 'description', 'street', 'neighborhood', 'city',
+            'zipCode', 'state']);
+
+        $info = [];
+
+        for ($i = 0; $i < count($data); $i++) {
+
+            $info[$i]["Name"] = $data[$i]->name;
+
+            $info[$i]["Grupo"] = $data[$i]->group_id ? $this->groupRepository->find($data[$i]->group_id)->name : "Sem Grupo";
+
+            $info[$i]["Criado Por"] = $this->userRepository->find($data[$i]->createdBy_id)->person->name;
+
+            $info[$i]["Data do Evento"] = $data[$i]->eventDate;
+
+            $info[$i]["Fim do Evento"] = $data[$i]->endEventDate;
+
+            $info[$i]["Hora de Ínicio"] = $data[$i]->startTime;
+
+            $info[$i]["Hora de Término"] = $data[$i]->endTime;
+
+            $info[$i]["Frequência"] = $data[$i]->frequency;
+
+            $info[$i]["Dia"] = $data[$i]->day;
+
+            $info[$i]["Dia Todo"] = $data[$i]->allDay == 1 ? "Sim" : "Não";
+
+            $info[$i]["Descrição"] = $data[$i]->description;
+
+            $info[$i]["Logradouro"] = $data[$i]->street;
+
+            $info[$i]["Bairro"] = $data[$i]->neighborhood;
+
+            $info[$i]["Cidade"] = $data[$i]->city;
+
+            $info[$i]["CEP"] = $data[$i]->zipCode;
+
+            $info[$i]["UF"] = $data[$i]->state;
+        }
+
+        Excel::create('Eventos', function($excel) use ($info) {
+
+            // Set the title
+            //$excel->setTitle('Our new awesome title');
+
+            // Call them separately
+            //$excel->setDescription('A demonstration to change the file properties');
+
+            $excel->sheet('Eventos', function ($sheet) use ($info){
+               $sheet->fromArray($info);
+            });
+
+        })->export($format);
+
+        return redirect()->route('event.index');
+    }
 }

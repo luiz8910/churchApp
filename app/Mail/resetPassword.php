@@ -49,7 +49,7 @@ class resetPassword extends Mailable
     public function build()
     {
         return $this
-            ->from('luiz.sanches8910@gmail.com')
+            ->from('contato@beconnect.com.br')
             ->subject('Recuperação de Senha')
             ->view("emails.resetEmail");
     }

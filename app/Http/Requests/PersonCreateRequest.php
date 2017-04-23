@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UserUpdateRequest extends FormRequest
+class PersonCreateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -16,18 +16,19 @@ class UserUpdateRequest extends FormRequest
         return true;
     }
 
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
     public function rules()
     {
-        $id = $this->route('users');
-
         return [
             'name' => 'required|max:255',
-            'email' => "required|unique:people,name,$id|email",
             'tel' => 'required',
             'gender' => 'required',
             'dateBirth' => 'date_format:"d/m/Y"|required',
-            'role' => 'required',
-            'cpf' => 'required',
+            'role_id' => 'required',
             'street' => 'required',
             'neighborhood' => 'required',
             'city' => 'required',
@@ -39,18 +40,16 @@ class UserUpdateRequest extends FormRequest
     public function attributes()
     {
         return [
-            'name' => 'nome',
-            'tel' => 'telefone',
-            'gender' => 'gênero',
-            'dateBirth' => 'data de nascimento',
-            'role' => 'cargo',
-            'cpf' => 'CPF',
-            'street' => 'logradouro',
-            'neighborhood' => 'bairro',
-            'city' => 'cidade',
+            'name' => 'Nome',
+            'tel' => 'Telefone',
+            'gender' => 'Gênero',
+            'dateBirth' => 'Data de nascimento',
+            'role_id' => 'Cargo',
+            'street' => 'Logradouro',
+            'neighborhood' => 'Bairro',
+            'city' => 'Cidade',
             'zipCode' => 'CEP',
             'state' => 'UF',
-            'password' => 'senha'
         ];
     }
 }

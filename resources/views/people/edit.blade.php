@@ -73,6 +73,13 @@ License: You must have a valid license purchased only from themeforest(the above
                         {{ Session::get('updateUser') }}
                     </div>
                 @endif
+
+                @if(Session::has('email.exists'))
+                    <div class="alert alert-danger alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        {{ Session::get('email.exists') }}
+                    </div>
+                @endif
                 <div class="page-content-inner">
                     <div class="row">
                         <div class="col-md-12">
@@ -176,6 +183,9 @@ License: You must have a valid license purchased only from themeforest(the above
                                 <div class="portlet-body">
                                     <div class="tab-content">
                                         <!-- PERSONAL INFO TAB -->
+
+                                        <input type="hidden" value="{{ $person->id }}" id="personId">
+
                                         <div class="tab-pane active" id="tab_1_1">
                                             {!! Form::open(['route' => ['person.update', 'person' => $person->id], 'class' => 'horizontal-form', 'method' => 'PUT']) !!}
 
@@ -183,15 +193,15 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <div class="col-md-6">
                                                     {!! Form::FormGroup('name', $errors) !!}
                                                     <label class="control-label">Nome</label>
-                                                    <input type="text" placeholder="João da Silva" name="name" value="{{ $person->name }}" class="form-control" />
+                                                    <input type="text" placeholder="João" name="name" value="{{ $person->name }}" class="form-control" />
                                                     {!! Form::error('name', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
                                                 </div>
 
                                                 <div class="col-md-6">
                                                     {!! Form::FormGroup('lastName', $errors) !!}
-                                                    <label class="control-label">Nome</label>
-                                                    <input type="text" placeholder="João da Silva" name="lastName" value="{{ $person->lastName }}" class="form-control" />
+                                                    <label class="control-label">Sobrenome</label>
+                                                    <input type="text" placeholder="da Silva" name="lastName" value="{{ $person->lastName }}" class="form-control" />
                                                     {!! Form::error('lastName', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
                                                 </div>
@@ -210,7 +220,29 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <div class="col-md-6">
                                                     {!! Form::FormGroup('email', $errors) !!}
                                                     <label class="control-label">Email</label>
-                                                    <input type="email" placeholder="email@dominio.com" value="{{ $person->user->email or null }}" name="email" class="form-control" />
+                                                    <div class="input-group input-icon right">
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-envelope font-blue" id="icon-email"></i>
+                                                        </span>
+                                                        <input type="email" placeholder="email@dominio.com" value="{{ $person->user->email or null }}"
+                                                               id="email-edit" name="email" class="form-control" />
+                                                        <i class="fa fa-check font-green" id="icon-success-email" style="display: none;"></i>
+                                                        <i class="fa fa-exclamation font-red" id="icon-error-email" style="display: none;"></i>
+                                                    </div>
+
+                                                    <span class="help-block" id="emailExists" style="display: none; color: red;">
+                                                        <i class="fa fa-block"></i>
+                                                        Já existe uma conta associada a este email
+                                                    </span>
+                                                    <span class="help-block" id="invalidEmail" style="display: none; color: red;">
+                                                        <i class="fa fa-block"></i>
+                                                        Email em formato incorreto
+                                                    </span>
+                                                    <span class="help-block" id="validEmail" style="display: none; color: green;">
+                                                        <i class="fa fa-check"></i>
+                                                        Email Válido
+                                                    </span>
+
                                                     {!! Form::error('email', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
                                                 </div>
@@ -276,7 +308,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <label>CPF (Sem pontos ou traços)</label>
                                                     <div class="input-group input-icon right">
                                                             <span class="input-group-addon">
-                                                                <i class="fa fa-user"></i>
+                                                                <i class="fa fa-user font-blue"></i>
                                                             </span>
                                                         <input type="text" name="cpf" id="cpf" maxlength="11" class="form-control"
                                                                placeholder="XXXXXXXXXXX" value="{{ $person->cpf }}">

@@ -6,7 +6,7 @@
  * Time: 17:21
  */
 
-namespace App\Repositories;
+namespace App\Traits;
 
 
 use App\Models\Group;

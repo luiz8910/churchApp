@@ -6,7 +6,7 @@
  * Time: 02:25
  */
 
-namespace App\Repositories;
+namespace App\Traits;
 
 
 trait FormatGoogleMaps

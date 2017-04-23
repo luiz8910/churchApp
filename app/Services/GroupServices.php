@@ -9,7 +9,7 @@
 namespace App\Services;
 
 
-use App\Repositories\DateRepository;
+use App\Traits\DateRepository;
 use Illuminate\Support\Facades\DB;
 
 class GroupServices

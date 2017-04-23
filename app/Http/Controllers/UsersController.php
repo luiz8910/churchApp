@@ -6,9 +6,10 @@ use App\Http\Requests\UserCreateRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Mail\resetPassword;
 use App\Models\User;
-use App\Repositories\CountRepository;
-use App\Repositories\DateRepository;
-use App\Repositories\NotifyRepository;
+use App\Traits\CountRepository;
+use App\Traits\DateRepository;
+use App\Traits\EmailTrait;
+use App\Traits\NotifyRepository;
 use App\Repositories\PersonRepository;
 use App\Repositories\RoleRepository;
 use App\Repositories\StateRepository;
@@ -20,7 +21,7 @@ use Illuminate\Support\Facades\Mail;
 
 class UsersController extends Controller
 {
-    use DateRepository, CountRepository, NotifyRepository;
+    use DateRepository, CountRepository, NotifyRepository, EmailTrait;
     /**
      * @var UserRepository
      */
@@ -249,6 +250,17 @@ class UsersController extends Controller
         }
 
         return json_encode(['status' => false]);
+    }
+
+    public function emailTestEdit($email, $id)
+    {
+        if($this->emailTestEditTrait($email, $id))
+        {
+            return json_encode(['status' => true]);
+        }
+        else{
+            return json_encode(['status' => false]);
+        }
     }
 
     public function forgotPassword()
