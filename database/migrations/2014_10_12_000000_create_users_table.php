@@ -15,7 +15,8 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('church_id');
+            $table->integer('church_id')->unsigned();
+            $table->foreign('church_id')->references('id')->on('churches');
             $table->integer('person_id')->unique()->nullable()->unsigned();
             $table->foreign('person_id')->references('id')->on('people')->onDelete('cascade');
             $table->string('facebook_id')->unique()->nullable();
@@ -23,8 +24,8 @@ class CreateUsersTable extends Migration
             $table->string('google_id')->unique()->nullable();
             $table->string('twitter_id')->unique()->nullable();
             $table->string('email')->unique()->nullable();
-            $table->string('password');
-            $table->rememberToken();
+            $table->string('password')->nullable();
+            $table->rememberToken()->nullable();
             $table->timestamps();
         });
     }

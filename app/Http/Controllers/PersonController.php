@@ -19,8 +19,10 @@ use App\Traits\NotifyRepository;
 use App\Repositories\PersonRepository;
 use App\Repositories\RoleRepository;
 use App\Repositories\StateRepository;
+use App\Traits\PeopleTrait;
 use App\Traits\UserLoginRepository;
 use App\Repositories\UserRepository;
+use App\Models\Visitor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -33,7 +35,7 @@ use File;
 
 class PersonController extends Controller
 {
-    use DateRepository, CountRepository, FormatGoogleMaps, UserLoginRepository, NotifyRepository, EmailTrait;
+    use DateRepository, CountRepository, FormatGoogleMaps, UserLoginRepository, NotifyRepository, EmailTrait, PeopleTrait;
     /**
      * @var PersonRepository
      */
@@ -110,9 +112,8 @@ class PersonController extends Controller
 
     public function visitors()
     {
-        $visitors = DB::table("people")
+        $visitors = DB::table("visitors")
             ->where([
-                'role_id' => 3,
                 'deleted_at' => null,
             ])->paginate(5);
 
@@ -163,7 +164,7 @@ class PersonController extends Controller
     {
         $state = $this->stateRepository->all();
 
-        $roles = $this->roleRepository->all();
+        $roles = $this->roleRepository->findWhereNotIn('id', [3]);
 
         $countPerson[] = $this->countPerson();
 
@@ -198,15 +199,15 @@ class PersonController extends Controller
 
         $confirmPass = implode('=>', $confirmPass);
 
-
         if(!$password){
             \Session::flash("email.exists", "Escolha uma senha");
             return redirect()->route("person.create");
         }
         elseif($password != $confirmPass){
             \Session::flash("email.exists", "As senhas não combinam");
+            $request->flashExcept('password');
 
-            return redirect()->route("person.create");
+            return redirect()->route("person.create")->withInput();
         }
 
         $email = $email["email"];
@@ -216,7 +217,11 @@ class PersonController extends Controller
         if($user)
         {
             \Session::flash("email.exists", "Existe uma conta associada para o email informado (" .$email. ")");
-            return redirect()->route("person.create");
+
+            $request->flashExcept('password');
+
+
+            return redirect()->route("person.create")->withInput();
         }
 
         $data = $request->except(['img', 'email', 'password', 'confirm-password']);
@@ -229,8 +234,10 @@ class PersonController extends Controller
 
         $id = $this->repository->create($data)->id;
 
+        $church_id = $request->user()->id;
+
         if ($this->repository->isAdult($data['dateBirth'])) {
-            $this->createUserLogin($id, $password, $email);
+            $this->createUserLogin($id, $password, $email, $church_id);
 
             if ($children) {
                 $this->children($children, $id, $data['gender']);
@@ -238,10 +245,10 @@ class PersonController extends Controller
 
         }
 
-        $this->tag($this->repository->tag($data['dateBirth']), $id);
+        $this->updateTag($this->tag($data['dateBirth']), $id, 'people');
 
         if ($file) {
-            $this->imgProfile($file, $id, $data['name']);
+            $this->imgProfile($file, $id, $data['name'], 'people');
         }
 
 
@@ -249,66 +256,10 @@ class PersonController extends Controller
     }
 
 
-    /**
-     * Atribui pais aos filhos
-     *
-     * @param $children
-     * @param $id (do pai ou mãe)
-     * @param $gender
-     */
-    public function children($children, $id, $gender)
-    {
-        foreach ($children as $child) {
-            //$resp = $this->repository->find($id);
-
-            $data['name'] = $child['childName'];
-
-            $data['lastName'] = $child['childLastName'];
-
-            $data['dateBirth'] = $this->formatDateBD($child['childDateBirth']);
-
-            $data['imgProfile'] = 'uploads/profile/noimage.png';
-
-            if ($gender == 'M') {
-                $data['father_id'] = $id;
-            } else {
-                $data['mother_id'] = $id;
-            }
-
-            $data['role_id'] = 2;
-
-            $data['maritalStatus'] = 'Solteiro';
-
-            $idChild = $this->repository->create($data)->id;
-
-            $this->tag($this->repository->tag($data['dateBirth']), $idChild);
-        }
-
-        DB::table("people")
-            ->where('id', $id)
-            ->update(['hasKids' => 'on']);
-    }
 
 
-    /**
-     * Insere a imagem de perfil do membro cadastrado
-     *
-     * @param $file
-     * @param $id
-     * @param $name
-     */
-    public function imgProfile($file, $id, $name)
-    {
-        $imgName = 'uploads/profile/' . $id . '-' . $name . '.' . $file->getClientOriginalExtension();
 
-        $file->move('uploads/profile', $imgName);
 
-        DB::table('people')->
-        where('id', $id)->
-        update(['imgProfile' => $imgName]);
-
-        //$request->session()->flash('updateUser', 'Alterações realizadas com sucesso');
-    }
 
     public function imgEditProfile(Request $request, $id)
     {
@@ -327,12 +278,7 @@ class PersonController extends Controller
         return redirect()->back();
     }
 
-    public function tag($tag, $id)
-    {
-        DB::table('people')->
-        where('id', $id)->
-        update(['tag' => $tag]);
-    }
+
 
 
     /**
@@ -408,7 +354,7 @@ class PersonController extends Controller
         if ($data['maritalStatus'] != 'Casado') {
             $data['partner'] = null;
         } else if ($data['partner'] != "0") {
-            $this->updateMaritalStatus($data['partner'], $id);
+            $this->updateMaritalStatus($data['partner'], $id, 'people');
         }
 
         $user = $this->userRepository->findByField('person_id', $id)->first();
@@ -431,15 +377,6 @@ class PersonController extends Controller
         DB::table('users')
             ->where('id', $id)
             ->update(['email' => $email]);
-    }
-
-    public function updateMaritalStatus($partner, $id)
-    {
-        DB::table('people')
-            ->where('id', $partner)
-            ->update(
-                ['partner' => $id, 'maritalStatus' => 'Casado']
-            );
     }
 
     /**
@@ -612,5 +549,19 @@ class PersonController extends Controller
                 $sheet->fromArray($info);
             });
         })->export($format);
+    }
+
+    public function createVisitors()
+    {
+
+    }
+
+    public function storeVisitors(PersonCreateRequest $request)
+    {
+
+
+
+
+        return redirect()->route('person.visitors');
     }
 }

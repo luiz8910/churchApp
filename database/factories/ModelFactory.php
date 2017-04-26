@@ -17,6 +17,7 @@ $factory->define(App\Models\User::class, function (Faker\Generator $faker) {
     return [
         'email' => $faker->unique()->safeEmail,
         'church_id' => 1,
+        'person_id' => 1,
         'password' => $password ?: $password = bcrypt('secret'),
         'remember_token' => str_random(10),
     ];
@@ -35,7 +36,6 @@ $factory->define(\App\Models\Person::class, function (\Faker\Generator $faker){
     return [
         'name' => $faker->name,
         'lastName' => $faker->lastName,
-        'church_id' => 1,
         'imgProfile' => 'uploads/profile/noimage.png',
         'tel' => $faker->numerify('#############'),
         'role_id' => 1,
@@ -50,4 +50,23 @@ $factory->define(\App\Models\Person::class, function (\Faker\Generator $faker){
         'state' => 'SP'
     ];
 
+});
+
+$factory->define(\App\Models\Church::class, function (\Faker\Generator $faker){
+   return [
+       'name' => $faker->name,
+       'email' => $faker->safeEmail,
+       'responsible_id' => 1,
+       'tel' =>  $faker->numerify('#############'),
+       'cnpj' => '94121653000172'
+   ];
+});
+
+$factory->define(\App\Models\Responsible::class, function (\Faker\Generator $faker){
+
+    return [
+        'name' => $faker->name,
+        'email' => $faker->safeEmail,
+        'role_id' => 5
+    ];
 });

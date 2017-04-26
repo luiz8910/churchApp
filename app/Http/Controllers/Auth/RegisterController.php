@@ -3,6 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
+use App\Repositories\VisitorRepository;
+use App\Traits\DateRepository;
+use App\Traits\FormatGoogleMaps;
+use Illuminate\Http\Request;
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -21,7 +25,7 @@ class RegisterController extends Controller
     |
     */
 
-    use RegistersUsers;
+    use RegistersUsers, DateRepository;
 
     /**
      * Where to redirect users after login / registration.
@@ -209,5 +213,20 @@ class RegisterController extends Controller
         auth()->login($member);
 
         return redirect()->route('index');
+    }
+
+    public function loginVisitor(Request $request, VisitorRepository $visitorRepository)
+    {
+        $visitor = $visitorRepository->findByField('email', $request->get('email'))->first();
+
+        $id = $visitor->users()->first();
+
+        if($visitor){
+            auth()->loginUsingId($id);
+
+            return redirect()->route('index');
+        }
+
+        return false;
     }
 }

@@ -34,6 +34,16 @@ class User extends Authenticatable implements Transformable
         return $this->belongsTo(Person::class);
     }
 
+    public function churches()
+    {
+        return $this->belongsToMany(Church::class);
+    }
+
+    public function visitors()
+    {
+        return $this->belongsToMany(Visitor::class);
+    }
+
     public function routeNotificationForSlack()
     {
         //return $this->slack_webhook;

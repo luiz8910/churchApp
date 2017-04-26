@@ -18,6 +18,10 @@ Route::group(['middleware' => 'auth'], function (){
 
     Route::resource('person', 'PersonController');
 
+    Route::get('visitors-create', 'PersonController@createVisitors')->name('visitors.create');
+
+    Route::post('visitors-store', 'PersonController@storeVisitors')->name('visitors.store');
+
     Route::get('teen', 'PersonController@teenagers')->name('person.teen');
 
     Route::get('visitors', 'PersonController@visitors')->name('person.visitors');
@@ -155,6 +159,14 @@ Route::get('auth/linkedin/callback', 'Auth\RegisterController@handleLinkedinProv
 Route::get('auth/google', 'Auth\RegisterController@redirectToGoogleProvider');
 Route::get('auth/google/callback', 'Auth\RegisterController@handleGoogleProviderCallback');
 
+//Login Visitante
+Route::get('login-visitante', 'VisitorController@login');
+
+Route::post('login-visitante', 'Auth\RegisterController@loginVisitor')->name('login.visitor');
+
 //Login Twitter
 //Route::get('auth/twitter', 'Auth\RegisterController@redirectToTwitterProvider');
 //Route::get('auth/twitter/callback', 'Auth\RegisterController@handleTwitterProviderCallback');
+
+
+//Testes

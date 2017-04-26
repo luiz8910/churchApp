@@ -26,8 +26,8 @@ trait CountRepository
             ->where('deleted_at', null)
             ->get());
 
-        $countVisitors = count(DB::table('people')
-            ->where('role_id', '3')
+        $countVisitors = count(DB::table('visitors')
+            ->where('deleted_at', null)
             ->get());
 
         $countInactive = count(DB::table('people')

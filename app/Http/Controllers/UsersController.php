@@ -62,8 +62,8 @@ class UsersController extends Controller
         $changePass = true;
 
         if (\Auth::getUser()->facebook_id != null || \Auth::getUser()->linkedin_id != null
-            || \Auth::getUser()->google_id != null || \Auth::getUser()->twitter_id != null)
-        {
+            || \Auth::getUser()->google_id != null || \Auth::getUser()->twitter_id != null
+        ) {
             $changePass = false;
         }
 
@@ -97,7 +97,7 @@ class UsersController extends Controller
 
         $data['password'] = bcrypt($password);
 
-        if($this->repository->create($data)){
+        if ($this->repository->create($data)) {
             $request->session()->flash('users.store', 'Usuário criado com sucesso');
         }
 
@@ -120,11 +120,9 @@ class UsersController extends Controller
          * Se a pessoa for casada e $data['partner'] != "0" então a pessoa é casada com o id informado
          *
         */
-        if($data['maritalStatus'] != 'Casado')
-        {
+        if ($data['maritalStatus'] != 'Casado') {
             $data['partner'] = null;
-        }
-        else if ($data['partner'] != "0"){
+        } else if ($data['partner'] != "0") {
             $this->updateMaritalStatus($data['partner'], $id);
         }
 
@@ -147,13 +145,13 @@ class UsersController extends Controller
 
         $id = \Auth::user()->id;
 
-        $imgName = 'uploads/profile/' . $id . '-' . \Auth::user()->name . '.' .$file->getClientOriginalExtension();
+        $imgName = 'uploads/profile/' . $id . '-' . \Auth::user()->name . '.' . $file->getClientOriginalExtension();
 
         $file->move('uploads/profile', $imgName);
 
         DB::table('people')->
-            where('id', $id)->
-            update(['imgProfile' => $imgName]);
+        where('id', $id)->
+        update(['imgProfile' => $imgName]);
 
         $request->session()->flash('updateUser', 'Alterações realizadas com sucesso');
 
@@ -162,19 +160,15 @@ class UsersController extends Controller
 
     public function changePassword(Request $request)
     {
-        if($request->new == $request->confirmPassword)
-        {
+        if ($request->new == $request->confirmPassword) {
             $result = $this->repository->changePassword($request);
 
-            if($result)
-            {
+            if ($result) {
                 $request->session()->flash('updateUser', 'Senha Alterada com sucesso');
-            }
-            else{
+            } else {
                 $request->session()->flash('updateUser', 'Sua senha original está incorreta');
             }
-        }
-        else{
+        } else {
             $request->session()->flash('updateUser', 'As senhas não combinam');
         }
 
@@ -226,8 +220,7 @@ class UsersController extends Controller
 
         //dd($today);
 
-        if(count($user) > 0)
-        {
+        if (count($user) > 0) {
 
             Mail::to(User::find($user->first()->id))
                 ->send(new resetPassword(
@@ -244,8 +237,7 @@ class UsersController extends Controller
     {
         $email = $this->repository->findByField('email', $email);
 
-        if(count($email) > 0)
-        {
+        if (count($email) > 0) {
             return json_encode(['status' => true]);
         }
 
@@ -254,11 +246,9 @@ class UsersController extends Controller
 
     public function emailTestEdit($email, $id)
     {
-        if($this->emailTestEditTrait($email, $id))
-        {
+        if ($this->emailTestEditTrait($email, $id)) {
             return json_encode(['status' => true]);
-        }
-        else{
+        } else {
             return json_encode(['status' => false]);
         }
     }

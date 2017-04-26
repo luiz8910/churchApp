@@ -70,7 +70,7 @@ License: You must have a valid license purchased only from themeforest(the above
                 <!-- END PAGE BREADCRUMBS -->
                 <!-- BEGIN PAGE CONTENT INNER -->
 
-                <?php $route = basename($_SERVER['PHP_SELF'], '.php');?>
+                <?php $route = "group";?>
 
                 <div class="page-content-inner">
                     <div class="row">

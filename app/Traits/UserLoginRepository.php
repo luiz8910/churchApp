@@ -9,21 +9,24 @@
 namespace App\Traits;
 
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 
 trait UserLoginRepository
 {
-    public function createUserLogin($id, $password, $email)
+    public function createUserLogin($id, $password = null, $email = null, $church, $visitor = null)
     {
-        User::create(
+        $user = User::create(
             [
-                'church_id' => '1',
-                'person_id' => $id,
-                'email' => $email,
-                'password' => bcrypt($password),
+                'church_id' => $church,
+                'person_id' => $id = $visitor ? null : $id,
+                'email' => $email or null,
+                'password' => bcrypt($password) or null,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
             ]
         );
+
+        return $user;
     }
 }

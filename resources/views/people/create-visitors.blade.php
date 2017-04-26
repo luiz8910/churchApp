@@ -114,7 +114,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                     </div>-->
                                 </div>
                                 <div class="portlet-body form">
-                                    {!! Form::open(['route' => 'person.store', 'method' => 'POST', 'class' => 'repeater', 'enctype' => 'multipart/form-data', 'role' => 'form']) !!}
+                                    {!! Form::open(['route' => 'visitors.store', 'method' => 'POST', 'class' => 'repeater', 'enctype' => 'multipart/form-data', 'role' => 'form']) !!}
                                     <div class="form-body">
                                         <div class="row">
                                             <div class="col-md-6">
@@ -207,12 +207,8 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <div class="input-icon input-icon-lg">
                                                         <select class="form-control" name="gender" required>
                                                             <option value="">Selecione</option>
-                                                            <option value="M" @if(old('gender') == "M") selected @endif>
-                                                                Masculino
-                                                            </option>
-                                                            <option value="F" @if(old('gender') == "F") selected @endif>
-                                                                Feminino
-                                                            </option>
+                                                            <option value="M">Masculino</option>
+                                                            <option value="F">Feminino</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -270,14 +266,8 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <label>Cargo</label>
                                                     <div class="input-icon input-icon-sm">
                                                         <i class="fa fa-briefcase"></i>
-                                                        <select class="form-control" name="role_id" required>
-                                                            <option value="">Selecione</option>
-                                                            @foreach($roles as $role)
-                                                                <option value="{{ $role->id }}"
-                                                                        @if(old('role_id') == $role->id) selected @endif>
-                                                                    {{ $role->name }}
-                                                                </option>
-                                                            @endforeach
+                                                        <select class="form-control" name="role_id" required readonly>
+                                                            <option value="3">Visitante</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -291,15 +281,9 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <label for="">Estado Civil</label>
                                                     <select name="maritalStatus" id="maritalStatus" class="form-control" required>
                                                         <option value="">Selecione</option>
-                                                        <option value="Casado" @if(old('maritalStatus') == "Casado") selected @endif>
-                                                            Casado
-                                                        </option>
-                                                        <option value="Solteiro" @if(old('maritalStatus') == "Solteiro") selected @endif>
-                                                            Solteiro
-                                                        </option>
-                                                        <option value="Divorciado" @if(old('maritalStatus') == "Divorciado") selected @endif>
-                                                            Divorciado
-                                                        </option>
+                                                        <option value="Casado">Casado</option>
+                                                        <option value="Solteiro">Solteiro</option>
+                                                        <option value="Divorciado">Divorciado</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -485,9 +469,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <select name="state" class="form-control" id="state">
                                                         <option value="">Selecione</option>
                                                         @foreach($state as $item)
-                                                            <option value="{{ $item->initials }}" @if(old('state') == $item->initials) selected @endif>
-                                                                {{ $item->state }}
-                                                            </option>
+                                                            <option value="{{ $item->initials }}">{{ $item->state }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>

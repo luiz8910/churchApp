@@ -26,6 +26,7 @@ class EventPerson extends Migration
             $table->boolean('show')->default(false);
 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -71,7 +71,7 @@ License: You must have a valid license purchased only from themeforest(the above
                 <!-- BEGIN PAGE CONTENT INNER -->
 
 
-                <?php $route = basename($_SERVER['PHP_SELF'], '.php');?>
+                <?php $route = "teen";?>
 
 
                 <div class="page-content-inner">

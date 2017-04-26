@@ -101,7 +101,7 @@ License: You must have a valid license purchased only from themeforest(the above
         </div>
         <div class="create-account">
             <p>
-                <a href="javascript:;" id="register-btn" class="uppercase"></a>
+                <a href="javascript:;" class="uppercase" onclick="visitante()">Visitante? Clique aqui</a>
             </p>
         </div>
     </form>
@@ -119,6 +119,12 @@ License: You must have a valid license purchased only from themeforest(the above
 <script src="../assets/pages/scripts/login.min.js" type="text/javascript"></script>
 
 <script src="../js/ajax.js"></script>
+
+<script>
+    function visitante() {
+        window.location.href = 'login-visitante';
+    }
+</script>
 <!-- END PAGE LEVEL SCRIPTS -->
 <!-- BEGIN THEME LAYOUT SCRIPTS -->
 <!-- END THEME LAYOUT SCRIPTS -->

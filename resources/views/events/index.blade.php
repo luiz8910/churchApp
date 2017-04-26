@@ -128,7 +128,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                         </div>
                                     @endif
 
-                                    <?php $route = basename($_SERVER['PHP_SELF'], '.php');?>
+                                    <?php $route = "events";?>
 
                                     <div class="row">
                                         <div class="col-md-12">
