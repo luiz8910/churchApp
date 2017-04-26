@@ -110,25 +110,6 @@ class PersonController extends Controller
         return view('people.teenagers', compact('teen', 'countPerson', 'countGroups', 'notify', 'qtde'));
     }
 
-    public function visitors()
-    {
-        $visitors = DB::table("visitors")
-            ->where([
-                'deleted_at' => null,
-            ])->paginate(5);
-
-        foreach ($visitors as $item) {
-            $item->dateBirth = $this->formatDateView($item->dateBirth);
-            $item->role = $this->roleRepository->find($item->role_id)->name;
-        }
-
-        $countPerson[] = $this->countPerson();
-        $countGroups[] = $this->countGroups();
-        $notify = $this->notify();
-        $qtde = count($notify);
-
-        return view('people.visitors', compact('visitors', 'countPerson', 'countGroups', 'notify', 'qtde'));
-    }
 
     public function inactive()
     {

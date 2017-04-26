@@ -809,8 +809,9 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             tabindex="1">
                                                         <option value="">Selecione</option>
                                                         @foreach($roles as $role)
-                                                            <option value="{{  Auth::getUser()->person->role_id }}"
-                                                                @if(Auth::getUser()->person->role_id == $role->id) selected @endif>{{ $role->name }}
+                                                            <option value="{{  $role->id }}"
+                                                                @if(Auth::getUser()->person->role_id == $role->id) selected @endif>
+                                                                {{ $role->name }}
                                                             </option>
                                                         @endforeach
                                                     </select>

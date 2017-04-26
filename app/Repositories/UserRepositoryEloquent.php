@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use Illuminate\Support\Facades\DB;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 use App\Repositories\UserRepository;
@@ -45,8 +46,8 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
             $new = bcrypt($request->new);
 
             DB::table('users')->
-            where('id', $id)->
-            update(['password' => $new]);
+                where('id', $id)->
+                update(['password' => $new]);
 
             return true;
         }

@@ -69,7 +69,7 @@ class UsersController extends Controller
 
         $countPerson[] = $this->countPerson();
 
-        $roles = $this->roleRepository->all();
+        $roles = $this->roleRepository->findWhereNotIn('name', ['Visitante']);
 
         $countGroups[] = $this->countGroups();
 
@@ -125,6 +125,8 @@ class UsersController extends Controller
         } else if ($data['partner'] != "0") {
             $this->updateMaritalStatus($data['partner'], $id);
         }
+
+        $data["role_id"] = $data["role"];
 
         $person_id = $this->repository->find($id)->person_id;
 

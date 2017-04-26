@@ -211,40 +211,43 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 </thead>
 
                                                 <tbody>
-                                                    <?php $i = 0; ?>
-                                                    @foreach($groups as $item)
-                                                        <tr>
-                                                            <td> <img src="{{ $item->imgProfile }}" style="width: 50px; height: 50px;"> </td>
-                                                            <td> <a href="{{ route('group.edit', ['group' => $item->id]) }}"> {{ $item->name }}</a></td>
-                                                            <td> {{ $item->sinceOf }} </td>
-                                                            <td> <span class="badge badge-info">{{ $countMembers[$i] }}</span></td>
+                                                    @if($groups)
+                                                        <?php $i = 0; ?>
+                                                        @foreach($groups as $item)
+                                                            <tr>
+                                                                <td> <img src="{{ $item->imgProfile }}" style="width: 50px; height: 50px;"> </td>
+                                                                <td> <a href="{{ route('group.edit', ['group' => $item->id]) }}"> {{ $item->name }}</a></td>
+                                                                <td> {{ $item->sinceOf }} </td>
+                                                                <td> <span class="badge badge-info">{{ $countMembers[$i] }}</span></td>
 
-                                                            @if(Auth::getUser()->person->role_id == 1)
+                                                                @if(Auth::getUser()->person->role_id == 1)
 
-                                                                <?php $deleteForm = "delete-".$item->id; ?>
-                                                                <td id="{{ $deleteForm }}">
-                                                                    {!! Form::open(['route' => ['group.destroy', 'group' => $item->id],
-                                                                            'method' => 'DELETE', 'id' => 'form-'.$deleteForm]) !!}
+                                                                    <?php $deleteForm = "delete-".$item->id; ?>
+                                                                    <td id="{{ $deleteForm }}">
+                                                                        {!! Form::open(['route' => ['group.destroy', 'group' => $item->id],
+                                                                                'method' => 'DELETE', 'id' => 'form-'.$deleteForm]) !!}
 
-                                                                    <a href="" class="btn btn-danger btn-sm" title="Excluir grupo"
-                                                                       onclick='event.preventDefault();document.getElementById("form-{{ $deleteForm }}").submit();'>
-                                                                        <i class="fa fa-close"></i>
-                                                                        Sair
-                                                                    </a>
+                                                                        <a href="" class="btn btn-danger btn-sm" title="Excluir grupo"
+                                                                           onclick='event.preventDefault();document.getElementById("form-{{ $deleteForm }}").submit();'>
+                                                                            <i class="fa fa-close"></i>
+                                                                            Sair
+                                                                        </a>
 
-                                                                    {!! Form::close() !!}
-                                                                </td>
+                                                                        {!! Form::close() !!}
+                                                                    </td>
 
-                                                            @endif
+                                                                @endif
 
-                                                        </tr>
-                                                        <?php $i++; ?>
-                                                    @endforeach
+                                                            </tr>
+                                                            <?php $i++; ?>
+                                                        @endforeach
+
+                                                    @endif
                                                 </tbody>
                                             </table>
                                             <br>
                                             <div class="pull-right">
-                                                {{ $groups->links() }}
+                                                @if($groups) {{ $groups->links() }} @endif
                                             </div>
                                         </div>
                                     </div>
@@ -311,7 +314,8 @@ License: You must have a valid license purchased only from themeforest(the above
                                     </div>
                                 </div>
 
-                                <div class="portlet-body">
+                                @if(count($events) > 0)
+                                    <div class="portlet-body">
                                     <div class="row desktop-row">
                                         <div class="col-md-12">
                                             <div class="panel panel-default" id="thisMonth">
@@ -3256,6 +3260,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                     <?php $i = 0; ?>
                                     <?php $x = 0; ?>
                                 </div>
+                                @endif
                             </div>
                         </div>
                     </div>

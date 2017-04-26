@@ -24,7 +24,7 @@ Route::group(['middleware' => 'auth'], function (){
 
     Route::get('teen', 'PersonController@teenagers')->name('person.teen');
 
-    Route::get('visitors', 'PersonController@visitors')->name('person.visitors');
+    Route::get('visitors', 'VisitorController@index')->name('visitors.index');
 
     Route::get('inactive', 'PersonController@inactive')->name('person.inactive');
 
@@ -33,9 +33,10 @@ Route::group(['middleware' => 'auth'], function (){
     Route::post('person-imgProfile/{id}', 'PersonController@imgEditProfile')->name('person.imgEditProfile');
 
     Route::get('myAccount', 'UsersController@myAccount')->name('users.myAccount');
-    Route::post('imgProfile', 'UsersController@imgProfile')->name('users.imgProfile');
-    Route::post('changePass', 'UsersController@changePassword')->name('users.changePass');
 
+    Route::post('imgProfile', 'UsersController@imgProfile')->name('users.imgProfile');
+
+    Route::post('changePass', 'UsersController@changePassword')->name('users.changePass');
 
     Route::get('group', 'GroupController@index')->name('group.index');
 
@@ -46,8 +47,6 @@ Route::group(['middleware' => 'auth'], function (){
     Route::get('events/create', 'EventController@create')->name('event.create');
 
     Route::get('events', 'EventController@index')->name('event.index');
-
-
 
     Route::get('events/{event}/edit', 'EventController@edit')->name('event.edit');
 
@@ -94,7 +93,6 @@ Route::group(["middleware" => "check.role:1"], function () {
     Route::post('newMember/{group}', 'GroupController@newMemberToGroup')->name('group.newMember');
 
     Route::get('group/deleteManyUsers/{id}', 'GroupController@destroyManyUsers')->name('group.destroyManyUsers');
-
 
     Route::get('pusher', function(){
         return view('pusher');

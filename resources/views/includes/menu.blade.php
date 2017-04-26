@@ -50,7 +50,7 @@
                                 <span class="badge badge-success">{{ $countPerson[0][1] }}</span></a> <!-- Qtde de Crianças/Jovens cad.-->
                         </li>
                         <li class=" ">
-                            <a href="{{ route('person.visitors') }}" class="nav-link  ">
+                            <a href="{{ route('visitors.index') }}" class="nav-link  ">
                                 <i class="icon-bulb"></i> Visitantes
                                 <span class="badge badge-success">{{ $countPerson[0][2] }}</span></a> <!-- Qtde de Visitantes cad.-->
                         </li>

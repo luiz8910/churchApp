@@ -49,11 +49,18 @@ class DashboardController extends Controller
 
         $events = $this->eventRepository->all();
 
-        $this->json();
-
         $notify = $this->notify();
 
         $qtde = count($notify);
+
+        $groups = null;
+
+        if (count($events) == 0)
+        {
+            return view('dashboard.index', compact('countPerson', 'countGroups', 'events', 'notify', 'qtde',
+                'countMembers', 'location', 'street', 'groups'));
+        }
+
 
         $id = Auth::getUser()->person_id;
 
