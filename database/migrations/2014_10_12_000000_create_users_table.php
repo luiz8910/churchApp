@@ -18,7 +18,7 @@ class CreateUsersTable extends Migration
             $table->integer('church_id')->unsigned();
             $table->foreign('church_id')->references('id')->on('churches');
             $table->integer('person_id')->unique()->nullable()->unsigned();
-            $table->foreign('person_id')->references('id')->on('people')->onDelete('cascade');
+            $table->foreign('person_id')->references('id')->on('people')->nullable();
             $table->string('facebook_id')->unique()->nullable();
             $table->string('linkedin_id')->unique()->nullable();
             $table->string('google_id')->unique()->nullable();

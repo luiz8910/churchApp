@@ -149,7 +149,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <td> {{ $item->sinceOf }} </td>
                                                     <td> <span class="badge badge-success">{{ $countMembers[$i] }}</span></td>
 
-                                                    @if(Auth::getUser()->person->role_id == 1)
+                                                    @if(Auth::getUser()->person && Auth::getUser()->person->role_id == 1)
 
                                                         <?php $deleteForm = "delete-".$item->id; ?>
                                                         <td id="{{ $deleteForm }}">

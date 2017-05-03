@@ -92,7 +92,7 @@ class GroupController extends Controller
 
         $notify = $this->notify();
 
-        $qtde = count($notify);
+        $qtde = count($notify) or 0;
 
         return view('groups.index', compact('groups', 'countPerson', 'countMembers', 'countGroups', 'notify', 'qtde'));
     }

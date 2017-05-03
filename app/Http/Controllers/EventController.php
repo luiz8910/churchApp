@@ -59,6 +59,8 @@ class EventController extends Controller
         $this->personRepository = $personRepository;
     }
 
+
+
     public function index()
     {
         $countPerson[] = $this->countPerson();
@@ -83,11 +85,11 @@ class EventController extends Controller
 
         $user = $this->userRepository->find(\Auth::getUser()->id);
 
-        $event_user[] = $user->person->events->all();
+        //$event_user[] = $user->person->events ? $user->person->events->all() : null;
 
         $notify = $this->notify();
 
-        $qtde = count($notify);
+        $qtde = count($notify) or 0;
 
         $days = AgendaServices::findWeek();
 
@@ -178,7 +180,7 @@ class EventController extends Controller
         //dd(count($days));
 
         return view('events.index', compact('countPerson', 'countGroups', 'state', 'allEvents',
-            'events', 'event_user', 'notify', 'qtde', 'days', 'nextMonth', 'nextMonth2',
+            'events', 'notify', 'qtde', 'days', 'nextMonth', 'nextMonth2',
             'nextMonth3', 'nextMonth4', 'nextMonth5', 'nextMonth6', 'prevMonth', 'prevMonth2',
             'prevMonth3', 'prevMonth4', 'prevMonth5', 'prevMonth6','allMonths', 'allDays'));
     }

@@ -27,38 +27,39 @@
             <ul class="dropdown-menu-list scroller" style="height: 250px;"
                 data-handle-color="#637283" id="eventNotify">
 
-                @foreach($notify as $n)
-                    <li>
-                        <a href="@if(isset($n["data"]["link"])) {{ $n["data"]["link"] }} @endif">
-                            <span class="time">
-                                @if(\Carbon\Carbon::now()->diffInMinutes($n["created_at"]) > 60)
-                                    @if(\Carbon\Carbon::now()->diffInHours($n["created_at"]) > 24)
-                                        @if(\Carbon\Carbon::now()->diffInWeeks($n["created_at"]) > 7)
-                                            há {{ \Carbon\Carbon::now()->diffInWeeks($n["created_at"]) }} Semanas
+                @if($notify)
+                    @foreach($notify as $n)
+                        <li>
+                            <a href="@if(isset($n["data"]["link"])) {{ $n["data"]["link"] }} @endif">
+                                <span class="time">
+                                    @if(\Carbon\Carbon::now()->diffInMinutes($n["created_at"]) > 60)
+                                        @if(\Carbon\Carbon::now()->diffInHours($n["created_at"]) > 24)
+                                            @if(\Carbon\Carbon::now()->diffInWeeks($n["created_at"]) > 7)
+                                                há {{ \Carbon\Carbon::now()->diffInWeeks($n["created_at"]) }} Semanas
+                                            @else
+                                                há {{ \Carbon\Carbon::now()->diffInDays($n["created_at"]) }} Dias
+                                            @endif
                                         @else
-                                            há {{ \Carbon\Carbon::now()->diffInDays($n["created_at"]) }} Dias
+                                            há {{ \Carbon\Carbon::now()->diffInHours($n["created_at"])}} horas
                                         @endif
                                     @else
-                                        há {{ \Carbon\Carbon::now()->diffInHours($n["created_at"])}} horas
+                                        @if(\Carbon\Carbon::now()->diffInMinutes($n["created_at"]) < 1)
+                                            Agora
+                                        @else
+                                            há {{ \Carbon\Carbon::now()->diffInMinutes($n["created_at"])}} minutos
+                                        @endif
                                     @endif
-                                @else
-                                    @if(\Carbon\Carbon::now()->diffInMinutes($n["created_at"]) < 1)
-                                        Agora
-                                    @else
-                                        há {{ \Carbon\Carbon::now()->diffInMinutes($n["created_at"])}} minutos
-                                    @endif
-                                @endif
-                            </span>
-                            <span class="details">
-                                <span class="label label-sm label-icon label-success">
-                                    <i class="fa fa-plus"></i>
                                 </span>
-                                {{ $n["data"]["id"] }}.
-                            </span>
-                        </a>
-                    </li>
-                @endforeach
-
+                                <span class="details">
+                                    <span class="label label-sm label-icon label-success">
+                                        <i class="fa fa-plus"></i>
+                                    </span>
+                                    {{ $n["data"]["id"] }}.
+                                </span>
+                            </a>
+                        </li>
+                    @endforeach
+                @endif
             </ul>
         </li>
     </ul>

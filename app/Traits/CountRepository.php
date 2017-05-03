@@ -48,14 +48,16 @@ trait CountRepository
         $all = count(Group::withTrashed()->get());
 
         $active = count(DB::table('groups')
-                    ->where('deleted_at', '<>', null)->get());
+            ->where('deleted_at', null)->get());
+
 
         $inactive = count(DB::table('groups')
-                    ->where('deleted_at', null)->get());
+            ->where('deleted_at', '<>', null)->get());
 
         $qtde[] = $all;
         $qtde[] = $active;
         $qtde[] = $inactive;
+
 
         return $qtde;
     }

@@ -1,4 +1,5 @@
-<input type="hidden" id="UserRole" value="{{ Auth::getUser()->person->role_id }}">
+<?php $visitor = 3; ?>
+<input type="hidden" id="UserRole" value="@if(Auth::getUser()->person){{ Auth::getUser()->person->role_id }} @else {{ $visitor }} @endif ">
 <!-- BEGIN HEADER -->
 <div class="page-header">
     <!-- BEGIN HEADER TOP -->
@@ -220,8 +221,18 @@
                     <li class="dropdown dropdown-user dropdown-dark">
                         <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"
                            data-close-others="true">
-                            <img alt="" class="img-circle" src="{{ Auth::getUser()->person->imgProfile }}">
-                            <span class="username username-hide-mobile">{{ Auth::getUser()->person->name }}</span>
+                            <img alt="" class="img-circle" src="
+                            @if(Auth::getUser()->person )
+                                {{ Auth::getUser()->person->imgProfile }}
+                            @elseif(Auth::getUser()->visitors)
+                                {{ Auth::getUser()->visitors->first()->imgProfile }}
+                            @endif ">
+                            <span class="username username-hide-mobile">
+                                @if(Auth::getUser()->person)
+                                    {{ Auth::getUser()->person->name }}
+                                @else
+                                    {{ Auth::getUser()->visitors->first()->name }}
+                                @endif</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-default">
                             <li>

@@ -83,13 +83,28 @@ License: You must have a valid license purchased only from themeforest(the above
                                 <div class="portlet light profile-sidebar-portlet ">
                                     <!-- SIDEBAR USERPIC -->
                                     <div class="profile-userpic">
-                                        <img src="{{ Auth::getUser()->person->imgProfile }}" class="img-responsive" alt="">
+                                        <img src="
+                                        @if(Auth::getUser()->person)
+                                            {{ Auth::getUser()->person->imgProfile }}
+                                                @else {{ Auth::getUser()->visitors->first()->imgProfile }}
+                                        @endif"
+                                             class="img-responsive" alt="">
                                     </div>
                                     <!-- END SIDEBAR USERPIC -->
                                     <!-- SIDEBAR USER TITLE -->
                                     <div class="profile-usertitle">
-                                        <div class="profile-usertitle-name"> {{ Auth::getUser()->person->name }} {{ Auth::getUser()->person->lastName }}</div>
-                                        <div class="profile-usertitle-job"> {{ Auth::getUser()->person->role->name }} </div>
+                                        <div class="profile-usertitle-name">
+                                            @if(Auth::getUser()->person)
+                                                {{ Auth::getUser()->person->name }} {{ Auth::getUser()->person->lastName }}
+                                                @else {{ Auth::getUser()->visitors->first()->name }} {{ Auth::getUser()->visitors->first()->lastName }}
+                                            @endif
+                                        </div>
+                                        <div class="profile-usertitle-job">
+                                            @if(Auth::getUser()->person)
+                                                {{ Auth::getUser()->person->role->name }}
+                                                @else Visitante
+                                            @endif
+                                        </div>
                                     </div>
                                     <!-- END SIDEBAR USER TITLE -->
 
@@ -706,7 +721,9 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <div class="col-md-6">
                                                     {!! Form::FormGroup('name', $errors) !!}
                                                     <label class="control-label">Nome</label>
-                                                    <input type="text" placeholder="João" name="name" value="{{ Auth::getUser()->person->name }}" class="form-control" />
+                                                    <input type="text" placeholder="João" name="name"
+                                                           value="{{ $user->name }}"
+                                                           class="form-control" />
                                                     {!! Form::error('name', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
                                                 </div>
@@ -714,7 +731,9 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <div class="col-md-6">
                                                     {!! Form::FormGroup('lastName', $errors) !!}
                                                     <label class="control-label">Sobrenome</label>
-                                                    <input type="text" placeholder="da Silva" name="lastName" value="{{ Auth::getUser()->person->lastName }}" class="form-control" />
+                                                    <input type="text" placeholder="da Silva" name="lastName"
+                                                           value="{{ $user->lastName }}"
+                                                           class="form-control" />
                                                     {!! Form::error('lastName', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
                                                 </div>
@@ -725,7 +744,9 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <div class="col-md-6">
                                                     {!! Form::FormGroup('cel', $errors) !!}
                                                     <label class="control-label">Celular</label>
-                                                    <input type="text" placeholder="(15) 9123-1234" name="cel" value="{{ Auth::getUser()->person->cel }}" class="form-control tel" />
+                                                    <input type="text" placeholder="(15) 9123-1234" name="cel"
+                                                           value="{{ $user->cel }}"
+                                                           class="form-control tel" />
                                                     {!! Form::error('cel', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
                                                 </div>
@@ -737,7 +758,8 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         <span class="input-group-addon">
                                                             <i class="fa fa-envelope font-blue" id="icon-email"></i>
                                                         </span>
-                                                        <input type="email" placeholder="email@dominio.com" value="{{ Auth::getUser()->email }}"
+                                                        <input type="email" placeholder="email@dominio.com"
+                                                               value="{{ Auth::getUser()->email }}"
                                                                name="email" id="email-edit" class="form-control" />
 
                                                         <i class="fa fa-check font-green" id="icon-success-email" style="display: none;"></i>
@@ -767,7 +789,9 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <div class="col-md-6">
                                                     {!! Form::FormGroup('tel', $errors) !!}
                                                     <label class="control-label">Telefone</label>
-                                                    <input type="text" placeholder="(15)99123-1234" name="tel" value="{{ Auth::getUser()->person->tel }}" class="form-control tel" />
+                                                    <input type="text" placeholder="(15)99123-1234" name="tel"
+                                                           value="{{ $user->tel }}"
+                                                           class="form-control tel" />
                                                     {!! Form::error('tel', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
                                                 </div>
@@ -777,454 +801,519 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <label class="control-label">Gênero</label>
                                                     <select name="gender" class="form-control" required>
                                                         <option value="">Selecione</option>
-                                                        <option value="M" @if(Auth::getUser()->person->gender == 'M') selected @endif >Masculino</option>
-                                                        <option value="F" @if(Auth::getUser()->person->gender == 'F') selected @endif >Feminino</option>
-                                                    </select>
-                                                    {!! Form::error('gender', $errors) !!}
-                                                    {!! Form::endFormGroup() !!}
-                                                </div>
-                                            </div>
-
-
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    {!! Form::FormGroup('dateBirth', $errors) !!}
-                                                    <label class="control-label">Data de Nasc.</label>
-                                                    <div class="input-group date date-picker" data-date-format="dd/mm/yyyy">
-                                                        <span class="input-group-addon">
-                                                                <i class="fa fa-calendar font-blue"></i>
-                                                        </span>
-
-                                                        <input type="text" class="form-control input-date" value="{{ $dateBirth }}"
-                                                               name="dateBirth" placeholder="dd/mm/aaaa" maxlength="10">
-                                                    </div>
-                                                    {!! Form::error('dateBirth', $errors) !!}
-                                                    {!! Form::endFormGroup() !!}
-                                                </div>
-                                                <div class="col-md-6">
-                                                    {!! Form::FormGroup('role', $errors) !!}
-                                                    <label class="control-label">Cargo</label>
-                                                    <select class="form-control" name="role"
-                                                            data-placeholder="Selecione seu cargo"
-                                                            tabindex="1">
-                                                        <option value="">Selecione</option>
-                                                        @foreach($roles as $role)
-                                                            <option value="{{  $role->id }}"
-                                                                @if(Auth::getUser()->person->role_id == $role->id) selected @endif>
-                                                                {{ $role->name }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                    {!! Form::error('role', $errors) !!}
-                                                    {!! Form::endFormGroup() !!}
-                                                </div>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    {!! Form::FormGroup('cpf', $errors) !!}
-                                                    <label class="control-label">CPF</label>
-                                                    <div class="input-group input-icon right">
-                                                            <span class="input-group-addon">
-                                                                <i class="fa fa-user font-blue"></i>
-                                                            </span>
-                                                        <input type="text" name="cpf" id="cpf" maxlength="11" class="form-control"
-                                                               placeholder="XXXXXXXXXXX" value="{{ Auth::getUser()->person->cpf }}">
-                                                        <i class="fa fa-check font-green" id="icon-success" style="display: none;"></i>
-                                                        <i class="fa fa-exclamation font-red" id="icon-error" style="display: none;"></i>
-
-                                                    </div>
-                                                    <div class="help-block small-error">CPF Inválido</div>
-
-                                                    {!! Form::error('cpf', $errors) !!}
-                                                    {!! Form::endFormGroup() !!}
-                                                </div>
-
-                                                <div class="col-md-6">
-                                                    {!! Form::FormGroup('rg', $errors) !!}
-                                                    <label class="control-label">RG</label>
-                                                    <input type="text" placeholder="123.123.123-12" value="{{ Auth::getUser()->person->rg }}" name="rg" id="rg" class="form-control" />
-                                                    {!! Form::error('rg', $errors) !!}
-                                                    {!! Form::endFormGroup() !!}
-                                                </div>
-
-
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    {!! Form::FormGroup('maritalStatus', $errors) !!}
-                                                    <label class="control-label">Estado Civil</label>
-                                                    <select name="maritalStatus" id="maritalStatus" class="form-control" required>
-                                                        <option value="">Selecione</option>
-                                                        <option value="Casado" @if(Auth::getUser()->person->maritalStatus == 'Casado') selected @endif >Casado</option>
-                                                        <option value="Solteiro" @if(Auth::getUser()->person->maritalStatus == 'Solteiro') selected @endif >Solteiro</option>
-                                                        <option value="Divorciado" @if(Auth::getUser()->person->maritalStatus == 'Divorciado') selected @endif >Divorciado</option>
-                                                    </select>
-                                                    {!! Form::error('maritalStatus', $errors) !!}
-                                                    {!! Form::endFormGroup() !!}
-                                                </div>
-
-                                                <div class="col-md-6">
-                                                    <div class="form-group" id="form-partner"
-                                                         @if(Auth::getUser()->person->maritalStatus != 'Casado')
-                                                         hidden @endif >
-                                                        <label>Nome Cônjuge</label>
-                                                        <select name="partner" id="partner" class="selectpicker
-                                                          form-control"
-                                                                data-live-search="true" data-size="8">
-                                                            <option value="0">Parceiro(a) fora da igreja</option>
-                                                            @foreach($adults as $adult)
-                                                                <option value="{{ $adult->id }}"
-                                                                        @if($adult->id == Auth::getUser()->person->partner) selected @endif
-                                                                >{{ $adult->name }} {{ $adult->lastName }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <h3 class="form-section">Endereço</h3>
-
-                                            <div class="loader"></div>
-                                            <div class="row">
-                                                <div class="col-md-3">
-                                                    {!! Form::FormGroup('zipCode', $errors) !!}
-                                                    <label class="control-label">CEP</label>
-                                                    <input type="text" placeholder="12123-12" id="zipCode"
-                                                           value="{{ Auth::getUser()->person->zipCode }}" name="zipCode" class="form-control" />
-                                                    {!! Form::error('zipCode', $errors) !!}
-                                                    {!! Form::endFormGroup() !!}
-                                                </div>
-                                                <div class="col-md-9">
-                                                    {!! Form::FormGroup('street', $errors) !!}
-                                                    <label class="control-label">Logradouro</label>
-                                                    <input type="text" placeholder="Rua dos Bobos, 0" id="street"
-                                                           value="{{ Auth::getUser()->person->street }}" name="street" class="form-control" />
-                                                    {!! Form::error('street', $errors) !!}
-                                                    {!! Form::endFormGroup() !!}
-                                                </div>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    {!! Form::FormGroup('neighborhood', $errors) !!}
-                                                    <label class="control-label">Bairro</label>
-                                                    <input type="text" placeholder="Vila Progresso" id="neighborhood"
-                                                           value="{{ Auth::getUser()->person->neighborhood }}" name="neighborhood" class="form-control" />
-                                                    {!! Form::error('neighborhood', $errors) !!}
-                                                    {!! Form::endFormGroup() !!}
-                                                </div>
-                                                <div class="col-md-4">
-                                                    {!! Form::FormGroup('city', $errors) !!}
-                                                    <label class="control-label">Cidade</label>
-                                                    <input type="text" placeholder="Sorocaba" name="city" id="city"
-                                                           value="{{ Auth::getUser()->person->city }}" class="form-control" />
-                                                    {!! Form::error('city', $errors) !!}
-                                                    {!! Form::endFormGroup() !!}
-                                                </div>
-                                                <div class="col-md-4">
-                                                    {!! Form::FormGroup('state', $errors) !!}
-                                                    <label class="control-label">UF:</label>
-                                                    <select name="state" class="form-control" id="state">
-                                                        <option value="">Selecione</option>
-                                                        @foreach($state as $value)
-                                                            <option value="{{ $value->initials }}" @if($value->initials == Auth::getUser()->person->state) selected @endif >
-                                                                {{ $value->state }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                    {!! Form::error('state', $errors) !!}
-                                                    {!! Form::endFormGroup() !!}
-                                                </div>
-                                            </div>
-
-                                                <div class="margiv-top-10">
-                                                    {!! Form::submit('Salvar', ['class' => 'btn green']) !!}
-                                                </div>
-                                            {!! Form::close() !!}
+                                                        <option value="M"
+                                                            @if($user->gender == 'M')
+                                                                selected
+                                                            @endif >Masculino
+                                                </option>
+                                                <option value="F"
+                                                    @if($user->gender == 'F')
+                                                        selected
+                                                    @endif >Feminino
+                                                </option>
+                                            </select>
+                                            {!! Form::error('gender', $errors) !!}
+                                            {!! Form::endFormGroup() !!}
                                         </div>
-                                        <!-- END PERSONAL INFO TAB -->
-                                        <!-- CHANGE AVATAR TAB -->
-                                        <div class="tab-pane" id="tab_1_2">
-                                            <p> Altere aqui sua foto do perfil </p>
-                                            {!! Form::open(['route' => ['person.imgEditProfile', Auth::getUser()->person->id], 'method' => 'post', 'enctype' => 'multipart/form-data', 'role' => 'form']) !!}
-                                                <div class="form-group">
-                                                    <div class="fileinput fileinput-new" data-provides="fileinput">
-                                                        <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
-                                                            <img src=@if(Auth::getUser()->person->imgProfile == "uploads/profile/noimage.png")
-                                                                    "http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=no+image"
-                                                            @else
-                                                                "../../{{ Auth::getUser()->person->imgProfile }}"
-                                                            @endif
-
-                                                            alt="" /> </div>
-                                                        <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"> </div>
-                                                        <div>
-                                                                                <span class="btn default btn-file">
-                                                                                    <span class="fileinput-new"> Escolher Imagem </span>
-                                                                                    <span class="fileinput-exists"> Alterar </span>
-                                                                                    <input type="file" name="img"> </span>
-                                                            <a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Remover </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="margin-top-10">
-                                                    {!! Form::submit('Enviar', ['class' => 'btn green']) !!}
-                                                </div>
-                                            {!! Form::close() !!}
-                                        </div>
-                                        <!-- END CHANGE AVATAR TAB -->
-                                        <!-- CHANGE PASSWORD TAB -->
-                                        <div class="tab-pane" id="tab_1_3">
-                                            {!! Form::open(['route' => 'users.changePass', 'method' => 'post']) !!}
-                                            <div class="form-group">
-                                                <label class="control-label">Senha Atual</label>
-                                                <input type="password" class="form-control" name="old" /> </div>
-                                            <div class="form-group">
-                                                <label class="control-label">Nova Senha</label>
-                                                <input type="password" class="form-control" name="new" /> </div>
-                                            <div class="form-group">
-                                                <label class="control-label">Confirme sua nova Senha</label>
-                                                <input type="password" class="form-control" name="confirmPassword" /> </div>
-                                            <div class="margin-top-10">
-                                                {!! Form::submit('Alterar Senha', ['class' => 'btn green']) !!}
-                                            </div>
-                                            {!! Form::close() !!}
-                                        </div>
-                                        <!-- END CHANGE PASSWORD TAB -->
-                                        <!-- PRIVACY SETTINGS TAB -->
-                                        <div class="tab-pane" id="tab_1_4">
-                                            <form action="#">
-                                                <table class="table table-light table-hover">
-                                                    <tr>
-                                                        <td> Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus.. </td>
-                                                        <td>
-                                                            <label class="uniform-inline">
-                                                                <input type="radio" name="optionsRadios1" value="option1" /> Yes </label>
-                                                            <label class="uniform-inline">
-                                                                <input type="radio" name="optionsRadios1" value="option2" checked/> No </label>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td> Enim eiusmod high life accusamus terry richardson ad squid wolf moon </td>
-                                                        <td>
-                                                            <label class="uniform-inline">
-                                                                <input type="checkbox" value="" /> Yes </label>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td> Enim eiusmod high life accusamus terry richardson ad squid wolf moon </td>
-                                                        <td>
-                                                            <label class="uniform-inline">
-                                                                <input type="checkbox" value="" /> Yes </label>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td> Enim eiusmod high life accusamus terry richardson ad squid wolf moon </td>
-                                                        <td>
-                                                            <label class="uniform-inline">
-                                                                <input type="checkbox" value="" /> Yes </label>
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                                <!--end profile-settings-->
-                                                <div class="margin-top-10">
-                                                    <a href="javascript:;" class="btn red"> Save Changes </a>
-                                                    <a href="javascript:;" class="btn default"> Cancel </a>
-                                                </div>
-                                            </form>
-                                        </div>
-                                        <!-- END PRIVACY SETTINGS TAB -->
                                     </div>
+
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            {!! Form::FormGroup('dateBirth', $errors) !!}
+                                            <label class="control-label">Data de Nasc.</label>
+                                            <div class="input-group date date-picker" data-date-format="dd/mm/yyyy">
+                                                <span class="input-group-addon">
+                                                        <i class="fa fa-calendar font-blue"></i>
+                                                </span>
+
+                                                <input type="text" class="form-control input-date" value="{{ $user->dateBirth }}"
+                                                       name="dateBirth" placeholder="dd/mm/aaaa" maxlength="10">
+                                            </div>
+                                            {!! Form::error('dateBirth', $errors) !!}
+                                            {!! Form::endFormGroup() !!}
+                                        </div>
+                                        <div class="col-md-6">
+                                            {!! Form::FormGroup('role', $errors) !!}
+                                            <label class="control-label">Cargo</label>
+                                            <select class="form-control" name="role"
+                                                    data-placeholder="Selecione seu cargo"
+                                                    tabindex="1" readonly>
+                                                @if(Auth::getUser()->person)
+                                                    @foreach($roles as $role)
+                                                        <option value="{{  $role->id }}"
+                                                            @if(Auth::getUser()->person->role_id == $role->id) selected @endif>
+                                                            {{ $role->name }}
+                                                        </option>
+                                                    @endforeach
+                                                @else <option value="3">Visitante</option> @endif
+                                            </select>
+                                            {!! Form::error('role', $errors) !!}
+                                            {!! Form::endFormGroup() !!}
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            {!! Form::FormGroup('cpf', $errors) !!}
+                                            <label class="control-label">CPF</label>
+                                            <div class="input-group input-icon right">
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-user font-blue"></i>
+                                                    </span>
+                                                <input type="text" name="cpf" id="cpf" maxlength="11" class="form-control"
+                                                       placeholder="XXXXXXXXXXX" value="{{ $user->cpf }}">
+                                                <i class="fa fa-check font-green" id="icon-success" style="display: none;"></i>
+                                                <i class="fa fa-exclamation font-red" id="icon-error" style="display: none;"></i>
+
+                                            </div>
+                                            <div class="help-block small-error">CPF Inválido</div>
+
+                                            {!! Form::error('cpf', $errors) !!}
+                                            {!! Form::endFormGroup() !!}
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            {!! Form::FormGroup('rg', $errors) !!}
+                                            <label class="control-label">RG</label>
+                                            <input type="text" placeholder="123.123.123-12"
+                                                   value="{{ $user->rg }}"
+
+                                                   name="rg" id="rg" class="form-control" />
+                                            {!! Form::error('rg', $errors) !!}
+                                            {!! Form::endFormGroup() !!}
+                                        </div>
+
+
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            {!! Form::FormGroup('maritalStatus', $errors) !!}
+                                            <label class="control-label">Estado Civil</label>
+                                            <select name="maritalStatus" id="maritalStatus" class="form-control" required>
+                                                <option value="">Selecione</option>
+                                                <option value="Casado"
+
+                                                        @if($user->maritalStatus == 'Casado')
+                                                            selected
+                                                        @endif
+                                                >Casado
+                                                </option>
+
+                                                <option value="Solteiro"
+                                                        @if($user->maritalStatus == 'Casado')
+                                                            selected
+                                                        @endif >
+                                                    Solteiro
+                                                </option>
+
+                                                <option value="Divorciado"
+                                                            @if($user->maritalStatus == 'Divorciado')
+                                                                selected
+                                                            @endif>
+                                                    Divorciado
+                                                </option>
+                                            </select>
+                                            {!! Form::error('maritalStatus', $errors) !!}
+                                            {!! Form::endFormGroup() !!}
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-group" id="form-partner"
+                                                    @if($user->maritalStatus != 'Casado')
+                                                        hidden
+                                                    @endif >
+                                                <label>Nome Cônjuge</label>
+                                                <select name="partner" id="partner" class="selectpicker
+                                                  form-control"
+                                                        data-live-search="true" data-size="8">
+                                                    <option value="0">Parceiro(a) fora da igreja</option>
+                                                    @foreach($adults as $adult)
+                                                        <option value="{{ $adult->id }}"
+                                                                @if($adult->id == $user->partner) selected @endif
+                                                        >{{ $adult->name }} {{ $adult->lastName }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <h3 class="form-section">Endereço</h3>
+
+                                    <div class="loader"></div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            {!! Form::FormGroup('zipCode', $errors) !!}
+                                            <label class="control-label">CEP</label>
+                                            <input type="text" placeholder="12123-12" id="zipCode"
+                                                   value="{{ $user->zipCode }}"
+
+                                                   name="zipCode" class="form-control" />
+                                            {!! Form::error('zipCode', $errors) !!}
+                                            {!! Form::endFormGroup() !!}
+                                        </div>
+                                        <div class="col-md-9">
+                                            {!! Form::FormGroup('street', $errors) !!}
+                                            <label class="control-label">Logradouro</label>
+                                            <input type="text" placeholder="Rua dos Bobos, 0" id="street"
+                                                   value="{{ $user->street }}"
+                                                   name="street" class="form-control" />
+                                            {!! Form::error('street', $errors) !!}
+                                            {!! Form::endFormGroup() !!}
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            {!! Form::FormGroup('neighborhood', $errors) !!}
+                                            <label class="control-label">Bairro</label>
+                                            <input type="text" placeholder="Vila Progresso" id="neighborhood"
+                                                   value="{{ $user->neighborhood }}"
+                                                   name="neighborhood" class="form-control" />
+                                            {!! Form::error('neighborhood', $errors) !!}
+                                            {!! Form::endFormGroup() !!}
+                                        </div>
+                                        <div class="col-md-4">
+                                            {!! Form::FormGroup('city', $errors) !!}
+                                            <label class="control-label">Cidade</label>
+                                            <input type="text" placeholder="Sorocaba" name="city" id="city"
+                                                   value="{{ $user->city }}"
+                                                   class="form-control" />
+                                            {!! Form::error('city', $errors) !!}
+                                            {!! Form::endFormGroup() !!}
+                                        </div>
+                                        <div class="col-md-4">
+                                            {!! Form::FormGroup('state', $errors) !!}
+                                            <label class="control-label">UF:</label>
+                                            <select name="state" class="form-control" id="state">
+                                                <option value="">Selecione</option>
+                                                @foreach($state as $value)
+                                                    <option value="{{ $value->initials }}"
+                                                            @if($value->initials == $user->state) selected @endif >
+                                                        {{ $value->state }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            {!! Form::error('state', $errors) !!}
+                                            {!! Form::endFormGroup() !!}
+                                        </div>
+                                    </div>
+
+                                        <div class="margiv-top-10">
+                                            {!! Form::submit('Salvar', ['class' => 'btn green']) !!}
+                                        </div>
+                                    {!! Form::close() !!}
                                 </div>
+                                <!-- END PERSONAL INFO TAB -->
+                                <!-- CHANGE AVATAR TAB -->
+                                <div class="tab-pane" id="tab_1_2">
+                                    <p> Altere aqui sua foto do perfil </p>
+                                    @if(Auth::getUser()->person)
+                                        {!! Form::open(['route' => ['person.imgEditProfile', Auth::getUser()->person->id], 'method' => 'post', 'enctype' => 'multipart/form-data', 'role' => 'form']) !!}
+                                            <div class="form-group">
+                                                <div class="fileinput fileinput-new" data-provides="fileinput">
+                                                    <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
+                                                        <img src=@if(Auth::getUser()->person->imgProfile == "uploads/profile/noimage.png")
+                                                                "http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=no+image"
+                                                        @else
+                                                            "../../{{ Auth::getUser()->person->imgProfile }}"
+                                                        @endif
+
+                                                        alt="" /> </div>
+                                                    <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"> </div>
+                                                    <div>
+                                                                            <span class="btn default btn-file">
+                                                                                <span class="fileinput-new"> Escolher Imagem </span>
+                                                                                <span class="fileinput-exists"> Alterar </span>
+                                                                                <input type="file" name="img"> </span>
+                                                        <a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Remover </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="margin-top-10">
+                                                {!! Form::submit('Enviar', ['class' => 'btn green']) !!}
+                                            </div>
+                                        {!! Form::close() !!}
+                                        @else
+                                        {!! Form::open(['route' => ['visitor.imgEditProfile', Auth::getUser()->visitors->first()->id], 'method' => 'post', 'enctype' => 'multipart/form-data', 'role' => 'form']) !!}
+                                        <div class="form-group">
+                                            <div class="fileinput fileinput-new" data-provides="fileinput">
+                                                <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
+                                                    <img src=@if(Auth::getUser()->visitors->first()->imgProfile == "uploads/profile/noimage.png")
+                                                            "http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=no+image"
+                                                    @else
+                                                        "../../{{ Auth::getUser()->visitors->first()->imgProfile }}"
+                                                    @endif
+
+                                                    alt="" /> </div>
+                                                <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"> </div>
+                                                <div>
+                                                                            <span class="btn default btn-file">
+                                                                                <span class="fileinput-new"> Escolher Imagem </span>
+                                                                                <span class="fileinput-exists"> Alterar </span>
+                                                                                <input type="file" name="img"> </span>
+                                                    <a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Remover </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="margin-top-10">
+                                            {!! Form::submit('Enviar', ['class' => 'btn green']) !!}
+                                        </div>
+                                        {!! Form::close() !!}
+                                    @endif
+                                </div>
+                                <!-- END CHANGE AVATAR TAB -->
+                                <!-- CHANGE PASSWORD TAB -->
+                                <div class="tab-pane" id="tab_1_3">
+                                    {!! Form::open(['route' => 'users.changePass', 'method' => 'post']) !!}
+                                    <div class="form-group">
+                                        <label class="control-label">Senha Atual</label>
+                                        <input type="password" class="form-control" name="old" /> </div>
+                                    <div class="form-group">
+                                        <label class="control-label">Nova Senha</label>
+                                        <input type="password" class="form-control" name="new" /> </div>
+                                    <div class="form-group">
+                                        <label class="control-label">Confirme sua nova Senha</label>
+                                        <input type="password" class="form-control" name="confirmPassword" /> </div>
+                                    <div class="margin-top-10">
+                                        {!! Form::submit('Alterar Senha', ['class' => 'btn green']) !!}
+                                    </div>
+                                    {!! Form::close() !!}
+                                </div>
+                                <!-- END CHANGE PASSWORD TAB -->
+                                <!-- PRIVACY SETTINGS TAB -->
+                                <div class="tab-pane" id="tab_1_4">
+                                    <form action="#">
+                                        <table class="table table-light table-hover">
+                                            <tr>
+                                                <td> Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus.. </td>
+                                                <td>
+                                                    <label class="uniform-inline">
+                                                        <input type="radio" name="optionsRadios1" value="option1" /> Yes </label>
+                                                    <label class="uniform-inline">
+                                                        <input type="radio" name="optionsRadios1" value="option2" checked/> No </label>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td> Enim eiusmod high life accusamus terry richardson ad squid wolf moon </td>
+                                                <td>
+                                                    <label class="uniform-inline">
+                                                        <input type="checkbox" value="" /> Yes </label>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td> Enim eiusmod high life accusamus terry richardson ad squid wolf moon </td>
+                                                <td>
+                                                    <label class="uniform-inline">
+                                                        <input type="checkbox" value="" /> Yes </label>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td> Enim eiusmod high life accusamus terry richardson ad squid wolf moon </td>
+                                                <td>
+                                                    <label class="uniform-inline">
+                                                        <input type="checkbox" value="" /> Yes </label>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <!--end profile-settings-->
+                                        <div class="margin-top-10">
+                                            <a href="javascript:;" class="btn red"> Save Changes </a>
+                                            <a href="javascript:;" class="btn default"> Cancel </a>
+                                        </div>
+                                    </form>
+                                </div>
+                                <!-- END PRIVACY SETTINGS TAB -->
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- END PAGE CONTENT INNER -->
             </div>
         </div>
-        <!-- END PAGE CONTENT BODY -->
-        <!-- END CONTENT BODY -->
+        <!-- END PAGE CONTENT INNER -->
     </div>
-    <!-- END CONTENT -->
-    <!-- BEGIN QUICK SIDEBAR -->
-    <a href="javascript:;" class="page-quick-sidebar-toggler">
-        <i class="icon-login"></i>
-    </a>
-    <div class="page-quick-sidebar-wrapper" data-close-on-body-click="false">
-        <div class="page-quick-sidebar">
-            <ul class="nav nav-tabs">
-                <li class="active">
-                    <a href="javascript:;" data-target="#quick_sidebar_tab_1" data-toggle="tab"> Users
-                        <span class="badge badge-danger">2</span>
-                    </a>
+</div>
+<!-- END PAGE CONTENT BODY -->
+<!-- END CONTENT BODY -->
+</div>
+<!-- END CONTENT -->
+<!-- BEGIN QUICK SIDEBAR -->
+<a href="javascript:;" class="page-quick-sidebar-toggler">
+<i class="icon-login"></i>
+</a>
+<div class="page-quick-sidebar-wrapper" data-close-on-body-click="false">
+<div class="page-quick-sidebar">
+    <ul class="nav nav-tabs">
+        <li class="active">
+            <a href="javascript:;" data-target="#quick_sidebar_tab_1" data-toggle="tab"> Users
+                <span class="badge badge-danger">2</span>
+            </a>
+        </li>
+        <li>
+            <a href="javascript:;" data-target="#quick_sidebar_tab_2" data-toggle="tab"> Alerts
+                <span class="badge badge-success">7</span>
+            </a>
+        </li>
+        <li class="dropdown">
+            <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown"> More
+                <i class="fa fa-angle-down"></i>
+            </a>
+            <ul class="dropdown-menu pull-right">
+                <li>
+                    <a href="javascript:;" data-target="#quick_sidebar_tab_3" data-toggle="tab">
+                        <i class="icon-bell"></i> Alerts </a>
                 </li>
                 <li>
-                    <a href="javascript:;" data-target="#quick_sidebar_tab_2" data-toggle="tab"> Alerts
-                        <span class="badge badge-success">7</span>
-                    </a>
+                    <a href="javascript:;" data-target="#quick_sidebar_tab_3" data-toggle="tab">
+                        <i class="icon-info"></i> Notifications </a>
                 </li>
-                <li class="dropdown">
-                    <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown"> More
-                        <i class="fa fa-angle-down"></i>
-                    </a>
-                    <ul class="dropdown-menu pull-right">
-                        <li>
-                            <a href="javascript:;" data-target="#quick_sidebar_tab_3" data-toggle="tab">
-                                <i class="icon-bell"></i> Alerts </a>
-                        </li>
-                        <li>
-                            <a href="javascript:;" data-target="#quick_sidebar_tab_3" data-toggle="tab">
-                                <i class="icon-info"></i> Notifications </a>
-                        </li>
-                        <li>
-                            <a href="javascript:;" data-target="#quick_sidebar_tab_3" data-toggle="tab">
-                                <i class="icon-speech"></i> Activities </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="javascript:;" data-target="#quick_sidebar_tab_3" data-toggle="tab">
-                                <i class="icon-settings"></i> Settings </a>
-                        </li>
-                    </ul>
+                <li>
+                    <a href="javascript:;" data-target="#quick_sidebar_tab_3" data-toggle="tab">
+                        <i class="icon-speech"></i> Activities </a>
+                </li>
+                <li class="divider"></li>
+                <li>
+                    <a href="javascript:;" data-target="#quick_sidebar_tab_3" data-toggle="tab">
+                        <i class="icon-settings"></i> Settings </a>
                 </li>
             </ul>
-            <div class="tab-content">
-                <div class="tab-pane active page-quick-sidebar-chat" id="quick_sidebar_tab_1">
-                    <div class="page-quick-sidebar-chat-users" data-rail-color="#ddd" data-wrapper-class="page-quick-sidebar-list">
-                        <h3 class="list-heading">Staff</h3>
-                        <ul class="media-list list-items">
-                            <li class="media">
-                                <div class="media-status">
-                                    <span class="badge badge-success">8</span>
-                                </div>
-                                <img class="media-object" src="../assets/layouts/layout/img/avatar3.jpg" alt="...">
-                                <div class="media-body">
-                                    <h4 class="media-heading">Bob Nilson</h4>
-                                    <div class="media-heading-sub"> Project Manager </div>
-                                </div>
-                            </li>
-                            <li class="media">
-                                <img class="media-object" src="../assets/layouts/layout/img/avatar1.jpg" alt="...">
-                                <div class="media-body">
-                                    <h4 class="media-heading">Nick Larson</h4>
-                                    <div class="media-heading-sub"> Art Director </div>
-                                </div>
-                            </li>
-                            <li class="media">
-                                <div class="media-status">
-                                    <span class="badge badge-danger">3</span>
-                                </div>
-                                <img class="media-object" src="../assets/layouts/layout/img/avatar4.jpg" alt="...">
-                                <div class="media-body">
-                                    <h4 class="media-heading">Deon Hubert</h4>
-                                    <div class="media-heading-sub"> CTO </div>
-                                </div>
-                            </li>
-                            <li class="media">
-                                <img class="media-object" src="../assets/layouts/layout/img/avatar2.jpg" alt="...">
-                                <div class="media-body">
-                                    <h4 class="media-heading">Ella Wong</h4>
-                                    <div class="media-heading-sub"> CEO </div>
-                                </div>
-                            </li>
-                        </ul>
-                        <h3 class="list-heading">Customers</h3>
-                        <ul class="media-list list-items">
-                            <li class="media">
-                                <div class="media-status">
-                                    <span class="badge badge-warning">2</span>
-                                </div>
-                                <img class="media-object" src="../assets/layouts/layout/img/avatar6.jpg" alt="...">
-                                <div class="media-body">
-                                    <h4 class="media-heading">Lara Kunis</h4>
-                                    <div class="media-heading-sub"> CEO, Loop Inc </div>
-                                    <div class="media-heading-small"> Last seen 03:10 AM </div>
-                                </div>
-                            </li>
-                            <li class="media">
-                                <div class="media-status">
-                                    <span class="label label-sm label-success">new</span>
-                                </div>
-                                <img class="media-object" src="../assets/layouts/layout/img/avatar7.jpg" alt="...">
-                                <div class="media-body">
-                                    <h4 class="media-heading">Ernie Kyllonen</h4>
-                                    <div class="media-heading-sub"> Project Manager,
-                                        <br> SmartBizz PTL </div>
-                                </div>
-                            </li>
-                            <li class="media">
-                                <img class="media-object" src="../assets/layouts/layout/img/avatar8.jpg" alt="...">
-                                <div class="media-body">
-                                    <h4 class="media-heading">Lisa Stone</h4>
-                                    <div class="media-heading-sub"> CTO, Keort Inc </div>
-                                    <div class="media-heading-small"> Last seen 13:10 PM </div>
-                                </div>
-                            </li>
-                            <li class="media">
-                                <div class="media-status">
-                                    <span class="badge badge-success">7</span>
-                                </div>
-                                <img class="media-object" src="../assets/layouts/layout/img/avatar9.jpg" alt="...">
-                                <div class="media-body">
-                                    <h4 class="media-heading">Deon Portalatin</h4>
-                                    <div class="media-heading-sub"> CFO, H&D LTD </div>
-                                </div>
-                            </li>
-                            <li class="media">
-                                <img class="media-object" src="../assets/layouts/layout/img/avatar10.jpg" alt="...">
-                                <div class="media-body">
-                                    <h4 class="media-heading">Irina Savikova</h4>
-                                    <div class="media-heading-sub"> CEO, Tizda Motors Inc </div>
-                                </div>
-                            </li>
-                            <li class="media">
-                                <div class="media-status">
-                                    <span class="badge badge-danger">4</span>
-                                </div>
-                                <img class="media-object" src="../assets/layouts/layout/img/avatar11.jpg" alt="...">
-                                <div class="media-body">
-                                    <h4 class="media-heading">Maria Gomez</h4>
-                                    <div class="media-heading-sub"> Manager, Infomatic Inc </div>
-                                    <div class="media-heading-small"> Last seen 03:10 AM </div>
-                                </div>
-                            </li>
-                        </ul>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active page-quick-sidebar-chat" id="quick_sidebar_tab_1">
+            <div class="page-quick-sidebar-chat-users" data-rail-color="#ddd" data-wrapper-class="page-quick-sidebar-list">
+                <h3 class="list-heading">Staff</h3>
+                <ul class="media-list list-items">
+                    <li class="media">
+                        <div class="media-status">
+                            <span class="badge badge-success">8</span>
+                        </div>
+                        <img class="media-object" src="../assets/layouts/layout/img/avatar3.jpg" alt="...">
+                        <div class="media-body">
+                            <h4 class="media-heading">Bob Nilson</h4>
+                            <div class="media-heading-sub"> Project Manager </div>
+                        </div>
+                    </li>
+                    <li class="media">
+                        <img class="media-object" src="../assets/layouts/layout/img/avatar1.jpg" alt="...">
+                        <div class="media-body">
+                            <h4 class="media-heading">Nick Larson</h4>
+                            <div class="media-heading-sub"> Art Director </div>
+                        </div>
+                    </li>
+                    <li class="media">
+                        <div class="media-status">
+                            <span class="badge badge-danger">3</span>
+                        </div>
+                        <img class="media-object" src="../assets/layouts/layout/img/avatar4.jpg" alt="...">
+                        <div class="media-body">
+                            <h4 class="media-heading">Deon Hubert</h4>
+                            <div class="media-heading-sub"> CTO </div>
+                        </div>
+                    </li>
+                    <li class="media">
+                        <img class="media-object" src="../assets/layouts/layout/img/avatar2.jpg" alt="...">
+                        <div class="media-body">
+                            <h4 class="media-heading">Ella Wong</h4>
+                            <div class="media-heading-sub"> CEO </div>
+                        </div>
+                    </li>
+                </ul>
+                <h3 class="list-heading">Customers</h3>
+                <ul class="media-list list-items">
+                    <li class="media">
+                        <div class="media-status">
+                            <span class="badge badge-warning">2</span>
+                        </div>
+                        <img class="media-object" src="../assets/layouts/layout/img/avatar6.jpg" alt="...">
+                        <div class="media-body">
+                            <h4 class="media-heading">Lara Kunis</h4>
+                            <div class="media-heading-sub"> CEO, Loop Inc </div>
+                            <div class="media-heading-small"> Last seen 03:10 AM </div>
+                        </div>
+                    </li>
+                    <li class="media">
+                        <div class="media-status">
+                            <span class="label label-sm label-success">new</span>
+                        </div>
+                        <img class="media-object" src="../assets/layouts/layout/img/avatar7.jpg" alt="...">
+                        <div class="media-body">
+                            <h4 class="media-heading">Ernie Kyllonen</h4>
+                            <div class="media-heading-sub"> Project Manager,
+                                <br> SmartBizz PTL </div>
+                        </div>
+                    </li>
+                    <li class="media">
+                        <img class="media-object" src="../assets/layouts/layout/img/avatar8.jpg" alt="...">
+                        <div class="media-body">
+                            <h4 class="media-heading">Lisa Stone</h4>
+                            <div class="media-heading-sub"> CTO, Keort Inc </div>
+                            <div class="media-heading-small"> Last seen 13:10 PM </div>
+                        </div>
+                    </li>
+                    <li class="media">
+                        <div class="media-status">
+                            <span class="badge badge-success">7</span>
+                        </div>
+                        <img class="media-object" src="../assets/layouts/layout/img/avatar9.jpg" alt="...">
+                        <div class="media-body">
+                            <h4 class="media-heading">Deon Portalatin</h4>
+                            <div class="media-heading-sub"> CFO, H&D LTD </div>
+                        </div>
+                    </li>
+                    <li class="media">
+                        <img class="media-object" src="../assets/layouts/layout/img/avatar10.jpg" alt="...">
+                        <div class="media-body">
+                            <h4 class="media-heading">Irina Savikova</h4>
+                            <div class="media-heading-sub"> CEO, Tizda Motors Inc </div>
+                        </div>
+                    </li>
+                    <li class="media">
+                        <div class="media-status">
+                            <span class="badge badge-danger">4</span>
+                        </div>
+                        <img class="media-object" src="../assets/layouts/layout/img/avatar11.jpg" alt="...">
+                        <div class="media-body">
+                            <h4 class="media-heading">Maria Gomez</h4>
+                            <div class="media-heading-sub"> Manager, Infomatic Inc </div>
+                            <div class="media-heading-small"> Last seen 03:10 AM </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="page-quick-sidebar-item">
+                <div class="page-quick-sidebar-chat-user">
+                    <div class="page-quick-sidebar-nav">
+                        <a href="javascript:;" class="page-quick-sidebar-back-to-list">
+                            <i class="icon-arrow-left"></i>Back</a>
                     </div>
-                    <div class="page-quick-sidebar-item">
-                        <div class="page-quick-sidebar-chat-user">
-                            <div class="page-quick-sidebar-nav">
-                                <a href="javascript:;" class="page-quick-sidebar-back-to-list">
-                                    <i class="icon-arrow-left"></i>Back</a>
+                    <div class="page-quick-sidebar-chat-user-messages">
+                        <div class="post out">
+                            <img class="avatar" alt="" src="../assets/layouts/layout/img/avatar3.jpg" />
+                            <div class="message">
+                                <span class="arrow"></span>
+                                <a href="javascript:;" class="name">Bob Nilson</a>
+                                <span class="datetime">20:15</span>
+                                <span class="body"> When could you send me the report ? </span>
                             </div>
-                            <div class="page-quick-sidebar-chat-user-messages">
-                                <div class="post out">
-                                    <img class="avatar" alt="" src="../assets/layouts/layout/img/avatar3.jpg" />
-                                    <div class="message">
-                                        <span class="arrow"></span>
-                                        <a href="javascript:;" class="name">Bob Nilson</a>
-                                        <span class="datetime">20:15</span>
-                                        <span class="body"> When could you send me the report ? </span>
-                                    </div>
-                                </div>
-                                <div class="post in">
-                                    <img class="avatar" alt="" src="../assets/layouts/layout/img/avatar2.jpg" />
-                                    <div class="message">
-                                        <span class="arrow"></span>
-                                        <a href="javascript:;" class="name">Ella Wong</a>
-                                        <span class="datetime">20:15</span>
-                                        <span class="body"> Its almost done. I will be sending it shortly </span>
-                                    </div>
-                                </div>
-                                <div class="post out">
-                                    <img class="avatar" alt="" src="../assets/layouts/layout/img/avatar3.jpg" />
-                                    <div class="message">
-                                        <span class="arrow"></span>
-                                        <a href="javascript:;" class="name">Bob Nilson</a>
-                                        <span class="datetime">20:15</span>
-                                        <span class="body"> Alright. Thanks! :) </span>
+                        </div>
+                        <div class="post in">
+                            <img class="avatar" alt="" src="../assets/layouts/layout/img/avatar2.jpg" />
+                            <div class="message">
+                                <span class="arrow"></span>
+                                <a href="javascript:;" class="name">Ella Wong</a>
+                                <span class="datetime">20:15</span>
+                                <span class="body"> Its almost done. I will be sending it shortly </span>
+                            </div>
+                        </div>
+                        <div class="post out">
+                            <img class="avatar" alt="" src="../assets/layouts/layout/img/avatar3.jpg" />
+                            <div class="message">
+                                <span class="arrow"></span>
+                                <a href="javascript:;" class="name">Bob Nilson</a>
+                                <span class="datetime">20:15</span>
+                                <span class="body"> Alright. Thanks! :) </span>
                                     </div>
                                 </div>
                                 <div class="post in">

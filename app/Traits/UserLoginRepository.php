@@ -14,18 +14,32 @@ use Illuminate\Support\Facades\DB;
 
 trait UserLoginRepository
 {
-    public function createUserLogin($id, $password = null, $email = null, $church, $visitor = null)
+    public function createUserLogin($id = null, $password = null, $email = null, $church)
     {
-        $user = User::create(
-            [
-                'church_id' => $church,
-                'person_id' => $id = $visitor ? null : $id,
-                'email' => $email or null,
-                'password' => bcrypt($password) or null,
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s'),
-            ]
-        );
+        if($id)
+        {
+            $user = User::create(
+                [
+                    'church_id' => $church,
+                    'person_id' => $id,
+                    'email' => $email,
+                    'password' => bcrypt($password),
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'updated_at' => date('Y-m-d H:i:s'),
+                ]
+            );
+        }
+
+        else{
+            $user = User::create(
+                [
+                    'church_id' => $church,
+                    'email' => $email,
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'updated_at' => date('Y-m-d H:i:s'),
+                ]
+            );
+        }
 
         return $user;
     }

@@ -16,7 +16,7 @@ class Visitor extends Model implements Transformable
         'hasKids', 'tag', 'specialNeeds', 'street', 'neighborhood', 'city', 'zipCode', 'state'
     ];
 
-    protected $dates = 'deleted_at';
+    protected $dates = ['deleted_at'];
 
     public function churches()
     {

@@ -36,7 +36,7 @@ License: You must have a valid license purchased only from themeforest(the above
 <div class="content">
 
     <!-- BEGIN FORGOT PASSWORD FORM -->
-    {!! Form::open(['route' => 'login.visitor', 'class' => 'forget-form', 'style' => "display: block !important;"]) !!}
+    {!! Form::open(['route' => 'login.visitor', 'method' => 'POST', 'class' => 'forget-form', 'style' => "display: block !important;"]) !!}
 
         <h3 class="font-green">Acesso de Visitantes</h3>
         <p class="text-center"> Entre com seu email para ter acesso </p>
@@ -58,6 +58,25 @@ License: You must have a valid license purchased only from themeforest(the above
             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <strong>Erro!</strong> Verifique sua conexão com a internet
         </div>
+
+        <div class="login-options">
+            <h4>Entre com</h4>
+            <ul class="social-icons">
+                <li>
+                    <a class="social-icon-color facebook" data-original-title="facebook" href="{{ url('auth/facebook/visitor') }}"></a>
+                </li>
+                <!--<li>
+                    <a class="social-icon-color twitter" data-original-title="Twitter" href="javascript:;"></a>
+                </li>-->
+                <li>
+                    <a class="social-icon-color googleplus" data-original-title="Google Plus" href="{{ url('auth/google') }}"></a>
+                </li>
+                <li>
+                    <a class="social-icon-color linkedin" data-original-title="Linkedin" href="{{ url('auth/linkedin') }}"></a>
+                </li>
+            </ul>
+        </div>
+
     {!! Form::close() !!}
     <!-- END FORGOT PASSWORD FORM -->
 </div>

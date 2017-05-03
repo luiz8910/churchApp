@@ -9,6 +9,7 @@
 namespace App\Traits;
 
 
+use App\Models\Role;
 use Illuminate\Support\Facades\DB;
 
 trait PeopleTrait
@@ -39,10 +40,9 @@ trait PeopleTrait
      * @param $id (do pai ou mãe)
      * @param $gender
      */
-    public function children($children, $gender, $id = null)
+    public function children($children, $gender, $id = null, $role_id)
     {
         foreach ($children as $child) {
-            //$resp = $this->repository->find($id);
 
             $data['name'] = $child['childName'];
 
@@ -58,13 +58,13 @@ trait PeopleTrait
                 $data['mother_id'] = $id;
             }
 
-            $data['role_id'] = 2;
+            $data['role_id'] = $role_id;
 
             $data['maritalStatus'] = 'Solteiro';
 
             $idChild = DB::table("people")->insertGetId($data);
 
-            $this->tag($this->repository->tag($data['dateBirth']), $idChild, 'people');
+            $this->updateTag($this->repository->tag($data['dateBirth']), $idChild, 'people');
         }
 
         if($id)

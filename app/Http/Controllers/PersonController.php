@@ -221,7 +221,7 @@ class PersonController extends Controller
             $this->createUserLogin($id, $password, $email, $church_id);
 
             if ($children) {
-                $this->children($children, $id, $data['gender']);
+                $this->children($children, $id, $data['gender'], $data["role_id"]);
             }
 
         }
@@ -237,11 +237,6 @@ class PersonController extends Controller
     }
 
 
-
-
-
-
-
     public function imgEditProfile(Request $request, $id)
     {
         $name = $this->repository->find($id)->name;
@@ -253,8 +248,8 @@ class PersonController extends Controller
         $file->move('uploads/profile', $imgName);
 
         DB::table('people')->
-        where('id', $id)->
-        update(['imgProfile' => $imgName]);
+            where('id', $id)->
+            update(['imgProfile' => $imgName]);
 
         return redirect()->back();
     }

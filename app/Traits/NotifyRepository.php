@@ -34,6 +34,7 @@ trait NotifyRepository
 
         }
 
+        $notify = array_key_exists(0, $notify) ? $notify : null;
 
         return $notify;
     }

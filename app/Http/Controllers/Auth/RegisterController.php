@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
+use App\Repositories\UserRepository;
 use App\Repositories\VisitorRepository;
 use App\Traits\DateRepository;
 use App\Traits\FormatGoogleMaps;
@@ -80,9 +81,9 @@ class RegisterController extends Controller
      *
      * @return Response
      */
-    public function redirectToProvider()
+    public function redirectToProvider($userType)
     {
-        return Socialite::driver('facebook')->redirect();
+        return Socialite::driver('facebook')->with(['userType' => $userType])->redirect();
     }
 
     /**
@@ -90,35 +91,35 @@ class RegisterController extends Controller
      *
      * @return Response
      */
-    public function handleProviderCallback()
+    public function handleProviderCallback($userType, VisitorRepository $visitorRepository)
     {
-        $user = Socialite::driver('facebook')->user();
+        $social = Socialite::driver('facebook')->user();
 
-        $member = User::where('facebook_id', $user->getId())->first();
-
-        if (!$member)
+        if($userType == "visitor")
         {
-            $email = User::where('email', $user->getEmail())->first();
+            $visitor = $visitorRepository->findByField('email', $social->getEmail());
 
-            if(count($email) == 0){
-                $member = User::create([
-                    'facebook_id' => $user->getId(),
-                    'name' => $user->getName(),
-                    'email' => $user->getEmail(),
-                    'church_id' => 1,
-                    'imgProfile' => $user->getAvatar(),
-                    'role' => 'membro'
-                ]);
+            if(count($visitor) > 0){
+
+                $data['facebook_id'] = $social->getId();
+                $data['name'] = $social->getName();
+                $data['imgProfile'] = $social->getAvatar();
+
+                $id = $visitor->users()->first();
+
+                $visitorRepository->update($data, $id->id);
+
+                auth()->loginUsingId($id->id);
+
+                return redirect()->route('index');
             }
             else{
-                \Session::flash('email.error', 'O email informado já existe');
+                \Session::flash('email.error', 'O email informado não existe');
                 return redirect()->route('login');
             }
         }
 
-        auth()->login($member);
-
-        return redirect()->route('index');
+        return false;
     }
 
     /**
@@ -219,14 +220,15 @@ class RegisterController extends Controller
     {
         $visitor = $visitorRepository->findByField('email', $request->get('email'))->first();
 
-        $id = $visitor->users()->first();
+        $id = $visitor->users->first();
 
         if($visitor){
-            auth()->loginUsingId($id);
+            auth()->loginUsingId($id->id);
 
             return redirect()->route('index');
         }
 
         return false;
     }
+
 }

@@ -4,11 +4,24 @@ namespace App\Http\Middleware;
 
 use App\Models\Person;
 use App\Repositories\PersonRepository;
+use App\Repositories\RoleRepository;
+use App\Repositories\VisitorRepository;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
 class CheckRole
 {
+
+
+    /**
+     * @var RoleRepository
+     */
+    private $roleRepository;
+
+    public function __construct(RoleRepository $roleRepository)
+    {
+        $this->roleRepository = $roleRepository;
+    }
     /**
      * Handle an incoming request.
      *
@@ -24,7 +37,10 @@ class CheckRole
             return redirect('/');
         }
 
-        $role_id = Auth::getUser()->person->role_id;
+        //Id do cargo/role de visitante
+        $visitors_id = $this->roleRepository->findByField('name', 'Visitante')->first()->id;
+
+        $role_id = Auth::getUser()->person ? Auth::getUser()->person->role_id : $visitors_id;
 
         if($role_id <> $role)
         {

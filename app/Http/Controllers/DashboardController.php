@@ -58,7 +58,7 @@ class DashboardController extends Controller
         if (count($events) == 0)
         {
             return view('dashboard.index', compact('countPerson', 'countGroups', 'events', 'notify', 'qtde',
-                'countMembers', 'location', 'street', 'groups'));
+                'countMembers', 'street', 'groups'));
         }
 
 

@@ -18,13 +18,7 @@ Route::group(['middleware' => 'auth'], function (){
 
     Route::resource('person', 'PersonController');
 
-    Route::get('visitors-create', 'PersonController@createVisitors')->name('visitors.create');
-
-    Route::post('visitors-store', 'PersonController@storeVisitors')->name('visitors.store');
-
     Route::get('teen', 'PersonController@teenagers')->name('person.teen');
-
-    Route::get('visitors', 'VisitorController@index')->name('visitors.index');
 
     Route::get('inactive', 'PersonController@inactive')->name('person.inactive');
 
@@ -41,6 +35,20 @@ Route::group(['middleware' => 'auth'], function (){
     Route::get('group', 'GroupController@index')->name('group.index');
 
     Route::get('group/{group}', 'GroupController@show')->name('group.show');
+
+    Route::get('visitors-create', 'VisitorController@create')->name('visitors.create');
+
+    Route::post('visitors-store', 'VisitorController@store')->name('visitors.store');
+
+    Route::get('visitors', 'VisitorController@index')->name('visitors.index');
+
+    Route::get("visitors/{visitor}/edit", "VisitorController@edit")->name('visitors.edit');
+
+    Route::post('visitors-update/{visitor}', "VisitorController@update")->name('visitors.update');
+
+    Route::delete("visitors-delete/{visitor}", "VisitorController@destroy")->name('visitors.destroy');
+
+    Route::post('visitor-imgProfile/{id}', 'VisitorController@imgEditProfile')->name('visitor.imgEditProfile');
 
     //Eventos
 
@@ -146,7 +154,7 @@ Route::get('/search/{text}', "SearchController@search");
 Route::get('/search-events/{text}', 'SearchController@searchEvents');
 
 //Login Facebook
-Route::get('auth/facebook', 'Auth\RegisterController@redirectToProvider');
+Route::get('auth/facebook/{userType}', 'Auth\RegisterController@redirectToProvider');
 Route::get('auth/facebook/callback', 'Auth\RegisterController@handleProviderCallback');
 
 //Login Linkedin

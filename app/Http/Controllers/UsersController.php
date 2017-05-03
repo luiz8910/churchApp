@@ -6,6 +6,7 @@ use App\Http\Requests\UserCreateRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Mail\resetPassword;
 use App\Models\User;
+use App\Repositories\VisitorRepository;
 use App\Traits\CountRepository;
 use App\Traits\DateRepository;
 use App\Traits\EmailTrait;
@@ -38,6 +39,10 @@ class UsersController extends Controller
      * @var PersonRepository
      */
     private $personRepository;
+    /**
+     * @var VisitorRepository
+     */
+    private $visitorRepository;
 
     /**
      * UsersController constructor.
@@ -45,19 +50,72 @@ class UsersController extends Controller
      * @param StateRepository $stateRepository
      */
     public function __construct(UserRepository $repository, StateRepository $stateRepository,
-                                RoleRepository $roleRepository, PersonRepository $personRepository)
+                                RoleRepository $roleRepository, PersonRepository $personRepository,
+                                VisitorRepository $visitorRepository)
     {
         $this->repository = $repository;
         $this->stateRepository = $stateRepository;
         $this->roleRepository = $roleRepository;
         $this->personRepository = $personRepository;
+        $this->visitorRepository = $visitorRepository;
     }
 
     public function myAccount()
     {
+        $changePass = true;
+
+        if(Auth::getUser()->person)
+        {
+            $user = Auth::getUser()->person;
+        }
+        else{
+            $user = Auth::getUser()->visitors->first();
+            $changePass = false;
+        }
+
         $state = $this->stateRepository->all();
 
-        $dateBirth = $this->formatDateView(\Auth::getUser()->person->dateBirth);
+        $user->dateBirth = $this->formatDateView($user->dateBirth);
+
+        $gender = $user->gender == 'M' ? 'F' : 'M';
+
+        if($user->facebook_id != null || $user->linkedin_id != null
+            || $user->google_id != null || $user->twitter_id != null)
+        {
+            $changePass = false;
+        }
+
+        $countPerson[] = $this->countPerson();
+
+        $roles = $this->roleRepository->findWhereNotIn('name', ['Visitante']);
+
+        $countGroups[] = $this->countGroups();
+
+        $notify = $this->notify();
+
+        $qtde = count($notify) or 0;
+
+        $adults = $this->personRepository->findWhere(['tag' => 'adult', 'gender' => $gender]);
+
+        return view('users.myAccount', compact('state', 'user', 'changePass', 'countPerson', 'roles', 'countGroups',
+            'notify', 'qtde', 'adults'));
+    }
+
+    public function teste()
+    {
+        $state = $this->stateRepository->all();
+
+        if(\Auth::getUser()->person)
+        {
+            $dateBirth = $this->formatDateView(\Auth::getUser()->person->dateBirth);
+
+            $gender = \Auth::getUser()->person->gender == 'M' ? 'F' : 'M';
+        }
+        else{
+            $dateBirth = $this->formatDateView(\Auth::getUser()->visitors->first()->dateBirth);
+
+            $gender = \Auth::getUser()->visitors->first()->gender == 'M' ? 'F' : 'M';
+        }
 
         $changePass = true;
 
@@ -75,9 +133,7 @@ class UsersController extends Controller
 
         $notify = $this->notify();
 
-        $qtde = count($notify);
-
-        $gender = \Auth::getUser()->person->gender == 'M' ? 'F' : 'M';
+        $qtde = count($notify) or 0;
 
         $adults = $this->personRepository->findWhere(['tag' => 'adult', 'gender' => $gender]);
 
@@ -128,9 +184,17 @@ class UsersController extends Controller
 
         $data["role_id"] = $data["role"];
 
-        $person_id = $this->repository->find($id)->person_id;
+        $visitor_id = $this->roleRepository->findByField('name', 'Visitante')->first()->id;
 
-        $this->personRepository->update($data, $person_id);
+        if($data["role"] == $visitor_id)
+        {
+            $this->visitorRepository->update($data, $id);
+        }else{
+            $person_id = $this->repository->find($id)->person_id;
+
+            $this->personRepository->update($data, $person_id);
+        }
+
 
         DB::table('users')
             ->where('id', $id)

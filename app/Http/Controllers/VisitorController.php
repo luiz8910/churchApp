@@ -12,6 +12,7 @@ use App\Traits\FormatGoogleMaps;
 use App\Traits\NotifyRepository;
 use App\Traits\PeopleTrait;
 use App\Traits\UserLoginRepository;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -81,7 +82,7 @@ class VisitorController extends Controller
 
         $notify = $this->notify();
 
-        $qtde = count($notify);
+        $qtde = count($notify) or 0;
 
         return view('people.create-visitors', compact('state', 'countPerson', 'countGroups', 'adults', 'notify', 'qtde'));
     }
@@ -98,9 +99,15 @@ class VisitorController extends Controller
 
         $data = $request->except(['img', '_token']);
 
+        unset($data["role_id"]);
+
         $data['dateBirth'] = $this->formatDateBD($data['dateBirth']);
 
         $data['imgProfile'] = 'uploads/profile/noimage.png';
+
+        $data['created_at'] = Carbon::now();
+
+        $data['updated_at'] = Carbon::now();
 
         $id = DB::table('visitors')->insertGetId($data);
 
@@ -116,7 +123,9 @@ class VisitorController extends Controller
 
         $visitor->churches()->attach($church);
 
-        $this->createUserLogin($id, null, $data['email'], true);
+        $user = $this->createUserLogin(null, null, $data['email'], $church);
+
+        $visitor->users()->attach($user);
 
         return redirect()->route('visitors.index');
     }
@@ -129,21 +138,21 @@ class VisitorController extends Controller
      */
     public function edit($id)
     {
-        $visitors = $this->repository->find($id);
+        $visitor = $this->repository->find($id);
 
         $state = $this->stateRepository->all();
 
-        $roles = $this->roleRepository->all();
+        $roles = $this->roleRepository->findWhereNotIn('id', [3]);
 
-        $visitors->dateBirth = $this->formatDateView($visitors->dateBirth);
+        $visitor->dateBirth = $this->formatDateView($visitor->dateBirth);
 
-        $location = $this->formatGoogleMaps($visitors);
+        $location = $this->formatGoogleMaps($visitor);
 
         $countPerson[] = $this->countPerson();
 
         $countGroups[] = $this->countGroups();
 
-        $gender = $visitors->gender == 'M' ? 'F' : 'M';
+        $gender = $visitor->gender == 'M' ? 'F' : 'M';
 
         $adults = $this->repository->findWhere(['tag' => 'adult', 'gender' => $gender]);
 
@@ -151,7 +160,7 @@ class VisitorController extends Controller
 
         $qtde = count($notify);
 
-        return view('visitors.edit', compact('visitors', 'state', 'location', 'roles', 'countPerson',
+        return view('people.edit-visitors', compact('visitor', 'state', 'location', 'roles', 'countPerson',
             'countGroups', 'adults', 'notify', 'qtde'));
     }
 
@@ -194,11 +203,36 @@ class VisitorController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $visitor = $this->repository->find($id);
+
+        $visitor->churches()->detach();
+
+        $visitor->users()->detach();
+
+        $this->repository->delete($id);
+
+        return redirect()->route('visitors.index');
     }
 
     public function login()
     {
         return view('auth.visitor');
+    }
+
+    public function imgEditProfile(Request $request, $id)
+    {
+        $name = $this->repository->find($id)->name;
+
+        $file = $request->file('img');
+
+        $imgName = 'uploads/profile/' . $id . '-' . $name . '.' . $file->getClientOriginalExtension();
+
+        $file->move('uploads/profile', $imgName);
+
+        DB::table('visitors')->
+            where('id', $id)->
+            update(['imgProfile' => $imgName]);
+
+        return redirect()->back();
     }
 }

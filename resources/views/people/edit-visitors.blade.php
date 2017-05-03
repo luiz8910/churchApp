@@ -18,19 +18,21 @@ License: You must have a valid license purchased only from themeforest(the above
 <!-- BEGIN HEAD -->
 
 <head>
-    @include('includes.head')
+    @include('includes.head-edit')
+
     <!-- BEGIN PAGE LEVEL PLUGINS -->
-    <link href="assets/global/plugins/datatables/datatables.min.css" rel="stylesheet" type="text/css" />
-    <link href="assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css" rel="stylesheet" type="text/css" />
-    <link href="assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
+    <link href="../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet" type="text/css" />
+    <link href="../../assets/global/plugins/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" type="text/css"/>
+    <link href="../../assets/pages/css/profile.min.css" rel="stylesheet" type="text/css" />
     <!-- END PAGE LEVEL PLUGINS -->
 </head>
 <!-- END HEAD -->
 
 <body class="page-container-bg-solid page-boxed">
 <!-- BEGIN HEADER -->
-@include('includes.header')
+@include('includes.header-edit')
 <!-- END HEADER -->
+
 <!-- BEGIN CONTAINER -->
 <div class="page-container">
     <!-- BEGIN CONTENT -->
@@ -41,14 +43,14 @@ License: You must have a valid license purchased only from themeforest(the above
             <div class="container">
                 <!-- BEGIN PAGE TITLE -->
                 <div class="page-title">
-                    <h1>Adultos
-                        <small>membros e etc...</small>
+                    <h1>Perfil do Usuário
+                        <small></small>
                     </h1>
                 </div>
                 <!-- END PAGE TITLE -->
-
             </div>
         </div>
+
         <!-- END PAGE HEAD-->
         <!-- BEGIN PAGE CONTENT BODY -->
         <div class="page-content">
@@ -60,130 +62,485 @@ License: You must have a valid license purchased only from themeforest(the above
                         <i class="fa fa-circle"></i>
                     </li>
                     <li>
-                        <a href="#">Pessoas</a>
-                        <i class="fa fa-circle"></i>
-                    </li>
-                    <li>
-                        <span>Adultos</span>
+                        <span>Minha Conta</span>
                     </li>
                 </ul>
                 <!-- END PAGE BREADCRUMBS -->
                 <!-- BEGIN PAGE CONTENT INNER -->
+                @if(Session::has('updateUser'))
+                    <div class="alert alert-success alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        {{ Session::get('updateUser') }}
+                    </div>
+                @endif
 
-
-                <?php $route = "visitors";?>
-
-
+                @if(Session::has('email.exists'))
+                    <div class="alert alert-danger alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        {{ Session::get('email.exists') }}
+                    </div>
+                @endif
                 <div class="page-content-inner">
                     <div class="row">
                         <div class="col-md-12">
-                            <!-- BEGIN BORDERED TABLE PORTLET-->
-                            <div class="portlet light portlet-fit ">
-                                <div class="portlet-title">
-                                    <div class="caption">
-                                        <i class="icon-settings font-green"></i>
-                                        <span class="caption-subject font-green sbold uppercase">Visitantes</span>
+                            <!-- BEGIN PROFILE SIDEBAR -->
+                            <div class="profile-sidebar">
+                                <!-- PORTLET MAIN -->
+                                <div class="portlet light profile-sidebar-portlet ">
+                                    <!-- SIDEBAR USERPIC -->
+                                    <div class="profile-userpic">
+                                        <img src="../../{{ $visitor->imgProfile }}" class="img-responsive" alt="">
                                     </div>
-                                    <div class="actions">
-                                        <div class="btn-group btn-group-devided">
-                                            <a role="button" class="btn btn-info btn-circle" href="{{ route('visitors.create') }}" style="margin-top: 2px;">
-                                                <i class="fa fa-plus"></i>
-                                                <span class="hidden-xs hidden-sm">Novo Visitante</span>
-                                            </a>
-
-                                        </div>
-                                        <div class="btn-group">
-                                            <a class="btn red btn-outline btn-circle" href="javascript:;" data-toggle="dropdown">
-                                                <i class="fa fa-share"></i>
-                                                <span class="hidden-xs"> Opções </span>
-                                                <i class="fa fa-angle-down"></i>
-                                            </a>
-                                            <ul class="dropdown-menu pull-right" id="sample_3_tools">
-                                                <li>
-                                                    <a href="javascript:;" id="print" onclick="printDiv('printable-table')"
-                                                       data-action="0" class="tool-action">
-                                                        <i class="icon-printer"></i> Imprimir
-                                                    </a>
-                                                </li>
-                                                <!--<li>
-                                                    <a href="javascript:;" data-action="1" class="tool-action">
-                                                        <i class="icon-check"></i> Copiar</a>
-                                                </li>-->
-                                                <li>
-                                                    <a href="javascript:;" data-action="2"
-                                                       onclick="printDiv('printable-table', 'pdf')" class="tool-action">
-                                                        <i class="icon-doc"></i> PDF</a>
-                                                </li>
-                                                <li>
-                                                    <a href="{{ route($route.'.excel', ['format' => 'xls']) }}"
-                                                       data-action="3" target="_blank"
-                                                       class="tool-action">
-                                                        <i class="icon-paper-clip"></i> Excel</a>
-                                                </li>
-                                                <li>
-                                                    <a href="{{ route($route.'.excel', ['format' => 'csv']) }}"
-                                                       data-action="4" target="_blank" class="tool-action">
-                                                        <i class="icon-cloud-upload"></i> CSV</a>
-                                                </li>
-
-                                            </ul>
-                                        </div>
+                                    <!-- END SIDEBAR USERPIC -->
+                                    <!-- SIDEBAR USER TITLE -->
+                                    <div class="profile-usertitle">
+                                        <div class="profile-usertitle-name"> {{ $visitor->name }} {{ $visitor->lastName }}</div>
+                                        <div class="profile-usertitle-job"> Visitante </div>
                                     </div>
+                                    <!-- END SIDEBAR USER TITLE -->
+
+                                    <!-- SIDEBAR MENU -->
+                                    <div class="profile-usermenu">
+                                        <ul class="nav">
+                                            <li class="active">
+                                                <a href="">
+                                                    <i class="icon-home"></i> Visão Geral </a>
+                                            </li>
+                                            <li>
+                                                <a href="">
+                                                    <i class="icon-info"></i> Ajuda </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <!-- END MENU -->
                                 </div>
-                                <div class="portlet-body">
-                                    <div class="table-scrollable table-scrollable-borderless">
-                                        <table class="table table-hover table-light">
-                                            <thead>
-                                            <tr class="uppercase">
-                                                <th> Foto </th>
-                                                <th> Nome </th>
-                                                <th> CPF </th>
-                                                <th> Cargo </th>
-                                                <th> Data de Nasc. </th>
-                                                <th> Opções </th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            @foreach($visitors as $item)
-                                                <tr>
-                                                    <td class="visible-xs"></td>
-                                                    <td> <img src="{{ $item->imgProfile }}" style="width: 50px; height: 50px;"> </td>
-                                                    <td>
-                                                        <a href="{{ route('visitors.edit', ['visitor' => $item->id]) }}">
-                                                            {{ $item->name }} {{ $item->lastName }}</a>
-                                                    </td>
-                                                    <td> {{ $item->cpf }} </td>
-                                                    <td> {{ $item->role }} </td>
-                                                    <td> {{ $item->dateBirth }} </td>
+                                <!-- END PORTLET MAIN -->
 
-                                                    <?php $deleteForm = "delete-".$item->id; ?>
-                                                    <td id="{{ $deleteForm }}">
-                                                        {!! Form::open(['route' => ['visitors.destroy', 'person' => $item->id],
-                                                                'method' => 'DELETE', 'id' => 'form-'.$deleteForm]) !!}
-
-                                                        <a href="" class="btn btn-danger btn-sm"
-                                                           onclick='event.preventDefault();document.getElementById("form-{{ $deleteForm }}").submit();'>
-                                                            <i class="fa fa-close"></i>
-                                                            Excluir
-                                                        </a>
-
-                                                        {!! Form::close() !!}
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                            </tbody>
-                                        </table>
-                                        <br>
-                                        <div class="pull-right">
-                                            {{ $visitors->links() }}
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
-                            <!-- END BORDERED TABLE PORTLET-->
+                            <!-- END BEGIN PROFILE SIDEBAR -->
+                            <!-- BEGIN PROFILE CONTENT -->
+                            <div class="profile-content">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <!-- BEGIN BASIC PORTLET-->
+                                        <div class="portlet light portlet-fit ">
+                                            <div class="portlet-title">
+                                                <div class="caption">
+                                                    <i class=" icon-layers font-red"></i>
+                                                    <span class="caption-subject font-red bold uppercase">Local do Evento</span>
+                                                </div>
+                                                <div class="actions">
+                                                    <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
+                                                        <i class="icon-cloud-upload"></i>
+                                                    </a>
+                                                    <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
+                                                        <i class="icon-wrench"></i>
+                                                    </a>
+                                                    <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
+                                                        <i class="icon-trash"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="portlet-body">
+                                                <div id="map" style="height: 304px; width: 100%;"></div>
+                                                <input type="hidden" value="{{ $location }}" id="location">
+                                            </div>
+                                        </div>
+                                        <!-- END BASIC PORTLET-->
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- END PROFILE CONTENT -->
                         </div>
                     </div>
 
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="portlet light ">
+                                <div class="portlet-title tabbable-line">
+                                    <div class="caption caption-md">
+                                        <i class="icon-globe theme-font hide"></i>
+                                        <span class="caption-subject font-blue-madison bold uppercase">Seus Dados</span>
+                                    </div>
+                                    <ul class="nav nav-tabs">
+                                        <li class="active">
+                                            <a href="#tab_1_1" data-toggle="tab">
+                                                <span class="hidden-xs hidden-sm">
+                                                    Informações Pessoais
+                                                </span>
+                                                <span class="visible-xs visible-sm">Pessoal</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#tab_1_2" data-toggle="tab">Alterar Foto</a>
+                                        </li>
+                                        <li>
+                                            <a href="#tab_1_4" data-toggle="tab">Personalizar</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="portlet-body">
+                                    <div class="tab-content">
+                                        <!-- PERSONAL INFO TAB -->
+
+                                        <input type="hidden" value="{{ $visitor->id }}" id="personId">
+
+                                        <div class="tab-pane active" id="tab_1_1">
+                                            {!! Form::open(['route' => ['visitors.update', 'visitor' => $visitor->id], 'class' => 'horizontal-form', 'method' => 'PUT']) !!}
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    {!! Form::FormGroup('name', $errors) !!}
+                                                    <label class="control-label">Nome</label>
+                                                    <input type="text" placeholder="João" name="name" value="{{ $visitor->name }}" class="form-control" />
+                                                    {!! Form::error('name', $errors) !!}
+                                                    {!! Form::endFormGroup() !!}
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    {!! Form::FormGroup('lastName', $errors) !!}
+                                                    <label class="control-label">Sobrenome</label>
+                                                    <input type="text" placeholder="da Silva" name="lastName" value="{{ $visitor->lastName }}" class="form-control" />
+                                                    {!! Form::error('lastName', $errors) !!}
+                                                    {!! Form::endFormGroup() !!}
+                                                </div>
+
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    {!! Form::FormGroup('cel', $errors) !!}
+                                                    <label class="control-label">Celular</label>
+                                                    <input type="text" placeholder="(15) 9123-1234" name="cel" value="{{ $visitor->cel }}" class="form-control tel" />
+                                                    {!! Form::error('cel', $errors) !!}
+                                                    {!! Form::endFormGroup() !!}
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    {!! Form::FormGroup('email', $errors) !!}
+                                                    <label class="control-label">Email</label>
+                                                    <div class="input-group input-icon right">
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-envelope font-blue" id="icon-email"></i>
+                                                        </span>
+                                                        <input type="email" placeholder="email@dominio.com" value="{{ $visitor->users->first()->email or null }}"
+                                                               id="email-edit" name="email" class="form-control" />
+                                                        <i class="fa fa-check font-green" id="icon-success-email" style="display: none;"></i>
+                                                        <i class="fa fa-exclamation font-red" id="icon-error-email" style="display: none;"></i>
+                                                    </div>
+
+                                                    <span class="help-block" id="emailExists" style="display: none; color: red;">
+                                                        <i class="fa fa-block"></i>
+                                                        Já existe uma conta associada a este email
+                                                    </span>
+                                                    <span class="help-block" id="invalidEmail" style="display: none; color: red;">
+                                                        <i class="fa fa-block"></i>
+                                                        Email em formato incorreto
+                                                    </span>
+                                                    <span class="help-block" id="validEmail" style="display: none; color: green;">
+                                                        <i class="fa fa-check"></i>
+                                                        Email Válido
+                                                    </span>
+
+                                                    {!! Form::error('email', $errors) !!}
+                                                    {!! Form::endFormGroup() !!}
+                                                </div>
+
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    {!! Form::FormGroup('tel', $errors) !!}
+                                                    <label class="control-label">Telefone</label>
+                                                    <input type="text" placeholder="(15) 9123-1234" name="tel" value="{{ $visitor->tel }}" class="form-control tel" />
+                                                    {!! Form::error('tel', $errors) !!}
+                                                    {!! Form::endFormGroup() !!}
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    {!! Form::FormGroup('gender', $errors) !!}
+                                                    <label class="control-label">Gênero</label>
+                                                    <select name="gender" class="form-control" required>
+                                                        <option value="">Selecione</option>
+                                                        <option value="M" @if($visitor->gender == 'M') selected @endif >Masculino</option>
+                                                        <option value="F" @if($visitor->gender == 'F') selected @endif >Feminino</option>
+                                                    </select>
+                                                    {!! Form::error('gender', $errors) !!}
+                                                    {!! Form::endFormGroup() !!}
+                                                </div>
+                                            </div>
+
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    {!! Form::FormGroup('dateBirth', $errors) !!}
+                                                    <label class="control-label">Data de Nasc.</label>
+                                                    <div class="input-group date date-picker" data-date-format="dd/mm/yyyy">
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-calendar font-blue"></i>
+                                                        </span>
+                                                        <input type="text" placeholder="dd/mm/aaaa" value="{{ $visitor->dateBirth }}"
+                                                               name="dateBirth" class="form-control input-date" />
+                                                    </div>
+                                                    {!! Form::error('dateBirth', $errors) !!}
+                                                    {!! Form::endFormGroup() !!}
+                                                </div>
+                                                <div class="col-md-6">
+                                                    {!! Form::FormGroup('role', $errors) !!}
+                                                    <label class="control-label">Cargo</label>
+                                                    <select class="form-control" name="role_id"
+                                                            data-placeholder="Selecione seu cargo"
+                                                            tabindex="1" required>
+                                                        <option value="3">Visitante</option>
+                                                        @foreach($roles as $role)
+                                                            <option value="{{ $role->id }}">
+                                                                {{ $role->name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                    {!! Form::error('role', $errors) !!}
+                                                    {!! Form::endFormGroup() !!}
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    {!! Form::FormGroup('cpf', $errors) !!}
+                                                    <label>CPF (Sem pontos ou traços)</label>
+                                                    <div class="input-group input-icon right">
+                                                            <span class="input-group-addon">
+                                                                <i class="fa fa-user font-blue"></i>
+                                                            </span>
+                                                        <input type="text" name="cpf" id="cpf" maxlength="11" class="form-control"
+                                                               placeholder="XXXXXXXXXXX" value="{{ $visitor->cpf }}">
+                                                        <i class="fa fa-check font-green" id="icon-success" style="display: none;"></i>
+                                                        <i class="fa fa-exclamation font-red" id="icon-error" style="display: none;"></i>
+
+                                                    </div>
+                                                    <div class="help-block small-error">CPF Inválido</div>
+                                                    {!! Form::error('cpf', $errors) !!}
+                                                    {!! Form::endFormGroup() !!}
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    {!! Form::FormGroup('rg', $errors) !!}
+                                                    <label class="control-label">RG</label>
+                                                    <input type="text" placeholder="123.123.123-12" value="{{ $visitor->rg }}" name="rg" class="form-control" />
+                                                    {!! Form::error('rg', $errors) !!}
+                                                    {!! Form::endFormGroup() !!}
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    {!! Form::FormGroup('maritalStatus', $errors) !!}
+                                                        <label class="control-label">Estado Civil</label>
+                                                        <select name="maritalStatus" id="maritalStatus" class="form-control" required>
+                                                            <option value="">Selecione</option>
+                                                            <option value="Casado" @if($visitor->maritalStatus == 'Casado') selected @endif >Casado</option>
+                                                            <option value="Solteiro" @if($visitor->maritalStatus == 'Solteiro') selected @endif >Solteiro</option>
+                                                            <option value="Divorciado" @if($visitor->maritalStatus == 'Divorciado') selected @endif >Divorciado</option>
+                                                        </select>
+                                                    {!! Form::error('maritalStatus', $errors) !!}
+                                                    {!! Form::endFormGroup() !!}
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group" id="form-partner"
+                                                         @if($visitor->maritalStatus != 'Casado')
+                                                         hidden @endif >
+                                                        <label>Nome Cônjuge</label>
+                                                        <select name="partner" id="partner" class="selectpicker
+                                                          form-control"
+                                                                data-live-search="true" data-size="8">
+                                                            <option value="0">Parceiro(a) fora da igreja</option>
+                                                            @foreach($adults as $adult)
+                                                                <option value="{{ $adult->id }}"
+                                                                        @if($adult->id == $visitor->partner) selected @endif
+                                                                >{{ $adult->name }} {{ $adult->lastName }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            @if($visitor->tag != 'adult')
+
+                                                <h3 class="form-section">Observações</h3>
+
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        {!! Form::FormGroup('specialNeeds', $errors) !!}
+                                                        <label class="control-label">Anotações Gerais</label>
+                                                        <textarea class="form-control" name="specialNeeds" value="{{ $visitor->specialNeeds }}"
+                                                                  placeholder="Digite aqui observações importantes sobre a criança/adolescente"
+                                                                  rows="5"></textarea>
+                                                        {!! Form::error('specialNeeds', $errors) !!}
+                                                        {!! Form::endFormGroup() !!}
+                                                    </div>
+                                                </div>
+                                            @endif
+
+                                            <h3 class="form-section">Endereço</h3>
+
+                                            <div class="loader"></div>
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    {!! Form::FormGroup('zipCode', $errors) !!}
+                                                    <label class="control-label">CEP</label>
+                                                    <input type="text" placeholder="12123-12" value="{{ $visitor->zipCode }}"
+                                                           name="zipCode" class="form-control" id="zipCode" />
+                                                    {!! Form::error('zipCode', $errors) !!}
+                                                    {!! Form::endFormGroup() !!}
+                                                </div>
+                                                <div class="col-md-9">
+                                                    {!! Form::FormGroup('street', $errors) !!}
+                                                    <label class="control-label">Logradouro</label>
+                                                    <input type="text" placeholder="Rua dos Bobos, 0" value="{{ $visitor->street }}" id="street"
+                                                           name="street" class="form-control" />
+                                                    {!! Form::error('street', $errors) !!}
+                                                    {!! Form::endFormGroup() !!}
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    {!! Form::FormGroup('neighborhood', $errors) !!}
+                                                    <label class="control-label">Bairro</label>
+                                                    <input type="text" placeholder="Vila Progresso" value="{{ $visitor->neighborhood }}"
+                                                           id="neighborhood" name="neighborhood" class="form-control" />
+                                                    {!! Form::error('neighborhood', $errors) !!}
+                                                    {!! Form::endFormGroup() !!}
+                                                </div>
+                                                <div class="col-md-4">
+                                                    {!! Form::FormGroup('city', $errors) !!}
+                                                    <label class="control-label">Cidade</label>
+                                                    <input type="text" placeholder="Sorocaba" name="city" value="{{ $visitor->city }}"
+                                                           class="form-control" id="city"/>
+                                                    {!! Form::error('city', $errors) !!}
+                                                    {!! Form::endFormGroup() !!}
+                                                </div>
+                                                <div class="col-md-4">
+                                                    {!! Form::FormGroup('state', $errors) !!}
+                                                    <label class="control-label">UF:</label>
+                                                    <select name="state" class="form-control" id="state">
+                                                        <option value="">Selecione</option>
+                                                        @foreach($state as $value)
+                                                            <option value="{{ $value->initials }}" @if($value->initials == $visitor->state) selected @endif >
+                                                                {{ $value->state }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                    {!! Form::error('state', $errors) !!}
+                                                    {!! Form::endFormGroup() !!}
+                                                </div>
+                                            </div>
+
+
+                                                <div class="margiv-top-10">
+                                                    {!! Form::submit('Salvar', ['class' => 'btn green']) !!}
+
+                                                </div>
+                                            {!! Form::close() !!}
+                                        </div>
+                                        <!-- END PERSONAL INFO TAB -->
+                                        <!-- CHANGE AVATAR TAB -->
+                                        <div class="tab-pane" id="tab_1_2">
+                                            <p> Altere aqui sua foto do perfil </p>
+                                            {!! Form::open(['route' => ['visitor.imgEditProfile', $visitor->id], 'method' => 'post', 'enctype' => 'multipart/form-data', 'role' => 'form']) !!}
+                                                <div class="form-group">
+                                                    <div class="fileinput fileinput-new" data-provides="fileinput">
+                                                        <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
+                                                            <img src=@if($visitor->imgProfile == "uploads/profile/noimage.png")
+                                                                        "http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=no+image"
+                                                                        @else
+                                                                            "../../{{ $visitor->imgProfile }}"
+                                                                    @endif
+
+                                                                 alt="" /> </div>
+                                                        <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"> </div>
+                                                        <div>
+                                                                                <span class="btn default btn-file">
+                                                                                    <span class="fileinput-new"> Escolher Imagem </span>
+                                                                                    <span class="fileinput-exists"> Alterar </span>
+                                                                                    <input type="file" name="img"> </span>
+                                                            <a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Remover </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="margin-top-10">
+                                                    {!! Form::submit('Enviar', ['class' => 'btn green']) !!}
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <!-- END CHANGE AVATAR TAB -->
+                                        <!-- CHANGE PASSWORD TAB -->
+                                        <div class="tab-pane" id="tab_1_3">
+                                            {!! Form::open(['route' => 'users.changePass', 'method' => 'post']) !!}
+                                            <div class="form-group">
+                                                <label class="control-label">Senha Atual</label>
+                                                <input type="password" class="form-control" name="old" /> </div>
+                                            <div class="form-group">
+                                                <label class="control-label">Nova Senha</label>
+                                                <input type="password" class="form-control" name="new" /> </div>
+                                            <div class="form-group">
+                                                <label class="control-label">Confirme sua nova Senha</label>
+                                                <input type="password" class="form-control" name="confirmPassword" /> </div>
+                                            <div class="margin-top-10">
+                                                {!! Form::submit('Alterar Senha', ['class' => 'btn green']) !!}
+                                            </div>
+                                            {!! Form::close() !!}
+                                        </div>
+                                        <!-- END CHANGE PASSWORD TAB -->
+                                        <!-- PRIVACY SETTINGS TAB -->
+                                        <div class="tab-pane" id="tab_1_4">
+                                            <form action="#">
+                                                <table class="table table-light table-hover">
+                                                    <tr>
+                                                        <td> Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus.. </td>
+                                                        <td>
+                                                            <label class="uniform-inline">
+                                                                <input type="radio" name="optionsRadios1" value="option1" /> Yes </label>
+                                                            <label class="uniform-inline">
+                                                                <input type="radio" name="optionsRadios1" value="option2" checked/> No </label>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td> Enim eiusmod high life accusamus terry richardson ad squid wolf moon </td>
+                                                        <td>
+                                                            <label class="uniform-inline">
+                                                                <input type="checkbox" value="" /> Yes </label>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td> Enim eiusmod high life accusamus terry richardson ad squid wolf moon </td>
+                                                        <td>
+                                                            <label class="uniform-inline">
+                                                                <input type="checkbox" value="" /> Yes </label>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td> Enim eiusmod high life accusamus terry richardson ad squid wolf moon </td>
+                                                        <td>
+                                                            <label class="uniform-inline">
+                                                                <input type="checkbox" value="" /> Yes </label>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                                <!--end profile-settings-->
+                                                <div class="margin-top-10">
+                                                    <a href="javascript:;" class="btn red"> Save Changes </a>
+                                                    <a href="javascript:;" class="btn default"> Cancel </a>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <!-- END PRIVACY SETTINGS TAB -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <!-- END PAGE CONTENT INNER -->
             </div>
@@ -452,7 +809,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                         </div>
                                         <div class="cont-col2">
                                             <div class="desc"> You have 4 pending tasks.
-                                                        <span class="label label-sm label-warning "> Take action
+                                                <span class="label label-sm label-warning "> Take action
                                                             <i class="fa fa-share"></i>
                                                         </span>
                                             </div>
@@ -586,7 +943,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                         </div>
                                         <div class="cont-col2">
                                             <div class="desc"> You have 4 pending tasks.
-                                                        <span class="label label-sm label-warning "> Take action
+                                                <span class="label label-sm label-warning "> Take action
                                                             <i class="fa fa-share"></i>
                                                         </span>
                                             </div>
@@ -770,7 +1127,7 @@ License: You must have a valid license purchased only from themeforest(the above
                     <form action="javascript:;">
                         <div class="input-group">
                             <input type="text" placeholder="mail@email.com" class="form-control">
-                                    <span class="input-group-btn">
+                            <span class="input-group-btn">
                                         <button class="btn" type="submit">Submit</button>
                                     </span>
                         </div>
@@ -825,16 +1182,24 @@ License: You must have a valid license purchased only from themeforest(the above
 </div>
 <!-- END INNER FOOTER -->
 <!-- END FOOTER -->
-@include('includes.core-scripts')
+@include('includes.core-scripts-edit')
 <!-- BEGIN PAGE LEVEL PLUGINS -->
-<script src="assets/global/scripts/datatable.js" type="text/javascript"></script>
-<script src="assets/global/plugins/datatables/datatables.min.js" type="text/javascript"></script>
-<script src="assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
-<script src="assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
-<!-- END PAGE LEVEL PLUGINS -->
-<!-- BEGIN PAGE LEVEL SCRIPTS -->
-<script src="assets/pages/scripts/table-datatables-buttons.min.js" type="text/javascript"></script>
+<script src="../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js" type="text/javascript"></script>
+<script src="../../assets/global/plugins/jquery.sparkline.min.js" type="text/javascript"></script>
+<script src="http://maps.google.com/maps/api/js?sensor=false" type="text/javascript"></script>
+<script src="../../assets/global/plugins/gmaps/gmaps.min.js" type="text/javascript"></script>
+
+<script src="../../assets/global/plugins/bootstrap-select/js/bootstrap-select.min.js" type="text/javascript"></script>
+
+<script src="../../assets/pages/scripts/profile.min.js" type="text/javascript"></script>
+<script src="../../assets/pages/scripts/timeline.min.js" type="text/javascript"></script>
 <!-- END PAGE LEVEL SCRIPTS -->
+
+<!-- Google maps function -->
+<script src="../../js/maps.js"></script>
+
+
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjTs0nbQbEecUygnKpThLfzRKES8nKS0A&callback=initMap"></script>
 </body>
 
 </html>
