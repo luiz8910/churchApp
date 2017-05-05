@@ -28,8 +28,12 @@ class AgendaServices
         elseif($week == "prev"){
             date_add($today, date_interval_create_from_date_string("-7 days"));
         }
-        elseif ($week == "2 weeks"){
+        elseif ($week == "2"){
             date_add($today, date_interval_create_from_date_string("14 days"));
+        }
+        elseif ($week){
+            $x = $week * 7;
+            date_add($today, date_interval_create_from_date_string($x . " days"));
         }
 
 
@@ -48,8 +52,12 @@ class AgendaServices
                 elseif($week == "prev"){
                     date_add($today, date_interval_create_from_date_string("-7 days"));
                 }
-                elseif ($week == "2 weeks"){
+                elseif ($week == "2"){
                     date_add($today, date_interval_create_from_date_string("14 days"));
+                }
+                elseif ($week){
+                    $x = $week * 7;
+                    date_add($today, date_interval_create_from_date_string($x . " days"));
                 }
             }
         }
@@ -76,8 +84,12 @@ class AgendaServices
                 elseif($week == "prev"){
                     date_add($today, date_interval_create_from_date_string("-7 days"));
                 }
-                elseif ($week == "2 weeks"){
+                elseif ($week == "2"){
                     date_add($today, date_interval_create_from_date_string("14 days"));
+                }
+                elseif ($week){
+                    $x = $week * 7;
+                    date_add($today, date_interval_create_from_date_string($x . " days"));
                 }
             }
         }
@@ -187,6 +199,11 @@ class AgendaServices
 
         return $days;
 
+    }
+
+    public static function thisMonth()
+    {
+        return date("n");
     }
 
     public static function allMonths()

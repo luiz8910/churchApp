@@ -181,11 +181,14 @@ class EventServices
      */
     public static function allEvents()
     {
+        //Filtrar eventos por igreja
         return DB::table('event_person')
-            ->select('event_id', 'eventDate')
-            ->orderBy('eventDate', 'desc')
+            ->join('events', 'events.id', '=', 'event_person.event_id')
+            ->select('event_person.event_id', 'event_person.eventDate')
+            ->orderBy('event_person.eventDate', 'asc')
+            ->orderBy('events.startTime', 'asc')
             ->distinct()
-            ->get();
+            ->get();   
     }
 }
 

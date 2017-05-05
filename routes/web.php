@@ -80,6 +80,8 @@ Route::group(['middleware' => 'auth'], function (){
 
     Route::get("email", "PersonController@email");
 
+    Route::get("teste", "EventController@teste");
+
 });
 
 Route::group(["middleware" => "check.role:1"], function () {

@@ -60,6 +60,85 @@ class EventController extends Controller
     }
 
 
+    public function teste()
+    {
+        /*
+         * Variáveis gerais p/ todas as páginas
+         *
+         */
+
+        $countPerson[] = $this->countPerson();
+
+        $countGroups[] = $this->countGroups();
+
+        $state = $this->stateRepository->all();
+
+        //Fim Variáveis
+
+        /*
+         * Lista de Eventos
+         */
+        $events = $this->repository->paginate(5);
+
+        /*
+         * Foreach para Formatação de datas e nome do grupo pertencente se houver
+         */
+        foreach ($events as $event) {
+            $event->eventDate = $this->formatDateView($event->eventDate);
+
+            if($event->group_id)
+            {
+                $event['group_name'] = $this->groupRepository->find($event->group_id)->name;
+            }
+
+            //$event->created_at = $this->formatDateView($event->created_at);
+        }
+
+        /*
+         * Notificação, e quantidades de novas notificações
+         */
+        $notify = $this->notify();
+
+        $qtde = count($notify) or 0;
+
+        //Fim notificação
+
+        /*
+         * Inicio Agenda
+         */
+
+        //Recupera todos os meses
+        $allMonths = AgendaServices::allMonths();
+
+        //Recuperar todos os dias da semana
+        $allDays = AgendaServices::allDaysName();
+
+        //Recupera a semana atual
+        $days = AgendaServices::findWeek();
+
+        //Contador de semanas
+        $cont = 1;
+
+        //Listagem até a 6° semana por padrão
+        while ($cont < 6)
+        {
+            $time = $cont == 1 ? 'next' : $cont;
+
+            $days = array_merge($days, AgendaServices::findWeek($time));
+
+            $cont++;
+        }
+
+        //Retorna todos os eventos
+        $allEvents = EventServices::allEvents();
+
+        //Recupera o mês atual
+        $thisMonth = AgendaServices::thisMonth();
+
+
+        return view("events.teste", compact('countPerson', 'countGroups', 'state',
+            'events', 'notify', 'qtde', 'allMonths', 'allDays', 'days', 'allEvents', 'thisMonth'));
+    }
 
     public function index()
     {
