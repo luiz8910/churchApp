@@ -326,7 +326,8 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <div class="col-md-6">
                                                     {!! Form::FormGroup('rg', $errors) !!}
                                                     <label class="control-label">RG</label>
-                                                    <input type="text" placeholder="123.123.123-12" value="{{ $visitor->rg }}" name="rg" class="form-control" />
+                                                    <input type="text" placeholder="123.123.123-12" value="{{ $visitor->rg }}"
+                                                           name="rg" class="form-control" maxlength="9" minlength="9" />
                                                     {!! Form::error('rg', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
                                                 </div>

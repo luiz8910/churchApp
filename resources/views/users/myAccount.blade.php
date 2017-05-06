@@ -52,6 +52,8 @@ License: You must have a valid license purchased only from themeforest(the above
             </div>
         </div>
 
+
+
         <!-- END PAGE HEAD-->
         <!-- BEGIN PAGE CONTENT BODY -->
         <div class="page-content">
@@ -72,6 +74,13 @@ License: You must have a valid license purchased only from themeforest(the above
                     <div class="alert alert-success alert-dismissible" role="alert">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         {{ Session::get('updateUser') }}
+                    </div>
+                @endif
+
+                @if(Session::has("email.exists"))
+                    <div class="alert alert-danger alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <strong>Erro!</strong> {{ Session::get("email.exists") }}
                     </div>
                 @endif
                 <div class="page-content-inner">
@@ -836,18 +845,17 @@ License: You must have a valid license purchased only from themeforest(the above
                                         <div class="col-md-6">
                                             {!! Form::FormGroup('role', $errors) !!}
                                             <label class="control-label">Cargo</label>
-                                            <select class="form-control" name="role"
-                                                    data-placeholder="Selecione seu cargo"
-                                                    tabindex="1" readonly>
-                                                @if(Auth::getUser()->person)
-                                                    @foreach($roles as $role)
-                                                        <option value="{{  $role->id }}"
-                                                            @if(Auth::getUser()->person->role_id == $role->id) selected @endif>
-                                                            {{ $role->name }}
-                                                        </option>
-                                                    @endforeach
-                                                @else <option value="3">Visitante</option> @endif
-                                            </select>
+
+                                                <div class="input-group" data-date-format="dd/mm/yyyy">
+                                                    <span class="input-group-addon">
+                                                            <i class="fa fa-suitcase font-blue"></i>
+                                                    </span>
+
+                                                    <input type="text" class="form-control"
+                                                           value="{{ $role }}"
+                                                           name="role" readonly required>
+                                                </div>
+
                                             {!! Form::error('role', $errors) !!}
                                             {!! Form::endFormGroup() !!}
                                         </div>
@@ -876,10 +884,10 @@ License: You must have a valid license purchased only from themeforest(the above
                                         <div class="col-md-6">
                                             {!! Form::FormGroup('rg', $errors) !!}
                                             <label class="control-label">RG</label>
-                                            <input type="text" placeholder="123.123.123-12"
+                                            <input type="text" placeholder="12312312312"
                                                    value="{{ $user->rg }}"
 
-                                                   name="rg" id="rg" class="form-control" />
+                                                   name="rg" id="rg" class="form-control" maxlength="9" minlength="9"/>
                                             {!! Form::error('rg', $errors) !!}
                                             {!! Form::endFormGroup() !!}
                                         </div>
@@ -902,7 +910,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 </option>
 
                                                 <option value="Solteiro"
-                                                        @if($user->maritalStatus == 'Casado')
+                                                        @if($user->maritalStatus == 'Solteiro')
                                                             selected
                                                         @endif >
                                                     Solteiro

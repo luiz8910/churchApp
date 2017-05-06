@@ -53,11 +53,13 @@
             var request = $.ajax({
                 url: "/sendPassword/" + email,
                 method: "POST",
-                //data: email,
+                async: false,
                 dataType: "json"
             });
 
             request.done(function (e) {
+                console.log("done");
+                console.log(e);
 
                 if(e.status)
                 {

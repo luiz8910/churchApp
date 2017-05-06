@@ -67,10 +67,12 @@ class UsersController extends Controller
         if(Auth::getUser()->person)
         {
             $user = Auth::getUser()->person;
+            $role = $user->role->name;
         }
         else{
             $user = Auth::getUser()->visitors->first();
             $changePass = false;
+            $role = "Visitante";
         }
 
         $state = $this->stateRepository->all();
@@ -87,8 +89,6 @@ class UsersController extends Controller
 
         $countPerson[] = $this->countPerson();
 
-        $roles = $this->roleRepository->findWhereNotIn('name', ['Visitante']);
-
         $countGroups[] = $this->countGroups();
 
         $notify = $this->notify();
@@ -97,49 +97,10 @@ class UsersController extends Controller
 
         $adults = $this->personRepository->findWhere(['tag' => 'adult', 'gender' => $gender]);
 
-        return view('users.myAccount', compact('state', 'user', 'changePass', 'countPerson', 'roles', 'countGroups',
+        return view('users.myAccount', compact('state', 'user', 'changePass', 'countPerson', 'role', 'countGroups',
             'notify', 'qtde', 'adults'));
     }
 
-    public function teste()
-    {
-        $state = $this->stateRepository->all();
-
-        if(\Auth::getUser()->person)
-        {
-            $dateBirth = $this->formatDateView(\Auth::getUser()->person->dateBirth);
-
-            $gender = \Auth::getUser()->person->gender == 'M' ? 'F' : 'M';
-        }
-        else{
-            $dateBirth = $this->formatDateView(\Auth::getUser()->visitors->first()->dateBirth);
-
-            $gender = \Auth::getUser()->visitors->first()->gender == 'M' ? 'F' : 'M';
-        }
-
-        $changePass = true;
-
-        if (\Auth::getUser()->facebook_id != null || \Auth::getUser()->linkedin_id != null
-            || \Auth::getUser()->google_id != null || \Auth::getUser()->twitter_id != null
-        ) {
-            $changePass = false;
-        }
-
-        $countPerson[] = $this->countPerson();
-
-        $roles = $this->roleRepository->findWhereNotIn('name', ['Visitante']);
-
-        $countGroups[] = $this->countGroups();
-
-        $notify = $this->notify();
-
-        $qtde = count($notify) or 0;
-
-        $adults = $this->personRepository->findWhere(['tag' => 'adult', 'gender' => $gender]);
-
-        return view('users.myAccount', compact('state', 'dateBirth', 'changePass', 'countPerson', 'roles', 'countGroups',
-            'notify', 'qtde', 'adults'));
-    }
 
     public function store(UserCreateRequest $request)
     {
@@ -168,6 +129,17 @@ class UsersController extends Controller
 
         $email = $email["email"];
 
+        $user = User::select('id')->where('email', $email)->first() or null;
+
+        if($user)
+        {
+            \Session::flash("email.exists", "Existe uma conta associada para o email informado (" .$email. ")");
+
+            $request->flashExcept('password');
+
+            return redirect()->route("users.myAccount")->withInput();
+        }
+
         $data['dateBirth'] = $this->formatDateBD($data['dateBirth']);
 
         /*
@@ -182,11 +154,17 @@ class UsersController extends Controller
             $this->updateMaritalStatus($data['partner'], $id);
         }
 
-        $data["role_id"] = $data["role"];
+        if(Auth::getUser()->person)
+        {
+            $user = Auth::getUser()->person;
+            $role = $user->role->name;
 
-        $visitor_id = $this->roleRepository->findByField('name', 'Visitante')->first()->id;
+            $data["role"] = $role;
+        }else{
+            $data["role"] = "Visitante";
+        }
 
-        if($data["role"] == $visitor_id)
+        if($data["role"] == "Visitante")
         {
             $this->visitorRepository->update($data, $id);
         }else{

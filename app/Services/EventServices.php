@@ -188,7 +188,7 @@ class EventServices
             ->orderBy('event_person.eventDate', 'asc')
             ->orderBy('events.startTime', 'asc')
             ->distinct()
-            ->get();   
+            ->get();
     }
 }
 

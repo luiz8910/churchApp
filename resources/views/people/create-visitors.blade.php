@@ -257,7 +257,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 <i class="fa fa-user font-green"></i>
                                                             </span>
                                                         <input type="text" id="rg" name="rg" class="form-control"
-                                                               placeholder="XX.XXX.XXX-X" value="{{ old('rg') }}">
+                                                               placeholder="XX.XXX.XXX-X" value="{{ old('rg') }}" maxlength="9" minlength="9">
                                                     </div>
                                                 </div>
                                             </div>
