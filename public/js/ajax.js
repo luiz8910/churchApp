@@ -1,4 +1,43 @@
 
+    $(".btnSend").click(function (e) {
+
+        if(!$(".btnSend").attr('disabled'))
+        {
+            var email = $("#recoverEmail").val();
+            var request = $.ajax({
+                url: "/sendPassword/" + email,
+                method: "POST",
+                dataType: "json"
+            });
+
+            request.done(function (e) {
+                console.log("done");
+                console.log(e);
+
+                if(e.status)
+                {
+                    $("#emailSent").css("display", "block");
+                }
+                else{
+                    $("#emailNotSent").css("display", "block");
+                }
+
+            });
+
+            request.fail(function (e) {
+                console.log("fail");
+                console.log(e);
+                $("#emailNotSent").css("display", "block");
+            })
+        }
+
+        e.stopImmediatePropagation();
+
+        return false;
+    });
+
+
+
 
     function checkInEvent(id)
     {
@@ -45,40 +84,7 @@
 
     }
 
-    $("#recoverPassword").submit(function () {
 
-        if(!$("#btnSend").attr('disabled'))
-        {
-            var email = $("#recoverEmail").val();
-            var request = $.ajax({
-                url: "/sendPassword/" + email,
-                method: "POST",
-                async: false,
-                dataType: "json"
-            });
-
-            request.done(function (e) {
-                console.log("done");
-                console.log(e);
-
-                if(e.status)
-                {
-                    $("#emailSent").css("display", "block");
-                }
-                else{
-                    $("#emailNotSent").css("display", "block");
-                }
-            });
-
-            request.fail(function (e) {
-                console.log("fail");
-                console.log(e);
-                $("#emailNotSent").css("display", "block");
-            })
-        }
-
-        return false;
-    });
 
     $("#recoverEmail").change(function () {
         console.log("email");

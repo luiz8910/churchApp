@@ -38,6 +38,7 @@ $factory->define(\App\Models\Person::class, function (\Faker\Generator $faker){
         'lastName' => $faker->lastName,
         'imgProfile' => 'uploads/profile/noimage.png',
         'tel' => $faker->numerify('#############'),
+        'church_id' => 1,
         'role_id' => 1,
         'gender' => 'M',
         'dateBirth' => '1989-05-26',
@@ -53,13 +54,15 @@ $factory->define(\App\Models\Person::class, function (\Faker\Generator $faker){
 });
 
 $factory->define(\App\Models\Church::class, function (\Faker\Generator $faker){
+
    return [
        'name' => $faker->name,
        'email' => $faker->safeEmail,
        'responsible_id' => 1,
-       'tel' =>  $faker->numerify('#############'),
+       'tel' => $faker->numerify('#############'),
        'cnpj' => '94121653000172'
    ];
+
 });
 
 $factory->define(\App\Models\Responsible::class, function (\Faker\Generator $faker){

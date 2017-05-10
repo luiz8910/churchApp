@@ -27,18 +27,23 @@ class resetPassword extends Mailable
      * @var
      */
     public $time;
+    /**
+     * @var null
+     */
+    public $password;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(User $user, $url, $today, $time)
+    public function __construct(User $user, $url, $today, $time, $password = null)
     {
         $this->user = $user;
         $this->url = $url;
         $this->today = $today;
         $this->time = $time;
+        $this->password = $password;
     }
 
     /**
@@ -48,9 +53,16 @@ class resetPassword extends Mailable
      */
     public function build()
     {
+        $text = 'Recuperação de Senha';
+
+        if($this->password)
+        {
+            $text = "Sua Nova Senha";
+        }
+
         return $this
             ->from('contato@beconnect.com.br')
-            ->subject('Recuperação de Senha')
+            ->subject($text)
             ->view("emails.resetEmail");
     }
 }

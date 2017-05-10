@@ -145,7 +145,6 @@ License: You must have a valid license purchased only from themeforest(the above
                                             <tbody>
                                             @foreach($adults as $item)
                                                 <tr>
-                                                    <td class="visible-xs"></td>
                                                     <td> <img src="{{ $item->imgProfile }}" style="width: 50px; height: 50px;"> </td>
                                                     <td>
                                                         <a href="{{ route('person.edit', ['person' => $item->id]) }}">
@@ -160,9 +159,9 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         {!! Form::open(['route' => ['person.destroy', 'person' => $item->id],
                                                                 'method' => 'DELETE', 'id' => 'form-'.$deleteForm]) !!}
 
-                                                        <a href="" class="btn btn-danger btn-sm"
+                                                        <a href="" class="btn btn-danger btn-sm btn-circle"
                                                            onclick='event.preventDefault();document.getElementById("form-{{ $deleteForm }}").submit();'>
-                                                            <i class="fa fa-close"></i>
+                                                            <i class="fa fa-trash"></i>
                                                             Excluir
                                                         </a>
 

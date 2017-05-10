@@ -17,6 +17,8 @@ class CreatePeopleTable extends Migration
             $table->increments('id');
 			$table->string('name');
 			$table->string('lastName')->nullable();
+            $table->integer('church_id')->nullable()->unsigned();
+            $table->foreign('church_id')->references('id')->on('churches');
 			$table->integer('role_id')->nullable()->unsigned();
             $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
 			$table->string('imgProfile')->nullable();

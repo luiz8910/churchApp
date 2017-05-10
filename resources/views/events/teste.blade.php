@@ -290,10 +290,10 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                             {!! Form::open(['route' => ['event.destroy', 'event' => $event->id],
                                                                                     'method' => 'DELETE', 'id' => 'form-'.$deleteForm]) !!}
 
-                                                                            <a href="" class="btn btn-danger btn-sm"
+                                                                            <a href="" class="btn btn-danger btn-sm btn-circle"
                                                                                title="Excluir evento"
                                                                                onclick='event.preventDefault();document.getElementById("form-{{ $deleteForm }}").submit();'>
-                                                                                <i class="fa fa-close"> Excluir</i>
+                                                                                <i class="fa fa-trash"> Excluir</i>
                                                                             </a>
 
                                                                             {!! Form::close() !!}

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\VisitorRepository;
 use App\Traits\CountRepository;
 use App\Traits\DateRepository;
 use App\Repositories\EventRepository;
@@ -32,17 +33,28 @@ class DashboardController extends Controller
      * @var PersonRepository
      */
     private $personRepository;
+    /**
+     * @var VisitorRepository
+     */
+    private $visitorRepository;
 
     public function __construct(EventRepository $eventRepository, GroupRepository $groupRepository,
-                                PersonRepository $personRepository)
+                                PersonRepository $personRepository, VisitorRepository $visitorRepository)
     {
         $this->eventRepository = $eventRepository;
         $this->groupRepository = $groupRepository;
         $this->personRepository = $personRepository;
+        $this->visitorRepository = $visitorRepository;
     }
 
     public function index()
     {
+
+        if(!Auth::getUser()->person)
+        {
+            return $this->visitors();
+        }
+
         $countPerson[] = $this->countPerson();
 
         $countGroups[] = $this->countGroups();
@@ -51,9 +63,22 @@ class DashboardController extends Controller
 
         $notify = $this->notify();
 
-        $qtde = count($notify);
+        $qtde = count($notify) or 0;
 
-        $groups = null;
+        $id = Auth::getUser()->person_id;
+
+        $person = $this->personRepository->find($id);
+
+        $groups = $person->groups()->paginate() or null;
+
+        if($groups)
+        {
+            foreach ($groups as $group)
+            {
+                $group->sinceOf = $this->formatDateView($group->sinceOf);
+                $countMembers[] = count($group->people->all());
+            }
+        }
 
         if (count($events) == 0)
         {
@@ -61,18 +86,6 @@ class DashboardController extends Controller
                 'countMembers', 'street', 'groups'));
         }
 
-
-        $id = Auth::getUser()->person_id;
-
-        $person = $this->personRepository->find($id);
-
-        $groups = $person->groups()->paginate();
-
-        foreach ($groups as $group)
-        {
-            $group->sinceOf = $this->formatDateView($group->sinceOf);
-            $countMembers[] = count($group->people->all());
-        }
 
         $nextEvent = $this->getNextEvent();
 
@@ -174,6 +187,43 @@ class DashboardController extends Controller
             'days', 'nextMonth', 'nextMonth2', 'allEvents', 'countMembers', 'nextEvent', 'location', 'street',
             'nextMonth3', 'nextMonth4', 'nextMonth5', 'nextMonth6', 'prevMonth', 'prevMonth2',
             'prevMonth3', 'prevMonth4', 'prevMonth5', 'prevMonth6','allMonths', 'allDays', 'groups'));
+    }
+
+    public function visitors()
+    {
+        $countPerson[] = $this->countPerson();
+
+        $countGroups[] = $this->countGroups();
+
+        $events = $this->eventRepository->all();
+
+        $notify = $this->notify();
+
+        $qtde = count($notify) or 0;
+
+        $groups = null;
+
+        if (count($events) == 0)
+        {
+            return view('dashboard.visitors', compact('countPerson', 'countGroups', 'events', 'notify', 'qtde',
+                'countMembers', 'street', 'groups'));
+        }
+
+        $groups = $this->groupRepository->paginate();
+
+        foreach ($groups as $group)
+        {
+            $group->sinceOf = $this->formatDateView($group->sinceOf);
+            $countMembers[] = count($group->people->all());
+        }
+
+        $allMonths = AgendaServices::allMonths();
+
+        //Recupera a semana atual
+        $days = AgendaServices::findWeek();
+        
+        return view('dashboard.visitors', compact('countPerson', 'countGroups', 'events', 'notify', 'qtde',
+            'street', 'groups', 'countMembers', 'allMonths', 'days'));
     }
 
     public function json()

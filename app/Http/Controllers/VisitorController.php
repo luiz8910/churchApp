@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PersonCreateRequest;
+use App\Models\User;
 use App\Repositories\RoleRepository;
 use App\Repositories\StateRepository;
 use App\Repositories\VisitorRepository;
@@ -175,6 +176,8 @@ class VisitorController extends Controller
     {
         $data = $request->all();
 
+        $oldEmail = $this->repository->find($id)->first()->email;
+
         //Formatação correta da data
         $data['dateBirth'] = $this->formatDateBD($data['dateBirth']);
 
@@ -190,7 +193,26 @@ class VisitorController extends Controller
             $this->updateMaritalStatus($data['partner'], $id, 'visitors');
         }
 
+        $user = User::select('id')->where('email', $data["email"])->first() or null;
+
+        if($user)
+        {
+            \Session::flash("email.exists", "Existe uma conta associada para o email informado (" .$data["email"]. ")");
+
+            $request->flashExcept('password');
+
+            return redirect()->back()->withInput();
+        }
+
         $this->repository->update($data, $id);
+
+        DB::table("visitors")
+            ->where('email', $oldEmail)
+            ->update(['email' => $data["email"]]);
+
+        DB::table('users')
+            ->where('email', $oldEmail)
+            ->update(['email' => $data["email"]]);
 
         return redirect()->route('visitors.index');
     }

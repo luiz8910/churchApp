@@ -421,10 +421,16 @@
                                                         <td align="center">
                                                             <table border="0" cellspacing="0" cellpadding="0">
                                                                 <tr>
-                                                                    <td>
-                                                                        <a href="{{ $url }}passResetView/{{ $user->email }}"
-                                                                           class="button button--green" target="_blank">Recuperar sua Senha</a>
-                                                                    </td>
+                                                                    @if(isset($password))
+                                                                        <td>
+                                                                            <label for="">{{ $password }}</label>
+                                                                        </td>
+                                                                    @else
+                                                                        <td>
+                                                                            <a href="{{ $url }}passResetView/{{ $user->email }}"
+                                                                               class="button button--green" target="_blank">Recuperar sua Senha</a>
+                                                                        </td>
+                                                                    @endif
                                                                 </tr>
                                                             </table>
                                                         </td>

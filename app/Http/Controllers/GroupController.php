@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Mail\resetPassword;
 use App\Models\Event;
 use App\Models\Group;
 use App\Models\User;
@@ -14,6 +15,7 @@ use App\Traits\NotifyRepository;
 use App\Repositories\PersonRepository;
 use App\Repositories\RoleRepository;
 use App\Repositories\StateRepository;
+use App\Traits\PeopleTrait;
 use App\Traits\UserLoginRepository;
 use App\Repositories\UserRepository;
 use App\Services\GroupServices;
@@ -21,11 +23,13 @@ use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use File;
+use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
 
 class GroupController extends Controller
 {
-    use DateRepository, CountRepository, FormatGoogleMaps, UserLoginRepository, NotifyRepository;
+    use DateRepository, CountRepository, FormatGoogleMaps, UserLoginRepository,
+        NotifyRepository, PeopleTrait;
     /**
      * @var GroupRepository
      */
@@ -353,17 +357,44 @@ class GroupController extends Controller
 
     public function newMemberToGroup(Request $request, $group)
     {
-        $user = $this->personRepository->create($request->except('email'));
+        $data = $request->except('email');
+
+        $data["dateBirth"] = $this->formatDateBD($data["dateBirth"]);
+
+        $data["role_id"] = $this->roleRepository->findByField('name', 'Membro')->first()->id;
+
+        $data["imgProfile"] = "uploads/profile/noimage.png";
+
+        $user = $this->personRepository->create($data);
 
         $user->groups()->attach($group);
 
         $email = $request->only('email');
 
-        $email = implode('=>', $email);
+        $email = $email["email"];
 
-        $this->createUserLogin($user->id, $email);
+        $church = $request->user()->church_id;
 
-        \Session::flash('group.deleteMember', 'Usuário criado com sucesso');
+        $this->updateTag($this->tag($data['dateBirth']), $user->id, 'people');
+
+        $password = $this->randomPassword();
+
+        $this->createUserLogin($user->id, $password, $email, $church);
+
+        $url = env('APP_URL');
+
+        $today = date("d/m/Y");
+
+        $time = date("H:i");
+
+        $u = User::find($user->user->id);
+
+        Mail::to($u)
+            ->send(new resetPassword(
+                $u, $url, $today, $time, $password
+            ));
+
+        \Session::flash('group.deleteMember', 'Sucesso!, um email com a senha foi enviado para ' . $email);
 
         return redirect()->route('group.edit', ['id' => $group]);
     }

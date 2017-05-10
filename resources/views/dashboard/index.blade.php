@@ -207,6 +207,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <th> Inicio em </th>
                                                     <th> Quantidade </th>
                                                     <th> Opções </th>
+
                                                 </tr>
                                                 </thead>
 
@@ -220,17 +221,17 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 <td> {{ $item->sinceOf }} </td>
                                                                 <td> <span class="badge badge-info">{{ $countMembers[$i] }}</span></td>
 
-                                                                @if(Auth::getUser()->person && Auth::getUser()->person->role_id == 1)
+                                                                @if(Auth::getUser()->person)
 
-                                                                    <?php $deleteForm = "delete-".$item->id; ?>
+                                                                    <?php $deleteForm = "delete-" . Auth::getUser()->person->id; ?>
                                                                     <td id="{{ $deleteForm }}">
-                                                                        {!! Form::open(['route' => ['group.destroy', 'group' => $item->id],
+                                                                        {!! Form::open(['route' => ['group.deleteMember', 'group' => $item->id, 'member' => Auth::getUser()->person->id],
                                                                                 'method' => 'DELETE', 'id' => 'form-'.$deleteForm]) !!}
 
-                                                                        <a href="" class="btn btn-danger btn-sm" title="Excluir grupo"
+                                                                        <a href="" class="btn btn-danger btn-sm btn-circle"
+                                                                           title="Excluir membro do grupo"
                                                                            onclick='event.preventDefault();document.getElementById("form-{{ $deleteForm }}").submit();'>
-                                                                            <i class="fa fa-close"></i>
-                                                                            Sair
+                                                                            <i class="fa fa-trash"></i>
                                                                         </a>
 
                                                                         {!! Form::close() !!}

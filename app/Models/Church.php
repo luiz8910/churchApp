@@ -15,7 +15,7 @@ class Church extends Model implements Transformable
         'street', 'neighborhood', 'city', 'zipCode', 'state'
     ];
 
-    protected $dates = 'deleted_at';
+    protected $dates = ['deleted_at'];
 
     public function visitors()
     {

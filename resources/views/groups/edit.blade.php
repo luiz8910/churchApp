@@ -440,20 +440,6 @@ License: You must have a valid license purchased only from themeforest(the above
                                             {!! Form::close() !!}
                                         </div>
 
-                                        <div class="btn-group">
-                                            <!-- Button trigger modal -->
-                                            <button type="button" class="btn sbold green" data-toggle="modal"
-                                                    id="sample_editable_1_new" data-target="#myModal">
-                                                <i class="fa fa-plus"></i> Novo
-                                            </button>
-                                        </div>
-                                        <div class="btn-group">
-                                            <!-- Button trigger modal -->
-                                            <button type="button" class="btn btn-primary" data-toggle="modal"
-                                                    id="sample_editable_1_new" data-target="#addMemberModal">
-                                                <i class="fa fa-user"></i> Novo Membro
-                                            </button>
-                                        </div>
 
                                         <div class="btn-group">
                                             <a class="btn blue btn-outline btn-circle btn-sm" href="javascript:;" data-toggle="dropdown" data-hover="dropdown" data-close-others="true"> Ações
@@ -540,10 +526,10 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             {!! Form::open(['route' => ['group.deleteMember', 'group' => $group->id, 'member' => $person->id],
                                                                     'method' => 'DELETE', 'id' => 'form-'.$deleteForm]) !!}
 
-                                                            <a href="" class="btn btn-danger btn-sm"
+                                                            <a href="" class="btn btn-danger btn-sm btn-circle"
                                                                title="Excluir membro do grupo"
                                                                onclick='event.preventDefault();document.getElementById("form-{{ $deleteForm }}").submit();'>
-                                                                <i class="fa fa-close"></i>
+                                                                <i class="fa fa-trash"></i>
                                                             </a>
 
                                                             {!! Form::close() !!}
@@ -675,6 +661,7 @@ License: You must have a valid license purchased only from themeforest(the above
                         </div>
                     </div>
 
+
                     <!-- Modal -->
                     <div class="modal fade" id="addMemberModal" tabindex="-1" role="dialog"
                          aria-labelledby="addMemberModalLabel">
@@ -697,12 +684,12 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <br>
                                                 <label>Nome</label>
                                                 <div class="input-group">
-                                                                            <span class="input-group-addon">
-                                                                                <i class="fa fa-user font-blue"></i>
-                                                                            </span>
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-user font-blue"></i>
+                                                    </span>
                                                     <input type="text" name="name"
                                                            class="form-control"
-                                                           placeholder="Entre com o nome aqui">
+                                                           placeholder="Digite o nome aqui" required>
                                                 </div>
                                             </div>
 
@@ -711,12 +698,12 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <br>
                                                 <label>Email</label>
                                                 <div class="input-group">
-                                                                            <span class="input-group-addon">
-                                                                                <i class="fa fa-envelope font-blue"></i>
-                                                                            </span>
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-envelope font-blue"></i>
+                                                    </span>
                                                     <input type="email" name="email"
                                                            class="form-control"
-                                                           placeholder="Entre com o email aqui">
+                                                           placeholder="Digite o email aqui" required>
                                                 </div>
                                             </div>
 
@@ -725,13 +712,26 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <br>
                                                 <label>Telefone</label>
                                                 <div class="input-group">
-                                                                            <span class="input-group-addon">
-                                                                                <i class="fa fa-phone font-blue"></i>
-                                                                            </span>
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-phone font-blue"></i>
+                                                    </span>
                                                     <input type="text" name="tel"
-                                                           class="form-control"
-                                                           placeholder="Entre com o telefone aqui">
+                                                           class="form-control tel"
+                                                           placeholder="Digite o telefone aqui" required>
                                                 </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <br>
+                                                <label>Data de Nasc. - Sem Barras</label>
+                                                <div class="input-group date date-picker" data-date-format="dd/mm/yyyy">
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-calendar font-blue"></i>
+                                                    </span>
+                                                    <input type="text" class="form-control input-date" name="dateBirth"
+                                                           placeholder="dd/mm/aaaa" maxlength="10" required>
+                                                </div>
+
                                             </div>
 
                                         </div>

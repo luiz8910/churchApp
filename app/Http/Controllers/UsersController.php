@@ -131,7 +131,9 @@ class UsersController extends Controller
 
         $user = User::select('id')->where('email', $email)->first() or null;
 
-        if($user)
+        $oldMail = $this->repository->find($id)->email;
+
+        if($user && $oldMail != $email)
         {
             \Session::flash("email.exists", "Existe uma conta associada para o email informado (" .$email. ")");
 
@@ -262,13 +264,12 @@ class UsersController extends Controller
 
         $time = date("H:i");
 
-        //dd($today);
-
         if (count($user) > 0) {
+            $u = User::find($user->first()->id);
 
-            Mail::to(User::find($user->first()->id))
+            Mail::to($u)
                 ->send(new resetPassword(
-                    User::find($user->first()->id), $url, $today, $time
+                    $u, $url, $today, $time
                 ));
 
             return json_encode(['status' => true]);

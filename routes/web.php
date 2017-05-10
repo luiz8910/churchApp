@@ -50,6 +50,8 @@ Route::group(['middleware' => 'auth'], function (){
 
     Route::post('visitor-imgProfile/{id}', 'VisitorController@imgEditProfile')->name('visitor.imgEditProfile');
 
+    Route::delete('deleteMemberGroup/{group}/{member}', 'GroupController@deleteMember')->name('group.deleteMember');
+
     //Eventos
 
     Route::get('events/create', 'EventController@create')->name('event.create');
@@ -98,8 +100,6 @@ Route::group(["middleware" => "check.role:1"], function () {
 
     Route::post('groups/addMembers/{group}', 'GroupController@addMembers')->name('group.addMembers');
 
-    Route::delete('deleteMemberGroup/{group}/{member}', 'GroupController@deleteMember')->name('group.deleteMember');
-
     Route::post('newMember/{group}', 'GroupController@newMemberToGroup')->name('group.newMember');
 
     Route::get('group/deleteManyUsers/{id}', 'GroupController@destroyManyUsers')->name('group.destroyManyUsers');
@@ -147,7 +147,7 @@ Route::get("/emailTest/{email}", "UsersController@hasEmail");
 
 Route::get("/emailTest-edit/{email}/{id}", "UsersController@emailTestEdit");
 
-Route::get("/forgotPassword", "UsersController@forgotPassword")->name("forgot.password");
+Route::any("/forgotPassword", "UsersController@forgotPassword")->name("forgot.password");
 
 //Instant Search
 Route::get('/search/{text}', "SearchController@search");

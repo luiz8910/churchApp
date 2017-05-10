@@ -233,11 +233,13 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             <thead>
                                                             <tr class="uppercase">
                                                                 <th>
-                                                                    <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
-                                                                        <input type="checkbox" name="events" class="checkboxes check-model" id="check-0"
-                                                                               value="0" />
-                                                                        <span></span>
-                                                                    </label>
+                                                                    @if(Auth::getUser()->person && Auth::getUser()->person->role_id == 1)
+                                                                        <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                                                            <input type="checkbox" name="events" class="checkboxes check-model" id="check-0"
+                                                                                   value="0" />
+                                                                            <span></span>
+                                                                        </label>
+                                                                    @endif
                                                                 </th>
                                                                 <th class="printable-table-header"> Nome </th>
                                                                 <th class="printable-table-header"> Frequência </th>
@@ -252,7 +254,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             @foreach($events as $event)
                                                                 <tr class="printable-table-tr">
                                                                     <td>
-                                                                        @if(Auth::getUser()->person->role_id == 1)
+                                                                        @if(Auth::getUser()->person && Auth::getUser()->person->role_id == 1)
                                                                             <fieldset>
                                                                                 <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
                                                                                     <input type="checkbox" name="events" class="checkboxes check-model" id="check-{{ $event->id }}"
@@ -284,16 +286,16 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                         @endif
                                                                     </td>
 
-                                                                    @if(Auth::getUser()->person->role_id == 1)
+                                                                    @if(Auth::getUser()->person && Auth::getUser()->person->role_id == 1)
                                                                         <?php $deleteForm = "delete-" . $event->id; ?>
                                                                         <td id="{{ $deleteForm }}">
                                                                             {!! Form::open(['route' => ['event.destroy', 'event' => $event->id],
                                                                                     'method' => 'DELETE', 'id' => 'form-'.$deleteForm]) !!}
 
-                                                                            <a href="" class="btn btn-danger btn-sm"
+                                                                            <a href="" class="btn btn-danger btn-sm btn-circle"
                                                                                title="Excluir evento"
                                                                                onclick='event.preventDefault();document.getElementById("form-{{ $deleteForm }}").submit();'>
-                                                                                <i class="fa fa-close"> Excluir</i>
+                                                                                <i class="fa fa-trash"> Excluir</i>
                                                                             </a>
 
                                                                             {!! Form::close() !!}
@@ -3939,7 +3941,6 @@ License: You must have a valid license purchased only from themeforest(the above
 <!-- END PAGE LEVEL PLUGINS -->
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
 <script src="../assets/pages/scripts/search.min.js" type="text/javascript"></script>
-<script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
 <script src="../js/agenda.js"></script>
 
 

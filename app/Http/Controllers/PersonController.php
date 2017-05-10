@@ -23,6 +23,7 @@ use App\Traits\PeopleTrait;
 use App\Traits\UserLoginRepository;
 use App\Repositories\UserRepository;
 use App\Models\Visitor;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -215,6 +216,18 @@ class PersonController extends Controller
 
         $id = $this->repository->create($data)->id;
 
+        /*
+         * Se a pessoa for casada e $data['partner'] = 0 então o parceiro é de fora da igreja
+         * Se a pessoa não for casada e $data['partner'] = 0 então não há parceiro para incluir
+         * Se a pessoa for casada e $data['partner'] != "0" então a pessoa é casada com o id informado
+         *
+        */
+        if ($data['maritalStatus'] != 'Casado') {
+            $data['partner'] = null;
+        } else if ($data['partner'] != "0") {
+            $this->updateMaritalStatus($data['partner'], $id, 'people');
+        }
+
         $church_id = $request->user()->id;
 
         if ($this->repository->isAdult($data['dateBirth'])) {
@@ -329,6 +342,14 @@ class PersonController extends Controller
         */
         if ($data['maritalStatus'] != 'Casado') {
             $data['partner'] = null;
+
+            $status = $this->repository->find($id);
+
+            if($status->maritalStatus == "Casado")
+            {
+                $this->updateMaritalSingleStatus($status->partner, $data["maritalStatus"], 'people');
+            }
+
         } else if ($data['partner'] != "0") {
             $this->updateMaritalStatus($data['partner'], $id, 'people');
         }

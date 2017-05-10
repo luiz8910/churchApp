@@ -36,7 +36,7 @@ License: You must have a valid license purchased only from themeforest(the above
 <div class="content">
 
     <!-- BEGIN FORGOT PASSWORD FORM -->
-    <form action="" id="recoverPassword" class="forget-form" style="display: block !important;">
+    <form id="recoverPassword" class="forget-form" style="display: block !important;" method="POST">
         <input type="hidden" value="{{ csrf_token() }}" />
 
         <h3 class="font-green">Esqueceu sua senha ?</h3>
@@ -47,7 +47,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
         <div class="form-actions">
             <button type="button" id="back-btn" class="btn btn-default" onclick="back()">Voltar</button>
-            <button type="submit" id="btnSend" class="btn btn-success uppercase pull-right" disabled>Enviar</button>
+            <button type="button" id="btnSend" class="btn btn-success uppercase pull-right btnSend" disabled>Enviar</button>
         </div>
 
         <div class="alert alert-danger alert-dismissible" role="alert" id="emailNotFound" style="display: none;">
