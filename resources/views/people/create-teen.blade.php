@@ -148,33 +148,6 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                         <div class="row">
                                             <div class="col-md-6">
-                                                <div class="form-group" id="form-email">
-                                                    <label>Email</label>
-                                                    <div class="input-group input-icon right">
-                                                            <span class="input-group-addon">
-                                                                <i class="fa fa-envelope font-blue" id="icon-email"></i>
-                                                            </span>
-                                                        <input type="text" name="email" id="email" class="form-control"
-                                                               placeholder="email@dominio.com" value="{{ old('email') }}" required>
-                                                        <i class="fa fa-check font-green" id="icon-success-email" style="display: none;"></i>
-                                                        <i class="fa fa-exclamation font-red" id="icon-error-email" style="display: none;"></i>
-                                                    </div>
-                                                    <span class="help-block" id="emailExists" style="display: none; color: red;">
-                                                        <i class="fa fa-block"></i>
-                                                        Já existe uma conta associada a este email
-                                                    </span>
-                                                    <span class="help-block" id="invalidEmail" style="display: none; color: red;">
-                                                        <i class="fa fa-block"></i>
-                                                        Email em formato incorreto
-                                                    </span>
-                                                    <span class="help-block" id="validEmail" style="display: none; color: green;">
-                                                        <i class="fa fa-check"></i>
-                                                        Email Válido
-                                                    </span>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="exampleInputPassword1">Celular</label>
                                                     <div class="input-group">
@@ -186,9 +159,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="exampleInputPassword1">Telefone</label>
@@ -202,6 +173,9 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 </div>
 
                                             </div>
+                                        </div>
+
+                                        <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Gênero</label>
@@ -219,9 +193,6 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 </div>
                                             </div>
 
-                                        </div>
-
-                                        <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Data de Nasc.</label>
@@ -235,6 +206,11 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                                 </div>
                                             </div>
+
+                                        </div>
+
+                                        <div class="row">
+
                                             <div class="col-md-6">
                                                 <div class="form-group" id="form-cpf">
                                                     <label>CPF (Sem pontos ou traços)</label>
@@ -251,9 +227,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <div class="help-block small-error">CPF Inválido</div>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>RG (Sem pontos ou traços)</label>
@@ -266,6 +240,9 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     </div>
                                                 </div>
                                             </div>
+                                        </div>
+
+                                        <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Cargo</label>
@@ -284,20 +261,20 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 </div>
 
                                             </div>
-                                        </div>
 
-                                        <div class="row">
+
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="">Estado Civil</label>
                                                     <select name="maritalStatus" id="maritalStatus" class="form-control" required>
-                                                        <option value="">Selecione</option>
-                                                        <option value="Casado" @if(old('maritalStatus') == "Casado") selected @endif>
-                                                            Casado
-                                                        </option>
                                                         <option value="Solteiro" @if(old('maritalStatus') == "Solteiro") selected @endif>
                                                             Solteiro
                                                         </option>
+
+                                                        <option value="Casado" @if(old('maritalStatus') == "Casado") selected @endif>
+                                                            Casado
+                                                        </option>
+
                                                         <option value="Divorciado" @if(old('maritalStatus') == "Divorciado") selected @endif>
                                                             Divorciado
                                                         </option>
@@ -305,6 +282,9 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 </div>
                                             </div>
 
+                                        </div>
+
+                                        <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group" id="form-partner" hidden>
                                                     <label>Nome Cônjuge</label>
@@ -318,7 +298,6 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     </select>
                                                 </div>
                                             </div>
-
                                         </div>
 
                                         <br>
@@ -338,7 +317,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             <span class="input-group-addon">
                                                                 <i class="fa fa-male font-blue"></i>
                                                             </span>
-                                                        <select name="father_id" class="selectpicker form-control"
+                                                        <select name="father_id" id="father_id" class="selectpicker form-control"
                                                             data-live-search="true" data-size="8">
 
                                                             <option value="">Selecione</option>
@@ -362,7 +341,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             <span class="input-group-addon">
                                                                 <i class="fa fa-female font-red"></i>
                                                             </span>
-                                                        <select name="mother_id" class="selectpicker form-control"
+                                                        <select name="mother_id" id="mother_id" class="selectpicker form-control"
                                                                 data-live-search="true" data-size="8">
 
                                                             <option value="">Selecione</option>
@@ -583,52 +562,6 @@ License: You must have a valid license purchased only from themeforest(the above
                                             </div>
                                         </div>
 
-                                        <h3>Senha</h3>
-
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="">Senha</label>
-                                                    <div class="input-group input-icon right">
-                                                        <span class="input-group-addon">
-                                                            <i class="fa fa-lock font-blue" id="icon-password"></i>
-                                                        </span>
-
-                                                        <input type="password" name="password" id="password"
-                                                               placeholder="Digite sua senha" class="form-control" minlength="6" required>
-
-                                                        <i class="fa fa-check font-green" id="icon-success-password" style="display: none;"></i>
-                                                        <i class="fa fa-exclamation font-red" id="icon-error-password" style="display: none;"></i>
-
-                                                    </div>
-
-                                                    <span class="help-block" id="passDontMatch" style="display: none; color: red;">
-                                                            <i class="fa fa-ban font-red"></i>
-                                                            As senhas não combinam
-                                                        </span>
-
-                                                    <span class="help-block" id="passMatch" style="display: none; color: #3598DC;">
-                                                            <i class="fa fa-check font-blue"></i>
-                                                            Senha válida
-                                                        </span>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="">Confirme sua Senha</label>
-                                                    <div class="input-group">
-                                                        <span class="input-group-addon">
-                                                            <i class="fa fa-lock font-blue"></i>
-                                                        </span>
-
-                                                        <input type="password" id="confirm-password" name="confirm-password"
-                                                               placeholder="Confirme sua senha" class="form-control" required>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
                                     <div class="form-actions">
                                         {!! Form::submit('Enviar', ['class' => 'btn blue', 'id' => 'btn-submit']) !!}

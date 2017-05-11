@@ -18,6 +18,8 @@ Route::group(['middleware' => 'auth'], function (){
 
     Route::resource('person', 'PersonController');
 
+    Route::get('teen-create', 'PersonController@createTeen')->name('teen.create');
+
     Route::get('teen', 'PersonController@teenagers')->name('person.teen');
 
     Route::get('inactive', 'PersonController@inactive')->name('person.inactive');
@@ -128,13 +130,16 @@ Route::get('/person-ajax', 'PersonController@getListPeople');
 
 Route::get('/teen-ajax', 'PersonController@getListTeen');
 
-Route::get('/visitors-ajax', 'PersonController@getListVisitors');
+Route::get('/visitors-ajax', 'VisitorController@getList');
 
 Route::get('/person-excel/{format}', 'PersonController@PersonExcel')->name('person.excel');
 
 Route::get('/teen-excel/{format}', 'PersonController@teenExcel')->name('teen.excel');
 
 Route::get('/visitors-excel/{format}', 'PersonController@visitorsExcel')->name('visitors.excel');
+
+//Ajax
+Route::get('/automatic-cep/{id}', 'PersonController@automaticCep');
 
 //Recuperação de Senha
 Route::get("/passResetView/{email}", "UsersController@passResetView");

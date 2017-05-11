@@ -86,7 +86,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                     </div>
                                     <div class="actions">
                                         <div class="btn-group btn-group-devided">
-                                            <a role="button" class="btn btn-info btn-circle" href="{{ route('person.create') }}" style="margin-top: 2px;">
+                                            <a role="button" class="btn btn-info btn-circle" href="{{ route('teen.create') }}" style="margin-top: 2px;">
                                                 <i class="fa fa-plus"></i>
                                                 <span class="hidden-xs hidden-sm">Novo Membro</span>
                                             </a>

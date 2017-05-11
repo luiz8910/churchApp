@@ -369,11 +369,11 @@ $(function () {
         numberSeparator:'-'
     });
 
-    $("#password").change(function(){
+    $("#password").keyup(function(){
         password(this.value, 'confirm-password');
     });
 
-    $("#confirm-password").change(function () {
+    $("#confirm-password").keyup(function () {
        password(this.value, 'password');
     });
 
@@ -409,6 +409,17 @@ $(function () {
         $("#input-results").focus();
     }*/
 
+     $("#check-parents").click(function () {
+
+         if($("#check-parents").is(':checked'))
+         {
+            $(".parent").attr('hidden', null);
+         }
+         else{
+            $(".parent").attr('hidden', true);
+         }
+
+     });
 
     $("td img").addClass("img-circle");
 

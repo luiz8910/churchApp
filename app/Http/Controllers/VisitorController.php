@@ -14,6 +14,7 @@ use App\Traits\NotifyRepository;
 use App\Traits\PeopleTrait;
 use App\Traits\UserLoginRepository;
 use Carbon\Carbon;
+use File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -256,5 +257,56 @@ class VisitorController extends Controller
             update(['imgProfile' => $imgName]);
 
         return redirect()->back();
+    }
+
+    public function getList()
+    {
+        $header[] = "Nome";
+        $header[] = "CPF";
+        $header[] = "Cargo";
+        $header[] = "Data de Nasc.";
+
+        $i = 0;
+
+        $text = "";
+
+        $church_id = Auth::getUser()->church_id;
+
+        $visitors = $this->repository->findByField('church_id', $church_id);
+
+        while ($i < count($visitors)) {
+            $visitors[$i]->dateBirth = $this->formatDateView($visitors[$i]->dateBirth);
+
+            $visitors[$i]->role_id = "Visitante";
+
+            $x = $i == (count($visitors) - 1) ? "" : ",";
+
+            $text .= '["' . $visitors[$i]->name . ' ' . $visitors[$i]->lastName . '","' . '' . $visitors[$i]->cpf . '' . '","' . '' . $visitors[$i]->role_id . '' . '","' . '' . $visitors[$i]->dateBirth . '"' . ']' . $x . '';
+
+            $i++;
+        }
+
+
+        $json = '{
+              "content": [
+                {
+                  "table": {
+                    "headerRows": 1,
+                    "widths": [ "*", "auto", 100, "*" ],
+            
+                    "body":[
+                      ["' . $header[0] . '", "' . $header[1] . '", "' . $header[2] . '", "' . $header[3] . '"],
+                      ' . $text . '
+                    ]
+                  }
+                }
+              ]
+            }';
+
+        if (env('APP_ENV') == "local") {
+            File::put(public_path('js/print.json'), $json);
+        } else {
+            File::put(getcwd() . '/js/print.json', $json);
+        }
     }
 }

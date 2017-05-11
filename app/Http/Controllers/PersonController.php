@@ -146,19 +146,96 @@ class PersonController extends Controller
     {
         $state = $this->stateRepository->all();
 
-        $roles = $this->roleRepository->findWhereNotIn('id', [3]);
+        $visitor_id = $this->roleRepository->findByField('name', 'Visitante')->first()->id;
+
+        $roles = $this->roleRepository->findWhereNotIn('id', [$visitor_id]);
 
         $countPerson[] = $this->countPerson();
 
         $countGroups[] = $this->countGroups();
 
-        $adults = $this->repository->findWhere(['tag' => 'adult']);
+        $church_id = Auth::getUser()->church_id;
+
+        $adults = $this->repository->findWhere(['tag' => 'adult', 'church_id' => $church_id]);
 
         $notify = $this->notify();
 
         $qtde = count($notify);
 
-        return view('people.create', compact('state', 'roles', 'countPerson', 'countGroups', 'adults', 'notify', 'qtde'));
+        $fathers = DB::table('people')
+            ->join('users', 'users.person_id', 'people.id')
+            ->where(
+                [
+                    'people.tag' => 'adult',
+                    'people.gender' => 'M',
+                    'users.church_id' => $church_id
+                ]
+            )
+            ->get();
+
+
+        $mothers = DB::table('people')
+            ->join('users', 'users.person_id', 'people.id')
+            ->where(
+                [
+                    'people.tag' => 'adult',
+                    'people.gender' => 'F',
+                    'users.church_id' => $church_id
+                ]
+            )
+            ->get();
+
+        return view('people.create', compact('state', 'roles', 'countPerson', 'countGroups',
+            'adults', 'notify', 'qtde', 'fathers', 'mothers'));
+    }
+
+    public function createTeen()
+    {
+        $state = $this->stateRepository->all();
+
+        $visitor_id = $this->roleRepository->findByField('name', 'Visitante')->first()->id;
+
+        $member_id = $this->roleRepository->findByField('name', 'Membro')->first()->id;
+
+        $roles = $this->roleRepository->findWhereIn('id', [$member_id, $visitor_id]);
+
+        $countPerson[] = $this->countPerson();
+
+        $countGroups[] = $this->countGroups();
+
+        $church_id = Auth::getUser()->church_id;
+
+        $notify = $this->notify();
+
+        $qtde = count($notify);
+
+        $adults = $this->repository->findWhere(['tag' => 'adult', 'church_id' => $church_id]);
+
+        $fathers = DB::table('people')
+            ->join('users', 'users.person_id', 'people.id')
+            ->where(
+                [
+                    'people.tag' => 'adult',
+                    'people.gender' => 'M',
+                    'users.church_id' => $church_id
+                ]
+            )
+            ->get();
+
+
+        $mothers = DB::table('people')
+            ->join('users', 'users.person_id', 'people.id')
+            ->where(
+                [
+                    'people.tag' => 'adult',
+                    'people.gender' => 'F',
+                    'users.church_id' => $church_id
+                ]
+            )
+            ->get();
+
+        return view('people.create-teen', compact('state', 'roles', 'countPerson', 'countGroups',
+            'adults', 'notify', 'qtde', 'fathers', 'mothers'));
     }
 
     /**
@@ -169,7 +246,7 @@ class PersonController extends Controller
      */
     public function store(PersonCreateRequest $request)
     {
-        $file = $request->file('img');
+        $file = $request->file('img');//dd($request->all());
 
         $email = $request->only(['email']);
 
@@ -213,6 +290,12 @@ class PersonController extends Controller
         $data['imgProfile'] = 'uploads/profile/noimage.png';
 
         $children = $request->get('group-a');
+
+        if($data['father_id_input'] || $data['mother_id_input'])
+        {
+            $data['father_id'] = $data['father_id_input'] or null;
+            $data['mother_id'] = $data['mother_id_input'] or null;
+        }
 
         $id = $this->repository->create($data)->id;
 
@@ -305,14 +388,39 @@ class PersonController extends Controller
 
         $gender = $person->gender == 'M' ? 'F' : 'M';
 
-        $adults = $this->repository->findWhere(['tag' => 'adult', 'gender' => $gender]);
+        $church_id = Auth::getUser()->church_id;
+
+        $adults = $this->repository->findWhere(['tag' => 'adult', 'gender' => $gender, 'church_id' => $church_id]);
 
         $notify = $this->notify();
 
         $qtde = count($notify);
 
+        $fathers = DB::table('people')
+            ->join('users', 'users.person_id', 'people.id')
+            ->where(
+                [
+                    'people.tag' => 'adult',
+                    'people.gender' => 'M',
+                    'users.church_id' => $church_id
+                ]
+            )
+            ->get();
+
+
+        $mothers = DB::table('people')
+            ->join('users', 'users.person_id', 'people.id')
+            ->where(
+                [
+                    'people.tag' => 'adult',
+                    'people.gender' => 'F',
+                    'users.church_id' => $church_id
+                ]
+            )
+            ->get();
+
         return view('people.edit', compact('person', 'state', 'location', 'roles', 'countPerson',
-            'countGroups', 'adults', 'notify', 'qtde'));
+            'countGroups', 'adults', 'notify', 'qtde', 'fathers', 'mothers'));
     }
 
     /**
@@ -356,13 +464,17 @@ class PersonController extends Controller
 
         $user = $this->userRepository->findByField('person_id', $id)->first();
 
-        if($this->emailTestEditTrait($email, $user->id)){
-            $this->updateEmail($email, $user->id);
+        if($email)
+        {
+            if($this->emailTestEditTrait($email, $user->id)){
+                $this->updateEmail($email, $user->id);
+            }
+            else{
+                \Session::flash("email.exists", "Existe uma conta associada para o email informado " . "(".$email.")");
+                return redirect()->route("person.edit", ['person' => $id]);
+            }
         }
-        else{
-            \Session::flash("email.exists", "Existe uma conta associada para o email informado " . "(".$email.")");
-            return redirect()->route("person.edit", ['person' => $id]);
-        }
+
 
         $this->repository->update($data, $id);
 
@@ -428,16 +540,18 @@ class PersonController extends Controller
     {
         $people = "";
 
+        $church_id = Auth::getUser()->church_id;
+
         if ($tag == "person") {
-            $people = $this->repository->findByField('tag', 'adult');
+            $people = $this->repository->findWhere([
+                ['tag' => 'adult'],
+                ['church_id' => $church_id]
+            ]);
         } elseif ($tag == "teen") {
             $people = $this->repository->findWhere([
-                ['tag', '<>', 'adult']
+                ['tag', '<>', 'adult'],
+                ['church_id' => $church_id]
             ]);
-        } elseif ($tag == "visitors") {
-            $role = $this->roleRepository->findByField('name', 'Visitante')->first();
-
-            $people = $this->repository->findByField('role_id', $role->id);
         }
 
         $header[] = "Nome";
@@ -495,11 +609,6 @@ class PersonController extends Controller
         return $this->getList("teen");
     }
 
-    public function getListVisitors()
-    {
-        return $this->getList("visitors");
-    }
-
     public function personExcel($format)
     {
         return $this->excel($format, "person");
@@ -548,17 +657,15 @@ class PersonController extends Controller
         })->export($format);
     }
 
-    public function createVisitors()
-    {
-
-    }
-
     public function storeVisitors(PersonCreateRequest $request)
     {
-
-
-
-
         return redirect()->route('person.visitors');
+    }
+
+    public function automaticCep($id)
+    {
+        $cep = $this->repository->find($id)->zipCode;
+
+        return json_encode(['cep' => $cep]);
     }
 }

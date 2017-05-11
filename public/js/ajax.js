@@ -419,3 +419,47 @@
         $("#invalidEmail").css("display", "block");
     }
 
+    $("#father_id").change(function () {
+
+        if($("#zipCode").val() == "")
+        {
+            automaticCep(this.value);
+        }
+
+    });
+
+    $("#mother_id").change(function () {
+
+        if($("#zipCode").val() == "")
+        {
+            automaticCep(this.value);
+        }
+
+    });
+
+    function automaticCep(id)
+    {
+        var request = $.ajax({
+            url: '/automatic-cep/' + id,
+            method: 'GET',
+            dataType:'json'
+        });
+
+        request.done(function (e) {
+            console.log("done");
+            console.log(e);
+
+            if(e.cep)
+            {
+                $("#zipCode")
+                    .val(e.cep)
+                    .trigger('blur');
+            }
+        });
+
+        request.fail(function (e) {
+            console.log("fail");
+            console.log(e);
+        });
+    }
+

@@ -187,7 +187,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                         <input type="hidden" value="{{ $person->id }}" id="personId">
 
                                         <div class="tab-pane active" id="tab_1_1">
-                                            {!! Form::open(['route' => ['person.update', 'person' => $person->id], 'class' => 'horizontal-form', 'method' => 'PUT']) !!}
+                                            {!! Form::open(['route' => ['person.update', 'person' => $person->id], 'class' => 'repeater', 'method' => 'PUT', 'role' => 'form']) !!}
 
                                             <div class="row">
                                                 <div class="col-md-6">
@@ -371,17 +371,248 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         {!! Form::FormGroup('specialNeeds', $errors) !!}
-                                                        <label class="control-label">Anotações Gerais</label>
-                                                        <textarea class="form-control" name="specialNeeds" value="{{ $person->specialNeeds }}"
-                                                                  placeholder="Digite aqui observações importantes sobre a criança/adolescente"
-                                                                  rows="5"></textarea>
+                                                            <label class="control-label">Anotações Gerais</label>
+                                                            <textarea class="form-control" name="specialNeeds" value="{{ $person->specialNeeds }}"
+                                                                      placeholder="Digite aqui observações importantes sobre a criança/adolescente"
+                                                                      rows="5"></textarea>
                                                         {!! Form::error('specialNeeds', $errors) !!}
                                                         {!! Form::endFormGroup() !!}
                                                     </div>
                                                 </div>
                                             @endif
 
-                                            <h3 class="form-section">Endereço</h3>
+
+                                            <br>
+                                            <div class="caption caption-md">
+                                                <i class="icon-globe theme-font hide"></i>
+                                                <span class="caption-subject font-blue-madison bold uppercase">Dados Familiares</span>
+                                            </div>
+
+                                            <hr>
+
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Nome do Pai</label>
+                                                    <div class="input-group">
+                                                            <span class="input-group-addon">
+                                                                <i class="fa fa-male font-blue"></i>
+                                                            </span>
+                                                        <select name="father_id" class="selectpicker form-control"
+                                                                data-live-search="true" data-size="8">
+
+                                                            <option value="">Selecione</option>
+
+                                                            @foreach($fathers as $parent)
+                                                                <option value="{{ $parent->id }}"
+                                                                @if($person->father_id == $parent->id) selected @endif
+                                                                >
+                                                                    {{ $parent->name }} {{ $parent->lastName }}
+                                                                </option>
+                                                            @endforeach
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Nome da Mãe</label>
+                                                    <div class="input-group">
+                                                            <span class="input-group-addon">
+                                                                <i class="fa fa-female font-red"></i>
+                                                            </span>
+                                                        <select name="father_id" class="selectpicker form-control"
+                                                                data-live-search="true" data-size="8">
+
+                                                            <option value="">Selecione</option>
+
+                                                            @foreach($mothers as $parent)
+                                                                <option value="{{ $parent->id }}"
+                                                                @if($person->mother_id == $parent->id) selected @endif
+                                                                >
+                                                                    {{ $parent->name }} {{ $parent->lastName }}
+                                                                </option>
+                                                            @endforeach
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="col-md-12">
+                                                <fieldset>
+                                                    <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                                        <input type="checkbox" name="parents" class="checkboxes check-model"
+                                                               id="check-parents" value="1" />
+                                                        <span></span>Selecione se os pais não pertencem a igreja
+                                                    </label>
+                                                </fieldset>
+                                            </div>
+
+                                            <br>
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group parent" hidden>
+                                                        <label>Nome do Pai</label>
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon">
+                                                                <i class="fa fa-male font-blue"></i>
+                                                            </span>
+                                                            <input type="text" class="form-control" name="father_id"
+                                                                   placeholder="José da Silva" value="{{ $person->father_id or old('father_id') }}">
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group parent" hidden>
+                                                        <label>Nome da Mãe</label>
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon">
+                                                                <i class="fa fa-female font-red-pink"></i>
+                                                            </span>
+                                                            <input type="text" name="mother_id" class="form-control"
+                                                                   placeholder="Maria das Dores" value="{{ $person->mother_id or old('mother_id') }}">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-10">
+                                                    <div class="form-group">
+                                                        <div data-repeater-list="group-a">
+                                                            <div data-repeater-item>
+                                                                <div class="table-container">
+                                                                    <table class="table">
+                                                                        <tbody>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <div class="input-group">
+
+                                                                                <span class="input-group-addon">
+                                                                                    <i class="fa fa-users"></i>
+                                                                                </span>
+                                                                                    <input type="text" name="childName"
+                                                                                           class="form-control"
+                                                                                           placeholder="Nome"/>
+
+                                                                                </div>
+                                                                                <br>
+                                                                                <div class="input-group">
+
+                                                                                <span class="input-group-addon">
+                                                                                    <i class="fa fa-users"></i>
+                                                                                </span>
+
+                                                                                    <input type="text" name="childLastName"
+                                                                                           class="form-control"
+                                                                                           placeholder="Sobrenome"/>
+
+                                                                                </div>
+
+                                                                                <br>
+                                                                                <div class="input-group date date-picker" data-date-format="dd/mm/yyyy">
+                                                                                <span class="input-group-addon">
+                                                                                    <i class="fa fa-calendar"></i>
+                                                                                </span>
+
+                                                                                    <input type="text" name="childDateBirth"
+                                                                                           class="form-control input-date"
+                                                                                           placeholder="data de Nasc. (dd/mm/aaaa)"/>
+
+                                                                                </div>
+
+                                                                            </td>
+                                                                            <td>
+                                                                                <a data-repeater-delete type="button"
+                                                                                   class="btn btn-danger">
+                                                                                    <i class="fa fa-close"></i>
+                                                                                    Excluir
+                                                                                </a>
+                                                                            </td>
+                                                                        </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <a data-repeater-create type="button" class="btn btn-info">
+                                                        <i class="fa fa-plus"></i> Adicionar Filhos
+                                                    </a> <small>Somente filhos menores de idade</small>
+                                                </div>
+
+                                            </div>
+
+                                            <br><br>
+
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <!-- BEGIN BORDERED TABLE PORTLET-->
+                                                    <div class="portlet light portlet-fit ">
+                                                        <div class="portlet-title">
+                                                            <div class="caption">
+                                                                <i class="icon-settings font-red"></i>
+                                                                <span class="caption-subject font-red sbold uppercase">Filhos</span>
+                                                            </div>
+                                                            <div class="actions">
+                                                                <div class="btn-group btn-group-devided" data-toggle="buttons">
+                                                                    <label class="btn grey-salsa btn-sm active">
+                                                                        <input type="radio" name="options" class="toggle" id="option1">Actions</label>
+                                                                    <label class="btn grey-salsa btn-sm">
+                                                                        <input type="radio" name="options" class="toggle" id="option2">Settings</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="portlet-body">
+                                                            <div class="table-scrollable table-scrollable-borderless">
+                                                                <table class="table table-hover table-light">
+                                                                    <thead>
+                                                                        <tr class="uppercase">
+                                                                            <th> # </th>
+                                                                            <th> Nome </th>
+                                                                            <th> Data de Nasc. </th>
+                                                                            <th> CPF </th>
+                                                                            <th> Opções </th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+
+                                                                        <tr>
+                                                                            <td> 1 </td>
+                                                                            <td>  </td>
+                                                                            <td> Otto </td>
+                                                                            <td> makr124 </td>
+                                                                            <td>
+                                                                                <span class="label label-sm label-success"> Approved </span>
+                                                                            </td>
+                                                                        </tr>
+
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- END BORDERED TABLE PORTLET-->
+                                                </div>
+                                            </div>
+
+
+
+                                            <br><br>
+
+                                            <div class="caption caption-md">
+                                                <i class="icon-globe theme-font hide"></i>
+                                                <span class="caption-subject font-blue-madison bold uppercase">Endereço</span>
+                                            </div>
+
+                                            <hr><br>
+
 
                                             <div class="loader"></div>
                                             <div class="row">
@@ -389,7 +620,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     {!! Form::FormGroup('zipCode', $errors) !!}
                                                     <label class="control-label">CEP</label>
                                                     <input type="text" placeholder="12123-12" value="{{ $person->zipCode }}"
-                                                           name="zipCode" class="form-control" id="zipCode" />
+                                                           name="zipCode" class="form-control" id="zipCode" maxlength="9" />
                                                     {!! Form::error('zipCode', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
                                                 </div>
@@ -1194,11 +1425,64 @@ License: You must have a valid license purchased only from themeforest(the above
 <script src="../../assets/pages/scripts/timeline.min.js" type="text/javascript"></script>
 <!-- END PAGE LEVEL SCRIPTS -->
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.repeater/1.2.1/jquery.repeater.min.js"></script>
+<script>
+
+
+        $('.repeater').repeater({
+            // (Optional)
+            // start with an empty list of repeaters. Set your first (and only)
+            // "data-repeater-item" with style="display:none;" and pass the
+            // following configuration flag
+            initEmpty: true,
+            // (Optional)
+            // "defaultValues" sets the values of added items.  The keys of
+            // defaultValues refer to the value of the input's name attribute.
+            // If a default value is not specified for an input, then it will
+            // have its value cleared.
+            defaultValues: {
+                'text-input': ''
+            },
+            // (Optional)
+            // "show" is called just after an item is added.  The item is hidden
+            // at this point.  If a show callback is not given the item will
+            // have $(this).show() called on it.
+            show: function () {
+                $(this).slideDown();
+            },
+            // (Optional)
+            // "hide" is called when a user clicks on a data-repeater-delete
+            // element.  The item is still visible.  "hide" is passed a function
+            // as its first argument which will properly remove the item.
+            // "hide" allows for a confirmation step, to send a delete request
+            // to the server, etc.  If a hide callback is not given the item
+            // will be deleted.
+            hide: function (deleteElement) {
+                if (confirm('Tem certeza que deseja excluir?')) {
+                    $(this).slideUp(deleteElement);
+                }
+            },
+            // (Optional)
+            // You can use this if you need to manually re-index the list
+            // for example if you are using a drag and drop library to reorder
+            // list items.
+            //ready: function (setIndexes) {
+            //  $dragAndDrop.on('drop', setIndexes);
+            //},
+            // (Optional)
+            // Removes the delete button from the first list item,
+            // defaults to false.
+            isFirstItemUndeletable: true
+        });
+</script>
+
 <!-- Google maps function -->
 <script src="../../js/maps.js"></script>
 
 
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjTs0nbQbEecUygnKpThLfzRKES8nKS0A&callback=initMap"></script>
+
+
 </body>
 
 </html>
