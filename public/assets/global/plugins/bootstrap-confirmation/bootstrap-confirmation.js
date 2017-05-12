@@ -106,10 +106,10 @@
     onCancel: $.noop,
     btnOkClass: 'btn-xs btn-primary',
     btnOkIcon: 'glyphicon glyphicon-ok',
-    btnOkLabel: 'Yes',
+    btnOkLabel: 'Sim',
     btnCancelClass: 'btn-xs btn-default',
     btnCancelIcon: 'glyphicon glyphicon-remove',
-    btnCancelLabel: 'No',
+    btnCancelLabel: 'Não',
     template:
       '<div class="popover confirmation">' +
         '<div class="arrow"></div>' +

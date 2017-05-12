@@ -551,56 +551,71 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                             <br><br>
 
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <!-- BEGIN BORDERED TABLE PORTLET-->
-                                                    <div class="portlet light portlet-fit ">
-                                                        <div class="portlet-title">
-                                                            <div class="caption">
-                                                                <i class="icon-settings font-red"></i>
-                                                                <span class="caption-subject font-red sbold uppercase">Filhos</span>
+                                            @if($children)
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <!-- BEGIN BORDERED TABLE PORTLET-->
+                                                        <div class="portlet light portlet-fit ">
+                                                            <div class="portlet-title">
+                                                                <div class="caption">
+                                                                    <i class="icon-settings font-red"></i>
+                                                                    <span class="caption-subject font-red sbold uppercase">Filhos</span>
+                                                                </div>
+                                                                <div class="actions">
+
+                                                                </div>
                                                             </div>
-                                                            <div class="actions">
-                                                                <div class="btn-group btn-group-devided" data-toggle="buttons">
-                                                                    <label class="btn grey-salsa btn-sm active">
-                                                                        <input type="radio" name="options" class="toggle" id="option1">Actions</label>
-                                                                    <label class="btn grey-salsa btn-sm">
-                                                                        <input type="radio" name="options" class="toggle" id="option2">Settings</label>
+                                                            <div class="portlet-body">
+                                                                <div class="table-scrollable table-scrollable-borderless">
+                                                                    <table class="table table-hover table-light">
+                                                                        <thead>
+                                                                            <tr class="uppercase">
+                                                                                <th> # </th>
+                                                                                <th> Nome </th>
+                                                                                <th> Data de Nasc. </th>
+                                                                                <th> CPF </th>
+                                                                                <th> Opções </th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+
+                                                                            @foreach($children as $child)
+                                                                                <tr>
+                                                                                    <td>
+                                                                                        <img src="../../{{ $child->imgProfile }}" style="width: 50px;">
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <a href="{{ route('teen.edit', ['teen' => $child->id]) }}">
+                                                                                            {{ $child->name }} {{ $child->lastName }}
+                                                                                        </a>
+                                                                                    </td>
+                                                                                    <td> {{ $child->dateBirth }} </td>
+                                                                                    <td> {{ $child->cpf or null }} </td>
+                                                                                    <?php $deleteForm = "delete-".$child->id; ?>
+                                                                                    <td id="{{ $deleteForm }}">
+                                                                                        {!! Form::open(['route' => ['person.destroy', 'person' => $child->id],
+                                                                                                'method' => 'DELETE', 'id' => 'form-'.$deleteForm]) !!}
+
+                                                                                        <a href="" class="btn btn-danger btn-sm btn-circle"
+                                                                                           onclick='event.preventDefault();document.getElementById("form-{{ $deleteForm }}").submit();'>
+                                                                                            <i class="fa fa-trash"></i>
+                                                                                            Excluir
+                                                                                        </a>
+
+                                                                                        {!! Form::close() !!}
+                                                                                    </td>
+                                                                                </tr>
+                                                                            @endforeach
+
+                                                                        </tbody>
+                                                                    </table>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="portlet-body">
-                                                            <div class="table-scrollable table-scrollable-borderless">
-                                                                <table class="table table-hover table-light">
-                                                                    <thead>
-                                                                        <tr class="uppercase">
-                                                                            <th> # </th>
-                                                                            <th> Nome </th>
-                                                                            <th> Data de Nasc. </th>
-                                                                            <th> CPF </th>
-                                                                            <th> Opções </th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-
-                                                                        <tr>
-                                                                            <td> 1 </td>
-                                                                            <td>  </td>
-                                                                            <td> Otto </td>
-                                                                            <td> makr124 </td>
-                                                                            <td>
-                                                                                <span class="label label-sm label-success"> Approved </span>
-                                                                            </td>
-                                                                        </tr>
-
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                        </div>
+                                                        <!-- END BORDERED TABLE PORTLET-->
                                                     </div>
-                                                    <!-- END BORDERED TABLE PORTLET-->
                                                 </div>
-                                            </div>
+                                            @endif
 
 
 

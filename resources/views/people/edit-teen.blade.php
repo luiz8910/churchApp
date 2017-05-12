@@ -18,19 +18,21 @@ License: You must have a valid license purchased only from themeforest(the above
 <!-- BEGIN HEAD -->
 
 <head>
-    @include('includes.head')
+    @include('includes.head-edit')
+
     <!-- BEGIN PAGE LEVEL PLUGINS -->
-    <link href="assets/global/plugins/datatables/datatables.min.css" rel="stylesheet" type="text/css" />
-    <link href="assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css" rel="stylesheet" type="text/css" />
-    <link href="assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
+    <link href="../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet" type="text/css" />
+    <link href="../../assets/global/plugins/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" type="text/css"/>
+    <link href="../../assets/pages/css/profile.min.css" rel="stylesheet" type="text/css" />
     <!-- END PAGE LEVEL PLUGINS -->
 </head>
 <!-- END HEAD -->
 
 <body class="page-container-bg-solid page-boxed">
 <!-- BEGIN HEADER -->
-@include('includes.header')
+@include('includes.header-edit')
 <!-- END HEADER -->
+
 <!-- BEGIN CONTAINER -->
 <div class="page-container">
     <!-- BEGIN CONTENT -->
@@ -41,14 +43,14 @@ License: You must have a valid license purchased only from themeforest(the above
             <div class="container">
                 <!-- BEGIN PAGE TITLE -->
                 <div class="page-title">
-                    <h1>Adultos
-                        <small>membros e etc...</small>
+                    <h1>Perfil do Usuário
+                        <small></small>
                     </h1>
                 </div>
                 <!-- END PAGE TITLE -->
-
             </div>
         </div>
+
         <!-- END PAGE HEAD-->
         <!-- BEGIN PAGE CONTENT BODY -->
         <div class="page-content">
@@ -60,130 +62,520 @@ License: You must have a valid license purchased only from themeforest(the above
                         <i class="fa fa-circle"></i>
                     </li>
                     <li>
-                        <a href="#">Pessoas</a>
+                        <a href="{{ route('person.teen') }}">Crianças e Adolescentes</a>
                         <i class="fa fa-circle"></i>
                     </li>
                     <li>
-                        <span>Adultos</span>
+                        <span>Perfil de {{ $person->name }} {{ $person->lastName }}</span>
                     </li>
                 </ul>
                 <!-- END PAGE BREADCRUMBS -->
                 <!-- BEGIN PAGE CONTENT INNER -->
+                @if(Session::has('updateUser'))
+                    <div class="alert alert-success alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        {{ Session::get('updateUser') }}
+                    </div>
+                @endif
 
-
-                <?php $route = "person";?>
-
+                @if(Session::has('email.exists'))
+                    <div class="alert alert-danger alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        {{ Session::get('email.exists') }}
+                    </div>
+                @endif
                 <div class="page-content-inner">
                     <div class="row">
                         <div class="col-md-12">
-                            <!-- BEGIN BORDERED TABLE PORTLET-->
-                            <div class="portlet light portlet-fit ">
-                                <div class="portlet-title">
-                                    <div class="caption">
-                                        <i class="icon-settings font-green"></i>
-                                        <span class="caption-subject font-green sbold uppercase">Adultos</span>
+                            <!-- BEGIN PROFILE SIDEBAR -->
+                            <div class="profile-sidebar">
+                                <!-- PORTLET MAIN -->
+                                <div class="portlet light profile-sidebar-portlet ">
+                                    <!-- SIDEBAR USERPIC -->
+                                    <div class="profile-userpic">
+                                        <img src="../../{{ $person->imgProfile }}" class="img-responsive" alt="">
                                     </div>
-                                    <div class="actions">
-                                        <div class="btn-group btn-group-devided">
-                                            <a role="button" class="btn btn-info btn-circle" href="{{ route('person.create') }}" style="margin-top: 2px;">
-                                                <i class="fa fa-plus"></i>
-                                                <span class="hidden-xs hidden-sm">Novo Membro</span>
-                                            </a>
-
-                                        </div>
-                                        <div class="btn-group">
-                                            <a class="btn red btn-outline btn-circle" href="javascript:;" data-toggle="dropdown">
-                                                <i class="fa fa-share"></i>
-                                                <span class="hidden-xs"> Opções </span>
-                                                <i class="fa fa-angle-down"></i>
-                                            </a>
-                                            <ul class="dropdown-menu pull-right" id="sample_3_tools">
-                                                <li>
-                                                    <a href="javascript:;" id="print" onclick="printDiv('printable-table')"
-                                                       data-action="0" class="tool-action">
-                                                        <i class="icon-printer"></i> Imprimir
-                                                    </a>
-                                                </li>
-                                                <!--<li>
-                                                    <a href="javascript:;" data-action="1" class="tool-action">
-                                                        <i class="icon-check"></i> Copiar</a>
-                                                </li>-->
-                                                <li>
-                                                    <a href="javascript:;" data-action="2"
-                                                       onclick="printDiv('printable-table', 'pdf')" class="tool-action">
-                                                        <i class="icon-doc"></i> PDF</a>
-                                                </li>
-                                                <li>
-                                                    <a href="{{ route($route.'.excel', ['format' => 'xls']) }}"
-                                                       data-action="3" target="_blank"
-                                                       class="tool-action">
-                                                        <i class="icon-paper-clip"></i> Excel</a>
-                                                </li>
-                                                <li>
-                                                    <a href="{{ route($route.'.excel', ['format' => 'csv']) }}"
-                                                       data-action="4" target="_blank" class="tool-action">
-                                                        <i class="icon-cloud-upload"></i> CSV</a>
-                                                </li>
-
-                                            </ul>
-                                        </div>
+                                    <!-- END SIDEBAR USERPIC -->
+                                    <!-- SIDEBAR USER TITLE -->
+                                    <div class="profile-usertitle">
+                                        <div class="profile-usertitle-name"> {{ $person->name }} {{ $person->lastName }}</div>
+                                        <div class="profile-usertitle-job"> {{ $person->role->name }} </div>
                                     </div>
+                                    <!-- END SIDEBAR USER TITLE -->
+
+                                    <!-- SIDEBAR MENU -->
+                                    <div class="profile-usermenu">
+                                        <ul class="nav">
+                                            <li class="active">
+                                                <a href="">
+                                                    <i class="icon-home"></i> Visão Geral </a>
+                                            </li>
+                                            <li>
+                                                <a href="">
+                                                    <i class="icon-info"></i> Ajuda </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <!-- END MENU -->
                                 </div>
-                                <div class="portlet-body">
-                                    <div class="table-scrollable table-scrollable-borderless">
-                                        <table class="table table-hover table-light">
-                                            <thead>
-                                                <tr class="uppercase">
-                                                    <th> Foto </th>
-                                                    <th> Nome </th>
-                                                    <th> CPF </th>
-                                                    <th> Cargo </th>
-                                                    <th> Data de Nasc. </th>
-                                                    <th> Opções </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach($adults as $item)
-                                                    <tr>
-                                                        <td> <img src="{{ $item->imgProfile }}" style="width: 50px; height: 50px;"> </td>
-                                                        <td>
-                                                            <a href="{{ route('person.edit', ['person' => $item->id]) }}">
-                                                            {{ $item->name }} {{ $item->lastName }}</a>
-                                                        </td>
-                                                        <td> {{ $item->cpf }} </td>
-                                                        <td> {{ $item->role }} </td>
-                                                        <td> {{ $item->dateBirth }} </td>
+                                <!-- END PORTLET MAIN -->
 
-
-                                                        <?php $deleteForm = "delete-".$item->id; ?>
-                                                        <td id="{{ $deleteForm }}">
-                                                            {!! Form::open(['route' => ['person.destroy', 'person' => $item->id],
-                                                                    'method' => 'DELETE', 'id' => 'form-'.$deleteForm]) !!}
-
-                                                            <button class="btn btn-danger btn-sm btn-circle pop" data-toggle="confirmation" data-placement="top"
-                                                                    data-original-title="Deseja Excluir?" data-popout="true" onclick="event.preventDefault()"
-                                                                    id="btn-{{ $deleteForm }}">
-                                                                <i class="fa fa-trash"></i>
-
-                                                            </button>
-
-                                                            {!! Form::close() !!}
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                        <br>
-                                        <div class="pull-right">
-                                            {{ $adults->links() }}
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
-                            <!-- END BORDERED TABLE PORTLET-->
+                            <!-- END BEGIN PROFILE SIDEBAR -->
+                            <!-- BEGIN PROFILE CONTENT -->
+                            <div class="profile-content">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <!-- BEGIN BASIC PORTLET-->
+                                        <div class="portlet light portlet-fit ">
+                                            <div class="portlet-title">
+                                                <div class="caption">
+                                                    <i class=" icon-layers font-red"></i>
+                                                    <span class="caption-subject font-red bold uppercase">Local do Evento</span>
+                                                </div>
+                                                <div class="actions">
+                                                    <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
+                                                        <i class="icon-cloud-upload"></i>
+                                                    </a>
+                                                    <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
+                                                        <i class="icon-wrench"></i>
+                                                    </a>
+                                                    <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
+                                                        <i class="icon-trash"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="portlet-body">
+                                                <div id="map" style="height: 304px; width: 100%;"></div>
+                                                <input type="hidden" value="{{ $location }}" id="location">
+                                            </div>
+                                        </div>
+                                        <!-- END BASIC PORTLET-->
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- END PROFILE CONTENT -->
                         </div>
                     </div>
 
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="portlet light ">
+                                <div class="portlet-title tabbable-line">
+                                    <div class="caption caption-md">
+                                        <i class="icon-globe theme-font hide"></i>
+                                        <span class="caption-subject font-blue-madison bold uppercase">Seus Dados</span>
+                                    </div>
+                                    <ul class="nav nav-tabs">
+                                        <li class="active">
+                                            <a href="#tab_1_1" data-toggle="tab">
+                                                <span class="hidden-xs hidden-sm">
+                                                    Informações Pessoais
+                                                </span>
+                                                <span class="visible-xs visible-sm">Pessoal</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#tab_1_2" data-toggle="tab">Alterar Foto</a>
+                                        </li>
+                                        <li>
+                                            <a href="#tab_1_4" data-toggle="tab">Personalizar</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="portlet-body">
+                                    <div class="tab-content">
+                                        <!-- PERSONAL INFO TAB -->
+
+                                        <input type="hidden" value="{{ $person->id }}" id="personId">
+
+                                        <div class="tab-pane active" id="tab_1_1">
+                                            {!! Form::open(['route' => ['person.update', 'person' => $person->id], 'class' => 'repeater', 'method' => 'PUT', 'role' => 'form']) !!}
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    {!! Form::FormGroup('name', $errors) !!}
+                                                    <label class="control-label">Nome</label>
+                                                    <input type="text" placeholder="João" name="name" value="{{ $person->name }}" class="form-control" />
+                                                    {!! Form::error('name', $errors) !!}
+                                                    {!! Form::endFormGroup() !!}
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    {!! Form::FormGroup('lastName', $errors) !!}
+                                                    <label class="control-label">Sobrenome</label>
+                                                    <input type="text" placeholder="da Silva" name="lastName" value="{{ $person->lastName }}" class="form-control" />
+                                                    {!! Form::error('lastName', $errors) !!}
+                                                    {!! Form::endFormGroup() !!}
+                                                </div>
+
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    {!! Form::FormGroup('cel', $errors) !!}
+                                                    <label class="control-label">Celular</label>
+                                                    <input type="text" placeholder="(15) 9123-1234" name="cel" value="{{ $person->cel }}" class="form-control tel" />
+                                                    {!! Form::error('cel', $errors) !!}
+                                                    {!! Form::endFormGroup() !!}
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    {!! Form::FormGroup('tel', $errors) !!}
+                                                    <label class="control-label">Telefone</label>
+                                                    <input type="text" placeholder="(15) 9123-1234" name="tel" value="{{ $person->tel }}" class="form-control tel" />
+                                                    {!! Form::error('tel', $errors) !!}
+                                                    {!! Form::endFormGroup() !!}
+                                                </div>
+
+                                            </div>
+
+                                            <div class="row">
+
+
+                                                <div class="col-md-6">
+                                                    {!! Form::FormGroup('gender', $errors) !!}
+                                                    <label class="control-label">Gênero</label>
+                                                    <select name="gender" class="form-control" required>
+                                                        <option value="">Selecione</option>
+                                                        <option value="M" @if($person->gender == 'M') selected @endif >Masculino</option>
+                                                        <option value="F" @if($person->gender == 'F') selected @endif >Feminino</option>
+                                                    </select>
+                                                    {!! Form::error('gender', $errors) !!}
+                                                    {!! Form::endFormGroup() !!}
+                                                </div>
+
+
+                                                <div class="col-md-6">
+                                                    {!! Form::FormGroup('dateBirth', $errors) !!}
+                                                    <label class="control-label">Data de Nasc.</label>
+                                                    <div class="input-group date date-picker" data-date-format="dd/mm/yyyy">
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-calendar font-blue"></i>
+                                                        </span>
+                                                        <input type="text" placeholder="dd/mm/aaaa" value="{{ $person->dateBirth }}"
+                                                               name="dateBirth" class="form-control input-date" />
+                                                    </div>
+                                                    {!! Form::error('dateBirth', $errors) !!}
+                                                    {!! Form::endFormGroup() !!}
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    {!! Form::FormGroup('cpf', $errors) !!}
+                                                    <label>CPF (Sem pontos ou traços)</label>
+                                                    <div class="input-group input-icon right">
+                                                            <span class="input-group-addon">
+                                                                <i class="fa fa-user font-blue"></i>
+                                                            </span>
+                                                        <input type="text" name="cpf" id="cpf" maxlength="11" class="form-control"
+                                                               placeholder="XXXXXXXXXXX" value="{{ $person->cpf }}">
+                                                        <i class="fa fa-check font-green" id="icon-success" style="display: none;"></i>
+                                                        <i class="fa fa-exclamation font-red" id="icon-error" style="display: none;"></i>
+
+                                                    </div>
+                                                    <div class="help-block small-error">CPF Inválido</div>
+                                                    {!! Form::error('cpf', $errors) !!}
+                                                    {!! Form::endFormGroup() !!}
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    {!! Form::FormGroup('rg', $errors) !!}
+                                                    <label class="control-label">RG</label>
+                                                    <input type="text" placeholder="123.123.123-12" value="{{ $person->rg }}"
+                                                           name="rg" class="form-control" maxlength="9" minlength="9"/>
+                                                    {!! Form::error('rg', $errors) !!}
+                                                    {!! Form::endFormGroup() !!}
+                                                </div>
+                                            </div>
+
+
+                                            <h3 class="form-section">Observações</h3>
+
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    {!! Form::FormGroup('specialNeeds', $errors) !!}
+                                                        <label class="control-label">Anotações Gerais</label>
+                                                        <textarea class="form-control" name="specialNeeds"
+                                                                  placeholder="Digite aqui observações importantes sobre a criança/adolescente"
+                                                                  rows="5">
+                                                            {{ $person->specialNeeds }}
+                                                        </textarea>
+                                                    {!! Form::error('specialNeeds', $errors) !!}
+                                                    {!! Form::endFormGroup() !!}
+                                                </div>
+                                            </div>
+
+
+                                            <br>
+                                            <div class="caption caption-md">
+                                                <i class="icon-globe theme-font hide"></i>
+                                                <span class="caption-subject font-blue-madison bold uppercase">Dados Familiares</span>
+                                            </div>
+
+                                            <hr>
+
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Nome do Pai</label>
+                                                    <div class="input-group">
+                                                            <span class="input-group-addon">
+                                                                <i class="fa fa-male font-blue"></i>
+                                                            </span>
+                                                        <select name="father_id" id="father_id" class="selectpicker form-control"
+                                                                data-live-search="true" data-size="8">
+
+                                                            <option value="">Selecione</option>
+
+                                                            @foreach($fathers as $parent)
+                                                                <option value="{{ $parent->id }}"
+                                                                @if($person->father_id == $parent->id) selected @endif
+                                                                >
+                                                                    {{ $parent->name }} {{ $parent->lastName }}
+                                                                </option>
+                                                            @endforeach
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Nome da Mãe</label>
+                                                    <div class="input-group">
+                                                            <span class="input-group-addon">
+                                                                <i class="fa fa-female font-red"></i>
+                                                            </span>
+                                                        <select name="mother_id" id="mother_id" class="selectpicker form-control"
+                                                                data-live-search="true" data-size="8">
+
+                                                            <option value="">Selecione</option>
+
+                                                            @foreach($mothers as $parent)
+                                                                <option value="{{ $parent->id }}"
+                                                                @if($person->mother_id == $parent->id) selected @endif
+                                                                >
+                                                                    {{ $parent->name }} {{ $parent->lastName }}
+                                                                </option>
+                                                            @endforeach
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="col-md-12">
+                                                <fieldset>
+                                                    <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                                        <input type="checkbox" name="parents" class="checkboxes check-model"
+                                                               id="check-parents" value="1" />
+                                                        <span></span>Selecione se os pais não pertencem a igreja
+                                                    </label>
+                                                </fieldset>
+                                            </div>
+
+                                            <br>
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group parent" hidden>
+                                                        <label>Nome do Pai</label>
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon">
+                                                                <i class="fa fa-male font-blue"></i>
+                                                            </span>
+                                                            <input type="text" class="form-control" name="father_id_input"
+                                                                   placeholder="José da Silva" value="{{ old('father_id_input') }}">
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group parent" hidden>
+                                                        <label>Nome da Mãe</label>
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon">
+                                                                <i class="fa fa-female font-red-pink"></i>
+                                                            </span>
+                                                            <input type="text" name="mother_id_input" class="form-control"
+                                                                   placeholder="Maria das Dores" value="{{ old('mother_id_input') }}">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <br><br>
+
+                                            <div class="caption caption-md">
+                                                <i class="icon-globe theme-font hide"></i>
+                                                <span class="caption-subject font-blue-madison bold uppercase">Endereço</span>
+                                            </div>
+
+                                            <hr><br>
+
+
+                                            <div class="loader"></div>
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    {!! Form::FormGroup('zipCode', $errors) !!}
+                                                    <label class="control-label">CEP</label>
+                                                    <input type="text" placeholder="12123-12" value="{{ $person->zipCode }}"
+                                                           name="zipCode" class="form-control" id="zipCode" maxlength="9" />
+                                                    {!! Form::error('zipCode', $errors) !!}
+                                                    {!! Form::endFormGroup() !!}
+                                                </div>
+                                                <div class="col-md-9">
+                                                    {!! Form::FormGroup('street', $errors) !!}
+                                                    <label class="control-label">Logradouro</label>
+                                                    <input type="text" placeholder="Rua dos Bobos, 0" value="{{ $person->street }}" id="street"
+                                                           name="street" class="form-control" />
+                                                    {!! Form::error('street', $errors) !!}
+                                                    {!! Form::endFormGroup() !!}
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    {!! Form::FormGroup('neighborhood', $errors) !!}
+                                                    <label class="control-label">Bairro</label>
+                                                    <input type="text" placeholder="Vila Progresso" value="{{ $person->neighborhood }}"
+                                                           id="neighborhood" name="neighborhood" class="form-control" />
+                                                    {!! Form::error('neighborhood', $errors) !!}
+                                                    {!! Form::endFormGroup() !!}
+                                                </div>
+                                                <div class="col-md-4">
+                                                    {!! Form::FormGroup('city', $errors) !!}
+                                                    <label class="control-label">Cidade</label>
+                                                    <input type="text" placeholder="Sorocaba" name="city" value="{{ $person->city }}"
+                                                           class="form-control" id="city"/>
+                                                    {!! Form::error('city', $errors) !!}
+                                                    {!! Form::endFormGroup() !!}
+                                                </div>
+                                                <div class="col-md-4">
+                                                    {!! Form::FormGroup('state', $errors) !!}
+                                                    <label class="control-label">UF:</label>
+                                                    <select name="state" class="form-control" id="state">
+                                                        <option value="">Selecione</option>
+                                                        @foreach($state as $value)
+                                                            <option value="{{ $value->initials }}" @if($value->initials == $person->state) selected @endif >
+                                                                {{ $value->state }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                    {!! Form::error('state', $errors) !!}
+                                                    {!! Form::endFormGroup() !!}
+                                                </div>
+                                            </div>
+
+
+                                                <div class="margiv-top-10">
+                                                    {!! Form::submit('Salvar', ['class' => 'btn green']) !!}
+
+                                                </div>
+                                            {!! Form::close() !!}
+                                        </div>
+                                        <!-- END PERSONAL INFO TAB -->
+                                        <!-- CHANGE AVATAR TAB -->
+                                        <div class="tab-pane" id="tab_1_2">
+                                            <p> Altere aqui sua foto do perfil </p>
+                                            {!! Form::open(['route' => ['person.imgEditProfile', $person->id], 'method' => 'post', 'enctype' => 'multipart/form-data', 'role' => 'form']) !!}
+                                                <div class="form-group">
+                                                    <div class="fileinput fileinput-new" data-provides="fileinput">
+                                                        <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
+                                                            <img src=@if($person->imgProfile == "uploads/profile/noimage.png")
+                                                                        "http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=no+image"
+                                                                        @else
+                                                                            "../../{{ $person->imgProfile }}"
+                                                                    @endif
+
+                                                                 alt="" /> </div>
+                                                        <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"> </div>
+                                                        <div>
+                                                                                <span class="btn default btn-file">
+                                                                                    <span class="fileinput-new"> Escolher Imagem </span>
+                                                                                    <span class="fileinput-exists"> Alterar </span>
+                                                                                    <input type="file" name="img"> </span>
+                                                            <a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Remover </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="margin-top-10">
+                                                    {!! Form::submit('Enviar', ['class' => 'btn green']) !!}
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <!-- END CHANGE AVATAR TAB -->
+                                        <!-- CHANGE PASSWORD TAB -->
+                                        <div class="tab-pane" id="tab_1_3">
+                                            {!! Form::open(['route' => 'users.changePass', 'method' => 'post']) !!}
+                                            <div class="form-group">
+                                                <label class="control-label">Senha Atual</label>
+                                                <input type="password" class="form-control" name="old" /> </div>
+                                            <div class="form-group">
+                                                <label class="control-label">Nova Senha</label>
+                                                <input type="password" class="form-control" name="new" /> </div>
+                                            <div class="form-group">
+                                                <label class="control-label">Confirme sua nova Senha</label>
+                                                <input type="password" class="form-control" name="confirmPassword" /> </div>
+                                            <div class="margin-top-10">
+                                                {!! Form::submit('Alterar Senha', ['class' => 'btn green']) !!}
+                                            </div>
+                                            {!! Form::close() !!}
+                                        </div>
+                                        <!-- END CHANGE PASSWORD TAB -->
+                                        <!-- PRIVACY SETTINGS TAB -->
+                                        <div class="tab-pane" id="tab_1_4">
+                                            <form action="#">
+                                                <table class="table table-light table-hover">
+                                                    <tr>
+                                                        <td> Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus.. </td>
+                                                        <td>
+                                                            <label class="uniform-inline">
+                                                                <input type="radio" name="optionsRadios1" value="option1" /> Yes </label>
+                                                            <label class="uniform-inline">
+                                                                <input type="radio" name="optionsRadios1" value="option2" checked/> No </label>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td> Enim eiusmod high life accusamus terry richardson ad squid wolf moon </td>
+                                                        <td>
+                                                            <label class="uniform-inline">
+                                                                <input type="checkbox" value="" /> Yes </label>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td> Enim eiusmod high life accusamus terry richardson ad squid wolf moon </td>
+                                                        <td>
+                                                            <label class="uniform-inline">
+                                                                <input type="checkbox" value="" /> Yes </label>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td> Enim eiusmod high life accusamus terry richardson ad squid wolf moon </td>
+                                                        <td>
+                                                            <label class="uniform-inline">
+                                                                <input type="checkbox" value="" /> Yes </label>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                                <!--end profile-settings-->
+                                                <div class="margin-top-10">
+                                                    <a href="javascript:;" class="btn red"> Save Changes </a>
+                                                    <a href="javascript:;" class="btn default"> Cancel </a>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <!-- END PRIVACY SETTINGS TAB -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <!-- END PAGE CONTENT INNER -->
             </div>
@@ -452,7 +844,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                         </div>
                                         <div class="cont-col2">
                                             <div class="desc"> You have 4 pending tasks.
-                                                        <span class="label label-sm label-warning "> Take action
+                                                <span class="label label-sm label-warning "> Take action
                                                             <i class="fa fa-share"></i>
                                                         </span>
                                             </div>
@@ -586,7 +978,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                         </div>
                                         <div class="cont-col2">
                                             <div class="desc"> You have 4 pending tasks.
-                                                        <span class="label label-sm label-warning "> Take action
+                                                <span class="label label-sm label-warning "> Take action
                                                             <i class="fa fa-share"></i>
                                                         </span>
                                             </div>
@@ -770,7 +1162,7 @@ License: You must have a valid license purchased only from themeforest(the above
                     <form action="javascript:;">
                         <div class="input-group">
                             <input type="text" placeholder="mail@email.com" class="form-control">
-                                    <span class="input-group-btn">
+                            <span class="input-group-btn">
                                         <button class="btn" type="submit">Submit</button>
                                     </span>
                         </div>
@@ -825,16 +1217,77 @@ License: You must have a valid license purchased only from themeforest(the above
 </div>
 <!-- END INNER FOOTER -->
 <!-- END FOOTER -->
-@include('includes.core-scripts')
+@include('includes.core-scripts-edit')
 <!-- BEGIN PAGE LEVEL PLUGINS -->
-<script src="assets/global/scripts/datatable.js" type="text/javascript"></script>
-<script src="assets/global/plugins/datatables/datatables.min.js" type="text/javascript"></script>
-<script src="assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
-<script src="assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
-<!-- END PAGE LEVEL PLUGINS -->
-<!-- BEGIN PAGE LEVEL SCRIPTS -->
-<script src="assets/pages/scripts/table-datatables-buttons.min.js" type="text/javascript"></script>
+<script src="../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js" type="text/javascript"></script>
+<script src="../../assets/global/plugins/jquery.sparkline.min.js" type="text/javascript"></script>
+<script src="http://maps.google.com/maps/api/js?sensor=false" type="text/javascript"></script>
+<script src="../../assets/global/plugins/gmaps/gmaps.min.js" type="text/javascript"></script>
+
+<script src="../../assets/global/plugins/bootstrap-select/js/bootstrap-select.min.js" type="text/javascript"></script>
+
+<script src="../../assets/pages/scripts/profile.min.js" type="text/javascript"></script>
+<script src="../../assets/pages/scripts/timeline.min.js" type="text/javascript"></script>
 <!-- END PAGE LEVEL SCRIPTS -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.repeater/1.2.1/jquery.repeater.min.js"></script>
+<script>
+
+
+        $('.repeater').repeater({
+            // (Optional)
+            // start with an empty list of repeaters. Set your first (and only)
+            // "data-repeater-item" with style="display:none;" and pass the
+            // following configuration flag
+            initEmpty: true,
+            // (Optional)
+            // "defaultValues" sets the values of added items.  The keys of
+            // defaultValues refer to the value of the input's name attribute.
+            // If a default value is not specified for an input, then it will
+            // have its value cleared.
+            defaultValues: {
+                'text-input': ''
+            },
+            // (Optional)
+            // "show" is called just after an item is added.  The item is hidden
+            // at this point.  If a show callback is not given the item will
+            // have $(this).show() called on it.
+            show: function () {
+                $(this).slideDown();
+            },
+            // (Optional)
+            // "hide" is called when a user clicks on a data-repeater-delete
+            // element.  The item is still visible.  "hide" is passed a function
+            // as its first argument which will properly remove the item.
+            // "hide" allows for a confirmation step, to send a delete request
+            // to the server, etc.  If a hide callback is not given the item
+            // will be deleted.
+            hide: function (deleteElement) {
+                if (confirm('Tem certeza que deseja excluir?')) {
+                    $(this).slideUp(deleteElement);
+                }
+            },
+            // (Optional)
+            // You can use this if you need to manually re-index the list
+            // for example if you are using a drag and drop library to reorder
+            // list items.
+            //ready: function (setIndexes) {
+            //  $dragAndDrop.on('drop', setIndexes);
+            //},
+            // (Optional)
+            // Removes the delete button from the first list item,
+            // defaults to false.
+            isFirstItemUndeletable: true
+        });
+</script>
+
+<!-- Google maps function -->
+<script src="../../js/maps.js"></script>
+
+
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjTs0nbQbEecUygnKpThLfzRKES8nKS0A&callback=initMap"></script>
+
+
 </body>
 
 </html>

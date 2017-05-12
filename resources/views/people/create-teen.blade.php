@@ -41,8 +41,8 @@ License: You must have a valid license purchased only from themeforest(the above
             <div class="container">
                 <!-- BEGIN PAGE TITLE -->
                 <div class="page-title">
-                    <h1>Bootstrap Form Controls
-                        <small>bootstrap form controls and more</small>
+                    <h1>Novo Membro
+                        <small>Crianças e Adolescentes</small>
                     </h1>
                 </div>
                 <!-- END PAGE TITLE -->
@@ -59,7 +59,7 @@ License: You must have a valid license purchased only from themeforest(the above
                         <i class="fa fa-circle"></i>
                     </li>
                     <li>
-                        <a href="#">Membros</a>
+                        <a href="{{ route('person.teen') }}">Crianças e Adolescentes</a>
                         <i class="fa fa-circle"></i>
                     </li>
                     <li>
@@ -242,64 +242,6 @@ License: You must have a valid license purchased only from themeforest(the above
                                             </div>
                                         </div>
 
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label>Cargo</label>
-                                                    <div class="input-icon input-icon-sm">
-                                                        <i class="fa fa-briefcase"></i>
-                                                        <select class="form-control" name="role_id" required>
-                                                            <option value="">Selecione</option>
-                                                            @foreach($roles as $role)
-                                                                <option value="{{ $role->id }}"
-                                                                        @if(old('role_id') == $role->id) selected @endif>
-                                                                    {{ $role->name }}
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-
-
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="">Estado Civil</label>
-                                                    <select name="maritalStatus" id="maritalStatus" class="form-control" required>
-                                                        <option value="Solteiro" @if(old('maritalStatus') == "Solteiro") selected @endif>
-                                                            Solteiro
-                                                        </option>
-
-                                                        <option value="Casado" @if(old('maritalStatus') == "Casado") selected @endif>
-                                                            Casado
-                                                        </option>
-
-                                                        <option value="Divorciado" @if(old('maritalStatus') == "Divorciado") selected @endif>
-                                                            Divorciado
-                                                        </option>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group" id="form-partner" hidden>
-                                                    <label>Nome Cônjuge</label>
-                                                    <select name="partner" id="partner" class="selectpicker
-                                                          form-control"
-                                                            data-live-search="true" data-size="8">
-                                                        <option value="0">Parceiro(a) fora da igreja</option>
-                                                        @foreach($adults as $adult)
-                                                            <option value="{{ $adult->id }}">{{ $adult->name }} {{ $adult->lastName }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-
                                         <br>
                                         <div class="caption caption-md">
                                             <i class="icon-globe theme-font hide"></i>
@@ -397,73 +339,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                             </div>
                                         </div>
 
-                                        <div class="row">
-                                            <div class="col-md-10">
-                                                <div class="form-group">
-                                                    <div data-repeater-list="group-a">
-                                                        <div data-repeater-item>
-                                                            <div class="table-container">
-                                                                <table class="table">
-                                                                    <tbody>
-                                                                    <tr>
-                                                                        <td>
-                                                                            <div class="input-group">
 
-                                                                                <span class="input-group-addon">
-                                                                                    <i class="fa fa-users"></i>
-                                                                                </span>
-                                                                                <input type="text" name="childName"
-                                                                                       class="form-control"
-                                                                                       placeholder="Nome"/>
-
-                                                                            </div>
-                                                                            <br>
-                                                                            <div class="input-group">
-
-                                                                                <span class="input-group-addon">
-                                                                                    <i class="fa fa-users"></i>
-                                                                                </span>
-
-                                                                                <input type="text" name="childLastName"
-                                                                                       class="form-control"
-                                                                                       placeholder="Sobrenome"/>
-
-                                                                            </div>
-
-                                                                            <br>
-                                                                            <div class="input-group date date-picker" data-date-format="dd/mm/yyyy">
-                                                                                <span class="input-group-addon">
-                                                                                    <i class="fa fa-calendar"></i>
-                                                                                </span>
-
-                                                                                <input type="text" name="childDateBirth"
-                                                                                       class="form-control input-date"
-                                                                                       placeholder="data de Nasc. (dd/mm/aaaa)"/>
-
-                                                                            </div>
-
-                                                                        </td>
-                                                                        <td>
-                                                                            <a data-repeater-delete type="button"
-                                                                                   class="btn btn-danger">
-                                                                            <i class="fa fa-close"></i>
-                                                                            Excluir
-                                                                            </a>
-                                                                        </td>
-                                                                    </tr>
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                                <a data-repeater-create type="button" class="btn btn-info">
-                                                    <i class="fa fa-plus"></i> Adicionar Filhos
-                                                </a> <small>Somente filhos menores de idade</small>
-                                            </div>
-
-                                        </div>
 
                                         <br><br>
                                         <div class="caption caption-md">

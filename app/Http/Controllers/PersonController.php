@@ -317,6 +317,11 @@ class PersonController extends Controller
             $this->createUserLogin($id, $password, $email, $church_id);
 
             if ($children) {
+
+                DB::table('people')
+                    ->where('id', $id)
+                    ->update(['hasKids' => 1]);
+
                 $this->children($children, $id, $data['gender'], $data["role_id"]);
             }
 
@@ -396,6 +401,30 @@ class PersonController extends Controller
 
         $qtde = count($notify);
 
+        $children = null;
+
+        if($person->hasKids == 1)
+        {
+            if ($person->gender == "M")
+            {
+                $children = $this->repository->findByField('father_id', $id);
+
+                foreach ($children as $child)
+                {
+                    $child->dateBirth = $this->formatDateView($child->dateBirth);
+                }
+            }
+            else{
+                $children = $this->repository->findByField('mother_id', $id);
+
+                foreach ($children as $child)
+                {
+                    $child->dateBirth = $this->formatDateView($child->dateBirth);
+                }
+            }
+        }
+
+
         $fathers = DB::table('people')
             ->join('users', 'users.person_id', 'people.id')
             ->where(
@@ -420,7 +449,58 @@ class PersonController extends Controller
             ->get();
 
         return view('people.edit', compact('person', 'state', 'location', 'roles', 'countPerson',
-            'countGroups', 'adults', 'notify', 'qtde', 'fathers', 'mothers'));
+            'countGroups', 'adults', 'notify', 'qtde', 'fathers', 'mothers', 'children'));
+    }
+
+
+    public function editTeen($id)
+    {
+        $person = $this->repository->find($id);
+
+        $state = $this->stateRepository->all();
+
+        $roles = $this->roleRepository->all();
+
+        $person->dateBirth = $this->formatDateView($person->dateBirth);
+
+        $location = $this->formatGoogleMaps($person);
+
+        $countPerson[] = $this->countPerson();
+
+        $countGroups[] = $this->countGroups();
+
+        $church_id = Auth::getUser()->church_id;
+
+        $notify = $this->notify();
+
+        $qtde = count($notify) or 0;
+
+
+        $fathers = DB::table('people')
+            ->join('users', 'users.person_id', 'people.id')
+            ->where(
+                [
+                    'people.tag' => 'adult',
+                    'people.gender' => 'M',
+                    'users.church_id' => $church_id
+                ]
+            )
+            ->get();
+
+
+        $mothers = DB::table('people')
+            ->join('users', 'users.person_id', 'people.id')
+            ->where(
+                [
+                    'people.tag' => 'adult',
+                    'people.gender' => 'F',
+                    'users.church_id' => $church_id
+                ]
+            )
+            ->get();
+
+        return view('people.edit-teen', compact('person', 'state', 'location', 'roles', 'countPerson',
+            'countGroups', 'notify', 'qtde', 'fathers', 'mothers'));
     }
 
     /**
@@ -441,6 +521,17 @@ class PersonController extends Controller
 
         //Formatação correta da data
         $data['dateBirth'] = $this->formatDateBD($data['dateBirth']);
+
+        if($data['father_id_input'] || $data['mother_id_input'])
+        {
+            $data['father_id'] = $data['father_id_input'] or null;
+            $data['mother_id'] = $data['mother_id_input'] or null;
+        }
+
+        if(!isset($data['maritalStatus']))
+        {
+            $data['maritalStatus'] = 'Solteiro';
+        }
 
         /*
          * Se a pessoa for casada e $data['partner'] = 0 então o parceiro é de fora da igreja

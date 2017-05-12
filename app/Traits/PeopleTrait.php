@@ -134,7 +134,7 @@ trait PeopleTrait
             );
     }
 
-    function randomPassword()
+    public function randomPassword()
     {
         $alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
         $pass = array(); //remember to declare $pass as an array
@@ -145,4 +145,5 @@ trait PeopleTrait
         }
         return implode($pass); //turn the array into a string
     }
+
 }

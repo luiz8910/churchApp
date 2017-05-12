@@ -22,6 +22,8 @@ Route::group(['middleware' => 'auth'], function (){
 
     Route::get('teen', 'PersonController@teenagers')->name('person.teen');
 
+    Route::get('teen/{person}/edit', 'PersonController@editTeen')->name('teen.edit');
+
     Route::get('inactive', 'PersonController@inactive')->name('person.inactive');
 
     Route::get('turnActive/{id}', 'PersonController@turnActive')->name('person.turnActive');

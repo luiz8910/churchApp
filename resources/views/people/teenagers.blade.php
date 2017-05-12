@@ -149,7 +149,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <td class="visible-xs"></td>
                                                     <td> <img src="{{ $item->imgProfile }}" style="width: 50px; height: 50px;"> </td>
                                                     <td>
-                                                        <a href="{{ route('person.edit', ['person' => $item->id]) }}">
+                                                        <a href="{{ route('teen.edit', ['person' => $item->id]) }}">
                                                             {{ $item->name }} {{ $item->lastName }}</a>
                                                     </td>
                                                     <td> {{ $item->cpf }} </td>

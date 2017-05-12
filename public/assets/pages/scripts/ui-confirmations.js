@@ -2,7 +2,7 @@ var UIConfirmations = function () {
 
     var handleSample = function () {
         
-        $('#bs_confirmation_demo_1').on('confirmed.bs.confirmation', function () {
+        /*$('#bs_confirmation_demo_1').on('confirmed.bs.confirmation', function () {
             alert('You confirmed action #1');
         });
 
@@ -17,7 +17,16 @@ var UIConfirmations = function () {
         $('#bs_confirmation_demo_2').on('canceled.bs.confirmation', function () {
             alert('You canceled action #2');
         });
-    }
+
+        $(".pop").click(function () {
+            alert(this.id);
+        });*/
+
+        $(".pop").on('confirmed.bs.confirmation', function () {
+            alert(this.id);
+        })
+
+    };
 
 
     return {

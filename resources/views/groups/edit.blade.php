@@ -808,7 +808,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             <i class="fa fa-location-arrow font-purple"></i>
                                                         </span>
                                                         <input type="text" class="form-control" id="zipCode" name="zipCode"
-                                                               value="{{ $group->zipCode }}" placeholder="XXXXX-XXX">
+                                                               value="{{ $group->zipCode }}" placeholder="XXXXX-XXX" maxlength="9">
                                                     </div>
                                                 </div>
                                             </div>
