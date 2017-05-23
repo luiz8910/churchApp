@@ -1512,7 +1512,11 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         @while($i < count($days))
                                                         <tr>
                                                             <td @if(date("Y-m-d") == $days[$i]) class="today-back" @endif>
-                                                                    <h6>{{ substr($days[$i], 8) }}</h6>
+                                                                    <h6>
+
+                                                                            {{ substr($days[$i], 8) }}
+
+                                                                    </h6>
 
                                                                     @while($x < count($allEvents))
                                                                         @if($allEvents[$x]->eventDate == $days[$i])

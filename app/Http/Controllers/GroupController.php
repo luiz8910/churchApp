@@ -320,7 +320,7 @@ class GroupController extends Controller
     {
         $this->repository->delete($id);
 
-        return redirect()->route('group.index');
+        return json_encode(true);
     }
 
     public function addMembers(Request $request, $group)
@@ -352,7 +352,9 @@ class GroupController extends Controller
 
         \Session::flash('group.deleteMember', 'Usuário excluido com sucesso');
 
-        return redirect()->route('group.edit', ['id' => $group]);
+        return json_encode(true);
+
+        //return redirect()->route('group.edit', ['id' => $group]);
     }
 
     public function newMemberToGroup(Request $request, $group)

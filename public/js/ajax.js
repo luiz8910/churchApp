@@ -464,3 +464,52 @@
         });
     }
 
+    function Delete(id, route)
+    {
+        var request = $.ajax({
+            url: route+"-delete/" + id,
+            method: "GET",
+            dataType: 'json'
+        });
+
+        request.done(function (e) {
+
+            if(e)
+            {
+                location.reload();
+            }
+
+        });
+
+
+        request.fail(function (e) {
+            console.log("fail");
+            console.log(e);
+        })
+    }
+
+
+    function leaveGroup(group, person)
+    {
+        var request = $.ajax({
+            url: 'deleteMemberGroup/'+ group + '/' + person,
+            method: 'GET',
+            dataType:'json'
+        });
+
+        request.done(function (e) {
+            console.log("done");
+            console.log(e);
+
+            if(e){
+                location.reload();
+            }
+
+        });
+
+        request.fail(function (e) {
+            console.log("fail");
+            console.log(e);
+        })
+    }
+

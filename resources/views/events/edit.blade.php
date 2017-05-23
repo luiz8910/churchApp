@@ -205,7 +205,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 Check-In
                                             </a>
 
-                                            <a href="javascript:;" class="btn btn-primary btn-circle">
+                                            <a href="{{ route('event.create') }}" class="btn btn-primary btn-circle">
                                                 <i class="fa fa-plus"></i>
                                                 Evento
                                             </a>

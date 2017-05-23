@@ -107,6 +107,9 @@ class EventController extends Controller
          * Inicio Agenda
          */
 
+        //Dia Atual
+        $today = date("Y-m-d");
+
         //Recupera todos os meses
         $allMonths = AgendaServices::allMonths();
 
@@ -135,9 +138,212 @@ class EventController extends Controller
         //Recupera o mês atual
         $thisMonth = AgendaServices::thisMonth();
 
+        /*
+         * Fim Agenda
+         */
 
         return view("events.teste", compact('countPerson', 'countGroups', 'state',
-            'events', 'notify', 'qtde', 'allMonths', 'allDays', 'days', 'allEvents', 'thisMonth'));
+            'events', 'notify', 'qtde', 'allMonths', 'allDays', 'days', 'allEvents',
+            'thisMonth', 'today'));
+    }
+
+
+    public function nextMonth($thisMonth)
+    {
+        $countPerson[] = $this->countPerson();
+
+        $countGroups[] = $this->countGroups();
+
+        $state = $this->stateRepository->all();
+
+        //Fim Variáveis
+
+        /*
+         * Lista de Eventos
+         */
+        $events = $this->repository->paginate(5);
+
+        /*
+         * Foreach para Formatação de datas e nome do grupo pertencente se houver
+         */
+        foreach ($events as $event) {
+            $event->eventDate = $this->formatDateView($event->eventDate);
+
+            if($event->group_id)
+            {
+                $event['group_name'] = $this->groupRepository->find($event->group_id)->name;
+            }
+
+            //$event->created_at = $this->formatDateView($event->created_at);
+        }
+
+        /*
+         * Notificação, e quantidades de novas notificações
+         */
+        $notify = $this->notify();
+
+        $qtde = count($notify) or 0;
+
+        //Fim notificação
+
+        /*
+         * Inicio Agenda
+         */
+
+        //Dia Atual
+        $today = date("Y-m-d");
+
+        //Recupera todos os meses
+        $allMonths = AgendaServices::allMonths();
+
+        //Recuperar todos os dias da semana
+        $allDays = AgendaServices::allDaysName();
+
+        //Retorna todos os eventos
+        $allEvents = EventServices::allEvents();
+
+        $ano = date("Y");
+
+        $nextMonth = $thisMonth + 1;
+
+        if($thisMonth == 12)
+        {
+            $ano++;
+            $nextMonth = 1;
+        }
+        elseif ($thisMonth == -1){
+            $ano--;
+            $nextMonth = 12;
+        }
+
+
+        $date = date_create();
+
+        date_date_set($date, $ano, $nextMonth, 1);
+
+        $firstDayNumber = date_format($date, "w");
+
+        $fixDays = $firstDayNumber == 0 ? 7 : $firstDayNumber;
+
+
+
+        $stop = false;
+
+        $days = [];
+
+        $mon = [];
+        $tue = [];
+        $wed = [];
+        $thu = [];
+        $fri = [];
+        $sat = [];
+        $sun = [];
+
+        $i = 0;
+
+        $x = $firstDayNumber; //4
+
+        $test = [];
+
+        while($x != 1)
+        {
+            // $i = 0, 1, 2, 3
+
+            $x--; //3, 2, 1, 0
+
+            $x *= -1; //-3, -2, -1, 0
+
+            date_add($date, date_interval_create_from_date_string($x. "days"));
+
+            $days[$i] = date_create(date_format($date, "Y-m-d"));
+
+            $days[$i] = date_format($days[$i], "Y-m-d");
+
+            //$date = date_create();
+
+            date_date_set($date, $ano, $nextMonth, 1);
+
+            $test[] = $date;
+
+            $x *= -1;
+
+            $i++;
+        }
+
+
+        //dd($days);
+
+
+        while(!$stop)
+        {
+            $days[$i] = date_create(date_format($date, "Y-m-d"));
+
+            $days[$i] = date_format($days[$i], "Y-m-d");
+
+            date_add($date, date_interval_create_from_date_string("1 day"));
+
+            $month = date_format(date_create($days[$i]), "n");
+
+            $dayNumber = date_format(date_create($days[$i]), "w");
+
+            switch ($dayNumber){
+                case 1 :
+                    $mon[] = $days[$i];
+                    break;
+
+                case 2:
+                    $tue[] = $days[$i];
+                    break;
+
+                case 3:
+                    $wed[] = $days[$i];
+                    break;
+
+                case 4:
+                    $thu[] = $days[$i];
+                    break;
+
+                case 5:
+                    $fri[] = $days[$i];
+                    break;
+
+                case 6:
+                    $sat[] = $days[$i];
+                    break;
+
+                case 0:
+                    $sun[] = $days[$i];
+                    break;
+            }
+
+
+            if($month != $nextMonth)
+            {
+                $stop = true;
+                array_pop($days);
+            }
+
+            $i++;
+        }
+
+
+
+        //Recupera o próximo mês
+        $thisMonth = $nextMonth;
+
+        /*
+         * Fim Agenda
+         */
+
+
+        $arr = [];
+
+        //dd($days);
+
+        return view("events.teste", compact('countPerson', 'countGroups', 'state',
+            'events', 'notify', 'qtde', 'allMonths', 'allDays', 'days', 'allEvents',
+            'thisMonth', 'today', 'weekDays', 'mon', 'tue', 'wed', 'thu', 'fri',
+            'sat', 'sun', 'arr', 'firstDayNumber', 'ano'));
     }
 
     public function index()
@@ -548,7 +754,7 @@ class EventController extends Controller
 
         \Session::flash('event.deleted', 'O evento '.$name.' foi excluido');
 
-        return redirect()->route('event.index');
+        return json_encode(true);
     }
 
     public function destroyMany(Request $request)

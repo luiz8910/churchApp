@@ -1,0 +1,28 @@
+/* The navigation bar */
+.navbar {
+    overflow: hidden;
+    background-color: white;
+    position: fixed; /* Set the navbar to fixed position */
+    top: 0; /* Position the navbar at the top of the page */
+    width: 100%; /* Full width */
+    z-index: 1000;
+    display: none;
+}
+
+/* Links inside the navbar */
+.navbar a {
+    float: left;
+    display: block;
+    color: darkgrey;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.logo-fixed-bar{
+    width:80%;
+    display: block;
+    margin: 0 auto;
+    z-index: 2000;
+}
+

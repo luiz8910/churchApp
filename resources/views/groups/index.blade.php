@@ -152,17 +152,15 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     @if(Auth::getUser()->person && Auth::getUser()->person->role_id == 1)
 
                                                         <?php $deleteForm = "delete-".$item->id; ?>
-                                                        <td id="{{ $deleteForm }}">
-                                                            {!! Form::open(['route' => ['group.destroy', 'group' => $item->id],
-                                                                    'method' => 'DELETE', 'id' => 'form-'.$deleteForm]) !!}
+                                                        <td>
 
-                                                            <a href="" class="btn btn-danger btn-sm btn-circle" title="Excluir grupo"
-                                                               onclick='event.preventDefault();document.getElementById("form-{{ $deleteForm }}").submit();'>
+                                                            <button class="btn btn-danger btn-sm btn-circle pop" title="Excluir grupo"
+                                                                    data-toggle="confirmation" data-placement="top" data-original-title="Deseja Excluir?"
+                                                                    data-popout="true" onclick="event.preventDefault()"
+                                                                    id="btn-{{ $deleteForm }}">
                                                                 <i class="fa fa-trash"></i>
-                                                                Excluir
-                                                            </a>
+                                                            </button>
 
-                                                            {!! Form::close() !!}
                                                         </td>
 
                                                     @endif

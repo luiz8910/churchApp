@@ -587,9 +587,15 @@ class PersonController extends Controller
      */
     public function destroy($id)
     {
-        $this->repository->delete($id);
+        $person = $this->repository->find($id);
 
-        return redirect()->route('person.index');
+        $user = $person->user->id;
+
+        $this->userRepository->delete($user);
+
+        $person->delete();
+
+        return json_encode(true);
     }
 
     /*public function notify()

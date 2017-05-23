@@ -56,6 +56,8 @@ Route::group(['middleware' => 'auth'], function (){
 
     Route::delete('deleteMemberGroup/{group}/{member}', 'GroupController@deleteMember')->name('group.deleteMember');
 
+    Route::get('deleteMemberGroup/{group}/{member}', 'GroupController@deleteMember');
+
     //Eventos
 
     Route::get('events/create', 'EventController@create')->name('event.create');
@@ -88,6 +90,10 @@ Route::group(['middleware' => 'auth'], function (){
 
     Route::get("teste", "EventController@teste");
 
+    Route::get("teste-mes/{thisMonth}", "EventController@nextMonth")->name("events.teste-mes");
+
+    Route::get("teste-mes-prev/{thisMonth}", "EventController@prevMonth")->name("events.teste-mes-prev");
+
 });
 
 Route::group(["middleware" => "check.role:1"], function () {
@@ -107,6 +113,12 @@ Route::group(["middleware" => "check.role:1"], function () {
     Route::post('newMember/{group}', 'GroupController@newMemberToGroup')->name('group.newMember');
 
     Route::get('group/deleteManyUsers/{id}', 'GroupController@destroyManyUsers')->name('group.destroyManyUsers');
+
+    Route::get('/person-delete/{id}', 'PersonController@destroy');
+
+    Route::get('/group-delete/{id}', 'GroupController@destroy');
+
+    Route::get('/events-delete/{id}', 'EventController@destroy');
 
     Route::get('pusher', function(){
         return view('pusher');

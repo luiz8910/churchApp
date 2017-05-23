@@ -21,10 +21,24 @@ var UIConfirmations = function () {
         $(".pop").click(function () {
             alert(this.id);
         });*/
+        var route = location.pathname;
 
         $(".pop").on('confirmed.bs.confirmation', function () {
-            alert(this.id);
-        })
+            var str = this.id;
+
+            var id = str.replace("btn-delete-", "");
+
+            Delete(id, route);
+        });
+
+        $(".pop-leave-group").on('confirmed.bs.confirmation', function () {
+
+            var group = str.replace("btn-delete-", "");
+
+            var person = $("#person_id").val();
+
+            leaveGroup(group, person);
+        });
 
     };
 

@@ -18,4 +18,16 @@ $(function () {
         }
 
     }
+
+    $(window).scroll(function(){
+       var height = $(window).scrollTop();
+
+        if(height > 600)
+        {
+            $('.navbar').css("display", "block")
+        }
+        else{
+            $('.navbar').css("display", "none")
+        }
+    });
 });

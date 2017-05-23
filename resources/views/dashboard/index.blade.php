@@ -211,6 +211,8 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 </tr>
                                                 </thead>
 
+                                                <input type="hidden" id="person_id" value="{{ Auth::getUser()->person_id }}">
+
                                                 <tbody>
                                                     @if($groups)
                                                         <?php $i = 0; ?>
@@ -223,18 +225,19 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                                                 @if(Auth::getUser()->person)
 
-                                                                    <?php $deleteForm = "delete-" . Auth::getUser()->person->id; ?>
-                                                                    <td id="{{ $deleteForm }}">
-                                                                        {!! Form::open(['route' => ['group.deleteMember', 'group' => $item->id, 'member' => Auth::getUser()->person->id],
-                                                                                'method' => 'DELETE', 'id' => 'form-'.$deleteForm]) !!}
 
-                                                                        <a href="" class="btn btn-danger btn-sm btn-circle"
+                                                                    <?php $deleteForm = "delete-" . $item->id; ?>
+                                                                    <td>
+
+                                                                        <a href="" class="btn btn-danger btn-sm btn-circle pop-leave-group"
                                                                            title="Excluir membro do grupo"
-                                                                           onclick='event.preventDefault();document.getElementById("form-{{ $deleteForm }}").submit();'>
+                                                                           data-toggle="confirmation" data-placement="top" data-original-title="Deseja Excluir?"
+                                                                           data-popout="true" onclick="event.preventDefault()"
+                                                                           id="btn-{{ $deleteForm }}">
                                                                             <i class="fa fa-trash"></i>
                                                                         </a>
 
-                                                                        {!! Form::close() !!}
+
                                                                     </td>
 
                                                                 @endif
