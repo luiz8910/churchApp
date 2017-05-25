@@ -40,6 +40,14 @@ var UIConfirmations = function () {
             leaveGroup(group, person);
         });
 
+        $(".pop-teen").on('confirmed.bs.confirmation', function () {
+            var str = this.id;
+            var teen = str.replace("btn-delete-", "");
+
+            detachTeen(teen);
+        });
+
+
     };
 
 

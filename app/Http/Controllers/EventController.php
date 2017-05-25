@@ -60,7 +60,7 @@ class EventController extends Controller
     }
 
 
-    public function teste()
+    public function index()
     {
         /*
          * Variáveis gerais p/ todas as páginas
@@ -138,13 +138,16 @@ class EventController extends Controller
         //Recupera o mês atual
         $thisMonth = AgendaServices::thisMonth();
 
+        //Ano Atual
+        $ano = date("Y");
+
         /*
          * Fim Agenda
          */
 
-        return view("events.teste", compact('countPerson', 'countGroups', 'state',
+        return view("events.index", compact('countPerson', 'countGroups', 'state',
             'events', 'notify', 'qtde', 'allMonths', 'allDays', 'days', 'allEvents',
-            'thisMonth', 'today'));
+            'thisMonth', 'today', 'ano'));
     }
 
 
@@ -202,6 +205,7 @@ class EventController extends Controller
         //Retorna todos os eventos
         $allEvents = EventServices::allEvents();
 
+        //Ano Atual
         $ano = date("Y");
 
         $nextMonth = $thisMonth + 1;
@@ -223,27 +227,13 @@ class EventController extends Controller
 
         $firstDayNumber = date_format($date, "w");
 
-        $fixDays = $firstDayNumber == 0 ? 7 : $firstDayNumber;
-
-
-
         $stop = false;
 
         $days = [];
 
-        $mon = [];
-        $tue = [];
-        $wed = [];
-        $thu = [];
-        $fri = [];
-        $sat = [];
-        $sun = [];
-
         $i = 0;
 
-        $x = $firstDayNumber; //4
-
-        $test = [];
+        $x = $firstDayNumber == 0 ? 7 : $firstDayNumber;
 
         while($x != 1)
         {
@@ -255,24 +245,18 @@ class EventController extends Controller
 
             date_add($date, date_interval_create_from_date_string($x. "days"));
 
-            $days[$i] = date_create(date_format($date, "Y-m-d"));
+            //$days[$i] = date_create($date);
 
-            $days[$i] = date_format($days[$i], "Y-m-d");
+            $days[$i] = date_format($date, "Y-m-d");
 
-            //$date = date_create();
+            //echo "1 : " . $days[$i] . "<br>";
 
             date_date_set($date, $ano, $nextMonth, 1);
-
-            $test[] = $date;
 
             $x *= -1;
 
             $i++;
         }
-
-
-        //dd($days);
-
 
         while(!$stop)
         {
@@ -284,49 +268,18 @@ class EventController extends Controller
 
             $month = date_format(date_create($days[$i]), "n");
 
-            $dayNumber = date_format(date_create($days[$i]), "w");
+            //echo "2: " . $days[$i] . "<br>";
 
-            switch ($dayNumber){
-                case 1 :
-                    $mon[] = $days[$i];
-                    break;
+            //$dayNumber = date_format(date_create($days[$i]), "w");
 
-                case 2:
-                    $tue[] = $days[$i];
-                    break;
-
-                case 3:
-                    $wed[] = $days[$i];
-                    break;
-
-                case 4:
-                    $thu[] = $days[$i];
-                    break;
-
-                case 5:
-                    $fri[] = $days[$i];
-                    break;
-
-                case 6:
-                    $sat[] = $days[$i];
-                    break;
-
-                case 0:
-                    $sun[] = $days[$i];
-                    break;
-            }
-
+            $i++;
 
             if($month != $nextMonth)
             {
                 $stop = true;
                 array_pop($days);
             }
-
-            $i++;
         }
-
-
 
         //Recupera o próximo mês
         $thisMonth = $nextMonth;
@@ -336,17 +289,16 @@ class EventController extends Controller
          */
 
 
-        $arr = [];
+        $next = true;
 
         //dd($days);
 
-        return view("events.teste", compact('countPerson', 'countGroups', 'state',
+        return view("events.index", compact('countPerson', 'countGroups', 'state',
             'events', 'notify', 'qtde', 'allMonths', 'allDays', 'days', 'allEvents',
-            'thisMonth', 'today', 'weekDays', 'mon', 'tue', 'wed', 'thu', 'fri',
-            'sat', 'sun', 'arr', 'firstDayNumber', 'ano'));
+            'thisMonth', 'today', 'next', 'ano'));
     }
 
-    public function index()
+    public function oldindex()
     {
         $countPerson[] = $this->countPerson();
 
@@ -615,6 +567,7 @@ class EventController extends Controller
             $item->name = $this->personRepository->find($item->person_id)->name;
             $item->frequency = EventServices::userFrequency($id, $item->person_id);
         }
+
 
 
         //dd($eventPeople);

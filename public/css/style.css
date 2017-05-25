@@ -2,6 +2,11 @@
     color: #4F0C53;
 }
 
+.beconnect-back{
+    background: #4F0C53;
+    color: white;
+}
+
 .sidebar-extended{
     width: 420px !important;
 }

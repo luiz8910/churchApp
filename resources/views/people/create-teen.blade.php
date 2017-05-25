@@ -116,6 +116,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                 <div class="portlet-body form">
                                     {!! Form::open(['route' => 'person.store', 'method' => 'POST', 'class' => 'repeater',
                                     'enctype' => 'multipart/form-data', 'role' => 'form']) !!}
+                                    <input type="hidden" name="teen" value="teen">
                                     <div class="form-body">
                                         <div class="row">
                                             <div class="col-md-6">

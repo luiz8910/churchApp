@@ -592,15 +592,16 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                                     <td> {{ $child->dateBirth }} </td>
                                                                                     <td> {{ $child->cpf or null }} </td>
                                                                                     <?php $deleteForm = "delete-".$child->id; ?>
-                                                                                    <td id="{{ $deleteForm }}">
-                                                                                        {!! Form::open(['route' => ['person.destroy', 'person' => $child->id],
-                                                                                                'method' => 'DELETE', 'id' => 'form-'.$deleteForm]) !!}
+                                                                                    <input type="hidden" id="parentId" value="{{ $person->id }}">
+                                                                                    <td>
 
-                                                                                        <a href="" class="btn btn-danger btn-sm btn-circle"
-                                                                                           onclick='event.preventDefault();document.getElementById("form-{{ $deleteForm }}").submit();'>
+                                                                                        <button class="btn btn-danger btn-sm btn-circle pop-teen"
+                                                                                           title="Você tem certeza?"
+                                                                                           data-toggle="confirmation" data-placement="top" data-original-title="Deseja Excluir?"
+                                                                                           data-popout="true" onclick="event.preventDefault()"
+                                                                                           id="btn-{{ $deleteForm }}">
                                                                                             <i class="fa fa-trash"></i>
-                                                                                            Excluir
-                                                                                        </a>
+                                                                                        </button>
 
                                                                                         {!! Form::close() !!}
                                                                                     </td>

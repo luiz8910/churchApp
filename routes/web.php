@@ -24,6 +24,10 @@ Route::group(['middleware' => 'auth'], function (){
 
     Route::get('teen/{person}/edit', 'PersonController@editTeen')->name('teen.edit');
 
+    Route::get('teen/{person}', 'PersonController@destroyTeen')->name('teen.destroy');
+
+    Route::get('teen-detach/{id}/{parentId}', 'PersonController@detachTeen');
+
     Route::get('inactive', 'PersonController@inactive')->name('person.inactive');
 
     Route::get('turnActive/{id}', 'PersonController@turnActive')->name('person.turnActive');
@@ -88,11 +92,7 @@ Route::group(['middleware' => 'auth'], function (){
 
     Route::get("email", "PersonController@email");
 
-    Route::get("teste", "EventController@teste");
-
-    Route::get("teste-mes/{thisMonth}", "EventController@nextMonth")->name("events.teste-mes");
-
-    Route::get("teste-mes-prev/{thisMonth}", "EventController@prevMonth")->name("events.teste-mes-prev");
+    Route::get("agenda-mes/{thisMonth}", "EventController@nextMonth")->name("events.agenda-mes");
 
 });
 

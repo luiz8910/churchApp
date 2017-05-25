@@ -513,3 +513,25 @@
         })
     }
 
+    function detachTeen(id)
+    {
+        var parentId = $("#parentId").val();
+
+        var request = $.ajax({
+            url: '/teen-detach/' + id + '/' + parentId,
+            method: "GET",
+            dataType: "json"
+        });
+
+        request.done(function (e) {
+           if(e){
+               location.reload();
+           }
+        });
+
+        request.fail(function (e) {
+            console.log("fail");
+            console.log(e);
+        });
+    }
+

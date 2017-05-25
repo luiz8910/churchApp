@@ -193,6 +193,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                         <div class="tab-pane active" id="tab_1_1">
                                             {!! Form::open(['route' => ['person.update', 'person' => $person->id], 'class' => 'repeater', 'method' => 'PUT', 'role' => 'form']) !!}
 
+                                            <input type="hidden" name="teen" value="teen">
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     {!! Form::FormGroup('name', $errors) !!}

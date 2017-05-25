@@ -20,7 +20,8 @@ trait PeopleTrait
     {
         DB::table($table)->
             where('id', $id)->
-            update(['tag' => $tag]);
+            update(['tag' => $tag, 'updated_at' => Carbon::now()]);
+
     }
 
     public function tag($dateBirth)
@@ -72,7 +73,7 @@ trait PeopleTrait
         {
             DB::table("people")
                 ->where('id', $id)
-                ->update(['hasKids' => 'on']);
+                ->update(['hasKids' => 1, 'updated_at' => Carbon::now()]);
         }
 
 
@@ -93,7 +94,7 @@ trait PeopleTrait
 
         DB::table($table)->
             where('id', $id)->
-            update(['imgProfile' => $imgName]);
+            update(['imgProfile' => $imgName, 'updated_at' => Carbon::now()]);
 
         //$request->session()->flash('updateUser', 'Alterações realizadas com sucesso');
     }

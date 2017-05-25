@@ -386,7 +386,32 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         </div>
                                                     </div>
                                                 </div>
+
+                                                @elseif($event->frequency == "Mensal")
+                                                    <div class="col-md-3" id="day">
+                                                        <div class="form-group">
+                                                            <label>Selecione o dia</label>
+                                                            <div class="input-icon input-icon-sm">
+                                                                <i class="fa fa-briefcase"></i>
+                                                                <select class="form-control" name="day" required>
+                                                                    <option value="">Selecione</option>
+                                                                    <?php $days = 32; $i = 1;?>
+
+                                                                    @while($i < $days)
+                                                                        <option value="{{ $i }}"
+                                                                                @if($event->day == $i ) selected @endif >
+                                                                            {{ $i }}
+                                                                        </option>
+                                                                        <?php $i++; ?>
+                                                                    @endwhile
+
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
                                             @endif
+
 
 
                                         </div>

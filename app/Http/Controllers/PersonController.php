@@ -244,7 +244,7 @@ class PersonController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(PersonCreateRequest $request)
+    public function store(Request $request)
     {
         $file = $request->file('img');//dd($request->all());
 
@@ -258,15 +258,20 @@ class PersonController extends Controller
 
         $confirmPass = implode('=>', $confirmPass);
 
-        if(!$password){
-            \Session::flash("email.exists", "Escolha uma senha");
-            return redirect()->route("person.create");
-        }
-        elseif($password != $confirmPass){
-            \Session::flash("email.exists", "As senhas não combinam");
-            $request->flashExcept('password');
+        $teen = $request->get('teen') or null;
 
-            return redirect()->route("person.create")->withInput();
+        if(!$teen)
+        {
+            if(!$password){
+                \Session::flash("email.exists", "Escolha uma senha");
+                return redirect()->route("person.create");
+            }
+            elseif($password != $confirmPass){
+                \Session::flash("email.exists", "As senhas não combinam");
+                $request->flashExcept('password');
+
+                return redirect()->route("person.create")->withInput();
+            }
         }
 
         $email = $email["email"];
@@ -278,7 +283,6 @@ class PersonController extends Controller
             \Session::flash("email.exists", "Existe uma conta associada para o email informado (" .$email. ")");
 
             $request->flashExcept('password');
-
 
             return redirect()->route("person.create")->withInput();
         }
@@ -296,6 +300,16 @@ class PersonController extends Controller
             $data['father_id'] = $data['father_id_input'] or null;
             $data['mother_id'] = $data['mother_id_input'] or null;
         }
+
+        if(!isset($data["maritalStatus"])){
+            $data["maritalStatus"] = "Solteiro";
+        }
+
+        if(!isset($data["role_id"])){
+            $member = $this->roleRepository->findByField('name', 'Membro')->first()->id;
+            $data["role_id"] = $member;
+        }
+
 
         $id = $this->repository->create($data)->id;
 
@@ -333,6 +347,9 @@ class PersonController extends Controller
             $this->imgProfile($file, $id, $data['name'], 'people');
         }
 
+        if($teen){
+            return redirect()->route('person.teen');
+        }
 
         return redirect()->route('person.index');
     }
@@ -405,23 +422,15 @@ class PersonController extends Controller
 
         if($person->hasKids == 1)
         {
-            if ($person->gender == "M")
+            $parent = $person->gender == "M" ? 'father_id' : 'mother_id';
+
+            $children = $this->repository->findByField($parent, $id);
+
+            foreach ($children as $child)
             {
-                $children = $this->repository->findByField('father_id', $id);
-
-                foreach ($children as $child)
-                {
-                    $child->dateBirth = $this->formatDateView($child->dateBirth);
-                }
+                $child->dateBirth = $this->formatDateView($child->dateBirth);
             }
-            else{
-                $children = $this->repository->findByField('mother_id', $id);
 
-                foreach ($children as $child)
-                {
-                    $child->dateBirth = $this->formatDateView($child->dateBirth);
-                }
-            }
         }
 
 
@@ -516,6 +525,8 @@ class PersonController extends Controller
 
         $email = $request->only('email');
 
+        $teen = $request->get('teen') or null;
+
         //Formatação correta do email
         $email = $email["email"];
 
@@ -531,6 +542,12 @@ class PersonController extends Controller
         if(!isset($data['maritalStatus']))
         {
             $data['maritalStatus'] = 'Solteiro';
+        }
+
+        if(!isset($data["role_id"]))
+        {
+            $member = $this->roleRepository->findByField('name', 'Membro')->first()->id;
+            $data["role_id"] = $member;
         }
 
         /*
@@ -566,8 +583,34 @@ class PersonController extends Controller
             }
         }
 
+        $this->updateTag($this->tag($data["dateBirth"]), $id, 'people');
 
         $this->repository->update($data, $id);
+
+        if($teen){
+            if(is_numeric($data['father_id'])){
+                $parentId = $this->repository->find($data['father_id'])->id;
+
+                DB::table('people')
+                    ->where('id', $parentId)
+                    ->update([
+                        'hasKids' => 1,
+                        'updated_at' => Carbon::now()
+                    ]);
+            }
+            if(is_numeric($data['mother_id'])){
+                $parentId = $this->repository->find($data['mother_id'])->id;
+
+                DB::table('people')
+                    ->where('id', $parentId)
+                    ->update([
+                        'hasKids' => 1,
+                        'updated_at' => Carbon::now()
+                    ]);
+            }
+
+            return redirect()->route('person.teen');
+        }
 
         return redirect()->route('person.index');
     }
@@ -594,6 +637,43 @@ class PersonController extends Controller
         $this->userRepository->delete($user);
 
         $person->delete();
+
+        return json_encode(true);
+    }
+
+    public function destroyTeen($id)
+    {
+        $person = $this->repository->find($id);
+
+        $person->delete();
+
+        return json_encode(true);
+    }
+
+    public function detachTeen($id, $parentId)
+    {
+        $adult = $this->repository->find($parentId);
+
+        $parent = $adult->gender == "M" ? 'father_id' : 'mother_id';
+
+        DB::table('people')
+            ->where('id', $id)
+            ->update([
+                $parent => null,
+                'updated_at' => Carbon::now()
+            ]);
+
+        $hasKids = $this->repository->findByField($parent, $parentId);
+
+        if(count($hasKids) == 0)
+        {
+            DB::table('people')
+                ->where('id', $parentId)
+                ->update([
+                    'hasKids' => null,
+                    'updated_at' => Carbon::now()
+                ]);
+        }
 
         return json_encode(true);
     }

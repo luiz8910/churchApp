@@ -22,9 +22,10 @@ License: You must have a valid license purchased only from themeforest(the above
 <head>
     @include('includes.head')
 
-    <link href="../assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
-    <link href="../assets/global/plugins/fancybox/source/jquery.fancybox.css" rel="stylesheet" type="text/css" />
+    <!--<link href="../assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/global/plugins/fancybox/source/jquery.fancybox.css" rel="stylesheet" type="text/css" />-->
     <link href="../assets/pages/css/search.min.css" rel="stylesheet" type="text/css" />
+    <link href="../css/navbar.css" rel="stylesheet" type="text/css" />
     <script src="../js/ajax.js"></script>
 
 
@@ -233,13 +234,11 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             <thead>
                                                             <tr class="uppercase">
                                                                 <th>
-                                                                    @if(Auth::getUser()->person && Auth::getUser()->person->role_id == 1)
-                                                                        <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
-                                                                            <input type="checkbox" name="events" class="checkboxes check-model" id="check-0"
-                                                                                   value="0" />
-                                                                            <span></span>
-                                                                        </label>
-                                                                    @endif
+                                                                    <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                                                        <input type="checkbox" name="events" class="checkboxes check-model" id="check-0"
+                                                                               value="0" />
+                                                                        <span></span>
+                                                                    </label>
                                                                 </th>
                                                                 <th class="printable-table-header"> Nome </th>
                                                                 <th class="printable-table-header"> Frequência </th>
@@ -254,7 +253,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             @foreach($events as $event)
                                                                 <tr class="printable-table-tr">
                                                                     <td>
-                                                                        @if(Auth::getUser()->person && Auth::getUser()->person->role_id == 1)
+                                                                        @if(Auth::getUser()->person->role_id == 1)
                                                                             <fieldset>
                                                                                 <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
                                                                                     <input type="checkbox" name="events" class="checkboxes check-model" id="check-{{ $event->id }}"
@@ -286,19 +285,19 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                         @endif
                                                                     </td>
 
-                                                                    @if(Auth::getUser()->person && Auth::getUser()->person->role_id == 1)
+                                                                    @if(Auth::getUser()->person->role_id == 1)
                                                                         <?php $deleteForm = "delete-" . $event->id; ?>
-                                                                        <td id="{{ $deleteForm }}">
-                                                                            {!! Form::open(['route' => ['event.destroy', 'event' => $event->id],
-                                                                                    'method' => 'DELETE', 'id' => 'form-'.$deleteForm]) !!}
+                                                                        <td>
 
-                                                                            <a href="" class="btn btn-danger btn-sm btn-circle"
+                                                                            <a href="" class="btn btn-danger btn-sm btn-circle pop"
                                                                                title="Excluir evento"
-                                                                               onclick='event.preventDefault();document.getElementById("form-{{ $deleteForm }}").submit();'>
-                                                                                <i class="fa fa-trash"> Excluir</i>
+                                                                               data-toggle="confirmation" data-placement="top" data-original-title="Deseja Excluir?"
+                                                                               data-popout="true" onclick="event.preventDefault()"
+                                                                               id="btn-{{ $deleteForm }}">
+                                                                                <i class="fa fa-trash"></i>
                                                                             </a>
 
-                                                                            {!! Form::close() !!}
+
                                                                         </td>
                                                                     @endif
 
@@ -324,1175 +323,244 @@ License: You must have a valid license purchased only from themeforest(the above
                                     </div>
 
 
-                                    <div class="row desktop-row">
-                                        <div class="col-md-12">
-                                            <div class="panel panel-default" id="prevMonth6" style="display: none;">
-                                                <div class="panel-heading desktop">
-                                                    <?php $i = 0; ?>
-                                                        <h5>Próximos Eventos -
-                                                            @while($i < count($allMonths))
-                                                                @if($i == (int) substr(end($prevMonth6), 5, 2))
-                                                                    {{ $allMonths[$i] }}
-                                                                @endif
-                                                                <?php $i++; ?>
+                                    @if(isset($next))
+
+                                        <div class="row desktop-row visible-md visible-lg">
+                                            <div class="col-md-12">
+                                                <div class="panel panel-default" id="thisMonth">
+
+                                                    <div class="panel-heading desktop">
+                                                        <h5>Próximos Eventos - {{ $allMonths[$thisMonth] }} - {{ $ano }}</h5>
+
+                                                        <a href="{{ route('events.agenda-mes', ['thisMonth' => $thisMonth])}}"
+                                                           id="btnThisRight" class="btn btn-default btn-sm btn-circle pull-right">
+                                                            <i class="fa fa-arrow-right"></i>
+                                                        </a>
+                                                        <a href="{{ route('events.agenda-mes', ['thisMonth' => $thisMonth - 2])}}"
+                                                           id="btnThisLeft" class="btn btn-default btn-sm btn-circle pull-right" style="margin-right: 33px;">
+                                                            <i class="fa fa-arrow-left"></i>
+                                                        </a>
+                                                    </div>
+                                                    <div class="panel-body">
+                                                        <table class="table table-bordered table-striped table-responsive" id="table-fixed">
+                                                            <thead class="thead-agenda">
+                                                                <tr>
+                                                                    <th>Segunda</th>
+                                                                    <th>Terça</th>
+                                                                    <th>Quarta</th>
+                                                                    <th>Quinta</th>
+                                                                    <th>Sexta</th>
+                                                                    <th>Sábado</th>
+                                                                    <th>Domingo</th>
+                                                                </tr>
+                                                            </thead>
+
+                                                            <tbody class="tbody-agenda-desktop">
+
+                                                            <?php $i = 0; ?>
+                                                            <?php $x = 0; ?>
+
+                                                            @while($i < count($days))
+                                                                <tr>
+                                                                    @if($i < count($days))
+                                                                        <td @if($today == $days[$i]) class="today-back" @endif>
+                                                                            <h6>
+                                                                                {{ substr($days[$i], 8) }}
+                                                                            </h6>
+
+                                                                            @while($x < count($allEvents))
+                                                                                @if($allEvents[$x]->eventDate == $days[$i])
+                                                                                    <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
+                                                                                        {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
+                                                                                    </label>
+
+                                                                                    <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
+                                                                                @endif
+                                                                                <?php $x++; ?>
+                                                                            @endwhile
+                                                                        </td>
+                                                                    @endif
+
+
+                                                                    <?php $i++; ?>
+                                                                    <?php $x = 0; ?>
+
+
+                                                                    @if($i < count($days))
+                                                                        <td @if($today == $days[$i]) class="today-back" @endif>
+                                                                            <h6>
+                                                                                {{ substr($days[$i], 8) }}
+                                                                            </h6>
+
+                                                                            @while($x < count($allEvents))
+                                                                                @if($allEvents[$x]->eventDate == $days[$i])
+                                                                                    <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
+                                                                                        {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
+                                                                                    </label>
+
+                                                                                    <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
+                                                                                @endif
+                                                                                <?php $x++; ?>
+                                                                            @endwhile
+                                                                        </td>
+                                                                    @endif
+
+                                                                        <?php $i++; ?>
+                                                                        <?php $x = 0; ?>
+
+
+                                                                    @if($i < count($days))
+                                                                        <td @if($today == $days[$i]) class="today-back" @endif>
+                                                                            <h6>
+                                                                                {{ substr($days[$i], 8) }}
+                                                                            </h6>
+
+                                                                            @while($x < count($allEvents))
+                                                                                @if($allEvents[$x]->eventDate == $days[$i])
+                                                                                    <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
+                                                                                        {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
+                                                                                    </label>
+
+                                                                                    <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
+                                                                                @endif
+                                                                                <?php $x++; ?>
+                                                                            @endwhile
+                                                                        </td>
+                                                                    @endif
+
+
+                                                                        <?php $i++; ?>
+                                                                        <?php $x = 0; ?>
+
+
+                                                                    @if($i < count($days))
+                                                                        <td @if($today == $days[$i]) class="today-back" @endif>
+                                                                            <h6>
+                                                                                {{ substr($days[$i], 8) }}
+                                                                            </h6>
+
+                                                                            @while($x < count($allEvents))
+                                                                                @if($allEvents[$x]->eventDate == $days[$i])
+                                                                                    <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
+                                                                                        {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
+                                                                                    </label>
+
+                                                                                    <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
+                                                                                @endif
+                                                                                <?php $x++; ?>
+                                                                            @endwhile
+                                                                        </td>
+                                                                    @endif
+
+
+                                                                        <?php $i++; ?>
+                                                                        <?php $x = 0; ?>
+
+
+                                                                    @if($i < count($days))
+                                                                        <td @if($today == $days[$i]) class="today-back" @endif>
+                                                                            <h6>
+                                                                                {{ substr($days[$i], 8) }}
+                                                                            </h6>
+
+                                                                            @while($x < count($allEvents))
+                                                                                @if($allEvents[$x]->eventDate == $days[$i])
+                                                                                    <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
+                                                                                        {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
+                                                                                    </label>
+
+                                                                                    <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
+                                                                                @endif
+                                                                                <?php $x++; ?>
+                                                                            @endwhile
+                                                                        </td>
+                                                                    @endif
+
+
+                                                                        <?php $i++; ?>
+                                                                        <?php $x = 0; ?>
+
+
+                                                                    @if($i < count($days))
+                                                                        <td @if($today == $days[$i]) class="today-back" @endif>
+                                                                            <h6>
+                                                                                {{ substr($days[$i], 8) }}
+                                                                            </h6>
+
+                                                                            @while($x < count($allEvents))
+                                                                                @if($allEvents[$x]->eventDate == $days[$i])
+                                                                                    <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
+                                                                                        {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
+                                                                                    </label>
+
+                                                                                    <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
+                                                                                @endif
+                                                                                <?php $x++; ?>
+                                                                            @endwhile
+                                                                        </td>
+                                                                    @endif
+
+
+                                                                    <?php $i++; ?>
+                                                                    <?php $x = 0; ?>
+
+
+                                                                    @if($i < count($days))
+                                                                        <td @if($today == $days[$i]) class="today-back" @endif>
+                                                                            <h6>
+                                                                                {{ substr($days[$i], 8) }}
+                                                                            </h6>
+
+                                                                            @while($x < count($allEvents))
+                                                                                @if($allEvents[$x]->eventDate == $days[$i])
+                                                                                    <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
+                                                                                        {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
+                                                                                    </label>
+
+                                                                                    <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
+                                                                                @endif
+                                                                                <?php $x++; ?>
+                                                                            @endwhile
+                                                                        </td>
+                                                                    @endif
+
+
+                                                                    <?php $i++; ?>
+                                                                    <?php $x = 0; ?>
+
+                                                            </tr>
+
                                                             @endwhile
+                                                            </tbody>
+
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div> <!-- outros mêses -->
+
+                                    @else
+
+                                        <div class="row desktop-row visible-md visible-lg">
+                                            <div class="col-md-12">
+                                                <div class="panel panel-default" id="thisMonth">
+                                                    <div class="panel-heading desktop">
+                                                        <?php $i = 0; ?>
+                                                        <h5>
+                                                            Eventos - Próximas 6 Semanas
                                                         </h5>
-                                                    <a href="javascript:;" id="btnPrevRight6" class="btn btn-default btn-sm btn-circle pull-right">
-                                                        <i class="fa fa-arrow-right"></i>
-                                                    </a>
-                                                    <a href="javascript:;" class="btn btn-default btn-sm btn-circle pull-right" style="margin-right: 33px;">
-                                                        <i class="fa fa-arrow-left"></i>
-                                                    </a>
-                                                </div>
-                                                <div class="panel-body">
-                                                    <table class="table table-bordered table-striped table-responsive" id="table-fixed">
-                                                        <thead class="thead-agenda">
-                                                        <tr>
-                                                            <th>Segunda</th>
-                                                            <th>Terça</th>
-                                                            <th>Quarta</th>
-                                                            <th>Quinta</th>
-                                                            <th>Sexta</th>
-                                                            <th>Sábado</th>
-                                                            <th>Domingo</th>
-                                                        </tr>
-                                                        </thead>
-
-                                                        <tbody class="tbody-agenda-desktop">
-
-                                                        <?php $i = 0; ?>
-                                                        <?php $x = 0; ?>
-
-                                                        @while($i < count($prevMonth6))
-                                                            <tr>
-                                                                <td>
-                                                                    <h6>{{ substr($prevMonth6[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $prevMonth6[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td>
-                                                                    <h6>{{ substr($prevMonth6[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $prevMonth6[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td>
-                                                                    <h6>{{ substr($prevMonth6[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $prevMonth6[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td>
-                                                                    <h6>{{ substr($prevMonth6[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $prevMonth6[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td>
-                                                                    <h6>{{ substr($prevMonth6[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $prevMonth6[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td>
-                                                                    <h6>{{ substr($prevMonth6[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $prevMonth6[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td>
-                                                                    <h6>{{ substr($prevMonth6[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $prevMonth6[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-                                                            </tr>
-
-                                                        @endwhile
-                                                        </tbody>
-
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div> <!-- Prev Month 6 -->
-
-                                    <div class="row desktop-row">
-                                        <div class="col-md-12">
-                                            <div class="panel panel-default" id="prevMonth5" style="display:none;">
-                                                <div class="panel-heading desktop">
-                                                    <?php $i = 0; ?>
-                                                        <h5>Próximos Eventos -
-                                                            @while($i < count($allMonths))
-                                                                @if($i == (int) substr(end($prevMonth5), 5, 2))
-                                                                    {{ $allMonths[$i] }}
-                                                                @endif
-                                                                <?php $i++; ?>
-                                                            @endwhile
-                                                        </h5>
-                                                    <a href="javascript:;" id="btnPrevRight5" class="btn btn-default btn-sm btn-circle pull-right">
-                                                        <i class="fa fa-arrow-right"></i>
-                                                    </a>
-                                                    <a href="javascript:;" id="btnPrevLeft5" class="btn btn-default btn-sm btn-circle pull-right" style="margin-right: 33px;">
-                                                        <i class="fa fa-arrow-left"></i>
-                                                    </a>
-                                                </div>
-                                                <div class="panel-body">
-                                                    <table class="table table-bordered table-striped table-responsive" id="table-fixed">
-                                                        <thead class="thead-agenda">
-                                                        <tr>
-                                                            <th>Segunda</th>
-                                                            <th>Terça</th>
-                                                            <th>Quarta</th>
-                                                            <th>Quinta</th>
-                                                            <th>Sexta</th>
-                                                            <th>Sábado</th>
-                                                            <th>Domingo</th>
-                                                        </tr>
-                                                        </thead>
-
-                                                        <tbody class="tbody-agenda-desktop">
-
-                                                        <?php $i = 0; ?>
-                                                        <?php $x = 0; ?>
-
-                                                        @while($i < count($prevMonth5))
-                                                            <tr>
-                                                                <td>
-                                                                    <h6>{{ substr($prevMonth5[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $prevMonth5[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td>
-                                                                    <h6>{{ substr($prevMonth5[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $prevMonth5[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td>
-                                                                    <h6>{{ substr($prevMonth5[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $prevMonth5[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td>
-                                                                    <h6>{{ substr($prevMonth5[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $prevMonth5[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td>
-                                                                    <h6>{{ substr($prevMonth5[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $prevMonth5[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td>
-                                                                    <h6>{{ substr($prevMonth5[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $prevMonth5[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td>
-                                                                    <h6>{{ substr($prevMonth5[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $prevMonth5[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-                                                            </tr>
-
-                                                        @endwhile
-                                                        </tbody>
-
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div> <!-- Prev Month 5 -->
-
-                                    <div class="row desktop-row">
-                                        <div class="col-md-12">
-                                            <div class="panel panel-default" id="prevMonth4" style="display:none;">
-                                                <div class="panel-heading desktop">
-                                                    <?php $i = 0; ?>
-                                                        <h5>Próximos Eventos -
-                                                            @while($i < count($allMonths))
-                                                                @if($i == (int) substr(end($prevMonth4), 5, 2))
-                                                                    {{ $allMonths[$i] }}
-                                                                @endif
-                                                                <?php $i++; ?>
-                                                            @endwhile
-                                                        </h5>
-                                                    <a href="javascript:;" id="btnPrevRight4" class="btn btn-default btn-sm btn-circle pull-right">
-                                                        <i class="fa fa-arrow-right"></i>
-                                                    </a>
-                                                    <a href="javascript:;" id="btnPrevLeft4" class="btn btn-default btn-sm btn-circle pull-right" style="margin-right: 33px;">
-                                                        <i class="fa fa-arrow-left"></i>
-                                                    </a>
-                                                </div>
-                                                <div class="panel-body">
-                                                    <table class="table table-bordered table-striped table-responsive" id="table-fixed">
-                                                        <thead class="thead-agenda">
-                                                        <tr>
-                                                            <th>Segunda</th>
-                                                            <th>Terça</th>
-                                                            <th>Quarta</th>
-                                                            <th>Quinta</th>
-                                                            <th>Sexta</th>
-                                                            <th>Sábado</th>
-                                                            <th>Domingo</th>
-                                                        </tr>
-                                                        </thead>
-
-                                                        <tbody class="tbody-agenda-desktop">
-
-                                                        <?php $i = 0; ?>
-                                                        <?php $x = 0; ?>
-
-                                                        @while($i < count($prevMonth4))
-                                                            <tr>
-                                                                <td>
-                                                                    <h6>{{ substr($prevMonth4[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $prevMonth4[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td>
-                                                                    <h6>{{ substr($prevMonth4[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $prevMonth4[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td>
-                                                                    <h6>{{ substr($prevMonth4[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $prevMonth4[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td>
-                                                                    <h6>{{ substr($prevMonth4[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $prevMonth4[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td>
-                                                                    <h6>{{ substr($prevMonth4[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $prevMonth4[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td>
-                                                                    <h6>{{ substr($prevMonth4[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $prevMonth4[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td>
-                                                                    <h6>{{ substr($prevMonth4[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $prevMonth4[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-                                                            </tr>
-
-                                                        @endwhile
-                                                        </tbody>
-
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div> <!-- Prev Month 4 -->
-
-                                    <div class="row desktop-row">
-                                        <div class="col-md-12">
-                                            <div class="panel panel-default" id="prevMonth3" style="display:none;">
-                                                <div class="panel-heading desktop">
-                                                    <?php $i = 0; ?>
-                                                        <h5>Próximos Eventos -
-                                                            @while($i < count($allMonths))
-                                                                @if($i == (int) substr(end($prevMonth3), 5, 2))
-                                                                    {{ $allMonths[$i] }}
-                                                                @endif
-                                                                <?php $i++; ?>
-                                                            @endwhile
-                                                        </h5>
-                                                    <a href="javascript:;" id="btnPrevRight3" class="btn btn-default btn-sm btn-circle pull-right">
-                                                        <i class="fa fa-arrow-right"></i>
-                                                    </a>
-                                                    <a href="javascript:;" id="btnPrevLeft3" class="btn btn-default btn-sm btn-circle pull-right" style="margin-right: 33px;">
-                                                        <i class="fa fa-arrow-left"></i>
-                                                    </a>
-                                                </div>
-                                                <div class="panel-body">
-                                                    <table class="table table-bordered table-striped table-responsive" id="table-fixed">
-                                                        <thead class="thead-agenda">
-                                                        <tr>
-                                                            <th>Segunda</th>
-                                                            <th>Terça</th>
-                                                            <th>Quarta</th>
-                                                            <th>Quinta</th>
-                                                            <th>Sexta</th>
-                                                            <th>Sábado</th>
-                                                            <th>Domingo</th>
-                                                        </tr>
-                                                        </thead>
-
-                                                        <tbody class="tbody-agenda-desktop">
-
-                                                        <?php $i = 0; ?>
-                                                        <?php $x = 0; ?>
-
-                                                        @while($i < count($prevMonth3))
-                                                            <tr>
-                                                                <td>
-                                                                    <h6>{{ substr($prevMonth3[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $prevMonth3[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td>
-                                                                    <h6>{{ substr($prevMonth3[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $prevMonth3[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td>
-                                                                    <h6>{{ substr($prevMonth3[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $prevMonth3[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td>
-                                                                    <h6>{{ substr($prevMonth3[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $prevMonth3[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td>
-                                                                    <h6>{{ substr($prevMonth3[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $prevMonth3[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td>
-                                                                    <h6>{{ substr($prevMonth3[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $prevMonth3[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td>
-                                                                    <h6>{{ substr($prevMonth3[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $prevMonth3[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-                                                            </tr>
-
-                                                        @endwhile
-                                                        </tbody>
-
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div> <!-- Prev Month 3 -->
-
-                                    <div class="row desktop-row">
-                                        <div class="col-md-12">
-                                            <div class="panel panel-default" id="prevMonth2" style="display:none;">
-                                                <div class="panel-heading desktop">
-                                                    <?php $i = 0; ?>
-                                                        <h5>Próximos Eventos -
-                                                            @while($i < count($allMonths))
-                                                                @if($i == (int) substr(end($prevMonth2), 5, 2))
-                                                                    {{ $allMonths[$i] }}
-                                                                @endif
-                                                                <?php $i++; ?>
-                                                            @endwhile
-                                                        </h5>
-                                                    <a href="javascript:;" id="btnPrevRight2" class="btn btn-default btn-sm btn-circle pull-right">
-                                                        <i class="fa fa-arrow-right"></i>
-                                                    </a>
-                                                    <a href="javascript:;" id="btnPrevLeft2" class="btn btn-default btn-sm btn-circle pull-right" style="margin-right: 33px;">
-                                                        <i class="fa fa-arrow-left"></i>
-                                                    </a>
-                                                </div>
-                                                <div class="panel-body">
-                                                    <table class="table table-bordered table-striped table-responsive" id="table-fixed">
-                                                        <thead class="thead-agenda">
-                                                        <tr>
-                                                            <th>Segunda</th>
-                                                            <th>Terça</th>
-                                                            <th>Quarta</th>
-                                                            <th>Quinta</th>
-                                                            <th>Sexta</th>
-                                                            <th>Sábado</th>
-                                                            <th>Domingo</th>
-                                                        </tr>
-                                                        </thead>
-
-                                                        <tbody class="tbody-agenda-desktop">
-
-                                                        <?php $i = 0; ?>
-                                                        <?php $x = 0; ?>
-
-                                                        @while($i < count($prevMonth2))
-                                                            <tr>
-                                                                <td>
-                                                                    <h6>{{ substr($prevMonth2[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $prevMonth2[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td>
-                                                                    <h6>{{ substr($prevMonth2[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $prevMonth2[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td>
-                                                                    <h6>{{ substr($prevMonth2[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $prevMonth2[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td>
-                                                                    <h6>{{ substr($prevMonth2[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $prevMonth2[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td>
-                                                                    <h6>{{ substr($prevMonth2[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $prevMonth2[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td>
-                                                                    <h6>{{ substr($prevMonth2[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $prevMonth2[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td>
-                                                                    <h6>{{ substr($prevMonth2[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $prevMonth2[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-                                                            </tr>
-
-                                                        @endwhile
-                                                        </tbody>
-
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div> <!-- Prev Month 2 -->
-
-                                    <div class="row desktop-row">
-                                        <div class="col-md-12">
-                                            <div class="panel panel-default" id="prevMonth" style="display:none;">
-                                                <div class="panel-heading desktop">
-                                                    <?php $i = 0; ?>
-                                                    <h5>Próximos Eventos -
-                                                        @while($i < count($allMonths))
-                                                            @if($i == (int) substr(end($prevMonth), 5, 2))
-                                                                {{ $allMonths[$i] }}
-                                                            @endif
-                                                            <?php $i++; ?>
-                                                        @endwhile
-                                                    </h5>
-                                                    <a href="javascript:;" id="btnPrevRight" class="btn btn-default btn-sm btn-circle pull-right">
-                                                        <i class="fa fa-arrow-right"></i>
-                                                    </a>
-                                                    <a href="javascript:;" id="btnPrevLeft" class="btn btn-default btn-sm btn-circle pull-right" style="margin-right: 33px;">
-                                                        <i class="fa fa-arrow-left"></i>
-                                                    </a>
-                                                </div>
-                                                <div class="panel-body">
-                                                    <table class="table table-bordered table-striped table-responsive" id="table-fixed">
-                                                        <thead class="thead-agenda">
-                                                        <tr>
-                                                            <th>Segunda</th>
-                                                            <th>Terça</th>
-                                                            <th>Quarta</th>
-                                                            <th>Quinta</th>
-                                                            <th>Sexta</th>
-                                                            <th>Sábado</th>
-                                                            <th>Domingo</th>
-                                                        </tr>
-                                                        </thead>
-
-                                                        <tbody class="tbody-agenda-desktop">
-
-                                                        <?php $i = 0; ?>
-                                                        <?php $x = 0; ?>
-
-                                                        @while($i < count($prevMonth))
-                                                            <tr>
-                                                                <td>
-                                                                    <h6>{{ substr($prevMonth[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $prevMonth[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td>
-                                                                    <h6>{{ substr($prevMonth[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $prevMonth[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td>
-                                                                    <h6>{{ substr($prevMonth[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $prevMonth[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td>
-                                                                    <h6>{{ substr($prevMonth[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $prevMonth[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td>
-                                                                    <h6>{{ substr($prevMonth[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $prevMonth[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td>
-                                                                    <h6>{{ substr($prevMonth[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $prevMonth[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td>
-                                                                    <h6>{{ substr($prevMonth[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $prevMonth[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-                                                            </tr>
-
-                                                        @endwhile
-                                                        </tbody>
-
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div> <!-- Prev Month  -->
-
-                                    <div class="row desktop-row">
-                                        <div class="col-md-12">
-                                            <div class="panel panel-default" id="thisMonth">
-                                                <div class="panel-heading desktop">
-                                                    <?php $i = 0; ?>
-                                                    <h5>Próximos Eventos -
-                                                        @while($i < count($allMonths))
-                                                            @if($i == (int) substr(end($days), 5, 2))
-                                                                {{ $allMonths[$i] }}
-                                                            @endif
-                                                                <?php $i++; ?>
-                                                        @endwhile
-                                                    </h5>
-                                                    <a href="javascript:;" id="btnThisRight" class="btn btn-default btn-sm btn-circle pull-right">
-                                                        <i class="fa fa-arrow-right"></i>
-                                                    </a>
-                                                    <a href="javascript:;" id="btnThisLeft" class="btn btn-default btn-sm btn-circle pull-right" style="margin-right: 33px;">
-                                                        <i class="fa fa-arrow-left"></i>
-                                                    </a>
-                                                </div>
-                                                <div class="panel-body">
-                                                    <table class="table table-bordered table-striped table-responsive" id="table-fixed">
-                                                        <thead class="thead-agenda">
+                                                            <a href="{{ route('events.agenda-mes', ['thisMonth' => $thisMonth])}}"
+                                                               id="btnThisRight" class="btn btn-default btn-sm btn-circle pull-right">
+                                                                <i class="fa fa-arrow-right"></i>
+                                                            </a>
+                                                            <a href="{{ route('events.agenda-mes', ['thisMonth' => $thisMonth - 2])}}"
+                                                               id="btnThisLeft" class="btn btn-default btn-sm btn-circle pull-right" style="margin-right: 33px;">
+                                                                <i class="fa fa-arrow-left"></i>
+                                                            </a>
+                                                    </div>
+                                                    <div class="panel-body">
+                                                        <table class="table table-bordered table-striped table-responsive" id="table-fixed">
+                                                            <thead class="thead-agenda">
                                                             <tr>
                                                                 <th>Segunda</th>
                                                                 <th>Terça</th>
@@ -1502,1333 +570,230 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 <th>Sábado</th>
                                                                 <th>Domingo</th>
                                                             </tr>
-                                                        </thead>
+                                                            </thead>
 
-                                                        <tbody class="tbody-agenda-desktop">
+                                                            <tbody class="tbody-agenda-desktop">
 
-                                                        <?php $i = 0; ?>
-                                                        <?php $x = 0; ?>
+                                                            <?php $i = 0; ?>
+                                                            <?php $x = 0; ?>
 
-                                                        @while($i < count($days))
-                                                        <tr>
-                                                            <td @if(date("Y-m-d") == $days[$i]) class="today-back" @endif>
-                                                                    <h6>
+                                                            @while($i < count($days))
+                                                                <tr>
+                                                                    <td @if(date("Y-m-d") == $days[$i]) class="today-back" @endif>
+                                                                        <h6>
 
                                                                             {{ substr($days[$i], 8) }}
 
-                                                                    </h6>
+                                                                        </h6>
 
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $days[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
+                                                                        @while($x < count($allEvents))
+                                                                            @if($allEvents[$x]->eventDate == $days[$i])
+                                                                                <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
+                                                                                    {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
+                                                                                </label>
 
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                            <?php $i++; ?>
-                                                            <?php $x = 0; ?>
+                                                                                <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
+                                                                            @endif
+                                                                            <?php $x++; ?>
+                                                                        @endwhile
+                                                                    </td>
 
 
-                                                            <td @if(date("Y-m-d") == $days[$i]) class="today-back" @endif>
-                                                                <h6>{{ substr($days[$i], 8) }}</h6>
-
-                                                                @while($x < count($allEvents))
-                                                                    @if($allEvents[$x]->eventDate == $days[$i])
-                                                                        <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                            {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                        </label>
-
-                                                                        <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                    @endif
-                                                                    <?php $x++; ?>
-                                                                @endwhile
-                                                            </td>
+                                                                    <?php $i++; ?>
+                                                                    <?php $x = 0; ?>
 
 
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
+                                                                    <td @if(date("Y-m-d") == $days[$i]) class="today-back" @endif>
+                                                                        <h6>{{ substr($days[$i], 8) }}</h6>
+
+                                                                        @while($x < count($allEvents))
+                                                                            @if($allEvents[$x]->eventDate == $days[$i])
+                                                                                <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
+                                                                                    {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
+                                                                                </label>
+
+                                                                                <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
+                                                                            @endif
+                                                                            <?php $x++; ?>
+                                                                        @endwhile
+                                                                    </td>
 
 
-                                                            <td @if(date("Y-m-d") == $days[$i]) class="today-back" @endif>
-                                                                <h6>{{ substr($days[$i], 8) }}</h6>
-
-                                                                @while($x < count($allEvents))
-                                                                    @if($allEvents[$x]->eventDate == $days[$i])
-                                                                        <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                            {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                        </label>
-
-                                                                        <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                    @endif
-                                                                    <?php $x++; ?>
-                                                                @endwhile
-                                                            </td>
+                                                                    <?php $i++; ?>
+                                                                    <?php $x = 0; ?>
 
 
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
+                                                                    <td @if(date("Y-m-d") == $days[$i]) class="today-back" @endif>
+                                                                        <h6>{{ substr($days[$i], 8) }}</h6>
+
+                                                                        @while($x < count($allEvents))
+                                                                            @if($allEvents[$x]->eventDate == $days[$i])
+                                                                                <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
+                                                                                    {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
+                                                                                </label>
+
+                                                                                <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
+                                                                            @endif
+                                                                            <?php $x++; ?>
+                                                                        @endwhile
+                                                                    </td>
 
 
-                                                            <td @if(date("Y-m-d") == $days[$i]) class="today-back" @endif>
-                                                                <h6>{{ substr($days[$i], 8) }}</h6>
-
-                                                                @while($x < count($allEvents))
-                                                                    @if($allEvents[$x]->eventDate == $days[$i])
-                                                                        <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                            {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                        </label>
-
-                                                                        <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                    @endif
-                                                                    <?php $x++; ?>
-                                                                @endwhile
-                                                            </td>
+                                                                    <?php $i++; ?>
+                                                                    <?php $x = 0; ?>
 
 
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
+                                                                    <td @if(date("Y-m-d") == $days[$i]) class="today-back" @endif>
+                                                                        <h6>{{ substr($days[$i], 8) }}</h6>
+
+                                                                        @while($x < count($allEvents))
+                                                                            @if($allEvents[$x]->eventDate == $days[$i])
+                                                                                <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
+                                                                                    {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
+                                                                                </label>
+
+                                                                                <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
+                                                                            @endif
+                                                                            <?php $x++; ?>
+                                                                        @endwhile
+                                                                    </td>
 
 
-                                                            <td @if(date("Y-m-d") == $days[$i]) class="today-back" @endif>
-                                                                <h6>{{ substr($days[$i], 8) }}</h6>
-
-                                                                @while($x < count($allEvents))
-                                                                    @if($allEvents[$x]->eventDate == $days[$i])
-                                                                        <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                            {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                        </label>
-
-                                                                        <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                    @endif
-                                                                    <?php $x++; ?>
-                                                                @endwhile
-                                                            </td>
+                                                                    <?php $i++; ?>
+                                                                    <?php $x = 0; ?>
 
 
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
+                                                                    <td @if(date("Y-m-d") == $days[$i]) class="today-back" @endif>
+                                                                        <h6>{{ substr($days[$i], 8) }}</h6>
+
+                                                                        @while($x < count($allEvents))
+                                                                            @if($allEvents[$x]->eventDate == $days[$i])
+                                                                                <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
+                                                                                    {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
+                                                                                </label>
+
+                                                                                <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
+                                                                            @endif
+                                                                            <?php $x++; ?>
+                                                                        @endwhile
+                                                                    </td>
 
 
-                                                            <td @if(date("Y-m-d") == $days[$i]) class="today-back" @endif>
-                                                                <h6>{{ substr($days[$i], 8) }}</h6>
-
-                                                                @while($x < count($allEvents))
-                                                                    @if($allEvents[$x]->eventDate == $days[$i])
-                                                                        <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                            {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                        </label>
-
-                                                                        <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                    @endif
-                                                                    <?php $x++; ?>
-                                                                @endwhile
-                                                            </td>
+                                                                    <?php $i++; ?>
+                                                                    <?php $x = 0; ?>
 
 
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
+                                                                    <td @if(date("Y-m-d") == $days[$i]) class="today-back" @endif>
+                                                                        <h6>{{ substr($days[$i], 8) }}</h6>
+
+                                                                        @while($x < count($allEvents))
+                                                                            @if($allEvents[$x]->eventDate == $days[$i])
+                                                                                <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
+                                                                                    {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
+                                                                                </label>
+
+                                                                                <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
+                                                                            @endif
+                                                                            <?php $x++; ?>
+                                                                        @endwhile
+                                                                    </td>
 
 
-                                                            <td @if(date("Y-m-d") == $days[$i]) class="today-back" @endif>
-                                                                <h6>{{ substr($days[$i], 8) }}</h6>
-
-                                                                @while($x < count($allEvents))
-                                                                    @if($allEvents[$x]->eventDate == $days[$i])
-                                                                        <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                            {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                        </label>
-
-                                                                        <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                    @endif
-                                                                    <?php $x++; ?>
-                                                                @endwhile
-                                                            </td>
+                                                                    <?php $i++; ?>
+                                                                    <?php $x = 0; ?>
 
 
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
+                                                                    <td @if(date("Y-m-d") == $days[$i]) class="today-back" @endif>
+                                                                        <h6>{{ substr($days[$i], 8) }}</h6>
 
-                                                        </tr>
+                                                                        @while($x < count($allEvents))
+                                                                            @if($allEvents[$x]->eventDate == $days[$i])
+                                                                                <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
+                                                                                    {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
+                                                                                </label>
 
-                                                        @endwhile
-                                                        </tbody>
+                                                                                <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
+                                                                            @endif
+                                                                            <?php $x++; ?>
+                                                                        @endwhile
+                                                                    </td>
 
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div> <!-- This Month -->
 
-                                    <div class="row desktop-row">
-                                        <div class="col-md-12">
-                                            <div class="panel panel-default" id="nextMonth" style="display: none;">
-                                                <div class="panel-heading desktop">
-                                                    <?php $i = 0; ?>
-                                                        <h5>Próximos Eventos -
-                                                            @while($i < count($allMonths))
-                                                                @if($i == (int) substr(end($nextMonth), 5, 2))
-                                                                    {{ $allMonths[$i] }}
-                                                                @endif
-                                                                <?php $i++; ?>
+                                                                    <?php $i++; ?>
+                                                                    <?php $x = 0; ?>
+
+                                                                </tr>
+
                                                             @endwhile
-                                                        </h5>
-                                                    <a href="javascript:;" id="btnNextRight" class="btn btn-default btn-sm btn-circle pull-right">
-                                                        <i class="fa fa-arrow-right"></i>
-                                                    </a>
-                                                    <a href="javascript:;" id="btnNextLeft" class="btn btn-default btn-sm btn-circle pull-right" style="margin-right: 33px;">
-                                                        <i class="fa fa-arrow-left"></i>
-                                                    </a>
-                                                </div>
-                                                <div class="panel-body">
-                                                    <table class="table table-bordered table-striped table-responsive" id="table-fixed">
-                                                        <thead class="thead-agenda">
-                                                        <tr>
-                                                            <th>Segunda</th>
-                                                            <th>Terça</th>
-                                                            <th>Quarta</th>
-                                                            <th>Quinta</th>
-                                                            <th>Sexta</th>
-                                                            <th>Sábado</th>
-                                                            <th>Domingo</th>
-                                                        </tr>
-                                                        </thead>
+                                                            </tbody>
 
-                                                        <tbody class="tbody-agenda-desktop">
-
-                                                        <?php $i = 0; ?>
-                                                        <?php $x = 0; ?>
-
-                                                        @while($i < count($nextMonth))
-                                                            <tr>
-                                                                <td @if(date("Y-m-d") == $nextMonth[$i]) class="today-back" @endif>
-                                                                    <h6>{{ substr($nextMonth[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $nextMonth[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td @if(date("Y-m-d") == $nextMonth[$i]) class="today-back" @endif>
-                                                                    <h6>{{ substr($nextMonth[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $nextMonth[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td @if(date("Y-m-d") == $nextMonth[$i]) class="today-back" @endif>
-                                                                    <h6>{{ substr($nextMonth[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $nextMonth[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td @if(date("Y-m-d") == $nextMonth[$i]) class="today-back" @endif>
-                                                                    <h6>{{ substr($nextMonth[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $nextMonth[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td @if(date("Y-m-d") == $nextMonth[$i]) class="today-back" @endif>
-                                                                    <h6>{{ substr($nextMonth[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $nextMonth[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td @if(date("Y-m-d") == $nextMonth[$i]) class="today-back" @endif>
-                                                                    <h6>{{ substr($nextMonth[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $nextMonth[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td @if(date("Y-m-d") == $nextMonth[$i]) class="today-back" @endif>
-                                                                    <h6>{{ substr($nextMonth[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $nextMonth[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-                                                            </tr>
-
-                                                        @endwhile
-                                                        </tbody>
-
-                                                    </table>
+                                                        </table>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div> <!-- Next Month  -->
+                                        </div> <!-- This Month -->
 
-                                    <div class="row desktop-row">
-                                        <div class="col-md-12">
-                                            <div class="panel panel-default" id="nextMonth2" style="display: none;">
-                                                <div class="panel-heading desktop">
-                                                    <?php $i = 0; ?>
-                                                        <h5>Próximos Eventos -
-                                                            @while($i < count($allMonths))
-                                                                @if($i == (int) substr(end($nextMonth2), 5, 2))
-                                                                    {{ $allMonths[$i] }}
-                                                                @endif
-                                                                <?php $i++; ?>
-                                                            @endwhile
-                                                        </h5>
-                                                    <a href="javascript:;" id="btnNextRight2" class="btn btn-default btn-sm btn-circle pull-right">
-                                                        <i class="fa fa-arrow-right"></i>
-                                                    </a>
-                                                    <a href="javascript:;" id="btnNextLeft2" class="btn btn-default btn-sm btn-circle pull-right" style="margin-right: 33px;">
-                                                        <i class="fa fa-arrow-left"></i>
-                                                    </a>
-                                                </div>
-                                                <div class="panel-body">
-                                                    <table class="table table-bordered table-striped table-responsive" id="table-fixed">
-                                                        <thead class="thead-agenda">
-                                                        <tr>
-                                                            <th>Segunda</th>
-                                                            <th>Terça</th>
-                                                            <th>Quarta</th>
-                                                            <th>Quinta</th>
-                                                            <th>Sexta</th>
-                                                            <th>Sábado</th>
-                                                            <th>Domingo</th>
-                                                        </tr>
-                                                        </thead>
-
-                                                        <tbody class="tbody-agenda-desktop">
-
-                                                        <?php $i = 0; ?>
-                                                        <?php $x = 0; ?>
-
-                                                        @while($i < count($nextMonth2))
-                                                            <tr>
-                                                                <td @if(date("Y-m-d") == $nextMonth2[$i]) style="background-color: #FFFFEE;" @endif>
-                                                                    <h6>{{ substr($nextMonth2[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $nextMonth2[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td @if(date("Y-m-d") == $nextMonth2[$i]) style="background-color: #FFFFEE;" @endif>
-                                                                    <h6>{{ substr($nextMonth2[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $nextMonth2[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td @if(date("Y-m-d") == $nextMonth2[$i]) style="background-color: #FFFFEE;" @endif>
-                                                                    <h6>{{ substr($nextMonth2[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $nextMonth2[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td @if(date("Y-m-d") == $nextMonth2[$i]) style="background-color: #FFFFEE;" @endif>
-                                                                    <h6>{{ substr($nextMonth2[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $nextMonth2[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td @if(date("Y-m-d") == $nextMonth2[$i]) style="background-color: #FFFFEE;" @endif>
-                                                                    <h6>{{ substr($nextMonth2[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $nextMonth2[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td @if(date("Y-m-d") == $nextMonth2[$i]) style="background-color: #FFFFEE;" @endif>
-                                                                    <h6>{{ substr($nextMonth2[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $nextMonth2[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td @if(date("Y-m-d") == $nextMonth2[$i]) style="background-color: #FFFFEE;" @endif>
-                                                                    <h6>{{ substr($nextMonth2[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $nextMonth2[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-                                                            </tr>
-
-                                                        @endwhile
-                                                        </tbody>
-
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div> <!-- Next Month 2 -->
-
-                                    <div class="row desktop-row">
-                                        <div class="col-md-12">
-                                            <div class="panel panel-default" id="nextMonth3" style="display: none;">
-                                                <div class="panel-heading desktop">
-                                                    <?php $i = 0; ?>
-                                                        <h5>Próximos Eventos -
-                                                            @while($i < count($allMonths))
-                                                                @if($i == (int) substr(end($nextMonth3), 5, 2))
-                                                                    {{ $allMonths[$i] }}
-                                                                @endif
-                                                                <?php $i++; ?>
-                                                            @endwhile
-                                                        </h5>
-                                                    <a href="javascript:;" id="btnNextRight3" class="btn btn-default btn-sm btn-circle pull-right">
-                                                        <i class="fa fa-arrow-right"></i>
-                                                    </a>
-                                                    <a href="javascript:;" id="btnNextLeft3" class="btn btn-default btn-sm btn-circle pull-right" style="margin-right: 33px;">
-                                                        <i class="fa fa-arrow-left"></i>
-                                                    </a>
-                                                </div>
-                                                <div class="panel-body">
-                                                    <table class="table table-bordered table-striped table-responsive" id="table-fixed">
-                                                        <thead class="thead-agenda">
-                                                        <tr>
-                                                            <th>Segunda</th>
-                                                            <th>Terça</th>
-                                                            <th>Quarta</th>
-                                                            <th>Quinta</th>
-                                                            <th>Sexta</th>
-                                                            <th>Sábado</th>
-                                                            <th>Domingo</th>
-                                                        </tr>
-                                                        </thead>
-
-                                                        <tbody class="tbody-agenda-desktop">
-
-                                                        <?php $i = 0; ?>
-                                                        <?php $x = 0; ?>
-
-                                                        @while($i < count($nextMonth3))
-                                                            <tr>
-                                                                <td @if(date("Y-m-d") == $nextMonth3[$i]) style="background-color: #FFFFEE;" @endif>
-                                                                    <h6>{{ substr($nextMonth3[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $nextMonth3[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td @if(date("Y-m-d") == $nextMonth3[$i]) style="background-color: #FFFFEE;" @endif>
-                                                                    <h6>{{ substr($nextMonth3[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $nextMonth3[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td @if(date("Y-m-d") == $nextMonth3[$i]) style="background-color: #FFFFEE;" @endif>
-                                                                    <h6>{{ substr($nextMonth3[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $nextMonth3[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td @if(date("Y-m-d") == $nextMonth3[$i]) style="background-color: #FFFFEE;" @endif>
-                                                                    <h6>{{ substr($nextMonth3[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $nextMonth3[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td @if(date("Y-m-d") == $nextMonth3[$i]) style="background-color: #FFFFEE;" @endif>
-                                                                    <h6>{{ substr($nextMonth3[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $nextMonth3[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td @if(date("Y-m-d") == $nextMonth3[$i]) style="background-color: #FFFFEE;" @endif>
-                                                                    <h6>{{ substr($nextMonth3[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $nextMonth3[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td @if(date("Y-m-d") == $nextMonth3[$i]) style="background-color: #FFFFEE;" @endif>
-                                                                    <h6>{{ substr($nextMonth3[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $nextMonth3[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-                                                            </tr>
-
-                                                        @endwhile
-                                                        </tbody>
-
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div> <!-- Next Month 3 -->
-
-                                    <div class="row desktop-row">
-                                        <div class="col-md-12">
-                                            <div class="panel panel-default" id="nextMonth4" style="display: none;">
-                                                <div class="panel-heading desktop">
-                                                    <?php $i = 0; ?>
-                                                    <h5>Próximos Eventos -
-                                                        @while($i < count($allMonths))
-                                                            @if($i == (int) substr(end($nextMonth4), 5, 2))
-                                                                {{ $allMonths[$i] }}
-                                                            @endif
-                                                            <?php $i++; ?>
-                                                        @endwhile
-                                                    </h5>
-                                                    <a href="javascript:;" id="btnNextRight4" class="btn btn-default btn-sm btn-circle pull-right">
-                                                        <i class="fa fa-arrow-right"></i>
-                                                    </a>
-                                                    <a href="javascript:;" id="btnNextLeft4" class="btn btn-default btn-sm btn-circle pull-right" style="margin-right: 33px;">
-                                                        <i class="fa fa-arrow-left"></i>
-                                                    </a>
-                                                </div>
-                                                <div class="panel-body">
-                                                    <table class="table table-bordered table-striped table-responsive" id="table-fixed">
-                                                        <thead class="thead-agenda">
-                                                        <tr>
-                                                            <th>Segunda</th>
-                                                            <th>Terça</th>
-                                                            <th>Quarta</th>
-                                                            <th>Quinta</th>
-                                                            <th>Sexta</th>
-                                                            <th>Sábado</th>
-                                                            <th>Domingo</th>
-                                                        </tr>
-                                                        </thead>
-
-                                                        <tbody class="tbody-agenda-desktop">
-
-                                                        <?php $i = 0; ?>
-                                                        <?php $x = 0; ?>
-
-                                                        @while($i < count($nextMonth4))
-                                                            <tr>
-                                                                <td @if(date("Y-m-d") == $nextMonth4[$i]) style="background-color: #FFFFEE;" @endif>
-                                                                    <h6>{{ substr($nextMonth4[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $nextMonth4[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td @if(date("Y-m-d") == $nextMonth4[$i]) style="background-color: #FFFFEE;" @endif>
-                                                                    <h6>{{ substr($nextMonth4[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $nextMonth4[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td @if(date("Y-m-d") == $nextMonth4[$i]) style="background-color: #FFFFEE;" @endif>
-                                                                    <h6>{{ substr($nextMonth4[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $nextMonth4[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td @if(date("Y-m-d") == $nextMonth4[$i]) style="background-color: #FFFFEE;" @endif>
-                                                                    <h6>{{ substr($nextMonth4[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $nextMonth4[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td @if(date("Y-m-d") == $nextMonth4[$i]) style="background-color: #FFFFEE;" @endif>
-                                                                    <h6>{{ substr($nextMonth4[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $nextMonth4[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td @if(date("Y-m-d") == $nextMonth4[$i]) style="background-color: #FFFFEE;" @endif>
-                                                                    <h6>{{ substr($nextMonth4[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $nextMonth4[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td @if(date("Y-m-d") == $nextMonth4[$i]) style="background-color: #FFFFEE;" @endif>
-                                                                    <h6>{{ substr($nextMonth4[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $nextMonth4[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-                                                            </tr>
-
-                                                        @endwhile
-                                                        </tbody>
-
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div> <!-- Next Month 4 -->
-
-                                    <div class="row desktop-row">
-                                        <div class="col-md-12">
-                                            <div class="panel panel-default" id="nextMonth5" style="display: none;">
-                                                <div class="panel-heading desktop">
-                                                    <?php $i = 0; ?>
-                                                        <h5>Próximos Eventos -
-                                                            @while($i < count($allMonths))
-                                                                @if($i == (int) substr(end($nextMonth5), 5, 2))
-                                                                    {{ $allMonths[$i] }}
-                                                                @endif
-                                                                <?php $i++; ?>
-                                                            @endwhile
-                                                        </h5>
-                                                    <a href="javascript:;" id="btnNextRight5" class="btn btn-default btn-sm btn-circle pull-right">
-                                                        <i class="fa fa-arrow-right"></i>
-                                                    </a>
-                                                    <a href="javascript:;" id="btnNextLeft5" class="btn btn-default btn-sm btn-circle pull-right" style="margin-right: 33px;">
-                                                        <i class="fa fa-arrow-left"></i>
-                                                    </a>
-                                                </div>
-                                                <div class="panel-body">
-                                                    <table class="table table-bordered table-striped table-responsive" id="table-fixed">
-                                                        <thead class="thead-agenda">
-                                                        <tr>
-                                                            <th>Segunda</th>
-                                                            <th>Terça</th>
-                                                            <th>Quarta</th>
-                                                            <th>Quinta</th>
-                                                            <th>Sexta</th>
-                                                            <th>Sábado</th>
-                                                            <th>Domingo</th>
-                                                        </tr>
-                                                        </thead>
-
-                                                        <tbody class="tbody-agenda-desktop">
-
-                                                        <?php $i = 0; ?>
-                                                        <?php $x = 0; ?>
-
-                                                        @while($i < count($nextMonth5))
-                                                            <tr>
-                                                                <td @if(date("Y-m-d") == $nextMonth5[$i]) style="background-color: #FFFFEE;" @endif>
-                                                                    <h6>{{ substr($nextMonth5[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $nextMonth5[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td @if(date("Y-m-d") == $nextMonth5[$i]) style="background-color: #FFFFEE;" @endif>
-                                                                    <h6>{{ substr($nextMonth5[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $nextMonth5[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td @if(date("Y-m-d") == $nextMonth5[$i]) style="background-color: #FFFFEE;" @endif>
-                                                                    <h6>{{ substr($nextMonth5[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $nextMonth5[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td @if(date("Y-m-d") == $nextMonth5[$i]) style="background-color: #FFFFEE;" @endif>
-                                                                    <h6>{{ substr($nextMonth5[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $nextMonth5[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td @if(date("Y-m-d") == $nextMonth5[$i]) style="background-color: #FFFFEE;" @endif>
-                                                                    <h6>{{ substr($nextMonth5[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $nextMonth5[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td @if(date("Y-m-d") == $nextMonth5[$i]) style="background-color: #FFFFEE;" @endif>
-                                                                    <h6>{{ substr($nextMonth5[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $nextMonth5[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td @if(date("Y-m-d") == $nextMonth5[$i]) style="background-color: #FFFFEE;" @endif>
-                                                                    <h6>{{ substr($nextMonth5[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $nextMonth5[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-                                                            </tr>
-
-                                                        @endwhile
-                                                        </tbody>
-
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div> <!-- Next Month 5 -->
-
-                                    <div class="row desktop-row">
-                                        <div class="col-md-12">
-                                            <div class="panel panel-default" id="nextMonth6" style="display: none;">
-                                                <div class="panel-heading desktop">
-                                                    <?php $i = 0; ?>
-                                                        <h5>Próximos Eventos -
-                                                            @while($i < count($allMonths))
-                                                                @if($i == (int) substr(end($nextMonth6), 5, 2))
-                                                                    {{ $allMonths[$i] }}
-                                                                @endif
-                                                                <?php $i++; ?>
-                                                            @endwhile
-                                                        </h5>
-                                                    <a href="javascript:;" class="btn btn-default btn-sm btn-circle pull-right">
-                                                        <i class="fa fa-arrow-right"></i>
-                                                    </a>
-                                                    <a href="javascript:;" id="btnNextLeft6" class="btn btn-default btn-sm btn-circle pull-right" style="margin-right: 33px;">
-                                                        <i class="fa fa-arrow-left"></i>
-                                                    </a>
-                                                </div>
-                                                <div class="panel-body">
-                                                    <table class="table table-bordered table-striped table-responsive" id="table-fixed">
-                                                        <thead class="thead-agenda">
-                                                        <tr>
-                                                            <th>Segunda</th>
-                                                            <th>Terça</th>
-                                                            <th>Quarta</th>
-                                                            <th>Quinta</th>
-                                                            <th>Sexta</th>
-                                                            <th>Sábado</th>
-                                                            <th>Domingo</th>
-                                                        </tr>
-                                                        </thead>
-
-                                                        <tbody class="tbody-agenda-desktop">
-
-                                                        <?php $i = 0; ?>
-                                                        <?php $x = 0; ?>
-
-                                                        @while($i < count($nextMonth6))
-                                                            <tr>
-                                                                <td @if(date("Y-m-d") == $nextMonth6[$i]) style="background-color: #FFFFEE;" @endif>
-                                                                    <h6>{{ substr($nextMonth6[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $nextMonth6[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td @if(date("Y-m-d") == $nextMonth6[$i]) style="background-color: #FFFFEE;" @endif>
-                                                                    <h6>{{ substr($nextMonth6[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $nextMonth6[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td @if(date("Y-m-d") == $nextMonth6[$i]) style="background-color: #FFFFEE;" @endif>
-                                                                    <h6>{{ substr($nextMonth6[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $nextMonth6[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td @if(date("Y-m-d") == $nextMonth6[$i]) style="background-color: #FFFFEE;" @endif>
-                                                                    <h6>{{ substr($nextMonth6[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $nextMonth6[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td @if(date("Y-m-d") == $nextMonth6[$i]) style="background-color: #FFFFEE;" @endif>
-                                                                    <h6>{{ substr($nextMonth6[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $nextMonth6[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td @if(date("Y-m-d") == $nextMonth6[$i]) style="background-color: #FFFFEE;" @endif>
-                                                                    <h6>{{ substr($nextMonth6[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $nextMonth6[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-
-                                                                <td @if(date("Y-m-d") == $nextMonth6[$i]) style="background-color: #FFFFEE;" @endif>
-                                                                    <h6>{{ substr($nextMonth6[$i], 8) }}</h6>
-
-                                                                    @while($x < count($allEvents))
-                                                                        @if($allEvents[$x]->eventDate == $nextMonth6[$i])
-                                                                            <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                            </label>
-
-                                                                            <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                        @endif
-                                                                        <?php $x++; ?>
-                                                                    @endwhile
-                                                                </td>
-
-
-                                                                <?php $i++; ?>
-                                                                <?php $x = 0; ?>
-
-                                                            </tr>
-
-                                                        @endwhile
-                                                        </tbody>
-
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div> <!-- Next Month 6 -->
-
+                                    @endif
 
                                     <?php $i = 0; ?>
                                     <?php $x = 0; ?>
 
-                                    <div class="row agenda mobile" id="agenda-mobile">
+
+                                    <div class="row visible-sm visible-xs">
+                                        <div class="navbar text-center">
+                                            <div class="col-xs-4">
+                                                <a href="{{ route('events.agenda-mes', ['thisMonth' => $thisMonth - 2])}}">
+                                                    <i class="fa fa-arrow-left fa-2x beconnect" aria-hidden="true"></i>
+                                                    <span class="font-purple">{{ $allMonths[$thisMonth - 1] }} / {{ substr($ano, 2) }}</span>
+                                                </a>
+                                            </div>
+                                            <div class="col-xs-4">
+                                                <a href="{{ route('index') }}">
+                                                    <img src="../logo/Simbolo2.png" class="logo-fixed-bar">
+                                                </a>
+                                            </div>
+                                            <div class="col-xs-4">
+                                                <a href="{{ route('events.agenda-mes', ['thisMonth' => $thisMonth])}}"
+                                                   class="pull-right">
+                                                    <i class="fa fa-arrow-right fa-2x beconnect" aria-hidden="true"></i>
+                                                    <span class="font-purple">{{ $allMonths[$thisMonth + 1] }} / {{ substr($ano, 2) }}</span>
+                                                </a>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-xs-12 visible-xs visible-sm">
+                                            <div class="panel">
+                                                <div class="panel-heading beconnect-back" style="margin-bottom: -20px">
+                                                    <h3 class="panel-title text-center">{{ $allMonths[$thisMonth] }}</h3>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row agenda mobile visible-sm visible-xs" id="agenda-mobile">
                                         @while($i < count($days))
                                             <div class="col-md-12">
                                                 <div class="panel panel-default panel-mobile @if(date("Y-m-d") == $days[$i]) today-back @endif">
                                                     <div class="panel-heading">
                                                         <h3 class="panel-title">
-
-                                                            {{ $allDays[
-                                                                date_format(date_create($days[$i]), 'N')
-                                                            ] }}
+                                                            <?php $weekDay =  date_format(date_create($days[$i]), 'N'); ?>
+                                                            {{ $allDays[$weekDay] }}
                                                         </h3>
                                                     </div>
                                                     <div class="panel-body">
-                                                        <small class="pull-right day-panel-mobile"> {{ substr($days[$i], 8) }}</small><br>
+                                                        <small class="pull-right day-panel-mobile">
+                                                            <?php $month = (int) substr($days[$i], 5, 2); ?>
+                                                            {{ substr($days[$i], 8) }} - {{ $allMonths[$month] }}
+
+                                                        </small>
+
+                                                        <br>
+
                                                         @while($x < count($allEvents))
                                                             @if($allEvents[$x]->eventDate == $days[$i])
                                                                 <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
@@ -2852,427 +817,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                     <?php $i = 0; ?>
                                     <?php $x = 0; ?>
 
-                                    <div class="row agenda" style="display: none;" id="nextMonth-mobile">
-                                        @while($i < count($nextMonth))
-                                            <div class="col-md-12">
-                                                <div class="panel panel-default panel-mobile">
-                                                    <div class="panel-heading">
-                                                        <h3 class="panel-title">
 
-                                                            {{ $allDays[
-                                                                date_format(date_create($nextMonth[$i]), 'N')
-                                                            ] }}
-                                                        </h3>
-                                                    </div>
-                                                    <div class="panel-body">
-                                                        <small class="pull-right day-panel-mobile"> {{ substr($nextMonth[$i], 8) }}</small><br>
-                                                        @while($x < count($allEvents))
-                                                            @if($allEvents[$x]->eventDate == $nextMonth[$i])
-                                                                <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                    {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                </label>
-
-                                                                <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                            @endif
-                                                            <?php $x++; ?>
-                                                        @endwhile
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <?php $i++; ?>
-                                            <?php $x = 0; ?>
-                                        @endwhile
-                                    </div>
-
-                                    <?php $i = 0; ?>
-                                    <?php $x = 0; ?>
-
-                                    <div class="row agenda" style="display: none;" id="nextMonth2-mobile">
-                                        @while($i < count($nextMonth2))
-                                            <div class="col-md-12">
-                                                <div class="panel panel-default panel-mobile">
-                                                    <div class="panel-heading">
-                                                        <h3 class="panel-title">
-
-                                                            {{ $allDays[
-                                                                date_format(date_create($nextMonth2[$i]), 'N')
-                                                            ] }}
-                                                        </h3>
-                                                    </div>
-                                                    <div class="panel-body">
-                                                        <small class="pull-right day-panel-mobile"> {{ substr($nextMonth2[$i], 8) }}</small><br>
-                                                        @while($x < count($allEvents))
-                                                            @if($allEvents[$x]->eventDate == $nextMonth2[$i])
-                                                                <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                    {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                </label>
-
-                                                                <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                            @endif
-                                                            <?php $x++; ?>
-                                                        @endwhile
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <?php $i++; ?>
-                                            <?php $x = 0; ?>
-                                        @endwhile
-                                    </div>
-
-                                    <?php $i = 0; ?>
-                                    <?php $x = 0; ?>
-
-                                    <div class="row agenda" style="display: none;" id="nextMonth3-mobile">
-                                        @while($i < count($nextMonth3))
-                                            <div class="col-md-12">
-                                                <div class="panel panel-default panel-mobile">
-                                                    <div class="panel-heading">
-                                                        <h3 class="panel-title">
-
-                                                            {{ $allDays[
-                                                                date_format(date_create($nextMonth3[$i]), 'N')
-                                                            ] }}
-                                                        </h3>
-                                                    </div>
-                                                    <div class="panel-body">
-                                                        <small class="pull-right day-panel-mobile"> {{ substr($nextMonth3[$i], 8) }}</small><br>
-                                                        @while($x < count($allEvents))
-                                                            @if($allEvents[$x]->eventDate == $nextMonth3[$i])
-                                                                <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                    {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                </label>
-
-                                                                <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                            @endif
-                                                            <?php $x++; ?>
-                                                        @endwhile
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <?php $i++; ?>
-                                            <?php $x = 0; ?>
-                                        @endwhile
-                                    </div>
-
-                                    <?php $i = 0; ?>
-                                    <?php $x = 0; ?>
-
-                                    <div class="row agenda" style="display: none;" id="nextMonth4-mobile">
-                                        @while($i < count($nextMonth4))
-                                            <div class="col-md-12">
-                                                <div class="panel panel-default panel-mobile">
-                                                    <div class="panel-heading">
-                                                        <h3 class="panel-title">
-
-                                                            {{ $allDays[
-                                                                date_format(date_create($nextMonth4[$i]), 'N')
-                                                            ] }}
-                                                        </h3>
-                                                    </div>
-                                                    <div class="panel-body">
-                                                        <small class="pull-right day-panel-mobile"> {{ substr($nextMonth4[$i], 8) }}</small><br>
-                                                        @while($x < count($allEvents))
-                                                            @if($allEvents[$x]->eventDate == $nextMonth4[$i])
-                                                                <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                    {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                </label>
-
-                                                                <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                            @endif
-                                                            <?php $x++; ?>
-                                                        @endwhile
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <?php $i++; ?>
-                                            <?php $x = 0; ?>
-                                        @endwhile
-                                    </div>
-
-                                    <?php $i = 0; ?>
-                                    <?php $x = 0; ?>
-
-                                    <div class="row agenda" style="display: none;" id="nextMonth5-mobile">
-                                        @while($i < count($nextMonth5))
-                                            <div class="col-md-12">
-                                                <div class="panel panel-default panel-mobile">
-                                                    <div class="panel-heading">
-                                                        <h3 class="panel-title">
-
-                                                            {{ $allDays[
-                                                                date_format(date_create($nextMonth5[$i]), 'N')
-                                                            ] }}
-                                                        </h3>
-                                                    </div>
-                                                    <div class="panel-body">
-                                                        <small class="pull-right day-panel-mobile"> {{ substr($nextMonth5[$i], 8) }}</small><br>
-                                                        @while($x < count($allEvents))
-                                                            @if($allEvents[$x]->eventDate == $nextMonth5[$i])
-                                                                <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                    {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                </label>
-
-                                                                <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                            @endif
-                                                            <?php $x++; ?>
-                                                        @endwhile
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <?php $i++; ?>
-                                            <?php $x = 0; ?>
-                                        @endwhile
-                                    </div>
-
-                                    <?php $i = 0; ?>
-                                    <?php $x = 0; ?>
-
-                                    <div class="row agenda" style="display: none;" id="nextMonth6-mobile">
-                                        @while($i < count($nextMonth6))
-                                            <div class="col-md-12">
-                                                <div class="panel panel-default panel-mobile">
-                                                    <div class="panel-heading">
-                                                        <h3 class="panel-title">
-
-                                                            {{ $allDays[
-                                                                date_format(date_create($nextMonth6[$i]), 'N')
-                                                            ] }}
-                                                        </h3>
-                                                    </div>
-                                                    <div class="panel-body">
-                                                        <small class="pull-right day-panel-mobile"> {{ substr($nextMonth6[$i], 8) }}</small><br>
-                                                        @while($x < count($allEvents))
-                                                            @if($allEvents[$x]->eventDate == $nextMonth6[$i])
-                                                                <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                    {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                </label>
-
-                                                                <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                            @endif
-                                                            <?php $x++; ?>
-                                                        @endwhile
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <?php $i++; ?>
-                                            <?php $x = 0; ?>
-                                        @endwhile
-                                    </div>
-
-                                    <?php $i = 0; ?>
-                                    <?php $x = 0; ?>
-
-                                    <div class="row agenda" style="display: none;" id="prevMonth-mobile">
-                                        @while($i < count($prevMonth))
-                                            <div class="col-md-12">
-                                                <div class="panel panel-default panel-mobile">
-                                                    <div class="panel-heading">
-                                                        <h3 class="panel-title">
-
-                                                            {{ $allDays[
-                                                                date_format(date_create($prevMonth[$i]), 'N')
-                                                            ] }}
-                                                        </h3>
-                                                    </div>
-                                                    <div class="panel-body">
-                                                        <small class="pull-right day-panel-mobile"> {{ substr($prevMonth[$i], 8) }}</small><br>
-                                                        @while($x < count($allEvents))
-                                                            @if($allEvents[$x]->eventDate == $prevMonth[$i])
-                                                                <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                    {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                </label>
-
-                                                                <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                            @endif
-                                                            <?php $x++; ?>
-                                                        @endwhile
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <?php $i++; ?>
-                                            <?php $x = 0; ?>
-                                        @endwhile
-                                    </div>
-
-                                    <?php $i = 0; ?>
-                                    <?php $x = 0; ?>
-
-                                    <div class="row agenda" style="display: none;" id="prevMonth2-mobile">
-                                        @while($i < count($prevMonth2))
-                                            <div class="col-md-12">
-                                                <div class="panel panel-default panel-mobile">
-                                                    <div class="panel-heading">
-                                                        <h3 class="panel-title">
-
-                                                            {{ $allDays[
-                                                                date_format(date_create($prevMonth2[$i]), 'N')
-                                                            ] }}
-                                                        </h3>
-                                                    </div>
-                                                    <div class="panel-body">
-                                                        <small class="pull-right day-panel-mobile"> {{ substr($prevMonth2[$i], 8) }}</small><br>
-                                                        @while($x < count($allEvents))
-                                                            @if($allEvents[$x]->eventDate == $prevMonth2[$i])
-                                                                <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                    {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                </label>
-
-                                                                <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                            @endif
-                                                            <?php $x++; ?>
-                                                        @endwhile
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <?php $i++; ?>
-                                            <?php $x = 0; ?>
-                                        @endwhile
-                                    </div>
-
-                                    <?php $i = 0; ?>
-                                    <?php $x = 0; ?>
-
-                                    <div class="row agenda" style="display: none;" id="prevMonth3-mobile">
-                                        @while($i < count($prevMonth3))
-                                            <div class="col-md-12">
-                                                <div class="panel panel-default panel-mobile">
-                                                    <div class="panel-heading">
-                                                        <h3 class="panel-title">
-
-                                                            {{ $allDays[
-                                                                date_format(date_create($prevMonth3[$i]), 'N')
-                                                            ] }}
-                                                        </h3>
-                                                    </div>
-                                                    <div class="panel-body">
-                                                        <small class="pull-right day-panel-mobile"> {{ substr($prevMonth3[$i], 8) }}</small><br>
-                                                        @while($x < count($allEvents))
-                                                            @if($allEvents[$x]->eventDate == $prevMonth3[$i])
-                                                                <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                    {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                </label>
-
-                                                                <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                            @endif
-                                                            <?php $x++; ?>
-                                                        @endwhile
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <?php $i++; ?>
-                                            <?php $x = 0; ?>
-                                        @endwhile
-                                    </div>
-
-                                    <?php $i = 0; ?>
-                                    <?php $x = 0; ?>
-
-
-                                    <div class="row agenda" style="display: none;" id="prevMonth4-mobile">
-                                        @while($i < count($prevMonth4))
-                                            <div class="col-md-12">
-                                                <div class="panel panel-default panel-mobile">
-                                                    <div class="panel-heading">
-                                                        <h3 class="panel-title">
-
-                                                            {{ $allDays[
-                                                                date_format(date_create($prevMonth4[$i]), 'N')
-                                                            ] }}
-                                                        </h3>
-                                                    </div>
-                                                    <div class="panel-body">
-                                                        <small class="pull-right day-panel-mobile"> {{ substr($prevMonth4[$i], 8) }}</small><br>
-                                                        @while($x < count($allEvents))
-                                                            @if($allEvents[$x]->eventDate == $prevMonth4[$i])
-                                                                <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                    {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                </label>
-
-                                                                <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                            @endif
-                                                            <?php $x++; ?>
-                                                        @endwhile
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <?php $i++; ?>
-                                            <?php $x = 0; ?>
-                                        @endwhile
-                                    </div>
-
-                                    <?php $i = 0; ?>
-                                    <?php $x = 0; ?>
-
-
-                                    <div class="row agenda" style="display: none;" id="prevMonth5-mobile">
-                                        @while($i < count($prevMonth5))
-                                            <div class="col-md-12">
-                                                <div class="panel panel-default panel-mobile">
-                                                    <div class="panel-heading">
-                                                        <h3 class="panel-title">
-
-                                                            {{ $allDays[
-                                                                date_format(date_create($prevMonth5[$i]), 'N')
-                                                            ] }}
-                                                        </h3>
-                                                    </div>
-                                                    <div class="panel-body">
-                                                        <small class="pull-right day-panel-mobile"> {{ substr($prevMonth5[$i], 8) }}</small><br>
-                                                        @while($x < count($allEvents))
-                                                            @if($allEvents[$x]->eventDate == $prevMonth5[$i])
-                                                                <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                    {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                </label>
-
-                                                                <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                            @endif
-                                                            <?php $x++; ?>
-                                                        @endwhile
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <?php $i++; ?>
-                                            <?php $x = 0; ?>
-                                        @endwhile
-                                    </div>
-
-                                    <?php $i = 0; ?>
-                                    <?php $x = 0; ?>
-
-                                    <div class="row agenda" style="display: none;" id="prevMonth6-mobile">
-                                        @while($i < count($prevMonth6))
-                                            <div class="col-md-12">
-                                                <div class="panel panel-default panel-mobile">
-                                                    <div class="panel-heading">
-                                                        <h3 class="panel-title">
-
-                                                            {{ $allDays[
-                                                                date_format(date_create($prevMonth6[$i]), 'N')
-                                                            ] }}
-                                                        </h3>
-                                                    </div>
-                                                    <div class="panel-body">
-                                                        <small class="pull-right day-panel-mobile"> {{ substr($prevMonth6[$i], 8) }}</small><br>
-                                                        @while($x < count($allEvents))
-                                                            @if($allEvents[$x]->eventDate == $prevMonth6[$i])
-                                                                <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                    {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                </label>
-
-                                                                <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                            @endif
-                                                            <?php $x++; ?>
-                                                        @endwhile
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <?php $i++; ?>
-                                            <?php $x = 0; ?>
-                                        @endwhile
-                                    </div>
-
-                                    <?php $i = 0; ?>
-                                    <?php $x = 0; ?>
 
                                 </div>
 
@@ -3939,13 +1484,13 @@ License: You must have a valid license purchased only from themeforest(the above
 <!-- END QUICK NAV -->
 @include('includes.core-scripts')
 <!-- BEGIN PAGE LEVEL PLUGINS -->
-<script src="../assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
-<script src="../assets/global/plugins/fancybox/source/jquery.fancybox.pack.js" type="text/javascript"></script>
-<script src="../assets/global/plugins/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js"></script>
+<!--<script src="../assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>-->
+<!--<script src="../assets/global/plugins/fancybox/source/jquery.fancybox.pack.js" type="text/javascript"></script>-->
+<!--<script src="../assets/global/plugins/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js"></script>-->
 <!-- END PAGE LEVEL PLUGINS -->
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
 <script src="../assets/pages/scripts/search.min.js" type="text/javascript"></script>
-<script src="../js/agenda.js"></script>
+<!--<script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>-->
 
 
 <!-- END PAGE LEVEL SCRIPTS -->
