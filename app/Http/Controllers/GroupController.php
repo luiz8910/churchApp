@@ -677,4 +677,26 @@ class GroupController extends Controller
 
         return redirect()->route('group.index');
     }
+
+
+    public function addUserToGroup($personId, $group)
+    {
+        $registered = DB::table('group_person')
+            ->where(
+                [
+                    'group_id' => $group,
+                    'person_id' => $personId
+                ])
+            ->get();
+
+        if(count($registered) > 0){
+            return json_encode(['status' => false]);
+        }
+
+        $group = $this->repository->find($group);
+
+        $group->people()->attach($personId);
+
+        return json_encode(['status' => true]);
+    }
 }

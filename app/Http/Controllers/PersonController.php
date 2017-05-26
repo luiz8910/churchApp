@@ -295,10 +295,12 @@ class PersonController extends Controller
 
         $children = $request->get('group-a');
 
-        if($data['father_id_input'] || $data['mother_id_input'])
-        {
-            $data['father_id'] = $data['father_id_input'] or null;
-            $data['mother_id'] = $data['mother_id_input'] or null;
+        if(isset($data['father_id_input']) || isset($data['mother_id_input'])){
+            if($data['father_id_input'] || $data['mother_id_input'])
+            {
+                $data['father_id'] = $data['father_id_input'] or null;
+                $data['mother_id'] = $data['mother_id_input'] or null;
+            }
         }
 
         if(!isset($data["maritalStatus"])){
@@ -348,9 +350,11 @@ class PersonController extends Controller
         }
 
         if($teen){
+            Session::flash('teen.crud', 'Usuário '. $data['name'] . ' criado com sucesso');
             return redirect()->route('person.teen');
         }
 
+        Session::flash('person.crud', 'Usuário '. $data['name'] . ' criado com sucesso');
         return redirect()->route('person.index');
     }
 
@@ -533,11 +537,14 @@ class PersonController extends Controller
         //Formatação correta da data
         $data['dateBirth'] = $this->formatDateBD($data['dateBirth']);
 
-        if($data['father_id_input'] || $data['mother_id_input'])
-        {
-            $data['father_id'] = $data['father_id_input'] or null;
-            $data['mother_id'] = $data['mother_id_input'] or null;
+        if(isset($data['father_id_input']) || isset($data['mother_id_input'])){
+            if($data['father_id_input'] || $data['mother_id_input'])
+            {
+                $data['father_id'] = $data['father_id_input'] or null;
+                $data['mother_id'] = $data['mother_id_input'] or null;
+            }
         }
+
 
         if(!isset($data['maritalStatus']))
         {
@@ -609,9 +616,11 @@ class PersonController extends Controller
                     ]);
             }
 
+            Session::flash('teen.crud', 'Usuário '. $data['name'] . ' alterado com sucesso');
             return redirect()->route('person.teen');
         }
 
+        Session::flash('person.crud', 'Usuário '. $data['name'] . ' alterado com sucesso');
         return redirect()->route('person.index');
     }
 
@@ -845,4 +854,6 @@ class PersonController extends Controller
 
         return json_encode(['cep' => $cep]);
     }
+
+
 }

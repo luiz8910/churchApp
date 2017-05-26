@@ -41,8 +41,8 @@ License: You must have a valid license purchased only from themeforest(the above
             <div class="container">
                 <!-- BEGIN PAGE TITLE -->
                 <div class="page-title">
-                    <h1>Bootstrap Form Controls
-                        <small>bootstrap form controls and more</small>
+                    <h1>
+                        Novo Visitante
                     </h1>
                 </div>
                 <!-- END PAGE TITLE -->
@@ -59,7 +59,7 @@ License: You must have a valid license purchased only from themeforest(the above
                         <i class="fa fa-circle"></i>
                     </li>
                     <li>
-                        <a href="#">Membros</a>
+                        <a href="{{ route('visitors.index') }}">Visitantes</a>
                         <i class="fa fa-circle"></i>
                     </li>
                     <li>
@@ -84,8 +84,10 @@ License: You must have a valid license purchased only from themeforest(the above
                                 <div class="portlet-title">
                                     <div class="caption font-red-sunglo">
                                         <i class="fa fa-user font-red-sunglo"></i>
-                                        <span class="caption-subject bold uppercase"> Novo Membro</span>
+                                        <span class="caption-subject bold uppercase"> Novo Registro</span>
+                                        <small style="color: grey;">Campos com * são Obrigatórios</small>
                                     </div>
+
                                     <!--<div class="actions">
                                         <div class="btn-group">
                                             <a class="btn btn-sm green dropdown-toggle" href="javascript:;"
@@ -119,7 +121,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label>Nome</label>
+                                                    <label>Nome *</label>
                                                     <div class="input-group">
                                                             <span class="input-group-addon">
                                                                 <i class="fa fa-user font-blue"></i>
@@ -131,7 +133,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label>Sobrenome</label>
+                                                    <label>Sobrenome *</label>
                                                     <div class="input-group">
                                                             <span class="input-group-addon">
                                                                 <i class="fa fa-user font-blue"></i>
@@ -148,7 +150,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group" id="form-email">
-                                                    <label>Email</label>
+                                                    <label>Email *</label>
                                                     <div class="input-group input-icon right">
                                                             <span class="input-group-addon">
                                                                 <i class="fa fa-envelope font-blue" id="icon-email"></i>
@@ -190,20 +192,20 @@ License: You must have a valid license purchased only from themeforest(the above
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label for="exampleInputPassword1">Telefone</label>
+                                                    <label for="exampleInputPassword1">Telefone *</label>
                                                     <div class="input-group">
                                                     <span class="input-group-addon">
                                                         <i class="fa fa-phone font-green"></i>
                                                     </span>
                                                         <input type="text" class="form-control tel" name="tel"
-                                                               id="exampleInputPassword1" value="{{ old('tel') }}" placeholder="(15) 1231413423">
+                                                               id="exampleInputPassword1" value="{{ old('tel') }}" placeholder="(15) 1231413423" required>
                                                     </div>
                                                 </div>
 
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label>Gênero</label>
+                                                    <label>Gênero *</label>
                                                     <div class="input-icon input-icon-lg">
                                                         <select class="form-control" name="gender" required>
                                                             <option value="">Selecione</option>
@@ -225,7 +227,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 <i class="fa fa-calendar font-blue"></i>
                                                             </span>
                                                         <input type="text" class="form-control input-date" name="dateBirth"
-                                                               placeholder="dd/mm/aaaa" maxlength="10" value="{{ old('dateBirth') }}" required>
+                                                               placeholder="dd/mm/aaaa" maxlength="10" value="{{ old('dateBirth') }}">
                                                     </div>
 
                                                 </div>
@@ -279,7 +281,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="">Estado Civil</label>
-                                                    <select name="maritalStatus" id="maritalStatus" class="form-control" required>
+                                                    <select name="maritalStatus" id="maritalStatus" class="form-control">
                                                         <option value="">Selecione</option>
                                                         <option value="Casado">Casado</option>
                                                         <option value="Solteiro">Solteiro</option>

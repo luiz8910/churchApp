@@ -682,15 +682,45 @@ License: You must have a valid license purchased only from themeforest(the above
                                         <div class="col-md-9">
                                             <div class="form-group">
                                                 <br>
+                                                <input type="hidden" id="groupId" value="{{ $group->id }}">
                                                 <label>Nome</label>
                                                 <div class="input-group">
                                                     <span class="input-group-addon">
                                                         <i class="fa fa-user font-blue"></i>
                                                     </span>
                                                     <input type="text" name="name"
-                                                           class="form-control"
-                                                           placeholder="Digite o nome aqui" required>
+                                                           class="form-control" id="input-join-new-people"
+                                                           placeholder="Digite o nome aqui" autocomplete="off" required>
                                                 </div>
+
+                                                <span class="help-block" id="foundResults" style="margin-top:10px; margin-bottom:10px; display: none;">
+                                                    Os seguintes usuários foram encontrados:
+                                                </span>
+
+                                                <br>
+
+                                                <span class="help-block" id="table-results" style="display: none;">
+                                                    <table class="table table-striped table-responsive">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>#</th>
+                                                                <th>Nome</th>
+                                                                <th>Adicionar ao grupo</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="tbody-create-modal">
+                                                            <tr>
+
+                                                            </tr>
+                                                            <label style="display: none; color: red;" class="lblRegistered">
+                                                                    Este Usuário já está inscrito nesse grupo
+                                                            </label>
+                                                        </tbody>
+                                                    </table>
+                                                </span>
+
+
+
                                             </div>
 
 
@@ -1654,7 +1684,7 @@ License: You must have a valid license purchased only from themeforest(the above
 <script src="../../js/script.js"></script>
 <script src="../../js/cep.js"></script>
 <script src="../../js/maskbrphone.js"></script>
-
+<script src="../../js/ajax.js"></script>
 
 <script src="../../assets/pages/scripts/components-bootstrap-select.min.js" type="text/javascript"></script>
 

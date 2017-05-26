@@ -7,6 +7,7 @@ use App\Models\Group;
 use App\Models\Person;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Laravel\Scout\Engines\AlgoliaEngine;
 
 class SearchController extends Controller
@@ -69,5 +70,40 @@ class SearchController extends Controller
     public function searchEvents($text)
     {
         return $this->event->search($text)->get();
+    }
+
+    public function findNewPeople($input)
+    {
+        $church_id = \Auth::getUser()->church_id;
+
+        $people = DB::table('people')
+                    ->where(
+                        [
+                            ['name', 'like', $input.'%'],
+                            ['church_id', '=', $church_id],
+                            ['deleted_at', '=', null]
+                        ]
+                    )
+                    ->get();
+
+
+        if(count($people) > 0)
+        {
+            $arr = [];
+
+            foreach ($people as $person)
+            {
+                $arr[] = $person->imgProfile;
+                $arr[] = $person->name . " " . $person->lastName;
+                $arr[] = $person->id;
+            }
+
+            return json_encode([
+                'status' => true,
+                'data' => $arr
+            ]);
+        }
+
+        return json_encode(['status' => false]);
     }
 }

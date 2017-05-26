@@ -83,13 +83,15 @@ License: You must have a valid license purchased only from themeforest(the above
                                         <span class="caption-subject font-green sbold uppercase">Grupos</span>
                                     </div>
                                     <div class="actions">
-                                        <div class="btn-group btn-group-devided">
-                                            <a role="button" class="btn btn-info btn-circle" href="{{ route('group.create') }}" style="margin-top: 2px;">
-                                                <i class="fa fa-plus"></i>
-                                                <span class="hidden-xs hidden-sm">Novo Grupo</span>
-                                            </a>
+                                        @if(Auth::getUser()->person->role_id == 1)
+                                            <div class="btn-group btn-group-devided">
+                                                <a role="button" class="btn btn-info btn-circle" href="{{ route('group.create') }}" style="margin-top: 2px;">
+                                                    <i class="fa fa-plus"></i>
+                                                    <span class="hidden-xs hidden-sm">Novo Grupo</span>
+                                                </a>
 
-                                        </div>
+                                            </div>
+                                        @endif
                                         <div class="btn-group">
                                             <a class="btn red btn-outline btn-circle" href="javascript:;" data-toggle="dropdown">
                                                 <i class="fa fa-share"></i>

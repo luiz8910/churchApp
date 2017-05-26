@@ -74,6 +74,13 @@ License: You must have a valid license purchased only from themeforest(the above
                     </div>
                 @endif
 
+                @if(Session::has('person.crud'))
+                    <div class="alert alert-success alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        {{ Session::get('person.crud') }}
+                    </div>
+                @endif
+
                 @if(Session::has('email.exists'))
                     <div class="alert alert-danger alert-dismissible" role="alert">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>

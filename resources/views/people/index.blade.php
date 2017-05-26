@@ -49,6 +49,8 @@ License: You must have a valid license purchased only from themeforest(the above
 
             </div>
         </div>
+
+
         <!-- END PAGE HEAD-->
         <!-- BEGIN PAGE CONTENT BODY -->
         <div class="page-content">
@@ -69,6 +71,13 @@ License: You must have a valid license purchased only from themeforest(the above
                 </ul>
                 <!-- END PAGE BREADCRUMBS -->
                 <!-- BEGIN PAGE CONTENT INNER -->
+
+                @if(Session::has('person.crud'))
+                    <div class="alert alert-success alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        {{ Session::get('person.crud') }}
+                    </div>
+                @endif
 
 
                 <?php $route = "person";?>

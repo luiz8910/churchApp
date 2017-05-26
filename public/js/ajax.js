@@ -535,3 +535,105 @@
         });
     }
 
+
+    $("#input-join-new-people").keyup(function(){
+
+        if(this.value != "")
+        {
+            if(this.value.length > 2)
+            {
+                var input = this.value;
+
+                console.log('input: ' + this.value);
+
+                var request = $.ajax({
+                    url: '/join-new-people/' + input,
+                    method: "GET",
+                    dataType: "json"
+                });
+
+                request.done(function(e){
+                    console.log("done");
+                    console.log(e);
+
+                    if(e.status)
+                    {
+                        $("#table-results").css('display', 'none');
+                        $(".lblRegistered").css('display', 'none');
+                        $("#tbody-create-modal tr td").remove();
+                        appendModalTable(e.data);
+                    }
+                });
+
+                request.fail(function(e){
+                    console.log("fail");
+                    console.log(e);
+                });
+            }
+
+        }
+        else{
+            $("#foundResults").css('display', 'none');
+            $("#table-results").css('display', 'none');
+            $(".lblRegistered").css('display', 'none');
+            $("#tbody-create-modal tr td").remove();
+        }
+
+    });
+
+    function appendModalTable(data)
+    {
+        var table =
+            '<td><img src="../../'+data[0]+'" class="img-circle small-img" </td>'+
+            '<td>'+data[1]+'</td>'+
+            '<td>'+
+                '<a href="javascript:;" onclick="addUserToGroup('+data[2]+')" class="btn btn-success btn-xs btn-circle">'+
+                    '<i class="fa fa-plus"></i>'+
+                '</a>'+
+            '</td>';
+
+
+        $("#foundResults").css('display', 'block');
+
+
+        $("#table-results").css('display', 'block');
+
+
+        $("#tbody-create-modal tr").append(table);
+
+    }
+
+    /*
+     * Adiciona o Usuário ao grupo
+     *
+     * */
+
+    function addUserToGroup(personId)
+    {
+        var group = $("#groupId").val();
+
+        var request = $.ajax({
+            url:'/addUserToGroup/' + personId + '/' + group,
+            method: 'GET',
+            dataType: "json"
+        });
+
+        request.done(function (e) {
+            console.log("done");
+            console.log(e);
+
+            if(e.status)
+            {
+                location.reload();
+            }
+            else{
+                $(".lblRegistered").css('display', 'block');
+            }
+
+        });
+
+        request.fail(function (e) {
+            console.log("fail");
+            console.log(e);
+        });
+    }

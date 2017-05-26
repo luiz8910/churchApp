@@ -97,8 +97,23 @@ class UsersController extends Controller
 
         $adults = $this->personRepository->findWhere(['tag' => 'adult', 'gender' => $gender]);
 
+        $person = $this->personRepository->find($user->id);
+
+        $groups = $person->groups()->paginate() or null;
+
+        $countMembers = [];
+
+        if($groups)
+        {
+            foreach ($groups as $group)
+            {
+                $group->sinceOf = $this->formatDateView($group->sinceOf);
+                $countMembers[] = count($group->people->all());
+            }
+        }
+
         return view('users.myAccount', compact('state', 'user', 'changePass', 'countPerson', 'role', 'countGroups',
-            'notify', 'qtde', 'adults'));
+            'notify', 'qtde', 'adults', 'groups', 'countMembers'));
     }
 
 

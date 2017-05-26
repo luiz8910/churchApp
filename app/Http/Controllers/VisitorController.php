@@ -95,7 +95,7 @@ class VisitorController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(PersonCreateRequest $request)
+    public function store(Request $request)
     {
         $file = $request->file('img');
 
@@ -103,7 +103,7 @@ class VisitorController extends Controller
 
         unset($data["role_id"]);
 
-        $data['dateBirth'] = $this->formatDateBD($data['dateBirth']);
+        $data['dateBirth'] = $data['dateBirth'] ? $this->formatDateBD($data['dateBirth']) : null;
 
         $data['imgProfile'] = 'uploads/profile/noimage.png';
 

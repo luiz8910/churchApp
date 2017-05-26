@@ -94,6 +94,8 @@ Route::group(['middleware' => 'auth'], function (){
 
     Route::get("agenda-mes/{thisMonth}", "EventController@nextMonth")->name("events.agenda-mes");
 
+    Route::get("join-new-people/{input}", "SearchController@findNewPeople");
+
 });
 
 Route::group(["middleware" => "check.role:1"], function () {
@@ -119,6 +121,8 @@ Route::group(["middleware" => "check.role:1"], function () {
     Route::get('/group-delete/{id}', 'GroupController@destroy');
 
     Route::get('/events-delete/{id}', 'EventController@destroy');
+
+    Route::get('/addUserToGroup/{personId}/{group}', 'GroupController@addUserToGroup');
 
     Route::get('pusher', function(){
         return view('pusher');
