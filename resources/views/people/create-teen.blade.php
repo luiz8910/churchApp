@@ -226,6 +226,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                                     </div>
                                                     <div class="help-block small-error">CPF Inválido</div>
+                                                    <div class="help-block small-error" id="textResponse" style="color: red;"></div>
                                                 </div>
                                             </div>
 

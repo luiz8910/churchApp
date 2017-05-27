@@ -11,6 +11,7 @@ namespace App\Traits;
 
 use App\Models\Role;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 trait PeopleTrait
@@ -145,6 +146,56 @@ trait PeopleTrait
             $pass[] = $alphabet[$n];
         }
         return implode($pass); //turn the array into a string
+    }
+
+    public function traitCheckCPF($cpf)
+    {
+        $person = DB::table('people')
+                    ->where('cpf', $cpf)
+                    ->first();
+
+        $church_id = Auth::getUser()->church_id;
+
+        if (count($person) > 0)
+        {
+            if($person->church_id == $church_id)
+            {
+                return json_encode(
+                    [
+                        'status' => true,
+                        'type' => 'person',
+                        'data' => $person
+                    ]
+                );
+            }
+            else{
+                return json_encode(
+                    [
+                        'status' => true,
+                        'type' => 'person',
+                        'data' => 0
+                    ]
+                );
+            }
+
+        }
+        else{
+            $visitor = DB::table('visitors')
+                ->where('cpf', $cpf)
+                ->first();
+
+            if(count($visitor) > 0){
+                return json_encode(
+                    [
+                        'status' => true,
+                        'type' => 'visitor',
+                        'data' => $visitor
+                    ]
+                );
+            }
+        }
+
+        return json_encode(['status' => false]);
     }
 
 }

@@ -194,9 +194,11 @@ class VisitorController extends Controller
             $this->updateMaritalStatus($data['partner'], $id, 'visitors');
         }
 
-        $user = User::select('id')->where('email', $data["email"])->first() or null;
+        //$user = User::where('email', $data["email"])->first() or null;dd($user);
 
-        if($user)
+        $user = $this->repository->findByField('email', $data["email"])->first()->id or null;
+
+        if($user && ($user != $id))
         {
             \Session::flash("email.exists", "Existe uma conta associada para o email informado (" .$data["email"]. ")");
 
@@ -308,5 +310,10 @@ class VisitorController extends Controller
         } else {
             File::put(getcwd() . '/js/print.json', $json);
         }
+    }
+
+    public function checkCPF($cpf)
+    {
+        return $this->traitCheckCPF($cpf)->first();
     }
 }

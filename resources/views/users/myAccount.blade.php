@@ -992,8 +992,10 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <i class="fa fa-check font-green" id="icon-success" style="display: none;"></i>
                                                 <i class="fa fa-exclamation font-red" id="icon-error" style="display: none;"></i>
 
+                                                <input type="hidden" id="userId" value="{{ Auth::getUser()->id }}">
                                             </div>
                                             <div class="help-block small-error">CPF Inválido</div>
+                                            <div class="help-block small-error" id="textResponse" style="color: red;"></div>
 
                                             {!! Form::error('cpf', $errors) !!}
                                             {!! Form::endFormGroup() !!}

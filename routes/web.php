@@ -96,6 +96,8 @@ Route::group(['middleware' => 'auth'], function (){
 
     Route::get("join-new-people/{input}", "SearchController@findNewPeople");
 
+    Route::get("check-cpf/{cpf}", "PersonController@checkCPF");
+
 });
 
 Route::group(["middleware" => "check.role:1"], function () {

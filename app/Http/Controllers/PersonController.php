@@ -312,6 +312,7 @@ class PersonController extends Controller
             $data["role_id"] = $member;
         }
 
+        $data["church_id"] = Auth::getUser()->church_id;
 
         $id = $this->repository->create($data)->id;
 
@@ -850,10 +851,16 @@ class PersonController extends Controller
 
     public function automaticCep($id)
     {
-        $cep = $this->repository->find($id)->zipCode;
+        $user = $this->userRepository->find($id)->person_id;
+
+        $cep = $this->repository->find($user)->zipCode;
 
         return json_encode(['cep' => $cep]);
     }
 
+    public function checkCPF($cpf)
+    {
+        return $this->traitCheckCPF($cpf);
+    }
 
 }

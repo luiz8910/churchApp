@@ -60,6 +60,8 @@ $("#cpf").keypress(function (e) {
             $("#icon-error-cpf").css("display", "none");
             $("#icon-success-cpf").css("display", "block");
             $(".small-error").css("display", "none");
+
+            checkCPF(cpf);
         } else{
             $("#form-cpf")
                 .removeClass("has-success")

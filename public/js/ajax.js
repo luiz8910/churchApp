@@ -637,3 +637,67 @@
             console.log(e);
         });
     }
+
+    function checkCPF(cpf)
+    {
+        var request = $.ajax({
+            url: '/check-cpf/' + cpf,
+            method: 'GET',
+            dataType: 'json'
+        });
+
+        var route = location.pathname;
+
+        console.log('route: ' + route);
+
+        $("#textResponse label")
+            .css('display', 'none').remove();
+
+        request.done(function(e){
+            console.log("done");
+            console.log(e);
+
+            $("#textResponse").css('display', 'block');
+
+
+            if(e.status){
+                if(e.type == "person" && e.data == 0){
+                    $("#textResponse")
+                        .append('<label><strong>Erro!</strong> Este CPF está em uso em outra igreja</label>')
+                }
+                else if(e.type == "person" && e.data != 0){
+                    if(route == "/myAccount")
+                    {
+                        console.log("id: " + e.data.id);
+                        console.log("user: " + $("#userId").val());
+
+                        if(e.data.id != $("#userId").val())
+                        {
+                            $("#textResponse")
+                                .append('<label><strong>Erro!</strong> Este CPF pertence ao usuário ' +e.data.name+' '+e.data.lastName+' </label>')
+                        }
+                    }
+                    else if(route.search('edit') != - 1){
+                        if(e.data.id != $("#personId").val()){
+                            $("#textResponse")
+                                .append('<label><strong>Erro!</strong> Este CPF pertence ao usuário ' +e.data.name+' '+e.data.lastName+' </label>')
+                        }
+                    }
+                    else{
+                        $("#textResponse")
+                            .append('<label><strong>Erro!</strong> Este CPF pertence ao usuário ' +e.data.name+' '+e.data.lastName+' </label>')
+                    }
+
+                }
+                else{
+                    $("#textResponse")
+                        .append('<label>Este CPF pertence ao visitante ' +e.data.name+' '+e.data.lastName+' </label>')
+                }
+            }
+        });
+
+        request.fail(function(e){
+            console.log("fail");
+            console.log(e);
+        })
+    }
