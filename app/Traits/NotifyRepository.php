@@ -18,7 +18,7 @@ trait NotifyRepository
         $notify = [];
         $verify = [];
 
-        foreach($user->notifications as $notification)
+        foreach($user->unreadNotifications as $notification)
         {
             if(count($notify) > 0)
             {

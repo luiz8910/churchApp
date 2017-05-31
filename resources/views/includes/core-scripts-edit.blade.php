@@ -52,56 +52,55 @@
 <script src="../../js/print.js"></script>
 <script src="https://js.pusher.com/4.0/pusher.min.js"></script>
 
+
 <script>
 
-    if($("#UserRole").val() == 1)
-    {
-        //instantiate a Pusher object with our Credential's key
-        var pusher = new Pusher('9f86933032dbae833b7d', {
+    //instantiate a Pusher object with our Credential's key
+    var pusher = new Pusher(getPusherKey(), {
 
-            encrypted: true
-        });
+        encrypted: true
+    });
 
-        //Subscribe to the channel we specified in our Laravel Event
-        var channel = pusher.subscribe('my-channel');
+    //Subscribe to the channel we specified in our Laravel Event
+    var channel = pusher.subscribe('my-channel');
 
-        //Bind a function to a Event (the full Laravel class)
-        channel.bind('App\\Events\\PersonEvent', UserAdded);
+    //Bind a function to a Event (the full Laravel class)
+    channel.bind('App\\Events\\PersonEvent', UserAdded);
 
-        badgeNotify = 0;
+    badgeNotify = 0;
 
-        function UserAdded(data) {
-            var li = '<li>' +
-                    '<a href="person/'+data.person[0]+'/edit">'+
-                    '<span class="time">Agora</span>'+
-                    '<span class="details">'+
-                    '<span class="label label-sm label-icon label-success">'+
-                    '<i class="fa fa-plus"></i>'+
-                    '</span> Novo Usuário Registrado. </span>'+
-                    '</a>'+
-                    '</li>';
+    function UserAdded(data) {
+        var li = '<li>' +
+                '<a href="person/'+data.person[0]+'/edit">'+
+                '<span class="time">Agora</span>'+
+                '<span class="details">'+
+                '<span class="label label-sm label-icon label-success">'+
+                '<i class="fa fa-plus"></i>'+
+                '</span> Novo Usuário Registrado. </span>'+
+                '</a>'+
+                '</li>';
 
 
 
-            if($("#badge-notify").val() != "")
-            {
-                badgeNotify = parseInt($("#badge-notify").val());
-            }
-
-            badgeNotify++;
-
-            $("#badge-notify").text(badgeNotify);
-
-            $("#created_person_id").val(data.person[0]);
-
-            $("#input-badge-count").text(badgeNotify).trigger("change");
-
-            $("#qtdeNotify").text(badgeNotify + " Nova Notificação");
-
-            $("#eventNotify").prepend(li);
-
-            console.log($("#badge-notify").text());
+        if($("#badge-notify").val() != "")
+        {
+            badgeNotify = parseInt($("#badge-notify").val());
         }
+
+        badgeNotify++;
+
+        $("#badge-notify").text(badgeNotify);
+
+        $("#created_person_id").val(data.person[0]);
+
+        $("#input-badge-count").text(badgeNotify).trigger("change");
+
+        $("#qtdeNotify").text(badgeNotify + " Nova Notificação");
+
+        $("#eventNotify").prepend(li);
+
+        console.log($("#badge-notify").text());
     }
+
 
 </script>

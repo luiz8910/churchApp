@@ -51,10 +51,11 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.debug.js"></script>
 <script src="https://js.pusher.com/4.0/pusher.min.js"></script>
 
+
 <script>
 
         //instantiate a Pusher object with our Credential's key
-        var pusher = new Pusher('9f86933032dbae833b7d', {
+        var pusher = new Pusher(getPusherKey(), {
 
             encrypted: true
         });
@@ -77,7 +78,7 @@
                     '<span class="details">'+
                     '<span class="label label-sm label-icon label-success">'+
                     '<i class="fa fa-plus"></i>'+
-                    '</span> Novo Evento. </span>'+
+                    '</span> '+data.event.name+'</span>'+
                     '</a>'+
                     '</li>';
 
@@ -137,6 +138,8 @@
 
             console.log($("#badge-notify").text());
         }
+
+
 
 
 </script>

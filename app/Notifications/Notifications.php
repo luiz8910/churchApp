@@ -41,7 +41,7 @@ class Notifications extends Notification
     public function via($notifiable)
     {
         //dd($notifiable);
-        return ['database', 'slack'];
+        return ['database'];
     }
 
     /**

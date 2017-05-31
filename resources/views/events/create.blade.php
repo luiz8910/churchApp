@@ -110,7 +110,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                     </div>-->
                                 </div>
                                 <div class="portlet-body form">
-                                    {!! Form::open(['route' => 'event.store', 'method' => 'POST', 'role' => 'form']) !!}
+                                    {!! Form::open(['route' => 'event.store', 'method' => 'POST', 'role' => 'form', 'id' => 'form']) !!}
                                     <div class="form-body">
                                         @if(isset($id))
                                             <input type="hidden" name="group_id" value="{{ $id }}">
@@ -356,7 +356,14 @@ License: You must have a valid license purchased only from themeforest(the above
                                         </div>
                                     </div>
                                     <div class="form-actions">
-                                        {!! Form::submit('Enviar', ['class' => 'btn blue']) !!}
+                                        {!! Form::submit('Enviar', ['class' => 'btn blue', 'id' => 'btn-submit']) !!}
+                                        <div class="progress" style="display: none;">
+                                            <div class="progress-bar progress-bar-striped active" role="progressbar"
+                                                 aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                                                Enviando...
+                                                <span class="sr-only">Enviando...</span>
+                                            </div>
+                                        </div>
                                     </div>
                                     {!! Form::close() !!}
                                 </div>

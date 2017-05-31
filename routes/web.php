@@ -98,6 +98,10 @@ Route::group(['middleware' => 'auth'], function (){
 
     Route::get("check-cpf/{cpf}", "PersonController@checkCPF");
 
+    Route::get("/getPusherKey", "ConfigController@getPusherKey");
+
+    Route::get("/markAllAsRead", "ConfigController@markAllAsRead");
+
 });
 
 Route::group(["middleware" => "check.role:1"], function () {
@@ -181,7 +185,7 @@ Route::get('/search/{text}', "SearchController@search");
 Route::get('/search-events/{text}', 'SearchController@searchEvents');
 
 //Login Facebook
-Route::get('auth/facebook/{userType}', 'Auth\RegisterController@redirectToProvider');
+Route::get('auth/facebook/', 'Auth\RegisterController@redirectToProvider');
 Route::get('auth/facebook/callback', 'Auth\RegisterController@handleProviderCallback');
 
 //Login Linkedin

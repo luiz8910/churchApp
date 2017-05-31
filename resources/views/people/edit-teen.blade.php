@@ -198,7 +198,8 @@ License: You must have a valid license purchased only from themeforest(the above
                                         <input type="hidden" value="{{ $person->id }}" id="personId">
 
                                         <div class="tab-pane active" id="tab_1_1">
-                                            {!! Form::open(['route' => ['person.update', 'person' => $person->id], 'class' => 'repeater', 'method' => 'PUT', 'role' => 'form']) !!}
+                                            {!! Form::open(['route' => ['person.update', 'person' => $person->id], 'class' => 'repeater',
+                                            'method' => 'PUT', 'role' => 'form', 'id' => 'form']) !!}
 
                                             <input type="hidden" name="teen" value="teen">
                                             <div class="row">
@@ -483,7 +484,14 @@ License: You must have a valid license purchased only from themeforest(the above
 
 
                                                 <div class="margiv-top-10">
-                                                    {!! Form::submit('Salvar', ['class' => 'btn green']) !!}
+                                                    {!! Form::submit('Salvar', ['class' => 'btn green', 'id' => 'form']) !!}
+                                                    <div class="progress" style="display: none;">
+                                                        <div class="progress-bar progress-bar-striped active" role="progressbar"
+                                                             aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                                                            Enviando...
+                                                            <span class="sr-only">Enviando...</span>
+                                                        </div>
+                                                    </div>
 
                                                 </div>
                                             {!! Form::close() !!}

@@ -3,25 +3,20 @@
     <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"
        data-close-others="true">
         <i class="icon-bell"></i>
-        <span class="badge badge-default" id="badge-notify">{{ $qtde or '' }}</span>
+        <span class="badge badge-default" id="badge-notify">{{ $qtde = $qtde > 0 ? $qtde : '' }}</span>
         <input type="hidden" id="input-badge-count">
         <input type="hidden" id="created_person_id">
 
         <input type="hidden" id="input-event">
         <input type="hidden" id="created_event_id">
     </a>
-    <ul class="dropdown-menu">
-        <li class="external">
-            <h3 id="qtdeNotify">
-                @if($qtde == 0)
-                    Sem Notificações
-                @elseif($qtde == 1)
-                    1 Nova Notificação
-                @else
-                    {{ $qtde }} Novas Notificações
-                @endif
+    <ul class="dropdown-menu white-menu">
+        <li class="external" >
+            <h3 id="qtdeNotify" >
+                Notificações
+
             </h3>
-            <a href="javascript:;">Marcar todas como lida</a>
+            <a href="javascript:;" onclick="markAllAsRead()" style="font-size: 10px; !important;">Marcar todas como lida</a>
         </li>
         <li>
             <ul class="dropdown-menu-list scroller" style="height: 250px;"
@@ -30,8 +25,8 @@
                 @if($notify)
                     @foreach($notify as $n)
                         <li>
-                            <a href="@if(isset($n["data"]["link"])) {{ $n["data"]["link"] }} @endif">
-                                <span class="time">
+                            <a href="@if(isset($n["data"]["link"])) {{ $n["data"]["link"] }} @endif" class="black-link">
+                                <span class="time white-span">
                                     @if(\Carbon\Carbon::now()->diffInMinutes($n["created_at"]) > 60)
                                         @if(\Carbon\Carbon::now()->diffInHours($n["created_at"]) > 24)
                                             @if(\Carbon\Carbon::now()->diffInWeeks($n["created_at"]) > 7)

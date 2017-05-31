@@ -4365,7 +4365,7 @@ License: You must have a valid license purchased only from themeforest(the above
 <script src="assets/global/plugins/jquery-easypiechart/jquery.easypiechart.min.js" type="text/javascript"></script>
 <script src="assets/global/plugins/jquery.sparkline.min.js" type="text/javascript"></script>
 
-<script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+<!--<script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>-->
 <script src="../js/agenda.js"></script>
 
 <script src="../js/maps.js"></script>

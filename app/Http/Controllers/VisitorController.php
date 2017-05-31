@@ -194,11 +194,12 @@ class VisitorController extends Controller
             $this->updateMaritalStatus($data['partner'], $id, 'visitors');
         }
 
-        //$user = User::where('email', $data["email"])->first() or null;dd($user);
 
-        $user = $this->repository->findByField('email', $data["email"])->first()->id or null;
 
-        if($user && ($user != $id))
+        $user = $this->repository->findByField('email', $data["email"])->first() or null;
+
+
+        if($user && ($user->id != $id))
         {
             \Session::flash("email.exists", "Existe uma conta associada para o email informado (" .$data["email"]. ")");
 

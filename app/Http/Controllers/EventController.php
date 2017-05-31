@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Events\AgendaEvent;
 use App\Models\Event;
 use App\Models\User;
+use App\Repositories\RoleRepository;
 use App\Services\AgendaServices;
 use App\Services\EventServices;
 use App\Notifications\EventNotification;
 use App\Notifications\Notifications;
+use App\Traits\ConfigTrait;
 use App\Traits\CountRepository;
 use App\Traits\DateRepository;
 use App\Repositories\EventRepository;
@@ -26,7 +28,7 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class EventController extends Controller
 {
-    use CountRepository, DateRepository, FormatGoogleMaps, NotifyRepository;
+    use CountRepository, DateRepository, FormatGoogleMaps, NotifyRepository, ConfigTrait;
     /**
      * @var EventRepository
      */
@@ -47,16 +49,30 @@ class EventController extends Controller
      * @var PersonRepository
      */
     private $personRepository;
+    /**
+     * @var RoleRepository
+     */
+    private $roleRepository;
 
+    /**
+     * EventController constructor.
+     * @param EventRepository $repository
+     * @param StateRepository $stateRepository
+     * @param UserRepository $userRepository
+     * @param GroupRepository $groupRepository
+     * @param PersonRepository $personRepository
+     * @param RoleRepository $roleRepository
+     */
     public function __construct(EventRepository $repository, StateRepository $stateRepository,
                                 UserRepository $userRepository, GroupRepository $groupRepository,
-                                PersonRepository $personRepository)
+                                PersonRepository $personRepository, RoleRepository $roleRepository)
     {
         $this->repository = $repository;
         $this->stateRepository = $stateRepository;
         $this->userRepository = $userRepository;
         $this->groupRepository = $groupRepository;
         $this->personRepository = $personRepository;
+        $this->roleRepository = $roleRepository;
     }
 
 
@@ -78,7 +94,7 @@ class EventController extends Controller
         /*
          * Lista de Eventos
          */
-        $events = $this->repository->paginate(5);
+        $events = Event::where('church_id', $this->getUserChurch())->paginate(5);
 
         /*
          * Foreach para Formatação de datas e nome do grupo pertencente se houver
@@ -164,7 +180,7 @@ class EventController extends Controller
         /*
          * Lista de Eventos
          */
-        $events = $this->repository->paginate(5);
+        $events = Event::where('church_id', $this->getUserChurch())->paginate(5);
 
         /*
          * Foreach para Formatação de datas e nome do grupo pertencente se houver
@@ -430,7 +446,7 @@ class EventController extends Controller
 
         $state = $this->stateRepository->all();
 
-        $roles = $this->repository->all();
+        $roles = $this->roleRepository->all();
 
         $notify = $this->notify();
 
@@ -462,7 +478,7 @@ class EventController extends Controller
 
     public function store(Request $request)
     {
-        $data = $request->all();
+        $data = $request->all();//dd($data["frequency"]);
 
         $data['createdBy_id'] = \Auth::getUser()->id;
 
@@ -477,6 +493,8 @@ class EventController extends Controller
         else{
             $data['endEventDate'] = $this->formatDateBD($data['endEventDate']);
         }
+
+        $data["church_id"] = $this->getUserChurch();
 
         $event = $this->repository->create($data);
 
@@ -515,7 +533,7 @@ class EventController extends Controller
 
         $join = DB::table('people')
             ->crossJoin('users', 'users.person_id', '=', 'people.id')
-            ->where('role_id', 1)
+            ->where('role_id', $this->getLeaderRoleId())
             ->select('users.id')
             ->get();
 
@@ -538,6 +556,8 @@ class EventController extends Controller
         $state = $this->stateRepository->all();
 
         $roles = $this->repository->all();
+
+        $church_id = $this->getUserChurch();
 
         $event = $this->repository->find($id);
 
@@ -569,12 +589,12 @@ class EventController extends Controller
         }
 
 
+        $group = $event->group or null;
 
-        //dd($eventPeople);
-
+        $groups = $this->groupRepository->findByField('church_id', $church_id);
 
         return view('events.edit', compact('countPerson', 'countGroups', 'state', 'roles', 'event', 'location',
-            'notify', 'qtde', 'eventDays', 'eventFrequency', 'check', 'eventPeople'));
+            'notify', 'qtde', 'eventDays', 'eventFrequency', 'check', 'eventPeople', 'group', 'groups'));
     }
 
     public function update(Request $request, $id)
@@ -594,6 +614,7 @@ class EventController extends Controller
         else{
             $data['endEventDate'] = $this->formatDateBD($data['endEventDate']);
         }
+
 
         $this->repository->update($data, $id);
 

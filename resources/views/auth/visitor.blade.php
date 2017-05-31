@@ -63,7 +63,7 @@ License: You must have a valid license purchased only from themeforest(the above
             <h4>Entre com</h4>
             <ul class="social-icons">
                 <li>
-                    <a class="social-icon-color facebook" data-original-title="facebook" href="{{ url('auth/facebook/visitor') }}"></a>
+                    <a class="social-icon-color facebook" data-original-title="facebook" href="{{ url('auth/facebook') }}"></a>
                 </li>
                 <!--<li>
                     <a class="social-icon-color twitter" data-original-title="Twitter" href="javascript:;"></a>

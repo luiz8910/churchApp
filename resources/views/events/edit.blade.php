@@ -184,7 +184,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                         <span class="caption-subject font-red sbold uppercase">Eventos</span>
                                     </div>
                                     <div class="actions">
-                                        {!! Form::open(['route' => 'event.destroyMany', 'id' => 'form-destroyMany', 'method' => 'GET']) !!}
+                                        {!! Form::open(['route' => 'event.destroyMany', 'id' => 'form-destroyMany', 'method' => 'GET', 'id' => 'form']) !!}
                                         <div class="btn-group btn-group-devided">
 
                                             <div id="modelToDel">
@@ -300,7 +300,8 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                 </div>
                                 <div class="portlet-body form">
-                                    {!! Form::open(['route' => ['event.update', 'event' => $event->id], 'method' => 'PUT', 'role' => 'form']) !!}
+                                    {!! Form::open(['route' => ['event.update', 'event' => $event->id], 'method' => 'PUT',
+                                    'role' => 'form', 'id' => 'form']) !!}
                                     <div class="form-body">
                                         <div class="row">
                                             <div class="col-md-6">
@@ -665,8 +666,31 @@ License: You must have a valid license purchased only from themeforest(the above
                                             </div>
                                         </div>
 
+                                        @if($group)
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="">Pertencente ao grupo</label>
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon">
+                                                                <i class="fa fa-users font-blue"></i>
+                                                            </span>
+
+                                                            <select name="group_id" id="" class="form-control">
+                                                                <option value="">Nenhum</option>
+                                                                @foreach($groups as $item)
+                                                                    <option value="{{ $item->id }}" @if($item == $group) selected @endif >
+                                                                        {{ $item->name }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endif
                                         <div class="row">
-                                            <div class="col-md-6">
+                                            <div class="col-md-12">
                                                 {!! Form::FormGroup('description', $errors) !!}
                                                 <label class="control-label">Descrição</label>
                                                 <textarea class="form-control" name="description"
@@ -754,7 +778,14 @@ License: You must have a valid license purchased only from themeforest(the above
                                         </div>
                                     </div>
                                     <div class="form-actions">
-                                        {!! Form::submit('Enviar', ['class' => 'btn blue']) !!}
+                                        {!! Form::submit('Enviar', ['class' => 'btn blue', 'id' => 'btn-submit']) !!}
+                                        <div class="progress" style="display: none;">
+                                            <div class="progress-bar progress-bar-striped active" role="progressbar"
+                                                 aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                                                Enviando...
+                                                <span class="sr-only">Enviando...</span>
+                                            </div>
+                                        </div>
                                     </div>
                                     {!! Form::close() !!}
                                 </div>

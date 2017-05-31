@@ -7,6 +7,7 @@ use App\Mail\resetPassword;
 use App\Models\Event;
 use App\Models\Group;
 use App\Models\User;
+use App\Traits\ConfigTrait;
 use App\Traits\CountRepository;
 use App\Traits\DateRepository;
 use App\Traits\FormatGoogleMaps;
@@ -29,7 +30,7 @@ use Maatwebsite\Excel\Facades\Excel;
 class GroupController extends Controller
 {
     use DateRepository, CountRepository, FormatGoogleMaps, UserLoginRepository,
-        NotifyRepository, PeopleTrait;
+        NotifyRepository, PeopleTrait, ConfigTrait;
     /**
      * @var GroupRepository
      */
@@ -81,8 +82,10 @@ class GroupController extends Controller
      */
     public function index()
     {
+        $church_id = $this->getUserChurch();
         //$groups = Group::withTrashed()->get();
-        $groups = $this->repository->paginate(10);
+
+        $groups = Group::where('church_id', $church_id)->paginate(10);
 
         foreach ($groups as $group)
         {
@@ -114,7 +117,7 @@ class GroupController extends Controller
 
         $state = $this->stateRepository->all();
 
-        $roles = $this->repository->all();
+        $roles = $this->roleRepository->all();
 
         $notify = $this->notify();
 
@@ -138,6 +141,8 @@ class GroupController extends Controller
         $data['sinceOf'] = $this->formatDateBD($data['sinceOf']);
 
         $data['owner_id'] = \Auth::getUser()->id;
+
+        $data['church_id'] = $this->getUserChurch();
 
         $id = $this->repository->create($data)->id;
 
@@ -300,6 +305,8 @@ class GroupController extends Controller
         $data = $request->except(['img']);
 
         $data['sinceOf'] = $this->formatDateBD($data['sinceOf']);
+
+        $data['church_id'] = $this->getUserChurch();
 
         $this->repository->update($data, $id);
 

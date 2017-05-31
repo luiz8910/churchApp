@@ -187,7 +187,8 @@ License: You must have a valid license purchased only from themeforest(the above
                                         <input type="hidden" value="{{ $visitor->id }}" id="personId">
 
                                         <div class="tab-pane active" id="tab_1_1">
-                                            {!! Form::open(['route' => ['visitors.update', 'visitor' => $visitor->id], 'class' => 'horizontal-form', 'method' => 'POST']) !!}
+                                            {!! Form::open(['route' => ['visitors.update', 'visitor' => $visitor->id],
+                                            'class' => 'horizontal-form', 'method' => 'POST', 'id' => 'form']) !!}
 
                                             <div class="row">
                                                 <div class="col-md-6">
@@ -441,7 +442,14 @@ License: You must have a valid license purchased only from themeforest(the above
 
 
                                                 <div class="margiv-top-10">
-                                                    {!! Form::submit('Salvar', ['class' => 'btn green']) !!}
+                                                    {!! Form::submit('Salvar', ['class' => 'btn green', 'id' => 'btn-submit']) !!}
+                                                    <div class="progress" style="display: none;">
+                                                        <div class="progress-bar progress-bar-striped active" role="progressbar"
+                                                             aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                                                            Enviando...
+                                                            <span class="sr-only">Enviando...</span>
+                                                        </div>
+                                                    </div>
 
                                                 </div>
                                             {!! Form::close() !!}

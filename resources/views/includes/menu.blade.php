@@ -18,7 +18,6 @@
                         <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"
                            data-close-others="true">
                             <i class="fa fa-calendar font-white"></i>
-                            Teste
                         </a>
                     </li>
                 </ul>

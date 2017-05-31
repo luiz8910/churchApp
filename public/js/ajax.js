@@ -701,3 +701,51 @@
             console.log(e);
         })
     }
+
+
+    function getPusherKey()
+    {
+        var request = $.ajax({
+            url: "/getPusherKey",
+            method: "GET",
+            dataType: "json"
+        });
+
+        request.done(function (e) {
+
+            return e;
+        });
+
+        request.fail(function (e) {
+            console.log("fail");
+            console.log(e);
+        });
+    }
+
+    /*
+    * Marcar todas as notificações do usuário logado como lidas
+    * */
+    function markAllAsRead()
+    {
+        var request = $.ajax({
+            url: "/markAllAsRead",
+            method: "GET",
+            dataType: "json"
+        });
+
+        request.done(function(e){
+            console.log("done");
+            console.log(e);
+
+            if(e.status)
+            {
+                $(".dropdown-menu-list > li").addClass("read-message");
+                $("#badge-notify").text('');
+            }
+        });
+
+        request.fail(function (e) {
+            console.log("fail");
+            console.log(e);
+        });
+    }

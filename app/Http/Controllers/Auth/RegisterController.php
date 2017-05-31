@@ -34,15 +34,20 @@ class RegisterController extends Controller
      * @var string
      */
     protected $redirectTo = '/home';
+    /**
+     * @var VisitorRepository
+     */
+    private $visitorRepository;
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(VisitorRepository $visitorRepository)
     {
         $this->middleware('guest');
+        $this->visitorRepository = $visitorRepository;
     }
 
     /**
@@ -81,9 +86,10 @@ class RegisterController extends Controller
      *
      * @return Response
      */
-    public function redirectToProvider($userType)
+    public function redirectToProvider()
     {
-        return Socialite::driver('facebook')->with(['userType' => $userType])->redirect();
+        return Socialite::driver('facebook')->redirect();
+        //return Socialite::driver('facebook')->with(['userType' => $userType])->redirect();
     }
 
     /**
@@ -91,13 +97,15 @@ class RegisterController extends Controller
      *
      * @return Response
      */
-    public function handleProviderCallback($userType, VisitorRepository $visitorRepository)
+    public function handleProviderCallback()
     {
-        $social = Socialite::driver('facebook')->user();
+        $social = Socialite::driver('facebook')->user();//print_r($social);
+
+        $userType = "visitor";
 
         if($userType == "visitor")
         {
-            $visitor = $visitorRepository->findByField('email', $social->getEmail());
+            $visitor = $this->visitorRepository->findByField('email', $social->getEmail())->first();
 
             if(count($visitor) > 0){
 
@@ -105,11 +113,11 @@ class RegisterController extends Controller
                 $data['name'] = $social->getName();
                 $data['imgProfile'] = $social->getAvatar();
 
-                $id = $visitor->users()->first();
+                $id = $visitor->users()->first()->id;
 
-                $visitorRepository->update($data, $id->id);
+                $this->visitorRepository->update($data, $visitor->id);
 
-                auth()->loginUsingId($id->id);
+                auth()->loginUsingId($id);
 
                 return redirect()->route('index');
             }

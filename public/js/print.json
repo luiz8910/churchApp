@@ -3,11 +3,11 @@
                 {
                   "table": {
                     "headerRows": 1,
-                    "widths": [ "*", "auto", 100, "*" ],
+                    "widths": [ "*", "auto", 100 ],
             
                     "body":[
-                      ["Nome", "CPF", "Cargo", "Data de Nasc."],
-                      ["Luiz Sanches","38418189860","Lider","26/05/1989"],["Jumar  Silva","34823893654","Membro","19/07/1980"],["Meany Ranheta","71767156707","Membro","18/05/1982"]
+                      ["Nome", "Início", "Quantidade"],
+                      ["Grupo de Jovens","09/05/2017","5"],["Grupo de Oração","30/05/2017","0"]
                     ]
                   }
                 }

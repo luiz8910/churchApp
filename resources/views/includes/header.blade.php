@@ -221,7 +221,9 @@
                     <li class="dropdown dropdown-user dropdown-dark">
                         <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"
                            data-close-others="true">
-                            <?php $img = "../" . Auth::getUser()->person->imgProfile; ?>
+                            <?php $img = isset(Auth::getUser()->person) ?
+                                    "../" . Auth::getUser()->person->imgProfile :
+                                    "../" . Auth::getUser()->visitors->first()->imgProfile; ?>
 
                             <img alt="" class="img-circle" src="
                             @if(Auth::getUser()->person )
