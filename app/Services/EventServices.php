@@ -193,6 +193,180 @@ class EventServices
             ->distinct()
             ->get();
     }
+
+    /*
+     * @param int $id
+     * $id = id do evento
+     * Usado para verificar se a pessoa ja deu check-in
+     * no evento selecionado
+     * @return bool
+     */
+    public static function isSubscribed($id)
+    {
+        $person = \Auth::getUser()->person_id;
+        $today = date("Y-m-d");
+
+        $sub = DB::table('event_person')
+            ->where(
+                [
+                    'person_id' => $person,
+                    'check-in' => 1,
+                    'event_id' => $id,
+                    'eventDate' => $today,
+                    'deleted_at' => null
+                ])
+            ->first();
+
+
+        return count($sub) > 0 ? true : false;
+    }
+
+    /*
+     * @param int $id
+     * $id = id do evento
+     * Usado para realizar check-in do evento selecionado
+     * */
+    public static function check($id)
+    {
+        $user = \Auth::getUser();
+
+        $date = date_create(date('Y-m-d'));
+
+        $event_person = DB::table('event_person')
+            ->where([
+                'event_id' => $id,
+                'person_id' => $user->person_id,
+                'eventDate' => date_format($date, "Y-m-d"),
+                'check-in' => 0
+            ])->get();
+
+        if(count($event_person) > 0)
+        {
+            DB::table('event_person')
+                ->where([
+                    'event_id' => $id,
+                    'person_id' => $user->person_id,
+                    'eventDate' => date_format($date, "Y-m-d"),
+                    'check-in' => 0
+                ])->update([
+                    'check-in' => 1,
+                    'show' => 1
+                ]);
+        }
+        else{
+            $days = EventServices::eventDays($id);
+
+            $today = date("Y-m-d");
+
+            for($i = 0; $i < count($days); $i++)
+            {
+                $check = $days[$i]->eventDate == $today ? 1 : 0;
+
+                DB::table('event_person')
+                    ->insert([
+                        'event_id' => $id,
+                        'person_id' => $user->person_id,
+                        'eventDate' => $days[$i]->eventDate,
+                        'check-in' => $check,
+                        'show' => 1
+                    ]);
+            }
+
+
+        }
+
+        echo json_encode(['status' => true]);
+    }
+
+    /*
+     * @param int $id
+     * $id = id do evento
+     * Usado para realizar check-out do evento selecionado
+     * */
+    public static function checkOut($id)
+    {
+        $person = \Auth::getUser()->person_id;
+        $today = date("Y-m-d");
+
+        DB::table('event_person')
+            ->where(
+                [
+                    'person_id' => $person,
+                    'check-in' => 1,
+                    'event_id' => $id,
+                    'eventDate' => $today,
+                    'deleted_at' => null
+                ]
+            )
+            ->update(
+                ['check-in' => 0]
+            );
+
+        return json_encode(['status' => true]);
+    }
+
+    /*
+     * @param int $id
+     * $id = id do evento
+     * Usado para verificar se a hora e o dia atual
+     * correspondem com a data do evento selecionado
+     *
+     * */
+    public static function canCheckIn($id)
+    {
+        $today = date("Y-m-d");
+        $time = date("H:i");
+
+        $time = date_create($time);
+
+        $event = DB::table('event_person')
+            ->where(
+                [
+                    'eventDate' => $today,
+                    'event_id' => $id,
+                    'deleted_at' => null
+                ])
+            ->first();
+
+        if (count($event) > 0)
+        {
+            $eventTime = Event::select('startTime', 'endTime')->where('id', $id)->first();
+
+            $endTime = $eventTime->endTime == "" ? "" : date_create($eventTime->endTime);
+
+            $startTime = date_create($eventTime->startTime);
+
+            $diff = date_diff($time, $startTime);
+
+
+
+            if($endTime == "")
+            {
+
+                if ($diff->format('%h:%i') > 0)
+                {
+                    return true;
+                }
+                else{
+                    return false;
+                }
+            }
+            else{
+                $diffEnd = date_diff($time, $endTime);
+
+                if($diff->format('%h:%i') > 0 && $diffEnd->format('%h:%i') <= 0){
+                    return true;
+                }
+                else{
+                    return false;
+                }
+            }
+        }
+
+
+        return false;
+
+    }
 }
 
 

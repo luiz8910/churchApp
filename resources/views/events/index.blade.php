@@ -312,7 +312,13 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             {{ $events->links() }}
                                                         </div>
 
-
+                                                        <div class="progress" style="display: none;">
+                                                            <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" aria-valuenow="100"
+                                                                 aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                                                                Excluindo...
+                                                                <span class="sr-only">Excluindo...</span>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
 

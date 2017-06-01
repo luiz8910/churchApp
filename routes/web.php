@@ -14,6 +14,8 @@
 Route::group(['middleware' => 'auth'], function (){
     Route::get('/', 'DashboardController@index')->name('index');
 
+    Route::get('/home', 'DashboardController@index');
+
     Route::resource('users', 'UsersController');
 
     Route::resource('person', 'PersonController');
@@ -80,6 +82,8 @@ Route::group(['middleware' => 'auth'], function (){
 
     Route::post('/events/checkInEvent/{id}', 'EventController@checkInEvent')->name('event.checkInEvent');
 
+    Route::post('/events/checkOutEvent/{id}', 'EventController@checkOutEvent')->name('event.checkOutEvent');
+
     Route::delete('events/delete/{id}', 'EventController@destroy')->name('event.destroy');
 
     Route::get('events/deleteMany/', 'EventController@destroyMany')->name('event.destroyMany');
@@ -139,8 +143,6 @@ Route::group(["middleware" => "check.role:1"], function () {
 
 
 Auth::routes();
-
-Route::get('/home', 'HomeController@index');
 
 Route::get('/events-ajax', 'EventController@getListEvents');
 

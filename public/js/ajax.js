@@ -38,27 +38,37 @@
 
 
 
-
+    /*
+     * var id = id do evento
+     * Usado para realizar check-in no evento
+     * @param id
+     */
     function checkInEvent(id)
     {
         var request = $.ajax({
             url: '/events/checkInEvent/' + id,
             method: 'POST',
-            data: id,
             dataType: 'json'
         });
 
         request.done(function(e){
             if(e.status)
             {
-                window.location.href = '/events/'+id+'/edit';
-                $("#alert-success").css('display', 'block');
+                //window.location.href = '/events/'+id+'/edit';
+                /*$("#alert-success").css('display', 'block');
 
                 $("#i-checkIn").remove();
 
                 $("#checkIn")
                     .text('')
-                    .append('<i class="fa fa-check" id="i-checkIn"></i> Check-out');
+                    .append('<i class="fa fa-close" id="i-checkIn"></i> Check-out')
+                    .removeClass('btn-success')
+                    .addClass('btn-danger');*/
+
+                location.reload();
+
+
+
                 //$("#btn-unsub-"+id).css('display', 'block');
                 //$("#btn-sub-"+id).css('display', 'none');
             }
@@ -73,6 +83,8 @@
                 //$("#btn-unsub-"+id).css('display', 'none');
                 //$("#btn-sub-"+id).css('display', 'block');
             }
+
+
         });
 
         request.fail(function (e) {
@@ -84,6 +96,31 @@
 
     }
 
+    /*
+    * @param id
+    * Usado para realizar check-out no evento
+    * id = id do evento
+    * */
+    function checkOut(id)
+    {
+        var request = $.ajax({
+            url: '/events/checkOutEvent/' + id,
+            method: 'POST',
+            dataType: 'json'
+        });
+
+        request.done(function(e) {
+            if (e.status)
+            {
+                location.reload();
+            }
+        });
+
+        request.fail(function (e) {
+            console.log("fail");
+            console.log(e);
+        })
+    }
 
 
     $("#recoverEmail").change(function () {

@@ -478,7 +478,7 @@ class EventController extends Controller
 
     public function store(Request $request)
     {
-        $data = $request->all();//dd($data["frequency"]);
+        $data = $request->all();
 
         $data['createdBy_id'] = \Auth::getUser()->id;
 
@@ -588,13 +588,22 @@ class EventController extends Controller
             $item->frequency = EventServices::userFrequency($id, $item->person_id);
         }
 
-
         $group = $event->group or null;
 
         $groups = $this->groupRepository->findByField('church_id', $church_id);
 
+        $sub = false;
+
+        $canCheckIn = EventServices::canCheckIn($id);
+
+        if($canCheckIn)
+        {
+            $sub = EventServices::isSubscribed($id);
+        }
+
         return view('events.edit', compact('countPerson', 'countGroups', 'state', 'roles', 'event', 'location',
-            'notify', 'qtde', 'eventDays', 'eventFrequency', 'check', 'eventPeople', 'group', 'groups'));
+            'notify', 'qtde', 'eventDays', 'eventFrequency', 'check', 'eventPeople',
+            'group', 'groups', 'sub', 'canCheckIn'));
     }
 
     public function update(Request $request, $id)
@@ -611,10 +620,15 @@ class EventController extends Controller
         {
             $data['endEventDate'] = $data['eventDate'];
         }
-        else{
+        else
+        {
             $data['endEventDate'] = $this->formatDateBD($data['endEventDate']);
         }
 
+        if($data["group_id"] == "")
+        {
+            $data["group_id"] = null;
+        }
 
         $this->repository->update($data, $id);
 
@@ -624,7 +638,7 @@ class EventController extends Controller
 
     public function check($id)
     {
-        $event = $this->repository->find($id);
+        $event = Event::where('id', $id)->first();
 
         $user = \Auth::getUser();
 
@@ -657,61 +671,23 @@ class EventController extends Controller
             echo json_encode(['status' => true]);
         }
 
-        //date_add($date, date_interval_create_from_date_string("2 days"));
     }
 
 
 
     public function checkInEvent($id)
     {
-        $user = \Auth::getUser();
+        return EventServices::check($id);
+    }
 
-        $date = date_create(date('Y-m-d'));
-
-        $event_person = DB::table('event_person')
-            ->where([
-                'event_id' => $id,
-                'person_id' => $user->person_id,
-                'eventDate' => date_format($date, "Y-m-d"),
-                'check-in' => 0
-            ])->get();
-
-        if(count($event_person) > 0)
-        {
-            DB::table('event_person')
-                ->where([
-                    'event_id' => $id,
-                    'person_id' => $user->person_id,
-                    'eventDate' => date_format($date, "Y-m-d"),
-                    'check-in' => 0
-                ])->update([
-                    'check-in' => 1,
-                    'show' => 1
-                    ]);
-        }
-        else{
-            $days = EventServices::eventDays($id);
-
-            $today = date("Y-m-d");
-
-            for($i = 0; $i < count($days); $i++)
-            {
-                $check = $days[$i]->eventDate == $today ? 1 : 0;
-
-                DB::table('event_person')
-                    ->insert([
-                        'event_id' => $id,
-                        'person_id' => $user->person_id,
-                        'eventDate' => $days[$i]->eventDate,
-                        'check-in' => $check,
-                        'show' => 1
-                ]);
-            }
-
-
-        }
-
-        echo json_encode(['status' => true]);
+    /*
+     * @param int $id
+     * $id = id do evento
+     * Usado para realizar check-out do evento selecionado
+     * */
+    public function checkOutEvent($id)
+    {
+        return EventServices::checkOut($id);
     }
 
 

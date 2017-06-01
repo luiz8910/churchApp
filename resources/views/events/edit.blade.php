@@ -199,11 +199,19 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 Excluir
                                             </a>
 
-
-                                            <a href="javascript:;" class="btn btn-success btn-circle" id="checkIn" onclick='checkInEvent({{ $event->id }})'>
-                                                <i class="fa fa-check" id="i-checkIn"></i>
-                                                Check-In
-                                            </a>
+                                            @if($canCheckIn)
+                                                @if($sub)
+                                                    <a href="javascript:;" class="btn btn-danger btn-circle" id="checkIn" onclick='checkOut({{ $event->id }})'>
+                                                        <i class="fa fa-close" id="i-checkIn"></i>
+                                                        Check-Out
+                                                    </a>
+                                                @else
+                                                    <a href="javascript:;" class="btn btn-success btn-circle" id="checkIn" onclick='checkInEvent({{ $event->id }})'>
+                                                        <i class="fa fa-check" id="i-checkIn"></i>
+                                                        Check-In
+                                                    </a>
+                                                @endif
+                                            @endif
 
                                             <a href="{{ route('event.create') }}" class="btn btn-primary btn-circle">
                                                 <i class="fa fa-plus"></i>
@@ -227,7 +235,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 </th>
                                                 <th> Nome </th>
                                                 @foreach($eventDays as $day)
-                                                    <th>{{ $day->eventDate }}</th>
+                                                    <th>{{ substr($day->eventDate, 0, 5) }}</th>
                                                 @endforeach
                                                 <th>Frequência</th>
                                             </tr>
@@ -584,7 +592,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                                                 @else
 
-                                                                <option value="">Em Branco</option>
+                                                                <option value="">Selecione</option>
                                                                 <option value="00:00"
                                                                         @if($event->endTime == "00:00") selected @endif
                                                                 >00:00</option>
@@ -666,29 +674,36 @@ License: You must have a valid license purchased only from themeforest(the above
                                             </div>
                                         </div>
 
-                                        @if($group)
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label for="">Pertencente ao grupo</label>
-                                                        <div class="input-group">
-                                                            <span class="input-group-addon">
-                                                                <i class="fa fa-users font-blue"></i>
-                                                            </span>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="">Pertencente ao grupo</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-users font-blue"></i>
+                                                        </span>
 
-                                                            <select name="group_id" id="" class="form-control">
-                                                                <option value="">Nenhum</option>
+                                                        <select name="group_id" id="" class="form-control">
+                                                            <option value="">Nenhum</option>
+                                                            @if(isset($group))
                                                                 @foreach($groups as $item)
                                                                     <option value="{{ $item->id }}" @if($item == $group) selected @endif >
                                                                         {{ $item->name }}
                                                                     </option>
                                                                 @endforeach
-                                                            </select>
-                                                        </div>
+                                                            @else
+                                                                @foreach($groups as $item)
+                                                                    <option value="{{ $item->id }}">
+                                                                        {{ $item->name }}
+                                                                    </option>
+                                                                @endforeach
+                                                            @endif
+                                                        </select>
                                                     </div>
                                                 </div>
                                             </div>
-                                        @endif
+                                        </div>
+
                                         <div class="row">
                                             <div class="col-md-12">
                                                 {!! Form::FormGroup('description', $errors) !!}
