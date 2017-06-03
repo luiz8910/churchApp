@@ -29,6 +29,9 @@
 <script src="../assets/pages/scripts/pdfmake.min.js" type="text/javascript"></script>
 <script src="../assets/pages/scripts/vfs_fonts.js" type="text/javascript"></script>
 
+<script src="../assets/global/plugins/jquery-notific8/jquery.notific8.min.js" type="text/javascript"></script>
+<script src="../assets/pages/scripts/ui-notific8.js" type="text/javascript"></script>
+
 
 <!--<script src="../assets/pages/scripts/ui-toastr.js" type="text/javascript"></script>-->
 <script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>

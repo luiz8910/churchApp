@@ -24,6 +24,8 @@ var UIConfirmations = function () {
         var route = location.pathname;
 
         $(".pop").on('confirmed.bs.confirmation', function () {
+            $("#progress-danger").css("display", "block");
+
             var str = this.id;
 
             var id = str.replace("btn-delete-", "");

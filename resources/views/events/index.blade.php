@@ -26,7 +26,7 @@ License: You must have a valid license purchased only from themeforest(the above
     <link href="../assets/global/plugins/fancybox/source/jquery.fancybox.css" rel="stylesheet" type="text/css" />-->
     <link href="../assets/pages/css/search.min.css" rel="stylesheet" type="text/css" />
     <link href="../css/navbar.css" rel="stylesheet" type="text/css" />
-    <script src="../js/ajax.js"></script>
+    <!--<script src="../js/ajax.js"></script>-->
 
 
 </head>
@@ -251,7 +251,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                                             <tbody>
                                                             @foreach($events as $event)
-                                                                <tr class="printable-table-tr">
+                                                                <tr class="printable-table-tr" id="tr-{{ $event->id }}">
                                                                     <td>
                                                                         @if(Auth::getUser()->person->role_id == 1)
                                                                             <fieldset>
@@ -289,7 +289,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                         <?php $deleteForm = "delete-" . $event->id; ?>
                                                                         <td>
 
-                                                                            <a href="" class="btn btn-danger btn-sm btn-circle pop"
+                                                                            <a href="javascript:;" class="btn btn-danger btn-sm btn-circle pop"
                                                                                title="Excluir evento"
                                                                                data-toggle="confirmation" data-placement="top" data-original-title="Deseja Excluir?"
                                                                                data-popout="true" onclick="event.preventDefault()"
@@ -312,13 +312,20 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             {{ $events->links() }}
                                                         </div>
 
-                                                        <div class="progress" style="display: none;">
+                                                        <div class="progress" id="progress-danger" style="display: none;">
                                                             <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" aria-valuenow="100"
                                                                  aria-valuemin="0" aria-valuemax="100" style="width: 100%">
                                                                 Excluindo...
                                                                 <span class="sr-only">Excluindo...</span>
                                                             </div>
                                                         </div>
+
+                                                        <input type="hidden" id="notific8-title">
+                                                        <input type="hidden" id="notific8-text">
+                                                        <input type="hidden" id="notific8-type" value="danger">
+
+                                                        <a href="javascript:;" class="btn btn-danger" id="notific8" style="display: none;"></a>
+
                                                     </div>
                                                 </div>
 
@@ -380,7 +387,9 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                                         {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
                                                                                     </label>
 
-                                                                                    <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
+                                                                                    <h5 class="{{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}">
+                                                                                        {{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h
+                                                                                    </h5>
                                                                                 @endif
                                                                                 <?php $x++; ?>
                                                                             @endwhile
@@ -404,7 +413,9 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                                         {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
                                                                                     </label>
 
-                                                                                    <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
+                                                                                    <h5 class="{{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}">
+                                                                                        {{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h
+                                                                                    </h5>
                                                                                 @endif
                                                                                 <?php $x++; ?>
                                                                             @endwhile
@@ -427,31 +438,10 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                                         {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
                                                                                     </label>
 
-                                                                                    <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                                                @endif
-                                                                                <?php $x++; ?>
-                                                                            @endwhile
-                                                                        </td>
-                                                                    @endif
+                                                                                    <h5 class="{{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}">
+                                                                                        {{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h
+                                                                                    </h5>
 
-
-                                                                        <?php $i++; ?>
-                                                                        <?php $x = 0; ?>
-
-
-                                                                    @if($i < count($days))
-                                                                        <td @if($today == $days[$i]) class="today-back" @endif>
-                                                                            <h6>
-                                                                                {{ substr($days[$i], 8) }}
-                                                                            </h6>
-
-                                                                            @while($x < count($allEvents))
-                                                                                @if($allEvents[$x]->eventDate == $days[$i])
-                                                                                    <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                        {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                                    </label>
-
-                                                                                    <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
                                                                                 @endif
                                                                                 <?php $x++; ?>
                                                                             @endwhile
@@ -475,7 +465,9 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                                         {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
                                                                                     </label>
 
-                                                                                    <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
+                                                                                    <h5 class="{{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}">
+                                                                                        {{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h
+                                                                                    </h5>
                                                                                 @endif
                                                                                 <?php $x++; ?>
                                                                             @endwhile
@@ -499,7 +491,35 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                                         {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
                                                                                     </label>
 
-                                                                                    <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
+                                                                                    <h5 class="{{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}">
+                                                                                        {{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}hh
+                                                                                    </h5>
+                                                                                @endif
+                                                                                <?php $x++; ?>
+                                                                            @endwhile
+                                                                        </td>
+                                                                    @endif
+
+
+                                                                        <?php $i++; ?>
+                                                                        <?php $x = 0; ?>
+
+
+                                                                    @if($i < count($days))
+                                                                        <td @if($today == $days[$i]) class="today-back" @endif>
+                                                                            <h6>
+                                                                                {{ substr($days[$i], 8) }}
+                                                                            </h6>
+
+                                                                            @while($x < count($allEvents))
+                                                                                @if($allEvents[$x]->eventDate == $days[$i])
+                                                                                    <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
+                                                                                        {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
+                                                                                    </label>
+
+                                                                                    <h5 class="{{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}">
+                                                                                        {{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h
+                                                                                    </h5>
                                                                                 @endif
                                                                                 <?php $x++; ?>
                                                                             @endwhile
@@ -523,7 +543,10 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                                         {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
                                                                                     </label>
 
-                                                                                    <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
+                                                                                    <h5 class="{{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}">
+                                                                                        {{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h
+                                                                                    </h5>
+
                                                                                 @endif
                                                                                 <?php $x++; ?>
                                                                             @endwhile
@@ -598,7 +621,10 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                                     {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
                                                                                 </label>
 
-                                                                                <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
+
+                                                                                <h5 class="{{ str_replace(" ", "-", \App\Models\Event::find($allEvents[$x]->event_id)->name) }}">
+                                                                                    {{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h
+                                                                                </h5>
                                                                             @endif
                                                                             <?php $x++; ?>
                                                                         @endwhile
@@ -618,7 +644,9 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                                     {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
                                                                                 </label>
 
-                                                                                <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
+                                                                                <h5 class="{{ str_replace(" ", "-", \App\Models\Event::find($allEvents[$x]->event_id)->name) }}">
+                                                                                    {{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h
+                                                                                </h5>
                                                                             @endif
                                                                             <?php $x++; ?>
                                                                         @endwhile
@@ -638,7 +666,9 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                                     {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
                                                                                 </label>
 
-                                                                                <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
+                                                                                <h5 class="{{ str_replace(" ", "-", \App\Models\Event::find($allEvents[$x]->event_id)->name) }}">
+                                                                                    {{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h
+                                                                                </h5>
                                                                             @endif
                                                                             <?php $x++; ?>
                                                                         @endwhile
@@ -658,7 +688,9 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                                     {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
                                                                                 </label>
 
-                                                                                <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
+                                                                                <h5 class="{{ str_replace(" ", "-", \App\Models\Event::find($allEvents[$x]->event_id)->name) }}">
+                                                                                    {{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h
+                                                                                </h5>
                                                                             @endif
                                                                             <?php $x++; ?>
                                                                         @endwhile
@@ -678,7 +710,9 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                                     {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
                                                                                 </label>
 
-                                                                                <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
+                                                                                <h5 class="{{ str_replace(" ", "-", \App\Models\Event::find($allEvents[$x]->event_id)->name) }}">
+                                                                                    {{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h
+                                                                                </h5>
                                                                             @endif
                                                                             <?php $x++; ?>
                                                                         @endwhile
@@ -698,7 +732,9 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                                     {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
                                                                                 </label>
 
-                                                                                <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
+                                                                                <h5 class="{{ str_replace(" ", "-", \App\Models\Event::find($allEvents[$x]->event_id)->name) }}">
+                                                                                    {{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h
+                                                                                </h5>
                                                                             @endif
                                                                             <?php $x++; ?>
                                                                         @endwhile
@@ -718,7 +754,9 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                                     {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
                                                                                 </label>
 
-                                                                                <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
+                                                                                <h5 class="{{ str_replace(" ", "-", \App\Models\Event::find($allEvents[$x]->event_id)->name) }}">
+                                                                                    {{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h
+                                                                                </h5>
                                                                             @endif
                                                                             <?php $x++; ?>
                                                                         @endwhile
@@ -1516,6 +1554,7 @@ License: You must have a valid license purchased only from themeforest(the above
     {
         window.location.href = "/events/"+id+"/edit";
     }
+
 
 </script>
 

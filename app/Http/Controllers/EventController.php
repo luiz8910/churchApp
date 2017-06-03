@@ -20,6 +20,7 @@ use App\Traits\NotifyRepository;
 use App\Repositories\PersonRepository;
 use App\Repositories\StateRepository;
 use App\Repositories\UserRepository;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -698,13 +699,16 @@ class EventController extends Controller
 
         $name = $event->name;
 
-        $event->people()->detach();
+        DB::table('event_person')
+            ->where(['event_id' => $id])
+            ->update(['deleted_at' => Carbon::now()]);
 
-        $this->repository->delete($id);
+        $event->delete();
 
-        \Session::flash('event.deleted', 'O evento '.$name.' foi excluido');
-
-        return json_encode(true);
+        return json_encode([
+                'status' => true,
+                'name' => $name
+            ]);
     }
 
     public function destroyMany(Request $request)

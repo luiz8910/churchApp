@@ -186,7 +186,10 @@ class EventServices
         //Filtrar eventos por igreja
         return DB::table('event_person')
             ->join('events', 'events.id', '=', 'event_person.event_id')
-            ->where('events.church_id', $church_id)
+            ->where([
+                'events.church_id' => $church_id,
+                'event_person.deleted_at' => null
+                ])
             ->select('event_person.event_id', 'event_person.eventDate')
             ->orderBy('event_person.eventDate', 'asc')
             ->orderBy('events.startTime', 'asc')

@@ -424,9 +424,10 @@ $(function () {
     $("td img").addClass("img-circle");
 
     $("#form").submit(function () {
-        console.log("aqui");
         $("#btn-submit").css("display", "none");
         $(".progress").css("display", "block");
     });
+
+
 
 });

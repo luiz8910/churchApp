@@ -1,4 +1,6 @@
 
+
+
     $(".btnSend").click(function (e) {
 
         if(!$(".btnSend").attr('disabled'))
@@ -511,9 +513,23 @@
 
         request.done(function (e) {
 
-            if(e)
+            if(e.status)
             {
-                location.reload();
+                $("#notific8-title").val("Atenção");
+                $("#notific8-text").val("O evento " + e.name + " foi excluído");
+
+                setTimeout(function() {
+                    $("#progress-danger").css("display", "none");
+
+                    searchForEvent(e.name);
+
+                    $("#tr-"+id).remove();
+
+                    $("#notific8").trigger("click");
+
+                }, 1000);
+
+
             }
 
         });
@@ -522,7 +538,61 @@
         request.fail(function (e) {
             console.log("fail");
             console.log(e);
-        })
+
+            //e.stopImmediatePropagation();
+        });
+
+
+
+
+        return false;
+    }
+
+    //Excluir o Evento Selecionado
+    function searchForEvent(text)
+    {
+        var label = $("label").get();
+        var str = text.replace(/ /gi, "-");
+
+        console.log('text: ' + str);
+        for (var i = 0; i < label.length; i++)
+        {
+
+            if(label[i].innerText == text)
+            {
+                console.log(label[i].innerHTML);
+
+                $("."+str).remove();
+
+                label[i].remove();
+            }
+        }
+    }
+
+    function notifc8()
+    {
+        var title = "Titulo";
+        var text = "Teste";
+
+            var settings = {
+                    color: 'ruby', //amethyst
+                    sticky: false,
+                    heading: title,
+                    horizontalEdge: 'top',
+                    verticalEdge: 'right',
+                    life: 3000
+                };
+                //$button = $(this);
+
+            $.notific8('zindex', 11500);
+            $.notific8(text, settings);
+
+            //$button.attr('disabled', 'disabled');
+
+            /*setTimeout(function() {
+                $button.removeAttr('disabled');
+            }, 1000);*/
+
     }
 
 
@@ -786,3 +856,5 @@
             console.log(e);
         });
     }
+
+
