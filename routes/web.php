@@ -11,7 +11,7 @@
 |
 */
 
-Route::group(['middleware' => 'auth'], function (){
+Route::group(['middleware' => 'auth'], function () {
     Route::get('/', 'DashboardController@index')->name('index');
 
     Route::get('/home', 'DashboardController@index');
@@ -64,6 +64,8 @@ Route::group(['middleware' => 'auth'], function (){
 
     Route::get('deleteMemberGroup/{group}/{member}', 'GroupController@deleteMember');
 
+    Route::get('group/{group}/edit', 'GroupController@edit')->name('group.edit');
+
     //Eventos
 
     Route::get('events/create', 'EventController@create')->name('event.create');
@@ -106,13 +108,13 @@ Route::group(['middleware' => 'auth'], function (){
 
     Route::get("/markAllAsRead", "ConfigController@markAllAsRead");
 
-});
+    Route::get("/showGroupEvents/{group}", 'GroupController@showGroupEvents');
 
-Route::group(["middleware" => "check.role:1"], function () {
+    Route::get('/addRemoveLoggedMember/{id}', 'GroupController@addRemoveLoggedMember')->name('group.addRemoveLoggedMember');
+
+    Route::get('/addNote/{id}/{notes}', 'GroupController@addNote');
 
     Route::get('groups/create', 'GroupController@create')->name('group.create');
-
-    Route::get('group/{group}/edit', 'GroupController@edit')->name('group.edit');
 
     Route::post('group/store', 'GroupController@store')->name('group.store');
 
@@ -134,74 +136,75 @@ Route::group(["middleware" => "check.role:1"], function () {
 
     Route::get('/addUserToGroup/{personId}/{group}', 'GroupController@addUserToGroup');
 
-    Route::get('pusher', function(){
+    Route::get('pusher', function () {
         return view('pusher');
-    });
 
+
+    });
 
 });
 
+    Auth::routes();
 
-Auth::routes();
+    Route::get('/events-ajax', 'EventController@getListEvents');
 
-Route::get('/events-ajax', 'EventController@getListEvents');
+    Route::get('/events-excel/{format}', 'EventController@excel')->name('events.excel');
 
-Route::get('/events-excel/{format}', 'EventController@excel')->name('events.excel');
+    Route::get('/group-ajax', 'GroupController@getListGroups');
 
-Route::get('/group-ajax', 'GroupController@getListGroups');
+    Route::get('/group-excel/{format}', 'GroupController@excel')->name('group.excel');
 
-Route::get('/group-excel/{format}', 'GroupController@excel')->name('group.excel');
+    Route::get('/person-ajax', 'PersonController@getListPeople');
 
-Route::get('/person-ajax', 'PersonController@getListPeople');
+    Route::get('/teen-ajax', 'PersonController@getListTeen');
 
-Route::get('/teen-ajax', 'PersonController@getListTeen');
+    Route::get('/visitors-ajax', 'VisitorController@getList');
 
-Route::get('/visitors-ajax', 'VisitorController@getList');
+    Route::get('/person-excel/{format}', 'PersonController@PersonExcel')->name('person.excel');
 
-Route::get('/person-excel/{format}', 'PersonController@PersonExcel')->name('person.excel');
+    Route::get('/teen-excel/{format}', 'PersonController@teenExcel')->name('teen.excel');
 
-Route::get('/teen-excel/{format}', 'PersonController@teenExcel')->name('teen.excel');
-
-Route::get('/visitors-excel/{format}', 'PersonController@visitorsExcel')->name('visitors.excel');
+    Route::get('/visitors-excel/{format}', 'PersonController@visitorsExcel')->name('visitors.excel');
 
 //Ajax
-Route::get('/automatic-cep/{id}', 'PersonController@automaticCep');
+    Route::get('/automatic-cep/{id}', 'PersonController@automaticCep');
 
 //Recuperação de Senha
-Route::get("/passResetView/{email}", "UsersController@passResetView");
+    Route::get("/passResetView/{email}", "UsersController@passResetView");
 
-Route::post("/passReset", "UsersController@passReset")->name('password.reset');
+    Route::post("/passReset", "UsersController@passReset")->name('password.reset');
 
-Route::post("/sendPassword/{email}", "UsersController@sendPassword")->name('recover.password');
+    Route::post("/sendPassword/{email}", "UsersController@sendPassword")->name('recover.password');
 
-Route::get("/emailTest/{email}", "UsersController@hasEmail");
+    Route::get("/emailTest/{email}", "UsersController@hasEmail");
 
-Route::get("/emailTest-edit/{email}/{id}", "UsersController@emailTestEdit");
+    Route::get("/emailTest-edit/{email}/{id}", "UsersController@emailTestEdit");
 
-Route::any("/forgotPassword", "UsersController@forgotPassword")->name("forgot.password");
+    Route::any("/forgotPassword", "UsersController@forgotPassword")->name("forgot.password");
 
 //Instant Search
-Route::get('/search/{text}', "SearchController@search");
+    Route::get('/search/{text}', "SearchController@search");
 
 //Instant Search na tabela de eventos
-Route::get('/search-events/{text}', 'SearchController@searchEvents');
+    Route::get('/search-events/{text}', 'SearchController@searchEvents');
 
 //Login Facebook
-Route::get('auth/facebook/', 'Auth\RegisterController@redirectToProvider');
-Route::get('auth/facebook/callback', 'Auth\RegisterController@handleProviderCallback');
+    Route::get('auth/facebook/', 'Auth\RegisterController@redirectToProvider');
+    Route::get('auth/facebook/callback', 'Auth\RegisterController@handleProviderCallback');
 
 //Login Linkedin
-Route::get('auth/linkedin', 'Auth\RegisterController@redirectToLinkedinProvider');
-Route::get('auth/linkedin/callback', 'Auth\RegisterController@handleLinkedinProviderCallback');
+    Route::get('auth/linkedin', 'Auth\RegisterController@redirectToLinkedinProvider');
+    Route::get('auth/linkedin/callback', 'Auth\RegisterController@handleLinkedinProviderCallback');
 
 //Login Google +
-Route::get('auth/google', 'Auth\RegisterController@redirectToGoogleProvider');
-Route::get('auth/google/callback', 'Auth\RegisterController@handleGoogleProviderCallback');
+    Route::get('auth/google', 'Auth\RegisterController@redirectToGoogleProvider');
+    Route::get('auth/google/callback', 'Auth\RegisterController@handleGoogleProviderCallback');
 
 //Login Visitante
-Route::get('login-visitante', 'VisitorController@login');
+    Route::get('login-visitante', 'VisitorController@login');
 
-Route::post('login-visitante', 'Auth\RegisterController@loginVisitor')->name('login.visitor');
+    Route::post('login-visitante', 'Auth\RegisterController@loginVisitor')->name('login.visitor');
+
 
 //Login Twitter
 //Route::get('auth/twitter', 'Auth\RegisterController@redirectToTwitterProvider');

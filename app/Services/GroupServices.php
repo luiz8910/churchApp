@@ -9,31 +9,21 @@
 namespace App\Services;
 
 
-use App\Traits\DateRepository;
-use Illuminate\Support\Facades\DB;
+use App\Models\Event;
 
 class GroupServices
 {
-    use DateRepository;
 
-    public function listGroupEvents($group)
+    public function listGroupEvents($group, $church_id)
     {
-        $events = DB::table("events")
-            ->where([
-                "group_id" => $group["id"],
-            ])
-            ->join("event_person", "event_id", "=", "events.id")
-            ->orderBy('event_person.eventDate', 'asc')
-            ->get();
+        $events = Event::select('id', 'name')
+            ->where(
+            [
+                'group_id' => $group,
+                'church_id' => $church_id
+            ]
+        )->get();
 
-
-
-        //dd($events);
-
-        foreach ($events as $event) {
-            $event->eventDate = $this->formatDateView($event->eventDate);
-
-        }
 
         return $events;
     }

@@ -203,9 +203,11 @@ class GroupController extends Controller
 
         $countGroups[] = $this->countGroups();
 
-        //$events = $this->groupServices->listGroupEvents($group);
+        $church_id = $this->getUserChurch();
 
-        $events = $this->groupServices->listGroupEvents($group);
+        $events = count($this->groupServices->listGroupEvents($id, $church_id));
+
+        $leader = $this->getLeaderRoleId();
 
         //Endereço do grupo formatado para api do google maps
         $location = $this->formatGoogleMaps($group);
@@ -219,10 +221,18 @@ class GroupController extends Controller
 
         $arr = [];
 
+        $sub = false;
+
         foreach ($members as $item)
         {
             //Separando a id de cada membro do grupo num array
             $arr[] = $item->id;
+
+            if(!$sub)
+            {
+                $sub = \Auth::getUser()->person_id == $item->id ? true : false;
+            }
+
 
             //Separando o endereço formatado para a api do google maps
             //de cada membro do grupo num array
@@ -278,16 +288,24 @@ class GroupController extends Controller
 
         $qtde = count($notify);
 
-        //dd($event_user[0][1]["id"]);
+        $owner_person_id = $this->userRepository->find($group->owner_id)->person_id;
 
-        //dd(isset($event_user[0][1]));
+        $owner_name = $this->personRepository->find($owner_person_id);
 
-        //dd(count($event_user[0]));
+        $imgProfile = $owner_name->imgProfile;
+
+        $owner_name = $owner_name->name . " " . $owner_name->lastName;
+
+        $qtdeMembers = count($members);
+
+
 
         return view('groups.edit', compact('group', 'countPerson', 'countGroups', 'events', 'address', 'location',
             'people', 'roles', 'state', 'members', 'quantitySingleMother', 'quantitySingleFather', 'quantitySingleWomen',
             'quantitySingleMen', 'quantityMarriedWomenNoKids', 'quantityMarriedMenNoKids',
-            'quantityMarriedWomenOutsideChurch', 'quantityMarriedMenOutsideChurch', 'event_user', 'notify', 'qtde', 'pag'));
+            'quantityMarriedWomenOutsideChurch', 'quantityMarriedMenOutsideChurch',
+            'event_user', 'notify', 'qtde', 'pag', 'owner_name', 'owner_person_id',
+            'qtdeMembers', 'imgProfile', 'leader', 'sub'));
     }
 
 
@@ -349,6 +367,27 @@ class GroupController extends Controller
 
 
         return redirect()->route('group.edit', ['id' => $group]);
+    }
+
+    public function addRemoveLoggedMember($id)
+    {
+        $group = $this->repository->find($id);
+
+        $person_id = \Auth::getUser()->person_id;
+
+        if(count($group->people()->where('person_id', $person_id)->first()) > 0)
+        {
+            $group->people()->detach($person_id);
+
+            \Session::flash('updateUser', 'Usuário foi removido');
+        }
+        else{
+            $group->people()->attach($person_id);
+
+            \Session::flash('updateUser', 'Usuário foi inscrito');
+        }
+
+        return redirect()->route('group.edit', ['id' => $id]);
     }
 
     public function deleteMember($group, $member)
@@ -703,6 +742,32 @@ class GroupController extends Controller
         $group = $this->repository->find($group);
 
         $group->people()->attach($personId);
+
+        return json_encode(['status' => true]);
+    }
+
+    public function showGroupEvents($group)
+    {
+        $church_id = $this->getUserChurch();
+
+        $events = $this->groupServices->listGroupEvents($group, $church_id);
+
+        return json_encode(
+          [
+              'status' => true,
+              'data' => $events
+          ]
+        );
+    }
+
+    /*
+     * Adiciona Observações ao grupo selecionado
+     * $id = id do grupo
+     *
+     */
+    public function addNote($id, $notes)
+    {
+        Group::where('id', $id)->update(['notes' => $notes]);
 
         return json_encode(['status' => true]);
     }

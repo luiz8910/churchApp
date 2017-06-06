@@ -4,10 +4,10 @@ var UINotific8 = function () {
         //main function to initiate the module
         init: function () {
 
-
+            console.log("notific8");
                 $("#notific8").click(function (e) {
 
-
+                    console.log("notific8");
                     var title = $("#notific8-title").val();
                     var text = $("#notific8-text").val();
                     var type = $("#notific8-type").val() == 'danger' ? 'ruby' : 'amethyst';

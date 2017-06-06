@@ -53,7 +53,7 @@ License: You must have a valid license purchased only from themeforest(the above
             <div class="container">
                 <!-- BEGIN PAGE TITLE -->
                 <div class="page-title">
-                    <h1>Perfil do Usuário
+                    <h1>Perfil do Grupo - {{ $group->name }}
                         <small></small>
                     </h1>
                 </div>
@@ -72,7 +72,11 @@ License: You must have a valid license purchased only from themeforest(the above
                         <i class="fa fa-circle"></i>
                     </li>
                     <li>
-                        <span>Minha Conta</span>
+                        <a href="{{ route('group.index') }}">Grupos</a>
+                        <i class="fa fa-circle"></i>
+                    </li>
+                    <li>
+                        <span>Grupo "{{ $group->name }}"</span>
                     </li>
                 </ul>
                 <!-- END PAGE BREADCRUMBS -->
@@ -156,131 +160,114 @@ License: You must have a valid license purchased only from themeforest(the above
                                             <div class="portlet-title">
                                                 <div class="caption">
                                                     <i class="icon-directions font-green hide"></i>
-                                                    <span class="caption-subject bold font-dark uppercase "> Eventos</span>
+                                                    <span class="caption-subject bold font-dark uppercase "> Detalhes </span>
                                                     <span class="caption-helper"></span>
                                                 </div>
                                                 <div class="actions">
                                                     <div class="btn-group">
-                                                        <a class="btn blue btn-outline btn-circle btn-sm" href="javascript:;" data-toggle="dropdown" data-hover="dropdown" data-close-others="true"> Ações
+                                                        <a class="btn purple btn-outline btn-circle btn-sm" href="javascript:;" data-toggle="dropdown" data-hover="dropdown" data-close-others="true"> Ações
                                                             <i class="fa fa-angle-down"></i>
                                                         </a>
                                                         <ul class="dropdown-menu pull-right">
                                                             <li>
-                                                                <a href="{{ route('group.event.create', ['id' => $group->id]) }}">Novo Evento</a>
-                                                            </li>
-                                                            <li class="divider"> </li>
-                                                            <li>
-                                                                <a href="javascript:;">Action 2</a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="javascript:;">Action 3</a>
+                                                                <a href="{{ route('group.event.create', ['id' => $group->id]) }}">
+                                                                    <i class="fa fa-bookmark font-purple"></i>
+                                                                    Novo Evento
+                                                                </a>
                                                             </li>
                                                             <li>
-                                                                <a href="javascript:;">Action 4</a>
+                                                                <a href="{{ route('group.addRemoveLoggedMember', ['id' => $group->id]) }}">
+                                                                    <i class="fa fa-sign-in font-purple"></i>
+                                                                    @if($sub)
+                                                                        Sair do grupo
+                                                                    @else
+                                                                        Entrar no grupo
+                                                                    @endif
+                                                                </a>
                                                             </li>
+                                                            @if(Auth::getUser()->person->role_id == $leader)
+                                                                <li class="divider"> </li>
+                                                                <li>
+                                                                    <a href="javascript:;" data-toggle="modal" data-target="#modal-note">
+                                                                        <i class="fa fa-book font-purple"></i>
+                                                                        Nova Nota
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <a href="javascript:;">
+                                                                        <i class="fa fa-ban font-red"></i>
+                                                                        Excluir Grupo
+                                                                    </a>
+                                                                </li>
+                                                            @endif
                                                         </ul>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="portlet-body">
-                                                <div class="cd-horizontal-timeline mt-timeline-horizontal" data-spacing="60">
-                                                    <div class="timeline">
-                                                        <div class="events-wrapper">
-                                                            <div class="events">
-                                                                <ol>
-                                                                    <?php $i = 0; ?>
-                                                                    @foreach($events as $event)
-                                                                        <li>
-                                                                            <a href="#0" data-date="{{ $event->eventDate }}"
-                                                                               class="border-after-red bg-after-red
-                                                                               @if($i == 0)selected @endif">{{ substr($event->eventDate, 0, 5) }}</a>
-                                                                        </li>
-                                                                        <?php $i++; ?>
-                                                                    @endforeach
-                                                                </ol>
-                                                                <span class="filling-line bg-red" aria-hidden="true"></span>
-                                                            </div>
-                                                            <!-- .events -->
+                                                <div class="col-md-12">
+                                                    <p>
+                                                        <i class="fa fa-calendar font-purple"></i> Data de Criação: {{ $group->sinceOf }}
+                                                    </p>
+
+                                                    <p>
+                                                        <i class="fa fa-user font-purple"></i> Criado Por:
+                                                            <a href="{{ route('person.edit', ['person' => $owner_person_id]) }}">
+                                                                {{ $owner_name }}
+                                                                <img src="../../{{ $imgProfile }}" class="img-circle hidden-xs hidden-sm"
+                                                                     style="width: 25px; margin-left: 10px;">
+                                                            </a>
+                                                    </p>
+
+                                                    <p>
+                                                        <i class="fa fa-users font-purple"></i>
+                                                        Participantes: {{ $qtdeMembers }}
+                                                    </p>
+
+                                                    <p>
+                                                        <i class="fa fa-bookmark font-purple"></i>
+
+                                                        Qtde de Eventos: {{ $events }}
+
+                                                        @if($events > 0)
+                                                            <a href="javascript:;" class="btn btn-circle btn-xs purple"
+                                                               id="showGroupEvents" style="margin-left: 10px;">
+                                                                <i class="fa fa-list"></i>
+                                                                <span class="hidden-xs hidden-sm">Listar</span>
+                                                            </a>
+
+                                                        @endif
+
+                                                        <br>
+                                                        <i class="fa fa-refresh fa-spin fa-3x fa-fw"
+                                                           id="icon-loading" style="margin-top: 20px; display: none;">
+                                                        </i>
+
+                                                        <div id="div-showGroupEvents">
+
                                                         </div>
-                                                        <!-- .events-wrapper -->
-                                                        <ul class="cd-timeline-navigation mt-ht-nav-icon">
-                                                            <li>
-                                                                <a href="#0" class="prev inactive btn btn-outline red md-skip">
-                                                                    <i class="fa fa-chevron-left"></i>
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="#0" class="next btn btn-outline red md-skip">
-                                                                    <i class="fa fa-chevron-right"></i>
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                        <!-- .cd-timeline-navigation -->
-                                                    </div>
-                                                    <!-- .timeline -->
-                                                    <div class="events-content">
-                                                        <ol>
-                                                            <?php $i = 0; ?>
+                                                    </p>
 
-                                                            @foreach($events as $event)
-                                                                <li class="@if($i == 0) selected @endif" data-date="{{ $event->eventDate }}">
-                                                            <div class="mt-title">
-                                                                <h2 class="mt-content-title">{{ $event->name }}</h2>
-                                                            </div>
-                                                            <div class="mt-author">
-                                                                <div class="mt-avatar">
-                                                                    <img src="../../{{ \App\Models\User::findOrFail($event->createdBy_id)->person->imgProfile }}"
-                                                                         title="Criador do Evento" />
-                                                                </div>
-                                                                <div class="mt-author-name">
-                                                                    <a href="javascript:;" class="font-blue-madison">
-                                                                        {{ \App\Models\User::findOrFail($event->createdBy_id)->person->name }}
-                                                                        {{ \App\Models\User::findOrFail($event->createdBy_id)->person->lastName }}
-                                                                    </a>
-                                                                </div>
-                                                                @if($event->endEventDate == $event->eventDate)
-                                                                <div class="mt-author-datetime font-grey-mint">
-                                                                    Inicia-se em: {{ $event->eventDate }} - {{ $event->startTime }}h {{ $event->endTime or '' }}
-                                                                </div>
-                                                                @else
-                                                                    <div class="mt-author-datetime font-grey-mint">
-                                                                        Inicia-se em: {{ $event->eventDate }} - {{ $event->startTime }}h {{ $event->endTime or '' }}
-                                                                    </div>
-                                                                    <div class="mt-author-datetime font-grey-mint">
-                                                                        Termina em: {{ $event->endEventDate }} - {{ $event->endTime or '' }}
-                                                                    </div>
-                                                                @endif
+                                                    <p>
+                                                        <i class="fa fa-map-marker font-purple"></i>
+                                                        {{ $group->street }} - {{ $group->neighborhood }} - {{ $group->city }} - {{ $group->state }}
+                                                    </p>
 
-                                                            </div>
-                                                            <div class="clearfix"></div>
-                                                            <div class="mt-content border-grey-steel">
-                                                                <p>{{ $event->description }}</p>
-                                                                <a href="{{ route('event.edit', ['event' => $event->id]) }}" class="btn btn-circle red btn-outline">
-                                                                    <i class="fa fa-users"></i>Lista de Participantes
-                                                                </a>
+                                                    <p id="p-note" @if($group->notes == '') style="display: none;" @endif >
 
-                                                                <a href="javascript:;" id="btn-sub-{{ $event->id }}" onclick="checkInEvent('{{ $event->id }}')"
-                                                                   class="btn btn-circle
-                                                                    @if(isset($event_user[0][$i]) && $event_user[0][$i]["id"] == $event->id)
-                                                                           red">
-                                                                    <i class="fa fa-sign-in">
-                                                                    </i>Deixar de Participar
-                                                                    @else
-                                                                            green">
-                                                                            <i class="fa fa-sign-in">
-                                                                            </i>Participar
-                                                                    @endif
+                                                        <i class="fa fa-refresh fa-spin fa-3x fa-fw"
+                                                           id="icon-loading-note" style="margin-top: 20px; display: none;">
+                                                        </i>
 
-                                                                </a>
-                                                            </div>
-                                                        </li>
+                                                        <div id="div-note" @if($group->notes == '') style="display: none;" @endif>
+                                                            <i class="fa fa-comments font-purple"></i>
+                                                            Observações: <span> {{ $group->notes }} </span>
+                                                        </div>
 
-                                                                    <?php $i++; ?>
-                                                            @endforeach
-                                                        </ol>
-                                                    </div>
-                                                    <!-- .events-content -->
+                                                    </p>
                                                 </div>
+
+
                                             </div>
                                         </div>
                                     </div>
@@ -292,6 +279,33 @@ License: You must have a valid license purchased only from themeforest(the above
                         </div>
                     </div>
 
+                    <input type="hidden" id="notific8-title">
+                    <input type="hidden" id="notific8-text">
+                    <input type="hidden" id="notific8-type" value="amethyst">
+
+                    <a href="javascript:;" class="btn btn-danger" id="notific8" onclick="console.log('teste')" style="display: none;"></a>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="modal-note" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title" id="">Adicionar Notas</h4>
+                                </div>
+                                <div class="modal-body">
+
+                                    <label for="note">Escreva as observações necessárias para o {{ $group->name }}</label>
+                                    <textarea class="form-control" name="" id="note" cols="50" rows="10"></textarea>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                                    <button type="button" class="btn btn-primary" id="addNote">Salvar Nota</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
 
                     <!-- BEGIN PROFILE CONTENT -->
@@ -302,7 +316,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                 <div class="portlet light portlet-fit ">
                                     <div class="portlet-title">
                                         <div class="caption">
-                                            <i class=" icon-layers font-red"></i>
+                                            <i class="fa fa-map-marker font-red"></i>
                                             <span class="caption-subject font-red bold uppercase">Endereços</span>
                                         </div>
                                         <div class="actions">
@@ -420,7 +434,7 @@ License: You must have a valid license purchased only from themeforest(the above
                             <div class="portlet light portlet-fit ">
                                 <div class="portlet-title">
                                     <div class="caption">
-                                        <i class="icon-settings font-red"></i>
+                                        <i class="icon-users font-red"></i>
                                         <span class="caption-subject font-red sbold uppercase">Membros do Grupo</span>
                                     </div>
 
@@ -442,19 +456,19 @@ License: You must have a valid license purchased only from themeforest(the above
 
 
                                         <div class="btn-group">
-                                            <a class="btn blue btn-outline btn-circle btn-sm" href="javascript:;" data-toggle="dropdown" data-hover="dropdown" data-close-others="true"> Ações
+                                            <a class="btn purple btn-outline btn-circle btn-sm" href="javascript:;" data-toggle="dropdown" data-hover="dropdown" data-close-others="true"> Ações
                                                 <i class="fa fa-angle-down"></i>
                                             </a>
                                             <ul class="dropdown-menu pull-right">
                                                 <li>
                                                     <a href="javascript:;" data-toggle="modal" data-target="#myModal">
-                                                        <i class="fa fa-users"></i> Novo
+                                                        <i class="fa fa-users font-purple"></i> Novo
                                                     </a>
                                                 </li>
 
                                                 <li>
                                                     <a href="javascript:;" data-toggle="modal" data-target="#addMemberModal">
-                                                        <i class="fa fa-user"></i> Cadastro
+                                                        <i class="fa fa-user font-purple"></i> Cadastro
                                                     </a>
                                                 </li>
 
@@ -462,15 +476,11 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                                 <li>
                                                     <a href="javascript:;">
-                                                        <i class="fa fa-print"></i> Imprimir </a>
+                                                        <i class="fa fa-print font-purple"></i> Imprimir/PDF </a>
                                                 </li>
                                                 <li>
                                                     <a href="javascript:;">
-                                                        <i class="fa fa-file-pdf-o"></i> Salvar como PDF </a>
-                                                </li>
-                                                <li>
-                                                    <a href="javascript:;">
-                                                        <i class="fa fa-file-excel-o"></i> Exportar para Excel </a>
+                                                        <i class="fa fa-file-excel-o font-purple"></i> Exportar para Excel </a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -780,177 +790,179 @@ License: You must have a valid license purchased only from themeforest(the above
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="portlet light ">
-                                <div class="portlet-title tabbable-line">
-                                    <div class="caption caption-md">
-                                        <i class="icon-globe theme-font hide"></i>
-                                        <span class="caption-subject font-blue-madison bold uppercase">Dados do Grupo</span>
+                    @if(Auth::getUser()->person && Auth::getUser()->person->role_id == $leader)
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="portlet light ">
+                                    <div class="portlet-title tabbable-line">
+                                        <div class="caption caption-md">
+                                            <i class="icon-globe theme-font hide"></i>
+                                            <span class="caption-subject font-blue-madison bold uppercase">Dados do Grupo</span>
+                                        </div>
+
                                     </div>
+                                    <div class="portlet-body">
+                                        {!! Form::open(['route' => ['group.update', 'group' => $group->id], 'method' => 'PUT',
+                                        'class' => 'repeater', 'enctype' => 'multipart/form-data', 'role' => 'form', 'id' => 'form']) !!}
+                                        <div class="form-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Nome</label>
+                                                        <div class="input-group">
+                                                                <span class="input-group-addon">
+                                                                    <i class="fa fa-user font-blue"></i>
+                                                                </span>
+                                                            <input type="text" name="name" class="form-control" value="{{ $group->name }}"
+                                                                   placeholder="Grupo de Jovens">
+                                                        </div>
+                                                    </div>
+                                                </div>
 
-                                </div>
-                                <div class="portlet-body">
-                                    {!! Form::open(['route' => ['group.update', 'group' => $group->id], 'method' => 'PUT',
-                                    'class' => 'repeater', 'enctype' => 'multipart/form-data', 'role' => 'form', 'id' => 'form']) !!}
-                                    <div class="form-body">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label>Nome</label>
-                                                    <div class="input-group">
-                                                            <span class="input-group-addon">
-                                                                <i class="fa fa-user font-blue"></i>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Data de Criação</label>
+                                                        <div class="input-group date date-picker" data-date-format="dd/mm/yyyy">
+                                                                <span class="input-group-btn">
+                                                                <button class="btn default" type="button">
+                                                                    <i class="fa fa-calendar font-blue"></i>
+                                                                </button>
                                                             </span>
-                                                        <input type="text" name="name" class="form-control" value="{{ $group->name }}"
-                                                               placeholder="Grupo de Jovens">
+                                                            <input type="text" class="form-control input-date" name="sinceOf"
+                                                                   value="{{ $group->sinceOf }}" placeholder="dd/mm/aaaa">
+                                                        </div>
+
                                                     </div>
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label>Data de Criação</label>
-                                                    <div class="input-group date date-picker" data-date-format="dd/mm/yyyy">
-                                                            <span class="input-group-btn">
-                                                            <button class="btn default" type="button">
-                                                                <i class="fa fa-calendar font-blue"></i>
-                                                            </button>
-                                                        </span>
-                                                        <input type="text" class="form-control input-date" name="sinceOf"
-                                                               value="{{ $group->sinceOf }}" placeholder="dd/mm/aaaa">
-                                                    </div>
 
+                                            <h3>Endereço</h3>
+
+                                            <div class="loader"></div>
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>CEP</label>
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon">
+                                                                <i class="fa fa-location-arrow font-purple"></i>
+                                                            </span>
+                                                            <input type="text" class="form-control" id="zipCode" name="zipCode"
+                                                                   value="{{ $group->zipCode }}" placeholder="XXXXX-XXX" maxlength="9">
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
 
-
-                                        <h3>Endereço</h3>
-
-                                        <div class="loader"></div>
-
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label>CEP</label>
-                                                    <div class="input-group">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Logradouro</label>
+                                                        <div class="input-group">
                                                         <span class="input-group-addon">
-                                                            <i class="fa fa-location-arrow font-purple"></i>
+                                                            <i class="fa fa-home font-purple"></i>
                                                         </span>
-                                                        <input type="text" class="form-control" id="zipCode" name="zipCode"
-                                                               value="{{ $group->zipCode }}" placeholder="XXXXX-XXX" maxlength="9">
+                                                            <input class="form-control" name="street" type="text"
+                                                                   value="{{ $group->street }}"
+                                                                   placeholder="Av. Antonio Carlos Comitre, 650" id="street">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Bairro</label>
+                                                        <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-home font-purple"></i>
+                                                        </span>
+                                                            <input class="form-control" name="neighborhood" type="text"
+                                                                   value="{{ $group->neighborhood }}"
+                                                                   placeholder="Parque do Dolly" id="neighborhood">
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label>Logradouro</label>
-                                                    <div class="input-group">
-                                                    <span class="input-group-addon">
-                                                        <i class="fa fa-home font-purple"></i>
-                                                    </span>
-                                                        <input class="form-control" name="street" type="text"
-                                                               value="{{ $group->street }}"
-                                                               placeholder="Av. Antonio Carlos Comitre, 650" id="street">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Cidade</label>
+                                                        <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-building font-purple"></i>
+                                                        </span>
+                                                            <input class="form-control" name="city" type="text"
+                                                                   value="{{ $group->city }}" placeholder="Sorocaba" id="city">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Estado</label>
+                                                        <select name="state" class="form-control" id="state">
+                                                            <option value="">Selecione</option>
+                                                            @foreach($state as $item)
+                                                                <option value="{{ $item->initials }}"
+                                                                        @if($item->initials == $group->state) selected @endif >
+                                                                    {{ $item->state }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label>Bairro</label>
-                                                    <div class="input-group">
-                                                    <span class="input-group-addon">
-                                                        <i class="fa fa-home font-purple"></i>
-                                                    </span>
-                                                        <input class="form-control" name="neighborhood" type="text"
-                                                               value="{{ $group->neighborhood }}"
-                                                               placeholder="Parque do Dolly" id="neighborhood">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
 
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label>Cidade</label>
-                                                    <div class="input-group">
-                                                    <span class="input-group-addon">
-                                                        <i class="fa fa-building font-purple"></i>
-                                                    </span>
-                                                        <input class="form-control" name="city" type="text"
-                                                               value="{{ $group->city }}" placeholder="Sorocaba" id="city">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label>Estado</label>
-                                                    <select name="state" class="form-control" id="state">
-                                                        <option value="">Selecione</option>
-                                                        @foreach($state as $item)
-                                                            <option value="{{ $item->initials }}"
-                                                                    @if($item->initials == $group->state) selected @endif >
-                                                                {{ $item->state }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                                                            <div class="fileinput-new thumbnail"
+                                                                 style="width: 200px; height: 150px;">
+                                                                <img src=@if($group->imgProfile == "uploads/profile/noimage.png")
+                                                                        "http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=no+image"
+                                                                @else
+                                                                    "../../{{ $group->imgProfile }}"
+                                                                @endif
 
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <div class="fileinput fileinput-new" data-provides="fileinput">
-                                                        <div class="fileinput-new thumbnail"
-                                                             style="width: 200px; height: 150px;">
-                                                            <img src=@if($group->imgProfile == "uploads/profile/noimage.png")
-                                                                    "http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=no+image"
-                                                            @else
-                                                                "../../{{ $group->imgProfile }}"
-                                                            @endif
-
-                                                            alt="" /></div>
-                                                        <div class="fileinput-preview fileinput-exists thumbnail"
-                                                             style="max-width: 200px; max-height: 150px;"></div>
-                                                        <div>
-                                                                <span class="btn default btn-file">
-                                                                    <span class="fileinput-new"> Escolher Imagem </span>
-                                                                    <span class="fileinput-exists"> Alterar </span>
-                                                                    <input type="file" name="img"> </span>
-                                                            <a href="javascript:;" class="btn default fileinput-exists"
-                                                               data-dismiss="fileinput"> Remover </a>
+                                                                alt="" /></div>
+                                                            <div class="fileinput-preview fileinput-exists thumbnail"
+                                                                 style="max-width: 200px; max-height: 150px;"></div>
+                                                            <div>
+                                                                    <span class="btn default btn-file">
+                                                                        <span class="fileinput-new"> Escolher Imagem </span>
+                                                                        <span class="fileinput-exists"> Alterar </span>
+                                                                        <input type="file" name="img"> </span>
+                                                                <a href="javascript:;" class="btn default fileinput-exists"
+                                                                   data-dismiss="fileinput"> Remover </a>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
 
 
-                                    <div class="margiv-top-10">
-                                        {!! Form::submit('Salvar', ['class' => 'btn green', 'id' => 'btn-submit']) !!}
+                                        <div class="margiv-top-10">
+                                            {!! Form::submit('Salvar', ['class' => 'btn green', 'id' => 'btn-submit']) !!}
 
-                                        <div class="progress" style="display: none;">
-                                            <div class="progress-bar progress-bar-striped active" role="progressbar"
-                                                 aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-                                                Enviando...
-                                                <span class="sr-only">Enviando...</span>
+                                            <div class="progress" style="display: none;">
+                                                <div class="progress-bar progress-bar-striped active" role="progressbar"
+                                                     aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                                                    Enviando...
+                                                    <span class="sr-only">Enviando...</span>
+                                                </div>
                                             </div>
                                         </div>
+                                        {!! Form::close() !!}
+
+
                                     </div>
-                                    {!! Form::close() !!}
-
-
                                 </div>
                             </div>
-                        </div>
                     </div>
+                    @endif
                 </div>
                 <!-- END PAGE CONTENT INNER -->
             </div>
@@ -1690,10 +1702,15 @@ License: You must have a valid license purchased only from themeforest(the above
 <script src="../../assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
 <script src="../../assets/pages/scripts/components-date-time-pickers.js" type="text/javascript"></script>
 
+
+
 <script src="../../js/script.js"></script>
 <script src="../../js/cep.js"></script>
 <script src="../../js/maskbrphone.js"></script>
 <script src="../../js/ajax.js"></script>
+
+<script src="../../assets/global/plugins/jquery-notific8/jquery.notific8.min.js" type="text/javascript"></script>
+<script src="../../assets/pages/scripts/ui-notific8.js" type="text/javascript"></script>
 
 <script src="../../assets/pages/scripts/components-bootstrap-select.min.js" type="text/javascript"></script>
 

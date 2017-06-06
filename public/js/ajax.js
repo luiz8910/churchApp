@@ -569,32 +569,6 @@
         }
     }
 
-    function notifc8()
-    {
-        var title = "Titulo";
-        var text = "Teste";
-
-            var settings = {
-                    color: 'ruby', //amethyst
-                    sticky: false,
-                    heading: title,
-                    horizontalEdge: 'top',
-                    verticalEdge: 'right',
-                    life: 3000
-                };
-                //$button = $(this);
-
-            $.notific8('zindex', 11500);
-            $.notific8(text, settings);
-
-            //$button.attr('disabled', 'disabled');
-
-            /*setTimeout(function() {
-                $button.removeAttr('disabled');
-            }, 1000);*/
-
-    }
-
 
     function leaveGroup(group, person)
     {
@@ -857,4 +831,91 @@
         });
     }
 
+    $("#showGroupEvents").click(function () {
+        $("#icon-loading").css('display', 'block');
+        showGroupEvents();
+    });
 
+    /*
+     * Exibe todos os eventos relacionado ao grupo
+    *
+    */
+    function showGroupEvents()
+    {
+        var group = $("#groupId").val();
+
+        var request = $.ajax({
+            url: '/showGroupEvents/' + group,
+            method: 'GET',
+            dataType: 'json'
+        });
+
+        request.done(function (e) {
+            var events = '';
+
+            if(e.status)
+            {
+                for(var i = 0; i < e.data.length; i++)
+                {
+                    events += '<div style="margin-left: 30px; margin-bottom: 10px;">'+
+                        '<i class="fa fa-eye"></i> '+
+                            '<a href="/events/'+e.data[i].id+'/edit">'+ e.data[i].name +' </a>'+
+                        '</div>';
+                }
+
+                //a href="/events/6/edit"
+
+                setTimeout(function () {
+                    $("#icon-loading").css('display', 'none');
+                    $("#div-showGroupEvents").append(events);
+                }, 2000);
+
+            }
+        });
+
+        request.fail(function (e) {
+            console.log("fail");
+            console.log(e);
+            $("#icon-loading").css('display', 'none');
+        });
+    }
+
+    $("#addNote").click(function(){
+        $("#div-note span").html("");
+        $("#p-note").css("display", "block");
+        $("#icon-loading-note").css("display", "block");
+        $("#modal-note").modal('hide');
+        addNote();
+    });
+
+
+    function addNote()
+    {
+        var group = $("#groupId").val(),
+            notes = $("#note").val();
+
+        var request = $.ajax({
+            url: '/addNote/' + group + '/' + notes,
+            method: 'GET',
+            dataType: 'json'
+        });
+
+        request.done(function(e){
+           if(e.status)
+           {
+               setTimeout(function () {
+                   $("#icon-loading-note").css("display", "none");
+                   $("#div-note").css("display", "block");
+                   $("#div-note span").append(notes);
+                   $("#notific8-text").val('Nota Adicionada');
+                   $("#notific8").trigger('click');
+               }, 2000)
+           }
+
+        });
+
+        request.done(function (e) {
+            console.log("fail");
+            console.log(e);
+        });
+    }
