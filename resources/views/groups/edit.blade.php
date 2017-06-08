@@ -34,7 +34,7 @@ License: You must have a valid license purchased only from themeforest(the above
           type="text/css"/>
 
     <script src="https://code.highcharts.com/highcharts.js"></script>
-    <script src="../../assets/pages/scripts/highcharts-exporting.js"></script>                          
+    <script src="../../assets/pages/scripts/highcharts-exporting.js"></script>
     <!-- END PAGE LEVEL PLUGINS -->
 </head>
 <!-- END HEAD -->
