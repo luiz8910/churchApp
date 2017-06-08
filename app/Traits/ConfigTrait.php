@@ -11,6 +11,7 @@ namespace App\Traits;
 
 use App\Models\Role;
 use App\Repositories\RoleRepository;
+use Auth;
 
 trait ConfigTrait
 {
@@ -37,7 +38,7 @@ trait ConfigTrait
 
     public function getUserChurch()
     {
-        return \Auth::getUser()->church_id;
+        return Auth::getUser()->church_id;
     }
 
     public function getLeaderRoleId()

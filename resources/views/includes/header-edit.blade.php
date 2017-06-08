@@ -8,7 +8,8 @@
             <!-- BEGIN LOGO -->
             <div class="page-logo">
                 <a href="{{ route('index') }}">
-                    <img src="../../assets/layouts/layout3/img/logo-default.jpg" alt="logo" class="logo-default">
+                    <img src="../../logo/Horizontal.png" alt="logo" class="logo-default" style="width: 300px; margin-top: -20px;">
+                    {{--<img src="../../logo/Vertical.png" alt="logo" class="logo-default" style="width: 300px; margin-top: -20px;">--}}
                 </a>
             </div>
             <!-- END LOGO -->

@@ -453,12 +453,14 @@ class EventController extends Controller
 
         $qtde = count($notify);
 
+        $groups = $this->groupRepository->findByField('church_id', \Auth::getUser()->church_id);
+
         if($id)
         {
-            return view('events.create', compact('countPerson', 'countGroups', 'state', 'roles', 'id', 'notify', 'qtde'));
+            return view('events.create', compact('countPerson', 'countGroups', 'state', 'roles', 'id', 'notify', 'qtde', 'groups'));
         }
         else{
-            return view('events.create', compact('countPerson', 'countGroups', 'state', 'roles', 'notify', 'qtde'));
+            return view('events.create', compact('countPerson', 'countGroups', 'state', 'roles', 'notify', 'qtde', 'groups'));
         }
 
 
@@ -495,7 +497,14 @@ class EventController extends Controller
             $data['endEventDate'] = $this->formatDateBD($data['endEventDate']);
         }
 
-        $data["church_id"] = $this->getUserChurch();
+        //$data["church_id"] = \Auth::getUser()->church_id;
+
+        if($data["group_id"] == "")
+        {
+            $data["group_id"] = null;
+        }
+
+        //dd($data);
 
         $event = $this->repository->create($data);
 
@@ -506,7 +515,17 @@ class EventController extends Controller
             EventServices::newEventDays($event->id, $data['eventDate'], $data['frequency']);
         }
 
+        $this->setChurch_id($event);
+
         return redirect()->route('event.index');
+    }
+
+    public function setChurch_id($event)
+    {
+        Event::where(['id' => $event->id])
+            ->update(
+                ['church_id' => \Auth::getUser()->church_id]
+            );
     }
 
     public function sendNotification($data, $event)

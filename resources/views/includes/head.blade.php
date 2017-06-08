@@ -1,5 +1,5 @@
 <meta charset="utf-8" />
-<title>Metronic | Dashboard</title>
+<title>Beconnect</title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta content="width=device-width, initial-scale=1" name="viewport" />
 <meta content="" name="description" />
@@ -30,7 +30,7 @@
 <link href="../assets/layouts/layout3/css/themes/default.min.css" rel="stylesheet" type="text/css" id="style_color" />
 <link href="../assets/layouts/layout3/css/custom.min.css" rel="stylesheet" type="text/css" />
 <!-- END THEME LAYOUT STYLES -->
-<link rel="shortcut icon" href="favicon.ico" />
+<link rel="shortcut icon" href="../logo/Simbolo2.png" />
 
 <!-- BEGIN PAGE LEVEL PLUGINS -->
 <link href="../assets/global/plugins/fullcalendar/fullcalendar.min.css" rel="stylesheet" type="text/css" />

@@ -114,6 +114,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/addNote/{id}/{notes}', 'GroupController@addNote');
 
+    Route::get('/getChartData/{group}', 'GroupController@getChartData');
+
     Route::get('groups/create', 'GroupController@create')->name('group.create');
 
     Route::post('group/store', 'GroupController@store')->name('group.store');

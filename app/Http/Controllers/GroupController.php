@@ -239,36 +239,7 @@ class GroupController extends Controller
             $address[] = $this->formatGoogleMaps($item);
         }
 
-        $quantitySingleMother = '';
-        $quantitySingleFather = '';
-        $quantitySingleWomen = '';
-        $quantitySingleMen = '';
-        $quantityMarriedWomenNoKids = '';
-        $quantityMarriedMenNoKids = '';
 
-        //Quantidade de todas as mulheres solteiras com filhos que pertencem ao grupo
-        $quantitySingleMother = $this->quantitySingleMother($arr);
-
-        //Quantidade de todos os homens solteiros com filhos que pertencem ao grupo
-        $quantitySingleFather = $this->quantitySingleMen($arr);
-
-        //Quantidade de todas as mulheres solteiras e adultas
-        $quantitySingleWomen = $this->quantitySingleWomen($arr);
-
-        //Quantidade de todos os homens solteiros e adultos
-        $quantitySingleMen = $this->quantitySingleMen($arr);
-
-        //Quantidade de mulheres casadas sem filhos
-        $quantityMarriedWomenNoKids = $this->quantityMarriedWomenNoKids($arr);
-
-        //Quantidade de homens casados sem filhos
-        $quantityMarriedMenNoKids = $this->quantityMarriedMenNoKids($arr);
-
-        //Quantidade de homens com parceira fora da igreja
-        $quantityMarriedWomenOutsideChurch = $this->quantityMarriedWomenOutsideChurch($arr);
-
-        //Quantidade de mulheres com parceiro fora da igreja
-        $quantityMarriedMenOutsideChurch = $this->quantityMarriedMenOutsideChurch($arr);
 
         //Listagem de todas as pessoas que não pertencem ao grupo
         $people = $this->personRepository->findWhereNotIn('id', $arr);
@@ -300,10 +271,8 @@ class GroupController extends Controller
 
 
 
-        return view('groups.edit', compact('group', 'countPerson', 'countGroups', 'events', 'address', 'location',
-            'people', 'roles', 'state', 'members', 'quantitySingleMother', 'quantitySingleFather', 'quantitySingleWomen',
-            'quantitySingleMen', 'quantityMarriedWomenNoKids', 'quantityMarriedMenNoKids',
-            'quantityMarriedWomenOutsideChurch', 'quantityMarriedMenOutsideChurch',
+        return view('groups.edit', compact('group', 'countPerson', 'countGroups',
+            'events', 'address', 'location', 'people', 'roles', 'state', 'members',
             'event_user', 'notify', 'qtde', 'pag', 'owner_name', 'owner_person_id',
             'qtdeMembers', 'imgProfile', 'leader', 'sub'));
     }
@@ -750,6 +719,7 @@ class GroupController extends Controller
     {
         $church_id = $this->getUserChurch();
 
+        //Retorna todos os eventos relacionados com o grupo $group
         $events = $this->groupServices->listGroupEvents($group, $church_id);
 
         return json_encode(
@@ -770,5 +740,72 @@ class GroupController extends Controller
         Group::where('id', $id)->update(['notes' => $notes]);
 
         return json_encode(['status' => true]);
+    }
+
+    /*
+     * Recupera dados para montar gráfico
+     *
+     * */
+    public function getChartData($group)
+    {
+        $group = $this->repository->find($group);
+
+        //Listagem de todos os membros do grupo
+        $members = $group->people->all();
+
+        $arr = [];
+
+        foreach ($members as $item)
+        {
+            //Separando a id de cada membro do grupo num array
+            $arr[] = $item->id;
+
+        }
+
+
+        //Quantidade de todas as mulheres solteiras com filhos que pertencem ao grupo
+        $quantitySingleMother = $this->quantitySingleMother($arr);
+
+        //Quantidade de todos os homens solteiros com filhos que pertencem ao grupo
+        $quantitySingleFather = $this->quantitySingleFather($arr);
+
+        //Quantidade de todas as mulheres solteiras e adultas
+        $quantitySingleWomen = $this->quantitySingleWomen($arr);
+
+        //Quantidade de todos os homens solteiros e adultos
+        $quantitySingleMen = $this->quantitySingleMen($arr);
+
+        //Quantidade de mulheres casadas sem filhos
+        $quantityMarriedWomenNoKids = $this->quantityMarriedWomenNoKids($arr);
+
+        //Quantidade de homens casados sem filhos
+        $quantityMarriedMenNoKids = $this->quantityMarriedMenNoKids($arr);
+
+        //Quantidade de homens com parceira fora da igreja
+        $quantityMarriedWomenOutsideChurch = $this->quantityMarriedWomenOutsideChurch($arr);
+
+        //Quantidade de mulheres com parceiro fora da igreja
+        $quantityMarriedMenOutsideChurch = $this->quantityMarriedMenOutsideChurch($arr);
+
+        //dd($quantitySingleFather);
+
+        $merge = [];
+
+        $merge[] = $quantitySingleMother;
+        $merge[] = $quantitySingleFather;
+        $merge[] = $quantitySingleWomen;
+        $merge[] = $quantitySingleMen;
+        $merge[] = $quantityMarriedWomenNoKids;
+        $merge[] = $quantityMarriedMenNoKids;
+        $merge[] = $quantityMarriedWomenOutsideChurch;
+        $merge[] = $quantityMarriedMenOutsideChurch;
+
+
+        return json_encode(
+            [
+                'status' => true,
+                'data' => $merge
+            ]
+        );
     }
 }

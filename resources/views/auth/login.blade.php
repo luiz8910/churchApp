@@ -29,7 +29,9 @@ License: You must have a valid license purchased only from themeforest(the above
 <!-- BEGIN LOGO -->
 <div class="logo">
     <a href="javascript:;">
-        <img src="../assets/pages/img/logo-big.png" alt="" /> </a>
+        <img src="../logo/Simbolo2.png" alt="logo" class="logo-default" style="width: 200px; margin-top: -20px;">
+        {{--<img src="../logo/Vertical.png" alt="logo" class="logo-default" style="width: 300px; margin-top: -20px;">--}}
+    </a>
 </div>
 <!-- END LOGO -->
 <!-- BEGIN LOGIN -->

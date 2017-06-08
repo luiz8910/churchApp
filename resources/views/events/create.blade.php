@@ -112,9 +112,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                 <div class="portlet-body form">
                                     {!! Form::open(['route' => 'event.store', 'method' => 'POST', 'role' => 'form', 'id' => 'form']) !!}
                                     <div class="form-body">
-                                        @if(isset($id))
-                                            <input type="hidden" name="group_id" value="{{ $id }}">
-                                        @endif
+
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
@@ -269,6 +267,36 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 </div>
                                             </div>
                                         </div>
+
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="">Pertencente ao grupo</label>
+                                                        <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-users font-blue"></i>
+                                                        </span>
+
+                                                            <select name="group_id" id="" class="form-control">
+                                                                <option value="">Nenhum</option>
+                                                                @if(isset($id))
+                                                                    @foreach($groups as $item)
+                                                                        <option value="{{ $item->id }}" @if($item->id == $id) selected @endif >
+                                                                            {{ $item->name }}
+                                                                        </option>
+                                                                    @endforeach
+                                                                @else
+                                                                    @foreach($groups as $item)
+                                                                        <option value="{{ $item->id }}">
+                                                                            {{ $item->name }}
+                                                                        </option>
+                                                                    @endforeach
+                                                                @endif
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
 
                                         <div class="row">
                                             <div class="col-md-12">

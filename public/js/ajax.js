@@ -919,3 +919,30 @@
             console.log(e);
         });
     }
+
+
+    function dataChart()
+    {
+        var group = $("#groupId").val();
+
+        var request = $.ajax({
+            url:"/getChartData/" + group,
+            method: "GET",
+            dataType:'json',
+            async: false
+        });
+
+        request.done(function(e){
+
+            if(e.status)
+            {
+                return simpleChart(e.data);
+            }
+        });
+
+        request.fail(function (e) {
+            console.log("fail");
+            console.log(e);
+        })
+    }
+

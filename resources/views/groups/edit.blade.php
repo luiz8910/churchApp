@@ -32,6 +32,9 @@ License: You must have a valid license purchased only from themeforest(the above
     <link href="../../assets/global/plugins/typeahead/typeahead.css" rel="stylesheet" type="text/css"/>
     <link href="../../assets/global/plugins/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet"
           type="text/css"/>
+
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="../../assets/pages/scripts/highcharts-exporting.js"></script>                          
     <!-- END PAGE LEVEL PLUGINS -->
 </head>
 <!-- END HEAD -->
@@ -371,7 +374,6 @@ License: You must have a valid license purchased only from themeforest(the above
                     </div>
                     <!-- END PROFILE CONTENT -->
 
-                    <!-- BEGIN PROFILE CONTENT -->
                     <div class="profile-content">
                         <div class="row">
                             <div class="col-md-12">
@@ -380,53 +382,20 @@ License: You must have a valid license purchased only from themeforest(the above
                                     <div class="portlet-title">
                                         <div class="caption">
                                             <i class="icon-bar-chart font-green-haze"></i>
-                                            <span class="caption-subject bold uppercase font-green-haze"> 3D Pie Chart</span>
-                                            <span class="caption-helper">bar and line chart mix</span>
-                                        </div>
-                                        <div class="tools">
-                                            <a href="javascript:;" class="collapse"> </a>
-                                            <a href="#portlet-config" data-toggle="modal" class="config"> </a>
-                                            <a href="javascript:;" class="reload"> </a>
-                                            <a href="javascript:;" class="fullscreen"> </a>
-                                            <a href="javascript:;" class="remove"> </a>
+                                            <span class="caption-subject bold uppercase font-green-haze"> Dados do Grupo</span>
                                         </div>
 
 
-                                        <input type="hidden" id="singleMother_qty_chart_label" value="Mulheres solteiras com filhos">
-                                        <input type="hidden" id="singleMother_qty_chart_value" value="{{ $quantitySingleMother }}">
+                                        <div id="container"></div>
 
-                                        <input type="hidden" id="singleFather_qty_chart_label" value="Homens solteiros com filhos">
-                                        <input type="hidden" id="singleFather_qty_chart_value" value="{{ $quantitySingleFather }}">
 
-                                        <input type="hidden" id="singleWomen_qty_chart_label" value="Mulheres solteiras">
-                                        <input type="hidden" id="singleWomen_qty_chart_value" value="{{ $quantitySingleWomen }}">
 
-                                        <input type="hidden" id="singleMen_qty_chart_label" value="Homens solteiros">
-                                        <input type="hidden" id="singleMen_qty_chart_value" value="{{ $quantitySingleMen }}">
-
-                                        <input type="hidden" id="marriedWomenNoKids_qty_chart_label" value="Mulheres casadas sem filhos">
-                                        <input type="hidden" id="marriedWomenNoKids_qty_chart_value" value="{{ $quantityMarriedWomenNoKids }}">
-
-                                        <input type="hidden" id="marriedMenNoKids_qty_chart_label" value="Homens casados sem filhos">
-                                        <input type="hidden" id="marriedMenNoKids_qty_chart_value" value="{{ $quantityMarriedMenNoKids }}">
-
-                                        <input type="hidden" id="marriedMenOutsideChurch_qty_chart_label" value="Homens casados com parceira fora da igreja">
-                                        <input type="hidden" id="marriedMenOutsideChurch_qty_chart_value" value="{{ $quantityMarriedMenOutsideChurch }}">
-
-                                        <input type="hidden" id="marriedWomenOutsideChurch_qty_chart_label" value="Mulheres casadas com parceiro fora da igreja">
-                                        <input type="hidden" id="marriedWomenOutsideChurch_qty_chart_value" value="{{ $quantityMarriedWomenOutsideChurch }}">
-
-                                    </div>
-                                    <div class="portlet-body">
-                                        <div id="chart_7" class="chart" style="height: 400px;"> </div>
                                     </div>
                                 </div>
-                                <!-- END CHART PORTLET-->
                             </div>
                         </div>
-
                     </div>
-                    <!-- END PROFILE CONTENT -->
+
 
                     <div class="row">
                         <div class="col-md-12">
@@ -1649,17 +1618,6 @@ License: You must have a valid license purchased only from themeforest(the above
 <!-- BEGIN PAGE LEVEL PLUGINS -->
 <script src="../../assets/global/plugins/bootstrap-select/js/bootstrap-select.min.js" type="text/javascript"></script>
 
-<script src="../../assets/global/plugins/amcharts/amcharts/amcharts.js" type="text/javascript"></script>
-<script src="../../assets/global/plugins/amcharts/amcharts/serial.js" type="text/javascript"></script>
-<script src="../../assets/global/plugins/amcharts/amcharts/pie.js" type="text/javascript"></script>
-<script src="../../assets/global/plugins/amcharts/amcharts/radar.js" type="text/javascript"></script>
-<script src="../../assets/global/plugins/amcharts/amcharts/themes/light.js" type="text/javascript"></script>
-<script src="../../assets/global/plugins/amcharts/amcharts/themes/patterns.js" type="text/javascript"></script>
-<script src="../../assets/global/plugins/amcharts/amcharts/themes/chalk.js" type="text/javascript"></script>
-<script src="../../assets/global/plugins/amcharts/ammap/ammap.js" type="text/javascript"></script>
-<script src="../../assets/global/plugins/amcharts/ammap/maps/js/worldLow.js" type="text/javascript"></script>
-<script src="../../assets/global/plugins/amcharts/amstockcharts/amstock.js" type="text/javascript"></script>
-
 <!-- END PAGE LEVEL PLUGINS -->
 <!-- BEGIN THEME GLOBAL SCRIPTS -->
 <script src="../../assets/global/scripts/app.min.js" type="text/javascript"></script>
@@ -1708,6 +1666,7 @@ License: You must have a valid license purchased only from themeforest(the above
 <script src="../../js/cep.js"></script>
 <script src="../../js/maskbrphone.js"></script>
 <script src="../../js/ajax.js"></script>
+<script src="../../js/chart.js"></script>
 
 <script src="../../assets/global/plugins/jquery-notific8/jquery.notific8.min.js" type="text/javascript"></script>
 <script src="../../assets/pages/scripts/ui-notific8.js" type="text/javascript"></script>
@@ -1847,6 +1806,7 @@ License: You must have a valid license purchased only from themeforest(the above
     }
 
 </script>
+
 
 
 <!-- END PAGE LEVEL SCRIPTS -->
