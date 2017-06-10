@@ -54,6 +54,10 @@ class EventController extends Controller
      * @var RoleRepository
      */
     private $roleRepository;
+    /**
+     * @var EventServices
+     */
+    private $eventServices;
 
     /**
      * EventController constructor.
@@ -66,7 +70,8 @@ class EventController extends Controller
      */
     public function __construct(EventRepository $repository, StateRepository $stateRepository,
                                 UserRepository $userRepository, GroupRepository $groupRepository,
-                                PersonRepository $personRepository, RoleRepository $roleRepository)
+                                PersonRepository $personRepository, RoleRepository $roleRepository,
+                                EventServices $eventServices)
     {
         $this->repository = $repository;
         $this->stateRepository = $stateRepository;
@@ -74,6 +79,7 @@ class EventController extends Controller
         $this->groupRepository = $groupRepository;
         $this->personRepository = $personRepository;
         $this->roleRepository = $roleRepository;
+        $this->eventServices = $eventServices;
     }
 
 
@@ -652,9 +658,18 @@ class EventController extends Controller
 
         $this->repository->update($data, $id);
 
+        $this->eventServices->changeEventDays($id);
+
         return redirect()->route('event.index');
     }
 
+
+    public function testeData($id)
+    {
+        $this->eventServices->changeEventDays($id);
+
+        return redirect()->route('event.index');
+    }
 
     public function check($id)
     {

@@ -494,9 +494,22 @@ License: You must have a valid license purchased only from themeforest(the above
                                         </div>
                                         <hr><br>
 
-                                        <div class="loader"></div>
                                         <div class="row">
-                                            <div class="col-md-6">
+                                            <div class="col-md-12">
+                                                <div class="div-loading">
+                                                    <i class="fa fa-refresh fa-spin fa-5x fa-fw"
+                                                       id="icon-loading-cep">
+                                                    </i>
+                                                    <p class="text-center" id="p-loading-cep" style="display: block;">
+                                                        Buscando Cep ...
+                                                    </p>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6 input-address">
                                                 <div class="form-group">
                                                     <label>CEP (sem traços)</label>
                                                     <div class="input-group">
@@ -511,7 +524,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                         </div>
 
                                         <div class="row">
-                                            <div class="col-md-6">
+                                            <div class="col-md-6 input-address">
                                                 <div class="form-group">
                                                     <label>Logradouro</label>
                                                     <div class="input-group">
@@ -523,7 +536,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-6 input-address">
                                                 <div class="form-group">
                                                     <label>Bairro</label>
                                                     <div class="input-group">
@@ -538,7 +551,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                         </div>
 
                                         <div class="row">
-                                            <div class="col-md-6">
+                                            <div class="col-md-6 input-address">
                                                 <div class="form-group">
                                                     <label>Cidade</label>
                                                     <div class="input-group">
@@ -550,7 +563,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-6 input-address">
                                                 <div class="form-group">
                                                     <label>Estado</label>
                                                     <select name="state" class="form-control" id="state">

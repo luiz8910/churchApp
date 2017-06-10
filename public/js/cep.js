@@ -35,40 +35,49 @@ $(function() {
 
             //Valida o formato do CEP.
             if(validacep.test(cep)) {
-
-                $(".loader").css("display", "block");
+                $(".input-address").css('display', 'none');
+                $(".div-loading").css('display', 'block');
                 //Preenche os campos com "..." enquanto consulta webservice.
-                $("#street").val("...");
+
+                /*$("#street").val("...");
                 $("#neighborhood").val("...");
-                $("#city").val("...");
+                $("#city").val("...");*/
 
                 //Consulta o webservice viacep.com.br/
                 $.getJSON("//viacep.com.br/ws/"+ cep +"/json/?callback=?", function(dados) {
 
                     if (!("erro" in dados)) {
                         //Atualiza os campos com os valores da consulta.
-                        $("#street").val(dados.logradouro);
-                        $("#neighborhood").val(dados.bairro);
-                        $("#city").val(dados.localidade);
-                        $("#state").val(dados.uf);
-                        $(".loader").css("display", "none");
+                        setTimeout(function () {
+                            $(".div-loading").css('display', 'none');
+                            $(".input-address").css('display', 'block');
+                            $("#street").val(dados.logradouro).focus();
+                            $("#neighborhood").val(dados.bairro);
+                            $("#city").val(dados.localidade);
+                            $("#state").val(dados.uf);
+                        }, 2000);
+
+
                     } //end if.
                     else {
                         //CEP pesquisado não foi encontrado.
                         limpa_formulário_cep();
-                        $(".loader").css("display", "none");
+                        $(".div-loading").css('display', 'none');
+                        $(".input-address").css('display', 'block');
                     }
                 });
             } //end if.
             else {
                 //cep é inválido.
                 limpa_formulário_cep();
-                $(".loader").css("display", "none");
+                $(".div-loading").css('display', 'none');
+                $(".input-address").css('display', 'block');
             }
         } //end if.
         else {
             //cep sem valor, limpa formulário.
-            $(".loader").css("display", "none");
+            $(".div-loading").css('display', 'none');
+            $(".input-address").css('display', 'block');
             limpa_formulário_cep();
         }
     });

@@ -639,9 +639,22 @@ License: You must have a valid license purchased only from themeforest(the above
                                             <hr><br>
 
 
-                                            <div class="loader"></div>
                                             <div class="row">
-                                                <div class="col-md-3">
+                                                <div class="col-md-12">
+                                                    <div class="div-loading">
+                                                        <i class="fa fa-refresh fa-spin fa-5x fa-fw"
+                                                           id="icon-loading-cep">
+                                                        </i>
+                                                        <p class="text-center" id="p-loading-cep" style="display: block;">
+                                                            Buscando Cep ...
+                                                        </p>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-3 input-address">
                                                     {!! Form::FormGroup('zipCode', $errors) !!}
                                                     <label class="control-label">CEP</label>
                                                     <input type="text" placeholder="12123-12" value="{{ $person->zipCode }}"
@@ -649,7 +662,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     {!! Form::error('zipCode', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
                                                 </div>
-                                                <div class="col-md-9">
+                                                <div class="col-md-9 input-address">
                                                     {!! Form::FormGroup('street', $errors) !!}
                                                     <label class="control-label">Logradouro</label>
                                                     <input type="text" placeholder="Rua dos Bobos, 0" value="{{ $person->street }}" id="street"
@@ -660,7 +673,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                             </div>
 
                                             <div class="row">
-                                                <div class="col-md-4">
+                                                <div class="col-md-4 input-address">
                                                     {!! Form::FormGroup('neighborhood', $errors) !!}
                                                     <label class="control-label">Bairro</label>
                                                     <input type="text" placeholder="Vila Progresso" value="{{ $person->neighborhood }}"
@@ -668,7 +681,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     {!! Form::error('neighborhood', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
                                                 </div>
-                                                <div class="col-md-4">
+                                                <div class="col-md-4 input-address">
                                                     {!! Form::FormGroup('city', $errors) !!}
                                                     <label class="control-label">Cidade</label>
                                                     <input type="text" placeholder="Sorocaba" name="city" value="{{ $person->city }}"
@@ -676,7 +689,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     {!! Form::error('city', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
                                                 </div>
-                                                <div class="col-md-4">
+                                                <div class="col-md-4 input-address">
                                                     {!! Form::FormGroup('state', $errors) !!}
                                                     <label class="control-label">UF:</label>
                                                     <select name="state" class="form-control" id="state">
