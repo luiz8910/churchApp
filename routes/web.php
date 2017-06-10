@@ -214,4 +214,3 @@ Route::group(['middleware' => 'auth'], function () {
 
 
 //Testes
-Route::get('testeData/{id}', 'EventController@testeData');

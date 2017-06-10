@@ -58,6 +58,10 @@ class EventController extends Controller
      * @var EventServices
      */
     private $eventServices;
+    /**
+     * @var AgendaServices
+     */
+    private $agendaServices;
 
     /**
      * EventController constructor.
@@ -71,7 +75,7 @@ class EventController extends Controller
     public function __construct(EventRepository $repository, StateRepository $stateRepository,
                                 UserRepository $userRepository, GroupRepository $groupRepository,
                                 PersonRepository $personRepository, RoleRepository $roleRepository,
-                                EventServices $eventServices)
+                                EventServices $eventServices, AgendaServices $agendaServices)
     {
         $this->repository = $repository;
         $this->stateRepository = $stateRepository;
@@ -80,6 +84,7 @@ class EventController extends Controller
         $this->personRepository = $personRepository;
         $this->roleRepository = $roleRepository;
         $this->eventServices = $eventServices;
+        $this->agendaServices = $agendaServices;
     }
 
 
@@ -134,13 +139,13 @@ class EventController extends Controller
         $today = date("Y-m-d");
 
         //Recupera todos os meses
-        $allMonths = AgendaServices::allMonths();
+        $allMonths = $this->agendaServices->allMonths();
 
         //Recuperar todos os dias da semana
-        $allDays = AgendaServices::allDaysName();
+        $allDays = $this->agendaServices->allDaysName();
 
         //Recupera a semana atual
-        $days = AgendaServices::findWeek();
+        $days = $this->agendaServices->findWeek();
 
         //Contador de semanas
         $cont = 1;
@@ -150,16 +155,16 @@ class EventController extends Controller
         {
             $time = $cont == 1 ? 'next' : $cont;
 
-            $days = array_merge($days, AgendaServices::findWeek($time));
+            $days = array_merge($days, $this->agendaServices->findWeek($time));
 
             $cont++;
         }
 
         //Retorna todos os eventos
-        $allEvents = EventServices::allEvents();
+        $allEvents = $this->eventServices->allEvents();
 
         //Recupera o mês atual
-        $thisMonth = AgendaServices::thisMonth();
+        $thisMonth = $this->agendaServices->thisMonth();
 
         //Ano Atual
         $ano = date("Y");
@@ -220,13 +225,13 @@ class EventController extends Controller
         $today = date("Y-m-d");
 
         //Recupera todos os meses
-        $allMonths = AgendaServices::allMonths();
+        $allMonths = $this->agendaServices->allMonths();
 
         //Recuperar todos os dias da semana
-        $allDays = AgendaServices::allDaysName();
+        $allDays = $this->agendaServices->allDaysName();
 
         //Retorna todos os eventos
-        $allEvents = EventServices::allEvents();
+        $allEvents = $this->eventServices->allEvents();
 
         //Ano Atual
         $ano = date("Y");
@@ -518,7 +523,7 @@ class EventController extends Controller
 
         if($data["frequency"] != "Encontro Unico")
         {
-            EventServices::newEventDays($event->id, $data['eventDate'], $data['frequency']);
+            $this->eventServices->newEventDays($event->id, $data['eventDate'], $data['frequency']);
         }
 
         $this->setChurch_id($event);
@@ -596,7 +601,7 @@ class EventController extends Controller
 
         $qtde = count($notify);
 
-        $eventDays = EventServices::eventDays($id);
+        $eventDays = $this->eventServices->eventDays($id);
 
         foreach ($eventDays as $eventDay) {
             $eventDay->eventDate = $this->formatDateView($eventDay->eventDate);
@@ -604,14 +609,14 @@ class EventController extends Controller
 
         $check = "check-in";
 
-        $eventFrequency = EventServices::eventFrequency($id);
+        $eventFrequency = $this->eventServices->eventFrequency($id);
 
-        $eventPeople = EventServices::eventPeople($id);
+        $eventPeople = $this->eventServices->eventPeople($id);
 
         foreach ($eventPeople as $item)
         {
             $item->name = $this->personRepository->find($item->person_id)->name;
-            $item->frequency = EventServices::userFrequency($id, $item->person_id);
+            $item->frequency = $this->eventServices->userFrequency($id, $item->person_id);
         }
 
         $group = $event->group or null;
@@ -620,11 +625,12 @@ class EventController extends Controller
 
         $sub = false;
 
-        $canCheckIn = EventServices::canCheckIn($id);
+        $canCheckIn = $this->eventServices->canCheckIn($id);
+        
 
         if($canCheckIn)
         {
-            $sub = EventServices::isSubscribed($id);
+            $sub = $this->eventServices->isSubscribed($id);
         }
 
         return view('events.edit', compact('countPerson', 'countGroups', 'state', 'roles', 'event', 'location',
@@ -663,13 +669,6 @@ class EventController extends Controller
         return redirect()->route('event.index');
     }
 
-
-    public function testeData($id)
-    {
-        $this->eventServices->changeEventDays($id);
-
-        return redirect()->route('event.index');
-    }
 
     public function check($id)
     {
@@ -712,7 +711,7 @@ class EventController extends Controller
 
     public function checkInEvent($id)
     {
-        return EventServices::check($id);
+        return $this->eventServices->check($id);
     }
 
     /*
@@ -722,7 +721,7 @@ class EventController extends Controller
      * */
     public function checkOutEvent($id)
     {
-        return EventServices::checkOut($id);
+        return $this->eventServices->checkOut($id);
     }
 
 

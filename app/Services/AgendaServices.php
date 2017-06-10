@@ -11,7 +11,7 @@ namespace App\Services;
 
 class AgendaServices
 {
-    public static function findWeek($week = null)
+    public function findWeek($week = null)
     {
         $i = 1;
 
@@ -98,7 +98,7 @@ class AgendaServices
         return $days;
     }
 
-    public static function findMonth($month, $week = null)
+    public function findMonth($month, $week = null)
     {
         $i = 1;
 
@@ -201,12 +201,12 @@ class AgendaServices
 
     }
 
-    public static function thisMonth()
+    public function thisMonth()
     {
         return date("n");
     }
 
-    public static function allMonths()
+    public function allMonths()
     {
         $month[] = "";
         $month[] = "Janeiro";
@@ -225,7 +225,7 @@ class AgendaServices
         return $month;
     }
 
-    public static function allDaysName()
+    public function allDaysName()
     {
         $days[] = '';
         $days[] = "Segunda-Feira";

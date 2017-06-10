@@ -37,14 +37,25 @@ class DashboardController extends Controller
      * @var VisitorRepository
      */
     private $visitorRepository;
+    /**
+     * @var AgendaServices
+     */
+    private $agendaServices;
+    /**
+     * @var EventServices
+     */
+    private $eventServices;
 
     public function __construct(EventRepository $eventRepository, GroupRepository $groupRepository,
-                                PersonRepository $personRepository, VisitorRepository $visitorRepository)
+                                PersonRepository $personRepository, VisitorRepository $visitorRepository,
+                                AgendaServices $agendaServices, EventServices $eventServices)
     {
         $this->eventRepository = $eventRepository;
         $this->groupRepository = $groupRepository;
         $this->personRepository = $personRepository;
         $this->visitorRepository = $visitorRepository;
+        $this->agendaServices = $agendaServices;
+        $this->eventServices = $eventServices;
     }
 
     public function index()
@@ -95,15 +106,15 @@ class DashboardController extends Controller
 
         $location = $this->formatGoogleMaps($event);
 
-        $days = AgendaServices::findWeek();
+        $days = $this->agendaServices->findWeek();
 
-        $nextWeek = AgendaServices::findWeek('next');
+        $nextWeek = $this->agendaServices->findWeek('next');
 
-        $prevWeek = AgendaServices::findWeek('prev');
+        $prevWeek = $this->agendaServices->findWeek('prev');
 
-        $twoWeeks = AgendaServices::findWeek('2 weeks');
+        $twoWeeks = $this->agendaServices->findWeek('2 weeks');
 
-        $allEvents = EventServices::allEvents();
+        $allEvents = $this->eventServices->allEvents();
 
         for($i = 0; $i < 7; $i++) { array_push($days, $nextWeek[$i]); }
 
@@ -127,59 +138,59 @@ class DashboardController extends Controller
         $prevMonth5 = [];
         $prevMonth6 = [];
 
-        $prevMonth = array_merge($prevMonth, AgendaServices::findMonth(-1));
-        $prevMonth = array_merge($prevMonth, AgendaServices::findMonth(-1, 'next'));
-        $prevMonth = array_merge($prevMonth, AgendaServices::findMonth(-1, '2 weeks'));
+        $prevMonth = array_merge($prevMonth, $this->agendaServices->findMonth(-1));
+        $prevMonth = array_merge($prevMonth, $this->agendaServices->findMonth(-1, 'next'));
+        $prevMonth = array_merge($prevMonth, $this->agendaServices->findMonth(-1, '2 weeks'));
 
-        $prevMonth2 = array_merge($prevMonth2, AgendaServices::findMonth(-2));
-        $prevMonth2 = array_merge($prevMonth2, AgendaServices::findMonth(-2, 'next'));
-        $prevMonth2 = array_merge($prevMonth2, AgendaServices::findMonth(-2, '2 weeks'));
+        $prevMonth2 = array_merge($prevMonth2, $this->agendaServices->findMonth(-2));
+        $prevMonth2 = array_merge($prevMonth2, $this->agendaServices->findMonth(-2, 'next'));
+        $prevMonth2 = array_merge($prevMonth2, $this->agendaServices->findMonth(-2, '2 weeks'));
 
-        $prevMonth3 = array_merge($prevMonth3, AgendaServices::findMonth(-3));
-        $prevMonth3 = array_merge($prevMonth3, AgendaServices::findMonth(-3, 'next'));
-        $prevMonth3 = array_merge($prevMonth3, AgendaServices::findMonth(-3, '2 weeks'));
+        $prevMonth3 = array_merge($prevMonth3, $this->agendaServices->findMonth(-3));
+        $prevMonth3 = array_merge($prevMonth3, $this->agendaServices->findMonth(-3, 'next'));
+        $prevMonth3 = array_merge($prevMonth3, $this->agendaServices->findMonth(-3, '2 weeks'));
 
-        $prevMonth4 = array_merge($prevMonth4, AgendaServices::findMonth(-4));
-        $prevMonth4 = array_merge($prevMonth4, AgendaServices::findMonth(-4, 'next'));
-        $prevMonth4 = array_merge($prevMonth4, AgendaServices::findMonth(-4, '2 weeks'));
+        $prevMonth4 = array_merge($prevMonth4, $this->agendaServices->findMonth(-4));
+        $prevMonth4 = array_merge($prevMonth4, $this->agendaServices->findMonth(-4, 'next'));
+        $prevMonth4 = array_merge($prevMonth4, $this->agendaServices->findMonth(-4, '2 weeks'));
 
-        $prevMonth5 = array_merge($prevMonth5, AgendaServices::findMonth(-5));
-        $prevMonth5 = array_merge($prevMonth5, AgendaServices::findMonth(-5, 'next'));
-        $prevMonth5 = array_merge($prevMonth5, AgendaServices::findMonth(-5, '2 weeks'));
+        $prevMonth5 = array_merge($prevMonth5, $this->agendaServices->findMonth(-5));
+        $prevMonth5 = array_merge($prevMonth5, $this->agendaServices->findMonth(-5, 'next'));
+        $prevMonth5 = array_merge($prevMonth5, $this->agendaServices->findMonth(-5, '2 weeks'));
 
-        $prevMonth6 = array_merge($prevMonth6, AgendaServices::findMonth(-6));
-        $prevMonth6 = array_merge($prevMonth6, AgendaServices::findMonth(-6, 'next'));
-        $prevMonth6 = array_merge($prevMonth6, AgendaServices::findMonth(-6, '2 weeks'));
+        $prevMonth6 = array_merge($prevMonth6, $this->agendaServices->findMonth(-6));
+        $prevMonth6 = array_merge($prevMonth6, $this->agendaServices->findMonth(-6, 'next'));
+        $prevMonth6 = array_merge($prevMonth6, $this->agendaServices->findMonth(-6, '2 weeks'));
 
         //$p = AgendaServices::findMonth(1, 'prev');
 
-        $nextMonth = array_merge($nextMonth, AgendaServices::findMonth(1));
-        $nextMonth = array_merge($nextMonth, AgendaServices::findMonth(1, 'next'));
-        $nextMonth = array_merge($nextMonth, AgendaServices::findMonth(1, '2 weeks'));
+        $nextMonth = array_merge($nextMonth, $this->agendaServices->findMonth(1));
+        $nextMonth = array_merge($nextMonth, $this->agendaServices->findMonth(1, 'next'));
+        $nextMonth = array_merge($nextMonth, $this->agendaServices->findMonth(1, '2 weeks'));
 
-        $nextMonth2 = array_merge($nextMonth2, AgendaServices::findMonth(2));
-        $nextMonth2 = array_merge($nextMonth2, AgendaServices::findMonth(2, 'next'));
-        $nextMonth2 = array_merge($nextMonth2, AgendaServices::findMonth(2, '2 weeks'));
+        $nextMonth2 = array_merge($nextMonth2, $this->agendaServices->findMonth(2));
+        $nextMonth2 = array_merge($nextMonth2, $this->agendaServices->findMonth(2, 'next'));
+        $nextMonth2 = array_merge($nextMonth2, $this->agendaServices->findMonth(2, '2 weeks'));
 
-        $nextMonth3 = array_merge($nextMonth3, AgendaServices::findMonth(3));
-        $nextMonth3 = array_merge($nextMonth3, AgendaServices::findMonth(3, 'next'));
-        $nextMonth3 = array_merge($nextMonth3, AgendaServices::findMonth(3, '2 weeks'));
+        $nextMonth3 = array_merge($nextMonth3, $this->agendaServices->findMonth(3));
+        $nextMonth3 = array_merge($nextMonth3, $this->agendaServices->findMonth(3, 'next'));
+        $nextMonth3 = array_merge($nextMonth3, $this->agendaServices->findMonth(3, '2 weeks'));
 
-        $nextMonth4 = array_merge($nextMonth4, AgendaServices::findMonth(4));
-        $nextMonth4 = array_merge($nextMonth4, AgendaServices::findMonth(4, 'next'));
-        $nextMonth4 = array_merge($nextMonth4, AgendaServices::findMonth(4, '2 weeks'));
+        $nextMonth4 = array_merge($nextMonth4, $this->agendaServices->findMonth(4));
+        $nextMonth4 = array_merge($nextMonth4, $this->agendaServices->findMonth(4, 'next'));
+        $nextMonth4 = array_merge($nextMonth4, $this->agendaServices->findMonth(4, '2 weeks'));
 
-        $nextMonth5 = array_merge($nextMonth5, AgendaServices::findMonth(5));
-        $nextMonth5 = array_merge($nextMonth5, AgendaServices::findMonth(5, 'next'));
-        $nextMonth5 = array_merge($nextMonth5, AgendaServices::findMonth(5, '2 weeks'));
+        $nextMonth5 = array_merge($nextMonth5, $this->agendaServices->findMonth(5));
+        $nextMonth5 = array_merge($nextMonth5, $this->agendaServices->findMonth(5, 'next'));
+        $nextMonth5 = array_merge($nextMonth5, $this->agendaServices->findMonth(5, '2 weeks'));
 
-        $nextMonth6 = array_merge($nextMonth6, AgendaServices::findMonth(6));
-        $nextMonth6 = array_merge($nextMonth6, AgendaServices::findMonth(6, 'next'));
-        $nextMonth6 = array_merge($nextMonth6, AgendaServices::findMonth(6, '2 weeks'));
+        $nextMonth6 = array_merge($nextMonth6, $this->agendaServices->findMonth(6));
+        $nextMonth6 = array_merge($nextMonth6, $this->agendaServices->findMonth(6, 'next'));
+        $nextMonth6 = array_merge($nextMonth6, $this->agendaServices->findMonth(6, '2 weeks'));
 
-        $allMonths = AgendaServices::allMonths();
+        $allMonths = $this->agendaServices->allMonths();
 
-        $allDays = AgendaServices::allDaysName();
+        $allDays = $this->agendaServices->allDaysName();
 
         //dd($notify);
 

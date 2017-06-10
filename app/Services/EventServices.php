@@ -32,7 +32,7 @@ class EventServices
      * @param $id ($event_id)
      * @return \DateTime
      */
-    public static function eventDays($id)
+    public function eventDays($id)
     {
         $eventDate = DB::table('event_person')
             ->where([
@@ -56,7 +56,7 @@ class EventServices
      * @param $person_id
      * @return Event
      */
-    public static function eventFrequency($id)
+    public function eventFrequency($id)
     {
         $event = DB::table('event_person')->
             where([
@@ -75,7 +75,7 @@ class EventServices
      * Retorna todas as pessoas que participam do evento
      * @param $id (event_id)
      */
-    public static function eventPeople($id)
+    public function eventPeople($id)
     {
         $event = DB::table('event_person')
             ->where([
@@ -97,7 +97,7 @@ class EventServices
      * @param $person_id
      * @return float|int
      */
-    public static function userFrequency($id, $person_id)
+    public function userFrequency($id, $person_id)
     {
         $event_qtde = count(DB::table('event_person')
             ->where([
@@ -133,7 +133,7 @@ class EventServices
      * @param $eventDate (data do primeiro evento)
      * @param $frequency (frequência do evento)
      */
-    public static function newEventDays($id, $eventDate, $frequency)
+    public function newEventDays($id, $eventDate, $frequency)
     {
         $show = $eventDate == date("Y-m-d") ? 1 : 0;
 
@@ -180,7 +180,7 @@ class EventServices
      * Retorna todos os eventos
      * @return Event
      */
-    public static function allEvents()
+    public function allEvents()
     {
         $church_id = \Auth::getUser()->church_id;
         
@@ -205,7 +205,7 @@ class EventServices
      * no evento selecionado
      * @return bool
      */
-    public static function isSubscribed($id)
+    public function isSubscribed($id)
     {
         $person = \Auth::getUser()->person_id;
         $today = date("Y-m-d");
@@ -230,9 +230,9 @@ class EventServices
      * $id = id do evento
      * Usado para realizar check-in do evento selecionado
      * */
-    public static function check($id)
+    public function check($id)
     {
-        $user = \Auth::getUser();
+        $user = \Auth::user();
 
         $date = date_create(date('Y-m-d'));
 
@@ -258,7 +258,7 @@ class EventServices
                 ]);
         }
         else{
-            $days = EventServices::eventDays($id);
+            $days = $this->eventDays($id);
 
             $today = date("Y-m-d");
 
@@ -287,9 +287,9 @@ class EventServices
      * $id = id do evento
      * Usado para realizar check-out do evento selecionado
      * */
-    public static function checkOut($id)
+    public function checkOut($id)
     {
-        $person = \Auth::getUser()->person_id;
+        $person = \Auth::user()->person_id;
         $today = date("Y-m-d");
 
         DB::table('event_person')
@@ -316,7 +316,7 @@ class EventServices
      * correspondem com a data do evento selecionado
      *
      * */
-    public static function canCheckIn($id)
+    public function canCheckIn($id)
     {
         $today = date("Y-m-d");
         $time = date("H:i");
@@ -342,26 +342,37 @@ class EventServices
 
             $diff = date_diff($time, $startTime);
 
+            $diffInMin = $diff->format("%r%h") * 60;
+
+            $diffInMin += $diff->format("%r%i");
+
 
 
             if($endTime == "")
             {
 
-                if ($diff->format('%h:%i') > 0)
+                if ($diffInMin < 0)
                 {
+                    //return 'check-in permitido, diff < 0';
                     return true;
                 }
                 else{
+                    //return 'check-in bloqueado, diff > 0';
                     return false;
                 }
             }
             else{
                 $diffEnd = date_diff($time, $endTime);
 
-                if($diff->format('%h:%i') > 0 && $diffEnd->format('%h:%i') <= 0){
+                $diffInMinEnd = $diffEnd->format("%r%h") * 60;
+                $diffInMinEnd += $diffEnd->format("%r%i");
+
+                if($diffInMin < 0 && $diffInMinEnd >= 0){
+                    //return 'check-in permitido';
                     return true;
                 }
                 else{
+                    //return 'check-in bloqueado';
                     return false;
                 }
             }
