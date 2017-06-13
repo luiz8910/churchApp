@@ -626,16 +626,51 @@ class EventController extends Controller
         $sub = false;
 
         $canCheckIn = $this->eventServices->canCheckIn($id);
-        
 
         if($canCheckIn)
         {
             $sub = $this->eventServices->isSubscribed($id);
         }
 
-        return view('events.edit', compact('countPerson', 'countGroups', 'state', 'roles', 'event', 'location',
-            'notify', 'qtde', 'eventDays', 'eventFrequency', 'check', 'eventPeople',
-            'group', 'groups', 'sub', 'canCheckIn'));
+
+        $createdBy_id = $this->userRepository->find($event->createdBy_id)->person_id;
+
+        $createdBy = $this->userRepository->find($event->createdBy_id)->person;
+
+        $nextEventDate = DB::table('event_person')
+                            ->select('eventDate')
+                            ->where(
+                                [
+                                    'event_id' => $id,
+                                    'show' => 0
+                                ]
+                            )->first();
+
+
+        $nextEventDate = $this->formatDateView($nextEventDate->eventDate);
+
+        $leader = $this->getLeaderRoleId();
+
+        $preposicao = '';
+
+        if($event->frequency == "Semanal")
+        {
+            if($event->day == "Sabado" || $event->day == "Domingo")
+            {
+                $preposicao = "todo";
+            }
+            else{
+                $preposicao = "toda";
+            }
+        }
+        elseif($event->frequency == "Mensal"){
+            $preposicao = "todo dia";
+        }
+
+        return view('events.edit', compact('countPerson', 'countGroups', 'state', 'roles',
+            'event', 'location', 'notify', 'qtde', 'eventDays', 'eventFrequency', 'check',
+            'eventPeople', 'group', 'groups', 'sub', 'canCheckIn', 'createdBy_id', 'createdBy',
+            'nextEventDate', 'leader', 'preposicao'));
     }
 
     public function update(Request $request, $id)

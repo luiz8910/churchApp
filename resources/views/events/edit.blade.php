@@ -52,7 +52,7 @@ License: You must have a valid license purchased only from themeforest(the above
             <div class="container">
                 <!-- BEGIN PAGE TITLE -->
                 <div class="page-title">
-                    <h1>Perfil do Usuário
+                    <h1>Detalhes do Evento "{{ $event->name }}"
                         <small></small>
                     </h1>
                 </div>
@@ -71,7 +71,11 @@ License: You must have a valid license purchased only from themeforest(the above
                         <i class="fa fa-circle"></i>
                     </li>
                     <li>
-                        <span>Minha Conta</span>
+                        <a href="{{ route('event.index') }}">Eventos</a>
+                        <i class="fa fa-circle"></i>
+                    </li>
+                    <li>
+                        <span>"{{ $event->name }}"</span>
                     </li>
                 </ul>
                 <!-- END PAGE BREADCRUMBS -->
@@ -91,45 +95,144 @@ License: You must have a valid license purchased only from themeforest(the above
                         {{ Session::get('group.deleteMember') }}
                     </div>
                 @endif
+
+                <div class="page-content-inner">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 cols-xs-12">
+                            <br>
+                            <div >
+                                <img src="../../uploads/event/Banner-horizontal-Skull-Bus.jpg" style="width:100%; height: 300px;">
+                            </div>
+                            <br><br>
+                        </div>
+
+
+
+                        <div class="page-content-inner">
+                            <!--<div class="row">-->
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="portlet light portlet-fit ">
+                                    <div class="portlet-title">
+                                        <div class="caption">
+                                            <i class="icon-directions font-green hide"></i>
+                                            <span class="caption-subject bold font-dark uppercase "> Detalhes </span>
+                                            <span class="caption-helper"></span>
+                                        </div>
+                                        <div class="actions">
+                                            <div class="btn-group">
+                                                <a class="btn purple btn-outline btn-circle btn-sm" href="javascript:;" data-toggle="dropdown" data-hover="dropdown" data-close-others="true"> Ações
+                                                    <i class="fa fa-angle-down"></i>
+                                                </a>
+                                                <ul class="dropdown-menu pull-right">
+                                                    <li>
+                                                        <a
+                                                            @if(isset($group))
+                                                                href="{{ route('group.event.create', ['id' => $group->id]) }}"
+                                                            @else
+                                                                href="{{ route('group.create') }}"
+                                                            @endif>
+                                                            <i class="fa fa-bookmark font-purple"></i>
+                                                            Novo Evento
+                                                        </a>
+                                                    </li>
+                                                    @if(isset($group))
+                                                        <li>
+                                                            <a href="{{ route('group.addRemoveLoggedMember', ['id' => $group->id]) }}">
+                                                                <i class="fa fa-sign-in font-purple"></i>
+                                                                @if($sub)
+                                                                    Sair do grupo do Evento
+                                                                @else
+                                                                    Entrar no grupo do Evento
+                                                                @endif
+                                                            </a>
+                                                        </li>
+                                                    @endif
+                                                    @if(Auth::getUser()->person->role_id == $leader)
+                                                        <li class="divider"> </li>
+                                                        <li>
+                                                            <a href="javascript:;" data-toggle="modal" data-target="#modal-note">
+                                                                <i class="fa fa-picture-o font-purple"></i>
+                                                                Trocar Imagem
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="javascript:;">
+                                                                <i class="fa fa-ban font-red"></i>
+                                                                Excluir Evento
+                                                            </a>
+                                                        </li>
+                                                    @endif
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="portlet-body">
+                                        <div class="col-md-12">
+
+                                            <p>
+                                                <i class="fa fa-user font-purple"></i> Criado Por:
+                                                <a href="{{ route('person.edit', ['person' => $createdBy_id]) }}">
+                                                    {{ $createdBy->name }} {{ $createdBy->lastName }}
+                                                    <img src="../../{{ $createdBy->imgProfile }}" class="img-circle hidden-xs hidden-sm"
+                                                         style="width: 25px; margin-left: 10px;">
+                                                </a>
+                                            </p>
+
+                                            <p>
+                                                <i class="fa fa-calendar font-purple"></i> Próximo Encontro: {{ $nextEventDate }}
+                                            </p>
+
+                                            <p>
+                                                <i class="fa fa-clock-o font-purple"></i>
+                                                Inicio: {{ $event->startTime }} / Fim: {{ $event->endTime == '' ? 'Sem previsão' : $event->endTime }}
+                                            </p>
+
+                                            <p>
+                                                <i class="fa fa-pencil font-purple"></i>
+                                                Frequência: {{ $event->frequency }} - {{ $preposicao }} {{ $event->day }}
+                                            </p>
+
+                                            <p>
+                                                <i class="fa fa-users font-purple"></i>
+                                                Pertence ao Grupo:
+                                                    @if(isset($group))
+                                                        <a href="{{ route('group.edit', ['group' => $group->id]) }}">
+                                                            {{ $group->name }}
+                                                        </a>
+                                                    @else
+                                                        Sem Grupo
+                                                    @endif
+                                            </p>
+
+                                            <p>
+                                                <i class="fa fa-map-marker font-purple"></i>
+                                                {{ $event->street }} - {{ $event->neighborhood }} - {{ $event->city }} - {{ $event->state }}
+                                            </p>
+
+                                            <p>
+
+                                            <div>
+                                                <i class="fa fa-comments font-purple"></i>
+                                                Observações: <span> {{ $event->description }} </span>
+                                            </div>
+
+                                            </p>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <br><br>
+
                 <div class="page-content-inner">
                     <div class="row">
                         <div class="col-md-12">
-                            <!-- BEGIN PROFILE SIDEBAR -->
-                            <div class="profile-sidebar">
-                                <!-- PORTLET MAIN -->
-                                <div class="portlet light profile-sidebar-portlet ">
-                                    <!-- SIDEBAR USERPIC -->
-                                    <div class="profile-userpic">
-                                        <img src="../../uploads/profile/noimage.png" class="img-responsive" alt="">
-                                    </div>
-                                    <!-- END SIDEBAR USERPIC -->
-                                    <!-- SIDEBAR USER TITLE -->
-                                    <div class="profile-usertitle">
-                                        <div class="profile-usertitle-name"> {{ $event->name }}</div>
-                                        <div class="profile-usertitle-job"> {{ $event->eventDate }} </div>
-                                    </div>
-                                    <!-- END SIDEBAR USER TITLE -->
-
-                                    <!-- SIDEBAR MENU -->
-                                    <div class="profile-usermenu">
-                                        <ul class="nav">
-                                            <li class="active">
-                                                <a href="">
-                                                    <i class="icon-home"></i> Visão Geral </a>
-                                            </li>
-                                            <li>
-                                                <a href="">
-                                                    <i class="icon-info"></i> Detalhes </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <!-- END MENU -->
-                                </div>
-                                <!-- END PORTLET MAIN -->
-
-                            </div>
-                            <!-- END BEGIN PROFILE SIDEBAR -->
-
                             <!-- BEGIN PROFILE CONTENT -->
                             <div class="profile-content">
                                 <!--<div class="row">-->
@@ -181,7 +284,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                 <div class="portlet-title">
                                     <div class="caption">
                                         <i class="icon-settings font-red"></i>
-                                        <span class="caption-subject font-red sbold uppercase">Eventos</span>
+                                        <span class="caption-subject font-red sbold uppercase">Frequência</span>
                                     </div>
                                     <div class="actions">
                                         {!! Form::open(['route' => 'event.destroyMany', 'id' => 'form-destroyMany', 'method' => 'GET', 'id' => 'form']) !!}
@@ -211,6 +314,11 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         Check-In
                                                     </a>
                                                 @endif
+                                            @else
+                                                <a href="javascript:;" class="btn btn-success btn-circle" disabled>
+                                                    <i class="fa fa-check" id="i-checkIn"></i>
+                                                    Check-In
+                                                </a>
                                             @endif
 
                                             <a href="{{ route('event.create') }}" class="btn btn-primary btn-circle">
@@ -297,528 +405,530 @@ License: You must have a valid license purchased only from themeforest(the above
                     </div>
 
 
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="portlet light ">
-                                <div class="portlet-title tabbable-line">
-                                    <div class="caption caption-md">
-                                        <i class="icon-globe theme-font hide"></i>
-                                        <span class="caption-subject font-blue-madison bold uppercase">Dados do Evento</span>
+                    @if(Auth::getUser()->person->role_id == $leader)
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="portlet light ">
+                                    <div class="portlet-title tabbable-line">
+                                        <div class="caption caption-md">
+                                            <i class="icon-globe theme-font hide"></i>
+                                            <span class="caption-subject font-blue-madison bold uppercase">Dados do Evento</span>
+                                        </div>
+
                                     </div>
-
-                                </div>
-                                <div class="portlet-body form">
-                                    {!! Form::open(['route' => ['event.update', 'event' => $event->id], 'method' => 'PUT',
-                                    'role' => 'form', 'id' => 'form']) !!}
-                                    <div class="form-body">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label>Nome</label>
-                                                    <div class="input-group">
-                                                            <span class="input-group-addon">
-                                                                <i class="fa fa-user font-blue"></i>
-                                                            </span>
-                                                        <input type="text" name="name" class="form-control"
-                                                               placeholder="Encontro de Jovens" value="{{ $event->name }}">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div id="frequency" class="
-                                                    @if($event->frequency == "Semanal" || $event->frequency == "Mensal")
-                                                        col-md-3
-                                                    @else
-                                                        col-md-6
-                                                    @endif">
-                                                <div class="form-group">
-                                                    <label>Frequência</label>
-                                                    <div class="input-icon input-icon-sm">
-                                                        <i class="fa fa-briefcase"></i>
-                                                        <select class="form-control" name="frequency" id="select-frequency">
-                                                            <option value="Encontro Único"
-                                                            @if($event->frequency == "Encontro Único") selected @endif
-                                                                >Encontro Único
-                                                            </option>
-                                                            <option value="Diário"
-                                                                    @if($event->frequency == "Diário") selected @endif>
-                                                                Diário
-                                                            </option>
-                                                            <option value="Semanal"
-                                                                    @if($event->frequency == "Semanal") selected @endif
-                                                            >Semanal</option>
-                                                            <option value="Quinzenal"
-                                                                    @if($event->frequency == "Quinzenal") selected @endif
-                                                            >Quinzenal</option>
-                                                            <option value="Mensal"
-                                                                    @if($event->frequency == "Mensal") selected @endif
-                                                            >Mensal</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-
-                                            @if($event->frequency == "Semanal")
-                                                <div class="col-md-3" id="day">
+                                    <div class="portlet-body form">
+                                        {!! Form::open(['route' => ['event.update', 'event' => $event->id], 'method' => 'PUT',
+                                        'role' => 'form', 'id' => 'form']) !!}
+                                        <div class="form-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label>Selecione o dia da semana</label>
+                                                        <label>Nome</label>
+                                                        <div class="input-group">
+                                                                <span class="input-group-addon">
+                                                                    <i class="fa fa-user font-blue"></i>
+                                                                </span>
+                                                            <input type="text" name="name" class="form-control"
+                                                                   placeholder="Encontro de Jovens" value="{{ $event->name }}">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div id="frequency" class="
+                                                        @if($event->frequency == "Semanal" || $event->frequency == "Mensal")
+                                                            col-md-3
+                                                        @else
+                                                            col-md-6
+                                                        @endif">
+                                                    <div class="form-group">
+                                                        <label>Frequência</label>
                                                         <div class="input-icon input-icon-sm">
                                                             <i class="fa fa-briefcase"></i>
-                                                            <select class="form-control" name="day" required>
-                                                                <option value="Domingo"
-                                                                    @if($event->day == "Domingo") selected @endif
-                                                                >Domingo</option>
-                                                                <option value="Segunda-Feira"
-                                                                        @if($event->day == "Segunda-Feira") selected @endif
-                                                                >Segunda-Feira</option>
-
-                                                                <option value="Terça-Feira"
-                                                                @if($event->day == "Terça-Feira") selected @endif
-                                                                >Terça-Feira</option>
-
-                                                                <option value="Quarta-Feira"
-                                                                @if($event->day == "Quarta-Feira") selected @endif
-                                                                >Quarta-Feira</option>
-
-                                                                <option value="Quinta-Feira"
-                                                                @if($event->day == "Quinta-Feira") selected @endif
-                                                                >Quinta-Feira</option>
-
-                                                                <option value="Sexta-Feira"
-                                                                @if($event->day == "Sexta-Feira") selected @endif
-                                                                >Sexta-Feira</option>
-
-                                                                <option value="Sábado"
-                                                                @if($event->day == "Sábado") selected @endif
-                                                                >Sábado</option>
+                                                            <select class="form-control" name="frequency" id="select-frequency">
+                                                                <option value="Encontro Único"
+                                                                @if($event->frequency == "Encontro Único") selected @endif
+                                                                    >Encontro Único
+                                                                </option>
+                                                                <option value="Diário"
+                                                                        @if($event->frequency == "Diário") selected @endif>
+                                                                    Diário
+                                                                </option>
+                                                                <option value="Semanal"
+                                                                        @if($event->frequency == "Semanal") selected @endif
+                                                                >Semanal</option>
+                                                                <option value="Quinzenal"
+                                                                        @if($event->frequency == "Quinzenal") selected @endif
+                                                                >Quinzenal</option>
+                                                                <option value="Mensal"
+                                                                        @if($event->frequency == "Mensal") selected @endif
+                                                                >Mensal</option>
                                                             </select>
                                                         </div>
                                                     </div>
+
                                                 </div>
 
-                                                @elseif($event->frequency == "Mensal")
+                                                @if($event->frequency == "Semanal")
                                                     <div class="col-md-3" id="day">
                                                         <div class="form-group">
-                                                            <label>Selecione o dia</label>
+                                                            <label>Selecione o dia da semana</label>
                                                             <div class="input-icon input-icon-sm">
                                                                 <i class="fa fa-briefcase"></i>
                                                                 <select class="form-control" name="day" required>
-                                                                    <option value="">Selecione</option>
-                                                                    <?php $days = 32; $i = 1;?>
+                                                                    <option value="Domingo"
+                                                                        @if($event->day == "Domingo") selected @endif
+                                                                    >Domingo</option>
+                                                                    <option value="Segunda-Feira"
+                                                                            @if($event->day == "Segunda-Feira") selected @endif
+                                                                    >Segunda-Feira</option>
 
-                                                                    @while($i < $days)
-                                                                        <option value="{{ $i }}"
-                                                                                @if($event->day == $i ) selected @endif >
-                                                                            {{ $i }}
-                                                                        </option>
-                                                                        <?php $i++; ?>
-                                                                    @endwhile
+                                                                    <option value="Terça-Feira"
+                                                                    @if($event->day == "Terça-Feira") selected @endif
+                                                                    >Terça-Feira</option>
 
-                                                                    </select>
-                                                                </div>
+                                                                    <option value="Quarta-Feira"
+                                                                    @if($event->day == "Quarta-Feira") selected @endif
+                                                                    >Quarta-Feira</option>
+
+                                                                    <option value="Quinta-Feira"
+                                                                    @if($event->day == "Quinta-Feira") selected @endif
+                                                                    >Quinta-Feira</option>
+
+                                                                    <option value="Sexta-Feira"
+                                                                    @if($event->day == "Sexta-Feira") selected @endif
+                                                                    >Sexta-Feira</option>
+
+                                                                    <option value="Sábado"
+                                                                    @if($event->day == "Sábado") selected @endif
+                                                                    >Sábado</option>
+                                                                </select>
                                                             </div>
                                                         </div>
-
-                                            @endif
-
-
-
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-md-6 col-sm-12">
-                                                <div class="form-group">
-                                                    <label>Data do Próximo/Primeiro Encontro</label>
-                                                    <div class="input-group date date-picker" data-date-format="dd/mm/yyyy" data-date-start-date="+0d">
-
-                                                        <span class="input-group-btn">
-                                                            <button class="btn default" type="button">
-                                                                <i class="fa fa-calendar"></i>
-                                                            </button>
-                                                        </span>
-                                                        <input type="text" class="form-control" name="eventDate" id="eventDate" readonly value="{{ $event->eventDate }}">
                                                     </div>
-                                                    <span class="help-block">
-                                                        <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
-                                                            <input type="checkbox" name="allDay" id="allDay" class="checkboxes" value="1"
-                                                                   @if($event->allDay == 1) checked @endif />
-                                                            <span></span>Dia Inteiro
-                                                        </label>
-                                                    </span>
-                                                </div>
+
+                                                    @elseif($event->frequency == "Mensal")
+                                                        <div class="col-md-3" id="day">
+                                                            <div class="form-group">
+                                                                <label>Selecione o dia</label>
+                                                                <div class="input-icon input-icon-sm">
+                                                                    <i class="fa fa-briefcase"></i>
+                                                                    <select class="form-control" name="day" required>
+                                                                        <option value="">Selecione</option>
+                                                                        <?php $days = 32; $i = 1;?>
+
+                                                                        @while($i < $days)
+                                                                            <option value="{{ $i }}"
+                                                                                    @if($event->day == $i ) selected @endif >
+                                                                                {{ $i }}
+                                                                            </option>
+                                                                            <?php $i++; ?>
+                                                                        @endwhile
+
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                @endif
+
+
+
                                             </div>
 
-                                            <div class="col-md-6 col-sm-12">
-                                                <div class="form-group">
-                                                    <label class="control-label">Término do Evento</label>
+                                            <div class="row">
+                                                <div class="col-md-6 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label>Data do Próximo/Primeiro Encontro</label>
+                                                        <div class="input-group date date-picker" data-date-format="dd/mm/yyyy" data-date-start-date="+0d">
 
-                                                    <div class="input-group date date-picker" data-date-format="dd/mm/yyyy" data-date-start-date="+0d">
                                                             <span class="input-group-btn">
                                                                 <button class="btn default" type="button">
                                                                     <i class="fa fa-calendar"></i>
                                                                 </button>
                                                             </span>
-                                                        <input type="text" class="form-control" name="endEventDate" id="endEventDate" readonly value="{{ $event->endEventDate }}">
+                                                            <input type="text" class="form-control" name="eventDate" id="eventDate" readonly value="{{ $event->eventDate }}">
+                                                        </div>
+                                                        <span class="help-block">
+                                                            <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                                                <input type="checkbox" name="allDay" id="allDay" class="checkboxes" value="1"
+                                                                       @if($event->allDay == 1) checked @endif />
+                                                                <span></span>Dia Inteiro
+                                                            </label>
+                                                        </span>
                                                     </div>
-                                                    <!-- /input-group -->
-                                                    <span class="help-block"> Deixe em branco se a data de término é a mesma da data de ínicio </span>
-
                                                 </div>
-                                            </div>
-                                        </div>
 
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="" class="control-label">Hora Inicio</label>
-                                                    <div class="input-group">
-                                                            <span class="input-group-addon">
-                                                                <i class="fa fa-clock-o font-blue"></i>
-                                                            </span>
+                                                <div class="col-md-6 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Término do Evento</label>
 
-                                                        <select name="startTime" class="form-control" required>
-                                                            <option value="">Selecione</option>
-                                                            <option value="00:00"
-                                                                @if($event->startTime == "00:00") selected @endif
-                                                            >00:00</option>
-                                                            <option value="01:00"
-                                                                @if($event->startTime == "01:00") selected @endif
-                                                            >01:00</option>
-                                                            <option value="02:00"
-                                                                    @if($event->startTime == "02:00") selected @endif
-                                                            >02:00</option>
-                                                            <option value="03:00"
-                                                                    @if($event->startTime == "03:00") selected @endif
-                                                            >03:00</option>
-                                                            <option value="04:00"
-                                                                    @if($event->startTime == "04:00") selected @endif
-                                                            >04:00</option>
-                                                            <option value="05:00"
-                                                                    @if($event->startTime == "05:00") selected @endif
-                                                            >05:00</option>
-                                                            <option value="06:00"
-                                                                    @if($event->startTime == "06:00") selected @endif
-                                                            >06:00</option>
-                                                            <option value="07:00"
-                                                                    @if($event->startTime == "07:00") selected @endif
-                                                            >07:00</option>
-                                                            <option value="08:00"
-                                                                    @if($event->startTime == "08:00") selected @endif
-                                                            >08:00</option>
-                                                            <option value="09:00"
-                                                                    @if($event->startTime == "09:00") selected @endif
-                                                            >09:00</option>
-                                                            <option value="10:00"
-                                                                    @if($event->startTime == "10:00") selected @endif
-                                                            >10:00</option>
-                                                            <option value="11:00"
-                                                                    @if($event->startTime == "11:00") selected @endif
-                                                            >11:00</option>
-                                                            <option value="12:00"
-                                                                    @if($event->startTime == "12:00") selected @endif
-                                                            >12:00</option>
-                                                            <option value="13:00"
-                                                                    @if($event->startTime == "13:00") selected @endif
-                                                            >13:00</option>
-                                                            <option value="14:00"
-                                                                    @if($event->startTime == "14:00") selected @endif
-                                                            >14:00</option>
-                                                            <option value="15:00"
-                                                                    @if($event->startTime == "15:00") selected @endif
-                                                            >15:00</option>
-                                                            <option value="16:00"
-                                                                    @if($event->startTime == "16:00") selected @endif
-                                                            >16:00</option>
-                                                            <option value="17:00"
-                                                                    @if($event->startTime == "17:00") selected @endif
-                                                            >17:00</option>
-                                                            <option value="18:00"
-                                                                    @if($event->startTime == "18:00") selected @endif
-                                                            >18:00</option>
-                                                            <option value="19:00"
-                                                                    @if($event->startTime == "19:00") selected @endif
-                                                            >19:00</option>
-                                                            <option value="20:00"
-                                                                    @if($event->startTime == "20:00") selected @endif
-                                                            >20:00</option>
-                                                            <option value="21:00"
-                                                                    @if($event->startTime == "21:00") selected @endif
-                                                            >21:00</option>
-                                                            <option value="22:00"
-                                                                    @if($event->startTime == "22:00") selected @endif
-                                                            >22:00</option>
-                                                            <option value="23:00"
-                                                                    @if($event->startTime == "23:00") selected @endif
-                                                            >23:00</option>
-                                                        </select>
+                                                        <div class="input-group date date-picker" data-date-format="dd/mm/yyyy" data-date-start-date="+0d">
+                                                                <span class="input-group-btn">
+                                                                    <button class="btn default" type="button">
+                                                                        <i class="fa fa-calendar"></i>
+                                                                    </button>
+                                                                </span>
+                                                            <input type="text" class="form-control" name="endEventDate" id="endEventDate" readonly value="{{ $event->endEventDate }}">
+                                                        </div>
+                                                        <!-- /input-group -->
+                                                        <span class="help-block"> Deixe em branco se a data de término é a mesma da data de ínicio </span>
+
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="" class="control-label">Hora Fim</label>
-                                                    <div class="input-group">
-                                                            <span class="input-group-addon">
-                                                                <i class="fa fa-clock-o font-blue"></i>
-                                                            </span>
 
-                                                        <select name="endTime" class="form-control" id="">
-                                                            @if($event->endTime == null)
-                                                                <option value="">Selecione</option>
-                                                                <option value="00:00">00:00</option>
-                                                                <option value="01:00">01:00</option>
-                                                                <option value="02:00">02:00</option>
-                                                                <option value="03:00">03:00</option>
-                                                                <option value="04:00">04:00</option>
-                                                                <option value="05:00">05:00</option>
-                                                                <option value="06:00">06:00</option>
-                                                                <option value="07:00">07:00</option>
-                                                                <option value="08:00">08:00</option>
-                                                                <option value="09:00">09:00</option>
-                                                                <option value="10:00">10:00</option>
-                                                                <option value="11:00">11:00</option>
-                                                                <option value="12:00">12:00</option>
-                                                                <option value="13:00">13:00</option>
-                                                                <option value="14:00">14:00</option>
-                                                                <option value="15:00">15:00</option>
-                                                                <option value="16:00">16:00</option>
-                                                                <option value="17:00">17:00</option>
-                                                                <option value="18:00">18:00</option>
-                                                                <option value="19:00">19:00</option>
-                                                                <option value="20:00">20:00</option>
-                                                                <option value="21:00">21:00</option>
-                                                                <option value="22:00">22:00</option>
-                                                                <option value="23:00">23:00</option>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="" class="control-label">Hora Inicio</label>
+                                                        <div class="input-group">
+                                                                <span class="input-group-addon">
+                                                                    <i class="fa fa-clock-o font-blue"></i>
+                                                                </span>
 
-                                                                @else
-
+                                                            <select name="startTime" class="form-control" required>
                                                                 <option value="">Selecione</option>
                                                                 <option value="00:00"
-                                                                        @if($event->endTime == "00:00") selected @endif
+                                                                    @if($event->startTime == "00:00") selected @endif
                                                                 >00:00</option>
                                                                 <option value="01:00"
-                                                                        @if($event->endTime == "01:00") selected @endif
+                                                                    @if($event->startTime == "01:00") selected @endif
                                                                 >01:00</option>
                                                                 <option value="02:00"
-                                                                        @if($event->endTime == "02:00") selected @endif
+                                                                        @if($event->startTime == "02:00") selected @endif
                                                                 >02:00</option>
                                                                 <option value="03:00"
-                                                                        @if($event->endTime == "03:00") selected @endif
+                                                                        @if($event->startTime == "03:00") selected @endif
                                                                 >03:00</option>
                                                                 <option value="04:00"
-                                                                        @if($event->endTime == "04:00") selected @endif
+                                                                        @if($event->startTime == "04:00") selected @endif
                                                                 >04:00</option>
                                                                 <option value="05:00"
-                                                                        @if($event->endTime == "05:00") selected @endif
+                                                                        @if($event->startTime == "05:00") selected @endif
                                                                 >05:00</option>
                                                                 <option value="06:00"
-                                                                        @if($event->endTime == "06:00") selected @endif
+                                                                        @if($event->startTime == "06:00") selected @endif
                                                                 >06:00</option>
                                                                 <option value="07:00"
-                                                                        @if($event->endTime == "07:00") selected @endif
+                                                                        @if($event->startTime == "07:00") selected @endif
                                                                 >07:00</option>
                                                                 <option value="08:00"
-                                                                        @if($event->endTime == "08:00") selected @endif
+                                                                        @if($event->startTime == "08:00") selected @endif
                                                                 >08:00</option>
                                                                 <option value="09:00"
-                                                                        @if($event->endTime == "09:00") selected @endif
+                                                                        @if($event->startTime == "09:00") selected @endif
                                                                 >09:00</option>
                                                                 <option value="10:00"
-                                                                        @if($event->endTime == "10:00") selected @endif
+                                                                        @if($event->startTime == "10:00") selected @endif
                                                                 >10:00</option>
                                                                 <option value="11:00"
-                                                                        @if($event->endTime == "11:00") selected @endif
+                                                                        @if($event->startTime == "11:00") selected @endif
                                                                 >11:00</option>
                                                                 <option value="12:00"
-                                                                        @if($event->endTime == "12:00") selected @endif
+                                                                        @if($event->startTime == "12:00") selected @endif
                                                                 >12:00</option>
                                                                 <option value="13:00"
-                                                                        @if($event->endTime == "13:00") selected @endif
+                                                                        @if($event->startTime == "13:00") selected @endif
                                                                 >13:00</option>
                                                                 <option value="14:00"
-                                                                        @if($event->endTime == "14:00") selected @endif
+                                                                        @if($event->startTime == "14:00") selected @endif
                                                                 >14:00</option>
                                                                 <option value="15:00"
-                                                                        @if($event->endTime == "15:00") selected @endif
+                                                                        @if($event->startTime == "15:00") selected @endif
                                                                 >15:00</option>
                                                                 <option value="16:00"
-                                                                        @if($event->endTime == "16:00") selected @endif
+                                                                        @if($event->startTime == "16:00") selected @endif
                                                                 >16:00</option>
                                                                 <option value="17:00"
-                                                                        @if($event->endTime == "17:00") selected @endif
+                                                                        @if($event->startTime == "17:00") selected @endif
                                                                 >17:00</option>
                                                                 <option value="18:00"
-                                                                        @if($event->endTime == "18:00") selected @endif
+                                                                        @if($event->startTime == "18:00") selected @endif
                                                                 >18:00</option>
                                                                 <option value="19:00"
-                                                                        @if($event->endTime == "19:00") selected @endif
+                                                                        @if($event->startTime == "19:00") selected @endif
                                                                 >19:00</option>
                                                                 <option value="20:00"
-                                                                        @if($event->endTime == "20:00") selected @endif
+                                                                        @if($event->startTime == "20:00") selected @endif
                                                                 >20:00</option>
                                                                 <option value="21:00"
-                                                                        @if($event->endTime == "21:00") selected @endif
+                                                                        @if($event->startTime == "21:00") selected @endif
                                                                 >21:00</option>
                                                                 <option value="22:00"
-                                                                        @if($event->endTime == "22:00") selected @endif
+                                                                        @if($event->startTime == "22:00") selected @endif
                                                                 >22:00</option>
                                                                 <option value="23:00"
-                                                                        @if($event->endTime == "23:00") selected @endif
+                                                                        @if($event->startTime == "23:00") selected @endif
                                                                 >23:00</option>
-                                                            @endif
-                                                        </select>
-
+                                                            </select>
+                                                        </div>
                                                     </div>
-                                                    <span class="help-block">Deixe em branco caso o término não esteja previsto</span>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="" class="control-label">Hora Fim</label>
+                                                        <div class="input-group">
+                                                                <span class="input-group-addon">
+                                                                    <i class="fa fa-clock-o font-blue"></i>
+                                                                </span>
+
+                                                            <select name="endTime" class="form-control" id="">
+                                                                @if($event->endTime == null)
+                                                                    <option value="">Selecione</option>
+                                                                    <option value="00:00">00:00</option>
+                                                                    <option value="01:00">01:00</option>
+                                                                    <option value="02:00">02:00</option>
+                                                                    <option value="03:00">03:00</option>
+                                                                    <option value="04:00">04:00</option>
+                                                                    <option value="05:00">05:00</option>
+                                                                    <option value="06:00">06:00</option>
+                                                                    <option value="07:00">07:00</option>
+                                                                    <option value="08:00">08:00</option>
+                                                                    <option value="09:00">09:00</option>
+                                                                    <option value="10:00">10:00</option>
+                                                                    <option value="11:00">11:00</option>
+                                                                    <option value="12:00">12:00</option>
+                                                                    <option value="13:00">13:00</option>
+                                                                    <option value="14:00">14:00</option>
+                                                                    <option value="15:00">15:00</option>
+                                                                    <option value="16:00">16:00</option>
+                                                                    <option value="17:00">17:00</option>
+                                                                    <option value="18:00">18:00</option>
+                                                                    <option value="19:00">19:00</option>
+                                                                    <option value="20:00">20:00</option>
+                                                                    <option value="21:00">21:00</option>
+                                                                    <option value="22:00">22:00</option>
+                                                                    <option value="23:00">23:00</option>
+
+                                                                    @else
+
+                                                                    <option value="">Selecione</option>
+                                                                    <option value="00:00"
+                                                                            @if($event->endTime == "00:00") selected @endif
+                                                                    >00:00</option>
+                                                                    <option value="01:00"
+                                                                            @if($event->endTime == "01:00") selected @endif
+                                                                    >01:00</option>
+                                                                    <option value="02:00"
+                                                                            @if($event->endTime == "02:00") selected @endif
+                                                                    >02:00</option>
+                                                                    <option value="03:00"
+                                                                            @if($event->endTime == "03:00") selected @endif
+                                                                    >03:00</option>
+                                                                    <option value="04:00"
+                                                                            @if($event->endTime == "04:00") selected @endif
+                                                                    >04:00</option>
+                                                                    <option value="05:00"
+                                                                            @if($event->endTime == "05:00") selected @endif
+                                                                    >05:00</option>
+                                                                    <option value="06:00"
+                                                                            @if($event->endTime == "06:00") selected @endif
+                                                                    >06:00</option>
+                                                                    <option value="07:00"
+                                                                            @if($event->endTime == "07:00") selected @endif
+                                                                    >07:00</option>
+                                                                    <option value="08:00"
+                                                                            @if($event->endTime == "08:00") selected @endif
+                                                                    >08:00</option>
+                                                                    <option value="09:00"
+                                                                            @if($event->endTime == "09:00") selected @endif
+                                                                    >09:00</option>
+                                                                    <option value="10:00"
+                                                                            @if($event->endTime == "10:00") selected @endif
+                                                                    >10:00</option>
+                                                                    <option value="11:00"
+                                                                            @if($event->endTime == "11:00") selected @endif
+                                                                    >11:00</option>
+                                                                    <option value="12:00"
+                                                                            @if($event->endTime == "12:00") selected @endif
+                                                                    >12:00</option>
+                                                                    <option value="13:00"
+                                                                            @if($event->endTime == "13:00") selected @endif
+                                                                    >13:00</option>
+                                                                    <option value="14:00"
+                                                                            @if($event->endTime == "14:00") selected @endif
+                                                                    >14:00</option>
+                                                                    <option value="15:00"
+                                                                            @if($event->endTime == "15:00") selected @endif
+                                                                    >15:00</option>
+                                                                    <option value="16:00"
+                                                                            @if($event->endTime == "16:00") selected @endif
+                                                                    >16:00</option>
+                                                                    <option value="17:00"
+                                                                            @if($event->endTime == "17:00") selected @endif
+                                                                    >17:00</option>
+                                                                    <option value="18:00"
+                                                                            @if($event->endTime == "18:00") selected @endif
+                                                                    >18:00</option>
+                                                                    <option value="19:00"
+                                                                            @if($event->endTime == "19:00") selected @endif
+                                                                    >19:00</option>
+                                                                    <option value="20:00"
+                                                                            @if($event->endTime == "20:00") selected @endif
+                                                                    >20:00</option>
+                                                                    <option value="21:00"
+                                                                            @if($event->endTime == "21:00") selected @endif
+                                                                    >21:00</option>
+                                                                    <option value="22:00"
+                                                                            @if($event->endTime == "22:00") selected @endif
+                                                                    >22:00</option>
+                                                                    <option value="23:00"
+                                                                            @if($event->endTime == "23:00") selected @endif
+                                                                    >23:00</option>
+                                                                @endif
+                                                            </select>
+
+                                                        </div>
+                                                        <span class="help-block">Deixe em branco caso o término não esteja previsto</span>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <label for="">Pertencente ao grupo</label>
-                                                    <div class="input-group">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="">Pertencente ao grupo</label>
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon">
+                                                                <i class="fa fa-users font-blue"></i>
+                                                            </span>
+
+                                                            <select name="group_id" id="" class="form-control">
+                                                                <option value="">Nenhum</option>
+                                                                @if(isset($group))
+                                                                    @foreach($groups as $item)
+                                                                        <option value="{{ $item->id }}" @if($item == $group) selected @endif >
+                                                                            {{ $item->name }}
+                                                                        </option>
+                                                                    @endforeach
+                                                                @else
+                                                                    @foreach($groups as $item)
+                                                                        <option value="{{ $item->id }}">
+                                                                            {{ $item->name }}
+                                                                        </option>
+                                                                    @endforeach
+                                                                @endif
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    {!! Form::FormGroup('description', $errors) !!}
+                                                    <label class="control-label">Descrição</label>
+                                                    <textarea class="form-control" name="description"
+                                                              placeholder="Digite aqui observações importantes sobre o evento"
+                                                              rows="5" >{{ $event->description }}</textarea>
+                                                    {!! Form::error('description', $errors) !!}
+                                                    {!! Form::endFormGroup() !!}
+                                                </div>
+                                            </div>
+
+
+                                            <h3>Endereço</h3>
+
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="div-loading">
+                                                        <i class="fa fa-refresh fa-spin fa-5x fa-fw"
+                                                           id="icon-loading-cep">
+                                                        </i>
+                                                        <p class="text-center" id="p-loading-cep" style="display: block;">
+                                                            Buscando Cep ...
+                                                        </p>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-6 input-address">
+                                                    <div class="form-group">
+                                                        <label>CEP (sem traços)</label>
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon">
+                                                                <i class="fa fa-location-arrow font-purple"></i>
+                                                            </span>
+                                                            <input type="text" class="form-control" name="zipCode"
+                                                                   value="{{ $event->zipCode }}" id="zipCode" placeholder="XXXXX-XXX">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-6 input-address">
+                                                    <div class="form-group">
+                                                        <label>Logradouro</label>
+                                                        <div class="input-group">
                                                         <span class="input-group-addon">
-                                                            <i class="fa fa-users font-blue"></i>
+                                                            <i class="fa fa-home font-purple"></i>
                                                         </span>
+                                                            <input class="form-control" name="street" type="text" id="street"
+                                                                   value="{{ $event->street }}" placeholder="Av. Antonio Carlos Comitre, 650">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 input-address">
+                                                    <div class="form-group">
+                                                        <label>Bairro</label>
+                                                        <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-home font-purple"></i>
+                                                        </span>
+                                                            <input class="form-control" name="neighborhood" id="neighborhood" type="text"
+                                                                   value="{{ $event->neighborhood }}" placeholder="Parque do Dolly">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
 
-                                                        <select name="group_id" id="" class="form-control">
-                                                            <option value="">Nenhum</option>
-                                                            @if(isset($group))
-                                                                @foreach($groups as $item)
-                                                                    <option value="{{ $item->id }}" @if($item == $group) selected @endif >
-                                                                        {{ $item->name }}
-                                                                    </option>
-                                                                @endforeach
-                                                            @else
-                                                                @foreach($groups as $item)
-                                                                    <option value="{{ $item->id }}">
-                                                                        {{ $item->name }}
-                                                                    </option>
-                                                                @endforeach
-                                                            @endif
+                                            <div class="row">
+                                                <div class="col-md-6 input-address">
+                                                    <div class="form-group">
+                                                        <label>Cidade</label>
+                                                        <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-building font-purple"></i>
+                                                        </span>
+                                                            <input class="form-control" name="city" id="city" type="text"
+                                                                   value="{{ $event->city }}" placeholder="Sorocaba">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 input-address">
+                                                    <div class="form-group">
+                                                        <label>Estado</label>
+                                                        <select name="state" class="form-control" id="state">
+                                                            <option value="">Selecione</option>
+                                                            @foreach($state as $item)
+                                                                <option value="{{ $item->initials }}"
+                                                                @if($item->initials == $event->state) selected @endif >
+                                                                    {{ $item->state }}
+                                                                </option>
+                                                            @endforeach
                                                         </select>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                {!! Form::FormGroup('description', $errors) !!}
-                                                <label class="control-label">Descrição</label>
-                                                <textarea class="form-control" name="description"
-                                                          placeholder="Digite aqui observações importantes sobre o evento"
-                                                          rows="5" >{{ $event->description }}</textarea>
-                                                {!! Form::error('description', $errors) !!}
-                                                {!! Form::endFormGroup() !!}
-                                            </div>
-                                        </div>
-
-
-                                        <h3>Endereço</h3>
-
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="div-loading">
-                                                    <i class="fa fa-refresh fa-spin fa-5x fa-fw"
-                                                       id="icon-loading-cep">
-                                                    </i>
-                                                    <p class="text-center" id="p-loading-cep" style="display: block;">
-                                                        Buscando Cep ...
-                                                    </p>
-                                                </div>
-
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-md-6 input-address">
-                                                <div class="form-group">
-                                                    <label>CEP (sem traços)</label>
-                                                    <div class="input-group">
-                                                        <span class="input-group-addon">
-                                                            <i class="fa fa-location-arrow font-purple"></i>
-                                                        </span>
-                                                        <input type="text" class="form-control" name="zipCode"
-                                                               value="{{ $event->zipCode }}" id="zipCode" placeholder="XXXXX-XXX">
-                                                    </div>
+                                        <div class="form-actions">
+                                            {!! Form::submit('Enviar', ['class' => 'btn blue', 'id' => 'btn-submit']) !!}
+                                            <div class="progress" style="display: none;">
+                                                <div class="progress-bar progress-bar-striped active" role="progressbar"
+                                                     aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                                                    Enviando...
+                                                    <span class="sr-only">Enviando...</span>
                                                 </div>
                                             </div>
                                         </div>
-
-                                        <div class="row">
-                                            <div class="col-md-6 input-address">
-                                                <div class="form-group">
-                                                    <label>Logradouro</label>
-                                                    <div class="input-group">
-                                                    <span class="input-group-addon">
-                                                        <i class="fa fa-home font-purple"></i>
-                                                    </span>
-                                                        <input class="form-control" name="street" type="text" id="street"
-                                                               value="{{ $event->street }}" placeholder="Av. Antonio Carlos Comitre, 650">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 input-address">
-                                                <div class="form-group">
-                                                    <label>Bairro</label>
-                                                    <div class="input-group">
-                                                    <span class="input-group-addon">
-                                                        <i class="fa fa-home font-purple"></i>
-                                                    </span>
-                                                        <input class="form-control" name="neighborhood" id="neighborhood" type="text"
-                                                               value="{{ $event->neighborhood }}" placeholder="Parque do Dolly">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-md-6 input-address">
-                                                <div class="form-group">
-                                                    <label>Cidade</label>
-                                                    <div class="input-group">
-                                                    <span class="input-group-addon">
-                                                        <i class="fa fa-building font-purple"></i>
-                                                    </span>
-                                                        <input class="form-control" name="city" id="city" type="text"
-                                                               value="{{ $event->city }}" placeholder="Sorocaba">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 input-address">
-                                                <div class="form-group">
-                                                    <label>Estado</label>
-                                                    <select name="state" class="form-control" id="state">
-                                                        <option value="">Selecione</option>
-                                                        @foreach($state as $item)
-                                                            <option value="{{ $item->initials }}"
-                                                            @if($item->initials == $event->state) selected @endif >
-                                                                {{ $item->state }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        {!! Form::close() !!}
                                     </div>
-                                    <div class="form-actions">
-                                        {!! Form::submit('Enviar', ['class' => 'btn blue', 'id' => 'btn-submit']) !!}
-                                        <div class="progress" style="display: none;">
-                                            <div class="progress-bar progress-bar-striped active" role="progressbar"
-                                                 aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-                                                Enviando...
-                                                <span class="sr-only">Enviando...</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    {!! Form::close() !!}
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    @endif
                 </div>
                 <!-- END PAGE CONTENT INNER -->
             </div>

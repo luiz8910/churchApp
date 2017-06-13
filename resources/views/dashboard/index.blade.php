@@ -205,7 +205,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <th> Foto </th>
                                                     <th> Nome </th>
                                                     <th> Inicio em </th>
-                                                    <th> Quantidade </th>
+                                                    <th> Participantes </th>
                                                     <th> Opções </th>
 
                                                 </tr>
@@ -264,6 +264,102 @@ License: You must have a valid license purchased only from themeforest(the above
                     <!-- END PAGE CONTENT INNER -->
 
                     <br><br>
+
+                    <!-- BEGIN PAGE CONTENT INNER -->
+                    <div class="page-content-inner">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <!-- BEGIN BORDERED TABLE PORTLET-->
+                                <div class="portlet light portlet-fit ">
+                                    <div class="portlet-title">
+                                        <div class="caption">
+                                            <i class="icon-settings font-red"></i>
+                                            <span class="caption-subject font-red sbold uppercase">Meus Eventos</span>
+                                        </div>
+                                        <div class="actions">
+                                            <div class="btn-group btn-group-devided">
+                                                <a role="button" class="btn btn-info btn-circle" href="{{ route('event.create') }}" style="margin-top: 2px;">
+                                                    <i class="fa fa-plus"></i>
+                                                    <span class="hidden-xs hidden-sm">Novo Evento</span>
+                                                </a>
+
+                                            </div>
+                                            <div class="btn-group">
+                                                <a class="btn red btn-outline btn-circle" href="javascript:;" data-toggle="dropdown">
+                                                    <i class="fa fa-share"></i>
+                                                    <span class="hidden-xs"> Opções </span>
+                                                    <i class="fa fa-angle-down"></i>
+                                                </a>
+                                                <ul class="dropdown-menu pull-right" id="sample_3_tools">
+                                                    <li>
+                                                        <a href="javascript:;" data-action="0" class="tool-action">
+                                                            <i class="icon-printer"></i> Imprimir</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:;" data-action="1" class="tool-action">
+                                                            <i class="icon-check"></i> Copiar</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:;" data-action="2" class="tool-action">
+                                                            <i class="icon-doc"></i> PDF</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:;" data-action="3" class="tool-action">
+                                                            <i class="icon-paper-clip"></i> Excel</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:;" data-action="4" class="tool-action">
+                                                            <i class="icon-cloud-upload"></i> CSV</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="portlet-body">
+                                        <div class="table-scrollable table-scrollable-borderless">
+                                            <table class="table table-hover table-light">
+                                                <thead>
+                                                <tr class="uppercase">
+                                                    <th> Foto </th>
+                                                    <th> Nome </th>
+                                                    <th> Próximo Encontro em </th>
+                                                    <th> Participantes </th>
+                                                    <th> Opções </th>
+
+                                                </tr>
+                                                </thead>
+
+                                                <input type="hidden" id="person_id" value="{{ Auth::getUser()->person_id }}">
+
+                                                <tbody>
+                                                    @if($events)
+                                                        <?php $i = 0; ?>
+                                                        @foreach($event_person as $item)
+                                                            <tr>
+                                                                <td> <img src="{{ $item->imgProfile }}" style="width: 50px; height: 50px;"> </td>
+                                                                <td> <a href="{{ route('event.edit', ['event' => $item->id]) }}"> {{ $item->name }}</a></td>
+                                                                <td> {{ $eventDate[$i]->eventDate }} </td>
+                                                                <td> <span class="badge badge-info">{{ $countMembers[$i] }}</span></td>
+
+
+                                                            </tr>
+                                                            <?php $i++; ?>
+                                                        @endforeach
+
+                                                    @endif
+                                                </tbody>
+                                            </table>
+                                            <br>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- END BORDERED TABLE PORTLET-->
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- END PAGE CONTENT INNER -->
 
 
                     <div class="row">

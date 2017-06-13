@@ -97,6 +97,34 @@ class DashboardController extends Controller
                 'countMembers', 'street', 'groups'));
         }
 
+        $eventDate = [];
+        $i = 0;
+
+        foreach ($events as $event)
+        {
+            $eventDate[] = DB::table('event_person')
+                ->where(
+                    [
+                        'event_id' => $event->id,
+                        'person_id' => Auth::user()->person_id,
+                        'show' => 0,
+                        'deleted_at' => null
+                    ])
+                ->first();
+
+            $eventDate[$i]->eventDate = $this->formatDateView($eventDate[$i]->eventDate);
+            $i++;
+        }
+
+
+        $event_person = [];
+
+        foreach ($eventDate as $item)
+        {
+            $event_person[] = $this->eventRepository->find($item->event_id);
+        }
+
+
 
         $nextEvent = $this->getNextEvent();
 
@@ -197,7 +225,8 @@ class DashboardController extends Controller
         return view('dashboard.index', compact('countPerson', 'countGroups', 'events', 'notify', 'qtde',
             'days', 'nextMonth', 'nextMonth2', 'allEvents', 'countMembers', 'nextEvent', 'location', 'street',
             'nextMonth3', 'nextMonth4', 'nextMonth5', 'nextMonth6', 'prevMonth', 'prevMonth2',
-            'prevMonth3', 'prevMonth4', 'prevMonth5', 'prevMonth6','allMonths', 'allDays', 'groups'));
+            'prevMonth3', 'prevMonth4', 'prevMonth5', 'prevMonth6',
+            'allMonths', 'allDays', 'groups', 'eventDate', 'event_person'));
     }
 
     public function visitors()

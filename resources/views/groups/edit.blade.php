@@ -207,6 +207,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     </div>
                                                 </div>
                                             </div>
+
                                             <div class="portlet-body">
                                                 <div class="col-md-12">
                                                     <p>
