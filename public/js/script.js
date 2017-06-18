@@ -429,6 +429,12 @@ $(function () {
     });
 
 
+    $("#changePicture").click(function () {
+       $("#file").trigger("click");
+    });
 
+    $("#file").change(function () {
+        $("#submit-img").trigger("click");
+    })
 
 });

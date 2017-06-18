@@ -33,7 +33,7 @@ License: You must have a valid license purchased only from themeforest(the above
     <link href="../../assets/global/plugins/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet"
           type="text/css"/>
 
-    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="../../assets/global/plugins/highcharts/highcharts.js"></script>
     <script src="../../assets/pages/scripts/highcharts-exporting.js"></script>
     <!-- END PAGE LEVEL PLUGINS -->
 </head>
@@ -1612,50 +1612,17 @@ License: You must have a valid license purchased only from themeforest(the above
 <!-- END INNER FOOTER -->
 <!-- END FOOTER -->
 
-<!--[if lt IE 9]>
-<script src="../../assets/global/plugins/respond.min.js"></script>
-<script src="../../assets/global/plugins/excanvas.min.js"></script>
-<![endif]-->
-<!-- BEGIN CORE PLUGINS -->
-<script src="../../assets/global/plugins/jquery.min.js" type="text/javascript"></script>
-<script src="../../assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-<script src="../../assets/global/plugins/js.cookie.min.js" type="text/javascript"></script>
-<script src="../../assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"
-        type="text/javascript"></script>
-<script src="../../assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
-<script src="../../assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
-<script src="../../assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
-<script src="../../assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
-<script src="../../js/script.js" type="text/javascript"></script>
-<!-- END CORE PLUGINS -->
-<!-- BEGIN PAGE LEVEL PLUGINS -->
-<script src="../../assets/global/plugins/bootstrap-select/js/bootstrap-select.min.js" type="text/javascript"></script>
 
-<!-- END PAGE LEVEL PLUGINS -->
-<!-- BEGIN THEME GLOBAL SCRIPTS -->
-<script src="../../assets/global/scripts/app.min.js" type="text/javascript"></script>
-<script src="../../assets/pages/scripts/charts-amcharts.js" type="text/javascript"></script>
-<script src="../../assets/global/plugins/horizontal-timeline/horizontal-timeline.js" type="text/javascript"></script>
-<!-- END THEME GLOBAL SCRIPTS -->
-<!-- BEGIN PAGE LEVEL SCRIPTS -->
-<script src="../../assets/pages/scripts/components-bootstrap-select.min.js" type="text/javascript"></script>
-<!-- END PAGE LEVEL SCRIPTS -->
-<!-- BEGIN THEME../ LAYOUT SCRIPTS -->
+@include('includes.core-scripts-edit')
+
+
+
+<!-- BEGIN THEME../ LAYOUT SCRIPTS
 <script src="../../assets/layouts/layout3/scripts/layout.min.js" type="text/javascript"></script>
 <script src="../../assets/layouts/layout3/scripts/demo.min.js" type="text/javascript"></script>
 <script src="../../assets/layouts/global/scripts/quick-sidebar.min.js" type="text/javascript"></script>
-<script src="../../assets/layouts/global/scripts/quick-nav.min.js" type="text/javascript"></script>
+<script src="../../assets/layouts/global/scripts/quick-nav.min.js" type="text/javascript"></script>-->
 <!-- END THEME LAYOUT SCRIPTS -->
-
-<script src="../../assets/global/scripts/datatable.js" type="text/javascript"></script>
-<script src="../../assets/global/plugins/datatables/datatables.min.js" type="text/javascript"></script>
-<script src="../../assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js"
-        type="text/javascript"></script>
-<!-- END PAGE LEVEL PLUGINS -->
-
-<!-- BEGIN PAGE LEVEL SCRIPTS -->
-<script src="../../assets/pages/scripts/table-datatables-managed.min.js" type="text/javascript"></script>
-<!-- END PAGE LEVEL SCRIPTS -->
 
 <script src="../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js" type="text/javascript"></script>
 <script src="../../assets/global/plugins/jquery.sparkline.min.js" type="text/javascript"></script>
@@ -1665,123 +1632,9 @@ License: You must have a valid license purchased only from themeforest(the above
 <script src="../../assets/pages/scripts/profile.min.js" type="text/javascript"></script>
 <script src="../../assets/pages/scripts/timeline.min.js" type="text/javascript"></script>
 
-<script src="../../assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.js" type="text/javascript"></script>
-
-<script src="../../assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js" type="text/javascript"></script>
-
-<script src="../../assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js" type="text/javascript"></script>
-<script src="../../assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
-<script src="../../assets/pages/scripts/components-date-time-pickers.js" type="text/javascript"></script>
-
-
-
-<script src="../../js/script.js"></script>
-<script src="../../js/cep.js"></script>
-<script src="../../js/maskbrphone.js"></script>
-<script src="../../js/ajax.js"></script>
 <script src="../../js/chart.js"></script>
 
-<script src="../../assets/global/plugins/jquery-notific8/jquery.notific8.min.js" type="text/javascript"></script>
-<script src="../../assets/pages/scripts/ui-notific8.js" type="text/javascript"></script>
-
 <script src="../../assets/pages/scripts/components-bootstrap-select.min.js" type="text/javascript"></script>
-
-<script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-
-<script src="https://js.pusher.com/4.0/pusher.min.js"></script>
-
-
-
-<script>
-
-    if($("#UserRole").val() == 1)
-    {
-        //instantiate a Pusher object with our Credential's key
-        var pusher = new Pusher('9f86933032dbae833b7d', {
-
-            encrypted: true
-        });
-
-        //Subscribe to the channel we specified in our Laravel Event
-        var channel = pusher.subscribe('my-channel');
-
-        var event = pusher.subscribe('new-event');
-
-        event.bind('App\\Events\\AgendaEvent', newEvent);
-
-        //Bind a function to a Event (the full Laravel class)
-        channel.bind('App\\Events\\PersonEvent', UserAdded);
-
-        badgeNotify = 0;
-
-        function newEvent(data) {
-            var li = '<li>' +
-                    '<a href="person/'+data.person[0]+'/edit">'+
-                    '<span class="time">Agora</span>'+
-                    '<span class="details">'+
-                    '<span class="label label-sm label-icon label-success">'+
-                    '<i class="fa fa-plus"></i>'+
-                    '</span> Novo Evento. </span>'+
-                    '</a>'+
-                    '</li>';
-
-
-
-            if($("#badge-notify").val() != "")
-            {
-                badgeNotify = parseInt($("#badge-notify").val());
-            }
-
-            badgeNotify++;
-
-            $("#badge-notify").text(badgeNotify);
-
-            $("#created_person_id").val(data.person[0]);
-
-            $("#input-badge-count").text(badgeNotify).trigger("change");
-
-            $("#qtdeNotify").text(badgeNotify + " Nova Notificação");
-
-            $("#eventNotify").prepend(li);
-
-            console.log($("#badge-notify").text());
-        }
-
-        function UserAdded(data) {
-            var li = '<li>' +
-                    '<a href="person/'+data.person[0]+'/edit">'+
-                    '<span class="time">Agora</span>'+
-                    '<span class="details">'+
-                    '<span class="label label-sm label-icon label-success">'+
-                    '<i class="fa fa-plus"></i>'+
-                    '</span> Novo Usuário Registrado. </span>'+
-                    '</a>'+
-                    '</li>';
-
-
-
-            if($("#badge-notify").val() != "")
-            {
-                badgeNotify = parseInt($("#badge-notify").val());
-            }
-
-            badgeNotify++;
-
-            $("#badge-notify").text(badgeNotify);
-
-            $("#created_person_id").val(data.person[0]);
-
-            $("#input-badge-count").text(badgeNotify).trigger("change");
-
-            $("#qtdeNotify").text(badgeNotify + " Nova Notificação");
-
-            $("#eventNotify").prepend(li);
-
-            console.log($("#badge-notify").text());
-        }
-    }
-
-</script>
 
 
 <script>

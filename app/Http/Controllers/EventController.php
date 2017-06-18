@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Events\AgendaEvent;
 use App\Models\Event;
 use App\Models\User;
+use App\Repositories\FrequencyRepository;
 use App\Repositories\RoleRepository;
 use App\Services\AgendaServices;
 use App\Services\EventServices;
@@ -62,6 +63,10 @@ class EventController extends Controller
      * @var AgendaServices
      */
     private $agendaServices;
+    /**
+     * @var FrequencyRepository
+     */
+    private $frequencyRepository;
 
     /**
      * EventController constructor.
@@ -75,7 +80,8 @@ class EventController extends Controller
     public function __construct(EventRepository $repository, StateRepository $stateRepository,
                                 UserRepository $userRepository, GroupRepository $groupRepository,
                                 PersonRepository $personRepository, RoleRepository $roleRepository,
-                                EventServices $eventServices, AgendaServices $agendaServices)
+                                EventServices $eventServices, AgendaServices $agendaServices,
+                                FrequencyRepository $frequencyRepository)
     {
         $this->repository = $repository;
         $this->stateRepository = $stateRepository;
@@ -85,6 +91,7 @@ class EventController extends Controller
         $this->roleRepository = $roleRepository;
         $this->eventServices = $eventServices;
         $this->agendaServices = $agendaServices;
+        $this->frequencyRepository = $frequencyRepository;
     }
 
 
@@ -460,18 +467,22 @@ class EventController extends Controller
 
         $roles = $this->roleRepository->all();
 
+        $frequencies = $this->frequencyRepository->all();
+
         $notify = $this->notify();
 
         $qtde = count($notify);
 
-        $groups = $this->groupRepository->findByField('church_id', \Auth::getUser()->church_id);
+        $groups = $this->groupRepository->findByField('church_id', \Auth::user()->church_id);
 
         if($id)
         {
-            return view('events.create', compact('countPerson', 'countGroups', 'state', 'roles', 'id', 'notify', 'qtde', 'groups'));
+            return view('events.create', compact('countPerson', 'countGroups', 'state', 'roles',
+                'id', 'notify', 'qtde', 'groups', 'frequencies'));
         }
         else{
-            return view('events.create', compact('countPerson', 'countGroups', 'state', 'roles', 'notify', 'qtde', 'groups'));
+            return view('events.create', compact('countPerson', 'countGroups', 'state', 'roles',
+                'notify', 'qtde', 'groups', 'frequencies'));
         }
 
 
@@ -488,6 +499,14 @@ class EventController extends Controller
         $user[] = User::find(11);
 
         \Notification::send($user, new Notifications($event->name, 'events/'.$event->id.'/edit'));
+    }
+
+    public function testeData()
+    {
+        $id = 11;
+        $eventDate = "2017-06-19";
+
+        $this->eventServices->setDailyEvents($id, $eventDate);
     }
 
     public function store(Request $request)
@@ -518,6 +537,11 @@ class EventController extends Controller
         //dd($data);
 
         $event = $this->repository->create($data);
+
+        if($data["group_id"] == null)
+        {
+            unset($data['group_id']);
+        }
 
         $this->sendNotification($data, $event);
 
@@ -588,6 +612,8 @@ class EventController extends Controller
 
         $roles = $this->repository->all();
 
+        $frequencies = $this->frequencyRepository->all();
+
         $church_id = $this->getUserChurch();
 
         $event = $this->repository->find($id);
@@ -646,14 +672,17 @@ class EventController extends Controller
                                 ]
                             )->first();
 
-
-        $nextEventDate = $this->formatDateView($nextEventDate->eventDate);
+        $nextEventDate = $nextEventDate != null ? $this->formatDateView($nextEventDate->eventDate) : null;
 
         $leader = $this->getLeaderRoleId();
 
         $preposicao = '';
 
-        if($event->frequency == "Semanal")
+        $weekly = $this->frequencyRepository->findByField('frequency', 'Semanal')->first()->frequency;
+
+        $monthly = $this->frequencyRepository->findByField('frequency', 'Mensal')->first()->frequency;
+
+        if($event->frequency == $weekly)
         {
             if($event->day == "Sabado" || $event->day == "Domingo")
             {
@@ -663,14 +692,14 @@ class EventController extends Controller
                 $preposicao = "toda";
             }
         }
-        elseif($event->frequency == "Mensal"){
+        elseif($event->frequency == $monthly){
             $preposicao = "todo dia";
         }
 
         return view('events.edit', compact('countPerson', 'countGroups', 'state', 'roles',
             'event', 'location', 'notify', 'qtde', 'eventDays', 'eventFrequency', 'check',
             'eventPeople', 'group', 'groups', 'sub', 'canCheckIn', 'createdBy_id', 'createdBy',
-            'nextEventDate', 'leader', 'preposicao'));
+            'nextEventDate', 'leader', 'preposicao', 'frequencies'));
     }
 
     public function update(Request $request, $id)
@@ -908,5 +937,22 @@ class EventController extends Controller
         })->export($format);
 
         return redirect()->route('event.index');
+    }
+
+    public function imgEvent(Request $request, $event)
+    {
+        $file = $request->file('file');
+
+        $event = $this->repository->find($event);
+
+        $imgName = 'uploads/event/' . $event->id . '-' . $event->name . '.' .$file->getClientOriginalExtension();
+
+        $file->move('uploads/event', $imgName);
+
+        DB::table('events')->
+            where('id', $event->id)->
+            update(['imgEvent' => $imgName]);
+
+        return redirect()->route('event.edit', ['event' => $event->id]);
     }
 }

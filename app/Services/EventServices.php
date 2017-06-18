@@ -11,6 +11,7 @@ namespace App\Services;
 
 use App\Models\Event;
 use App\Repositories\EventRepository;
+use App\Repositories\FrequencyRepository;
 use Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -21,10 +22,15 @@ class EventServices
      * @var EventRepository
      */
     private $repository;
+    /**
+     * @var FrequencyRepository
+     */
+    private $frequencyRepository;
 
-    public function __construct(EventRepository $repository)
+    public function __construct(EventRepository $repository, FrequencyRepository $frequencyRepository)
     {
         $this->repository = $repository;
+        $this->frequencyRepository = $frequencyRepository;
     }
 
     /**
@@ -140,34 +146,44 @@ class EventServices
         DB::table('event_person')
             ->insert([
                 'event_id' => $id,
-                'person_id' => \Auth::getUser()->person_id,
+                'person_id' => \Auth::user()->person_id,
                 'eventDate' => $eventDate,
                 'show' => $show
             ]);
 
-        $i = 0;
+        $daily = $this->frequencyRepository->findByField('frequency', 'Diário')->first()->frequency;
+        $weekly = $this->frequencyRepository->findByField('frequency', 'Semanal')->first()->frequency;
+        $monthly = $this->frequencyRepository->findByField('frequency', 'Mensal')->first()->frequency;
 
+
+        if($frequency == $weekly)
+        {
+            $this->setNextEvents($id, $eventDate, "7 days");
+        }
+        elseif($frequency == $monthly)
+        {
+            $this->setNextEvents($id, $eventDate, "30 days");
+        }
+        elseif ($frequency == $daily)
+        {
+            $this->setNextEvents($id, $eventDate, "1 days");
+        }
+    }
+
+    public function setNextEvents($id, $eventDate, $days)
+    {
         $day = date_create($eventDate);
 
-        while ($i < 4)
-        {
-            if($frequency == "Semanal")
-            {
-                date_add($day, date_interval_create_from_date_string("7 days"));
-            }
-            elseif($frequency == "Mensal")
-            {
-                date_add($day, date_interval_create_from_date_string("30 days"));
-            }
-            elseif ($frequency == "Diario")
-            {
-                date_add($day, date_interval_create_from_date_string("1 day"));
-            }
+        $i = 0;
+
+        while($i < 4) {
+            date_add($day, date_interval_create_from_date_string($days));
+
 
             DB::table('event_person')
                 ->insert([
                     'event_id' => $id,
-                    'person_id' => \Auth::getUser()->person_id,
+                    'person_id' => \Auth::user()->person_id,
                     'eventDate' => date_format($day, "Y-m-d"),
                     'show' => 0
                 ]);

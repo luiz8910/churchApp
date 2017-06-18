@@ -64,7 +64,7 @@
                     <h1>Página não encontrada <small><font face="Tahoma" color="red">Erro 404</font></small></h1>
                     <br />
                     <p>O página que você está tentando exibir não foi encontrada.
-                        Use o botão de <b>Voltar</b> para retorna a página anterior</p>
+                        Use o botão de <b>Voltar</b> para retornar a página anterior</p>
 
                     <p>Ou...</p>
                     <p><b>Clique no botão abaixo para voltar para a Home:</b></p>

@@ -73,3 +73,7 @@ $factory->define(\App\Models\Responsible::class, function (\Faker\Generator $fak
         'role_id' => 5
     ];
 });
+
+$factory->define(\App\Models\Frequency::class, function (\Faker\Generator $faker){
+   return [];
+});

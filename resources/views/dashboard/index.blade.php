@@ -274,7 +274,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                     <div class="portlet-title">
                                         <div class="caption">
                                             <i class="icon-settings font-red"></i>
-                                            <span class="caption-subject font-red sbold uppercase">Meus Eventos</span>
+                                            <span class="caption-subject font-red sbold uppercase">Eventos</span>
                                         </div>
                                         <div class="actions">
                                             <div class="btn-group btn-group-devided">
@@ -320,11 +320,10 @@ License: You must have a valid license purchased only from themeforest(the above
                                             <table class="table table-hover table-light">
                                                 <thead>
                                                 <tr class="uppercase">
-                                                    <th> Foto </th>
+                                                    <th> Criado Por</th>
                                                     <th> Nome </th>
                                                     <th> Próximo Encontro em </th>
-                                                    <th> Participantes </th>
-                                                    <th> Opções </th>
+                                                    <th> Pertence ao Grupo </th>
 
                                                 </tr>
                                                 </thead>
@@ -336,11 +335,36 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         <?php $i = 0; ?>
                                                         @foreach($event_person as $item)
                                                             <tr>
-                                                                <td> <img src="{{ $item->imgProfile }}" style="width: 50px; height: 50px;"> </td>
+                                                                <td>
+                                                                    <span class="hidden-xs hidden-sm">
+                                                                        <a href="{{ route('person.edit', ['person' => $events[$i]->createdBy_id]) }}">
+                                                                            <img src="{{ '../'.$events[$i]->imgProfileUser }}"
+                                                                             class="img-circle" style="height: 50px; width: 50px; margin-right: 10px;">
+
+                                                                                {{ $events[$i]->createdBy_name }}
+                                                                        </a>
+                                                                    </span>
+                                                                        <span class="hidden-md hidden-lg" >
+                                                                            <a href="{{ route('person.edit', ['person' => $events[$i]->createdBy_id]) }}">
+                                                                            <img src="{{ '../'.$events[$i]->imgProfileUser }}"
+                                                                                 class="img-circle" style="height: 30px; width: 30px;">
+
+                                                                                {{ $events[$i]->createdBy_name }}
+                                                                        </a>
+                                                                        </span>
+
+                                                                </td>
                                                                 <td> <a href="{{ route('event.edit', ['event' => $item->id]) }}"> {{ $item->name }}</a></td>
                                                                 <td> {{ $eventDate[$i]->eventDate }} </td>
-                                                                <td> <span class="badge badge-info">{{ $countMembers[$i] }}</span></td>
-
+                                                                <td>
+                                                                    @if(isset($item->group_name))
+                                                                        <a href="{{ route('group.edit', ['group' => $item->group_id]) }}">
+                                                                            {{ $item->group_name }}
+                                                                        </a>
+                                                                        @else
+                                                                        Sem Grupo
+                                                                    @endif
+                                                                </td>
 
                                                             </tr>
                                                             <?php $i++; ?>
@@ -368,7 +392,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                 <div class="portlet-title">
                                     <div class="caption">
                                         <i class=" icon-layers font-green"></i>
-                                        <span class="caption-subject font-green sbold uppercase ">Eventos</span>
+                                        <span class="caption-subject font-green sbold uppercase ">Agenda</span>
 
                                     </div>
                                     <div class="actions" style="margin-bottom: 25px;">

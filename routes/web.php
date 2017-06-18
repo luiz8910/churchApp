@@ -138,6 +138,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/addUserToGroup/{personId}/{group}', 'GroupController@addUserToGroup');
 
+    Route::post("/imgEvent/{event}", 'EventController@imgEvent')->name('event.edit.imgEvent');
+
     Route::get('pusher', function () {
         return view('pusher');
 
@@ -214,3 +216,4 @@ Route::group(['middleware' => 'auth'], function () {
 
 
 //Testes
+Route::get('teste-data', 'EventController@testeData');

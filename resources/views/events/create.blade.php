@@ -132,11 +132,9 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <div class="input-icon input-icon-sm">
                                                         <i class="fa fa-briefcase"></i>
                                                         <select class="form-control" id="select-frequency" name="frequency">
-                                                            <option value="Encontro Único">Encontro Único</option>
-                                                            <option value="Diário">Diário</option>
-                                                            <option value="Semanal">Semanal</option>
-                                                            <option value="Quinzenal">Quinzenal</option>
-                                                            <option value="Mensal">Mensal</option>
+                                                            @foreach($frequencies as $frequency)
+                                                                <option value="{{ $frequency->frequency }}">{{ $frequency->frequency }}</option>
+                                                            @endforeach
                                                         </select>
                                                     </div>
                                                 </div>

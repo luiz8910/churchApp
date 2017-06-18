@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\UserRepository;
 use App\Repositories\VisitorRepository;
 use App\Traits\CountRepository;
 use App\Traits\DateRepository;
@@ -45,10 +46,14 @@ class DashboardController extends Controller
      * @var EventServices
      */
     private $eventServices;
+    /**
+     * @var UserRepository
+     */
+    private $userRepository;
 
     public function __construct(EventRepository $eventRepository, GroupRepository $groupRepository,
                                 PersonRepository $personRepository, VisitorRepository $visitorRepository,
-                                AgendaServices $agendaServices, EventServices $eventServices)
+                                AgendaServices $agendaServices, EventServices $eventServices, UserRepository $userRepository)
     {
         $this->eventRepository = $eventRepository;
         $this->groupRepository = $groupRepository;
@@ -56,6 +61,7 @@ class DashboardController extends Controller
         $this->visitorRepository = $visitorRepository;
         $this->agendaServices = $agendaServices;
         $this->eventServices = $eventServices;
+        $this->userRepository = $userRepository;
     }
 
     public function index()
@@ -91,6 +97,7 @@ class DashboardController extends Controller
             }
         }
 
+
         if (count($events) == 0)
         {
             return view('dashboard.index', compact('countPerson', 'countGroups', 'events', 'notify', 'qtde',
@@ -112,16 +119,40 @@ class DashboardController extends Controller
                     ])
                 ->first();
 
-            $eventDate[$i]->eventDate = $this->formatDateView($eventDate[$i]->eventDate);
+            // Incluir dados da coluna criado por ( foto e primeiro nome )
+
+            $user = $this->userRepository->find($event->createdBy_id)->person;
+
+            $event->createdBy_name = $user->name;
+
+            $event->imgProfileUser = $user->imgProfile;
+
+
+            if($eventDate[$i] != null)
+            {
+                $eventDate[$i]->eventDate = $this->formatDateView($eventDate[$i]->eventDate);
+            }
+
             $i++;
         }
 
 
+
         $event_person = [];
 
-        foreach ($eventDate as $item)
+        if($eventDate[0] != null)
         {
-            $event_person[] = $this->eventRepository->find($item->event_id);
+            for ($i = 0; $i < count($eventDate); $i++)
+            {
+
+                if($eventDate[$i] != null) {
+                    $event_person[$i] = $this->eventRepository->find($eventDate[$i]->event_id);
+
+                    if ($event_person[$i]->group_id != null) {
+                        $event_person[$i]->group_name = $this->groupRepository->find($event_person[$i]->group_id)->name;
+                    }
+                }
+            }
         }
 
 

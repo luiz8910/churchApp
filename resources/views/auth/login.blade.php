@@ -22,14 +22,14 @@ License: You must have a valid license purchased only from themeforest(the above
 <link href="../assets/global/plugins/select2/css/select2-bootstrap.min.css" rel="stylesheet" type="text/css" />
 <!-- END PAGE LEVEL PLUGINS -->
 <!-- BEGIN PAGE LEVEL STYLES -->
-<link href="../assets/pages/css/login.min.css" rel="stylesheet" type="text/css" />
+<link href="../assets/pages/css/login.css" rel="stylesheet" type="text/css" />
 <!-- END PAGE LEVEL STYLES -->
 
 <body class=" login">
 <!-- BEGIN LOGO -->
 <div class="logo">
     <a href="javascript:;">
-        <img src="../logo/Simbolo2.png" alt="logo" class="logo-default" style="width: 200px; margin-top: -20px;">
+        <img src="../teste/Simbolo-branco.png" alt="logo" class="logo-default" style="width: 150px; margin-top: -20px;">
         {{--<img src="../logo/Vertical.png" alt="logo" class="logo-default" style="width: 300px; margin-top: -20px;">--}}
     </a>
 </div>
@@ -78,12 +78,56 @@ License: You must have a valid license purchased only from themeforest(the above
 
         </div>
 
-        <div class="form-actions">
-            <button type="submit" class="btn green uppercase">Login</button>
-            <label class="rememberme check">
-                <input type="checkbox" name="remember" value="1" />Mantenha-me conectado </label>
-            <a href="{{ route("forgot.password") }}" id="forget-password" class="forget-password">Esqueceu sua senha?</a>
+        <!-- visivel em pc -->
+        <div class="hidden-xs hidden-sm">
+
+            <div class="form-actions-2">
+                <button type="submit" class="btn btn-info btn-lg mt-ladda-btn ladda-button" data-style="zoom-in" data-size="l">
+                    <span class="ladda-label">Login</span>
+                    <span class="ladda-spinner"></span>
+                </button>
+                <!--<button type="submit" class="btn btn-lg green uppercase">Login</button>-->
+                <label class="rememberme check mt-checkbox mt-checkbox-outline">
+                    <input type="checkbox" name="remember" value="1">Mantenha-me Conectado
+                    <span></span>
+                </label>
+
+            </div>
+
+            <div class="form-actions">
+                <p class="text-right">
+                    <a href="{{ route("forgot.password") }}" id="forget-password" class="forget-password">Esqueceu sua senha?</a>
+                </p>
+
+            </div>
+
         </div>
+
+        <!-- visivel em celulares -->
+        <div class="visible-xs">
+            <div class="form-actions-xl-2">
+                <label class="rememberme check mt-checkbox mt-checkbox-outline">
+                    <input type="checkbox" name="remember" value="1">Mantenha-me Conectado
+                    <span></span>
+                </label>
+            </div>
+
+            <div class="form-actions-xl-2">
+                <button type="submit" class="btn btn-info btn-block mt-ladda-btn ladda-button" data-style="zoom-in" data-size="l">
+                    <span class="ladda-label">Login</span>
+                    <span class="ladda-spinner"></span>
+                </button>
+                <!--<button type="submit" class="btn btn-lg green uppercase">Login</button>-->
+            </div>
+
+            <div class="form-actions-xl">
+                <p class="text-right">
+                    <a href="http://192.168.0.10:8000/forgotPassword" id="forget-password" class="forget-password">Esqueceu sua senha?</a>
+                </p>
+            </div>
+        </div>
+
+
         <div class="login-options">
             <h4>Entre com</h4>
             <ul class="social-icons">
@@ -91,13 +135,7 @@ License: You must have a valid license purchased only from themeforest(the above
                     <a class="social-icon-color facebook" data-original-title="facebook" href="{{ url('auth/facebook') }}"></a>
                 </li>
                 <li>
-                    <a class="social-icon-color twitter" data-original-title="Twitter" href="javascript:;"></a>
-                </li>
-                <li>
                     <a class="social-icon-color googleplus" data-original-title="Google Plus" href="{{ url('auth/google') }}"></a>
-                </li>
-                <li>
-                    <a class="social-icon-color linkedin" data-original-title="Linkedin" href="{{ url('auth/linkedin') }}"></a>
                 </li>
             </ul>
         </div>
@@ -110,7 +148,7 @@ License: You must have a valid license purchased only from themeforest(the above
     <!-- END LOGIN FORM -->
 
 </div>
-<div class="copyright"> 2014 © Metronic. Admin Dashboard Template. </div>
+<div class="copyright"> 2017 © Beconnect.</div>
 @include('includes.core-scripts')
 <!-- BEGIN PAGE LEVEL PLUGINS -->
 <script src="../assets/global/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>

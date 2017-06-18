@@ -96,16 +96,28 @@ License: You must have a valid license purchased only from themeforest(the above
                     </div>
                 @endif
 
-                <div class="page-content-inner">
-                    <div class="row">
-                        <div class="col-md-12 col-sm-12 cols-xs-12">
-                            <br>
-                            <div >
-                                <img src="../../uploads/event/Banner-horizontal-Skull-Bus.jpg" style="width:100%; height: 300px;">
-                            </div>
-                            <br><br>
-                        </div>
 
+                <div class="page-content-inner">
+
+                    <div class="row">
+                        @if($event->imgEvent != null)
+                            <div class="col-md-12 col-sm-12 cols-xs-12">
+                                <br>
+                                <div>
+                                    <img src="../../{{ $event->imgEvent }}" style="width:100%; height: 300px;">
+                                </div>
+                                <br><br>
+                            </div>
+                        @endif
+
+                        {!! Form::open(['route' => ['event.edit.imgEvent', 'event' => $event],
+                                            'enctype' => 'multipart/form-data', 'method' => 'POST']) !!}
+
+                            <input type="file" name="file" id="file" style="display: none;">
+
+                            <input type="submit" id="submit-img" hidden>
+
+                        {!! Form::close() !!}
 
 
                         <div class="page-content-inner">
@@ -150,7 +162,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     @if(Auth::getUser()->person->role_id == $leader)
                                                         <li class="divider"> </li>
                                                         <li>
-                                                            <a href="javascript:;" data-toggle="modal" data-target="#modal-note">
+                                                            <a href="javascript:;" id="changePicture">
                                                                 <i class="fa fa-picture-o font-purple"></i>
                                                                 Trocar Imagem
                                                             </a>
@@ -444,23 +456,12 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         <div class="input-icon input-icon-sm">
                                                             <i class="fa fa-briefcase"></i>
                                                             <select class="form-control" name="frequency" id="select-frequency">
-                                                                <option value="Encontro Único"
-                                                                @if($event->frequency == "Encontro Único") selected @endif
-                                                                    >Encontro Único
-                                                                </option>
-                                                                <option value="Diário"
-                                                                        @if($event->frequency == "Diário") selected @endif>
-                                                                    Diário
-                                                                </option>
-                                                                <option value="Semanal"
-                                                                        @if($event->frequency == "Semanal") selected @endif
-                                                                >Semanal</option>
-                                                                <option value="Quinzenal"
-                                                                        @if($event->frequency == "Quinzenal") selected @endif
-                                                                >Quinzenal</option>
-                                                                <option value="Mensal"
-                                                                        @if($event->frequency == "Mensal") selected @endif
-                                                                >Mensal</option>
+                                                                @foreach($frequencies as $frequency)
+                                                                    <option value="{{ $frequency->frequency }}"
+                                                                        @if($event->frequency == $frequency->frequency) selected @endif >
+                                                                        {{ $frequency->frequency }}
+                                                                    </option>
+                                                                @endforeach
                                                             </select>
                                                         </div>
                                                     </div>

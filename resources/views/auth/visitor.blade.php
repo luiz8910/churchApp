@@ -80,7 +80,7 @@ License: You must have a valid license purchased only from themeforest(the above
     {!! Form::close() !!}
     <!-- END FORGOT PASSWORD FORM -->
 </div>
-<div class="copyright"> 2014 © Metronic. Admin Dashboard Template. </div>
+<div class="copyright"> 2017 © Beconnect.</div>
 @include('includes.core-scripts')
 <!-- BEGIN PAGE LEVEL PLUGINS -->
 <script src="../assets/global/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>

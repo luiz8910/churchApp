@@ -79,9 +79,32 @@ Login page
   clear: both;
   border: 0px;
   border-bottom: 1px solid #eee;
-  padding: 25px 30px 25px 30px;
+  padding: 0px 30px 5px 30px;
   margin-left: -30px;
   margin-right: -30px; }
+
+.login .content .form-actions-2 {
+  clear: both;
+  border: 0px;
+  padding: 15px 30px 5px 30px;
+  margin-left: -30px;
+  margin-right: -30px; }
+
+.login .content .form-actions-xl {
+  clear: both;
+  border: 0px;
+  border-bottom: 1px solid #eee;
+  padding: 0px 30px 5px 30px;
+  margin-left: -30px;
+  margin-right: -30px; }
+
+.login .content .form-actions-xl-2 {
+  clear: both;
+  border: 0px;
+  padding: 10px 30px 5px 30px;
+  margin-left: -30px;
+  margin-right: -30px; }
+
   .login .content .form-actions > .btn {
     margin-top: -2px; }
 
@@ -139,9 +162,9 @@ Login page
 
 .login .content .forget-password {
   font-size: 14px;
-  float: right;
+  /*float: right;
   display: inline-block;
-  margin-top: 10px; }
+  margin-top: 10px;*/ }
 
 .login .content .check {
   color: #8290a3; }
@@ -194,7 +217,7 @@ Login page
     display: inline-block;
     margin-top: 20px; }
   .login-options .social-icons {
-    float: left;
+    float: right;
     padding-top: 3px; }
   .login .checkbox {
     font-size: 13px; } }
