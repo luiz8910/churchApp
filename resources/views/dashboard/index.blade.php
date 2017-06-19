@@ -355,9 +355,19 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                                                 </td>
                                                                 <td> <a href="{{ route('event.edit', ['event' => $item->id]) }}"> {{ $item->name }}</a></td>
-                                                                <td> {{ $eventDate[$i]->eventDate }} </td>
                                                                 <td>
-                                                                    Sem Grupo
+                                                                    @if(isset($eventDate[$i]->eventDate))
+                                                                        {{ $eventDate[$i]->eventDate }}
+                                                                    @endif
+                                                                </td>
+                                                                <td>
+                                                                    @if(isset($item->group_name))
+                                                                        <a href="{{ route('group.edit', ['group' => $item->group_id]) }}">
+                                                                            {{ $item->group_name }}
+                                                                        </a>
+                                                                    @else
+                                                                        Sem Grupo
+                                                                    @endif
                                                                 </td>
 
                                                             </tr>
