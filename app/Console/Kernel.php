@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Console\Commands\SendEmails;
 use App\Mail\resetPassword;
 use App\Models\User;
 use Illuminate\Console\Scheduling\Schedule;
@@ -17,7 +18,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        SendEmails::class
     ];
 
     /**
@@ -47,7 +48,7 @@ class Kernel extends ConsoleKernel
                     ->send(new resetPassword(
                         $u, $url, $today, $time
                     ));
-                
+
             }
         })->everyMinute();
 
