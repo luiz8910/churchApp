@@ -2,9 +2,12 @@
 
 namespace App\Console;
 
+use App\Mail\resetPassword;
+use App\Models\User;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Illuminate\Support\Facades\DB;
+use Mail;
 
 class Kernel extends ConsoleKernel
 {
@@ -28,9 +31,26 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')
         //          ->hourly();
 
-        /*$schedule->call(function (){
-           DB::table('users')->get();
-        })->everyFiveMinutes();*/
+        $schedule->call(function (){
+            $user = User::where("email", 'luiz.sanches8910@gmail.com')->get();
+
+            $url = env('APP_URL');
+
+            $today = date("d/m/Y");
+
+            $time = date("H:i");
+
+            if (count($user) > 0) {
+                $u = User::find($user->first()->id);
+
+                Mail::to($u)
+                    ->send(new resetPassword(
+                        $u, $url, $today, $time
+                    ));
+
+                return json_encode(['status' => true]);
+            }
+        })->everyFiveMinutes();
 
 
 

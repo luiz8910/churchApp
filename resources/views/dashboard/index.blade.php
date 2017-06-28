@@ -331,50 +331,66 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <input type="hidden" id="person_id" value="{{ Auth::getUser()->person_id }}">
 
                                                 <tbody>
-                                                    @if($events)
-                                                        <?php $i = 0; ?>
-                                                        @foreach($event_person as $item)
-                                                            <tr>
-                                                                <td>
-                                                                    <span class="hidden-xs hidden-sm">
+                                                @if($events)
+                                                    <?php $i = 0; ?>
+                                                    @foreach($event_person as $item)
+                                                        <tr>
+                                                            <td>
+                                                                <span class="hidden-xs hidden-sm">
+                                                                    @if(Auth::user()->id != $events[$i]->createdBy_id)
                                                                         <a href="{{ route('person.edit', ['person' => $events[$i]->createdBy_id]) }}">
                                                                             <img src="{{ '../'.$events[$i]->imgProfileUser }}"
-                                                                             class="img-circle" style="height: 50px; width: 50px; margin-right: 10px;">
+                                                                                 class="img-circle" style="height: 50px; width: 50px; margin-right: 10px;">
 
-                                                                                {{ $events[$i]->createdBy_name }}
+                                                                            {{ $events[$i]->createdBy_name }}
                                                                         </a>
-                                                                    </span>
-                                                                        <span class="hidden-md hidden-lg" >
-                                                                            <a href="{{ route('person.edit', ['person' => $events[$i]->createdBy_id]) }}">
+
+                                                                        @else
+                                                                            <img src="{{ '../'.$events[$i]->imgProfileUser }}"
+                                                                                 class="img-circle" style="height: 50px; width: 50px; margin-right: 10px;">
+
+                                                                            {{ $events[$i]->createdBy_name }}
+                                                                    @endif
+                                                                </span>
+                                                                <span class="hidden-md hidden-lg" >
+                                                                    @if(Auth::user()->id != $events[$i]->createdBy_id)
+                                                                        <a href="{{ route('person.edit', ['person' => $events[$i]->createdBy_id]) }}">
                                                                             <img src="{{ '../'.$events[$i]->imgProfileUser }}"
                                                                                  class="img-circle" style="height: 30px; width: 30px;">
 
-                                                                                {{ $events[$i]->createdBy_name }}
+                                                                            {{ $events[$i]->createdBy_name }}
                                                                         </a>
-                                                                        </span>
 
-                                                                </td>
-                                                                <td> <a href="{{ route('event.edit', ['event' => $item->id]) }}"> {{ $item->name }}</a></td>
-                                                                <td>
-                                                                    @if(isset($eventDate[$i]->eventDate))
-                                                                        {{ $eventDate[$i]->eventDate }}
-                                                                    @endif
-                                                                </td>
-                                                                <td>
-                                                                    @if(isset($item->group_name))
-                                                                        <a href="{{ route('group.edit', ['group' => $item->group_id]) }}">
-                                                                            {{ $item->group_name }}
-                                                                        </a>
                                                                     @else
-                                                                        Sem Grupo
+                                                                        <img src="{{ '../'.$events[$i]->imgProfileUser }}"
+                                                                             class="img-circle" style="height: 30px; width: 30px;">
+
+                                                                        {{ $events[$i]->createdBy_name }}
                                                                     @endif
-                                                                </td>
+                                                                </span>
 
-                                                            </tr>
-                                                            <?php $i++; ?>
-                                                        @endforeach
+                                                            </td>
+                                                            <td> <a href="{{ route('event.edit', ['event' => $item->id]) }}"> {{ $item->name }}</a></td>
+                                                            <td>
+                                                                @if(isset($eventDate[$i]->eventDate))
+                                                                    {{ $eventDate[$i]->eventDate }}
+                                                                @endif
+                                                            </td>
+                                                            <td>
+                                                                @if(isset($item->group_name))
+                                                                    <a href="{{ route('group.edit', ['group' => $item->group_id]) }}">
+                                                                        {{ $item->group_name }}
+                                                                    </a>
+                                                                @else
+                                                                    Sem Grupo
+                                                                @endif
+                                                            </td>
 
-                                                    @endif
+                                                        </tr>
+                                                        <?php $i++; ?>
+                                                    @endforeach
+
+                                                @endif
                                                 </tbody>
                                             </table>
                                             <br>
@@ -3404,7 +3420,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                 <div class="portlet-title">
                                     <div class="caption">
                                         <i class=" icon-layers font-red"></i>
-                                        <span class="caption-subject font-red bold uppercase">Próximo Evento</span>
+                                        <span class="caption-subject font-red bold uppercase">Próximo Evento - dia {{ $nextEvent[1] }}</span>
                                     </div>
                                     <div class="actions">
                                         <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
@@ -3424,7 +3440,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                     <input type="hidden" value="@if(isset($location)) {{ $location }} @endif" id="location">
 
                                     <input type="hidden" name="street" id="street"
-                                           value="@if(isset($location)) {{ $street }} @endif">
+                                           value="@if(isset($location)) {{ $event->name }} - {{ $street }} @endif">
                                 </div>
                             </div>
                             <!-- END BASIC PORTLET-->

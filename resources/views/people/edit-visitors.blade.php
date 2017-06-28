@@ -290,16 +290,20 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <div class="col-md-6">
                                                     {!! Form::FormGroup('role', $errors) !!}
                                                     <label class="control-label">Cargo</label>
-                                                    <select class="form-control" name="role_id"
-                                                            data-placeholder="Selecione seu cargo"
-                                                            tabindex="1" required>
-                                                        <option value="3">Visitante</option>
-                                                        @foreach($roles as $role)
-                                                            <option value="{{ $role->id }}">
-                                                                {{ $role->name }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
+                                                    @if(isset(Auth::user()->person) && Auth::user()->person->role_id == $leader)
+                                                        <select class="form-control" name="role_id"
+                                                                data-placeholder="Selecione seu cargo"
+                                                                tabindex="1" required>
+                                                            <option value="3">Visitante</option>
+                                                            @foreach($roles as $role)
+                                                                <option value="{{ $role->id }}">
+                                                                    {{ $role->name }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                    @else
+                                                        <input type="text" class="form-control" value="Visitante" readonly>
+                                                    @endif
                                                     {!! Form::error('role', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
                                                 </div>

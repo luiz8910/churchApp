@@ -115,10 +115,13 @@ class EventController extends Controller
          */
         $events = Event::where('church_id', $this->getUserChurch())->paginate(5);
 
+        $sub = false;
+
         /*
          * Foreach para Formatação de datas e nome do grupo pertencente se houver
          */
         foreach ($events as $event) {
+
             $event->eventDate = $this->formatDateView($event->eventDate);
 
             if($event->group_id)
@@ -126,7 +129,19 @@ class EventController extends Controller
                 $event['group_name'] = $this->groupRepository->find($event->group_id)->name;
             }
 
-            //$event->created_at = $this->formatDateView($event->created_at);
+            //Check-in e Check-out
+
+            $canCheckIn = $this->eventServices->canCheckIn($event->id);
+
+            if($canCheckIn)
+            {
+                $sub = $this->eventServices->isSubscribed($event->id);
+
+                $event->checkIn = $sub ? false : true;
+            }
+            else{
+                $event->checkIn = null;
+            }
         }
 
         /*

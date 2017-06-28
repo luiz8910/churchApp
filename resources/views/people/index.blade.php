@@ -156,8 +156,12 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <tr>
                                                         <td> <img src="{{ $item->imgProfile }}" style="width: 50px; height: 50px;"> </td>
                                                         <td>
-                                                            <a href="{{ route('person.edit', ['person' => $item->id]) }}">
-                                                            {{ $item->name }} {{ $item->lastName }}</a>
+                                                            @if(\Auth::user()->person_id != $item->id)
+                                                                <a href="{{ route('person.edit', ['person' => $item->id]) }}">
+                                                                {{ $item->name }} {{ $item->lastName }}</a>
+                                                            @else
+                                                                {{ $item->name }} {{ $item->lastName }}
+                                                            @endif
                                                         </td>
                                                         <td> {{ $item->cpf }} </td>
                                                         <td> {{ $item->role }} </td>

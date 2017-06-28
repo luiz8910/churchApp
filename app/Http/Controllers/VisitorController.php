@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Repositories\RoleRepository;
 use App\Repositories\StateRepository;
 use App\Repositories\VisitorRepository;
+use App\Traits\ConfigTrait;
 use App\Traits\CountRepository;
 use App\Traits\DateRepository;
 use App\Traits\FormatGoogleMaps;
@@ -21,7 +22,7 @@ use Illuminate\Support\Facades\DB;
 
 class VisitorController extends Controller
 {
-    use DateRepository, CountRepository, NotifyRepository, PeopleTrait, UserLoginRepository, FormatGoogleMaps;
+    use DateRepository, CountRepository, NotifyRepository, PeopleTrait, UserLoginRepository, FormatGoogleMaps, ConfigTrait;
     /**
      * @var VisitorRepository
      */
@@ -150,6 +151,8 @@ class VisitorController extends Controller
 
         $location = $this->formatGoogleMaps($visitor);
 
+        $leader = $this->getLeaderRoleId();
+
         $countPerson[] = $this->countPerson();
 
         $countGroups[] = $this->countGroups();
@@ -163,7 +166,7 @@ class VisitorController extends Controller
         $qtde = count($notify);
 
         return view('people.edit-visitors', compact('visitor', 'state', 'location', 'roles', 'countPerson',
-            'countGroups', 'adults', 'notify', 'qtde'));
+            'countGroups', 'adults', 'notify', 'qtde', 'leader'));
     }
 
     /**

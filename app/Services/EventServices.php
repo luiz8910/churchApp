@@ -223,7 +223,7 @@ class EventServices
      */
     public function isSubscribed($id)
     {
-        $person = \Auth::getUser()->person_id;
+        $person = \Auth::user()->person_id;
         $today = date("Y-m-d");
 
         $sub = DB::table('event_person')

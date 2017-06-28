@@ -490,9 +490,13 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 <span></span>
                                                             </label>
                                                         <td>
-                                                            <a href="{{ route('person.edit', ['person' => $person->id]) }}">
+                                                            @if(Auth::user()->person_id != $person->id)
+                                                                <a href="{{ route('person.edit', ['person' => $person->id]) }}">
+                                                                    {{ $person->name }} {{ $person->lastName }}
+                                                                </a>
+                                                            @else
                                                                 {{ $person->name }} {{ $person->lastName }}
-                                                            </a>
+                                                            @endif
                                                         </td>
                                                         <td>
                                                             <a href="mailto:{{ $person->user->email or null }}"> {{ $person->user->email or null }} </a>

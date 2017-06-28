@@ -297,14 +297,18 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <div class="col-md-6">
                                                     {!! Form::FormGroup('role', $errors) !!}
                                                     <label class="control-label">Cargo</label>
-                                                    <select class="form-control" name="role_id"
+                                                    @if(\Auth::user()->person->role_id != $leader)
+                                                        <input type="text" class="form-control" value="{{ $person->role->name }}" readonly>
+                                                    @else
+                                                        <select class="form-control" name="role_id"
                                                             data-placeholder="Selecione seu cargo"
                                                             tabindex="1">
-                                                        <option value="">Selecione</option>
-                                                        @foreach($roles as $role)
-                                                            <option value="{{ $role->id }}" @if($role->id == $person->role_id) selected @endif >{{ $role->name }}</option>
-                                                        @endforeach
-                                                    </select>
+                                                            <option value="">Selecione</option>
+                                                            @foreach($roles as $role)
+                                                                <option value="{{ $role->id }}" @if($role->id == $person->role_id) selected @endif >{{ $role->name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    @endif
                                                     {!! Form::error('role', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
                                                 </div>

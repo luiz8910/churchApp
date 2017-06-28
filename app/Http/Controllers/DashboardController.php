@@ -88,6 +88,7 @@ class DashboardController extends Controller
 
         $groups = $person->groups()->paginate() or null;
 
+
         if($groups)
         {
             foreach ($groups as $group)
@@ -96,7 +97,6 @@ class DashboardController extends Controller
                 $countMembers[] = count($group->people->all());
             }
         }
-
 
         if (count($events) == 0)
         {
@@ -132,10 +132,13 @@ class DashboardController extends Controller
             {
                 $eventDate[$i]->eventDate = $this->formatDateView($eventDate[$i]->eventDate);
             }
+            else{
+                array_pop($eventDate);
+                $i--;
+            }
 
             $i++;
         }
-
 
 
         $event_person = [];
@@ -156,10 +159,11 @@ class DashboardController extends Controller
         }
 
 
-
         $nextEvent = $this->getNextEvent();
 
-        $event = $this->eventRepository->find($nextEvent->event_id);
+        $nextEvent[1] = $this->formatDateView($nextEvent[1]);
+
+        $event = $this->eventRepository->find($nextEvent[0]);
 
         $street = $event->street;
 
@@ -180,6 +184,8 @@ class DashboardController extends Controller
         for($i = 0; $i < 7; $i++) { array_push($days, $twoWeeks[$i]); }
 
         foreach ($days as $day) { array_push($prevWeek, $day); }
+
+
 
         $days = $prevWeek;
 
@@ -251,9 +257,8 @@ class DashboardController extends Controller
 
         $allDays = $this->agendaServices->allDaysName();
 
-        //dd($notify);
 
-        return view('dashboard.index', compact('countPerson', 'countGroups', 'events', 'notify', 'qtde',
+        return view('dashboard.index', compact('countPerson', 'countGroups', 'events', 'notify', 'qtde', 'event',
             'days', 'nextMonth', 'nextMonth2', 'allEvents', 'countMembers', 'nextEvent', 'location', 'street',
             'nextMonth3', 'nextMonth4', 'nextMonth5', 'nextMonth6', 'prevMonth', 'prevMonth2',
             'prevMonth3', 'prevMonth4', 'prevMonth5', 'prevMonth6',
@@ -288,10 +293,10 @@ class DashboardController extends Controller
             $countMembers[] = count($group->people->all());
         }
 
-        $allMonths = AgendaServices::allMonths();
+        $allMonths = $this->agendaServices->allMonths();
 
         //Recupera a semana atual
-        $days = AgendaServices::findWeek();
+        $days = $this->agendaServices->findWeek();
         
         return view('dashboard.visitors', compact('countPerson', 'countGroups', 'events', 'notify', 'qtde',
             'street', 'groups', 'countMembers', 'allMonths', 'days'));
@@ -336,12 +341,61 @@ class DashboardController extends Controller
         File::put(public_path('js/events.json'), $json);
     }
 
+    //Busca pelo próximo evento
     public function getNextEvent()
     {
-        $today = date("Y-m-d");
+        //Dia Atual
+        $today = date_create();
 
-        return DB::table("event_person")
-            ->where("eventDate", ">=", $today)
-            ->first();
+        //$dates contém todos os eventos que não foram excluídos
+        $dates = DB::table("event_person")
+            ->where([
+                ["deleted_at", '=', null]
+            ])
+            ->get();
+
+        $arrayDates = [];
+
+        $arrayIds = [];
+
+
+        for ($i = 0; $i < count($dates); $i++)
+        {
+            //Separando as datas dos eventos
+            $date = date_create($dates[$i]->eventDate);
+
+            //Obtendo a diferença entre a data atual
+            // e a data do evento
+            $diff = date_diff($today, $date);
+
+            //Se a data do evento for igual o dia atual
+            //ou datas futuras
+            if($diff->format("%r%a") > -1)
+            {
+                //Separa o id do evento
+                $arrayIds[$i] = $dates[$i]->event_id;
+                //Separa a data do evento
+                $arrayDates[$i] = $date;
+            }
+        }
+
+        //Organiza os eventos de forma ascendente
+        //O indice 0 é o próximo evento
+        asort($arrayDates);
+
+        //Separa a data do próximo Evento numa variável
+        $d = array_values($arrayDates)[0];
+
+        //Separa o id do próximo evento numa variável
+        $id = array_search($d, $arrayDates);
+
+        /*
+         * Indíce 0 corresponde a $id do próximo evento
+         * Indice 1 corresponde a data do próximo evento
+         * */
+        $arr[] = $arrayIds[$id];
+        $arr[] = date_format($d, "Y-m-d");
+
+        return $arr;
     }
 }

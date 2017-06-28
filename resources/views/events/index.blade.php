@@ -67,19 +67,11 @@ License: You must have a valid license purchased only from themeforest(the above
                             <!-- BEGIN PAGE BREADCRUMBS -->
                             <ul class="page-breadcrumb breadcrumb">
                                 <li>
-                                    <a href="index.html">Home</a>
+                                    <a href="{{ route('index') }}">Home</a>
                                     <i class="fa fa-circle"></i>
                                 </li>
                                 <li>
-                                    <a href="#">Pages</a>
-                                    <i class="fa fa-circle"></i>
-                                </li>
-                                <li>
-                                    <a href="#">General</a>
-                                    <i class="fa fa-circle"></i>
-                                </li>
-                                <li>
-                                    <span>Search</span>
+                                    <span>Eventos</span>
                                 </li>
                             </ul>
                             <!-- END PAGE BREADCRUMBS -->
@@ -244,6 +236,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 <th class="printable-table-header"> Frequência </th>
                                                                 <th class="printable-table-header"> Criado Por </th>
                                                                 <th class="printable-table-header"> Grupo </th>
+                                                                <th> Check-in/Excluir </th>
                                                             </tr>
                                                             </thead>
 
@@ -285,21 +278,45 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                         @endif
                                                                     </td>
 
-                                                                    @if(Auth::getUser()->person->role_id == 1)
+
                                                                         <?php $deleteForm = "delete-" . $event->id; ?>
                                                                         <td>
+                                                                            @if($event->checkIn === false)
 
-                                                                            <a href="javascript:;" class="btn btn-danger btn-sm btn-circle pop"
-                                                                               title="Excluir evento"
-                                                                               data-toggle="confirmation" data-placement="top" data-original-title="Deseja Excluir?"
-                                                                               data-popout="true" onclick="event.preventDefault()"
-                                                                               id="btn-{{ $deleteForm }}">
-                                                                                <i class="fa fa-trash"></i>
-                                                                            </a>
+                                                                                <a href="javascript:;" class="btn btn-danger btn-sm btn-circle" id="checkIn" onclick='checkOut({{ $event->id }})'>
+                                                                                    <i class="fa fa-close" id="i-checkIn"></i>
 
+                                                                                </a>
+                                                                            @elseif($event->checkIn)
+                                                                                <a href="javascript:;" class="btn btn-success btn-sm btn-circle" id="checkIn" onclick='checkInEvent({{ $event->id }})'>
+                                                                                    <i class="fa fa-check" id="i-checkIn"></i>
+
+                                                                                </a>
+
+                                                                            @elseif($event->checkIn === null)
+                                                                                <a href="javascript:;" class="btn btn-success btn-sm btn-circle" disabled>
+                                                                                    <i class="fa fa-check" id="i-checkIn"></i>
+
+                                                                                </a>
+                                                                            @endif
+
+                                                                            @if(Auth::getUser()->person->role_id == 1)
+                                                                                <a href="javascript:;" class="btn btn-danger btn-sm btn-circle pop"
+                                                                                   title="Excluir evento"
+                                                                                   data-toggle="confirmation" data-placement="top" data-original-title="Deseja Excluir?"
+                                                                                   data-popout="true" onclick="event.preventDefault()"
+                                                                                   id="btn-{{ $deleteForm }}">
+                                                                                    <i class="fa fa-trash"></i>
+                                                                                </a>
+                                                                            @endif
 
                                                                         </td>
-                                                                    @endif
+
+
+
+                                                                    <td>
+
+                                                                    </td>
 
                                                                 </tr>
                                                             @endforeach

@@ -11,6 +11,7 @@ use App\Models\Role;
 use App\Models\User;
 use App\Notifications\EventNotification;
 use App\Notifications\Notifications;
+use App\Traits\ConfigTrait;
 use App\Traits\CountRepository;
 use App\Traits\DateRepository;
 use App\Traits\EmailTrait;
@@ -36,7 +37,8 @@ use File;
 
 class PersonController extends Controller
 {
-    use DateRepository, CountRepository, FormatGoogleMaps, UserLoginRepository, NotifyRepository, EmailTrait, PeopleTrait;
+    use DateRepository, CountRepository, FormatGoogleMaps, UserLoginRepository,
+        NotifyRepository, EmailTrait, PeopleTrait, ConfigTrait;
     /**
      * @var PersonRepository
      */
@@ -407,6 +409,8 @@ class PersonController extends Controller
 
         $person->dateBirth = $this->formatDateView($person->dateBirth);
 
+        $leader = $this->getLeaderRoleId();
+
         $location = $this->formatGoogleMaps($person);
 
         $countPerson[] = $this->countPerson();
@@ -463,7 +467,7 @@ class PersonController extends Controller
             ->get();
 
         return view('people.edit', compact('person', 'state', 'location', 'roles', 'countPerson',
-            'countGroups', 'adults', 'notify', 'qtde', 'fathers', 'mothers', 'children'));
+            'countGroups', 'adults', 'notify', 'qtde', 'fathers', 'mothers', 'children', 'leader'));
     }
 
 
