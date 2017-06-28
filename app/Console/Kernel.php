@@ -47,10 +47,9 @@ class Kernel extends ConsoleKernel
                     ->send(new resetPassword(
                         $u, $url, $today, $time
                     ));
-
-                return json_encode(['status' => true]);
+                
             }
-        })->everyFiveMinutes();
+        })->everyMinute();
 
 
 
