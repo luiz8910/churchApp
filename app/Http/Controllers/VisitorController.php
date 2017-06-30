@@ -40,10 +40,10 @@ class VisitorController extends Controller
      * VisitorController constructor.
      * @param VisitorRepository $repository
      */
-    public function __construct(VisitorRepository $repository, RoleRepository $roleRepository, StateRepository $stateRepository)
+    public function __construct(VisitorRepository $repository, RoleRepository $roleRepositoryTrait, StateRepository $stateRepository)
     {
         $this->repository = $repository;
-        $this->roleRepository = $roleRepository;
+        $this->roleRepository = $roleRepositoryTrait;
         $this->stateRepository = $stateRepository;
     }
 

@@ -71,20 +71,20 @@ class EventController extends Controller
     /**
      * EventController constructor.
      * @param EventRepository $repository
-     * @param StateRepository $stateRepository
+     * @param StateRepository $stateRepositoryTrait
      * @param UserRepository $userRepository
      * @param GroupRepository $groupRepository
      * @param PersonRepository $personRepository
      * @param RoleRepository $roleRepository
      */
-    public function __construct(EventRepository $repository, StateRepository $stateRepository,
+    public function __construct(EventRepository $repository, StateRepository $stateRepositoryTrait,
                                 UserRepository $userRepository, GroupRepository $groupRepository,
                                 PersonRepository $personRepository, RoleRepository $roleRepository,
                                 EventServices $eventServices, AgendaServices $agendaServices,
                                 FrequencyRepository $frequencyRepository)
     {
         $this->repository = $repository;
-        $this->stateRepository = $stateRepository;
+        $this->stateRepository = $stateRepositoryTrait;
         $this->userRepository = $userRepository;
         $this->groupRepository = $groupRepository;
         $this->personRepository = $personRepository;
@@ -516,13 +516,6 @@ class EventController extends Controller
         \Notification::send($user, new Notifications($event->name, 'events/'.$event->id.'/edit'));
     }
 
-    public function testeData()
-    {
-        $id = 11;
-        $eventDate = "2017-06-19";
-
-        $this->eventServices->setDailyEvents($id, $eventDate);
-    }
 
     public function store(Request $request)
     {
@@ -574,7 +567,7 @@ class EventController extends Controller
     {
         Event::where(['id' => $event->id])
             ->update(
-                ['church_id' => \Auth::getUser()->church_id]
+                ['church_id' => \Auth::user()->church_id]
             );
     }
 
@@ -969,5 +962,31 @@ class EventController extends Controller
             update(['imgEvent' => $imgName]);
 
         return redirect()->route('event.edit', ['event' => $event->id]);
+    }
+
+    //Função de teste somente, não tem uso em produção
+    public function Cron()
+    {
+        $today = date_create();
+
+        date_add($today, date_interval_create_from_date_string("1 day"));
+
+        $today = date_format($today, "Y-m-d");
+        //dd($today);
+
+        dd( DB::table('event_person')
+            ->where(
+                [
+                    'eventDate' => $today,
+                    'show' => 0,
+                    'deleted_at' => null
+                ]
+            )
+            ->get());
+    }
+
+    public function subAllMembers()
+    {
+        dd($this->eventServices->subAllMembers(26, '2017-06-29', \Auth::user()->person_id));
     }
 }

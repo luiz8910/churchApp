@@ -12,12 +12,14 @@ namespace App\Services;
 use App\Models\Event;
 use App\Repositories\EventRepository;
 use App\Repositories\FrequencyRepository;
+use App\Traits\ConfigTrait;
 use Auth;
 use Illuminate\Support\Facades\DB;
 
 class EventServices
 {
 
+    use ConfigTrait;
     /**
      * @var EventRepository
      */
@@ -27,10 +29,10 @@ class EventServices
      */
     private $frequencyRepository;
 
-    public function __construct(EventRepository $repository, FrequencyRepository $frequencyRepository)
+    public function __construct(EventRepository $repository, FrequencyRepository $frequencyRepositoryTrait)
     {
         $this->repository = $repository;
-        $this->frequencyRepository = $frequencyRepository;
+        $this->frequencyRepository = $frequencyRepositoryTrait;
     }
 
     /**
@@ -142,54 +144,120 @@ class EventServices
     public function newEventDays($id, $eventDate, $frequency)
     {
         $show = $eventDate == date("Y-m-d") ? 1 : 0;
+        $person_id = \Auth::user()->person_id;
 
         DB::table('event_person')
             ->insert([
                 'event_id' => $id,
-                'person_id' => \Auth::user()->person_id,
+                'person_id' => $person_id,
                 'eventDate' => $eventDate,
                 'show' => $show
             ]);
 
-        $daily = $this->frequencyRepository->findByField('frequency', 'Diário')->first()->frequency;
-        $weekly = $this->frequencyRepository->findByField('frequency', 'Semanal')->first()->frequency;
-        $monthly = $this->frequencyRepository->findByField('frequency', 'Mensal')->first()->frequency;
 
+        if($frequency == $this->weekly())
+        {
+            $this->setNextEvents($id, $eventDate, "7 days", $person_id);
+        }
+        elseif($frequency == $this->monthly())
+        {
+            $this->setNextEvents($id, $eventDate, "30 days", $person_id);
+        }
+        elseif ($frequency == $this->daily())
+        {
+            $this->setNextEvents($id, $eventDate, "1 days", $person_id);
+        }
 
-        if($frequency == $weekly)
-        {
-            $this->setNextEvents($id, $eventDate, "7 days");
-        }
-        elseif($frequency == $monthly)
-        {
-            $this->setNextEvents($id, $eventDate, "30 days");
-        }
-        elseif ($frequency == $daily)
-        {
-            $this->setNextEvents($id, $eventDate, "1 days");
-        }
+        $this->subAllMembers($id, $eventDate, $person_id);
     }
 
-    public function setNextEvents($id, $eventDate, $days)
+    public function setNextEvents($id, $eventDate, $days, $person_id)
     {
         $day = date_create($eventDate);
 
         $i = 0;
 
-        while($i < 4) {
+        while($i < ($this->numNextEvents() - 1)) {
             date_add($day, date_interval_create_from_date_string($days));
 
 
             DB::table('event_person')
                 ->insert([
                     'event_id' => $id,
-                    'person_id' => \Auth::user()->person_id,
+                    'person_id' => $person_id,
                     'eventDate' => date_format($day, "Y-m-d"),
                     'show' => 0
                 ]);
 
             $i++;
         }
+    }
+
+    /* Inscreve todos os membros do grupo
+     * ao qual o evento pertence (se aplicável)
+     * $id = id do evento
+     * $eventDate = data do evento
+    */
+    public function subAllMembers($id, $eventDate, $createdBy_id)
+    {
+        $event = $this->repository->find($id);
+
+        $group = $event->group;
+
+        if($group)
+        {
+            $people = [];
+
+            foreach ($group->people as $person)
+            {
+                if($person->id != $createdBy_id)
+                {
+                    $people[] = $person;
+                }
+
+            }
+
+            //dd($people);
+
+            $frequency = $event->frequency;
+
+            $show = $eventDate == date("Y-m-d") ? 1 : 0;
+
+            $i = 0;
+
+            while ($i < count($people))
+            {
+
+                DB::table('event_person')
+                    ->insert([
+                        'event_id' => $id,
+                        'person_id' => $people[$i]->id,
+                        'eventDate' => $eventDate,
+                        'show' => $show
+                    ]);
+
+
+                if($frequency == $this->weekly())
+                {
+                    $this->setNextEvents($id, $eventDate, "7 days", $people[$i]->id);
+                }
+                elseif($frequency == $this->monthly())
+                {
+                    $this->setNextEvents($id, $eventDate, "30 days", $people[$i]->id);
+                }
+                elseif ($frequency == $this->daily())
+                {
+                    $this->setNextEvents($id, $eventDate, "1 days", $people[$i]->id);
+                }
+
+                $i++;
+            }
+
+            return $people;
+        }
+
+        return false;
+
     }
 
     /**

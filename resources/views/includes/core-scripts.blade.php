@@ -58,7 +58,7 @@
 <script>
 
         //instantiate a Pusher object with our Credential's key
-        var pusher = new Pusher(getPusherKey(), {
+        var pusher = new Pusher('9f86933032dbae833b7d', {
 
             encrypted: true
         });

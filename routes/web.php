@@ -216,4 +216,8 @@ Route::group(['middleware' => 'auth'], function () {
 
 
 //Testes
-Route::get('teste-data', 'EventController@testeData');
+Route::get('cron', 'EventController@Cron');
+
+Route::get('subAllMembers', 'EventController@subAllMembers');
+
+Route::get('calendario', 'DashboardController@calendario');

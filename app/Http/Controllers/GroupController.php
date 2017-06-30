@@ -22,6 +22,7 @@ use App\Repositories\UserRepository;
 use App\Services\GroupServices;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use File;
 use Illuminate\Support\Facades\Mail;
@@ -59,17 +60,17 @@ class GroupController extends Controller
     /**
      * GroupController constructor.
      * @param GroupRepository $repository
-     * @param StateRepository $stateRepository
+     * @param StateRepository $stateRepositoryTrait
      * @param RoleRepository $roleRepository
      * @param PersonRepository $personRepository
      */
-    public function __construct(GroupRepository $repository, StateRepository $stateRepository,
+    public function __construct(GroupRepository $repository, StateRepository $stateRepositoryTrait,
                                 RoleRepository $roleRepository, PersonRepository $personRepository,
                                 UserRepository $userRepository, GroupServices $groupServices)
     {
 
         $this->repository = $repository;
-        $this->stateRepository = $stateRepository;
+        $this->stateRepository = $stateRepositoryTrait;
         $this->roleRepository = $roleRepository;
         $this->personRepository = $personRepository;
         $this->userRepository = $userRepository;
@@ -140,22 +141,28 @@ class GroupController extends Controller
 
         $data['sinceOf'] = $this->formatDateBD($data['sinceOf']);
 
-        $data['owner_id'] = \Auth::getUser()->id;
+        $data['owner_id'] = Auth::user()->id;
 
-        $data['church_id'] = $this->getUserChurch();
+        $data['church_id'] = Auth::user()->church_id;
 
         $id = $this->repository->create($data)->id;
 
         $this->imgProfile($file, $id, $data['name']);
+
 
         return redirect()->route('group.index');
     }
 
     public function imgProfile($file, $id, $name)
     {
-        $imgName = 'uploads/group/' . $id . '-' . $name . '.' .$file->getClientOriginalExtension();
+        $imgName = 'uploads/group/grupo.jpg';
 
-        $file->move('uploads/group', $imgName);
+        if($file)
+        {
+            $imgName = 'uploads/group/' . $id . '-' . $name . '.' .$file->getClientOriginalExtension();
+            $file->move('uploads/group', $imgName);
+        }
+
 
         DB::table('groups')->
             where('id', $id)->
@@ -312,7 +319,13 @@ class GroupController extends Controller
      */
     public function destroy($id)
     {
-        $this->repository->delete($id);
+        $group = $this->repository->find($id);
+
+        DB::table('events')
+            ->where('group_id', $id)
+            ->update(['group_id' => null]);
+
+        $group->delete();
 
         return json_encode(true);
     }

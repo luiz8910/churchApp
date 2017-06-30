@@ -1,0 +1,150 @@
+/*
+|
+| EDIT HEADER BOX CALENDARIO
+|
+ */
+
+.header-box-calendario{
+    padding: 15px 20px;
+
+}
+
+.btn-pagination {
+    border: none !important;
+}
+
+.ano-calendario{
+    float: right;
+    padding: 0px 25px 0px 0px !important;
+    margin-bottom: 0px;
+    margin-top: 5px;
+}
+
+.ano-calendario p{
+    font-size: 25px;
+
+}
+
+
+
+/*
+|
+| EDIT TABLE
+|
+ */
+
+.color-head-table {
+    color: #747474;
+    background-color: #eeeeee;
+    border: 1px solid #dddddd;
+}
+
+.adjust-th-table {
+    border: 1px solid #dddddd !important;
+    text-align: center !important;
+    padding: 2px 2px !important;
+
+}
+
+.adjust-td-body-table{
+    height: 100px !important;
+    width: 165px !important;
+    padding: 10px 0px 2px 0px  !important;
+    border: 1px solid #dddddd !important;
+
+}
+
+.p-dia-mes{
+    margin-bottom: 10px !important;
+    margin-right: 15px ;
+    color: #747474 !important;
+}
+
+
+/*
+|
+| EDIT EVENTOS
+|
+ */
+
+.evento-calendario{
+    height: auto !important;
+    width: 165px !important;
+    padding: 10px;
+    margin-bottom: 2px !important;
+    text-decoration: none !important;
+
+}
+
+a:link {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none !important;
+}
+
+
+/*
+|
+| COR EVENTOS
+|
+ */
+
+
+/*
+|AZUL
+*/
+
+.cor-1{
+    background: #3598DC;
+    color: #fff;
+}
+
+.cor-1:hover{
+    background: #217ebd;
+    color: #fff;
+}
+
+/*
+|VERDE
+*/
+
+.cor-2{
+    background: #4DB3A2;
+    color: #fff;
+}
+
+.cor-2:hover{
+    background: #3d9082;
+    color: #fff;
+}
+
+/*
+|VERMELHO
+*/
+
+.cor-3{
+    background: #F36A5A;
+    color: #FFF;
+}
+
+.cor-3:hover{
+    background: #EF4836;
+    color: #FFF;
+}
+
+/*
+|AMARELO
+*/
+
+.cor-4{
+    background: #F4D03F;
+    color: #FFF;
+
+}
+
+.cor-4:hover{
+    background: #f1c40f;
+    color: #FFF;
+}

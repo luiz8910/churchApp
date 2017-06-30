@@ -29,10 +29,22 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
 
         $schedule->call(function (){
+
+            $today = date("Y-m-d");
+
+            DB::table('event_person')
+                ->where(
+                    [
+                        'eventDate' => $today
+                    ]
+                )
+                ->get();
+
+        });
+
+        /*$schedule->call(function (){
             $user = User::where("email", 'luiz.sanches8910@gmail.com')->get();
 
             $url = env('APP_URL');
@@ -50,9 +62,7 @@ class Kernel extends ConsoleKernel
                     ));
 
             }
-        })->everyMinute();
-
-
+        });*/
 
     }
 

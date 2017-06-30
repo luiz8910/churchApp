@@ -56,11 +56,11 @@ class PersonController extends Controller
      */
     private $userRepository;
 
-    public function __construct(PersonRepository $repository, StateRepository $stateRepository, RoleRepository $roleRepository,
+    public function __construct(PersonRepository $repository, StateRepository $stateRepositoryTrait, RoleRepository $roleRepository,
                                 UserRepository $userRepository)
     {
         $this->repository = $repository;
-        $this->stateRepository = $stateRepository;
+        $this->stateRepository = $stateRepositoryTrait;
         $this->roleRepository = $roleRepository;
         $this->userRepository = $userRepository;
     }

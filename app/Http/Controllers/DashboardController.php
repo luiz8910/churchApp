@@ -398,4 +398,9 @@ class DashboardController extends Controller
 
         return $arr;
     }
+
+    public function calendario()
+    {
+        return view('calendario');
+    }
 }
