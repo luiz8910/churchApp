@@ -136,7 +136,7 @@ class EventServices
     }
 
     /**
-     * Cria 5 datas de eventos futuros
+     * Cria datas de eventos futuros (10 datas por default)
      * @param $id (event_id)
      * @param $eventDate (data do primeiro evento)
      * @param $frequency (frequência do evento)
@@ -177,8 +177,49 @@ class EventServices
 
         $i = 0;
 
+        $event = Event::find($id);
+
+        $diff = $event->eventDate != $event->endEventDate ? true : false;
+
         while($i < ($this->numNextEvents() - 1)) {
-            date_add($day, date_interval_create_from_date_string($days));
+
+            if($days == "30 days")
+            {
+                $d = date_format($day, "d");
+                $month = date_format($day, "m");
+                $year = date_format($day, "Y");
+
+                $month++;
+
+                if($month == 13)
+                {
+                    $month = 01;
+                    $year++;
+                }
+
+                $day = date_create($year."-".$month."-".$d);
+
+                if($diff)
+                {
+                    if($day == $event->eventDate)
+                    {
+                        $i = $this->numNextEvents();
+                    }
+                }
+            }
+            else{
+                date_add($day, date_interval_create_from_date_string($days));
+
+                if($diff)
+                {
+                    if($day == $event->eventDate)
+                    {
+                        $i = $this->numNextEvents();
+                    }
+                }
+            }
+
+
 
 
             DB::table('event_person')
@@ -252,8 +293,6 @@ class EventServices
 
                 $i++;
             }
-
-            return $people;
         }
 
         return false;

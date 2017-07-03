@@ -264,10 +264,14 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                     </td>
                                                                     <td class="printable-table"> {{ $event->frequency }} </td>
                                                                     <td>
-                                                                        <a href="{{ route('person.edit',
-                                                                            ['person' => \App\Models\User::find($event->createdBy_id)->person->id]) }}" rel="external" class="printable-table">
+                                                                        @if(\Auth::user()->id != $event->createdBy_id)
+                                                                            <a href="{{ route('person.edit',
+                                                                                ['person' => \App\Models\User::find($event->createdBy_id)->person->id]) }}" rel="external" class="printable-table">
+                                                                                {{ \App\Models\User::find($event->createdBy_id)->person->name }}
+                                                                            </a>
+                                                                        @else
                                                                             {{ \App\Models\User::find($event->createdBy_id)->person->name }}
-                                                                        </a>
+                                                                        @endif
                                                                     </td>
                                                                     <td>
                                                                         @if($event->group_id)

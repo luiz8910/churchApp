@@ -30,6 +30,22 @@ var UIConfirmations = function () {
 
             var id = str.replace("btn-delete-", "");
 
+            var num = route.search("agenda");
+
+            if(num > -1)
+            {
+                route = "/events";
+            }
+            else
+            {
+                num = route.search("events");
+
+                if(num > -1)
+                {
+                    route = "/events";
+                }
+            }
+
             Delete(id, route);
         });
 

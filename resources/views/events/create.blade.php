@@ -182,7 +182,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             <input type="text" class="form-control" name="endEventDate" id="endEventDate" readonly>
                                                         </div>
                                                         <!-- /input-group -->
-                                                        <span class="help-block"> Deixe em branco se a data de término é a mesma da data de ínicio </span>
+                                                        <span class="help-block"> Deixe em branco se a data de término é indeterminada </span>
 
                                                 </div>
                                             </div>
