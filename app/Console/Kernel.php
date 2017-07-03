@@ -6,8 +6,6 @@ use App\Console\Commands\SendEmails;
 use App\Mail\resetPassword;
 use App\Models\Event;
 use App\Models\User;
-use App\Services\EventServices;
-use App\Traits\ConfigTrait;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Illuminate\Support\Facades\DB;
@@ -15,7 +13,7 @@ use Mail;
 
 class Kernel extends ConsoleKernel
 {
-    use ConfigTrait;
+
     /**
      * The Artisan commands provided by your application.
      *
@@ -24,16 +22,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         SendEmails::class
     ];
-    /**
-     * @var EventServices
-     */
-    private $eventServices;
 
-    public function __construct(EventServices $eventServices)
-    {
-
-        $this->eventServices = $eventServices;
-    }
 
     /**
      * Define the application's command schedule.
@@ -44,7 +33,9 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
 
-        $schedule->call($this->Cron());
+        $schedule->call(function(){
+            $this->Cron();
+        });
 
         /*$schedule->call(function (){
             $user = User::where("email", 'luiz.sanches8910@gmail.com')->get();
@@ -78,7 +69,6 @@ class Kernel extends ConsoleKernel
         require base_path('routes/console.php');
     }
 
-    //Função de teste somente, não tem uso em produção
     public function Cron()
     {
         /*$today = date_create();
@@ -86,6 +76,7 @@ class Kernel extends ConsoleKernel
         $today = date_format($today, "Y-m-d");*/
         $today = date("Y-m-d");
         //dd($today);
+
 
 
         $events = DB::table('event_person')
@@ -123,15 +114,15 @@ class Kernel extends ConsoleKernel
                 ->first();
 
 
-            if($e->frequency == $this->daily())
+            if($e->frequency == "Diário")
             {
                 $this->setDays($event, $last, '1 day');
             }
-            elseif ($e->frequency == $this->weekly())
+            elseif ($e->frequency == "Semanal")
             {
                 $todayNumber = date('w');
 
-                $dayNumber = $this->eventServices->getDayNumber($e->day);
+                $dayNumber = $this->getDayNumber($e->day);
 
                 if($todayNumber == $dayNumber)
                 {
@@ -139,7 +130,7 @@ class Kernel extends ConsoleKernel
                 }
 
             }
-            elseif($e->frequency == $this->monthly())
+            elseif($e->frequency == "Mensal")
             {
                 $todayNumber = date('d');
 
@@ -189,4 +180,30 @@ class Kernel extends ConsoleKernel
                 ]
             );
     }
+
+    public function getDayNumber($day)
+    {
+
+        $dayName[] = 'Domingo'; //0
+        $dayName[] = 'Segunda-Feira'; //1
+        $dayName[] = 'Terça-Feira'; //2
+        $dayName[] = 'Quarta-Feira'; //3
+        $dayName[] = 'Quinta-Feira'; //4
+        $dayName[] = 'Sexta-Feira'; //5
+        $dayName[] = 'Sábado'; //6
+
+        $x = 0;
+
+        for ($i = 0; $i < count($dayName); $i++)
+        {
+            if($day == $dayName[$i])
+            {
+                $x = $i;
+                break;
+            }
+        }
+
+        return $x;
+    }
+
 }
