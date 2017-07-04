@@ -972,6 +972,7 @@ class EventController extends Controller
         //dd($today);
 
 
+
         $events = DB::table('event_person')
             ->where(
                 [
@@ -983,56 +984,61 @@ class EventController extends Controller
             ->get();
 
 
-        DB::table('event_person')
-            ->where(
-                [
-                    'eventDate' => $today,
-                    'show' => 0,
-                    'deleted_at' => null
-                ]
-            )->update(['show' => 1]);
-
-        foreach ($events as $event)
+        if(count($events) > 0)
         {
-            $e = Event::find($event->event_id);
-
-            $last = DB::table('event_person')
+            DB::table('event_person')
                 ->where(
                     [
-                        'event_id' => $event->event_id,
+                        'eventDate' => $today,
+                        'show' => 0,
                         'deleted_at' => null
                     ]
-                )
-                ->orderBy('eventDate', 'desc')
-                ->first();
+                )->update(['show' => 1]);
 
-
-            if($e->frequency == $this->daily())
+            foreach ($events as $event)
             {
-                $this->setDays($event, $last, '1 day');
-            }
-            elseif ($e->frequency == $this->weekly())
-            {
-                $todayNumber = date('w');
+                $e = Event::find($event->event_id);
 
-                $dayNumber = $this->eventServices->getDayNumber($e->day);
+                $last = DB::table('event_person')
+                    ->where(
+                        [
+                            'event_id' => $event->event_id,
+                            'deleted_at' => null
+                        ]
+                    )
+                    ->orderBy('eventDate', 'desc')
+                    ->first();
 
-                if($todayNumber == $dayNumber)
+
+                if($e->frequency == $this->daily())
                 {
-                    $this->setDays($event, $last, '7 days');
+                    $this->setDays($event, $last, '1 day');
                 }
-
-            }
-            elseif($e->frequency == $this->monthly())
-            {
-                $todayNumber = date('d');
-
-                if($todayNumber == $e->day)
+                elseif ($e->frequency == $this->weekly())
                 {
-                    $this->setDays($event, $last);
+                    $todayNumber = date('w');
+
+                    $dayNumber = $this->eventServices->getDayNumber($e->day);
+
+                    if($todayNumber == $dayNumber)
+                    {
+                        $this->setDays($event, $last, '7 days');
+                    }
+
+                }
+                elseif($e->frequency == $this->monthly())
+                {
+                    $todayNumber = date('d');
+
+                    if($todayNumber == $e->day)
+                    {
+                        $this->setDays($event, $last);
+                    }
                 }
             }
-        }
+
+        }else return 0;
+
 
     }
 
