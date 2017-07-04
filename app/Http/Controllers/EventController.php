@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Cron\CronEvents;
 use App\Events\AgendaEvent;
 use App\Models\Event;
 use App\Models\User;
@@ -959,8 +960,14 @@ class EventController extends Controller
         return redirect()->route('event.edit', ['event' => $event->id]);
     }
 
-    //Função de teste somente, não tem uso em produção
     public function Cron()
+    {
+        $cron = new CronEvents();
+
+        $cron->setNextEvents();
+    }
+    //Função de teste somente, não tem uso em produção
+    public function Cron2()
     {
         /*$today = date_create();
 
