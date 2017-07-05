@@ -94,7 +94,7 @@ class Kernel extends ConsoleKernel
             )
             ->get();
 
-        
+
         if(count($events) > 0)
         {
             DB::table('event_person')

@@ -145,7 +145,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                             <tbody>
                                             <?php $i = 0; ?>
                                             @foreach($groups as $item)
-                                                <tr>
+                                                <tr id="tr-{{ $item->id }}">
                                                     <td> <img src="{{ $item->imgProfile }}" style="width: 50px; height: 50px;"> </td>
                                                     <td> <a href="{{ route('group.edit', ['group' => $item->id]) }}"> {{ $item->name }}</a></td>
                                                     <td> {{ $item->sinceOf }} </td>
@@ -176,6 +176,20 @@ License: You must have a valid license purchased only from themeforest(the above
                                         <div class="pull-right">
                                             {{ $groups->links() }}
                                         </div>
+
+                                        <div class="progress" id="progress-danger" style="display: none;">
+                                            <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" aria-valuenow="100"
+                                                 aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                                                Excluindo...
+                                                <span class="sr-only">Excluindo...</span>
+                                            </div>
+                                        </div>
+
+                                        <input type="hidden" id="notific8-title">
+                                        <input type="hidden" id="notific8-text">
+                                        <input type="hidden" id="notific8-type" value="danger">
+
+                                        <a href="javascript:;" class="btn btn-danger" id="notific8" style="display: none;"></a>
                                     </div>
                                 </div>
                             </div>

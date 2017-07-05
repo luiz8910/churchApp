@@ -327,7 +327,7 @@ class GroupController extends Controller
 
         $group->delete();
 
-        return json_encode(true);
+        return json_encode(['status' => true, 'name' => $group->name]);
     }
 
     public function addMembers(Request $request, $group)

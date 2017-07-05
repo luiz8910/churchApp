@@ -511,12 +511,18 @@
             dataType: 'json'
         });
 
-        request.done(function (e) {
+        console.log(route);
 
+        request.done(function (e) {
+            console.log("done");
+            console.log(e);
             if(e.status)
             {
+                console.log("status: " + e.status);
+                console.log("id: " + id);
+
                 $("#notific8-title").val("Atenção");
-                $("#notific8-text").val("O evento " + e.name + " foi excluído");
+                $("#notific8-text").val(e.name + " foi excluído");
 
                 setTimeout(function() {
                     $("#progress-danger").css("display", "none");

@@ -4,7 +4,7 @@ var UINotific8 = function () {
         //main function to initiate the module
         init: function () {
 
-            console.log("notific8");
+
                 $("#notific8").click(function (e) {
 
                     console.log("notific8");

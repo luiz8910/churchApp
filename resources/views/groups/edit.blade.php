@@ -386,9 +386,9 @@ License: You must have a valid license purchased only from themeforest(the above
                                             <span class="caption-subject bold uppercase font-green-haze"> Dados do Grupo</span>
                                         </div>
 
-
-                                        <div id="container"></div>
-
+                                        @if(!empty($members))
+                                            <div id="container"></div>
+                                        @endif
 
 
                                     </div>
@@ -397,6 +397,9 @@ License: You must have a valid license purchased only from themeforest(the above
                         </div>
                     </div>
 
+                    @if(empty($members))
+                        <p class="text-center" style="margin-top: -15px;">Não há dados a serem exibidos</p>
+                    @endif
 
                     <div class="row">
                         <div class="col-md-12">
@@ -481,47 +484,54 @@ License: You must have a valid license purchased only from themeforest(the above
                                             </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach($pag as $person)
-                                                    <tr class="odd gradeX">
-                                                        <td>
-                                                            <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
-                                                                <input type="checkbox" name="events" class="checkboxes check-model" id="check-{{ $person->id }}"
-                                                                       value="{{ $person->id }}" />
-                                                                <span></span>
-                                                            </label>
-                                                        <td>
-                                                            @if(Auth::user()->person_id != $person->id)
-                                                                <a href="{{ route('person.edit', ['person' => $person->id]) }}">
+                                                @if($qtdeMembers > 0)
+                                                    @foreach($pag as $person)
+                                                        <tr class="odd gradeX">
+                                                            <td>
+                                                                <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                                                    <input type="checkbox" name="events" class="checkboxes check-model" id="check-{{ $person->id }}"
+                                                                           value="{{ $person->id }}" />
+                                                                    <span></span>
+                                                                </label>
+                                                            <td>
+                                                                @if(Auth::user()->person_id != $person->id)
+                                                                    <a href="{{ route('person.edit', ['person' => $person->id]) }}">
+                                                                        {{ $person->name }} {{ $person->lastName }}
+                                                                    </a>
+                                                                @else
                                                                     {{ $person->name }} {{ $person->lastName }}
+                                                                @endif
+                                                            </td>
+                                                            <td>
+                                                                <a href="mailto:{{ $person->user->email or null }}"> {{ $person->user->email or null }} </a>
+                                                            </td>
+                                                            <td> {{ $person->tel }} </td>
+                                                            <td class="center"> {{ $person->cel }} </td>
+                                                            <!--<span class="label label-sm label-success"> Aprovado </span>-->
+
+                                                            <?php $deleteForm = "delete-" . $person->id; ?>
+                                                            <td id="{{ $deleteForm }}">
+                                                                {!! Form::open(['route' => ['group.deleteMember', 'group' => $group->id, 'member' => $person->id],
+                                                                        'method' => 'DELETE', 'id' => 'form-'.$deleteForm]) !!}
+
+                                                                <a href="" class="btn btn-danger btn-sm btn-circle"
+                                                                   title="Excluir membro do grupo"
+                                                                   onclick='event.preventDefault();document.getElementById("form-{{ $deleteForm }}").submit();'>
+                                                                    <i class="fa fa-trash"></i>
                                                                 </a>
-                                                            @else
-                                                                {{ $person->name }} {{ $person->lastName }}
-                                                            @endif
-                                                        </td>
-                                                        <td>
-                                                            <a href="mailto:{{ $person->user->email or null }}"> {{ $person->user->email or null }} </a>
-                                                        </td>
-                                                        <td> {{ $person->tel }} </td>
-                                                        <td class="center"> {{ $person->cel }} </td>
-                                                        <!--<span class="label label-sm label-success"> Aprovado </span>-->
 
-                                                        <?php $deleteForm = "delete-" . $person->id; ?>
-                                                        <td id="{{ $deleteForm }}">
-                                                            {!! Form::open(['route' => ['group.deleteMember', 'group' => $group->id, 'member' => $person->id],
-                                                                    'method' => 'DELETE', 'id' => 'form-'.$deleteForm]) !!}
+                                                                {!! Form::close() !!}
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
 
-                                                            <a href="" class="btn btn-danger btn-sm btn-circle"
-                                                               title="Excluir membro do grupo"
-                                                               onclick='event.preventDefault();document.getElementById("form-{{ $deleteForm }}").submit();'>
-                                                                <i class="fa fa-trash"></i>
-                                                            </a>
-
-                                                            {!! Form::close() !!}
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
+                                                @endif
                                             </tbody>
+
                                         </table>
+                                            @if($qtdeMembers == 0)
+                                                <p class="text-center" style="margin-top: 40px;">Não há dados a serem exibidos</p>
+                                            @endif
                                         <br><br>
                                         <div class="pull-right">
                                             {{ $pag->links() }}
@@ -553,6 +563,7 @@ License: You must have a valid license purchased only from themeforest(the above
                             <!-- END BORDERED TABLE PORTLET-->
                         </div>
                     </div>
+
 
                     <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
                          aria-labelledby="myModalLabel">
