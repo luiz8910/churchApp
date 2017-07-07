@@ -13,7 +13,9 @@ class AddChurchIdEvents extends Migration
      */
     public function up()
     {
-
+        Schema::table('events', function(Blueprint $table){
+           $table->integer('church_id');
+        });
     }
 
     /**

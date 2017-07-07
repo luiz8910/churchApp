@@ -156,9 +156,15 @@ class PersonController extends Controller
 
         $countGroups[] = $this->countGroups();
 
-        $church_id = Auth::getUser()->church_id;
+        $church_id = Auth::user()->church_id;
 
-        $adults = $this->repository->findWhere(['tag' => 'adult', 'church_id' => $church_id]);
+        $adults = $this->repository->findWhere(
+            [
+                'tag' => 'adult',
+                'church_id' => $church_id,
+                ['maritalStatus', '<>', 'Casado']
+            ]
+        );
 
         $notify = $this->notify();
 
@@ -219,7 +225,8 @@ class PersonController extends Controller
                 [
                     'people.tag' => 'adult',
                     'people.gender' => 'M',
-                    'users.church_id' => $church_id
+                    'users.church_id' => $church_id,
+                    'people.deleted_at' => null
                 ]
             )
             ->get();
@@ -231,7 +238,8 @@ class PersonController extends Controller
                 [
                     'people.tag' => 'adult',
                     'people.gender' => 'F',
-                    'users.church_id' => $church_id
+                    'users.church_id' => $church_id,
+                    'people.deleted_at' => null
                 ]
             )
             ->get();
@@ -248,7 +256,7 @@ class PersonController extends Controller
      */
     public function store(Request $request)
     {
-        $file = $request->file('img');//dd($request->all());
+        $file = $request->file('img');
 
         $email = $request->only(['email']);
 
@@ -330,16 +338,12 @@ class PersonController extends Controller
             $this->updateMaritalStatus($data['partner'], $id, 'people');
         }
 
-        $church_id = $request->user()->id;
+        $church_id = $request->user()->church_id;
 
         if ($this->repository->isAdult($data['dateBirth'])) {
             $this->createUserLogin($id, $password, $email, $church_id);
 
             if ($children) {
-
-                DB::table('people')
-                    ->where('id', $id)
-                    ->update(['hasKids' => 1]);
 
                 $this->children($children, $id, $data['gender'], $data["role_id"]);
             }
@@ -403,6 +407,8 @@ class PersonController extends Controller
     {
         $person = $this->repository->find($id);
 
+        $user = $person->user;
+
         $state = $this->stateRepository->all();
 
         $roles = $this->roleRepository->all();
@@ -421,7 +427,14 @@ class PersonController extends Controller
 
         $church_id = Auth::getUser()->church_id;
 
-        $adults = $this->repository->findWhere(['tag' => 'adult', 'gender' => $gender, 'church_id' => $church_id]);
+        $adults = $this->repository->findWhere(
+            [
+                'tag' => 'adult',
+                'gender' => $gender,
+                'church_id' => $church_id,
+                ['maritalStatus', '<>', 'Casado']
+            ]
+        );
 
         $notify = $this->notify();
 
@@ -433,7 +446,7 @@ class PersonController extends Controller
         {
             $parent = $person->gender == "M" ? 'father_id' : 'mother_id';
 
-            $children = $this->repository->findByField($parent, $id);
+            $children = $this->repository->findByField($parent, $user->id);
 
             foreach ($children as $child)
             {
@@ -447,9 +460,11 @@ class PersonController extends Controller
             ->join('users', 'users.person_id', 'people.id')
             ->where(
                 [
+                    ['people.id', '<>', $id],
                     'people.tag' => 'adult',
                     'people.gender' => 'M',
-                    'users.church_id' => $church_id
+                    'users.church_id' => $church_id,
+                    'people.deleted_at' => null
                 ]
             )
             ->get();
@@ -459,9 +474,11 @@ class PersonController extends Controller
             ->join('users', 'users.person_id', 'people.id')
             ->where(
                 [
+                    ['people.id', '<>', $id],
                     'people.tag' => 'adult',
                     'people.gender' => 'F',
-                    'users.church_id' => $church_id
+                    'users.church_id' => $church_id,
+                    'people.deleted_at' => null
                 ]
             )
             ->get();
@@ -646,13 +663,19 @@ class PersonController extends Controller
     {
         $person = $this->repository->find($id);
 
-        $user = $person->user->id;
+        $user = $person->tag == 'adult' ? $person->user->id : null;
 
-        $this->userRepository->delete($user);
+        if($user){
+            $this->userRepository->delete($user);
+        }
 
         $person->delete();
 
-        return json_encode(true);
+        return json_encode(
+            [
+                'status' => true,
+                'name' => $person->name . " ". $person->lastName
+            ]);
     }
 
     public function destroyTeen($id)

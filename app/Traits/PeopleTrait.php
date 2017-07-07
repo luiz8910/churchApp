@@ -43,7 +43,7 @@ trait PeopleTrait
      * @param $id (do pai ou mãe)
      * @param $gender
      */
-    public function children($children, $gender, $id = null, $role_id)
+    public function children($children, $id, $gender, $role_id)
     {
         foreach ($children as $child) {
 
@@ -55,11 +55,15 @@ trait PeopleTrait
 
             $data['imgProfile'] = 'uploads/profile/noimage.png';
 
-            if ($gender == 'M') {
-                $data['father_id'] = $id;
-            } else {
-                $data['mother_id'] = $id;
+            if($id){
+                if ($gender == 'M') {
+                    $data['father_id'] = $id;
+                } else {
+                    $data['mother_id'] = $id;
+                }
             }
+
+            $data['church_id'] = Auth::user()->church_id;
 
             $data['role_id'] = $role_id;
 
@@ -67,7 +71,7 @@ trait PeopleTrait
 
             $idChild = DB::table("people")->insertGetId($data);
 
-            $this->updateTag($this->repository->tag($data['dateBirth']), $idChild, 'people');
+            $this->updateTag($this->tag($data['dateBirth']), $idChild, 'people');
         }
 
         if($id)

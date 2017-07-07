@@ -88,6 +88,9 @@ class DashboardController extends Controller
 
         $groups = $person->groups()->paginate() or null;
 
+        $event_person = [];
+
+        $nextEvent = null;
 
         if($groups)
         {
@@ -101,7 +104,7 @@ class DashboardController extends Controller
         if (count($events) == 0)
         {
             return view('dashboard.index', compact('countPerson', 'countGroups', 'events', 'notify', 'qtde',
-                'countMembers', 'street', 'groups'));
+                'countMembers', 'street', 'groups', 'event_person', 'nextEvent'));
         }
 
         $eventDate = [];
@@ -141,7 +144,7 @@ class DashboardController extends Controller
         }
 
 
-        $event_person = [];
+
 
         if($eventDate[0] != null)
         {
@@ -402,5 +405,10 @@ class DashboardController extends Controller
     public function calendario()
     {
         return view('calendario');
+    }
+
+    public function menu()
+    {
+        return view('testes.menu');
     }
 }

@@ -154,7 +154,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                             </thead>
                                             <tbody>
                                             @foreach($teen as $item)
-                                                <tr>
+                                                <tr id="tr-{{ $item->id }}">
                                                     <td class="visible-xs"></td>
                                                     <td> <img src="{{ $item->imgProfile }}" style="width: 50px; height: 50px;"> </td>
                                                     <td>
@@ -167,16 +167,16 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                                     <?php $deleteForm = "delete-".$item->id; ?>
                                                     <td id="{{ $deleteForm }}">
-                                                        {!! Form::open(['route' => ['person.destroy', 'person' => $item->id],
-                                                                'method' => 'DELETE', 'id' => 'form-'.$deleteForm]) !!}
 
-                                                        <a href="" class="btn btn-danger btn-sm btn-circle"
-                                                           onclick='event.preventDefault();document.getElementById("form-{{ $deleteForm }}").submit();'>
+
+                                                        <a href="javascript:;" class="btn btn-danger btn-sm btn-circle pop" title="Deseja Excluir o Membro"
+                                                           data-toggle="confirmation" data-placement="top"
+                                                           data-original-title="Deseja Excluir?" data-popout="true"
+                                                           onclick='event.preventDefault();' id="btn-delete-{{ $item->id }}">
                                                             <i class="fa fa-trash"></i>
-                                                            Excluir
                                                         </a>
 
-                                                        {!! Form::close() !!}
+
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -186,6 +186,20 @@ License: You must have a valid license purchased only from themeforest(the above
                                         <div class="pull-right">
                                             {{ $teen->links() }}
                                         </div>
+
+                                        <div class="progress" id="progress-danger" style="display: none;">
+                                            <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" aria-valuenow="100"
+                                                 aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                                                Excluindo...
+                                                <span class="sr-only">Excluindo...</span>
+                                            </div>
+                                        </div>
+
+                                        <input type="hidden" id="notific8-title">
+                                        <input type="hidden" id="notific8-text">
+                                        <input type="hidden" id="notific8-type" value="danger">
+
+                                        <a href="javascript:;" class="btn btn-danger" id="notific8" style="display: none;"></a>
                                     </div>
                                 </div>
                             </div>

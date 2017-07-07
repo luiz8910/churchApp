@@ -100,6 +100,14 @@ License: You must have a valid license purchased only from themeforest(the above
                     </div>
                 @endif
 
+                @if(Session::has('member.deleted'))
+                    <div class="alert alert-success alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+                        {{ Session::get('member.deleted') }}
+                    </div>
+                @endif
+
                 <div class="alert alert-success alert-dismissible" id="alert-success" role="alert" style="display: none;">
                     <button type="button" class="close" id="button-success" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <strong>Sucesso</strong> Você está inscrito
@@ -197,13 +205,37 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                     </a>
                                                                 </li>
                                                                 <li>
-                                                                    <a href="javascript:;">
+                                                                    <a href="javascript:;" data-toggle="modal" data-target=".group-delete-modal-sm">
                                                                         <i class="fa fa-ban font-red"></i>
                                                                         Excluir Grupo
                                                                     </a>
                                                                 </li>
                                                             @endif
                                                         </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Modal Excluir Grupo -->
+                                            <div class="modal fade group-delete-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+                                                <div class="modal-dialog modal-md" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                            <h4 class="modal-title text-center" id="myModalLabel">Atenção</h4>
+                                                        </div>
+                                                        <div class="modal-body text-center">
+                                                            Deseja Excluir o Grupo "{{ $group->name }}" ?
+                                                            <br>
+                                                            (Esta ação não pode ser revertida)
+                                                        </div>
+
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                                            <button type="button" id="btn-delete-{{ $group->id }}" class="btn btn-danger group-delete">
+                                                                Excluir Grupo
+                                                            </button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -414,11 +446,13 @@ License: You must have a valid license purchased only from themeforest(the above
                                     <div class="actions">
 
                                         <div class="btn-group btn-group-devided">
-                                            {!! Form::open(['route' => ['group.destroyManyUsers', 'id' => $group->id], 'id' => 'form-destroyMany', 'method' => 'GET']) !!}
+                                            {!! Form::open(['route' => 'group.destroyManyUsers', 'id' => 'form-destroyMany', 'method' => 'POST']) !!}
                                             <div id="modelToDel"></div>
 
-                                            <a href=""
-                                               class="btn red btn-outline" id="btn-delete-model"
+                                            <input type="hidden" name="group" value="{{ $group->id }}">
+
+                                            <a href="javascript:;"
+                                               class="btn red btn-outline btn-sm btn-circle" id="btn-delete-model"
                                                onclick="event.preventDefault();document.getElementById('form-destroyMany').submit();"
                                                style="display: none;">
                                                 <i class="fa fa-close"></i>
@@ -514,9 +548,10 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 {!! Form::open(['route' => ['group.deleteMember', 'group' => $group->id, 'member' => $person->id],
                                                                         'method' => 'DELETE', 'id' => 'form-'.$deleteForm]) !!}
 
-                                                                <a href="" class="btn btn-danger btn-sm btn-circle"
-                                                                   title="Excluir membro do grupo"
-                                                                   onclick='event.preventDefault();document.getElementById("form-{{ $deleteForm }}").submit();'>
+                                                                <a href="javascript:;" class="btn btn-danger btn-sm btn-circle pop-leave-group"
+                                                                   title="Excluir membro do grupo" data-toggle="confirmation" data-placement="top"
+                                                                   data-original-title="Deseja Excluir?" data-popout="true"
+                                                                   onclick='event.preventDefault();' id="btn-delete-{{ $person->id }}">
                                                                     <i class="fa fa-trash"></i>
                                                                 </a>
 
@@ -556,7 +591,19 @@ License: You must have a valid license purchased only from themeforest(the above
                                             </nav>-->
                                         </div>
 
+                                        <div class="progress" id="progress-danger" style="display: none;">
+                                            <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" aria-valuenow="100"
+                                                 aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                                                Excluindo...
+                                                <span class="sr-only">Excluindo...</span>
+                                            </div>
+                                        </div>
 
+                                        <input type="hidden" id="notific8-title">
+                                        <input type="hidden" id="notific8-text">
+                                        <input type="hidden" id="notific8-type" value="danger">
+
+                                        <a href="javascript:;" class="btn btn-danger" id="notific8" style="display: none;"></a>
                                     </div>
                                 </div>
                             </div>

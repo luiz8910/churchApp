@@ -168,13 +168,37 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             </a>
                                                         </li>
                                                         <li>
-                                                            <a href="javascript:;">
+                                                            <a href="javascript:;" data-toggle="modal" data-target=".event-delete-modal-sm">
                                                                 <i class="fa fa-ban font-red"></i>
                                                                 Excluir Evento
                                                             </a>
                                                         </li>
                                                     @endif
                                                 </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Modal Excluir Evento -->
+                                    <div class="modal fade event-delete-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+                                        <div class="modal-dialog modal-md" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    <h4 class="modal-title text-center" id="myModalLabel">Atenção</h4>
+                                                </div>
+                                                <div class="modal-body text-center">
+                                                    Deseja Excluir o Evento "{{ $event->name }}" ?
+                                                    <br>
+                                                    (Esta ação não pode ser revertida)
+                                                </div>
+
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                                    <button type="button" id="btn-delete-{{ $event->id }}" class="btn btn-danger event-delete">
+                                                        Excluir Evento
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

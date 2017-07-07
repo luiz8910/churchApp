@@ -435,6 +435,13 @@ $(function () {
 
     $("#file").change(function () {
         $("#submit-img").trigger("click");
-    })
+    });
+
+    if(window.localStorage.getItem('edit') != null)
+    {
+        $("#delete-group-alert").css("display", "block");
+        $("#message").append(window.localStorage.getItem('edit'));
+        window.localStorage.removeItem('edit');
+    }
 
 });

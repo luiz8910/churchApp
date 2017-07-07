@@ -46,14 +46,17 @@ var UIConfirmations = function () {
                 }
             }
 
+
             Delete(id, route);
         });
 
         $(".pop-leave-group").on('confirmed.bs.confirmation', function () {
 
-            var group = str.replace("btn-delete-", "");
+            var str = this.id;
 
-            var person = $("#person_id").val();
+            var person = str.replace("btn-delete-", "");
+
+            var group = $("#groupId").val();
 
             leaveGroup(group, person);
         });

@@ -453,16 +453,19 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                             </div>
 
                                                                             <br>
-                                                                            <div class="input-group date date-picker" data-date-format="dd/mm/yyyy">
+                                                                            <div class="form-group">
+                                                                                <div class="input-group date date-picker" data-date-format="dd/mm/yyyy">
                                                                                 <span class="input-group-addon">
                                                                                     <i class="fa fa-calendar"></i>
                                                                                 </span>
 
-                                                                                <input type="text" name="childDateBirth"
-                                                                                       class="form-control input-date"
-                                                                                       placeholder="data de Nasc. (dd/mm/aaaa)"/>
+                                                                                    <input type="text" name="childDateBirth"
+                                                                                           class="form-control input-date"
+                                                                                           placeholder="data de Nasc. (dd/mm/aaaa)"/>
 
+                                                                                </div>
                                                                             </div>
+
 
                                                                         </td>
                                                                         <td>

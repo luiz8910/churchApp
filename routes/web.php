@@ -122,15 +122,17 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::put('group/{group}', 'GroupController@update')->name('group.update');
 
-    Route::delete('group/{group}', 'GroupController@destroy')->name('group.destroy');
+    Route::get('group/{group}', 'GroupController@destroy')->name('group.destroy');
 
     Route::post('groups/addMembers/{group}', 'GroupController@addMembers')->name('group.addMembers');
 
     Route::post('newMember/{group}', 'GroupController@newMemberToGroup')->name('group.newMember');
 
-    Route::get('group/deleteManyUsers/{id}', 'GroupController@destroyManyUsers')->name('group.destroyManyUsers');
+    Route::post('group/deleteManyUsers', 'GroupController@destroyManyUsers')->name('group.destroyManyUsers');
 
     Route::get('/person-delete/{id}', 'PersonController@destroy');
+
+    Route::get('/teen-delete/{id}', 'PersonController@destroy');
 
     Route::get('/group-delete/{id}', 'GroupController@destroy');
 
@@ -221,3 +223,5 @@ Route::get('cron', 'EventController@Cron');
 Route::get('subAllMembers', 'EventController@subAllMembers');
 
 Route::get('calendario', 'DashboardController@calendario');
+
+Route::get('menu', 'DashboardController@menu');

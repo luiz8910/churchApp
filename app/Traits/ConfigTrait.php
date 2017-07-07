@@ -72,6 +72,6 @@ trait ConfigTrait
 
     public function numNextEvents()
     {
-        return 10;
+        return 5;
     }
 }

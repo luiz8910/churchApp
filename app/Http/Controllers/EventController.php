@@ -818,9 +818,15 @@ class EventController extends Controller
 
         $data = $request->all();
 
+
         while($i < count($data['input']))
         {
             $this->repository->delete($data['input'][$i]);
+
+            DB::table('event_person')
+                ->where('event_id', $data['input'][$i])
+                ->update(['deleted_at' => Carbon::now()]);
+
             $i++;
         }
 
@@ -960,6 +966,7 @@ class EventController extends Controller
         return redirect()->route('event.edit', ['event' => $event->id]);
     }
 
+    //Função de teste somente, não tem uso em produção
     public function Cron()
     {
         $cron = new CronEvents();

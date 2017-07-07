@@ -74,6 +74,12 @@ License: You must have a valid license purchased only from themeforest(the above
                                     <span>Eventos</span>
                                 </li>
                             </ul>
+
+                            <div class="alert alert-danger alert-dismissible" id="delete-group-alert" role="alert" style="display: none;">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <strong>Atenção </strong><span id="message"></span>
+                            </div>
+
                             <!-- END PAGE BREADCRUMBS -->
                             <!-- BEGIN PAGE CONTENT INNER -->
                             <div class="page-content-inner">

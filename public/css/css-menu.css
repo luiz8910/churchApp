@@ -1,0 +1,40 @@
+.teste{
+	width: 300px;
+	display: block;
+	position: relative;
+	background: #38414c;
+	/* border: 1px solid red; */
+	
+}
+
+.drop-pesquisar-ul {
+	list-style-type: none;
+	padding: 0px !important;
+}
+
+.drop-pesquisar-a {
+	position: relative;
+    display: block;
+    padding: 15px 15px;
+    margin-bottom: -1px;
+	
+	color: #BCC2CB;
+}
+
+.drop-pesquisar-a:hover {
+	background-color: #4e5966;
+    color: #fff;
+	text-decoration:none;
+}
+
+.drop-pesquisa-i{
+	color: #6fa7d7;
+	margin-right: 10px;
+}
+
+.drop-pesquisar-img{
+	height: 25px;
+	width: 25px;
+	margin-right: 10px;
+	
+}

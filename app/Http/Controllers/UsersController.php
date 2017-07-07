@@ -295,7 +295,12 @@ class UsersController extends Controller
 
     public function hasEmail($email)
     {
-        $email = $this->repository->findByField('email', $email);
+        $email = User::where(
+            [
+                'email' => $email,
+                'church_id' => Auth::user()->church_id
+            ]
+        );
 
         if (count($email) > 0) {
             return json_encode(['status' => true]);

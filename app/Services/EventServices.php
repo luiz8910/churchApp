@@ -181,7 +181,9 @@ class EventServices
 
         $diff = $event->eventDate != $event->endEventDate ? true : false;
 
-        while($i < ($this->numNextEvents() - 1)) {
+        $numNextEvents = $this->numNextEvents();
+
+        while($i < ($numNextEvents - 1)) {
 
             if($days == "30 days")
             {
@@ -603,9 +605,6 @@ class EventServices
                         );
 
                     $this->nextMonthlyEvents($day, $id);
-                }
-                else{
-                    dd("else");
                 }
             }
 

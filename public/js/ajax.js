@@ -579,7 +579,7 @@
     function leaveGroup(group, person)
     {
         var request = $.ajax({
-            url: 'deleteMemberGroup/'+ group + '/' + person,
+            url: '/deleteMemberGroup/'+ group + '/' + person,
             method: 'GET',
             dataType:'json'
         });
@@ -588,10 +588,10 @@
             console.log("done");
             console.log(e);
 
-            if(e){
+            if(e)
+            {
                 location.reload();
             }
-
         });
 
         request.fail(function (e) {
@@ -952,3 +952,111 @@
         })
     }
 
+    $(".group-delete").click(function(){
+        var text = "Excluindo...";
+
+        $(".group-delete").html(text).attr("disabled", true);
+
+        var str = this.id;
+
+        var id = str.replace("btn-delete-", "");
+
+        deleteGroup(id);
+    });
+
+    $(".event-delete").click(function(){
+        var text = "Excluindo...";
+
+        $(".event-delete").html(text).attr("disabled", true);
+
+        var str = this.id;
+
+        var id = str.replace("btn-delete-", "");
+
+        deleteEvent(id);
+    });
+
+    function deleteGroup(id)
+    {
+        var route = location.pathname;
+
+        var text = false;
+
+        if(route.search("edit") != -1)
+        {
+            text = true;
+        }
+
+        var request = $.ajax({
+            url: "/group/" + id,
+            method: "GET",
+            dataType: "json"
+        });
+
+        request.done(function (e) {
+
+            if(e.status)
+            {
+                if(text)
+                {
+                    localStorage.setItem('edit', 'O grupo ' + e.name + ' foi excluido');
+                    location.href = '/group';
+                }
+                else{
+                    $("#notific8-title").val("Atenção");
+                    $("#notific8-text").val(e.name + " foi excluído");
+
+                    setTimeout(function() {
+                        $("#progress-danger").css("display", "none");
+
+                        $("#tr-"+id).remove();
+
+                        $("#notific8").trigger("click");
+
+                    }, 1000);
+                }
+            }
+        });
+
+        request.fail(function (e) {
+            console.log("fail");
+            console.log(e);
+        });
+
+
+    }
+
+    function deleteEvent(id)
+    {
+        var route = location.pathname;
+
+        var text = false;
+
+        if(route.search("edit") != -1)
+        {
+            text = true;
+        }
+
+        var request = $.ajax({
+            url: "/events-delete/" + id,
+            method: "GET",
+            dataType: "json"
+        });
+
+        request.done(function (e) {
+
+            if(e.status)
+            {
+                if(text)
+                {
+                    localStorage.setItem('edit', 'O evento ' + e.name + ' foi excluido');
+                    location.href = '/events';
+                }
+            }
+        });
+
+        request.fail(function (e) {
+            console.log("fail");
+            console.log(e);
+        });
+    }

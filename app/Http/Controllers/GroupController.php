@@ -149,8 +149,9 @@ class GroupController extends Controller
 
         $this->imgProfile($file, $id, $data['name']);
 
+        $this->addRemoveLoggedMember($id);
 
-        return redirect()->route('group.index');
+        return redirect()->route('group.edit', ['id' => $id]);
     }
 
     public function imgProfile($file, $id, $name)
@@ -609,15 +610,17 @@ class GroupController extends Controller
 
         $data = $request->all();
 
+        $group = $this->repository->find($data['group']);
+
         while($i < count($data['input']))
         {
-            $this->repository->delete($data['input'][$i]);
+            $group->people()->detach([$data['input'][$i]]);
             $i++;
         }
 
         \Session::flash('member.deleted', 'Os usuários selecionados foram excluidos');
 
-        return redirect()->route('group.index');
+        return redirect()->route('group.edit', ['id' => $group]);
     }
 
 
