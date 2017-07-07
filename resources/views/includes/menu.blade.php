@@ -2,7 +2,7 @@
 <div class="page-header-menu">
     <div class="container">
         <!-- BEGIN HEADER SEARCH BOX -->
-        <form class="search-form" action="" method="GET">
+        <form class="search-form" action="" method="GET" autocomplete="off">
             <div class="input-group">
                 <input type="text" class="form-control" id="search-results" placeholder="Pesquisar" name="query">
                 <span class="input-group-btn">
