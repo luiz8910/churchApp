@@ -1,5 +1,5 @@
 
-/*#ul-results li a{
+#ul-results li a{
     color: #1e7ad3;
     text-decoration: none;
 }
@@ -152,7 +152,7 @@
     -ms-box-shadow: inset 0 1px rgba(255, 255, 255, 0.2), 0 1px rgba(0, 0, 0, 0.08);
     -o-box-shadow: inset 0 1px rgba(255, 255, 255, 0.2), 0 1px rgba(0, 0, 0, 0.08);
     box-shadow: inset 0 1px rgba(255, 255, 255, 0.2), 0 1px rgba(0, 0, 0, 0.08);
-}*/
+}
 
 #ul-results-mobile {
     display: none;
@@ -262,6 +262,7 @@
 .drop-pesquisar-ul {
     list-style-type: none;
     padding: 0px !important;
+    margin: 0px !important;
 }
 
 .drop-pesquisar-a {
