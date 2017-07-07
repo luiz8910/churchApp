@@ -429,36 +429,36 @@ License: You must have a valid license purchased only from themeforest(the above
 
 
                                 <ul class="drop-pesquisar-ul">
-                                    <li class="">
-                                        <a href="#" class="drop-pesquisar-a">
-                                            <i class="icon-bar-chart drop-pesquisa-i fa-lg"></i>
-                                            Grupo de Jovens
+                                <li class="">
+                                    <a href="#" class="drop-pesquisar-a">
+                                        <i class="icon-bar-chart drop-pesquisa-i fa-lg"></i>
+                                        Grupo de Jovens
 
-                                        </a>
-                                    </li>
-                                    <li class="">
-                                        <a href="#" class="drop-pesquisar-a">
-                                            <i class="icon-bar-chart drop-pesquisa-i fa-lg"></i>
-                                            Grupo de Jovens
+                                    </a>
+                                </li>
+                                <li class="">
+                                    <a href="#" class="drop-pesquisar-a">
+                                        <i class="icon-bar-chart drop-pesquisa-i fa-lg"></i>
+                                        Grupo de Jovens
 
-                                        </a>
-                                    </li>
-                                    <li class="">
-                                        <a href="#" class="drop-pesquisar-a">
-                                            <i class="icon-bar-chart drop-pesquisa-i fa-lg"></i>
-                                            Grupo de Jovens
+                                    </a>
+                                </li>
+                                <li class="">
+                                    <a href="#" class="drop-pesquisar-a">
+                                        <i class="icon-bar-chart drop-pesquisa-i fa-lg"></i>
+                                        Grupo de Jovens
 
-                                        </a>
-                                    </li>
-                                    <li class="">
-                                        <a href="#" class="drop-pesquisar-a">
-                                            <img src="../teste/avatar9.jpg" alt="" class="img-rounded drop-pesquisar-img">
-                                            Grupo de Jovens
+                                    </a>
+                                </li>
+                                <li class="">
+                                    <a href="#" class="drop-pesquisar-a">
+                                        <img src="../teste/avatar9.jpg" alt="" class="img-rounded drop-pesquisar-img">
+                                        Grupo de Jovens
 
-                                        </a>
-                                    </li>
+                                    </a>
+                                </li>
 
-                                </ul>
+                            </ul>
                         </form>
                         <!-- END HEADER SEARCH BOX -->
                         <!-- BEGIN MEGA MENU -->

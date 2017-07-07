@@ -394,6 +394,9 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 </tbody>
                                             </table>
                                             <br>
+                                            <div class="pull-right">
+                                                {{ $events->links() }}
+                                            </div>
 
                                         </div>
                                     </div>

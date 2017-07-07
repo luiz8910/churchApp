@@ -25,7 +25,7 @@
                 @if($notify)
                     @foreach($notify as $n)
                         <li>
-                            <a href="@if(isset($n["data"]["link"])) {{ $n["data"]["link"] }} @endif" class="black-link">
+                            <a href='@if(isset($n["data"]["link"])) /{{ $n["data"]["link"] }} @endif' class="black-link">
                                 <span class="time white-span">
                                     @if(\Carbon\Carbon::now()->diffInMinutes($n["created_at"]) > 60)
                                         @if(\Carbon\Carbon::now()->diffInHours($n["created_at"]) > 24)

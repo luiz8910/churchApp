@@ -76,7 +76,7 @@ class DashboardController extends Controller
 
         $countGroups[] = $this->countGroups();
 
-        $events = $this->eventRepository->all();
+        $events = $this->eventRepository->paginate(5);
 
         $notify = $this->notify();
 
@@ -86,7 +86,8 @@ class DashboardController extends Controller
 
         $person = $this->personRepository->find($id);
 
-        $groups = $person->groups()->paginate() or null;
+        //Paginação de Grupo está com bug
+        $groups = $person->groups()->paginate(5) or null;
 
         $event_person = [];
 

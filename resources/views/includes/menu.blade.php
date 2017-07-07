@@ -11,8 +11,22 @@
                     </a>
                 </span>
 
+
+
             </div>
-            <div class="top-menu">
+
+            <ul class="drop-pesquisar-ul" id="results" style="display: none;">
+
+                <!--<li class="">
+                    <a href="#" class="drop-pesquisar-a">
+                        <img src="../teste/avatar9.jpg" alt="" class="img-rounded drop-pesquisar-img">
+                        Grupo de Jovens
+
+                    </a>
+                </li>-->
+
+            </ul>
+            <!--<div class="top-menu">
                 <ul class="nav navbar-nav ul-search">
                     <li class="dropdown dropdown-extended dropdown-notification dropdown-dark">
                         <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"
@@ -21,7 +35,7 @@
                         </a>
                     </li>
                 </ul>
-            </div>
+            </div>-->
 
         </form>
         <!-- END HEADER SEARCH BOX -->

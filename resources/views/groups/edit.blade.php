@@ -248,11 +248,21 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                                     <p>
                                                         <i class="fa fa-user font-purple"></i> Criado Por:
+
+                                                        @if(Auth::user()->person_id == $owner_person_id)
+                                                            <label>
+                                                                {{ $owner_name }}
+                                                                <img src="../../{{ $imgProfile }}" class="img-circle hidden-xs hidden-sm"
+                                                                     style="width: 25px; margin-left: 10px;">
+                                                            </label>
+
+                                                        @else
                                                             <a href="{{ route('person.edit', ['person' => $owner_person_id]) }}">
                                                                 {{ $owner_name }}
                                                                 <img src="../../{{ $imgProfile }}" class="img-circle hidden-xs hidden-sm"
                                                                      style="width: 25px; margin-left: 10px;">
                                                             </a>
+                                                        @endif
                                                     </p>
 
                                                     <p>
@@ -898,6 +908,8 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         </div>
                                                     </div>
                                                 </div>
+
+                                                @include('includes.address')
                                             </div>
 
                                             <div class="row">

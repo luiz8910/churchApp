@@ -142,6 +142,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post("/imgEvent/{event}", 'EventController@imgEvent')->name('event.edit.imgEvent');
 
+    Route::get("/getChurchZipCode", "ConfigController@getChurchZipCode");
+
     Route::get('pusher', function () {
         return view('pusher');
 

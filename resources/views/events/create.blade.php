@@ -341,6 +341,8 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     </div>
                                                 </div>
                                             </div>
+
+                                            @include('includes.address')
                                         </div>
 
                                         <div class="row">

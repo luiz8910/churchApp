@@ -26,4 +26,13 @@ class ConfigController extends Controller
 
         return json_encode(["status" => true]);
     }
+
+    public function getChurchZipCode()
+    {
+        $address = \DB::table('churches')
+            ->where('id', \Auth::user()->church_id)
+            ->first();
+
+        return json_encode($address);
+    }
 }

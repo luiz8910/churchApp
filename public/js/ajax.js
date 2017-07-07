@@ -167,20 +167,26 @@
     $("#search-results").keyup(function () {
 
         if(this.value == ""){
-            $(".ul-search").css("display", "none");
-            $(".ul-search li").remove();
+            $("#results").css("display", "none");
+            $("#results li").remove();
         }
         else{
 
             if(this.value.length > 2)
             {
-                $(".ul-search").css("display", "block");
+                $("#results").css("display", "block");
                 search(this.value);
             }
 
         }
 
+    }).focusout(function () {
+        $("#results").css("display", "none");
+    }).focus(function () {
+        $("#results").css("display", "block");
     });
+
+
 
 
     function search(text)
@@ -192,24 +198,20 @@
         });
 
         request.done(function (e) {
-            console.log("done");
 
             console.log(e);
 
-
-
-            var ul = $(".ul-search");
+            var ul = $("#results");
 
 
             for(var i = 0; i < e.length; i++)
             {
                 if(i == 0)
                 {
-                    $(".ul-search li").remove();
+                    $("#results li").remove();
                 }
 
-                var model;
-                var icon;
+                var model, icon;
 
                 if(e[i].lastName != undefined)
                 {
@@ -232,11 +234,10 @@
                 //console.log(model);
 
                 var li =
-                    '<li class="dropdown dropdown-extended dropdown-notification dropdown-dark">' +
-                        '<a href="/'+model+'/'+e[i].id+'/edit" class="dropdown-toggle"'+
-                        'data-close-others="true">'+
-                        '<i class="fa fa-'+icon+' font-grey"></i>'+
-                        e[i].name
+                    '<li class="">' +
+                        '<a href="/'+model+'/'+e[i].id+'/edit" class="drop-pesquisar-a"'+
+                            '<i class="fa fa-'+icon+' drop-pesquisa-i fa-lg"></i>'+
+                            e[i].name
                         +'</a>'+
                     '</li>';
 
@@ -244,6 +245,14 @@
             }
 
         });
+
+            /*<li class="">
+                <a href="#" class="drop-pesquisar-a">
+                <i class="icon-bar-chart drop-pesquisa-i fa-lg"></i>
+                Grupo de Jovens
+
+                </a>
+            </li>*/
 
         request.fail(function (e) {
             console.log("fail");
@@ -1059,4 +1068,34 @@
             console.log("fail");
             console.log(e);
         });
+    }
+
+
+    function getChurchZipCode()
+    {
+        $("#btn-zipCode").css("display", "none");
+        $("#loading-zip").css("display", "block");
+
+        var request = $.ajax({
+            url: "/getChurchZipCode",
+            method: "GET",
+            dataType: "json"
+        });
+
+        request.done(function (e) {
+            console.log(e);
+            $("#zipCode").val(e.zipCode);
+            $("#street").val(e.street);
+            $("#neighborhood").val(e.neighborhood);
+            $("#city").val(e.city);
+            $("#state").val(e.state);
+            $("#btn-zipCode").css("display", "block");
+            $("#loading-zip").css("display", "none");
+
+        });
+
+        request.fail(function (e) {
+            console.log("fail");
+            console.log(e);
+        })
     }

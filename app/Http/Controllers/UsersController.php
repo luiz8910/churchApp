@@ -295,12 +295,15 @@ class UsersController extends Controller
 
     public function hasEmail($email)
     {
-        $email = User::where(
+        $email = DB::table('users')
+            ->where(
             [
                 'email' => $email,
                 'church_id' => Auth::user()->church_id
             ]
-        );
+        )->get();
+
+        //dd($email);
 
         if (count($email) > 0) {
             return json_encode(['status' => true]);
