@@ -235,7 +235,7 @@
 
                 var li =
                     '<li class="">' +
-                        '<a href="/'+model+'/'+e[i].id+'/edit" class="drop-pesquisar-a"'+
+                        '<a href="/'+model+'/'+e[i].id+'/edit" class="drop-pesquisar-a">'+
                             '<i class="fa fa-'+icon+' drop-pesquisa-i fa-lg"></i>'+
                             e[i].name
                         +'</a>'+
