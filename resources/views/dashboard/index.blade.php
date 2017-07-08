@@ -36,7 +36,7 @@ License: You must have a valid license purchased only from themeforest(the above
                 <!-- BEGIN PAGE TITLE -->
                 <div class="page-title">
                     <h1>Dashboard
-                        <small>dashboard & statistics</small>
+                        <small>Resumo Geral</small>
                     </h1>
                 </div>
                 <!-- END PAGE TITLE -->
@@ -59,7 +59,7 @@ License: You must have a valid license purchased only from themeforest(the above
                 <!-- END PAGE BREADCRUMBS -->
                 <!-- BEGIN PAGE CONTENT INNER -->
                 <div class="page-content-inner">
-                    <div class="row">
+                    {{--<div class="row">
                         <div class="col-md-12 col-sm-12">
                             <div class="portlet light ">
                                 <div class="portlet-title">
@@ -143,7 +143,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div>--}}
 
                     <br><br>
 
