@@ -181,11 +181,12 @@
         }
 
     }).focusout(function () {
-        $("#results").css("display", "none");
+        setTimeout(function () {
+            $("#results").css("display", "none");
+        }, 500);
     }).focus(function () {
         $("#results").css("display", "block");
     });
-
 
 
 
@@ -234,7 +235,7 @@
                 //console.log(model);
 
                 var li =
-                    '<li class="">' +
+                    '<li>' +
                         '<a href="/'+model+'/'+e[i].id+'/edit" class="drop-pesquisar-a">'+
                             '<i class="fa fa-'+icon+' drop-pesquisa-i fa-lg"></i>'+
                             e[i].name
