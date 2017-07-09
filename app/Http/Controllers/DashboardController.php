@@ -145,7 +145,7 @@ class DashboardController extends Controller
         }
 
 
-
+        dd($eventDate);
 
         if(isset($eventDate) && $eventDate[0] != null)
         {
