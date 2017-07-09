@@ -145,22 +145,27 @@ class DashboardController extends Controller
         }
 
 
-        dd($eventDate);
+        //dd($eventDate);
 
-        if(isset($eventDate) && $eventDate[0] != null)
+        if(!empty($eventDate))
         {
-            for ($i = 0; $i < count($eventDate); $i++)
+            if($eventDate[0] != null)
             {
+                for ($i = 0; $i < count($eventDate); $i++)
+                {
 
-                if($eventDate[$i] != null) {
-                    $event_person[$i] = $this->eventRepository->find($eventDate[$i]->event_id);
+                    if($eventDate[$i] != null) {
+                        $event_person[$i] = $this->eventRepository->find($eventDate[$i]->event_id);
 
-                    if ($event_person[$i]->group_id != null) {
-                        $event_person[$i]->group_name = $this->groupRepository->find($event_person[$i]->group_id)->name;
+                        if ($event_person[$i]->group_id != null) {
+                            $event_person[$i]->group_name = $this->groupRepository->find($event_person[$i]->group_id)->name;
+                        }
                     }
                 }
             }
         }
+
+
 
 
         $nextEvent = $this->getNextEvent();
