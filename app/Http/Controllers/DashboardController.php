@@ -540,7 +540,7 @@ class DashboardController extends Controller
             ])
             ->get();
 
-        dd($dates);
+
 
         $arrayDates = [];
 
@@ -549,6 +549,8 @@ class DashboardController extends Controller
 
         for ($i = 0; $i < count($dates); $i++)
         {
+            echo $dates[$i]->eventDate . "\n";
+
             //Separando as datas dos eventos
             $date = date_create($dates[$i]->eventDate);
 
@@ -566,7 +568,7 @@ class DashboardController extends Controller
                 $arrayDates[$i] = $date;
             }
         }
-
+        dd($dates);
         //Organiza os eventos de forma ascendente
         //O indice 0 é o próximo evento
         asort($arrayDates);
