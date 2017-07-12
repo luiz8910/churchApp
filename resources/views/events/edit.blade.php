@@ -474,7 +474,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                     <i class="fa fa-user font-blue"></i>
                                                                 </span>
                                                             <input type="text" name="name" class="form-control"
-                                                                   placeholder="Encontro de Jovens" value="{{ $event->name }}">
+                                                                   placeholder="Encontro de Jovens" value="{{ $event->name }}" required>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -579,7 +579,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                     <i class="fa fa-calendar"></i>
                                                                 </button>
                                                             </span>
-                                                            <input type="text" class="form-control" name="eventDate" id="eventDate" readonly value="{{ $event->eventDate }}">
+                                                            <input type="text" class="form-control" name="eventDate" id="eventDate" readonly value="{{ $event->eventDate }}" required>
                                                         </div>
                                                         <span class="help-block">
                                                             <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
@@ -902,7 +902,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             <i class="fa fa-home font-purple"></i>
                                                         </span>
                                                             <input class="form-control" name="street" type="text" id="street"
-                                                                   value="{{ $event->street }}" placeholder="Av. Antonio Carlos Comitre, 650">
+                                                                   value="{{ $event->street }}" placeholder="Av. Antonio Carlos Comitre, 650" required>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -914,7 +914,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             <i class="fa fa-home font-purple"></i>
                                                         </span>
                                                             <input class="form-control" name="neighborhood" id="neighborhood" type="text"
-                                                                   value="{{ $event->neighborhood }}" placeholder="Parque do Dolly">
+                                                                   value="{{ $event->neighborhood }}" placeholder="Parque do Dolly" required>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -929,14 +929,14 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             <i class="fa fa-building font-purple"></i>
                                                         </span>
                                                             <input class="form-control" name="city" id="city" type="text"
-                                                                   value="{{ $event->city }}" placeholder="Sorocaba">
+                                                                   value="{{ $event->city }}" placeholder="Sorocaba" required>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 input-address">
                                                     <div class="form-group">
                                                         <label>Estado</label>
-                                                        <select name="state" class="form-control" id="state">
+                                                        <select name="state" class="form-control" id="state" required>
                                                             <option value="">Selecione</option>
                                                             @foreach($state as $item)
                                                                 <option value="{{ $item->initials }}"

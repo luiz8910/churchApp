@@ -570,7 +570,7 @@ class EventController extends Controller
     {
         $data = $request->all();
 
-        $data['createdBy_id'] = \Auth::getUser()->id;
+        $data['createdBy_id'] = \Auth::user()->id;
 
         $data['eventDate'] = $this->formatDateBD($data['eventDate']);
 
