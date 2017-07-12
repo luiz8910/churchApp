@@ -221,6 +221,7 @@ class AgendaServices
         $month[] = "Outubro";
         $month[] = "Novembro";
         $month[] = "Dezembro";
+        $month[] = "Janeiro";
 
         return $month;
     }

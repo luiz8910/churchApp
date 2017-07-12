@@ -7,7 +7,7 @@
             
                     "body":[
                       ["Nome", "Frequência", "Criado Por", "Grupo"],
-                      ["Caravana Silvio Santos","Semanal","Luiz","Sem Grupo"],["Lapidar Minerais raros","Mensal","Meany","Encontro da Zueira"],["Evento Grupo de Oração","Semanal","Luiz","Sem Grupo"],["Teste com Grupo","Diário","Luiz","Sem Grupo"],["Limpeza","Diário","Luiz","Encontro da Zueira"],["Maratona de Netflix","Diário","Luiz","Grupo de Jovens"],["Aprender Dollynes","Diário","Luiz","Grupo de Jovens"],["Lorem Ipsum","Diário","Luiz","Grupo de Jovens"],["Show do Matanza","Diário","Luiz","Grupo de Jovens"],["Aplaudir o sol e fazer poesias","Semanal","Luiz","Grupo dos Comunistas"],["Evento Mensal dia 01","Mensal","Luiz","Grupo dos Comunistas"]
+                      ["Maratona de Netflix","Diário","Luiz","Encontro da Zueira"],["Aprender Dollynes","Semanal","Luiz","Grupo de Jovens"],["Encontro de Domingo","Semanal","Luiz","Sem Grupo"],["Debate sobre Teologia","Mensal","Luiz","Grupo dos Comunistas"],["Encontro de Jovens","Mensal","Luiz","Grupo de Jovens"],["Limpeza","Diário","Luiz","Sem Grupo"],["Manutenção Preventiva de TI","Diário","Luiz","Manutenção de TI"]
                     ]
                   }
                 }

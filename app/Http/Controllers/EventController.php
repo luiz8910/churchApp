@@ -186,6 +186,28 @@ class EventController extends Controller
         //Retorna todos os eventos
         $allEvents = $this->eventServices->allEvents();
 
+        $allEventsNames = [];
+        $allEventsTimes = [];
+        $allEventsFrequencies = [];
+        $allEventsAddresses = [];
+
+        foreach ($allEvents as $allEvent) {
+            $e = $this->repository->find($allEvent->event_id);
+
+            //Nome de todos os eventos
+            $allEventsNames[] = $e->name;
+
+            //Hora de inicio de todos os eventos
+            $allEventsTimes[] = $e->startTime;
+
+            //Frequência de todos os eventos
+            $allEventsFrequencies[] = $e->frequency;
+
+            //Todos os endereços
+            $allEventsAddresses[] = $e->street . ", " . $e->neighborhood . "\n" . $e->city . ", " . $e->state;
+        }
+
+
         //Recupera o mês atual
         $thisMonth = $this->agendaServices->thisMonth();
 
@@ -198,7 +220,8 @@ class EventController extends Controller
 
         return view("events.index", compact('countPerson', 'countGroups', 'state',
             'events', 'notify', 'qtde', 'allMonths', 'allDays', 'days', 'allEvents',
-            'thisMonth', 'today', 'ano'));
+            'thisMonth', 'today', 'ano', 'allEventsNames', 'allEventsTimes',
+            'allEventsFrequencies', 'allEventsAddresses'));
     }
 
 
@@ -255,6 +278,27 @@ class EventController extends Controller
 
         //Retorna todos os eventos
         $allEvents = $this->eventServices->allEvents();
+
+        $allEventsNames = [];
+        $allEventsTimes = [];
+        $allEventsFrequencies = [];
+        $allEventsAddresses = [];
+
+        foreach ($allEvents as $allEvent) {
+            $e = $this->repository->find($allEvent->event_id);
+
+            //Nome de todos os eventos
+            $allEventsNames[] = $e->name;
+
+            //Hora de inicio de todos os eventos
+            $allEventsTimes[] = $e->startTime;
+
+            //Frequência de todos os eventos
+            $allEventsFrequencies[] = $e->frequency;
+
+            //Todos os endereços
+            $allEventsAddresses[] = $e->street . ", " . $e->neighborhood . "<br>" . $e->city . ", " . $e->state;
+        }
 
         //Ano Atual
         $ano = date("Y");
@@ -346,7 +390,8 @@ class EventController extends Controller
 
         return view("events.index", compact('countPerson', 'countGroups', 'state',
             'events', 'notify', 'qtde', 'allMonths', 'allDays', 'days', 'allEvents',
-            'thisMonth', 'today', 'next', 'ano'));
+            'thisMonth', 'today', 'next', 'ano', 'allEventsNames', 'allEventsTimes',
+            'allEventsFrequencies', 'allEventsAddresses'));
     }
 
     public function oldindex()

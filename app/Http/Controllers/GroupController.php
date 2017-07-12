@@ -86,7 +86,7 @@ class GroupController extends Controller
         $church_id = $this->getUserChurch();
         //$groups = Group::withTrashed()->get();
 
-        $groups = Group::where('church_id', $church_id)->paginate(10);
+        $groups = Group::where('church_id', $church_id)->paginate(5);
 
         foreach ($groups as $group)
         {

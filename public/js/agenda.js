@@ -4,10 +4,118 @@
 
 $(function () {
 
-    $("a").attr("rel", "external");
+    //$("a").attr("rel", "external");
 
-//Desktop
+    //Desktop
+    var dialog = 0;
 
+    $(".btn-options").click(function () {
+        var str = this.id;
+
+        var id = str.replace("btn-options-", "");
+
+        $("#bubble-"+id).css("display", "inline-block");
+
+        if(dialog != 0)
+        {
+            $("#bubble-"+dialog).css("display", "none");
+        }
+
+        dialog = id;
+    }).focusout(function () {
+        $("#bubble-"+dialog).css("display", "none");
+
+        dialog = 0;
+    });
+
+
+    $(".lbl-opacity").click(function(){
+        $(".caption-subject span").addClass("lbl-opacity");
+        $(this).removeClass("lbl-opacity");
+        hideEvents(this.id);
+    });
+
+    /*ID do campo que contém
+    frequência de exibição desejada*/
+    function hideEvents(id)
+    {
+        var frequencies = [
+            'Diário', 'Semanal', 'Mensal', 'Encontro-Único'
+        ];
+
+        var i = 0;
+
+
+        if(id == "daily")
+        {
+            while(i < 4)
+            {
+                if(frequencies[i] != "Diário")
+                {
+                    $("."+frequencies[i]).css("display", "none");
+                }
+
+                i++;
+            }
+
+            $(".Diário").css("display", "block");
+
+        }
+
+        else if(id == "weekly"){
+            while(i < 4)
+            {
+                if(frequencies[i] != "Semanal")
+                {
+                    $("."+frequencies[i]).css("display", "none");
+                }
+
+                i++;
+            }
+
+            $(".Semanal").css("display", "block");
+        }
+
+        else if(id == "monthly"){
+            while(i < 4)
+            {
+                if(frequencies[i] != "Mensal")
+                {
+                    $("."+frequencies[i]).css("display", "none");
+                }
+
+                i++;
+            }
+
+            $(".Mensal").css("display", "block");
+        }
+
+        else if(id == "singleEvent"){
+            while(i < 4)
+            {
+                if(frequencies[i] != "Encontro-Único")
+                {
+                    $("."+frequencies[i]).css("display", "none");
+                }
+
+                i++;
+            }
+
+            $(".Encontro-Único").css("display", "block");
+        }
+        else{
+            while(i < 4)
+            {
+                $("."+frequencies[i]).css("display", "block");
+
+                i++;
+            }
+        }
+
+        i = 0;
+    }
+
+/*
 $("#btnPrevRight6").click(function () {
     $("#prevMonth6").css("display", "none");
     $("#prevMonth5").css("display", "block");
@@ -537,4 +645,5 @@ $("#prevMonth6-mobile").on("swipeleft", function () {
 
 });
 
+*/
 });

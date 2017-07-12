@@ -26,6 +26,7 @@ License: You must have a valid license purchased only from themeforest(the above
     <link href="../assets/global/plugins/fancybox/source/jquery.fancybox.css" rel="stylesheet" type="text/css" />-->
     <link href="../assets/pages/css/search.min.css" rel="stylesheet" type="text/css" />
     <link href="../css/navbar.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="../css/calendar.css">
     <!--<script src="../js/ajax.js"></script>-->
 
 
@@ -231,12 +232,12 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         <table class="table table-hover table-light">
                                                             <thead>
                                                             <tr class="uppercase">
-                                                                <th>
-                                                                    <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                                                <th>#
+                                                                    {{--<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
                                                                         <input type="checkbox" name="events" class="checkboxes check-model" id="check-0"
                                                                                value="0" />
                                                                         <span></span>
-                                                                    </label>
+                                                                    </label>--}}
                                                                 </th>
                                                                 <th class="printable-table-header"> Nome </th>
                                                                 <th class="printable-table-header"> Frequência </th>
@@ -363,6 +364,10 @@ License: You must have a valid license purchased only from themeforest(the above
                                     </div>
 
 
+
+
+
+
                                     @if(isset($next))
 
                                         <div class="row desktop-row visible-md visible-lg">
@@ -411,11 +416,11 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                             @while($x < count($allEvents))
                                                                                 @if($allEvents[$x]->eventDate == $days[$i])
                                                                                     <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                        {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
+                                                                                        {{ $allEventsNames[$x] }}
                                                                                     </label>
 
-                                                                                    <h5 class="{{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}">
-                                                                                        {{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h
+                                                                                    <h5 class="{{ $allEventsNames[$x] }}">
+                                                                                        {{ $allEventsTimes[$x] }}h
                                                                                     </h5>
                                                                                 @endif
                                                                                 <?php $x++; ?>
@@ -437,11 +442,11 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                             @while($x < count($allEvents))
                                                                                 @if($allEvents[$x]->eventDate == $days[$i])
                                                                                     <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                        {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
+                                                                                        {{ $allEventsNames[$x] }}
                                                                                     </label>
 
-                                                                                    <h5 class="{{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}">
-                                                                                        {{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h
+                                                                                    <h5 class="{{ $allEventsNames[$x] }}">
+                                                                                        {{ $allEventsTimes[$x] }}h
                                                                                     </h5>
                                                                                 @endif
                                                                                 <?php $x++; ?>
@@ -462,11 +467,11 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                             @while($x < count($allEvents))
                                                                                 @if($allEvents[$x]->eventDate == $days[$i])
                                                                                     <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                        {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
+                                                                                        {{ $allEventsNames[$x] }}
                                                                                     </label>
 
-                                                                                    <h5 class="{{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}">
-                                                                                        {{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h
+                                                                                    <h5 class="{{ $allEventsNames[$x] }}">
+                                                                                        {{ $allEventsTimes[$x] }}h
                                                                                     </h5>
 
                                                                                 @endif
@@ -489,37 +494,11 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                             @while($x < count($allEvents))
                                                                                 @if($allEvents[$x]->eventDate == $days[$i])
                                                                                     <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                        {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
+                                                                                        {{ $allEventsNames[$x] }}
                                                                                     </label>
 
-                                                                                    <h5 class="{{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}">
-                                                                                        {{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h
-                                                                                    </h5>
-                                                                                @endif
-                                                                                <?php $x++; ?>
-                                                                            @endwhile
-                                                                        </td>
-                                                                    @endif
-
-
-                                                                        <?php $i++; ?>
-                                                                        <?php $x = 0; ?>
-
-
-                                                                    @if($i < count($days))
-                                                                        <td @if($today == $days[$i]) class="today-back" @endif>
-                                                                            <h6>
-                                                                                {{ substr($days[$i], 8) }}
-                                                                            </h6>
-
-                                                                            @while($x < count($allEvents))
-                                                                                @if($allEvents[$x]->eventDate == $days[$i])
-                                                                                    <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                        {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                                    </label>
-
-                                                                                    <h5 class="{{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}">
-                                                                                        {{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}hh
+                                                                                    <h5 class="{{ $allEventsNames[$x] }}">
+                                                                                        {{ $allEventsTimes[$x] }}h
                                                                                     </h5>
                                                                                 @endif
                                                                                 <?php $x++; ?>
@@ -541,11 +520,37 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                             @while($x < count($allEvents))
                                                                                 @if($allEvents[$x]->eventDate == $days[$i])
                                                                                     <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                        {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
+                                                                                        {{ $allEventsNames[$x] }}
                                                                                     </label>
 
-                                                                                    <h5 class="{{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}">
-                                                                                        {{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h
+                                                                                    <h5 class="{{ $allEventsNames[$x] }}">
+                                                                                        {{ $allEventsTimes[$x] }}h
+                                                                                    </h5>
+                                                                                @endif
+                                                                                <?php $x++; ?>
+                                                                            @endwhile
+                                                                        </td>
+                                                                    @endif
+
+
+                                                                        <?php $i++; ?>
+                                                                        <?php $x = 0; ?>
+
+
+                                                                    @if($i < count($days))
+                                                                        <td @if($today == $days[$i]) class="today-back" @endif>
+                                                                            <h6>
+                                                                                {{ substr($days[$i], 8) }}
+                                                                            </h6>
+
+                                                                            @while($x < count($allEvents))
+                                                                                @if($allEvents[$x]->eventDate == $days[$i])
+                                                                                    <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
+                                                                                        {{ $allEventsNames[$x] }}
+                                                                                    </label>
+
+                                                                                    <h5 class="{{ $allEventsNames[$x] }}">
+                                                                                        {{ $allEventsTimes[$x] }}h
                                                                                     </h5>
                                                                                 @endif
                                                                                 <?php $x++; ?>
@@ -567,11 +572,11 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                             @while($x < count($allEvents))
                                                                                 @if($allEvents[$x]->eventDate == $days[$i])
                                                                                     <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                        {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
+                                                                                        {{ $allEventsNames[$x] }}
                                                                                     </label>
 
-                                                                                    <h5 class="{{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}">
-                                                                                        {{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h
+                                                                                    <h5 class="{{ $allEventsNames[$x] }}">
+                                                                                        {{ $allEventsTimes[$x] }}h
                                                                                     </h5>
 
                                                                                 @endif
@@ -597,212 +602,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                     @else
 
-                                        <div class="row desktop-row visible-md visible-lg">
-                                            <div class="col-md-12">
-                                                <div class="panel panel-default" id="thisMonth">
-                                                    <div class="panel-heading desktop">
-                                                        <?php $i = 0; ?>
-                                                        <h5>
-                                                            Eventos - Próximas 6 Semanas
-                                                        </h5>
-                                                            <a href="{{ route('events.agenda-mes', ['thisMonth' => $thisMonth])}}"
-                                                               id="btnThisRight" class="btn btn-default btn-sm btn-circle pull-right">
-                                                                <i class="fa fa-arrow-right"></i>
-                                                            </a>
-                                                            <a href="{{ route('events.agenda-mes', ['thisMonth' => $thisMonth - 2])}}"
-                                                               id="btnThisLeft" class="btn btn-default btn-sm btn-circle pull-right" style="margin-right: 33px;">
-                                                                <i class="fa fa-arrow-left"></i>
-                                                            </a>
-                                                    </div>
-                                                    <div class="panel-body">
-                                                        <table class="table table-bordered table-striped table-responsive" id="table-fixed">
-                                                            <thead class="thead-agenda">
-                                                            <tr>
-                                                                <th>Segunda</th>
-                                                                <th>Terça</th>
-                                                                <th>Quarta</th>
-                                                                <th>Quinta</th>
-                                                                <th>Sexta</th>
-                                                                <th>Sábado</th>
-                                                                <th>Domingo</th>
-                                                            </tr>
-                                                            </thead>
-
-                                                            <tbody class="tbody-agenda-desktop">
-
-                                                            <?php $i = 0; ?>
-                                                            <?php $x = 0; ?>
-
-                                                            @while($i < count($days))
-                                                                <tr>
-                                                                    <td @if(date("Y-m-d") == $days[$i]) class="today-back" @endif>
-                                                                        <h6>
-
-                                                                            {{ substr($days[$i], 8) }}
-
-                                                                        </h6>
-
-                                                                        @while($x < count($allEvents))
-                                                                            @if($allEvents[$x]->eventDate == $days[$i])
-                                                                                <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                    {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                                </label>
-
-
-                                                                                <h5 class="{{ str_replace(" ", "-", \App\Models\Event::find($allEvents[$x]->event_id)->name) }}">
-                                                                                    {{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h
-                                                                                </h5>
-                                                                            @endif
-                                                                            <?php $x++; ?>
-                                                                        @endwhile
-                                                                    </td>
-
-
-                                                                    <?php $i++; ?>
-                                                                    <?php $x = 0; ?>
-
-
-                                                                    <td @if(date("Y-m-d") == $days[$i]) class="today-back" @endif>
-                                                                        <h6>{{ substr($days[$i], 8) }}</h6>
-
-                                                                        @while($x < count($allEvents))
-                                                                            @if($allEvents[$x]->eventDate == $days[$i])
-                                                                                <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                    {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                                </label>
-
-                                                                                <h5 class="{{ str_replace(" ", "-", \App\Models\Event::find($allEvents[$x]->event_id)->name) }}">
-                                                                                    {{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h
-                                                                                </h5>
-                                                                            @endif
-                                                                            <?php $x++; ?>
-                                                                        @endwhile
-                                                                    </td>
-
-
-                                                                    <?php $i++; ?>
-                                                                    <?php $x = 0; ?>
-
-
-                                                                    <td @if(date("Y-m-d") == $days[$i]) class="today-back" @endif>
-                                                                        <h6>{{ substr($days[$i], 8) }}</h6>
-
-                                                                        @while($x < count($allEvents))
-                                                                            @if($allEvents[$x]->eventDate == $days[$i])
-                                                                                <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                    {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                                </label>
-
-                                                                                <h5 class="{{ str_replace(" ", "-", \App\Models\Event::find($allEvents[$x]->event_id)->name) }}">
-                                                                                    {{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h
-                                                                                </h5>
-                                                                            @endif
-                                                                            <?php $x++; ?>
-                                                                        @endwhile
-                                                                    </td>
-
-
-                                                                    <?php $i++; ?>
-                                                                    <?php $x = 0; ?>
-
-
-                                                                    <td @if(date("Y-m-d") == $days[$i]) class="today-back" @endif>
-                                                                        <h6>{{ substr($days[$i], 8) }}</h6>
-
-                                                                        @while($x < count($allEvents))
-                                                                            @if($allEvents[$x]->eventDate == $days[$i])
-                                                                                <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                    {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                                </label>
-
-                                                                                <h5 class="{{ str_replace(" ", "-", \App\Models\Event::find($allEvents[$x]->event_id)->name) }}">
-                                                                                    {{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h
-                                                                                </h5>
-                                                                            @endif
-                                                                            <?php $x++; ?>
-                                                                        @endwhile
-                                                                    </td>
-
-
-                                                                    <?php $i++; ?>
-                                                                    <?php $x = 0; ?>
-
-
-                                                                    <td @if(date("Y-m-d") == $days[$i]) class="today-back" @endif>
-                                                                        <h6>{{ substr($days[$i], 8) }}</h6>
-
-                                                                        @while($x < count($allEvents))
-                                                                            @if($allEvents[$x]->eventDate == $days[$i])
-                                                                                <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                    {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                                </label>
-
-                                                                                <h5 class="{{ str_replace(" ", "-", \App\Models\Event::find($allEvents[$x]->event_id)->name) }}">
-                                                                                    {{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h
-                                                                                </h5>
-                                                                            @endif
-                                                                            <?php $x++; ?>
-                                                                        @endwhile
-                                                                    </td>
-
-
-                                                                    <?php $i++; ?>
-                                                                    <?php $x = 0; ?>
-
-
-                                                                    <td @if(date("Y-m-d") == $days[$i]) class="today-back" @endif>
-                                                                        <h6>{{ substr($days[$i], 8) }}</h6>
-
-                                                                        @while($x < count($allEvents))
-                                                                            @if($allEvents[$x]->eventDate == $days[$i])
-                                                                                <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                    {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                                </label>
-
-                                                                                <h5 class="{{ str_replace(" ", "-", \App\Models\Event::find($allEvents[$x]->event_id)->name) }}">
-                                                                                    {{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h
-                                                                                </h5>
-                                                                            @endif
-                                                                            <?php $x++; ?>
-                                                                        @endwhile
-                                                                    </td>
-
-
-                                                                    <?php $i++; ?>
-                                                                    <?php $x = 0; ?>
-
-
-                                                                    <td @if(date("Y-m-d") == $days[$i]) class="today-back" @endif>
-                                                                        <h6>{{ substr($days[$i], 8) }}</h6>
-
-                                                                        @while($x < count($allEvents))
-                                                                            @if($allEvents[$x]->eventDate == $days[$i])
-                                                                                <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                                    {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                                </label>
-
-                                                                                <h5 class="{{ str_replace(" ", "-", \App\Models\Event::find($allEvents[$x]->event_id)->name) }}">
-                                                                                    {{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h
-                                                                                </h5>
-                                                                            @endif
-                                                                            <?php $x++; ?>
-                                                                        @endwhile
-                                                                    </td>
-
-
-                                                                    <?php $i++; ?>
-                                                                    <?php $x = 0; ?>
-
-                                                                </tr>
-
-                                                            @endwhile
-                                                            </tbody>
-
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div> <!-- This Month -->
+                                        @include('includes.calendar')
 
                                     @endif
 
@@ -1473,81 +1273,8 @@ License: You must have a valid license purchased only from themeforest(the above
             <!-- END CONTAINER -->
         </div>
     </div>
-    <div class="page-wrapper-row">
-        <div class="page-wrapper-bottom">
-            <!-- BEGIN FOOTER -->
-            <!-- BEGIN PRE-FOOTER -->
-            <div class="page-prefooter">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-3 col-sm-6 col-xs-12 footer-block">
-                            <h2>About</h2>
-                            <p> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam dolore. </p>
-                        </div>
-                        <div class="col-md-3 col-sm-6 col-xs12 footer-block">
-                            <h2>Subscribe Email</h2>
-                            <div class="subscribe-form">
-                                <form action="javascript:;">
-                                    <div class="input-group">
-                                        <input type="text" placeholder="mail@email.com" class="form-control">
-                                        <span class="input-group-btn">
-                                                    <button class="btn" type="submit">Submit</button>
-                                                </span>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-sm-6 col-xs-12 footer-block">
-                            <h2>Follow Us On</h2>
-                            <ul class="social-icons">
-                                <li>
-                                    <a href="javascript:;" data-original-title="rss" class="rss"></a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;" data-original-title="facebook" class="facebook"></a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;" data-original-title="twitter" class="twitter"></a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;" data-original-title="googleplus" class="googleplus"></a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;" data-original-title="linkedin" class="linkedin"></a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;" data-original-title="youtube" class="youtube"></a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;" data-original-title="vimeo" class="vimeo"></a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="col-md-3 col-sm-6 col-xs-12 footer-block">
-                            <h2>Contacts</h2>
-                            <address class="margin-bottom-40"> Phone: 800 123 3456
-                                <br> Email:
-                                <a href="mailto:info@metronic.com">info@metronic.com</a>
-                            </address>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- END PRE-FOOTER -->
-            <!-- BEGIN INNER FOOTER -->
-            <div class="page-footer">
-                <div class="container"> 2016 &copy; Metronic Theme By
-                    <a target="_blank" href="http://keenthemes.com">Keenthemes</a> &nbsp;|&nbsp;
-                    <a href="http://themeforest.net/item/metronic-responsive-admin-dashboard-template/4021469?ref=keenthemes" title="Purchase Metronic just for 27$ and get lifetime updates for free" target="_blank">Purchase Metronic!</a>
-                </div>
-            </div>
-            <div class="scroll-to-top">
-                <i class="icon-arrow-up"></i>
-            </div>
-            <!-- END INNER FOOTER -->
-            <!-- END FOOTER -->
-        </div>
-    </div>
+@include('includes.footer')
+
 </div>
 <!-- BEGIN QUICK NAV -->
 

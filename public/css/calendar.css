@@ -96,15 +96,48 @@ a:hover {
 |AZUL
 */
 
-.cor-1{
-    background: #3598DC;
+.Diário{
+    /*background: #3598DC;*/
+    background: #337AB7;
     color: #fff;
 }
 
-.cor-1:hover{
+.Diário:hover{
     background: #217ebd;
     color: #fff;
 }
+
+.Semanal{
+    background: #36C6D3;
+    color: #fff;
+}
+
+.Semanal:hover{
+    background: #00CED1;
+    color: #fff;
+}
+
+.Mensal{
+    background: #F1C40F;
+    color: #fff;
+}
+
+.Mensal:hover{
+    background: #FFD700;
+    color: #FFF;
+}
+
+.Encontro-Único{
+    background: #ED6B75;
+    color: #fff;
+}
+
+.Encontro-Único:hover{
+    background: #F08080;
+    color: #FFF;
+}
+
+
 
 /*
 |VERDE
@@ -115,10 +148,7 @@ a:hover {
     color: #fff;
 }
 
-.cor-2:hover{
-    background: #3d9082;
-    color: #fff;
-}
+
 
 /*
 |VERMELHO
@@ -129,10 +159,7 @@ a:hover {
     color: #FFF;
 }
 
-.cor-3:hover{
-    background: #EF4836;
-    color: #FFF;
-}
+
 
 /*
 |AMARELO
@@ -144,7 +171,104 @@ a:hover {
 
 }
 
-.cor-4:hover{
-    background: #f1c40f;
-    color: #FFF;
+.btn-options{
+    margin-top: -10px !important;
+    margin-right: -10px !important;
+}
+
+.btn-options:after {
+    content: '\2807';
+    font-size: 15px;
+}
+
+.lbl-opacity{
+    opacity: 0.4;
+}
+
+.caption-subject span{
+    cursor: pointer;
+}
+
+/* CSS talk bubble */
+.talk-bubble {
+    margin: 40px;
+    display: none; /*inline-block*/
+    position: absolute;
+    width: 200px;
+    height: auto;
+    background-color: lightyellow;
+    z-index: 1000;
+}
+
+.bubble-margin{
+    margin-top: -120px;
+    margin-left: 90px;
+}
+
+.bubble-margin-right{
+    margin-top: -130px;
+    margin-left: -105px;
+}
+
+.round{
+    border-radius: 30px;
+    -webkit-border-radius: 30px;
+    -moz-border-radius: 30px;
+
+}
+
+.tri-right.btm-left:after{
+    content: ' ';
+    position: absolute;
+    width: 0;
+    height: 0;
+    left: 0px;
+    right: auto;
+    top: auto;
+    bottom: -20px;
+    border: 22px solid;
+    border-color: transparent transparent transparent lightyellow;
+}
+
+.tri-right.btm-right:after{
+    content: ' ';
+    position: absolute;
+    width: 0;
+    height: 0;
+    left: auto;
+    right: 0px;
+    bottom: -20px;
+    border: 12px solid;
+    border-color: lightyellow lightyellow transparent transparent;
+    margin-top: -10px !important;
+    margin-left: 90px !important;
+}
+
+.tri-right.right-in:after{
+    content: ' ';
+    position: absolute;
+    width: 0;
+    height: 0;
+    left: auto;
+    right: -20px;
+    top: 38px;
+    bottom: auto;
+    border: 12px solid;
+    border-color: lightyellow transparent transparent lightyellow;
+    margin-left: 150px !important;
+    margin-top: 30px !important;
+}
+
+/* talk bubble contents */
+.talktext{
+    padding: 1em;
+    text-align: left;
+    line-height: 1.5em;
+    color: #000;
+}
+.talktext p{
+    /* remove webkit p margins */
+    -webkit-margin-before: 0em;
+    -webkit-margin-after: 0em;
+    font-size: 12px;
 }

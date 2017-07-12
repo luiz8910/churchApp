@@ -49,6 +49,7 @@
 <script src="../js/maskbrphone.js"></script>
 <script src="../js/ajax.js"></script>
 <script src="../js/print.js"></script>
+<script src="../js/agenda.js"></script>
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.debug.js"></script>
