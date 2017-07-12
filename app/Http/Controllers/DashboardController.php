@@ -540,8 +540,6 @@ class DashboardController extends Controller
             ])
             ->get();
 
-        dd($dates);
-
         $arrayDates = [];
 
         $arrayIds = [];
@@ -549,8 +547,6 @@ class DashboardController extends Controller
 
         for ($i = 0; $i < count($dates); $i++)
         {
-            echo $dates[$i]->eventDate . "\n";
-
             //Separando as datas dos eventos
             $date = date_create($dates[$i]->eventDate);
 
