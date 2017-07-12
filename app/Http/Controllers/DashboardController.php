@@ -540,6 +540,8 @@ class DashboardController extends Controller
             ])
             ->get();
 
+        dd($dates);
+
         $arrayDates = [];
 
         $arrayIds = [];
