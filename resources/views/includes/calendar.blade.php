@@ -5,6 +5,7 @@
                 <div class="caption">
                     <i class="fa fa-calendar font-green"></i>
                     <span class="caption-subject font-green sbold uppercase">Calendário
+                        @if(!isset($next)) - Próximas {{ $numWeek }} semanas @endif
                         <span class="label label-default lbl-opacity" id="all" style="margin-left: 20px;">Todos</span>
                         <span class="label label-primary lbl-opacity" id="daily">Diário</span>
                         <span class="label label-success lbl-opacity" id="weekly">Semanal</span>
@@ -43,6 +44,7 @@
                     </li>
                 </ul>
 
+
                 <div class="ano-calendario">
                     <p class="ano-calendario"><strong>{{ $ano }}</strong></p>
                 </div>
@@ -73,371 +75,380 @@
                                 <?php $x = 0; ?>
 
                                 @while($i < count($days))
+
                                     <tr class="">
+                                        @if($i < count($days))
+                                            <!-- INICIO DO DIA -->
+                                            <td @if(date("Y-m-d") == $days[$i]) class="today-back adjust-td-body-table" @endif class="adjust-td-body-table ">
+                                                <p class="text-right p-dia-mes">
+                                                    {{ substr($days[$i], 8) }}
+                                                </p>
 
-                                        <!-- INICIO DO DIA -->
-                                        <td @if(date("Y-m-d") == $days[$i]) class="today-back adjust-td-body-table" @endif class="adjust-td-body-table ">
-                                            <p class="text-right p-dia-mes">
-                                                {{ substr($days[$i], 8) }}
-                                            </p>
+                                                @while($x < count($allEvents))
+                                                    @if($allEvents[$x]->eventDate == $days[$i])
 
-                                            @while($x < count($allEvents))
-                                                @if($allEvents[$x]->eventDate == $days[$i])
+                                                        <a href="{{ route('event.edit', ['event' => $allEvents[$x]->event_id]) }}">
 
-                                                    <a href="{{ route('event.edit', ['event' => $allEvents[$x]->event_id]) }}">
+                                                            <div class="evento-calendario {{ str_replace(" ", "-", $allEventsFrequencies[$x]) }}">
+                                                                <strong class="{{ str_replace(" ", "-", $allEventsNames[$x]) }}">
+                                                                    {{ $allEventsTimes[$x] }}h
+                                                                </strong>
 
-                                                        <div class="evento-calendario {{ str_replace(" ", "-", $allEventsFrequencies[$x]) }}">
-                                                            <strong class="{{ str_replace(" ", "-", $allEventsNames[$x]) }}">
-                                                                {{ $allEventsTimes[$x] }}h
-                                                            </strong>
-
-                                                            <div class="talk-bubble tri-right round btm-left bubble-margin" id="bubble-{{ $x }}">
-                                                                <div class="talktext">
-                                                                    <p>
-                                                                        <i class="fa fa-map-marker font-blue"></i>
-                                                                        Local do Evento
-                                                                        <br>
-                                                                        {{ $allEventsAddresses[$x] }}
-                                                                    </p>
+                                                                <div class="talk-bubble tri-right round btm-left bubble-margin" id="bubble-{{ $x }}">
+                                                                    <div class="talktext">
+                                                                        <p>
+                                                                            <i class="fa fa-map-marker font-blue"></i>
+                                                                            Local do Evento
+                                                                            <br>
+                                                                            {{ $allEventsAddresses[$x] }}
+                                                                        </p>
+                                                                    </div>
                                                                 </div>
+
+                                                                <button onclick="event.preventDefault();" id="btn-options-{{ $x }}"
+                                                                        class="btn btn-sm pull-right btn-options {{ str_replace(" ", "-", $allEventsFrequencies[$x]) }}">
+                                                                </button>
+
+                                                                <br>
+
+                                                                {{ $allEventsNames[$x] }}
                                                             </div>
+                                                        </a>
 
-                                                            <button onclick="event.preventDefault();" id="btn-options-{{ $x }}"
-                                                                    class="btn btn-sm pull-right btn-options {{ str_replace(" ", "-", $allEventsFrequencies[$x]) }}">
-                                                            </button>
+                                                    @endif
 
-                                                            <br>
+                                                    <?php $x++; ?>
+                                                @endwhile
+                                                {{--<a href="">
+                                                    <div class="evento-calendario cor-2">
+                                                        <strong>14:00h</strong><br>
+                                                        Limpeza da igreja completa
+                                                    </div>
+                                                </a>
+                                                <a href="">
+                                                    <div class="evento-calendario cor-2">
+                                                        <strong>14:00h</strong><br>
+                                                        Limpeza da igreja completa
+                                                    </div>
+                                                </a>
+                                                <a href="">
+                                                    <div class="evento-calendario cor-2">
+                                                        <strong>14:00h</strong><br>
+                                                        Limpeza da igreja completa
+                                                    </div>
+                                                </a>
+                                                <a href="">
+                                                    <div class="evento-calendario cor-2">
+                                                        <strong>14:00h</strong><br>
+                                                        Limpeza da igreja completa
+                                                    </div>
+                                                </a>--}}
 
-                                                            {{ $allEventsNames[$x] }}
-                                                        </div>
-                                                    </a>
+                                            </td>
+                                            <!--FIM DO DIA -->
 
-                                                @endif
-
-                                                <?php $x++; ?>
-                                            @endwhile
-                                            {{--<a href="">
-                                                <div class="evento-calendario cor-2">
-                                                    <strong>14:00h</strong><br>
-                                                    Limpeza da igreja completa
-                                                </div>
-                                            </a>
-                                            <a href="">
-                                                <div class="evento-calendario cor-2">
-                                                    <strong>14:00h</strong><br>
-                                                    Limpeza da igreja completa
-                                                </div>
-                                            </a>
-                                            <a href="">
-                                                <div class="evento-calendario cor-2">
-                                                    <strong>14:00h</strong><br>
-                                                    Limpeza da igreja completa
-                                                </div>
-                                            </a>
-                                            <a href="">
-                                                <div class="evento-calendario cor-2">
-                                                    <strong>14:00h</strong><br>
-                                                    Limpeza da igreja completa
-                                                </div>
-                                            </a>--}}
-
-                                        </td>
-                                        <!--FIM DO DIA -->
-
-                                    <?php $i++; ?>
-                                    <?php $x = 0; ?>
-
-
-                                        <!-- INICIO DO DIA -->
-                                        <td @if(date("Y-m-d") == $days[$i]) class="today-back adjust-td-body-table" @endif class="adjust-td-body-table ">
-                                            <p class="text-right p-dia-mes">
-                                                {{ substr($days[$i], 8) }}
-                                            </p>
-
-                                            @while($x < count($allEvents))
-                                                @if($allEvents[$x]->eventDate == $days[$i])
-
-                                                    <a href="{{ route('event.edit', ['event' => $allEvents[$x]->event_id]) }}">
-
-                                                        <div class="evento-calendario {{ str_replace(" ", "-", $allEventsFrequencies[$x]) }}">
-                                                            <strong class="{{ str_replace(" ", "-", $allEventsNames[$x]) }}">
-                                                                {{ $allEventsTimes[$x] }}h
-                                                            </strong>
-
-                                                            <div class="talk-bubble tri-right round btm-left bubble-margin" id="bubble-{{ $x }}">
-                                                                <div class="talktext">
-                                                                    <p>
-                                                                        <i class="fa fa-map-marker font-blue"></i>
-                                                                        Local do Evento
-                                                                        <br>
-                                                                        {{ $allEventsAddresses[$x] }}
-                                                                    </p>
-                                                                </div>
-                                                            </div>
-
-                                                            <button onclick="event.preventDefault();" id="btn-options-{{ $x }}"
-                                                                    class="btn btn-sm pull-right btn-options {{ str_replace(" ", "-", $allEventsFrequencies[$x]) }}">
-                                                            </button>
-
-                                                            <br>
-
-                                                            {{ $allEventsNames[$x] }}
-                                                        </div>
-                                                    </a>
-
-                                                @endif
-
-                                                <?php $x++; ?>
-                                            @endwhile
-                                        </td>
-                                        <!--FIM DO DIA -->
-
+                                            @endif
                                         <?php $i++; ?>
                                         <?php $x = 0; ?>
 
 
+                                        @if($i < count($days))
+                                            <!-- INICIO DO DIA -->
+                                            <td @if(date("Y-m-d") == $days[$i]) class="today-back adjust-td-body-table" @endif class="adjust-td-body-table ">
+                                                <p class="text-right p-dia-mes">
+                                                    {{ substr($days[$i], 8) }}
+                                                </p>
 
-                                    <!-- INICIO DO DIA -->
-                                        <td @if(date("Y-m-d") == $days[$i]) class="today-back adjust-td-body-table" @endif class="adjust-td-body-table ">
-                                            <p class="text-right p-dia-mes">
-                                                {{ substr($days[$i], 8) }}
-                                            </p>
+                                                @while($x < count($allEvents))
+                                                    @if($allEvents[$x]->eventDate == $days[$i])
 
-                                            @while($x < count($allEvents))
-                                                @if($allEvents[$x]->eventDate == $days[$i])
+                                                        <a href="{{ route('event.edit', ['event' => $allEvents[$x]->event_id]) }}">
 
-                                                    <a href="{{ route('event.edit', ['event' => $allEvents[$x]->event_id]) }}">
+                                                            <div class="evento-calendario {{ str_replace(" ", "-", $allEventsFrequencies[$x]) }}">
+                                                                <strong class="{{ str_replace(" ", "-", $allEventsNames[$x]) }}">
+                                                                    {{ $allEventsTimes[$x] }}h
+                                                                </strong>
 
-                                                        <div class="evento-calendario {{ str_replace(" ", "-", $allEventsFrequencies[$x]) }}">
-                                                            <strong class="{{ str_replace(" ", "-", $allEventsNames[$x]) }}">
-                                                                {{ $allEventsTimes[$x] }}h
-                                                            </strong>
-
-                                                            <div class="talk-bubble tri-right round btm-left bubble-margin" id="bubble-{{ $x }}">
-                                                                <div class="talktext">
-                                                                    <p>
-                                                                        <i class="fa fa-map-marker font-blue"></i>
-                                                                        Local do Evento
-                                                                        <br>
-                                                                        {{ $allEventsAddresses[$x] }}
-                                                                    </p>
+                                                                <div class="talk-bubble tri-right round btm-left bubble-margin" id="bubble-{{ $x }}">
+                                                                    <div class="talktext">
+                                                                        <p>
+                                                                            <i class="fa fa-map-marker font-blue"></i>
+                                                                            Local do Evento
+                                                                            <br>
+                                                                            {{ $allEventsAddresses[$x] }}
+                                                                        </p>
+                                                                    </div>
                                                                 </div>
+
+                                                                <button onclick="event.preventDefault();" id="btn-options-{{ $x }}"
+                                                                        class="btn btn-sm pull-right btn-options {{ str_replace(" ", "-", $allEventsFrequencies[$x]) }}">
+                                                                </button>
+
+                                                                <br>
+
+                                                                {{ $allEventsNames[$x] }}
                                                             </div>
+                                                        </a>
 
-                                                            <button onclick="event.preventDefault();" id="btn-options-{{ $x }}"
-                                                                    class="btn btn-sm pull-right btn-options {{ str_replace(" ", "-", $allEventsFrequencies[$x]) }}">
-                                                            </button>
+                                                    @endif
 
-                                                            <br>
+                                                    <?php $x++; ?>
+                                                @endwhile
+                                            </td>
+                                            <!--FIM DO DIA -->
 
-                                                            {{ $allEventsNames[$x] }}
-                                                        </div>
-                                                    </a>
+                                        @endif
+                                            <?php $i++; ?>
+                                            <?php $x = 0; ?>
 
-                                                @endif
+                                        @if($i < count($days))
+                                            <!-- INICIO DO DIA -->
+                                            <td @if(date("Y-m-d") == $days[$i]) class="today-back adjust-td-body-table" @endif class="adjust-td-body-table ">
+                                                <p class="text-right p-dia-mes">
+                                                    {{ substr($days[$i], 8) }}
+                                                </p>
 
-                                                <?php $x++; ?>
-                                            @endwhile
-                                        </td>
-                                        <!--FIM DO DIA -->
+                                                @while($x < count($allEvents))
+                                                    @if($allEvents[$x]->eventDate == $days[$i])
 
-                                    <?php $i++; ?>
-                                    <?php $x = 0; ?>
+                                                        <a href="{{ route('event.edit', ['event' => $allEvents[$x]->event_id]) }}">
 
+                                                            <div class="evento-calendario {{ str_replace(" ", "-", $allEventsFrequencies[$x]) }}">
+                                                                <strong class="{{ str_replace(" ", "-", $allEventsNames[$x]) }}">
+                                                                    {{ $allEventsTimes[$x] }}h
+                                                                </strong>
 
-
-                                    <!-- INICIO DO DIA -->
-                                        <td @if(date("Y-m-d") == $days[$i]) class="today-back adjust-td-body-table" @endif class="adjust-td-body-table ">
-                                            <p class="text-right p-dia-mes">
-                                                {{ substr($days[$i], 8) }}
-                                            </p>
-
-                                            @while($x < count($allEvents))
-                                                @if($allEvents[$x]->eventDate == $days[$i])
-
-                                                    <a href="{{ route('event.edit', ['event' => $allEvents[$x]->event_id]) }}">
-
-                                                        <div class="evento-calendario {{ str_replace(" ", "-", $allEventsFrequencies[$x]) }}">
-                                                            <strong class="{{ str_replace(" ", "-", $allEventsNames[$x]) }}">
-                                                                {{ $allEventsTimes[$x] }}h
-                                                            </strong>
-
-                                                            <div class="talk-bubble tri-right round btm-left bubble-margin" id="bubble-{{ $x }}">
-                                                                <div class="talktext">
-                                                                    <p>
-                                                                        <i class="fa fa-map-marker font-blue"></i>
-                                                                        Local do Evento
-                                                                        <br>
-                                                                        {{ $allEventsAddresses[$x] }}
-                                                                    </p>
+                                                                <div class="talk-bubble tri-right round btm-left bubble-margin" id="bubble-{{ $x }}">
+                                                                    <div class="talktext">
+                                                                        <p>
+                                                                            <i class="fa fa-map-marker font-blue"></i>
+                                                                            Local do Evento
+                                                                            <br>
+                                                                            {{ $allEventsAddresses[$x] }}
+                                                                        </p>
+                                                                    </div>
                                                                 </div>
+
+                                                                <button onclick="event.preventDefault();" id="btn-options-{{ $x }}"
+                                                                        class="btn btn-sm pull-right btn-options {{ str_replace(" ", "-", $allEventsFrequencies[$x]) }}">
+                                                                </button>
+
+                                                                <br>
+
+                                                                {{ $allEventsNames[$x] }}
                                                             </div>
+                                                        </a>
 
-                                                            <button onclick="event.preventDefault();" id="btn-options-{{ $x }}"
-                                                                    class="btn btn-sm pull-right btn-options {{ str_replace(" ", "-", $allEventsFrequencies[$x]) }}">
-                                                            </button>
+                                                    @endif
 
-                                                            <br>
+                                                    <?php $x++; ?>
+                                                @endwhile
+                                            </td>
+                                            <!--FIM DO DIA -->
 
-                                                            {{ $allEventsNames[$x] }}
-                                                        </div>
-                                                    </a>
+                                        @endif
+                                        <?php $i++; ?>
+                                        <?php $x = 0; ?>
 
-                                                @endif
+                                        @if($i < count($days))
+                                            <!-- INICIO DO DIA -->
+                                            <td @if(date("Y-m-d") == $days[$i]) class="today-back adjust-td-body-table" @endif class="adjust-td-body-table ">
+                                                <p class="text-right p-dia-mes">
+                                                    {{ substr($days[$i], 8) }}
+                                                </p>
 
-                                                <?php $x++; ?>
-                                            @endwhile
-                                        </td>
-                                        <!--FIM DO DIA -->
+                                                @while($x < count($allEvents))
+                                                    @if($allEvents[$x]->eventDate == $days[$i])
 
-                                    <?php $i++; ?>
-                                    <?php $x = 0; ?>
+                                                        <a href="{{ route('event.edit', ['event' => $allEvents[$x]->event_id]) }}">
 
+                                                            <div class="evento-calendario {{ str_replace(" ", "-", $allEventsFrequencies[$x]) }}">
+                                                                <strong class="{{ str_replace(" ", "-", $allEventsNames[$x]) }}">
+                                                                    {{ $allEventsTimes[$x] }}h
+                                                                </strong>
 
-
-                                    <!-- INICIO DO DIA -->
-                                        <td @if(date("Y-m-d") == $days[$i]) class="today-back adjust-td-body-table" @endif class="adjust-td-body-table ">
-                                            <p class="text-right p-dia-mes">
-                                                {{ substr($days[$i], 8) }}
-                                            </p>
-
-                                            @while($x < count($allEvents))
-                                                @if($allEvents[$x]->eventDate == $days[$i])
-
-                                                    <a href="{{ route('event.edit', ['event' => $allEvents[$x]->event_id]) }}">
-
-                                                        <div class="evento-calendario {{ str_replace(" ", "-", $allEventsFrequencies[$x]) }}">
-                                                            <strong class="{{ str_replace(" ", "-", $allEventsNames[$x]) }}">
-                                                                {{ $allEventsTimes[$x] }}h
-                                                            </strong>
-
-                                                            <div class="talk-bubble tri-right round btm-left bubble-margin" id="bubble-{{ $x }}">
-                                                                <div class="talktext">
-                                                                    <p>
-                                                                        <i class="fa fa-map-marker font-blue"></i>
-                                                                        Local do Evento
-                                                                        <br>
-                                                                        {{ $allEventsAddresses[$x] }}
-                                                                    </p>
+                                                                <div class="talk-bubble tri-right round btm-left bubble-margin" id="bubble-{{ $x }}">
+                                                                    <div class="talktext">
+                                                                        <p>
+                                                                            <i class="fa fa-map-marker font-blue"></i>
+                                                                            Local do Evento
+                                                                            <br>
+                                                                            {{ $allEventsAddresses[$x] }}
+                                                                        </p>
+                                                                    </div>
                                                                 </div>
+
+                                                                <button onclick="event.preventDefault();" id="btn-options-{{ $x }}"
+                                                                        class="btn btn-sm pull-right btn-options {{ str_replace(" ", "-", $allEventsFrequencies[$x]) }}">
+                                                                </button>
+
+                                                                <br>
+
+                                                                {{ $allEventsNames[$x] }}
                                                             </div>
+                                                        </a>
 
-                                                            <button onclick="event.preventDefault();" id="btn-options-{{ $x }}"
-                                                                    class="btn btn-sm pull-right btn-options {{ str_replace(" ", "-", $allEventsFrequencies[$x]) }}">
-                                                            </button>
+                                                    @endif
 
-                                                            <br>
+                                                    <?php $x++; ?>
+                                                @endwhile
+                                            </td>
+                                            <!--FIM DO DIA -->
 
-                                                            {{ $allEventsNames[$x] }}
-                                                        </div>
-                                                    </a>
-
-                                                @endif
-
-                                                <?php $x++; ?>
-                                            @endwhile
-                                        </td>
-                                        <!--FIM DO DIA -->
-
-                                    <?php $i++; ?>
-                                    <?php $x = 0; ?>
+                                        @endif
+                                        <?php $i++; ?>
+                                        <?php $x = 0; ?>
 
 
-                                    <!-- INICIO DO DIA -->
-                                        <td @if(date("Y-m-d") == $days[$i]) class="today-back adjust-td-body-table" @endif class="adjust-td-body-table ">
-                                            <p class="text-right p-dia-mes">
-                                                {{ substr($days[$i], 8) }}
-                                            </p>
+                                        @if($i < count($days))
+                                            <!-- INICIO DO DIA -->
+                                            <td @if(date("Y-m-d") == $days[$i]) class="today-back adjust-td-body-table" @endif class="adjust-td-body-table ">
+                                                <p class="text-right p-dia-mes">
+                                                    {{ substr($days[$i], 8) }}
+                                                </p>
 
-                                            @while($x < count($allEvents))
-                                                @if($allEvents[$x]->eventDate == $days[$i])
+                                                @while($x < count($allEvents))
+                                                    @if($allEvents[$x]->eventDate == $days[$i])
 
-                                                    <a href="{{ route('event.edit', ['event' => $allEvents[$x]->event_id]) }}">
+                                                        <a href="{{ route('event.edit', ['event' => $allEvents[$x]->event_id]) }}">
 
-                                                        <div class="evento-calendario {{ str_replace(" ", "-", $allEventsFrequencies[$x]) }}">
-                                                            <strong class="{{ str_replace(" ", "-", $allEventsNames[$x]) }}">
-                                                                {{ $allEventsTimes[$x] }}h
-                                                            </strong>
+                                                            <div class="evento-calendario {{ str_replace(" ", "-", $allEventsFrequencies[$x]) }}">
+                                                                <strong class="{{ str_replace(" ", "-", $allEventsNames[$x]) }}">
+                                                                    {{ $allEventsTimes[$x] }}h
+                                                                </strong>
 
-                                                            <div class="talk-bubble tri-right round btm-left bubble-margin" id="bubble-{{ $x }}">
-                                                                <div class="talktext">
-                                                                    <p>
-                                                                        <i class="fa fa-map-marker font-blue"></i>
-                                                                        Local do Evento
-                                                                        <br>
-                                                                        {{ $allEventsAddresses[$x] }}
-                                                                    </p>
+                                                                <div class="talk-bubble tri-right round btm-left bubble-margin" id="bubble-{{ $x }}">
+                                                                    <div class="talktext">
+                                                                        <p>
+                                                                            <i class="fa fa-map-marker font-blue"></i>
+                                                                            Local do Evento
+                                                                            <br>
+                                                                            {{ $allEventsAddresses[$x] }}
+                                                                        </p>
+                                                                    </div>
                                                                 </div>
+
+                                                                <button onclick="event.preventDefault();" id="btn-options-{{ $x }}"
+                                                                        class="btn btn-sm pull-right btn-options {{ str_replace(" ", "-", $allEventsFrequencies[$x]) }}">
+                                                                </button>
+
+                                                                <br>
+
+                                                                {{ $allEventsNames[$x] }}
                                                             </div>
+                                                        </a>
 
-                                                            <button onclick="event.preventDefault();" id="btn-options-{{ $x }}"
-                                                                    class="btn btn-sm pull-right btn-options {{ str_replace(" ", "-", $allEventsFrequencies[$x]) }}">
-                                                            </button>
+                                                    @endif
 
-                                                            <br>
+                                                    <?php $x++; ?>
+                                                @endwhile
+                                            </td>
+                                            <!--FIM DO DIA -->
 
-                                                            {{ $allEventsNames[$x] }}
-                                                        </div>
-                                                    </a>
-
-                                                @endif
-
-                                                <?php $x++; ?>
-                                            @endwhile
-                                        </td>
-                                        <!--FIM DO DIA -->
-
-                                    <?php $i++; ?>
-                                    <?php $x = 0; ?>
+                                        @endif
+                                        <?php $i++; ?>
+                                        <?php $x = 0; ?>
 
 
-                                    <!-- INICIO DO DIA -->
-                                        <td @if(date("Y-m-d") == $days[$i]) class="today-back adjust-td-body-table" @endif class="adjust-td-body-table ">
-                                            <p class="text-right p-dia-mes">
-                                                {{ substr($days[$i], 8) }}
-                                            </p>
+                                        @if($i < count($days))
+                                            <!-- INICIO DO DIA -->
+                                            <td @if(date("Y-m-d") == $days[$i]) class="today-back adjust-td-body-table" @endif class="adjust-td-body-table ">
+                                                <p class="text-right p-dia-mes">
+                                                    {{ substr($days[$i], 8) }}
+                                                </p>
 
-                                            @while($x < count($allEvents))
-                                                @if($allEvents[$x]->eventDate == $days[$i])
+                                                @while($x < count($allEvents))
+                                                    @if($allEvents[$x]->eventDate == $days[$i])
 
-                                                    <a href="{{ route('event.edit', ['event' => $allEvents[$x]->event_id]) }}">
+                                                        <a href="{{ route('event.edit', ['event' => $allEvents[$x]->event_id]) }}">
 
-                                                        <div class="evento-calendario {{ str_replace(" ", "-", $allEventsFrequencies[$x]) }}">
-                                                            <strong class="{{ str_replace(" ", "-", $allEventsNames[$x]) }}">
-                                                                {{ $allEventsTimes[$x] }}h
-                                                            </strong>
+                                                            <div class="evento-calendario {{ str_replace(" ", "-", $allEventsFrequencies[$x]) }}">
+                                                                <strong class="{{ str_replace(" ", "-", $allEventsNames[$x]) }}">
+                                                                    {{ $allEventsTimes[$x] }}h
+                                                                </strong>
 
-                                                            <div class="talk-bubble tri-right round btm-right bubble-margin-right" id="bubble-{{ $x }}">
-                                                                <div class="talktext">
-                                                                    <p>
-                                                                        <i class="fa fa-map-marker font-blue"></i>
-                                                                        Local do Evento
-                                                                        <br>
-                                                                        {{ $allEventsAddresses[$x] }}
-                                                                    </p>
+                                                                <div class="talk-bubble tri-right round btm-left bubble-margin" id="bubble-{{ $x }}">
+                                                                    <div class="talktext">
+                                                                        <p>
+                                                                            <i class="fa fa-map-marker font-blue"></i>
+                                                                            Local do Evento
+                                                                            <br>
+                                                                            {{ $allEventsAddresses[$x] }}
+                                                                        </p>
+                                                                    </div>
                                                                 </div>
+
+                                                                <button onclick="event.preventDefault();" id="btn-options-{{ $x }}"
+                                                                        class="btn btn-sm pull-right btn-options {{ str_replace(" ", "-", $allEventsFrequencies[$x]) }}">
+                                                                </button>
+
+                                                                <br>
+
+                                                                {{ $allEventsNames[$x] }}
                                                             </div>
+                                                        </a>
 
-                                                            <button onclick="event.preventDefault();" id="btn-options-{{ $x }}"
-                                                                    class="btn btn-sm pull-right btn-options {{ str_replace(" ", "-", $allEventsFrequencies[$x]) }}">
-                                                            </button>
+                                                    @endif
 
-                                                            <br>
+                                                    <?php $x++; ?>
+                                                @endwhile
+                                            </td>
+                                            <!--FIM DO DIA -->
 
-                                                            {{ $allEventsNames[$x] }}
-                                                        </div>
-                                                    </a>
+                                        @endif
+                                        <?php $i++; ?>
+                                        <?php $x = 0; ?>
 
-                                                @endif
 
-                                                <?php $x++; ?>
-                                            @endwhile
-                                        </td>
-                                        <!--FIM DO DIA -->
+                                        @if($i < count($days))
+                                            <!-- INICIO DO DIA -->
+                                            <td @if(date("Y-m-d") == $days[$i]) class="today-back adjust-td-body-table" @endif class="adjust-td-body-table ">
+                                                <p class="text-right p-dia-mes">
+                                                    {{ substr($days[$i], 8) }}
+                                                </p>
 
-                                    <?php $i++; ?>
-                                    <?php $x = 0; ?>
-                            </tr>
+                                                @while($x < count($allEvents))
+                                                    @if($allEvents[$x]->eventDate == $days[$i])
+
+                                                        <a href="{{ route('event.edit', ['event' => $allEvents[$x]->event_id]) }}">
+
+                                                            <div class="evento-calendario {{ str_replace(" ", "-", $allEventsFrequencies[$x]) }}">
+                                                                <strong class="{{ str_replace(" ", "-", $allEventsNames[$x]) }}">
+                                                                    {{ $allEventsTimes[$x] }}h
+                                                                </strong>
+
+                                                                <div class="talk-bubble tri-right round btm-right bubble-margin-right" id="bubble-{{ $x }}">
+                                                                    <div class="talktext">
+                                                                        <p>
+                                                                            <i class="fa fa-map-marker font-blue"></i>
+                                                                            Local do Evento
+                                                                            <br>
+                                                                            {{ $allEventsAddresses[$x] }}
+                                                                        </p>
+                                                                    </div>
+                                                                </div>
+
+                                                                <button onclick="event.preventDefault();" id="btn-options-{{ $x }}"
+                                                                        class="btn btn-sm pull-right btn-options {{ str_replace(" ", "-", $allEventsFrequencies[$x]) }}">
+                                                                </button>
+
+                                                                <br>
+
+                                                                {{ $allEventsNames[$x] }}
+                                                            </div>
+                                                        </a>
+
+                                                    @endif
+
+                                                    <?php $x++; ?>
+                                                @endwhile
+                                            </td>
+                                            <!--FIM DO DIA -->
+
+                                        @endif
+                                        <?php $i++; ?>
+                                        <?php $x = 0; ?>
+                                </tr>
                                 @endwhile
                             <!--
                             |

@@ -16,17 +16,18 @@ class ConfigController extends Controller
     }
 
     /*
-     * $id do usuário
+     * Marca todas as notificações como lidas
      */
     public function markAllAsRead()
     {
-        $user = \Auth::getUser();
+        $user = \Auth::user();
 
         $user->unreadNotifications()->update(['read_at' => Carbon::now()]);
 
         return json_encode(["status" => true]);
     }
 
+    //Recupera o endereço completo da igreja
     public function getChurchZipCode()
     {
         $address = \DB::table('churches')

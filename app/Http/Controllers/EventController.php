@@ -173,8 +173,11 @@ class EventController extends Controller
         //Contador de semanas
         $cont = 1;
 
+        //Numero de Semanas
+        $numWeek = $this->getDefaultWeeks();
+
         //Listagem até a 6° semana por padrão
-        while ($cont < 6)
+        while ($cont < $numWeek)
         {
             $time = $cont == 1 ? 'next' : $cont;
 
@@ -221,7 +224,7 @@ class EventController extends Controller
         return view("events.index", compact('countPerson', 'countGroups', 'state',
             'events', 'notify', 'qtde', 'allMonths', 'allDays', 'days', 'allEvents',
             'thisMonth', 'today', 'ano', 'allEventsNames', 'allEventsTimes',
-            'allEventsFrequencies', 'allEventsAddresses'));
+            'allEventsFrequencies', 'allEventsAddresses', 'numWeek'));
     }
 
 
@@ -386,7 +389,7 @@ class EventController extends Controller
 
         $next = true;
 
-        //dd($days);
+        //dd(count($days));
 
         return view("events.index", compact('countPerson', 'countGroups', 'state',
             'events', 'notify', 'qtde', 'allMonths', 'allDays', 'days', 'allEvents',

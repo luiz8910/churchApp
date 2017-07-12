@@ -4,9 +4,20 @@
 
 $(function () {
 
-    //$("a").attr("rel", "external");
+    //Agenda Desktop
+    var path = location.pathname;
 
-    //Desktop
+    var route = path.search('agenda');
+
+    if(route > -1)
+    {
+        $('html, body').animate({
+            scrollTop: $("#all").offset().top
+        }, 2000);
+
+    }
+
+
     var dialog = 0;
 
     $(".btn-options").click(function () {

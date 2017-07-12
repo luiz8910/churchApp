@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Repositories\UserRepository;
 use App\Repositories\VisitorRepository;
+use App\Traits\ConfigTrait;
 use App\Traits\CountRepository;
 use App\Traits\DateRepository;
 use App\Repositories\EventRepository;
@@ -20,7 +21,7 @@ use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
-    use CountRepository, NotifyRepository, DateRepository, FormatGoogleMaps;
+    use CountRepository, NotifyRepository, DateRepository, FormatGoogleMaps, ConfigTrait;
 
     /**
      * @var EventRepository
@@ -64,13 +65,189 @@ class DashboardController extends Controller
         $this->userRepository = $userRepository;
     }
 
+
     public function index()
     {
 
-        if(!Auth::getUser()->person)
+        $countPerson[] = $this->countPerson();
+
+        $countGroups[] = $this->countGroups();
+
+        $events = $this->eventRepository->paginate(5);
+
+        $notify = $this->notify();
+
+        $qtde = count($notify) or 0;
+
+        $id = Auth::user()->person_id;
+
+        $person = $this->personRepository->find($id);
+
+        //Paginação de Grupo está com bug
+        $groups = $person->groups()->paginate(5) or null;
+
+        $event_person = [];
+
+        $nextEvent = null;
+
+        if($groups)
         {
-            return $this->visitors();
+            foreach ($groups as $group)
+            {
+                $group->sinceOf = $this->formatDateView($group->sinceOf);
+                $countMembers[] = count($group->people->all());
+            }
         }
+
+        if (count($events) == 0)
+        {
+            return view('dashboard.index', compact('countPerson', 'countGroups', 'events', 'notify', 'qtde',
+                'countMembers', 'street', 'groups', 'event_person', 'nextEvent'));
+        }
+
+        $eventDate = [];
+        $i = 0;
+
+        foreach ($events as $event)
+        {
+            $eventDate[] = DB::table('event_person')
+                ->where(
+                    [
+                        'event_id' => $event->id,
+                        'person_id' => Auth::user()->person_id,
+                        'show' => 0,
+                        'deleted_at' => null
+                    ])
+                ->first();
+
+            // Incluir dados da coluna criado por ( foto e primeiro nome )
+
+            $user = $this->userRepository->find($event->createdBy_id)->person;
+
+            $event->createdBy_name = $user->name;
+
+            $event->imgProfileUser = $user->imgProfile;
+
+
+            if($eventDate[$i] != null)
+            {
+                $eventDate[$i]->eventDate = $this->formatDateView($eventDate[$i]->eventDate);
+            }
+            else{
+                array_pop($eventDate);
+                $i--;
+            }
+
+            $i++;
+        }
+
+
+        //dd($eventDate);
+
+        if(!empty($eventDate))
+        {
+            if($eventDate[0] != null)
+            {
+                for ($i = 0; $i < count($eventDate); $i++)
+                {
+
+                    if($eventDate[$i] != null) {
+                        $event_person[$i] = $this->eventRepository->find($eventDate[$i]->event_id);
+
+                        if ($event_person[$i]->group_id != null) {
+                            $event_person[$i]->group_name = $this->groupRepository->find($event_person[$i]->group_id)->name;
+                        }
+                    }
+                }
+            }
+        }
+
+
+
+
+        $nextEvent = $this->getNextEvent();
+
+        $nextEvent[1] = $this->formatDateView($nextEvent[1]);
+
+        $event = $this->eventRepository->find($nextEvent[0]);
+
+        $street = $event->street;
+
+        $location = $this->formatGoogleMaps($event);
+
+        //Dia Atual
+        $today = date("Y-m-d");
+
+        //Recupera todos os meses
+        $allMonths = $this->agendaServices->allMonths();
+
+        //Recuperar todos os dias da semana
+        $allDays = $this->agendaServices->allDaysName();
+
+        //Recupera a semana atual
+        $days = $this->agendaServices->findWeek();
+
+        //Contador de semanas
+        $cont = 1;
+
+        //Numero de Semanas
+        $numWeek = $this->getDefaultWeeks();
+
+        //Listagem até a 6° semana por padrão
+        while ($cont < $numWeek)
+        {
+            $time = $cont == 1 ? 'next' : $cont;
+
+            $days = array_merge($days, $this->agendaServices->findWeek($time));
+
+            $cont++;
+        }
+
+        //Retorna todos os eventos
+        $allEvents = $this->eventServices->allEvents();
+
+        $allEventsNames = [];
+        $allEventsTimes = [];
+        $allEventsFrequencies = [];
+        $allEventsAddresses = [];
+
+        foreach ($allEvents as $allEvent) {
+            $e = $this->eventRepository->find($allEvent->event_id);
+
+            //Nome de todos os eventos
+            $allEventsNames[] = $e->name;
+
+            //Hora de inicio de todos os eventos
+            $allEventsTimes[] = $e->startTime;
+
+            //Frequência de todos os eventos
+            $allEventsFrequencies[] = $e->frequency;
+
+            //Todos os endereços
+            $allEventsAddresses[] = $e->street . ", " . $e->neighborhood . "\n" . $e->city . ", " . $e->state;
+        }
+
+
+        //Recupera o mês atual
+        $thisMonth = $this->agendaServices->thisMonth();
+
+        //Ano Atual
+        $ano = date("Y");
+
+        /*
+         * Fim Agenda
+         */
+
+
+        return view('dashboard.index', compact('countPerson', 'countGroups', 'events', 'notify', 'qtde', 'event',
+            'countMembers', 'nextEvent', 'location', 'street', 'groups', 'eventDate', 'event_person',
+            'allMonths', 'allDays', 'days', 'allEvents',
+            'thisMonth', 'today', 'ano', 'allEventsNames', 'allEventsTimes',
+            'allEventsFrequencies', 'allEventsAddresses', 'numWeek'));
+    }
+
+    public function oldindex()
+    {
 
         $countPerson[] = $this->countPerson();
 

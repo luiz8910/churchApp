@@ -70,8 +70,17 @@ trait ConfigTrait
         return 'Mensal';
     }
 
+    /*
+     * Retorna qual a qtde de replicação de um evento
+     * No momento de sua criação*/
     public function numNextEvents()
     {
         return 5;
+    }
+
+    //Retorna o número de semanas que serão exibidas na agenda
+    public function getDefaultWeeks()
+    {
+        return 6;
     }
 }
