@@ -1,5 +1,5 @@
 <?php $visitor = 3; ?>
-<input type="hidden" id="UserRole" value="@if(Auth::getUser()->person){{ Auth::getUser()->person->role_id }} @else {{ $visitor }} @endif">
+<input type="hidden" id="UserRole" value="@if(isset(Auth::user()->person)){{ Auth::user()->person->role_id }} @else {{ $visitor }} @endif">
 <!-- BEGIN HEADER -->
 <div class="page-header">
     <!-- BEGIN HEADER TOP -->
@@ -7,7 +7,9 @@
         <div class="container">
             <!-- BEGIN LOGO -->
             <div class="page-logo">
-                <a href="{{ route('index') }}">
+                <a href="@if(Auth::user()->church_id)
+                            {{ route('index') }}
+                        @else {{ route('home.visitor', ['church_id' => $church_id])}} @endif">
                     <img src="../../teste/logo-menor-header.png" alt="logo" class="logo-default" style="width: 270px; margin-top: 7px;">
                     {{--<img src="../../logo/Vertical.png" alt="logo" class="logo-default" style="width: 300px; margin-top: -20px;">--}}
                 </a>
@@ -226,7 +228,11 @@
                             <img alt="" class="img-circle" src="@if(Auth::getUser()->person)
                                     ../../{{ Auth::getUser()->person->imgProfile }}
                             @else
-                                    ../../{{ Auth::getUser()->visitors->first()->imgProfile }}
+                                    @if(Auth::user()->facebook_id || Auth::user()->google_id)
+                                        {{ Auth::getUser()->visitors->first()->imgProfile }}
+                                    @else
+                                        ../../{{ Auth::getUser()->visitors->first()->imgProfile }}
+                                    @endif
                             @endif">
                             <span class="username username-hide-mobile">@if(Auth::getUser()->person)
                                     {{ Auth::getUser()->person->name }}

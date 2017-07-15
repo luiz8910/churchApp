@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Event;
 use App\Repositories\UserRepository;
 use App\Repositories\VisitorRepository;
 use App\Traits\ConfigTrait;
@@ -73,7 +74,9 @@ class DashboardController extends Controller
 
         $countGroups[] = $this->countGroups();
 
-        $events = $this->eventRepository->paginate(5);
+        $church_id = Auth::user()->church_id;
+
+        $events = Event::where('church_id', $church_id)->paginate(5);
 
         $notify = $this->notify();
 
@@ -83,8 +86,22 @@ class DashboardController extends Controller
 
         $person = $this->personRepository->find($id);
 
-        //Paginação de Grupo está com bug
-        $groups = $person->groups()->paginate(5) or null;
+        $group_ids = [];
+
+        for ($i = 0; $i < count($person->groups); $i++)
+        {
+            $group_ids[] = $person->groups[$i]->id;
+        }
+
+        $groups = DB::table("groups")
+                    ->whereIn("id", $group_ids)
+                    ->paginate(5);
+
+
+        if(count($groups) == 0)
+        {
+            $groups = null;
+        }
 
         $event_person = [];
 
@@ -94,8 +111,11 @@ class DashboardController extends Controller
         {
             foreach ($groups as $group)
             {
-                $group->sinceOf = $this->formatDateView($group->sinceOf);
-                $countMembers[] = count($group->people->all());
+                $g = $this->groupRepository->find($group->id);
+
+                $group->sinceOf = $this->formatDateView($g->sinceOf);
+
+                $countMembers[] = count($g->people->all());
             }
         }
 
@@ -204,7 +224,7 @@ class DashboardController extends Controller
         }
 
         //Retorna todos os eventos
-        $allEvents = $this->eventServices->allEvents();
+        $allEvents = $this->eventServices->allEvents($church_id);
 
         $allEventsNames = [];
         $allEventsTimes = [];
@@ -451,8 +471,11 @@ class DashboardController extends Controller
             'allMonths', 'allDays', 'groups', 'eventDate', 'event_person'));
     }
 
-    public function visitors()
+    public function visitors(Request $request)
     {
+        $data = $request->all();
+
+        dd($data);
         $countPerson[] = $this->countPerson();
 
         $countGroups[] = $this->countGroups();

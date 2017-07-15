@@ -192,6 +192,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                         <!-- PERSONAL INFO TAB -->
 
                                         <input type="hidden" value="{{ $person->id }}" id="personId">
+                                        <input type="hidden" id="streetMap" value="{{ $person->street }}">
 
                                         <div class="tab-pane active" id="tab_1_1">
                                             {!! Form::open(['route' => ['person.update', 'person' => $person->id], 'class' => 'repeater',

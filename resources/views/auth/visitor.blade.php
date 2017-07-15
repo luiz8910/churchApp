@@ -29,7 +29,7 @@ License: You must have a valid license purchased only from themeforest(the above
 <!-- BEGIN LOGO -->
 <div class="logo">
     <a href="javascript:;">
-        <img src="../assets/pages/img/logo-big.png" alt="" /> </a>
+        <img src="../teste/Simbolo-branco.png" alt="logo" class="logo-default" style="width: 150px; margin-top: -20px;"> </a>
 </div>
 <!-- END LOGO -->
 <!-- BEGIN LOGIN -->
@@ -39,7 +39,22 @@ License: You must have a valid license purchased only from themeforest(the above
     {!! Form::open(['route' => 'login.visitor', 'method' => 'POST', 'class' => 'forget-form', 'style' => "display: block !important;"]) !!}
 
         <h3 class="font-green">Acesso de Visitantes</h3>
-        <p class="text-center"> Entre com seu email para ter acesso </p>
+        <p class="text-center"> Selecione a igreja para ter acesso </p>
+
+        <div class="alert alert-warning alert-dismissible" role="alert" id="selectChurch" style="display: none;">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <strong>Erro!</strong> Selecione uma igreja abaixo
+        </div>
+
+        <div class="form-group">
+            <select name="church" id="church" class="form-control" required>
+                <option value="">Selecione a Igreja</option>
+                @foreach($churches as $church)
+                    <option value="{{ $church->id }}">{{ $church->name }}</option>
+                @endforeach
+            </select>
+        </div>
+
         <div class="form-group has-error">
             <input class="form-control placeholder-no-fix" id="" type="text" autocomplete="off" placeholder="Email" name="email" required/>
         </div>
@@ -59,20 +74,16 @@ License: You must have a valid license purchased only from themeforest(the above
             <strong>Erro!</strong> Verifique sua conexão com a internet
         </div>
 
+
+
         <div class="login-options">
             <h4>Entre com</h4>
             <ul class="social-icons">
                 <li>
-                    <a class="social-icon-color facebook" data-original-title="facebook" href="{{ url('auth/facebook') }}"></a>
-                </li>
-                <!--<li>
-                    <a class="social-icon-color twitter" data-original-title="Twitter" href="javascript:;"></a>
-                </li>-->
-                <li>
-                    <a class="social-icon-color googleplus" data-original-title="Google Plus" href="{{ url('auth/google') }}"></a>
+                    <a class="social-icon-color facebook" data-original-title="facebook" href="{{ url('pre/auth/facebook') }}"></a>
                 </li>
                 <li>
-                    <a class="social-icon-color linkedin" data-original-title="Linkedin" href="{{ url('auth/linkedin') }}"></a>
+                    <a class="social-icon-color googleplus" data-original-title="Google Plus" href="{{ url('pre/auth/google') }}"></a>
                 </li>
             </ul>
         </div>
@@ -91,6 +102,7 @@ License: You must have a valid license purchased only from themeforest(the above
 <script src="../assets/pages/scripts/login.min.js" type="text/javascript"></script>
 
 <script src="../js/ajax.js"></script>
+<script src="../js/login.js"></script>
 <!-- END PAGE LEVEL SCRIPTS -->
 <!-- BEGIN THEME LAYOUT SCRIPTS -->
 <!-- END THEME LAYOUT SCRIPTS -->

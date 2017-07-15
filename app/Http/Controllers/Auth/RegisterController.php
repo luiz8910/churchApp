@@ -8,6 +8,8 @@ use App\Repositories\VisitorRepository;
 use App\Traits\DateRepository;
 use App\Traits\FormatGoogleMaps;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -81,6 +83,20 @@ class RegisterController extends Controller
         ]);
     }
 
+    public function preFbLogin($church)
+    {
+        session(['church' => $church]);
+
+        return $this->redirectToProvider();
+    }
+
+    public function preGoogleLogin($church)
+    {
+        session(['church' => $church]);
+
+        return $this->redirectToGoogleProvider();
+    }
+
     /**
      * Redirect the user to the Facebook authentication page.
      *
@@ -89,7 +105,7 @@ class RegisterController extends Controller
     public function redirectToProvider()
     {
         return Socialite::driver('facebook')->redirect();
-        //return Socialite::driver('facebook')->with(['userType' => $userType])->redirect();
+        //return Socialite::driver('facebook')->with(['church' => $church])->redirect();
     }
 
     /**
@@ -99,7 +115,9 @@ class RegisterController extends Controller
      */
     public function handleProviderCallback()
     {
-        $social = Socialite::driver('facebook')->user();//print_r($social);
+        $church = session('church');
+
+        $social = Socialite::driver('facebook')->user();
 
         $userType = "visitor";
 
@@ -117,9 +135,13 @@ class RegisterController extends Controller
 
                 $this->visitorRepository->update($data, $visitor->id);
 
+                DB::table('users')
+                    ->where('id', $id)
+                    ->update(['facebook_id' => $social->getId()]);
+
                 auth()->loginUsingId($id);
 
-                return redirect()->route('index');
+                return redirect()->route('home.visitor', ['church' => $church]);
             }
             else{
                 \Session::flash('email.error', 'O email informado não existe');
@@ -194,46 +216,55 @@ class RegisterController extends Controller
      */
     public function handleGoogleProviderCallback()
     {
-        $user = Socialite::driver('google')->user();
+        $church = session('church');
 
-        $member = User::where('google_id', $user->getId())->first();
+        $social = Socialite::driver('google')->user();
 
-        if(!$member){
+        $userType = "visitor";
 
-            $email = User::where('email', $user->getEmail())->first();
+        if($userType == "visitor")
+        {
+            $visitor = $this->visitorRepository->findByField('email', $social->getEmail())->first();
 
-            if(count($email) == 0){
-                $member = User::create([
-                    'google_id' => $user->getId(),
-                    'name' => $user->getName(),
-                    'email' => $user->getEmail(),
-                    'church_id' => 1,
-                    'imgProfile' => $user->getAvatar(),
-                    'role' => 'membro'
-                ]);
+            if(count($visitor) > 0){
 
-            }else{
-                \Session::flash('email.error', 'O email informado já existe');
+                $data['google_id'] = $social->getId();
+                $data['name'] = $social->getName();
+                $data['imgProfile'] = $social->getAvatar();
+
+                $id = $visitor->users()->first()->id;
+
+                $this->visitorRepository->update($data, $visitor->id);
+
+                DB::table('users')
+                    ->where('id', $id)
+                    ->update(['google_id' => $social->getId()]);
+
+                auth()->loginUsingId($id);
+
+                return redirect()->route('home.visitor', ['church' => $church]);
+            }
+            else{
+                \Session::flash('email.error', 'O email informado não existe');
                 return redirect()->route('login');
             }
-
         }
 
-        auth()->login($member);
-
-        return redirect()->route('index');
+        return false;
     }
 
     public function loginVisitor(Request $request, VisitorRepository $visitorRepository)
     {
         $visitor = $visitorRepository->findByField('email', $request->get('email'))->first();
 
+        $church = $request->get('church');
+
         $id = $visitor->users->first();
 
         if($visitor){
             auth()->loginUsingId($id->id);
 
-            return redirect()->route('index');
+            return redirect()->route('home.visitor', ['church' => $church]);
         }
 
         return false;

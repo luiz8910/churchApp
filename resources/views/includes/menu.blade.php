@@ -48,43 +48,52 @@
                     <a href="javascript:;"> Pessoas
                         <span class="arrow"></span>
                     </a>
-                    <ul class="dropdown-menu pull-left">
-                        <li class=" ">
-                            <a href="{{ route('person.index') }}" class="nav-link  ">
-                                <i class="icon-bar-chart"></i> Adultos
-                                <span class="badge badge-success">
-                                    {{ $countPerson[0][0] }}
-                                </span> <!-- Qtde de Adultos cadastrados -->
-                            </a>
-                        </li>
-                        <li class=" ">
-                            <a href="{{ route('person.teen') }}" class="nav-link  ">
-                                <i class="icon-bulb"></i> Jovens e Crianças
-                                <span class="badge badge-success">{{ $countPerson[0][1] }}</span></a> <!-- Qtde de Crianças/Jovens cad.-->
-                        </li>
-                        <li class=" ">
-                            <a href="{{ route('visitors.index') }}" class="nav-link  ">
-                                <i class="icon-bulb"></i> Visitantes
-                                <span class="badge badge-success">{{ $countPerson[0][2] }}</span></a> <!-- Qtde de Visitantes cad.-->
-                        </li>
+                    @if(Auth::user()->church_id)
+                        <ul class="dropdown-menu pull-left">
+                            <li class=" ">
+                                <a href="{{ route('person.index') }}" class="nav-link  ">
+                                    <i class="icon-bar-chart"></i> Adultos
+                                    <span class="badge badge-success">
+                                        {{ $countPerson[0][0] }}
+                                    </span> <!-- Qtde de Adultos cadastrados -->
+                                </a>
+                            </li>
+                            <li class=" ">
+                                <a href="{{ route('person.teen') }}" class="nav-link  ">
+                                    <i class="icon-bulb"></i> Jovens e Crianças
+                                    <span class="badge badge-success">{{ $countPerson[0][1] }}</span></a> <!-- Qtde de Crianças/Jovens cad.-->
+                            </li>
+                            <li class=" ">
+                                <a href="{{ route('visitors.index') }}" class="nav-link  ">
+                                    <i class="icon-bulb"></i> Visitantes
+                                    <span class="badge badge-success">{{ $countPerson[0][2] }}</span></a> <!-- Qtde de Visitantes cad.-->
+                            </li>
 
-                    </ul>
+                        </ul>
+                    @endif
                 </li>
                 <li class="menu-dropdown classic-menu-dropdown ">
                     <a href="javascript:;"> Grupos
                     </a>
-                    <ul class="dropdown-menu pull-left">
-                        <li>
-                            <a href="{{ route('group.index') }}" class="nav-link">
-                                <i class="icon-user"></i> Ativos
-                                <span class="badge badge-success">{{ $countGroups[0][1] }}</span>
-                            </a>
-                        </li>
+                    @if(Auth::user()->church_id)
+                        <ul class="dropdown-menu pull-left">
+                            <li>
+                                <a href="{{ route('group.index') }}" class="nav-link">
+                                    <i class="icon-user"></i> Ativos
+                                    <span class="badge badge-success">{{ $countGroups[0][1] }}</span>
+                                </a>
+                            </li>
 
-                    </ul>
+                        </ul>
+                    @endif
                 </li>
                 <li class="menu-dropdown mega-menu-dropdown  ">
-                    <a href="{{ route('event.index') }}"> Agendas e Eventos
+                    <a href="
+                        @if(Auth::user()->church_id)
+                            {{ route('event.index') }}
+                        @else
+                            javascript:;
+                        @endif "> Agendas e Eventos
                     </a>
                 </li>
                 <!--<li class="menu-dropdown classic-menu-dropdown ">

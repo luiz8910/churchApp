@@ -20,15 +20,25 @@ License: You must have a valid license purchased only from themeforest(the above
 <!-- BEGIN HEAD -->
 
 <head>
-    @include('includes.head')
+    @if(!isset($church_id) || $church_id == null)
+        @include('includes.head')
 
-    <!--<link href="../assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
-    <link href="../assets/global/plugins/fancybox/source/jquery.fancybox.css" rel="stylesheet" type="text/css" />-->
-    <link href="../assets/pages/css/search.min.css" rel="stylesheet" type="text/css" />
-    <link href="../css/navbar.css" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" href="../css/calendar.css">
-    <!--<script src="../js/ajax.js"></script>-->
+        <!--<link href="../assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/global/plugins/fancybox/source/jquery.fancybox.css" rel="stylesheet" type="text/css" />-->
+        <link href="../assets/pages/css/search.min.css" rel="stylesheet" type="text/css" />
+        <link href="../css/navbar.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="../css/calendar.css">
+        <!--<script src="../js/ajax.js"></script>-->
 
+    @else
+        @include('includes.head-edit')
+        <!--<link href="../assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/global/plugins/fancybox/source/jquery.fancybox.css" rel="stylesheet" type="text/css" />-->
+        <link href="../../assets/pages/css/search.min.css" rel="stylesheet" type="text/css" />
+        <link href="../../css/navbar.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="../../css/calendar.css">
+        <!--<script src="../js/ajax.js"></script>-->
+    @endif
 
 </head>
 <!-- END HEAD -->
@@ -38,7 +48,11 @@ License: You must have a valid license purchased only from themeforest(the above
     <div class="page-wrapper-row">
         <div class="page-wrapper-top">
             <!-- BEGIN HEADER -->
-            @include('includes.header')
+            @if(!isset($church_id) || $church_id == null)
+                @include('includes.header')
+            @else
+                @include('includes.header-edit')
+            @endif
             <!-- END HEADER -->
         </div>
     </div>
@@ -253,7 +267,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             @foreach($events as $event)
                                                                 <tr class="printable-table-tr" id="tr-{{ $event->id }}">
                                                                     <td>
-                                                                        @if(Auth::getUser()->person->role_id == 1)
+                                                                        @if(Auth::user()->church_id && Auth::user()->person->role_id == 1)
                                                                             <fieldset>
                                                                                 <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
                                                                                     <input type="checkbox" name="events" class="checkboxes check-model" id="check-{{ $event->id }}"
@@ -271,7 +285,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                     </td>
                                                                     <td class="printable-table"> {{ $event->frequency }} </td>
                                                                     <td>
-                                                                        @if(\Auth::user()->id != $event->createdBy_id)
+                                                                        @if(\Auth::user()->id != $event->createdBy_id && Auth::user()->church_id != null)
                                                                             <a href="{{ route('person.edit',
                                                                                 ['person' => \App\Models\User::find($event->createdBy_id)->person->id]) }}" rel="external" class="printable-table">
                                                                                 {{ \App\Models\User::find($event->createdBy_id)->person->name }}
@@ -282,10 +296,14 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                     </td>
                                                                     <td>
                                                                         @if($event->group_id)
+                                                                            @if(Auth::user()->church_id != null)
                                                                             <a href="{{ route("group.edit", ['group' => $event->group_id]) }}" rel="external" class="printable-table">
                                                                                 {{ $event['group_name'] }}
                                                                             </a>
-                                                                            @else Sem Grupo
+                                                                            @else
+                                                                                {{ $event['group_name'] }}
+                                                                            @endif
+                                                                        @else Sem Grupo
                                                                         @endif
                                                                     </td>
 
@@ -311,7 +329,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                                 </a>
                                                                             @endif
 
-                                                                            @if(Auth::getUser()->person->role_id == 1)
+                                                                            @if(Auth::user()->church_id && Auth::getUser()->person->role_id == 1)
                                                                                 <a href="javascript:;" class="btn btn-danger btn-sm btn-circle pop"
                                                                                    title="Excluir evento"
                                                                                    data-toggle="confirmation" data-placement="top" data-original-title="Deseja Excluir?"
@@ -1040,16 +1058,20 @@ License: You must have a valid license purchased only from themeforest(the above
 
 
 <!-- END QUICK NAV -->
-@include('includes.core-scripts')
-<!-- BEGIN PAGE LEVEL PLUGINS -->
-<!--<script src="../assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>-->
-<!--<script src="../assets/global/plugins/fancybox/source/jquery.fancybox.pack.js" type="text/javascript"></script>-->
-<!--<script src="../assets/global/plugins/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js"></script>-->
-<!-- END PAGE LEVEL PLUGINS -->
-<!-- BEGIN PAGE LEVEL SCRIPTS -->
-<script src="../assets/pages/scripts/search.min.js" type="text/javascript"></script>
-<!--<script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>-->
-
+@if(!isset($church_id) || $church_id == null)
+    @include('includes.core-scripts')
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
+    <!--<script src="../assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>-->
+    <!--<script src="../assets/global/plugins/fancybox/source/jquery.fancybox.pack.js" type="text/javascript"></script>-->
+    <!--<script src="../assets/global/plugins/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js"></script>-->
+    <!-- END PAGE LEVEL PLUGINS -->
+    <!-- BEGIN PAGE LEVEL SCRIPTS -->
+    <script src="../assets/pages/scripts/search.min.js" type="text/javascript"></script>
+    <!--<script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>-->
+@else
+    @include('includes.core-scripts-edit')
+    <script src="../../assets/pages/scripts/search.min.js" type="text/javascript"></script>
+@endif
 
 <!-- END PAGE LEVEL SCRIPTS -->
 

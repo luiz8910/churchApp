@@ -3,10 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PersonCreateRequest;
+use App\Models\Event;
+use App\Models\Group;
 use App\Models\User;
+use App\Repositories\ChurchRepository;
+use App\Repositories\EventRepository;
+use App\Repositories\GroupRepository;
 use App\Repositories\RoleRepository;
 use App\Repositories\StateRepository;
 use App\Repositories\VisitorRepository;
+use App\Services\AgendaServices;
+use App\Services\EventServices;
 use App\Traits\ConfigTrait;
 use App\Traits\CountRepository;
 use App\Traits\DateRepository;
@@ -35,16 +42,51 @@ class VisitorController extends Controller
      * @var StateRepository
      */
     private $stateRepository;
+    /**
+     * @var ChurchRepository
+     */
+    private $churchRepository;
+    /**
+     * @var EventRepository
+     */
+    private $eventRepository;
+    /**
+     * @var GroupRepository
+     */
+    private $groupRepository;
+    /**
+     * @var AgendaServices
+     */
+    private $agendaServices;
+    /**
+     * @var EventServices
+     */
+    private $eventServices;
 
     /**
      * VisitorController constructor.
      * @param VisitorRepository $repository
+     * @param RoleRepository $roleRepositoryTrait
+     * @param StateRepository $stateRepository
+     * @param ChurchRepository $churchRepository
+     * @param EventRepository $eventRepository
+     * @param GroupRepository $groupRepository
+     * @param AgendaServices $agendaServices
+     * @param EventServices $eventServices
      */
-    public function __construct(VisitorRepository $repository, RoleRepository $roleRepositoryTrait, StateRepository $stateRepository)
+    public function __construct(VisitorRepository $repository, RoleRepository $roleRepositoryTrait,
+                                StateRepository $stateRepository, ChurchRepository $churchRepository,
+                                EventRepository $eventRepository, GroupRepository $groupRepository,
+                                AgendaServices $agendaServices, EventServices $eventServices)
     {
         $this->repository = $repository;
         $this->roleRepository = $roleRepositoryTrait;
         $this->stateRepository = $stateRepository;
+        $this->churchRepository = $churchRepository;
+        $this->eventRepository = $eventRepository;
+        $this->groupRepository = $groupRepository;
+        $this->agendaServices = $agendaServices;
+        $this->eventServices = $eventServices;
     }
 
     /**
@@ -93,7 +135,7 @@ class VisitorController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -136,7 +178,7 @@ class VisitorController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -172,8 +214,8 @@ class VisitorController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -198,13 +240,11 @@ class VisitorController extends Controller
         }
 
 
-
         $user = $this->repository->findByField('email', $data["email"])->first() or null;
 
 
-        if($user && ($user->id != $id))
-        {
-            \Session::flash("email.exists", "Existe uma conta associada para o email informado (" .$data["email"]. ")");
+        if ($user && ($user->id != $id)) {
+            \Session::flash("email.exists", "Existe uma conta associada para o email informado (" . $data["email"] . ")");
 
             $request->flashExcept('password');
 
@@ -227,7 +267,7 @@ class VisitorController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
@@ -245,8 +285,115 @@ class VisitorController extends Controller
 
     public function login()
     {
-        return view('auth.visitor');
+        $churches = $this->churchRepository->orderBy('name')->all();
+
+        return view('auth.visitor', compact('churches'));
     }
+
+    /*$church = id da igreja escolhida pelo visitante*/
+    public function visitors($church)
+    {
+        $countPerson[] = $this->countPerson();
+
+        $countGroups[] = $this->countGroups();
+
+        $events = Event::where('church_id', $church)->paginate(5);
+
+        //$notify = $this->notify();
+
+        //$qtde = count($notify) or 0;
+
+        $groups = null;
+
+        if (count($events) == 0) {
+            return view('dashboard.visitors', compact('countPerson', 'countGroups', 'events',
+                'countMembers', 'street', 'groups'));
+        }
+
+        $groups = Group::where('church_id', $church)->paginate(5);
+
+        foreach ($groups as $group) {
+            $group->sinceOf = $this->formatDateView($group->sinceOf);
+            $countMembers[] = count($group->people->all());
+        }
+
+
+        /*
+         * Inicio Agenda
+         */
+
+        //Dia Atual
+        $today = date("Y-m-d");
+
+        //Recupera todos os meses
+        $allMonths = $this->agendaServices->allMonths();
+
+        //Recuperar todos os dias da semana
+        $allDays = $this->agendaServices->allDaysName();
+
+        //Recupera a semana atual
+        $days = $this->agendaServices->findWeek();
+
+        //Contador de semanas
+        $cont = 1;
+
+        //Numero de Semanas
+        $numWeek = $this->getDefaultWeeks();
+
+        //Listagem até a 6° semana por padrão
+        while ($cont < $numWeek) {
+            $time = $cont == 1 ? 'next' : $cont;
+
+            $days = array_merge($days, $this->agendaServices->findWeek($time));
+
+            $cont++;
+        }
+
+        //Retorna todos os eventos
+        $allEvents = $this->eventServices->allEvents($church);
+
+        $allEventsNames = [];
+        $allEventsTimes = [];
+        $allEventsFrequencies = [];
+        $allEventsAddresses = [];
+
+        foreach ($allEvents as $allEvent) {
+            $e = $this->eventRepository->find($allEvent->event_id);
+
+            //Nome de todos os eventos
+            $allEventsNames[] = $e->name;
+
+            //Hora de inicio de todos os eventos
+            $allEventsTimes[] = $e->startTime;
+
+            //Frequência de todos os eventos
+            $allEventsFrequencies[] = $e->frequency;
+
+            //Todos os endereços
+            $allEventsAddresses[] = $e->street . ", " . $e->neighborhood . "\n" . $e->city . ", " . $e->state;
+        }
+
+        //dd($allEventsNames);
+        //Recupera o mês atual
+        $thisMonth = $this->agendaServices->thisMonth();
+
+        //Ano Atual
+        $ano = date("Y");
+
+
+        /*
+         * Fim Agenda
+         */
+
+        $church_id = $church;
+
+        return view('dashboard.visitors', compact('countPerson', 'countGroups', 'events', 'notify', 'qtde',
+            'street', 'groups', 'countMembers', 'allMonths', 'days',
+            'allMonths', 'allDays', 'days', 'allEvents',
+            'thisMonth', 'today', 'ano', 'allEventsNames', 'allEventsTimes',
+            'allEventsFrequencies', 'allEventsAddresses', 'numWeek', 'church_id'));
+    }
+
 
     public function imgEditProfile(Request $request, $id)
     {
@@ -259,8 +406,8 @@ class VisitorController extends Controller
         $file->move('uploads/profile', $imgName);
 
         DB::table('visitors')->
-            where('id', $id)->
-            update(['imgProfile' => $imgName]);
+        where('id', $id)->
+        update(['imgProfile' => $imgName]);
 
         return redirect()->back();
     }

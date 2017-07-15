@@ -89,7 +89,11 @@ License: You must have a valid license purchased only from themeforest(the above
                                 <div class="portlet light profile-sidebar-portlet ">
                                     <!-- SIDEBAR USERPIC -->
                                     <div class="profile-userpic">
-                                        <img src="../../{{ $visitor->imgProfile }}" class="img-responsive" alt="">
+                                        @if($visitor->facebook_id == null && $visitor->google_id == null)
+                                            <img src="../../{{ $visitor->imgProfile }}" class="img-responsive" alt="">
+                                        @else
+                                            <img src="{{ $visitor->imgProfile }}" class="img-responsive" alt="">
+                                        @endif
                                     </div>
                                     <!-- END SIDEBAR USERPIC -->
                                     <!-- SIDEBAR USER TITLE -->
@@ -185,6 +189,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                         <!-- PERSONAL INFO TAB -->
 
                                         <input type="hidden" value="{{ $visitor->id }}" id="personId">
+                                        <input type="hidden" id="streetMap" value="{{ $visitor->street }}">
 
                                         <div class="tab-pane active" id="tab_1_1">
                                             {!! Form::open(['route' => ['visitors.update', 'visitor' => $visitor->id],

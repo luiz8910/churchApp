@@ -129,13 +129,13 @@ License: You must have a valid license purchased only from themeforest(the above
 
 
         <div class="login-options">
-            <h4>Entre com</h4>
+            <h4>Em breve: </h4>
             <ul class="social-icons">
                 <li>
-                    <a class="social-icon-color facebook" data-original-title="facebook" href="{{ url('auth/facebook') }}"></a>
+                    <a class="social-icon-color facebook disabled-links" data-original-title="facebook" href="{{ url('auth/facebook') }}"></a>
                 </li>
                 <li>
-                    <a class="social-icon-color googleplus" data-original-title="Google Plus" href="{{ url('auth/google') }}"></a>
+                    <a class="social-icon-color googleplus disabled-links" data-original-title="Google Plus" href="{{ url('auth/google') }}"></a>
                 </li>
             </ul>
         </div>

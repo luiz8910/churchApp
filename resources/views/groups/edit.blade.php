@@ -832,7 +832,9 @@ License: You must have a valid license purchased only from themeforest(the above
                         </div>
                     </div>
 
-                    @if(Auth::getUser()->person && Auth::getUser()->person->role_id == $leader)
+                    <input type="hidden" id="streetMap" value="{{ $group->street }}">
+
+                    @if(Auth::user()->church_id && Auth::user()->person->role_id == $leader)
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="portlet light ">

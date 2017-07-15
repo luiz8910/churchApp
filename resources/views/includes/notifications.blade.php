@@ -3,7 +3,7 @@
     <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"
        data-close-others="true">
         <i class="icon-bell"></i>
-        <span class="badge badge-default" id="badge-notify">{{ $qtde = $qtde > 0 ? $qtde : '' }}</span>
+        <span class="badge badge-default" id="badge-notify">{{ $qtde = isset($qtde) && $qtde > 0 ? $qtde : '' }}</span>
         <input type="hidden" id="input-badge-count">
         <input type="hidden" id="created_person_id">
 
@@ -22,7 +22,7 @@
             <ul class="dropdown-menu-list scroller" style="height: 250px;"
                 data-handle-color="#637283" id="eventNotify">
 
-                @if($notify)
+                @if(isset($notify))
                     @foreach($notify as $n)
                         <li>
                             <a href='@if(isset($n["data"]["link"])) /{{ $n["data"]["link"] }} @endif' class="black-link">

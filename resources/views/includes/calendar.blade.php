@@ -19,29 +19,64 @@
 
             <div class="header-box-calendario">
                 <ul class="pagination ">
-                    <li>
-                        <a class="btn-pagination" href="{{ route('events.agenda-mes', ['thisMonth' => $thisMonth - 2])}}">
-                            <i class="fa fa-angle-left fa-2x"></i>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="btn-pagination" href="{{ route('events.agenda-mes', ['thisMonth' => $thisMonth - 2])}}">
-                            {{ $allMonths[$thisMonth - 1] }}
-                        </a>
-                    </li>
+                    @if(Auth::user()->church_id)
+                        <li>
+                            <a class="btn-pagination" href="{{ route('events.agenda-mes', ['thisMonth' => $thisMonth - 2])}}">
+                                <i class="fa fa-angle-left fa-2x"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="btn-pagination" href="{{ route('events.agenda-mes', ['thisMonth' => $thisMonth - 2])}}">
+                                {{ $allMonths[$thisMonth - 1] }}
+                            </a>
+                        </li>
+                    @else
+                        <li>
+                            <a class="btn-pagination" href="{{ route('events.agenda-mes',
+                            ['thisMonth' => $thisMonth - 2, 'church_id' => $church_id])}}">
+                                <i class="fa fa-angle-left fa-2x"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="btn-pagination" href="{{ route('events.agenda-mes',
+                            ['thisMonth' => $thisMonth - 2, 'church_id' => $church_id])}}">
+                                {{ $allMonths[$thisMonth - 1] }}
+                            </a>
+                        </li>
+                    @endif
+
                     <li class="active">
                         <a href="javascript:;"> <strong>{{ $allMonths[$thisMonth] }}</strong> </a>
                     </li>
-                    <li>
-                        <a class="btn-pagination" href="{{ route('events.agenda-mes', ['thisMonth' => $thisMonth])}}">
-                            {{ $allMonths[$thisMonth + 1] }}
-                        </a>
-                    </li>
-                    <li>
-                        <a class="btn-pagination" href="{{ route('events.agenda-mes', ['thisMonth' => $thisMonth])}}">
-                            <i class="fa fa-angle-right fa-2x"></i>
-                        </a>
-                    </li>
+
+                    @if(Auth::user()->church_id)
+                        <li>
+                            <a class="btn-pagination" href="{{ route('events.agenda-mes', ['thisMonth' => $thisMonth])}}">
+                                {{ $allMonths[$thisMonth + 1] }}
+                            </a>
+                        </li>
+                        <li>
+                            <a class="btn-pagination" href="{{ route('events.agenda-mes', ['thisMonth' => $thisMonth])}}">
+                                <i class="fa fa-angle-right fa-2x"></i>
+                            </a>
+                        </li>
+
+                    @else
+
+                        <li>
+                            <a class="btn-pagination" href="{{ route('events.agenda-mes',
+                            ['thisMonth' => $thisMonth, 'church_id' => $church_id])}}">
+                                {{ $allMonths[$thisMonth + 1] }}
+                            </a>
+                        </li>
+                        <li>
+                            <a class="btn-pagination" href="{{ route('events.agenda-mes',
+                            ['thisMonth' => $thisMonth, 'church_id' => $church_id])}}">
+                                <i class="fa fa-angle-right fa-2x"></i>
+                            </a>
+                        </li>
+
+                    @endif
                 </ul>
 
 

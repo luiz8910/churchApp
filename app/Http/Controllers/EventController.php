@@ -111,10 +111,11 @@ class EventController extends Controller
 
         //Fim Variáveis
 
+        $church_id = \Auth::user()->church_id;
         /*
          * Lista de Eventos
          */
-        $events = Event::where('church_id', $this->getUserChurch())->paginate(5);
+        $events = Event::where('church_id', $church_id)->paginate(5);
 
         $sub = false;
 
@@ -187,7 +188,7 @@ class EventController extends Controller
         }
 
         //Retorna todos os eventos
-        $allEvents = $this->eventServices->allEvents();
+        $allEvents = $this->eventServices->allEvents($church_id);
 
         $allEventsNames = [];
         $allEventsTimes = [];
@@ -217,6 +218,9 @@ class EventController extends Controller
         //Ano Atual
         $ano = date("Y");
 
+
+        $church_id = null;
+
         /*
          * Fim Agenda
          */
@@ -224,11 +228,11 @@ class EventController extends Controller
         return view("events.index", compact('countPerson', 'countGroups', 'state',
             'events', 'notify', 'qtde', 'allMonths', 'allDays', 'days', 'allEvents',
             'thisMonth', 'today', 'ano', 'allEventsNames', 'allEventsTimes',
-            'allEventsFrequencies', 'allEventsAddresses', 'numWeek'));
+            'allEventsFrequencies', 'allEventsAddresses', 'numWeek', 'church_id'));
     }
 
 
-    public function nextMonth($thisMonth)
+    public function nextMonth($thisMonth, $church_id = null)
     {
         $countPerson[] = $this->countPerson();
 
@@ -238,10 +242,12 @@ class EventController extends Controller
 
         //Fim Variáveis
 
+        $church_id = $church_id ? $church_id : \Auth::user()->church_id;
+
         /*
          * Lista de Eventos
          */
-        $events = Event::where('church_id', $this->getUserChurch())->paginate(5);
+        $events = Event::where('church_id', $church_id)->paginate(5);
 
         /*
          * Foreach para Formatação de datas e nome do grupo pertencente se houver
@@ -280,7 +286,7 @@ class EventController extends Controller
         $allDays = $this->agendaServices->allDaysName();
 
         //Retorna todos os eventos
-        $allEvents = $this->eventServices->allEvents();
+        $allEvents = $this->eventServices->allEvents($church_id);
 
         $allEventsNames = [];
         $allEventsTimes = [];
@@ -300,7 +306,7 @@ class EventController extends Controller
             $allEventsFrequencies[] = $e->frequency;
 
             //Todos os endereços
-            $allEventsAddresses[] = $e->street . ", " . $e->neighborhood . "<br>" . $e->city . ", " . $e->state;
+            $allEventsAddresses[] = $e->street . ", " . $e->neighborhood . "\n" . $e->city . ", " . $e->state;
         }
 
         //Ano Atual
@@ -389,12 +395,13 @@ class EventController extends Controller
 
         $next = true;
 
+
         //dd(count($days));
 
         return view("events.index", compact('countPerson', 'countGroups', 'state',
             'events', 'notify', 'qtde', 'allMonths', 'allDays', 'days', 'allEvents',
             'thisMonth', 'today', 'next', 'ano', 'allEventsNames', 'allEventsTimes',
-            'allEventsFrequencies', 'allEventsAddresses'));
+            'allEventsFrequencies', 'allEventsAddresses', 'church_id'));
     }
 
     public function oldindex()
@@ -655,7 +662,7 @@ class EventController extends Controller
     }
 
 
-    public function edit($id)
+    public function edit($id, $church_id = null)
     {
         $countPerson[] = $this->countPerson();
 
@@ -667,8 +674,14 @@ class EventController extends Controller
 
         $frequencies = $this->frequencyRepository->all();
 
-        $church_id = $this->getUserChurch();
-
+        if(\Auth::user()->church_id == null)
+        {
+            $church_id = 1;
+        }
+        else{
+            $church_id = \Auth::user()->church_id;
+        }
+        
         $event = $this->repository->find($id);
 
         $location = $this->formatGoogleMaps($event);
@@ -752,7 +765,7 @@ class EventController extends Controller
         return view('events.edit', compact('countPerson', 'countGroups', 'state', 'roles',
             'event', 'location', 'notify', 'qtde', 'eventDays', 'eventFrequency', 'check',
             'eventPeople', 'group', 'groups', 'sub', 'canCheckIn', 'createdBy_id', 'createdBy',
-            'nextEventDate', 'leader', 'preposicao', 'frequencies'));
+            'nextEventDate', 'leader', 'preposicao', 'frequencies', 'church_id'));
     }
 
     public function update(Request $request, $id)

@@ -305,9 +305,8 @@ class EventServices
      * Retorna todos os eventos
      * @return Event
      */
-    public function allEvents()
+    public function allEvents($church_id)
     {
-        $church_id = \Auth::getUser()->church_id;
         
         //Filtrar eventos por igreja
         return DB::table('event_person')

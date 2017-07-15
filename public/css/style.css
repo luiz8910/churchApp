@@ -206,6 +206,9 @@
     margin-top: 50px;
 }
 
+.disabled-links{
+    pointer-events: none;
+}
 
 
 

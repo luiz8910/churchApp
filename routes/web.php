@@ -98,7 +98,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get("email", "PersonController@email");
 
-    Route::get("agenda-mes/{thisMonth}", "EventController@nextMonth")->name("events.agenda-mes");
+    Route::get("agenda-mes/{thisMonth}/{church_id?}", "EventController@nextMonth")->name("events.agenda-mes");
 
     Route::get("join-new-people/{input}", "SearchController@findNewPeople");
 
@@ -197,21 +197,26 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/search-events/{text}', 'SearchController@searchEvents');
 
 //Login Facebook
+    Route::get('pre/auth/facebook/{church}', 'Auth\RegisterController@preFbLogin');
+
     Route::get('auth/facebook/', 'Auth\RegisterController@redirectToProvider');
     Route::get('auth/facebook/callback', 'Auth\RegisterController@handleProviderCallback');
+
+//Login Google +
+    Route::get('pre/auth/google/{church}', 'Auth\RegisterController@preGoogleLogin');
+    Route::get('auth/google', 'Auth\RegisterController@redirectToGoogleProvider');
+    Route::get('auth/google/callback', 'Auth\RegisterController@handleGoogleProviderCallback');
 
 //Login Linkedin
     Route::get('auth/linkedin', 'Auth\RegisterController@redirectToLinkedinProvider');
     Route::get('auth/linkedin/callback', 'Auth\RegisterController@handleLinkedinProviderCallback');
 
-//Login Google +
-    Route::get('auth/google', 'Auth\RegisterController@redirectToGoogleProvider');
-    Route::get('auth/google/callback', 'Auth\RegisterController@handleGoogleProviderCallback');
-
 //Login Visitante
     Route::get('login-visitante', 'VisitorController@login');
 
     Route::post('login-visitante', 'Auth\RegisterController@loginVisitor')->name('login.visitor');
+
+    Route::get('home-visitante/{church}', 'VisitorController@visitors')->name('home.visitor');
 
 
 //Login Twitter

@@ -38,7 +38,7 @@ function initMap() {
     var infowindow = new google.maps.InfoWindow({map: map});
 
     infowindow.open(map, marker);
-    infowindow.setContent(document.getElementById('street').value);
+    infowindow.setContent(document.getElementById('streetMap').value);
 
     marker.addListener('click', function () {
         infowindow.open(map, marker);
