@@ -197,10 +197,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/search-events/{text}', 'SearchController@searchEvents');
 
 //Login Facebook
-    Route::get('pre/auth/facebook/{church}', 'Auth\RegisterController@preFbLogin');
+    Route::get('/pre/auth/facebook/{church}', 'Auth\RegisterController@preFbLogin');
 
-    Route::get('auth/facebook/', 'Auth\RegisterController@redirectToProvider');
-    Route::get('auth/facebook/callback', 'Auth\RegisterController@handleProviderCallback');
+    Route::get('/auth/facebook/', 'Auth\RegisterController@redirectToProvider');
+    Route::get('/auth/facebook/callback', 'Auth\RegisterController@handleProviderCallback');
 
 //Login Google +
     Route::get('pre/auth/google/{church}', 'Auth\RegisterController@preGoogleLogin');

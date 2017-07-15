@@ -681,7 +681,7 @@ class EventController extends Controller
         else{
             $church_id = \Auth::user()->church_id;
         }
-        
+
         $event = $this->repository->find($id);
 
         $location = $this->formatGoogleMaps($event);
