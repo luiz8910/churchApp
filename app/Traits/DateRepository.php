@@ -13,25 +13,30 @@ trait DateRepository
 {
     public function formatDateBD($date)
     {
-        $dia = substr($date, 0, 2);
+        $day = substr($date, 0, 2);
 
-        $mes = substr($date, 3, 2);
+        $month = substr($date, 3, 2);
 
-        $ano = substr($date, 6);
+        $year = substr($date, 6);
 
-        return $ano.'-'.$mes.'-'.$dia;
+        if(checkdate($month, $day, $year))
+        {
+            return $year.'-'.$month.'-'.$day;
+        }
+
+        return null;
     }
 
     public function formatDateView($date)
     {
         // 2005-10-5
 
-        $ano = substr($date, 0, 4);
+        $year = substr($date, 0, 4);
 
-        $mes = substr($date, 5, 2);
+        $month = substr($date, 5, 2);
 
-        $dia = substr($date, 8, 2);
+        $day = substr($date, 8, 2);
 
-        return $dia.'/'.$mes.'/'.$ano;
+        return $day.'/'.$month.'/'.$year;
     }
 }

@@ -70,6 +70,16 @@ License: You must have a valid license purchased only from themeforest(the above
                         <span>Novo</span>
                     </li>
                 </ul>
+
+                @if(Session::has('invalidDate'))
+
+                    <div class="alert alert-danger alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <strong>Erro!</strong> {{ Session::get('invalidDate') }}
+                    </div>
+                @endif
+
+
                 <!-- END PAGE BREADCRUMBS -->
                 <!-- BEGIN PAGE CONTENT INNER -->
                 <div class="page-content-inner">
@@ -122,7 +132,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 <i class="fa fa-user font-blue"></i>
                                                             </span>
                                                         <input type="text" name="name" class="form-control"
-                                                               placeholder="Encontro de Jovens" required>
+                                                               placeholder="Encontro de Jovens" value="{{ old('name') }}" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -133,7 +143,10 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         <i class="fa fa-briefcase"></i>
                                                         <select class="form-control" id="select-frequency" name="frequency">
                                                             @foreach($frequencies as $frequency)
-                                                                <option value="{{ $frequency->frequency }}">{{ $frequency->frequency }}</option>
+                                                                <option value="{{ $frequency->frequency }}"
+                                                                    @if(old('frequency') == $frequency->frequency) selected @endif>
+                                                                    {{ $frequency->frequency }}
+                                                                </option>
                                                             @endforeach
                                                         </select>
                                                     </div>
@@ -147,7 +160,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                         <div class="row">
                                             <div class="col-md-6 col-sm-12">
-                                                <div class="form-group">
+                                                <div class="form-group @if(Session::has('invalidDate')) has-error @endif ">
                                                     <label>Data do Próximo/Primeiro Encontro</label>
                                                     <div class="input-group date date-picker" data-date-format="dd/mm/yyyy" data-date-start-date="+0d">
 
@@ -279,13 +292,15 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 <option value="">Nenhum</option>
                                                                 @if(isset($id))
                                                                     @foreach($groups as $item)
-                                                                        <option value="{{ $item->id }}" @if($item->id == $id) selected @endif >
+                                                                        <option value="{{ $item->id }}"
+                                                                                @if($item->id == $id || old('group_id') == $id) selected @endif >
                                                                             {{ $item->name }}
                                                                         </option>
                                                                     @endforeach
                                                                 @else
                                                                     @foreach($groups as $item)
-                                                                        <option value="{{ $item->id }}">
+                                                                        <option value="{{ $item->id }}"
+                                                                            @if(old('group_id') == $item->id) selected @endif >
                                                                             {{ $item->name }}
                                                                         </option>
                                                                     @endforeach
@@ -300,7 +315,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                             <div class="col-md-12">
                                                 {!! Form::FormGroup('description', $errors) !!}
                                                 <label class="control-label">Descrição</label>
-                                                <textarea class="form-control" name="description" value=""
+                                                <textarea class="form-control" name="description" value="{{ old('description') }}"
                                                           placeholder="Digite aqui observações importantes sobre o evento"
                                                           rows="5"></textarea>
                                                 {!! Form::error('description', $errors) !!}
@@ -337,7 +352,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             <i class="fa fa-location-arrow font-purple"></i>
                                                         </span>
                                                         <input type="text" class="form-control" name="zipCode"
-                                                               id="zipCode" placeholder="XXXXX-XXX">
+                                                               id="zipCode" placeholder="XXXXX-XXX" value="{{ old('zipCode') }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -354,7 +369,8 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         <i class="fa fa-home font-purple"></i>
                                                     </span>
                                                         <input class="form-control" name="street" id="street"
-                                                               type="text" placeholder="Av. Antonio Carlos Comitre, 650" required>
+                                                               type="text" placeholder="Av. Antonio Carlos Comitre, 650" required
+                                                        value="{{ old('street') }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -366,7 +382,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         <i class="fa fa-home font-purple"></i>
                                                     </span>
                                                         <input class="form-control" name="neighborhood" id="neighborhood"
-                                                               type="text" placeholder="Parque do Dolly" required>
+                                                               type="text" placeholder="Centro" value="{{ old('neighborhood') }}" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -381,7 +397,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         <i class="fa fa-building font-purple"></i>
                                                     </span>
                                                         <input class="form-control" name="city" id="city"
-                                                               type="text" placeholder="Sorocaba" required>
+                                                               type="text" placeholder="Sorocaba" value="{{ old('city') }}" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -391,7 +407,8 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <select name="state" class="form-control" id="state" required>
                                                         <option value="">Selecione</option>
                                                         @foreach($state as $item)
-                                                            <option value="{{ $item->initials }}">{{ $item->state }}</option>
+                                                            <option value="{{ $item->initials }}"
+                                                            @if(old('state') == $item->initials) selected @endif >{{ $item->state }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>

@@ -17,6 +17,11 @@ $(function () {
 
     }
 
+    /*$("td").contextmenu(function() {
+        event.preventDefault();
+        alert( "Hello World!" );
+    });*/
+
 
     var dialog = 0;
 
@@ -51,15 +56,17 @@ $(function () {
     function hideEvents(id)
     {
         var frequencies = [
-            'Diário', 'Semanal', 'Mensal', 'Encontro-Único'
+            'Diário', 'Semanal', 'Quinzenal', 'Mensal', 'Encontro-Único'
         ];
+
+        var length = frequencies.length;
 
         var i = 0;
 
 
         if(id == "daily")
         {
-            while(i < 4)
+            while(i < length)
             {
                 if(frequencies[i] != "Diário")
                 {
@@ -74,7 +81,7 @@ $(function () {
         }
 
         else if(id == "weekly"){
-            while(i < 4)
+            while(i < length)
             {
                 if(frequencies[i] != "Semanal")
                 {
@@ -87,8 +94,22 @@ $(function () {
             $(".Semanal").css("display", "block");
         }
 
+        else if(id == "biweekly"){
+            while(i < length)
+            {
+                if(frequencies[i] != "Quinzenal")
+                {
+                    $("."+frequencies[i]).css("display", "none");
+                }
+
+                i++;
+            }
+
+            $(".Quinzenal").css("display", "block");
+        }
+
         else if(id == "monthly"){
-            while(i < 4)
+            while(i < length)
             {
                 if(frequencies[i] != "Mensal")
                 {
@@ -102,7 +123,7 @@ $(function () {
         }
 
         else if(id == "singleEvent"){
-            while(i < 4)
+            while(i < length)
             {
                 if(frequencies[i] != "Encontro-Único")
                 {
@@ -115,7 +136,7 @@ $(function () {
             $(".Encontro-Único").css("display", "block");
         }
         else{
-            while(i < 4)
+            while(i < length)
             {
                 $("."+frequencies[i]).css("display", "block");
 

@@ -16,7 +16,8 @@ class Event extends Model implements Transformable
 
     protected $fillable = [
         'name', 'createdBy_id', 'eventDate', 'group_id', 'description',
-        'endEventDate', 'startTime', 'endTime', 'frequency', 'day', 'allDay',
+        'endEventDate', 'startTime', 'endTime', 'frequency',
+        'day', 'allDay', 'day_2',
         'street', 'neighborhood', 'city', 'zipCode', 'state'
     ];
 

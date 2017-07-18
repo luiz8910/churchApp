@@ -451,6 +451,14 @@ License: You must have a valid license purchased only from themeforest(the above
 
                     <input type="hidden" id="streetMap" value="{{ $event->street }}">
 
+                    @if(Session::has('invalidDate'))
+
+                        <div class="alert alert-danger alert-dismissible" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <strong>Erro!</strong> {{ Session::get('invalidDate') }}
+                        </div>
+                    @endif
+
 
                     @if(Auth::user()->church_id && Auth::getUser()->person->role_id == $leader)
                         <div class="row">
@@ -572,7 +580,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                             <div class="row">
                                                 <div class="col-md-6 col-sm-12">
-                                                    <div class="form-group">
+                                                    <div class="form-group @if(Session::has('invalidDate')) has-error @endif ">
                                                         <label>Data do Próximo/Primeiro Encontro</label>
                                                         <div class="input-group date date-picker" data-date-format="dd/mm/yyyy" data-date-start-date="+0d">
 

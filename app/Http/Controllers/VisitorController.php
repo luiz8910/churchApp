@@ -162,13 +162,13 @@ class VisitorController extends Controller
             $this->imgProfile($file, $id, $data['name'], 'visitors');
         }
 
-        $church = $request->user()->church_id;
+        //$church = $request->user()->church_id;
 
         $visitor = $this->repository->find($id);
 
-        $visitor->churches()->attach($church);
+        //$visitor->churches()->attach($church);
 
-        $user = $this->createUserLogin(null, null, $data['email'], $church);
+        $user = $this->createUserLogin(null, null, $data['email'], null);
 
         $visitor->users()->attach($user);
 

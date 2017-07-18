@@ -190,6 +190,7 @@ class EventController extends Controller
         //Retorna todos os eventos
         $allEvents = $this->eventServices->allEvents($church_id);
 
+
         $allEventsNames = [];
         $allEventsTimes = [];
         $allEventsFrequencies = [];
@@ -581,6 +582,12 @@ class EventController extends Controller
 
         $data['eventDate'] = $this->formatDateBD($data['eventDate']);
 
+        if(!$data['eventDate'])
+        {
+            $request->session()->flash('invalidDate', 'Insira a data do primeiro encontro');
+            return redirect()->back()->withInput();
+        }
+
         $endEventDate = $request->get('endEventDate');
 
         if ($endEventDate == "")
@@ -596,6 +603,26 @@ class EventController extends Controller
             $data["group_id"] = null;
         }
 
+        if($data["frequency"] == $this->biweekly())
+        {
+            $firstDay = substr($data['eventDate'], 8, 2);
+
+            if($data['day'][0] != $firstDay)
+            {
+                $request->session()->flash('invalidDate', 'Data do Próximo evento está inválida');
+                return redirect()->back()->withInput();
+            }
+            else{
+                $day = $data['day'][0];
+                $data['day_2'] = $data['day'][1];
+
+                unset($data['day']);
+
+                $data['day'] = $day;
+            }
+        }
+
+
         $event = $this->repository->create($data);
 
         if($data["group_id"] == null)
@@ -605,9 +632,23 @@ class EventController extends Controller
 
         $this->sendNotification($data, $event);
 
-        if($data["frequency"] != "Encontro Unico")
+        if($data["frequency"] != $this->unique())
         {
             $this->eventServices->newEventDays($event->id, $data['eventDate'], $data['frequency']);
+        }
+        else{
+            $show = $event->eventDate == date("Y-m-d") ? 1 : 0;
+            $person_id = \Auth::user()->person_id;
+
+            DB::table('event_person')
+                ->insert([
+                    'event_id' => $event->id,
+                    'person_id' => $person_id,
+                    'eventDate' => $event->eventDate,
+                    'show' => $show
+                ]);
+
+            $this->eventServices->subAllMembers($event->id, $event->eventDate, $person_id);
         }
 
         $this->setChurch_id($event);
@@ -729,24 +770,33 @@ class EventController extends Controller
 
         $createdBy = $this->userRepository->find($event->createdBy_id)->person;
 
-        $nextEventDate = DB::table('event_person')
-                            ->select('eventDate')
-                            ->where(
-                                [
-                                    'event_id' => $id,
-                                    'show' => 0
-                                ]
-                            )->first();
+        if($event->frequency != $this->unique())
+        {
+            $nextEventDate = DB::table('event_person')
+                ->select('eventDate')
+                ->where(
+                    [
+                        'event_id' => $id,
+                        'show' => 0
+                    ]
+                )->first();
 
-        $nextEventDate = $nextEventDate != null ? $this->formatDateView($nextEventDate->eventDate) : null;
+            $nextEventDate = $nextEventDate != null ? $this->formatDateView($nextEventDate->eventDate) : null;
+        }
+        else{
+            $nextEventDate = $event->eventDate;
+        }
+
 
         $leader = $this->getLeaderRoleId();
 
         $preposicao = '';
 
-        $weekly = $this->frequencyRepository->findByField('frequency', 'Semanal')->first()->frequency;
+        $weekly = $this->weekly();
 
-        $monthly = $this->frequencyRepository->findByField('frequency', 'Mensal')->first()->frequency;
+        $monthly = $this->monthly();
+
+        $biweekly = $this->biweekly();
 
         if($event->frequency == $weekly)
         {
@@ -758,7 +808,7 @@ class EventController extends Controller
                 $preposicao = "toda";
             }
         }
-        elseif($event->frequency == $monthly){
+        elseif($event->frequency == $monthly || $event->frequency == $biweekly){
             $preposicao = "todo dia";
         }
 
@@ -778,6 +828,12 @@ class EventController extends Controller
 
         $endEventDate = $request->get('endEventDate');
 
+        if(!$data['eventDate'])
+        {
+            $request->session()->flash('invalidDate', 'Insira a data do primeiro encontro');
+            return redirect()->back()->withInput();
+        }
+
         if ($endEventDate == "")
         {
             $data['endEventDate'] = $data['eventDate'];
@@ -790,6 +846,25 @@ class EventController extends Controller
         if($data["group_id"] == "")
         {
             $data["group_id"] = null;
+        }
+
+        if($data["frequency"] == "Quinzenal")
+        {
+            $firstDay = substr($data['eventDate'], 8, 2);
+
+            if($data['day'][0] != $firstDay)
+            {
+                $request->session()->flash('invalidDate', 'Data do Próximo evento está inválida');
+                return redirect()->back()->withInput();
+            }
+            else{
+                $day = $data['day'][0];
+                $data['day_2'] = $data['day'][1];
+
+                unset($data['day']);
+
+                $data['day'] = $day;
+            }
         }
 
         $this->repository->update($data, $id);

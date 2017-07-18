@@ -9,6 +9,7 @@
                         <span class="label label-default lbl-opacity" id="all" style="margin-left: 20px;">Todos</span>
                         <span class="label label-primary lbl-opacity" id="daily">Diário</span>
                         <span class="label label-success lbl-opacity" id="weekly">Semanal</span>
+                        <span class="label label-Quinzenal lbl-opacity" id="biweekly">Quinzenal</span>
                         <span class="label label-warning lbl-opacity" id="monthly">Mensal</span>
                         <span class="label label-danger lbl-opacity" id="singleEvent">Encontro Único</span>
                     </span>

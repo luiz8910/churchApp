@@ -70,6 +70,16 @@ trait ConfigTrait
         return 'Mensal';
     }
 
+    public function biweekly()
+    {
+        return 'Quinzenal';
+    }
+
+    public function unique()
+    {
+        return 'Encontro Único';
+    }
+
     /*
      * Retorna qual a qtde de replicação de um evento
      * No momento de sua criação*/

@@ -167,6 +167,10 @@ class EventServices
         {
             $this->setNextEvents($id, $eventDate, "1 days", $person_id);
         }
+        elseif ($frequency == $this->biweekly())
+        {
+            $this->setNextEvents($id, $eventDate, "15 days", $person_id);
+        }
 
         $this->subAllMembers($id, $eventDate, $person_id);
     }
@@ -209,6 +213,33 @@ class EventServices
                     }
                 }
             }
+
+            elseif ($days == "15 days")
+            {
+                $d = date_format($day, "d");
+                $month = date_format($day, "m");
+                $year = date_format($day, "Y");
+
+                $month++;
+
+                if($month == 13)
+                {
+                    $month = 01;
+                    $year++;
+                }
+
+                $day = date_create($year."-".$month."-".$d);
+                $day_2 = date_create($year."-".$month."-".$event->day_2);
+
+                DB::table('event_person')
+                    ->insert([
+                        'event_id' => $id,
+                        'person_id' => $person_id,
+                        'eventDate' => date_format($day_2, "Y-m-d"),
+                        'show' => 0
+                    ]);
+            }
+
             else{
                 date_add($day, date_interval_create_from_date_string($days));
 
@@ -220,8 +251,6 @@ class EventServices
                     }
                 }
             }
-
-
 
 
             DB::table('event_person')
@@ -511,25 +540,21 @@ class EventServices
     {
         $today = date("Y-m-d");
 
-        $day = Event::where('id' , $id)
-            ->first()
-            ->day;
+        $event = Event::where('id' , $id)->first();
 
+        DB::table('event_person')
+            ->where(
+                [
+                    'event_id' => $id,
+                    'show' => 0
+                ]
+            )
+            ->delete();
 
         //Eventos Semanais
-        if(!is_numeric($day))
+        if(!is_numeric($event->day))
         {
-            $dayNumber = $this->getDayNumber($day);
-
-
-            DB::table('event_person')
-                ->where(
-                    [
-                        'event_id' => $id,
-                        'show' => 0
-                    ]
-                )
-                ->delete();
+            $dayNumber = $this->getDayNumber($event->day);
 
             $nextDay = date_create($today);
 
@@ -565,16 +590,7 @@ class EventServices
 
         }
         //Eventos Mensais
-        else{
-            DB::table("event_person")
-                ->where(
-                    [
-                        'event_id' => $id,
-                        'show' => 0
-                    ]
-                )
-                ->delete();
-
+        elseif ($event->frequency == $this->monthly()){
 
             $year = date("Y");
 
@@ -583,14 +599,13 @@ class EventServices
             $today = date_create($today);
 
 
-
             //Se o dia informado for maior ou igual a data atual
-            if($day >= date_format($today, 'd'))
+            if($event->day >= date_format($today, 'd'))
             {
 
-                if(checkdate($month, $day, $year))
+                if(checkdate($month, $event->day, $year))
                 {
-                    $date = date_create($year."-".$month."-".$day);
+                    $date = date_create($year."-".$month."-".$event->day);
 
                     DB::table('event_person')
                         ->insert(
@@ -603,13 +618,50 @@ class EventServices
                             ]
                         );
 
-                    $this->nextMonthlyEvents($day, $id);
+                    $this->nextMonthlyEvents($event->day, $id);
                 }
             }
 
             //Se o dia informado for menor que a data atual
             else{
-                $this->nextMonthlyEvents($day, $id);
+                $this->nextMonthlyEvents($event->day, $id);
+            }
+
+        }
+
+        elseif ($event->frequency == $this->biweekly())
+        {
+            $year = date("Y");
+
+            $month = date("m");
+
+            $today = date_create($today);
+
+
+            //Se o dia informado for maior ou igual a data atual
+            if($event->day >= date_format($today, 'd'))
+            {
+
+                if(checkdate($month, $event->day, $year))
+                {
+                    $date = date_create($year."-".$month."-".$event->day);
+
+                    DB::table('event_person')
+                        ->insert(
+                            [
+                                'event_id' => $id,
+                                'person_id' => Auth::user()->person_id,
+                                'eventDate' => date_format($date, "Y-m-d"),
+                                'check-in' => 0,
+                                'show' => 0
+                            ]
+                        );
+
+                    $this->nextBiWeeklyEvents($event->day, $event->day_2, $id);
+                }
+            }//Se o dia informado for menor que a data atual
+            else{
+                $this->nextBiWeeklyEvents($event->day, $event->day_2, $id);
             }
 
         }
@@ -676,9 +728,60 @@ class EventServices
 
             $i++;
         }
-
-
+        
     }
+
+    public function nextBiWeeklyEvents($day, $day_2, $id)
+    {
+        $i = 0;
+        $year = date("Y");
+        $month = date('m');
+
+        while ($i < 5)
+        {
+            if($month == 12)
+            {
+                $month = 0;
+                $year++;
+            }
+
+            if(checkdate($month + 1, $day, $year))
+            {
+                $month++;
+                $date = date_create($year."-".$month."-".$day);
+
+                DB::table("event_person")
+                    ->insert(
+                        [
+                            'event_id' => $id,
+                            'person_id' => Auth::user()->person_id,
+                            'eventDate' => date_format($date, "Y-m-d"),
+                            'check-in' => 0,
+                            'show' => 0
+                        ]
+                    );
+            }
+
+            if (checkdate($month + 1, $day_2, $year))
+            {
+                $month++;
+                $date = date_create($year."-".$month."-".$day_2);
+
+                DB::table("event_person")
+                    ->insert(
+                        [
+                            'event_id' => $id,
+                            'person_id' => Auth::user()->person_id,
+                            'eventDate' => date_format($date, "Y-m-d"),
+                            'check-in' => 0,
+                            'show' => 0
+                        ]
+                    );
+            }
+
+            $i++;
+        }
+    }   
 }
 
 

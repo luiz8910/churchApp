@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\DB;
 
 trait UserLoginRepository
 {
-    public function createUserLogin($id = null, $password = null, $email = null, $church)
+    public function createUserLogin($id = null, $password = null, $email = null, $church = null)
     {
         if($id)
         {
