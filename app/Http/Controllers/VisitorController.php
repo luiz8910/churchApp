@@ -6,14 +6,17 @@ use App\Http\Requests\PersonCreateRequest;
 use App\Models\Event;
 use App\Models\Group;
 use App\Models\User;
+use App\Models\Visitor;
 use App\Repositories\ChurchRepository;
 use App\Repositories\EventRepository;
 use App\Repositories\GroupRepository;
 use App\Repositories\RoleRepository;
 use App\Repositories\StateRepository;
+use App\Repositories\UserRepository;
 use App\Repositories\VisitorRepository;
 use App\Services\AgendaServices;
 use App\Services\EventServices;
+use App\Services\VisitorServices;
 use App\Traits\ConfigTrait;
 use App\Traits\CountRepository;
 use App\Traits\DateRepository;
@@ -62,6 +65,14 @@ class VisitorController extends Controller
      * @var EventServices
      */
     private $eventServices;
+    /**
+     * @var VisitorServices
+     */
+    private $visitorServices;
+    /**
+     * @var UserRepository
+     */
+    private $userRepository;
 
     /**
      * VisitorController constructor.
@@ -73,11 +84,14 @@ class VisitorController extends Controller
      * @param GroupRepository $groupRepository
      * @param AgendaServices $agendaServices
      * @param EventServices $eventServices
+     * @param VisitorServices $visitorServices
+     * @param UserRepository $userRepository
      */
     public function __construct(VisitorRepository $repository, RoleRepository $roleRepositoryTrait,
                                 StateRepository $stateRepository, ChurchRepository $churchRepository,
                                 EventRepository $eventRepository, GroupRepository $groupRepository,
-                                AgendaServices $agendaServices, EventServices $eventServices)
+                                AgendaServices $agendaServices, EventServices $eventServices,
+                                VisitorServices $visitorServices, UserRepository $userRepository)
     {
         $this->repository = $repository;
         $this->roleRepository = $roleRepositoryTrait;
@@ -87,6 +101,8 @@ class VisitorController extends Controller
         $this->groupRepository = $groupRepository;
         $this->agendaServices = $agendaServices;
         $this->eventServices = $eventServices;
+        $this->visitorServices = $visitorServices;
+        $this->userRepository = $userRepository;
     }
 
     /**
@@ -96,7 +112,7 @@ class VisitorController extends Controller
      */
     public function index()
     {
-        $visitors = $this->repository->paginate(5);
+        $visitors = Visitor::where('deleted_at' , null)->paginate(5);
 
         foreach ($visitors as $item) {
             $item->dateBirth = $this->formatDateView($item->dateBirth);
@@ -147,6 +163,12 @@ class VisitorController extends Controller
         unset($data["role_id"]);
 
         $data['dateBirth'] = $data['dateBirth'] ? $this->formatDateBD($data['dateBirth']) : null;
+
+        if($data["dateBirth"] == "")
+        {
+            $request->session()->flash("email.exists", "Insira a data de Nascimento");
+            return redirect()->back()->withInput();
+        }
 
         $data['imgProfile'] = 'uploads/profile/noimage.png';
 
@@ -222,10 +244,18 @@ class VisitorController extends Controller
     {
         $data = $request->all();
 
-        $oldEmail = $this->repository->find($id)->first()->email;
+        $user = $this->userRepository->findByField('email', $data["email"])->first() or null;
+
+        //$oldEmail = $user->email;
 
         //Formatação correta da data
         $data['dateBirth'] = $this->formatDateBD($data['dateBirth']);
+
+        if($data["dateBirth"] == "")
+        {
+            $request->session()->flash("email.exists", "Insira a data de Nascimento");
+            return redirect()->back()->withInput();
+        }
 
         /*
          * Se a pessoa for casada e $data['partner'] = 0 então o parceiro é de fora da igreja
@@ -240,26 +270,46 @@ class VisitorController extends Controller
         }
 
 
-        $user = $this->repository->findByField('email', $data["email"])->first() or null;
+        //$user = $visitor->users->first() or null;
+
+        if(isset($data["password"]))
+        {
+            if($data["password"] != $data["confirm-password"])
+            {
+                $request->session()->flash("email.exists", "As senhas não combinam");
+                return redirect()->back()->withInput();
+            }
+        }
 
 
-        if ($user && ($user->id != $id)) {
-            \Session::flash("email.exists", "Existe uma conta associada para o email informado (" . $data["email"] . ")");
+        if($user)
+        {
+            if ($user->church_id != null || $user->visitors->first()->id != $id) {
+                \Session::flash("email.exists", "Existe uma conta associada para o email informado (" . $data["email"] . ")");
 
-            $request->flashExcept('password');
+                $request->flashExcept('password');
 
-            return redirect()->back()->withInput();
+                return redirect()->back()->withInput();
+            }
+        }
+
+
+        if($data["role_id"] != $this->roleRepository->findByField('name', 'Visitante')->first()->id)
+        {
+            $this->visitorServices->changeRole($data);
+        }
+        else{
+            $visitor = $this->repository->find($id);
+
+            DB::table('users')
+                ->where('email', $visitor->users->first()->email)
+                ->update([
+                    'email' => $data["email"],
+                    'updated_at' => Carbon::now()
+                ]);
         }
 
         $this->repository->update($data, $id);
-
-        DB::table("visitors")
-            ->where('email', $oldEmail)
-            ->update(['email' => $data["email"]]);
-
-        DB::table('users')
-            ->where('email', $oldEmail)
-            ->update(['email' => $data["email"]]);
 
         return redirect()->route('visitors.index');
     }

@@ -136,7 +136,7 @@ class EventServices
     }
 
     /**
-     * Cria datas de eventos futuros (10 datas por default)
+     * Cria datas de eventos futuros (5 datas por default)
      * @param $id (event_id)
      * @param $eventDate (data do primeiro evento)
      * @param $frequency (frequência do evento)
@@ -220,6 +220,12 @@ class EventServices
                 $month = date_format($day, "m");
                 $year = date_format($day, "Y");
 
+                if ($i == 0)
+                {
+                    $day_2 = date_create($year."-".$month."-".$event->day_2);
+                    $this->insertNewDay($id, $person_id, $day_2);
+                }
+
                 $month++;
 
                 if($month == 13)
@@ -231,13 +237,9 @@ class EventServices
                 $day = date_create($year."-".$month."-".$d);
                 $day_2 = date_create($year."-".$month."-".$event->day_2);
 
-                DB::table('event_person')
-                    ->insert([
-                        'event_id' => $id,
-                        'person_id' => $person_id,
-                        'eventDate' => date_format($day_2, "Y-m-d"),
-                        'show' => 0
-                    ]);
+
+                $this->insertNewDay($id, $person_id, $day_2);
+
             }
 
             else{
@@ -252,17 +254,21 @@ class EventServices
                 }
             }
 
-
-            DB::table('event_person')
-                ->insert([
-                    'event_id' => $id,
-                    'person_id' => $person_id,
-                    'eventDate' => date_format($day, "Y-m-d"),
-                    'show' => 0
-                ]);
+            $this->insertNewDay($id, $person_id, $day);
 
             $i++;
         }
+    }
+
+    public function insertNewDay($id, $person_id, $day)
+    {
+        return DB::table('event_person')
+            ->insert([
+                'event_id' => $id,
+                'person_id' => $person_id,
+                'eventDate' => date_format($day, "Y-m-d"),
+                'show' => 0
+            ]);
     }
 
     /* Inscreve todos os membros do grupo

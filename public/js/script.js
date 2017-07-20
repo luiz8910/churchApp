@@ -484,6 +484,22 @@ $(function () {
         numberSeparator:'-'
     });
 
+    $("#role_id").change(function () {
+       if(this.value != 3)
+       {
+           $("#row-pass").css("display", "block");
+           $("#h3-pass").css("display", "block");
+           $("#password").attr('required');
+           $("#confirm-password").attr('required');
+       }
+       else{
+           $("#row-pass").css("display", "none");
+           $("#h3-pass").css("display", "none");
+           $("#password").attr('required', null);
+           $("#confirm-password").attr('required', null);
+       }
+    });
+
     $("#password").keyup(function(){
         password(this.value, 'confirm-password');
     });

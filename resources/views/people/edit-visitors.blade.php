@@ -296,7 +296,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     {!! Form::FormGroup('role', $errors) !!}
                                                     <label class="control-label">Cargo</label>
                                                     @if(isset(Auth::user()->person) && Auth::user()->person->role_id == $leader)
-                                                        <select class="form-control" name="role_id"
+                                                        <select class="form-control" name="role_id" id="role_id"
                                                                 data-placeholder="Selecione seu cargo"
                                                                 tabindex="1" required>
                                                             <option value="3">Visitante</option>
@@ -461,6 +461,8 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     {!! Form::endFormGroup() !!}
                                                 </div>
                                             </div>
+
+                                            @include('includes.password')
 
 
                                                 <div class="margiv-top-10">

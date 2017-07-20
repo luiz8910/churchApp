@@ -567,22 +567,25 @@
     //Excluir o Evento Selecionado
     function searchForEvent(text)
     {
-        var label = $("label").get();
         var str = text.replace(/ /gi, "-");
+
+        $("."+str).remove();
+
+        /*var strong = $("strong").get();
 
         console.log('text: ' + str);
         for (var i = 0; i < label.length; i++)
         {
 
-            if(label[i].innerText == text)
+            if(strong[i].innerText == text)
             {
-                console.log(label[i].innerHTML);
+                console.log(strong[i].innerHTML);
 
                 $("."+str).remove();
 
-                label[i].remove();
+                strong[i].remove();
             }
-        }
+        }*/
     }
 
 
