@@ -45,4 +45,8 @@ class Person extends Model implements Transformable
         return $this->belongsToMany(Event::class);
     }
 
+    public function recent_user()
+    {
+        return $this->belongsTo(RecentUsers::class);
+    }
 }

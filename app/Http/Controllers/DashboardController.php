@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Event;
+use App\Models\RecentEvents;
+use App\Models\RecentGroups;
+use App\Models\RecentUsers;
+use App\Repositories\RoleRepository;
 use App\Repositories\UserRepository;
 use App\Repositories\VisitorRepository;
 use App\Traits\ConfigTrait;
@@ -52,10 +56,15 @@ class DashboardController extends Controller
      * @var UserRepository
      */
     private $userRepository;
+    /**
+     * @var RoleRepository
+     */
+    private $roleRepository;
 
     public function __construct(EventRepository $eventRepository, GroupRepository $groupRepository,
                                 PersonRepository $personRepository, VisitorRepository $visitorRepository,
-                                AgendaServices $agendaServices, EventServices $eventServices, UserRepository $userRepository)
+                                AgendaServices $agendaServices, EventServices $eventServices,
+                                UserRepository $userRepository, RoleRepository $roleRepository)
     {
         $this->eventRepository = $eventRepository;
         $this->groupRepository = $groupRepository;
@@ -64,6 +73,7 @@ class DashboardController extends Controller
         $this->agendaServices = $agendaServices;
         $this->eventServices = $eventServices;
         $this->userRepository = $userRepository;
+        $this->roleRepository = $roleRepository;
     }
 
 
@@ -185,7 +195,7 @@ class DashboardController extends Controller
 
 
 
-        $nextEvent = $this->getNextEvent();
+        $nextEvent = $this->eventServices->getNextEvent();
 
         $nextEvent[1] = $this->formatDateView($nextEvent[1]);
 
@@ -258,12 +268,94 @@ class DashboardController extends Controller
          * Fim Agenda
          */
 
+        /*
+         * Início Recent Users, Group e Events
+         * */
+
+        $recent_users = RecentUsers::where([
+            'church_id' => $church_id
+        ])->get();
+
+        $recent_groups = RecentGroups::where([
+            'church_id' => $church_id
+        ])->get();
+
+        $recent_events = RecentEvents::where([
+            'church_id' => $church_id
+        ])->get();
+
+        $qtde_users = count($recent_users);
+        $qtde_groups = count($recent_groups);
+        $qtde_events = count($recent_events);
+
+        $people = [];
+        $groups_recent = [];
+        $events_recent = [];
+
+        if($qtde_users > 0)
+        {
+            foreach ($recent_users as $recent_user)
+            {
+                $p = $this->personRepository->find($recent_user->person_id);
+
+                $p->role_id = $this->roleRepository->findByField('id', $p->role_id)->first()->name;
+
+                $people[] = $p;
+            }
+        }
+
+        if($qtde_groups > 0)
+        {
+            foreach ($recent_groups as $item)
+            {
+                $g = $this->groupRepository->find($item->group_id);
+
+                $g->owner_id = $this->userRepository->find($g->owner_id)->person;
+
+                $g->imgCreatorProfile = $g->owner_id->imgProfile;
+
+                $g->owner_id = $g->owner_id->name . " " . $g->owner_id->lastName;
+
+                $g->sinceOf = $this->formatDateView($g->sinceOf);
+
+                $groups_recent[] = $g;
+            }
+        }
+
+        if($qtde_events > 0)
+        {
+            foreach ($recent_events as $item)
+            {
+                $e = $this->eventRepository->find($item->event_id);
+
+                $e->createdBy_id = $this->userRepository->find($e->createdBy_id)->person;
+
+                $e->imgCreatorProfile = $e->createdBy_id->imgProfile;
+
+                $e->createdBy_id = $e->createdBy_id->name . " " . $e->createdBy_id->lastName;
+
+                $e->group_id = $e->group_id ? $this->groupRepository->find($e->group_id)->name : 'Sem Grupo';
+
+                $nextEventRecent = $this->eventServices->getNextEvent($e->id);
+
+                $e->nextEvent = $this->formatDateView($nextEventRecent[1]);
+
+                $events_recent[] = $e;
+            }
+        }
+
+        //dd($events_recent);
+
+        /*
+         * Fim Recentes
+         * */
 
         return view('dashboard.index', compact('countPerson', 'countGroups', 'events', 'notify', 'qtde', 'event',
             'countMembers', 'nextEvent', 'location', 'street', 'groups', 'eventDate', 'event_person',
             'allMonths', 'allDays', 'days', 'allEvents',
             'thisMonth', 'today', 'ano', 'allEventsNames', 'allEventsTimes',
-            'allEventsFrequencies', 'allEventsAddresses', 'numWeek'));
+            'allEventsFrequencies', 'allEventsAddresses', 'numWeek',
+            'people', 'groups_recent', 'events_recent', 'qtde_users', 'qtde_groups', 'qtde_events'));
     }
 
     public function oldindex()
@@ -550,63 +642,6 @@ class DashboardController extends Controller
         File::put(public_path('js/events.json'), $json);
     }
 
-    //Busca pelo próximo evento
-    public function getNextEvent()
-    {
-        //Dia Atual
-        $today = date_create();
-
-        //$dates contém todos os eventos que não foram excluídos
-        $dates = DB::table("event_person")
-            ->where([
-                ["deleted_at", '=', null]
-            ])
-            ->get();
-
-        $arrayDates = [];
-
-        $arrayIds = [];
-
-
-        for ($i = 0; $i < count($dates); $i++)
-        {
-            //Separando as datas dos eventos
-            $date = date_create($dates[$i]->eventDate);
-
-            //Obtendo a diferença entre a data atual
-            // e a data do evento
-            $diff = date_diff($today, $date);
-
-            //Se a data do evento for igual o dia atual
-            //ou datas futuras
-            if($diff->format("%r%a") > -1)
-            {
-                //Separa o id do evento
-                $arrayIds[$i] = $dates[$i]->event_id;
-                //Separa a data do evento
-                $arrayDates[$i] = $date;
-            }
-        }
-
-        //Organiza os eventos de forma ascendente
-        //O indice 0 é o próximo evento
-        asort($arrayDates);
-
-        //Separa a data do próximo Evento numa variável
-        $d = array_values($arrayDates)[0];
-
-        //Separa o id do próximo evento numa variável
-        $id = array_search($d, $arrayDates);
-
-        /*
-         * Indíce 0 corresponde a $id do próximo evento
-         * Indice 1 corresponde a data do próximo evento
-         * */
-        $arr[] = $arrayIds[$id];
-        $arr[] = date_format($d, "Y-m-d");
-
-        return $arr;
-    }
 
     public function calendario()
     {

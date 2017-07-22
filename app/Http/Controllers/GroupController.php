@@ -151,6 +151,8 @@ class GroupController extends Controller
 
         $this->addRemoveLoggedMember($id);
 
+        $this->groupServices->newRecentGroup($id, \Auth::user()->church_id);
+
         return redirect()->route('group.edit', ['id' => $id]);
     }
 

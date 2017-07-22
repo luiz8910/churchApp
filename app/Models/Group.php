@@ -29,4 +29,9 @@ class Group extends Model implements Transformable
         return $this->hasMany(Event::class);
     }
 
+    public function recent_group()
+    {
+        return $this->hasOne(RecentGroups::class);
+    }
+
 }

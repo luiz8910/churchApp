@@ -59,16 +59,16 @@ License: You must have a valid license purchased only from themeforest(the above
                 <!-- END PAGE BREADCRUMBS -->
                 <!-- BEGIN PAGE CONTENT INNER -->
                 <div class="page-content-inner">
-                    {{--<div class="row">
-                        <div class="col-md-12 col-sm-12">
+                    <div class="row">
+                        <div class="col-md-12">
                             <div class="portlet light ">
                                 <div class="portlet-title">
                                     <div class="caption caption-md">
                                         <i class="icon-bar-chart font-red"></i>
                                         <span class="caption-subject font-red bold uppercase">Atividades Recentes</span>
-                                        <span class="caption-helper">Hoje</span>
+                                        <span class="caption-helper"></span>
                                     </div>
-                                    <div class="actions">
+                                    {{--<div class="actions">
                                         <div class="btn-group btn-group-devided" data-toggle="buttons">
                                             <label class="btn btn-transparent green btn-outline btn-circle btn-sm active">
                                                 <input type="radio" name="options" class="toggle" id="option1">Hoje</label>
@@ -77,73 +77,151 @@ License: You must have a valid license purchased only from themeforest(the above
                                             <label class="btn btn-transparent green btn-outline btn-circle btn-sm">
                                                 <input type="radio" name="options" class="toggle" id="option2">Mês</label>
                                         </div>
-                                    </div>
+                                    </div>--}}
                                 </div>
                                 <div class="portlet-body">
-                                    <div class="table-scrollable table-scrollable-borderless">
-                                        <table class="table table-hover table-light">
-                                            <thead>
-                                            <tr class="uppercase">
-                                                <th colspan="2"> Membro </th>
-                                                <th> Email </th>
-                                                <th> Telefone </th>
-                                                <th> Ult. Edição por</th>
-                                            </tr>
-                                            </thead>
-                                            <tr>
-                                                <td class="fit">
-                                                    <img class="user-pic rounded" src="assets/pages/media/users/avatar4.jpg"> </td>
-                                                <td>
-                                                    <a href="page_user_profile_1.html" class="primary-link">João da Silva</a>
-                                                </td>
-                                                <td> joao.silva@suaigreja.com.br </td>
-                                                <td> (15) 9 9123-4567 </td>
-                                                <td>
-                                                    <span class="bold theme-font">Administrador</span>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="fit">
-                                                    <img class="user-pic rounded" src="assets/pages/media/users/avatar5.jpg"> </td>
-                                                <td>
-                                                    <a href="page_user_profile_1.html" class="primary-link">José Ferreira</a>
-                                                </td>
-                                                <td> jose.ferreira@suaigreja.com.br </td>
-                                                <td> (15) 9 9123-4567 </td>
-                                                <td>
-                                                    <span class="bold theme-font">Administrador</span>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="fit">
-                                                    <img class="user-pic rounded" src="assets/pages/media/users/avatar6.jpg"> </td>
-                                                <td>
-                                                    <a href="page_user_profile_1.html" class="primary-link">Timóteo Junqueira</a>
-                                                </td>
-                                                <td> tim.junqueira@suaigreja.com.br </td>
-                                                <td> (15) 9 9123-4567 </td>
-                                                <td>
-                                                    <span class="bold theme-font">Administrador</span>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="fit">
-                                                    <img class="user-pic rounded" src="assets/pages/media/users/avatar7.jpg"> </td>
-                                                <td>
-                                                    <a href="page_user_profile_1.html" class="primary-link">Bartolomeu dos Santos</a>
-                                                </td>
-                                                <td> bart.santos@suaigreja.com.br </td>
-                                                <td> (15) 9 9123-4567 </td>
-                                                <td>
-                                                    <span class="bold theme-font">Administrador</span>
-                                                </td>
-                                            </tr>
-                                        </table>
+                                    <ul class="nav nav-tabs">
+                                        <li role="presentation" class="active">
+                                            <a href="#tab-users" aria-controls="tab-users" role="tab" data-toggle="tab">
+                                                Usuários @if($qtde_users > 0) ({{ $qtde_users }}) @endif
+                                            </a>
+                                        </li>
+                                        <li role="presentation">
+                                            <a href="#tab-groups" aria-controls="tab-groups" role="tab" data-toggle="tab">
+                                                Grupos @if($qtde_groups > 0) ({{ $qtde_groups }}) @endif
+                                            </a>
+                                        </li>
+                                        <li role="presentation">
+                                            <a href="#tab-events" aria-controls="tab-events" role="tab" data-toggle="tab">
+                                                Eventos @if($qtde_events > 0) ({{ $qtde_events }}) @endif
+                                            </a>
+                                        </li>
+                                    </ul>
+
+                                    <div class="tab-content">
+                                        <div class="table-scrollable table-scrollable-borderless tab-pane fade in active" role="tabpanel" id="tab-users">
+                                            <table class="table table-hover table-light">
+                                                <thead>
+                                                    <tr class="uppercase">
+                                                        <th colspan="2"> Membro </th>
+                                                        <th> Email </th>
+                                                        <th> Telefone </th>
+                                                        <th> Cargo </th>
+                                                    </tr>
+                                                </thead>
+
+                                                @if($qtde_users > 0)
+                                                    @foreach($people as $person)
+                                                        <tr>
+                                                            <td class="fit">
+                                                                <img class="user-pic rounded" src="../{{ $person->imgProfile }}">
+                                                            </td>
+                                                            <td>
+                                                                <a href="{{ route('person.edit', ['person' => $person->id]) }}"
+                                                                   class="primary-link">{{ $person->name }}</a>
+                                                            </td>
+                                                            <td> {{ $person->user->email or null }} </td>
+                                                            <td> {{ $person->tel }} </td>
+                                                            <td>
+                                                                <span class="bold theme-font">{{ $person->role_id }}</span>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                @endif
+                                            </table>
+
+                                            @if($qtde_users == 0)
+                                                <p class="empty_table">Não há novos Usuários</p>
+                                            @endif
+                                        </div>
+
+                                        <div class="table-scrollable table-scrollable-borderless tab-pane fade in" role="tabpanel" id="tab-groups">
+                                            <table class="table table-hover table-light">
+                                                <thead>
+                                                    <tr class="uppercase">
+                                                        <th colspan="2"> Nome </th>
+                                                        <th> Criado Por </th>
+                                                        <th> Criado Em </th>
+                                                    </tr>
+                                                </thead>
+
+                                                @if($qtde_groups > 0)
+                                                    @foreach($groups_recent as $item)
+                                                        <tr>
+                                                            <td class="fit">
+                                                                <img class="user-pic rounded" src="../{{ $item->imgProfile }}"> </td>
+                                                            <td>
+                                                                <a href="{{ route('group.edit', ['group' => $item->id]) }}" class="primary-link">
+                                                                    {{ $item->name }}
+                                                                </a>
+                                                            </td>
+                                                            <td class="">
+                                                                <img class="user-pic rounded" src="../{{ $item->imgCreatorProfile }}">
+                                                                {{ $item->owner_id }}
+                                                            </td>
+
+                                                            <td> {{ $item->sinceOf }} </td>
+                                                        </tr>
+                                                    @endforeach
+
+                                                @endif
+                                            </table>
+
+                                            @if($qtde_groups == 0)
+                                                <p class="empty_table">Não há novos grupos</p>
+                                            @endif
+                                        </div>
+
+                                        <div class="table-scrollable table-scrollable-borderless tab-pane fade in" role="tabpanel" id="tab-events">
+                                            <table class="table table-hover table-light">
+                                                <thead>
+                                                    <tr class="uppercase">
+                                                        <th> Nome </th>
+                                                        <th> Frequência </th>
+                                                        <th> Criado Por </th>
+                                                        <th> Pertence ao Grupo </th>
+                                                        <th> Próximo Encontro em </th>
+                                                    </tr>
+                                                </thead>
+
+                                                @if($qtde_events > 0)
+
+                                                    @foreach($events_recent as $item)
+                                                        <tr>
+                                                            <td>
+                                                                <a href="{{ route('event.edit', ['event' => $item->id]) }}"
+                                                                   class="primary-link">
+                                                                    {{ $item->name }}
+                                                                </a>
+                                                            </td>
+                                                            <td> {{ $item->frequency }} </td>
+                                                            <td> {{ $item->createdBy_id }} </td>
+                                                            <td>
+                                                                <span class="bold theme-font">{{ $item->group_id }}</span>
+                                                            </td>
+                                                            <td>
+                                                                {{ $item->nextEvent }}
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                @endif
+                                            </table>
+
+                                            @if($qtde_events == 0)
+                                                <p class="empty_table">Não há novos Eventos</p>
+                                            @endif
+
+                                        </div>
                                     </div>
+
                                 </div>
                             </div>
+
+
+
                         </div>
-                    </div>--}}
+                    </div>
+
 
                     <br><br>
 

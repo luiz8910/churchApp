@@ -210,6 +210,7 @@
     pointer-events: none;
 }
 
-
-
-
+.empty_table{
+    margin-top: 30px !important;
+    text-align: center;
+}

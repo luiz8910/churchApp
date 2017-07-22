@@ -9,6 +9,7 @@
 namespace App\Traits;
 
 
+use App\Models\RecentUsers;
 use App\Models\Role;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -200,6 +201,16 @@ trait PeopleTrait
         }
 
         return json_encode(['status' => false]);
+    }
+
+    public function newRecentUser($id, $church_id)
+    {
+        RecentUsers::insert([
+            'person_id' => $id,
+            'church_id' => $church_id,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+        ]);
     }
 
 }

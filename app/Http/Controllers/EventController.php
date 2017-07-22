@@ -653,6 +653,8 @@ class EventController extends Controller
 
         $this->setChurch_id($event);
 
+        $this->eventServices->newRecentEvents($event->id, \Auth::user()->church_id);
+
         return redirect()->route('event.index');
     }
 

@@ -10,10 +10,12 @@ namespace App\Services;
 
 
 use App\Models\Event;
+use App\Models\RecentEvents;
 use App\Repositories\EventRepository;
 use App\Repositories\FrequencyRepository;
 use App\Traits\ConfigTrait;
 use Auth;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class EventServices
@@ -787,7 +789,90 @@ class EventServices
 
             $i++;
         }
-    }   
+    }
+
+    //Busca pelo próximo evento
+    public function getNextEvent($id = null)
+    {
+        //Dia Atual
+        $today = date_create();
+
+        if($id)
+        {
+            //$dates contém todos as datas do evento selecionado que não foram excluídos
+            $dates = DB::table("event_person")
+                ->where([
+                    ["deleted_at", '=', null],
+                    ["event_id", '=', $id]
+                ])
+                ->get();
+        }
+        else{
+            //$dates contém todos os eventos que não foram excluídos
+            $dates = DB::table("event_person")
+                ->where([
+                    ["deleted_at", '=', null]
+                ])
+                ->get();
+        }
+
+
+        $arrayDates = [];
+
+        $arrayIds = [];
+
+
+        for ($i = 0; $i < count($dates); $i++)
+        {
+            //Separando as datas dos eventos
+            $date = date_create($dates[$i]->eventDate);
+
+            //Obtendo a diferença entre a data atual
+            // e a data do evento
+            $diff = date_diff($today, $date);
+
+            //Se a data do evento for igual o dia atual
+            //ou datas futuras
+            if($diff->format("%r%a") > -1)
+            {
+                //Separa o id do evento
+                $arrayIds[$i] = $dates[$i]->event_id;
+                //Separa a data do evento
+                $arrayDates[$i] = $date;
+            }
+        }
+
+        //Organiza os eventos de forma ascendente
+        //O indice 0 é o próximo evento
+        asort($arrayDates);
+
+        //Separa a data do próximo Evento numa variável
+        $d = array_values($arrayDates)[0];
+
+        //Separa o id do próximo evento numa variável
+        $id = array_search($d, $arrayDates);
+
+        /*
+         * Indíce 0 corresponde a $id do próximo evento
+         * Indice 1 corresponde a data do próximo evento
+         * */
+        $arr[] = $arrayIds[$id];
+        $arr[] = date_format($d, "Y-m-d");
+
+        return $arr;
+    }
+
+    public function newRecentEvents($id, $church_id)
+    {
+        RecentEvents::insert([
+            'event_id' => $id,
+            'church_id' => $church_id,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+        ]);
+    }
+
+
 }
 
 

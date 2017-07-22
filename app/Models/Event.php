@@ -30,4 +30,9 @@ class Event extends Model implements Transformable
     {
         return $this->belongsToMany(Person::class);
     }
+
+    public function recent_event()
+    {
+        return $this->hasOne(RecentEvents::class);
+    }
 }

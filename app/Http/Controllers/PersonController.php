@@ -7,6 +7,7 @@ use App\Events\PersonEvent;
 use App\Http\Requests\PersonCreateRequest;
 use App\Models\Event;
 use App\Models\Person;
+use App\Models\RecentUsers;
 use App\Models\Role;
 use App\Models\User;
 use App\Notifications\EventNotification;
@@ -355,6 +356,8 @@ class PersonController extends Controller
         if ($file) {
             $this->imgProfile($file, $id, $data['name'], 'people');
         }
+
+        $this->newRecentUser($id, $church_id);
 
         if($teen){
             Session::flash('teen.crud', 'Usuário '. $data['name'] . ' criado com sucesso');

@@ -96,7 +96,15 @@ License: You must have a valid license purchased only from themeforest(the above
                                 <div class="portlet light profile-sidebar-portlet ">
                                     <!-- SIDEBAR USERPIC -->
                                     <div class="profile-userpic">
-                                        <img src="../../{{ $person->imgProfile }}" class="img-responsive" alt="">
+                                        @if($person->user->facebook_id != null || $person->user->google_id != null)
+
+                                            <img src="{{ $person->imgProfile }}" class="img-responsive" alt="">
+
+                                        @else
+
+                                            <img src="../../{{ $person->imgProfile }}" class="img-responsive" alt="">
+
+                                        @endif
                                     </div>
                                     <!-- END SIDEBAR USERPIC -->
                                     <!-- SIDEBAR USER TITLE -->

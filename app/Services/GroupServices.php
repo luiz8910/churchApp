@@ -10,6 +10,8 @@ namespace App\Services;
 
 
 use App\Models\Event;
+use App\Models\RecentGroups;
+use Carbon\Carbon;
 
 class GroupServices
 {
@@ -26,5 +28,15 @@ class GroupServices
 
 
         return $events;
+    }
+
+    public function newRecentGroup($id, $church_id)
+    {
+        RecentGroups::insert([
+            'group_id' => $id,
+            'church_id' => $church_id,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+        ]);
     }
 }
