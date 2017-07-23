@@ -195,7 +195,8 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         <i class="fa fa-phone font-green"></i>
                                                     </span>
                                                         <input type="text" class="form-control tel" name="tel"
-                                                               id="exampleInputPassword1" value="{{ old('tel') }}" placeholder="(15) 1231413423">
+                                                               id="exampleInputPassword1" value="{{ old('tel') }}"
+                                                               placeholder="(15) 1231413423" required>
                                                     </div>
                                                 </div>
 
@@ -533,7 +534,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         <i class="fa fa-home font-purple"></i>
                                                     </span>
                                                         <input class="form-control" name="street" id="street" type="text"
-                                                               value="{{ old('street') }}" placeholder="Av. Antonio Carlos Comitre, 650">
+                                                               value="{{ old('street') }}" placeholder="Av. Antonio Carlos Comitre, 650" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -545,7 +546,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         <i class="fa fa-home font-purple"></i>
                                                     </span>
                                                         <input class="form-control" name="neighborhood"
-                                                               value="{{ old('neighborhood') }}" id="neighborhood" type="text" placeholder="Parque do Dolly">
+                                                               value="{{ old('neighborhood') }}" id="neighborhood" type="text" placeholder="Centro">
                                                     </div>
                                                 </div>
                                             </div>
@@ -560,14 +561,14 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         <i class="fa fa-building font-purple"></i>
                                                     </span>
                                                         <input class="form-control" name="city" id="city"
-                                                               value="{{ old('city') }}" type="text" placeholder="Sorocaba">
+                                                               value="{{ old('city') }}" type="text" placeholder="Sorocaba" required>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-6 input-address">
                                                 <div class="form-group">
                                                     <label>Estado</label>
-                                                    <select name="state" class="form-control" id="state">
+                                                    <select name="state" class="form-control" id="state" required>
                                                         <option value="">Selecione</option>
                                                         @foreach($state as $item)
                                                             <option value="{{ $item->initials }}" @if(old('state') == $item->initials) selected @endif>
