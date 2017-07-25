@@ -7,6 +7,7 @@ use App\Http\Requests\UserUpdateRequest;
 use App\Mail\resetPassword;
 use App\Models\User;
 use App\Repositories\VisitorRepository;
+use App\Traits\ConfigTrait;
 use App\Traits\CountRepository;
 use App\Traits\DateRepository;
 use App\Traits\EmailTrait;
@@ -22,7 +23,7 @@ use Illuminate\Support\Facades\Mail;
 
 class UsersController extends Controller
 {
-    use DateRepository, CountRepository, NotifyRepository, EmailTrait;
+    use DateRepository, CountRepository, NotifyRepository, EmailTrait, ConfigTrait;
     /**
      * @var UserRepository
      */
@@ -95,6 +96,8 @@ class UsersController extends Controller
 
         $qtde = count($notify) or 0;
 
+        $leader = $this->getLeaderRoleId();
+
         $adults = $this->personRepository->findWhere(['tag' => 'adult', 'gender' => $gender]);
 
         $person = $this->personRepository->find($user->id);
@@ -113,7 +116,7 @@ class UsersController extends Controller
         }
 
         return view('users.myAccount', compact('state', 'user', 'changePass', 'countPerson', 'role', 'countGroups',
-            'notify', 'qtde', 'adults', 'groups', 'countMembers'));
+            'notify', 'qtde', 'adults', 'groups', 'countMembers', 'leader'));
     }
 
 

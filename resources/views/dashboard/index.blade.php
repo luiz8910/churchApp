@@ -117,8 +117,15 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 <img class="user-pic rounded" src="../{{ $person->imgProfile }}">
                                                             </td>
                                                             <td>
-                                                                <a href="{{ route('person.edit', ['person' => $person->id]) }}"
-                                                                   class="primary-link">{{ $person->name }}</a>
+                                                                @if($person->tag == "adult")
+                                                                    <a href="{{ route('person.edit', ['person' => $person->id]) }}"
+                                                                       class="primary-link">{{ $person->name }}
+                                                                    </a>
+                                                                @else
+                                                                    <a href="{{ route('teen.edit', ['person' => $person->id]) }}"
+                                                                       class="primary-link">{{ $person->name }}
+                                                                    </a>
+                                                                @endif
                                                             </td>
                                                             <td> {{ $person->user->email or null }} </td>
                                                             <td> {{ $person->tel }} </td>

@@ -16,6 +16,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/home', 'DashboardController@index');
 
+    // Início Usuários e pessoas
+
     Route::resource('users', 'UsersController');
 
     Route::resource('person', 'PersonController');
@@ -42,9 +44,60 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('changePass', 'UsersController@changePassword')->name('users.changePass');
 
+    Route::get("email", "PersonController@email");
+
+    Route::get("check-cpf/{cpf}", "PersonController@checkCPF");
+
+    Route::get('/person-delete/{id}', 'PersonController@destroy');
+
+    Route::get('/teen-delete/{id}', 'PersonController@destroy');
+
+    // Fim Usuários e pessoas
+
+    //Inicio Grupos
+
     Route::get('group', 'GroupController@index')->name('group.index');
 
     Route::get('group/{group}', 'GroupController@show')->name('group.show');
+
+    Route::get('groups/create', 'GroupController@create')->name('group.create');
+
+    Route::post('group/store', 'GroupController@store')->name('group.store');
+
+    Route::put('group/{group}', 'GroupController@update')->name('group.update');
+
+    Route::get('group/{group}', 'GroupController@destroy')->name('group.destroy');
+
+    Route::post('groups/addMembers/{group}', 'GroupController@addMembers')->name('group.addMembers');
+
+    Route::post('newMember/{group}', 'GroupController@newMemberToGroup')->name('group.newMember');
+
+    Route::post('group/deleteManyUsers', 'GroupController@destroyManyUsers')->name('group.destroyManyUsers');
+
+    Route::get('/group-delete/{id}', 'GroupController@destroy');
+
+    Route::get('/addUserToGroup/{personId}/{group}', 'GroupController@addUserToGroup');
+
+    Route::get('/addNote/{id}/{notes}', 'GroupController@addNote');
+
+    Route::get('/getChartData/{group}', 'GroupController@getChartData');
+
+    Route::delete('deleteMemberGroup/{group}/{member}', 'GroupController@deleteMember')->name('group.deleteMember');
+
+    Route::get('deleteMemberGroup/{group}/{member}', 'GroupController@deleteMember');
+
+    Route::get('group/{group}/edit', 'GroupController@edit')->name('group.edit');
+
+    Route::get("/showGroupEvents/{group}", 'GroupController@showGroupEvents');
+
+    Route::get('/addRemoveLoggedMember/{id}', 'GroupController@addRemoveLoggedMember')->name('group.addRemoveLoggedMember');
+
+    Route::get('notify', 'PersonController@notify')->name('notify.user');
+
+    // Fim Grupos
+
+
+    //Visitantes
 
     Route::get('visitors-create', 'VisitorController@create')->name('visitors.create');
 
@@ -60,11 +113,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('visitor-imgProfile/{id}', 'VisitorController@imgEditProfile')->name('visitor.imgEditProfile');
 
-    Route::delete('deleteMemberGroup/{group}/{member}', 'GroupController@deleteMember')->name('group.deleteMember');
-
-    Route::get('deleteMemberGroup/{group}/{member}', 'GroupController@deleteMember');
-
-    Route::get('group/{group}/edit', 'GroupController@edit')->name('group.edit');
+    // Fim Visitantes
 
     //Eventos
 
@@ -92,65 +141,43 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('events/test', 'EventController@testEventNotification');
 
-    Route::get('notify', 'PersonController@notify')->name('notify.user');
-
     Route::get('/events/check/{id}', 'EventController@checkInEvent');
-
-    Route::get("email", "PersonController@email");
 
     Route::get("agenda-mes/{thisMonth}/{church_id?}", "EventController@nextMonth")->name("events.agenda-mes");
 
-    Route::get("join-new-people/{input}", "SearchController@findNewPeople");
+    Route::get('/events-delete/{id}', 'EventController@destroy');
 
-    Route::get("check-cpf/{cpf}", "PersonController@checkCPF");
+    Route::post("/imgEvent/{event}", 'EventController@imgEvent')->name('event.edit.imgEvent');
+
+    // Fim Eventos
+
+
+    // Inicio Configurações
+
+    Route::group(['middleware' => 'check.role:1'], function (){
+        Route::get("/configuracoes", "ConfigController@index")->name('config.index');
+
+        Route::post("/config-required/{model}", 'ConfigController@updateRule')->name('config.required.person');
+
+        Route::post("/config/{model}", "ConfigController@newRule")->name('config.newRule');
+    });
 
     Route::get("/getPusherKey", "ConfigController@getPusherKey");
 
     Route::get("/markAllAsRead", "ConfigController@markAllAsRead");
-
-    Route::get("/showGroupEvents/{group}", 'GroupController@showGroupEvents');
-
-    Route::get('/addRemoveLoggedMember/{id}', 'GroupController@addRemoveLoggedMember')->name('group.addRemoveLoggedMember');
-
-    Route::get('/addNote/{id}/{notes}', 'GroupController@addNote');
-
-    Route::get('/getChartData/{group}', 'GroupController@getChartData');
-
-    Route::get('groups/create', 'GroupController@create')->name('group.create');
-
-    Route::post('group/store', 'GroupController@store')->name('group.store');
-
-    Route::put('group/{group}', 'GroupController@update')->name('group.update');
-
-    Route::get('group/{group}', 'GroupController@destroy')->name('group.destroy');
-
-    Route::post('groups/addMembers/{group}', 'GroupController@addMembers')->name('group.addMembers');
-
-    Route::post('newMember/{group}', 'GroupController@newMemberToGroup')->name('group.newMember');
-
-    Route::post('group/deleteManyUsers', 'GroupController@destroyManyUsers')->name('group.destroyManyUsers');
-
-    Route::get('/person-delete/{id}', 'PersonController@destroy');
-
-    Route::get('/teen-delete/{id}', 'PersonController@destroy');
-
-    Route::get('/group-delete/{id}', 'GroupController@destroy');
-
-    Route::get('/events-delete/{id}', 'EventController@destroy');
-
-    Route::get('/addUserToGroup/{personId}/{group}', 'GroupController@addUserToGroup');
-
-    Route::post("/imgEvent/{event}", 'EventController@imgEvent')->name('event.edit.imgEvent');
 
     Route::get("/getChurchZipCode", "ConfigController@getChurchZipCode");
 
     Route::get('pusher', function () {
         return view('pusher');
 
-
     });
 
+    // Fim Configurações
+
 });
+
+
 
     Auth::routes();
 
@@ -193,7 +220,8 @@ Route::group(['middleware' => 'auth'], function () {
 //Instant Search
     Route::get('/search/{text}', "SearchController@search");
 
-//Instant Search na tabela de eventos
+    Route::get("join-new-people/{input}", "SearchController@findNewPeople");
+
     Route::get('/search-events/{text}', 'SearchController@searchEvents');
 
 //Login Facebook

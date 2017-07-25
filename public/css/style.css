@@ -214,3 +214,11 @@
     margin-top: 30px !important;
     text-align: center;
 }
+
+fieldset label{
+    margin-bottom: 30px;
+}
+
+.lbl-txt{
+    margin-right: 50px;
+}

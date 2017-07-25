@@ -12,6 +12,7 @@ use App\Models\Role;
 use App\Models\User;
 use App\Notifications\EventNotification;
 use App\Notifications\Notifications;
+use App\Repositories\RequiredFieldsRepository;
 use App\Traits\ConfigTrait;
 use App\Traits\CountRepository;
 use App\Traits\DateRepository;
@@ -56,14 +57,19 @@ class PersonController extends Controller
      * @var UserRepository
      */
     private $userRepository;
+    /**
+     * @var RequiredFieldsRepository
+     */
+    private $fieldsRepository;
 
     public function __construct(PersonRepository $repository, StateRepository $stateRepositoryTrait, RoleRepository $roleRepository,
-                                UserRepository $userRepository)
+                                UserRepository $userRepository, RequiredFieldsRepository $fieldsRepository)
     {
         $this->repository = $repository;
         $this->stateRepository = $stateRepositoryTrait;
         $this->roleRepository = $roleRepository;
         $this->userRepository = $userRepository;
+        $this->fieldsRepository = $fieldsRepository;
     }
 
     /**
@@ -89,8 +95,9 @@ class PersonController extends Controller
         $countGroups[] = $this->countGroups();
         $notify = $this->notify();
         $qtde = count($notify);
+        $leader = $this->getLeaderRoleId();
 
-        return view('people.index', compact('adults', 'countPerson', 'countGroups', 'notify', 'qtde'));
+        return view('people.index', compact('adults', 'countPerson', 'countGroups', 'notify', 'qtde', 'leader'));
     }
 
     public function teenagers()
@@ -110,8 +117,9 @@ class PersonController extends Controller
         $countGroups[] = $this->countGroups();
         $notify = $this->notify();
         $qtde = count($notify);
+        $leader = $this->getLeaderRoleId();
 
-        return view('people.teenagers', compact('teen', 'countPerson', 'countGroups', 'notify', 'qtde'));
+        return view('people.teenagers', compact('teen', 'countPerson', 'countGroups', 'notify', 'qtde', 'leader'));
     }
 
 
@@ -127,8 +135,9 @@ class PersonController extends Controller
         $countGroups[] = $this->countGroups();
         $notify = $this->notify();
         $qtde = count($notify);
+        $leader = $this->getLeaderRoleId();
 
-        return view('people.inactive', compact('inactive', 'countPerson', 'countGroups', 'notify', 'qtde'));
+        return view('people.inactive', compact('inactive', 'countPerson', 'countGroups', 'notify', 'qtde', 'leader'));
     }
 
     public function turnActive($id)
@@ -157,6 +166,19 @@ class PersonController extends Controller
 
         $countGroups[] = $this->countGroups();
 
+        $leader = $this->getLeaderRoleId();
+
+        $notify = $this->notify();
+
+        $qtde = count($notify);
+
+        $fields = $this->fieldsRepository->findWhere([
+            'model' => 'person',
+            'church_id' => \Auth::user()->church_id
+        ]);
+
+        //dd($fields);
+
         $church_id = Auth::user()->church_id;
 
         $adults = $this->repository->findWhere(
@@ -166,10 +188,6 @@ class PersonController extends Controller
                 ['maritalStatus', '<>', 'Casado']
             ]
         );
-
-        $notify = $this->notify();
-
-        $qtde = count($notify);
 
         $fathers = DB::table('people')
             ->join('users', 'users.person_id', 'people.id')
@@ -195,7 +213,7 @@ class PersonController extends Controller
             ->get();
 
         return view('people.create', compact('state', 'roles', 'countPerson', 'countGroups',
-            'adults', 'notify', 'qtde', 'fathers', 'mothers'));
+            'adults', 'notify', 'qtde', 'fathers', 'mothers', 'leader', 'fields'));
     }
 
     public function createTeen()
@@ -211,6 +229,8 @@ class PersonController extends Controller
         $countPerson[] = $this->countPerson();
 
         $countGroups[] = $this->countGroups();
+
+        $leader = $this->getLeaderRoleId();
 
         $church_id = Auth::getUser()->church_id;
 
@@ -246,7 +266,7 @@ class PersonController extends Controller
             ->get();
 
         return view('people.create-teen', compact('state', 'roles', 'countPerson', 'countGroups',
-            'adults', 'notify', 'qtde', 'fathers', 'mothers'));
+            'adults', 'notify', 'qtde', 'fathers', 'mothers', 'leader'));
     }
 
     /**
@@ -257,6 +277,11 @@ class PersonController extends Controller
      */
     public function store(Request $request)
     {
+        $fields = $this->fieldsRepository->findWhere([
+            'model' => 'person',
+            'church_id' => \Auth::user()->church_id
+        ]);
+
         $file = $request->file('img');
 
         $email = $request->only(['email']);
@@ -275,7 +300,7 @@ class PersonController extends Controller
         {
             if(!$password){
                 \Session::flash("email.exists", "Escolha uma senha");
-                return redirect()->route("person.create");
+                return redirect()->route("person.create")->withInput();
             }
             elseif($password != $confirmPass){
                 \Session::flash("email.exists", "As senhas não combinam");
@@ -286,6 +311,16 @@ class PersonController extends Controller
         }
 
         $email = $email["email"];
+
+        foreach ($fields as $field) {
+            if($field->value == "email"){
+                if($field->required == 1 && $email == ""){
+                    \Session::flash("email.exists", "Insira seu email");
+                    return redirect()->route("person.create")->withInput();
+                }
+            }
+        }
+
 
         $user = User::select('id')->where('email', $email)->first() or null;
 
@@ -298,7 +333,38 @@ class PersonController extends Controller
             return redirect()->route("person.create")->withInput();
         }
 
-        $data = $request->except(['img', 'email', 'password', 'confirm-password']);
+        $data = $request->except(['img', 'email', 'password', 'confirm-password', '_token']);
+
+        $array = array_keys($data);
+
+        //dd($array[0]);
+
+        $i = 0;
+
+        foreach ($fields as $field)
+        {
+            while($i < count($array))
+            {
+                if($array[$i] == $field->value)
+                {
+                    if($field->required == 1 && $data[$array[$i]] == "")
+                    {
+                        \Session::flash("email.exists", "Preencha o campo " . $field->field);
+                        return redirect()->route("person.create")->withInput();
+                    }
+                    else
+                    {
+                        $i++;
+                    }
+                }
+                else{
+                    $i++;
+                }
+            }
+
+            $i = 0;
+
+        }
 
         $data['dateBirth'] = $this->formatDateBD($data['dateBirth']);
 
@@ -513,6 +579,8 @@ class PersonController extends Controller
 
         $qtde = count($notify) or 0;
 
+        $leader = $this->getLeaderRoleId();
+
 
         $fathers = DB::table('people')
             ->join('users', 'users.person_id', 'people.id')
@@ -538,7 +606,7 @@ class PersonController extends Controller
             ->get();
 
         return view('people.edit-teen', compact('person', 'state', 'location', 'roles', 'countPerson',
-            'countGroups', 'notify', 'qtde', 'fathers', 'mothers'));
+            'countGroups', 'notify', 'qtde', 'fathers', 'mothers', 'leader'));
     }
 
     /**
@@ -672,6 +740,8 @@ class PersonController extends Controller
             $this->userRepository->delete($user);
         }
 
+        RecentUsers::where('person_id', $id)->delete();
+
         $person->delete();
 
         return json_encode(
@@ -684,6 +754,8 @@ class PersonController extends Controller
     public function destroyTeen($id)
     {
         $person = $this->repository->find($id);
+
+        RecentUsers::where('person_id', $id)->delete();
 
         $person->delete();
 

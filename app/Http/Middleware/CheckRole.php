@@ -40,7 +40,7 @@ class CheckRole
         //Id do cargo/role de visitante
         $visitors_id = $this->roleRepository->findByField('name', 'Visitante')->first()->id;
 
-        $role_id = Auth::getUser()->person ? Auth::getUser()->person->role_id : $visitors_id;
+        $role_id = Auth::user()->person ? Auth::user()->person->role_id : $visitors_id;
 
         if($role_id <> $role)
         {

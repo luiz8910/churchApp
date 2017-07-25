@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use App\Mail\resetPassword;
 use App\Models\Event;
 use App\Models\Group;
+use App\Models\RecentGroups;
 use App\Models\User;
 use App\Traits\ConfigTrait;
 use App\Traits\CountRepository;
@@ -102,7 +103,9 @@ class GroupController extends Controller
 
         $qtde = count($notify) or 0;
 
-        return view('groups.index', compact('groups', 'countPerson', 'countMembers', 'countGroups', 'notify', 'qtde'));
+        $leader = $this->getLeaderRoleId();
+
+        return view('groups.index', compact('groups', 'countPerson', 'countMembers', 'countGroups', 'notify', 'qtde', 'leader'));
     }
 
     /**
@@ -124,7 +127,9 @@ class GroupController extends Controller
 
         $qtde = count($notify);
 
-        return view('groups.create', compact('countPerson', 'countGroups', 'state', 'roles', 'notify', 'qtde'));
+        $leader = $this->getLeaderRoleId();
+
+        return view('groups.create', compact('countPerson', 'countGroups', 'state', 'roles', 'notify', 'qtde', 'leader'));
     }
 
     /**
@@ -213,6 +218,8 @@ class GroupController extends Controller
 
         $countGroups[] = $this->countGroups();
 
+        $leader = $this->getLeaderRoleId();
+
         $church_id = $this->getUserChurch();
 
         $events = count($this->groupServices->listGroupEvents($id, $church_id));
@@ -284,7 +291,7 @@ class GroupController extends Controller
         return view('groups.edit', compact('group', 'countPerson', 'countGroups',
             'events', 'address', 'location', 'people', 'roles', 'state', 'members',
             'event_user', 'notify', 'qtde', 'pag', 'owner_name', 'owner_person_id',
-            'qtdeMembers', 'imgProfile', 'leader', 'sub'));
+            'qtdeMembers', 'imgProfile', 'leader', 'sub', 'leader'));
     }
 
 
@@ -327,6 +334,8 @@ class GroupController extends Controller
         DB::table('events')
             ->where('group_id', $id)
             ->update(['group_id' => null]);
+
+        RecentGroups::where('group_id', $id)->delete();
 
         $group->delete();
 

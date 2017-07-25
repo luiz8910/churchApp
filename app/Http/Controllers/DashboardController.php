@@ -80,9 +80,18 @@ class DashboardController extends Controller
     public function index()
     {
 
+        /*
+        * Variáveis gerais p/ todas as páginas
+        *
+        */
+
         $countPerson[] = $this->countPerson();
 
         $countGroups[] = $this->countGroups();
+
+        $leader = $this->getLeaderRoleId();
+
+        //Fim Variáveis
 
         $church_id = Auth::user()->church_id;
 
@@ -132,7 +141,7 @@ class DashboardController extends Controller
         if (count($events) == 0)
         {
             return view('dashboard.index', compact('countPerson', 'countGroups', 'events', 'notify', 'qtde',
-                'countMembers', 'street', 'groups', 'event_person', 'nextEvent'));
+                'countMembers', 'street', 'groups', 'event_person', 'nextEvent', 'leader'));
         }
 
         $eventDate = [];
@@ -355,7 +364,7 @@ class DashboardController extends Controller
             'allMonths', 'allDays', 'days', 'allEvents',
             'thisMonth', 'today', 'ano', 'allEventsNames', 'allEventsTimes',
             'allEventsFrequencies', 'allEventsAddresses', 'numWeek',
-            'people', 'groups_recent', 'events_recent', 'qtde_users', 'qtde_groups', 'qtde_events'));
+            'people', 'groups_recent', 'events_recent', 'qtde_users', 'qtde_groups', 'qtde_events', 'leader'));
     }
 
     public function oldindex()

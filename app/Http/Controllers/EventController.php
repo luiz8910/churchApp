@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Cron\CronEvents;
 use App\Events\AgendaEvent;
 use App\Models\Event;
+use App\Models\RecentEvents;
 use App\Models\User;
 use App\Repositories\FrequencyRepository;
 use App\Repositories\RoleRepository;
@@ -99,13 +100,15 @@ class EventController extends Controller
     public function index()
     {
         /*
-         * Variáveis gerais p/ todas as páginas
-         *
-         */
+        * Variáveis gerais p/ todas as páginas
+        *
+        */
 
         $countPerson[] = $this->countPerson();
 
         $countGroups[] = $this->countGroups();
+
+        $leader = $this->getLeaderRoleId();
 
         $state = $this->stateRepository->all();
 
@@ -229,7 +232,7 @@ class EventController extends Controller
         return view("events.index", compact('countPerson', 'countGroups', 'state',
             'events', 'notify', 'qtde', 'allMonths', 'allDays', 'days', 'allEvents',
             'thisMonth', 'today', 'ano', 'allEventsNames', 'allEventsTimes',
-            'allEventsFrequencies', 'allEventsAddresses', 'numWeek', 'church_id'));
+            'allEventsFrequencies', 'allEventsAddresses', 'numWeek', 'church_id', 'leader'));
     }
 
 
@@ -402,7 +405,7 @@ class EventController extends Controller
         return view("events.index", compact('countPerson', 'countGroups', 'state',
             'events', 'notify', 'qtde', 'allMonths', 'allDays', 'days', 'allEvents',
             'thisMonth', 'today', 'next', 'ano', 'allEventsNames', 'allEventsTimes',
-            'allEventsFrequencies', 'allEventsAddresses', 'church_id'));
+            'allEventsFrequencies', 'allEventsAddresses', 'church_id', 'leader'));
     }
 
     public function oldindex()
@@ -539,6 +542,8 @@ class EventController extends Controller
 
         $roles = $this->roleRepository->all();
 
+        $leader = $this->getLeaderRoleId();
+
         $frequencies = $this->frequencyRepository->all();
 
         $notify = $this->notify();
@@ -550,11 +555,11 @@ class EventController extends Controller
         if($id)
         {
             return view('events.create', compact('countPerson', 'countGroups', 'state', 'roles',
-                'id', 'notify', 'qtde', 'groups', 'frequencies'));
+                'id', 'notify', 'qtde', 'groups', 'frequencies', 'leader'));
         }
         else{
             return view('events.create', compact('countPerson', 'countGroups', 'state', 'roles',
-                'notify', 'qtde', 'groups', 'frequencies'));
+                'notify', 'qtde', 'groups', 'frequencies', 'leader'));
         }
 
 
@@ -717,6 +722,8 @@ class EventController extends Controller
 
         $frequencies = $this->frequencyRepository->all();
 
+        $leader = $this->getLeaderRoleId();
+
         if(\Auth::user()->church_id == null)
         {
             $church_id = 1;
@@ -817,7 +824,7 @@ class EventController extends Controller
         return view('events.edit', compact('countPerson', 'countGroups', 'state', 'roles',
             'event', 'location', 'notify', 'qtde', 'eventDays', 'eventFrequency', 'check',
             'eventPeople', 'group', 'groups', 'sub', 'canCheckIn', 'createdBy_id', 'createdBy',
-            'nextEventDate', 'leader', 'preposicao', 'frequencies', 'church_id'));
+            'nextEventDate', 'leader', 'preposicao', 'frequencies', 'church_id', 'leader'));
     }
 
     public function update(Request $request, $id)
@@ -941,6 +948,8 @@ class EventController extends Controller
         DB::table('event_person')
             ->where(['event_id' => $id])
             ->update(['deleted_at' => Carbon::now()]);
+
+        RecentEvents::where('event_id', $id)->delete();
 
         $event->delete();
 

@@ -44,447 +44,447 @@ License: You must have a valid license purchased only from themeforest(the above
 <!-- END HEAD -->
 
 <body class="page-container-bg-solid">
-<div class="page-wrapper">
-    <div class="page-wrapper-row">
-        <div class="page-wrapper-top">
-            <!-- BEGIN HEADER -->
-            @if(!isset($church_id) || $church_id == null)
-                @include('includes.header')
-            @else
-                @include('includes.header-edit')
-            @endif
-            <!-- END HEADER -->
+    <div class="page-wrapper">
+        <div class="page-wrapper-row">
+            <div class="page-wrapper-top">
+                <!-- BEGIN HEADER -->
+                @if(!isset($church_id) || $church_id == null)
+                    @include('includes.header')
+                @else
+                    @include('includes.header-edit')
+                @endif
+                <!-- END HEADER -->
+            </div>
         </div>
-    </div>
-    <div class="page-wrapper-row full-height">
-        <div class="page-wrapper-middle">
-            <!-- BEGIN CONTAINER -->
-            <div class="page-container">
-                <!-- BEGIN CONTENT -->
-                <div class="page-content-wrapper">
-                    <!-- BEGIN CONTENT BODY -->
-                    <!-- BEGIN PAGE HEAD-->
-                    <div class="page-head">
-                        <div class="container">
-                            <!-- BEGIN PAGE TITLE -->
-                            <div class="page-title">
-                                <h1> Eventos </h1>
+        <div class="page-wrapper-row full-height">
+            <div class="page-wrapper-middle">
+                <!-- BEGIN CONTAINER -->
+                <div class="page-container">
+                    <!-- BEGIN CONTENT -->
+                    <div class="page-content-wrapper">
+                        <!-- BEGIN CONTENT BODY -->
+                        <!-- BEGIN PAGE HEAD-->
+                        <div class="page-head">
+                            <div class="container">
+                                <!-- BEGIN PAGE TITLE -->
+                                <div class="page-title">
+                                    <h1> Eventos </h1>
+                                </div>
+                                <!-- END PAGE TITLE -->
+
+
                             </div>
-                            <!-- END PAGE TITLE -->
-
-
                         </div>
-                    </div>
-                    <!-- END PAGE HEAD-->
-                    <!-- BEGIN PAGE CONTENT BODY -->
-                    <div class="page-content">
-                        <div class="container">
-                            <!-- BEGIN PAGE BREADCRUMBS -->
-                            <ul class="page-breadcrumb breadcrumb">
-                                <li>
-                                    <a href="{{ route('index') }}">Home</a>
-                                    <i class="fa fa-circle"></i>
-                                </li>
-                                <li>
-                                    <span>Eventos</span>
-                                </li>
-                            </ul>
+                        <!-- END PAGE HEAD-->
+                        <!-- BEGIN PAGE CONTENT BODY -->
+                        <div class="page-content">
+                            <div class="container">
+                                <!-- BEGIN PAGE BREADCRUMBS -->
+                                <ul class="page-breadcrumb breadcrumb">
+                                    <li>
+                                        <a href="{{ route('index') }}">Home</a>
+                                        <i class="fa fa-circle"></i>
+                                    </li>
+                                    <li>
+                                        <span>Eventos</span>
+                                    </li>
+                                </ul>
 
-                            <div class="alert alert-danger alert-dismissible" id="delete-group-alert" role="alert" style="display: none;">
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                <strong>Atenção </strong><span id="message"></span>
-                            </div>
+                                <div class="alert alert-danger alert-dismissible" id="delete-group-alert" role="alert" style="display: none;">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <strong>Atenção </strong><span id="message"></span>
+                                </div>
 
-                            <!-- END PAGE BREADCRUMBS -->
-                            <!-- BEGIN PAGE CONTENT INNER -->
-                            <div class="page-content-inner">
-                                <div class="search-page search-content-4">
-                                    <div class="search-bar bordered hidden-lg hidden-md">
-                                        <div class="row">
-                                            <div class="col-lg-8">
-                                                <div class="input-group ">
-                                                    <input type="text" class="form-control" id="search-input-mobile" placeholder="Pesquisar Eventos">
-                                                    <span class="input-group-btn">
-                                                        <button class="btn green-soft uppercase bold small-button" type="button">
-                                                            <i class="fa fa-search"></i>
-                                                        </button>
-                                                    </span>
+                                <!-- END PAGE BREADCRUMBS -->
+                                <!-- BEGIN PAGE CONTENT INNER -->
+                                <div class="page-content-inner">
+                                    <div class="search-page search-content-4">
+                                        <div class="search-bar bordered hidden-lg hidden-md">
+                                            <div class="row">
+                                                <div class="col-lg-8">
+                                                    <div class="input-group ">
+                                                        <input type="text" class="form-control" id="search-input-mobile" placeholder="Pesquisar Eventos">
+                                                        <span class="input-group-btn">
+                                                            <button class="btn green-soft uppercase bold small-button" type="button">
+                                                                <i class="fa fa-search"></i>
+                                                            </button>
+                                                        </span>
+                                                    </div>
+
+                                                    <ul id="ul-results-mobile">
+
+                                                    </ul>
                                                 </div>
-
-                                                <ul id="ul-results-mobile">
-
-                                                </ul>
                                             </div>
                                         </div>
-                                    </div>
 
 
 
-                                    <div class="alert alert-success alert-dismissible" id="alert-success" role="alert" style="display: none;">
-                                        <button type="button" class="close" id="button-success" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                        <strong>Sucesso</strong> Você está inscrito
-                                    </div>
-
-                                    <div class="alert alert-info alert-dismissible" id="alert-info" role="alert" style="display: none;">
-                                        <button type="button" class="close" id="button-info" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                        <strong>Atenção</strong> Você cancelou sua inscrição
-                                    </div>
-
-                                    <div class="alert alert-danger alert-dismissible"  role="alert" style="display: none;">
-                                        <button type="button" class="close" id="button-danger" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                        <strong>Erro</strong> Sua solicitação não foi processada
-                                    </div>
-
-                                    @if(Session::has('event.deleted'))
-                                        <div class="alert alert-danger alert-dismissible" id="alert-danger" role="alert" style="display: block;">
-                                            <button type="button" class="close" id="button-danger" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                            <strong>Atenção</strong> {{ Session::get('event.deleted') }}
+                                        <div class="alert alert-success alert-dismissible" id="alert-success" role="alert" style="display: none;">
+                                            <button type="button" class="close" id="button-success" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <strong>Sucesso</strong> Você está inscrito
                                         </div>
-                                    @endif
 
-                                    <?php $route = "events";?>
+                                        <div class="alert alert-info alert-dismissible" id="alert-info" role="alert" style="display: none;">
+                                            <button type="button" class="close" id="button-info" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <strong>Atenção</strong> Você cancelou sua inscrição
+                                        </div>
 
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <!-- BEGIN BORDERED TABLE PORTLET-->
-                                            <div class="portlet light portlet-fit ">
-                                                <div class="portlet-title">
-                                                    <div class="caption">
-                                                        <i class="icon-settings font-red"></i>
-                                                        <span class="caption-subject font-red sbold uppercase">Eventos</span>
+                                        <div class="alert alert-danger alert-dismissible"  role="alert" style="display: none;">
+                                            <button type="button" class="close" id="button-danger" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <strong>Erro</strong> Sua solicitação não foi processada
+                                        </div>
 
-                                                    </div>
+                                        @if(Session::has('event.deleted'))
+                                            <div class="alert alert-danger alert-dismissible" id="alert-danger" role="alert" style="display: block;">
+                                                <button type="button" class="close" id="button-danger" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                <strong>Atenção</strong> {{ Session::get('event.deleted') }}
+                                            </div>
+                                        @endif
 
+                                        <?php $route = "events";?>
 
-                                                    <div class="actions">
-                                                        {!! Form::open(['route' => 'event.destroyMany', 'id' => 'form-destroyMany', 'method' => 'GET']) !!}
-                                                        <div class="btn-group btn-group-devided">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <!-- BEGIN BORDERED TABLE PORTLET-->
+                                                <div class="portlet light portlet-fit ">
+                                                    <div class="portlet-title">
+                                                        <div class="caption">
+                                                            <i class="icon-settings font-red"></i>
+                                                            <span class="caption-subject font-red sbold uppercase">Eventos</span>
 
-                                                            <div id="modelToDel">
-
-                                                            </div>
-
-
-
-
-                                                            <a href=""
-                                                               class="btn btn-danger btn-circle" id="btn-delete-model"
-                                                               onclick="event.preventDefault();document.getElementById('form-destroyMany').submit();"
-                                                               style="display: none;">
-                                                                <i class="fa fa-close"></i>
-                                                                Excluir
-                                                            </a>
-
-                                                            <a href="javascript:;" onclick="newEvent()" class="btn btn-primary btn-circle">
-                                                                <i class="fa fa-plus"></i>
-                                                                Evento
-                                                            </a>
+                                                        </div>
 
 
+                                                        <div class="actions">
+                                                            {!! Form::open(['route' => 'event.destroyMany', 'id' => 'form-destroyMany', 'method' => 'GET']) !!}
+                                                            <div class="btn-group btn-group-devided">
 
-                                                            <div class="btn-group">
-                                                                <a class="btn red btn-outline btn-circle" href="javascript:;" data-toggle="dropdown">
-                                                                    <i class="fa fa-share"></i>
-                                                                    <span class="hidden-xs"> Opções </span>
-                                                                    <i class="fa fa-angle-down"></i>
+                                                                <div id="modelToDel">
+
+                                                                </div>
+
+
+
+
+                                                                <a href=""
+                                                                   class="btn btn-danger btn-circle" id="btn-delete-model"
+                                                                   onclick="event.preventDefault();document.getElementById('form-destroyMany').submit();"
+                                                                   style="display: none;">
+                                                                    <i class="fa fa-close"></i>
+                                                                    Excluir
                                                                 </a>
-                                                                <ul class="dropdown-menu pull-right" id="sample_3_tools">
-                                                                    <li>
-                                                                        <a href="javascript:;" id="print" onclick="printDiv('printable-table')"
-                                                                           data-action="0" class="tool-action">
-                                                                            <i class="icon-printer"></i> Imprimir
-                                                                        </a>
-                                                                    </li>
-                                                                    <!--<li>
-                                                                        <a href="javascript:;" data-action="1" class="tool-action">
-                                                                            <i class="icon-check"></i> Copiar</a>
-                                                                    </li>-->
-                                                                    <li>
-                                                                        <a href="javascript:;" data-action="2"
-                                                                           onclick="printDiv('printable-table', 'pdf')" class="tool-action">
-                                                                            <i class="icon-doc"></i> PDF</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="{{ route($route.'.excel', ['format' => 'xls']) }}"
-                                                                           data-action="3" target="_blank"
-                                                                           class="tool-action">
-                                                                            <i class="icon-paper-clip"></i> Excel</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="{{ route($route.'.excel', ['format' => 'csv']) }}"
-                                                                           data-action="4" target="_blank" class="tool-action">
-                                                                            <i class="icon-cloud-upload"></i> CSV</a>
-                                                                    </li>
 
-                                                                </ul>
+                                                                <a href="javascript:;" onclick="newEvent()" class="btn btn-primary btn-circle">
+                                                                    <i class="fa fa-plus"></i>
+                                                                    Evento
+                                                                </a>
+
+
+
+                                                                <div class="btn-group">
+                                                                    <a class="btn red btn-outline btn-circle" href="javascript:;" data-toggle="dropdown">
+                                                                        <i class="fa fa-share"></i>
+                                                                        <span class="hidden-xs"> Opções </span>
+                                                                        <i class="fa fa-angle-down"></i>
+                                                                    </a>
+                                                                    <ul class="dropdown-menu pull-right" id="sample_3_tools">
+                                                                        <li>
+                                                                            <a href="javascript:;" id="print" onclick="printDiv('printable-table')"
+                                                                               data-action="0" class="tool-action">
+                                                                                <i class="icon-printer"></i> Imprimir
+                                                                            </a>
+                                                                        </li>
+                                                                        <!--<li>
+                                                                            <a href="javascript:;" data-action="1" class="tool-action">
+                                                                                <i class="icon-check"></i> Copiar</a>
+                                                                        </li>-->
+                                                                        <li>
+                                                                            <a href="javascript:;" data-action="2"
+                                                                               onclick="printDiv('printable-table', 'pdf')" class="tool-action">
+                                                                                <i class="icon-doc"></i> PDF</a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="{{ route($route.'.excel', ['format' => 'xls']) }}"
+                                                                               data-action="3" target="_blank"
+                                                                               class="tool-action">
+                                                                                <i class="icon-paper-clip"></i> Excel</a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="{{ route($route.'.excel', ['format' => 'csv']) }}"
+                                                                               data-action="4" target="_blank" class="tool-action">
+                                                                                <i class="icon-cloud-upload"></i> CSV</a>
+                                                                        </li>
+
+                                                                    </ul>
+                                                                </div>
+
+
                                                             </div>
-
-
-                                                        </div>
-                                                        {!! Form::close() !!}
-
-                                                    </div>
-                                                </div>
-                                                <div class="portlet-body">
-                                                    <div class="row">
-                                                        <div class="col-md-12">
-                                                            <div class="pull-right hidden-xs hidden-sm">
-                                                                <!--<a href="javascript:;" class="btn btn-default btn-circle" style="margin-left: 3px;">
-                                                                    <i class="fa fa-search"></i>
-                                                                </a>-->
-
-                                                                <input type="text" class="form-control" id="search-input" placeholder="Pesquisar Eventos">
-
-                                                                <ul id="ul-results">
-
-                                                                </ul>
-                                                            </div>
+                                                            {!! Form::close() !!}
 
                                                         </div>
                                                     </div>
-                                                    <div class="table-scrollable table-scrollable-borderless">
-                                                        <table class="table table-hover table-light">
-                                                            <thead>
-                                                            <tr class="uppercase">
-                                                                <th>#
-                                                                    {{--<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
-                                                                        <input type="checkbox" name="events" class="checkboxes check-model" id="check-0"
-                                                                               value="0" />
-                                                                        <span></span>
-                                                                    </label>--}}
-                                                                </th>
-                                                                <th class="printable-table-header"> Nome </th>
-                                                                <th class="printable-table-header"> Frequência </th>
-                                                                <th class="printable-table-header"> Criado Por </th>
-                                                                <th class="printable-table-header"> Grupo </th>
-                                                                <th> Check-in/Excluir </th>
-                                                            </tr>
-                                                            </thead>
+                                                    <div class="portlet-body">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="pull-right hidden-xs hidden-sm">
+                                                                    <!--<a href="javascript:;" class="btn btn-default btn-circle" style="margin-left: 3px;">
+                                                                        <i class="fa fa-search"></i>
+                                                                    </a>-->
+
+                                                                    <input type="text" class="form-control" id="search-input" placeholder="Pesquisar Eventos">
+
+                                                                    <ul id="ul-results">
+
+                                                                    </ul>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="table-scrollable table-scrollable-borderless">
+                                                            <table class="table table-hover table-light">
+                                                                <thead>
+                                                                <tr class="uppercase">
+                                                                    <th>#
+                                                                        {{--<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                                                            <input type="checkbox" name="events" class="checkboxes check-model" id="check-0"
+                                                                                   value="0" />
+                                                                            <span></span>
+                                                                        </label>--}}
+                                                                    </th>
+                                                                    <th class="printable-table-header"> Nome </th>
+                                                                    <th class="printable-table-header"> Frequência </th>
+                                                                    <th class="printable-table-header"> Criado Por </th>
+                                                                    <th class="printable-table-header"> Grupo </th>
+                                                                    <th> Check-in/Excluir </th>
+                                                                </tr>
+                                                                </thead>
 
 
 
-                                                            <tbody>
-                                                            @foreach($events as $event)
-                                                                <tr class="printable-table-tr" id="tr-{{ $event->id }}">
-                                                                    <td>
-                                                                        @if(Auth::user()->church_id && Auth::user()->person->role_id == 1)
-                                                                            <fieldset>
-                                                                                <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
-                                                                                    <input type="checkbox" name="events" class="checkboxes check-model" id="check-{{ $event->id }}"
-                                                                                           value="{{ $event->id }}" />
-                                                                                    <span></span>
-                                                                                </label>
-                                                                            </fieldset>
-
-                                                                        @endif
-                                                                    </td>
-                                                                    <td>
-                                                                        <a href="{{ route('event.edit', ['event' => $event->id]) }}" rel="external" class="printable-table">
-                                                                            {{ $event->name }}
-                                                                        </a>
-                                                                    </td>
-                                                                    <td class="printable-table"> {{ $event->frequency }} </td>
-                                                                    <td>
-                                                                        @if(\Auth::user()->id != $event->createdBy_id && Auth::user()->church_id != null)
-                                                                            <a href="{{ route('person.edit',
-                                                                                ['person' => \App\Models\User::find($event->createdBy_id)->person->id]) }}" rel="external" class="printable-table">
-                                                                                {{ \App\Models\User::find($event->createdBy_id)->person->name }}
-                                                                            </a>
-                                                                        @else
-                                                                            {{ \App\Models\User::find($event->createdBy_id)->person->name }}
-                                                                        @endif
-                                                                    </td>
-                                                                    <td>
-                                                                        @if($event->group_id)
-                                                                            @if(Auth::user()->church_id != null)
-                                                                            <a href="{{ route("group.edit", ['group' => $event->group_id]) }}" rel="external" class="printable-table">
-                                                                                {{ $event['group_name'] }}
-                                                                            </a>
-                                                                            @else
-                                                                                {{ $event['group_name'] }}
-                                                                            @endif
-                                                                        @else Sem Grupo
-                                                                        @endif
-                                                                    </td>
-
-
-                                                                        <?php $deleteForm = "delete-" . $event->id; ?>
+                                                                <tbody>
+                                                                @foreach($events as $event)
+                                                                    <tr class="printable-table-tr" id="tr-{{ $event->id }}">
                                                                         <td>
-                                                                            @if($event->checkIn === false)
+                                                                            @if(Auth::user()->church_id && Auth::user()->person->role_id == 1)
+                                                                                <fieldset>
+                                                                                    <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                                                                        <input type="checkbox" name="events" class="checkboxes check-model" id="check-{{ $event->id }}"
+                                                                                               value="{{ $event->id }}" />
+                                                                                        <span></span>
+                                                                                    </label>
+                                                                                </fieldset>
 
-                                                                                <a href="javascript:;" class="btn btn-danger btn-sm btn-circle" id="checkIn" onclick='checkOut({{ $event->id }})'>
-                                                                                    <i class="fa fa-close" id="i-checkIn"></i>
-
-                                                                                </a>
-                                                                            @elseif($event->checkIn)
-                                                                                <a href="javascript:;" class="btn btn-success btn-sm btn-circle" id="checkIn" onclick='checkInEvent({{ $event->id }})'>
-                                                                                    <i class="fa fa-check" id="i-checkIn"></i>
-
-                                                                                </a>
-
-                                                                            @elseif($event->checkIn === null)
-                                                                                <a href="javascript:;" class="btn btn-success btn-sm btn-circle" disabled>
-                                                                                    <i class="fa fa-check" id="i-checkIn"></i>
-
-                                                                                </a>
                                                                             @endif
-
-                                                                            @if(Auth::user()->church_id && Auth::getUser()->person->role_id == 1)
-                                                                                <a href="javascript:;" class="btn btn-danger btn-sm btn-circle pop"
-                                                                                   title="Excluir evento"
-                                                                                   data-toggle="confirmation" data-placement="top" data-original-title="Deseja Excluir?"
-                                                                                   data-popout="true" onclick="event.preventDefault()"
-                                                                                   id="btn-{{ $deleteForm }}">
-                                                                                    <i class="fa fa-trash"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <a href="{{ route('event.edit', ['event' => $event->id]) }}" rel="external" class="printable-table">
+                                                                                {{ $event->name }}
+                                                                            </a>
+                                                                        </td>
+                                                                        <td class="printable-table"> {{ $event->frequency }} </td>
+                                                                        <td>
+                                                                            @if(\Auth::user()->id != $event->createdBy_id && Auth::user()->church_id != null)
+                                                                                <a href="{{ route('person.edit',
+                                                                                    ['person' => \App\Models\User::find($event->createdBy_id)->person->id]) }}" rel="external" class="printable-table">
+                                                                                    {{ \App\Models\User::find($event->createdBy_id)->person->name }}
                                                                                 </a>
+                                                                            @else
+                                                                                {{ \App\Models\User::find($event->createdBy_id)->person->name }}
                                                                             @endif
-
+                                                                        </td>
+                                                                        <td>
+                                                                            @if($event->group_id)
+                                                                                @if(Auth::user()->church_id != null)
+                                                                                <a href="{{ route("group.edit", ['group' => $event->group_id]) }}" rel="external" class="printable-table">
+                                                                                    {{ $event['group_name'] }}
+                                                                                </a>
+                                                                                @else
+                                                                                    {{ $event['group_name'] }}
+                                                                                @endif
+                                                                            @else Sem Grupo
+                                                                            @endif
                                                                         </td>
 
 
+                                                                            <?php $deleteForm = "delete-" . $event->id; ?>
+                                                                            <td>
+                                                                                @if($event->checkIn === false)
 
-                                                                    <td>
+                                                                                    <a href="javascript:;" class="btn btn-danger btn-sm btn-circle" id="checkIn" onclick='checkOut({{ $event->id }})'>
+                                                                                        <i class="fa fa-close" id="i-checkIn"></i>
 
-                                                                    </td>
+                                                                                    </a>
+                                                                                @elseif($event->checkIn)
+                                                                                    <a href="javascript:;" class="btn btn-success btn-sm btn-circle" id="checkIn" onclick='checkInEvent({{ $event->id }})'>
+                                                                                        <i class="fa fa-check" id="i-checkIn"></i>
 
-                                                                </tr>
-                                                            @endforeach
+                                                                                    </a>
 
-                                                            </tbody>
+                                                                                @elseif($event->checkIn === null)
+                                                                                    <a href="javascript:;" class="btn btn-success btn-sm btn-circle" disabled>
+                                                                                        <i class="fa fa-check" id="i-checkIn"></i>
 
-                                                        </table>
-                                                        <br>
-                                                        <div class="pull-right">
-                                                            {{ $events->links() }}
-                                                        </div>
+                                                                                    </a>
+                                                                                @endif
 
-                                                        <div class="progress" id="progress-danger" style="display: none;">
-                                                            <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" aria-valuenow="100"
-                                                                 aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-                                                                Excluindo...
-                                                                <span class="sr-only">Excluindo...</span>
+                                                                                @if(Auth::user()->church_id && Auth::getUser()->person->role_id == 1)
+                                                                                    <a href="javascript:;" class="btn btn-danger btn-sm btn-circle pop"
+                                                                                       title="Excluir evento"
+                                                                                       data-toggle="confirmation" data-placement="top" data-original-title="Deseja Excluir?"
+                                                                                       data-popout="true" onclick="event.preventDefault()"
+                                                                                       id="btn-{{ $deleteForm }}">
+                                                                                        <i class="fa fa-trash"></i>
+                                                                                    </a>
+                                                                                @endif
+
+                                                                            </td>
+
+
+
+                                                                        <td>
+
+                                                                        </td>
+
+                                                                    </tr>
+                                                                @endforeach
+
+                                                                </tbody>
+
+                                                            </table>
+                                                            <br>
+                                                            <div class="pull-right">
+                                                                {{ $events->links() }}
                                                             </div>
+
+                                                            <div class="progress" id="progress-danger" style="display: none;">
+                                                                <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" aria-valuenow="100"
+                                                                     aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                                                                    Excluindo...
+                                                                    <span class="sr-only">Excluindo...</span>
+                                                                </div>
+                                                            </div>
+
+                                                            <input type="hidden" id="notific8-title">
+                                                            <input type="hidden" id="notific8-text">
+                                                            <input type="hidden" id="notific8-type" value="danger">
+
+                                                            <a href="javascript:;" class="btn btn-danger" id="notific8" style="display: none;"></a>
+
                                                         </div>
-
-                                                        <input type="hidden" id="notific8-title">
-                                                        <input type="hidden" id="notific8-text">
-                                                        <input type="hidden" id="notific8-type" value="danger">
-
-                                                        <a href="javascript:;" class="btn btn-danger" id="notific8" style="display: none;"></a>
-
                                                     </div>
+
+
+                                                </div>
+                                                <!-- END BORDERED TABLE PORTLET-->
+                                            </div>
+                                        </div>
+
+
+                                        @include('includes.calendar')
+
+                                        <?php $i = 0; ?>
+                                        <?php $x = 0; ?>
+
+
+                                        <div class="row visible-sm visible-xs">
+                                            <div class="navbar text-center">
+                                                <div class="col-xs-4">
+                                                    <a href="{{ route('events.agenda-mes', ['thisMonth' => $thisMonth - 2])}}">
+                                                        <i class="fa fa-arrow-left fa-2x beconnect" aria-hidden="true"></i>
+                                                        <span class="font-purple">{{ $allMonths[$thisMonth - 1] }} / {{ substr($ano, 2) }}</span>
+                                                    </a>
+                                                </div>
+                                                <div class="col-xs-4">
+                                                    <a href="{{ route('index') }}">
+                                                        <img src="../logo/Simbolo2.png" class="logo-fixed-bar">
+                                                    </a>
+                                                </div>
+                                                <div class="col-xs-4">
+                                                    <a href="{{ route('events.agenda-mes', ['thisMonth' => $thisMonth])}}"
+                                                       class="pull-right">
+                                                        <i class="fa fa-arrow-right fa-2x beconnect" aria-hidden="true"></i>
+                                                        <span class="font-purple">{{ $allMonths[$thisMonth + 1] }} / {{ substr($ano, 2) }}</span>
+                                                    </a>
                                                 </div>
 
-
-                                            </div>
-                                            <!-- END BORDERED TABLE PORTLET-->
-                                        </div>
-                                    </div>
-
-
-                                    @include('includes.calendar')
-
-                                    <?php $i = 0; ?>
-                                    <?php $x = 0; ?>
-
-
-                                    <div class="row visible-sm visible-xs">
-                                        <div class="navbar text-center">
-                                            <div class="col-xs-4">
-                                                <a href="{{ route('events.agenda-mes', ['thisMonth' => $thisMonth - 2])}}">
-                                                    <i class="fa fa-arrow-left fa-2x beconnect" aria-hidden="true"></i>
-                                                    <span class="font-purple">{{ $allMonths[$thisMonth - 1] }} / {{ substr($ano, 2) }}</span>
-                                                </a>
-                                            </div>
-                                            <div class="col-xs-4">
-                                                <a href="{{ route('index') }}">
-                                                    <img src="../logo/Simbolo2.png" class="logo-fixed-bar">
-                                                </a>
-                                            </div>
-                                            <div class="col-xs-4">
-                                                <a href="{{ route('events.agenda-mes', ['thisMonth' => $thisMonth])}}"
-                                                   class="pull-right">
-                                                    <i class="fa fa-arrow-right fa-2x beconnect" aria-hidden="true"></i>
-                                                    <span class="font-purple">{{ $allMonths[$thisMonth + 1] }} / {{ substr($ano, 2) }}</span>
-                                                </a>
                                             </div>
 
                                         </div>
 
-                                    </div>
+                                        <div class="row">
+                                            <div class="col-xs-12 visible-xs visible-sm">
+                                                <div class="panel">
+                                                    <div class="panel-heading beconnect-back" style="margin-bottom: -20px">
+                                                        <h3 class="panel-title text-center">{{ $allMonths[$thisMonth] }}</h3>
+                                                    </div>
 
-                                    <div class="row">
-                                        <div class="col-xs-12 visible-xs visible-sm">
-                                            <div class="panel">
-                                                <div class="panel-heading beconnect-back" style="margin-bottom: -20px">
-                                                    <h3 class="panel-title text-center">{{ $allMonths[$thisMonth] }}</h3>
                                                 </div>
-
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <div class="row agenda mobile visible-sm visible-xs" id="agenda-mobile">
-                                        @while($i < count($days))
-                                            <div class="col-md-12">
-                                                <div class="panel panel-default panel-mobile @if(date("Y-m-d") == $days[$i]) today-back @endif">
-                                                    <div class="panel-heading">
-                                                        <h3 class="panel-title">
-                                                            <?php $weekDay =  date_format(date_create($days[$i]), 'N'); ?>
-                                                            {{ $allDays[$weekDay] }}
-                                                        </h3>
-                                                    </div>
-                                                    <div class="panel-body">
-                                                        <small class="pull-right day-panel-mobile">
-                                                            <?php $month = (int) substr($days[$i], 5, 2); ?>
-                                                            {{ substr($days[$i], 8) }} - {{ $allMonths[$month] }}
+                                        <div class="row agenda mobile visible-sm visible-xs" id="agenda-mobile">
+                                            @while($i < count($days))
+                                                <div class="col-md-12">
+                                                    <div class="panel panel-default panel-mobile @if(date("Y-m-d") == $days[$i]) today-back @endif">
+                                                        <div class="panel-heading">
+                                                            <h3 class="panel-title">
+                                                                <?php $weekDay =  date_format(date_create($days[$i]), 'N'); ?>
+                                                                {{ $allDays[$weekDay] }}
+                                                            </h3>
+                                                        </div>
+                                                        <div class="panel-body">
+                                                            <small class="pull-right day-panel-mobile">
+                                                                <?php $month = (int) substr($days[$i], 5, 2); ?>
+                                                                {{ substr($days[$i], 8) }} - {{ $allMonths[$month] }}
 
-                                                        </small>
+                                                            </small>
 
-                                                        <br>
+                                                            <br>
 
-                                                        @while($x < count($allEvents))
-                                                            @if($allEvents[$x]->eventDate == $days[$i])
-                                                                <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
-                                                                    {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
-                                                                </label>
+                                                            @while($x < count($allEvents))
+                                                                @if($allEvents[$x]->eventDate == $days[$i])
+                                                                    <label onclick="goToEvent({{ $allEvents[$x]->event_id }})">
+                                                                        {{ \App\Models\Event::find($allEvents[$x]->event_id)->name }}
+                                                                    </label>
 
-                                                                <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
-                                                            @endif
-                                                            <?php $x++; ?>
-                                                        @endwhile
+                                                                    <h5>{{ \App\Models\Event::find($allEvents[$x]->event_id)->startTime }}h</h5>
+                                                                @endif
+                                                                <?php $x++; ?>
+                                                            @endwhile
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <?php $i++; ?>
-                                            <?php $x = 0; ?>
-                                        @endwhile
+                                                <?php $i++; ?>
+                                                <?php $x = 0; ?>
+                                            @endwhile
+
+
+                                        </div>
+
+                                        <?php $i = 0; ?>
+                                        <?php $x = 0; ?>
+
 
 
                                     </div>
 
-                                    <?php $i = 0; ?>
-                                    <?php $x = 0; ?>
+                                    </div>
 
 
+                                    </div>
 
+
+                                    </div>
+                                    </div>
                                 </div>
-
-                                </div>
-
-
-                                </div>
-
-
-                                </div>
-                                </div>
+                                <!-- END PAGE CONTENT INNER -->
                             </div>
-                            <!-- END PAGE CONTENT INNER -->
                         </div>
+                        <!-- END PAGE CONTENT BODY -->
+                        <!-- END CONTENT BODY -->
                     </div>
-                    <!-- END PAGE CONTENT BODY -->
-                    <!-- END CONTENT BODY -->
-                </div>
                 <!-- END CONTENT -->
                 <!-- BEGIN QUICK SIDEBAR -->
                 <a href="javascript:;" class="page-quick-sidebar-toggler">

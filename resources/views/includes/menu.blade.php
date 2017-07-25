@@ -107,11 +107,13 @@
                 <li class="menu-dropdown classic-menu-dropdown ">
                     <a href="javascript:;"> Relatórios
                     </a>
-                </li>
-                <li class="menu-dropdown classic-menu-dropdown ">
-                    <a href="javascript:;"> Configurações
-                    </a>
                 </li>-->
+                @if(Auth::user()->person_id != null && Auth::user()->person->role_id == $leader)
+                    <li class="menu-dropdown classic-menu-dropdown ">
+                        <a href="{{ route("config.index") }}"> Configurações
+                        </a>
+                    </li>
+                @endif
             </ul>
         </div>
         <!-- END MEGA MENU -->
