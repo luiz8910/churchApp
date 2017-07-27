@@ -7,7 +7,9 @@ use App\Mail\resetPassword;
 use App\Models\Event;
 use App\Models\Group;
 use App\Models\RecentGroups;
+use App\Models\RequiredFields;
 use App\Models\User;
+use App\Repositories\RequiredFieldsRepository;
 use App\Traits\ConfigTrait;
 use App\Traits\CountRepository;
 use App\Traits\DateRepository;
@@ -57,6 +59,10 @@ class GroupController extends Controller
      * @var GroupServices
      */
     private $groupServices;
+    /**
+     * @var RequiredFieldsRepository
+     */
+    private $fieldsRepository;
 
     /**
      * GroupController constructor.
@@ -67,7 +73,8 @@ class GroupController extends Controller
      */
     public function __construct(GroupRepository $repository, StateRepository $stateRepositoryTrait,
                                 RoleRepository $roleRepository, PersonRepository $personRepository,
-                                UserRepository $userRepository, GroupServices $groupServices)
+                                UserRepository $userRepository, GroupServices $groupServices,
+                                RequiredFieldsRepository $fieldsRepository)
     {
 
         $this->repository = $repository;
@@ -76,6 +83,7 @@ class GroupController extends Controller
         $this->personRepository = $personRepository;
         $this->userRepository = $userRepository;
         $this->groupServices = $groupServices;
+        $this->fieldsRepository = $fieldsRepository;
     }
     /**
      * Exibe todos os grupos
@@ -129,7 +137,13 @@ class GroupController extends Controller
 
         $leader = $this->getLeaderRoleId();
 
-        return view('groups.create', compact('countPerson', 'countGroups', 'state', 'roles', 'notify', 'qtde', 'leader'));
+        $fields = $this->fieldsRepository->findWhere([
+            'model' => 'group',
+            'church_id' => \Auth::user()->church_id
+        ]);
+
+        return view('groups.create', compact('countPerson', 'countGroups', 'state', 'roles',
+            'notify', 'qtde', 'leader', 'fields'));
     }
 
     /**
@@ -143,6 +157,14 @@ class GroupController extends Controller
         $file = $request->file('img');
 
         $data = $request->except(['img']);
+
+        $verifyFields = $this->verifyRequiredFields($data, 'group');
+
+        if($verifyFields)
+        {
+            \Session::flash("error.required-fields", "Preencha o campo " . $verifyFields);
+            return redirect()->route("group.create")->withInput();
+        }
 
         $data['sinceOf'] = $this->formatDateBD($data['sinceOf']);
 
@@ -218,13 +240,16 @@ class GroupController extends Controller
 
         $countGroups[] = $this->countGroups();
 
-        $leader = $this->getLeaderRoleId();
-
         $church_id = $this->getUserChurch();
 
         $events = count($this->groupServices->listGroupEvents($id, $church_id));
 
         $leader = $this->getLeaderRoleId();
+
+        $fields = $this->fieldsRepository->findWhere([
+            'model' => 'group',
+            'church_id' => \Auth::user()->church_id
+        ]);
 
         //Endereço do grupo formatado para api do google maps
         $location = $this->formatGoogleMaps($group);
@@ -291,7 +316,7 @@ class GroupController extends Controller
         return view('groups.edit', compact('group', 'countPerson', 'countGroups',
             'events', 'address', 'location', 'people', 'roles', 'state', 'members',
             'event_user', 'notify', 'qtde', 'pag', 'owner_name', 'owner_person_id',
-            'qtdeMembers', 'imgProfile', 'leader', 'sub', 'leader'));
+            'qtdeMembers', 'imgProfile', 'leader', 'sub', 'leader', 'fields'));
     }
 
 
@@ -307,6 +332,14 @@ class GroupController extends Controller
         $file = $request->file('img');
 
         $data = $request->except(['img']);
+
+        $verifyFields = $this->verifyRequiredFields($data, 'group');
+
+        if($verifyFields)
+        {
+            \Session::flash("error.required-fields", "Preencha o campo " . $verifyFields);
+            return redirect()->route("group.update", ['group' => $id])->withInput();
+        }
 
         $data['sinceOf'] = $this->formatDateBD($data['sinceOf']);
 

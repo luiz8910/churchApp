@@ -80,26 +80,26 @@ License: You must have a valid license purchased only from themeforest(the above
                         <!-- BEGIN PAGE CONTENT BODY -->
                         <div class="page-content">
                             <div class="container">
-                                <!-- BEGIN PAGE BREADCRUMBS -->
+                                <!-- BEGIN PAGE BREADCRUMBS
                                 <ul class="page-breadcrumb breadcrumb">
                                     <li>
-                                        <a href="{{ route('index') }}">Home</a>
+                                        <a href=" route('index') ">Home</a>
                                         <i class="fa fa-circle"></i>
                                     </li>
                                     <li>
                                         <span>Configurações</span>
                                     </li>
-                                </ul>
+                                </ul>-->
 
                                 <div class="alert alert-danger alert-dismissible" id="delete-group-alert" role="alert" style="display: none;">
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                     <strong>Atenção </strong><span id="message"></span>
                                 </div>
 
-                                @if(Session::has('error'))
+                                @if(Session::has('error.field'))
                                     <div class="alert alert-danger alert-dismissible" role="alert">
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                        <strong>Atenção </strong> {{ Session::get('error') }}
+                                        <strong>Atenção </strong> {{ Session::get('error.field') }}
                                     </div>
                                 @endif
                                 <!-- END PAGE BREADCRUMBS -->
@@ -118,6 +118,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     </div>
 
 
+
                                                     <div class="actions">
                                                         <div class="btn-group btn-group-devided">
 
@@ -130,10 +131,18 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 <ul class="dropdown-menu pull-right" id="sample_3_tools">
                                                                     <li>
                                                                         <a href="javascript:;" data-toggle="modal" data-target="#newRulePerson">
+                                                                            <i class="fa fa-table" aria-hidden="true"></i>
+                                                                            Classe
+                                                                        </a>
+                                                                    </li>
+
+                                                                    <li>
+                                                                        <a href="javascript:;" data-toggle="modal" data-target="#newRulePerson">
                                                                             <i class="fa fa-plus" aria-hidden="true"></i>
                                                                             Nova Regra
                                                                         </a>
                                                                     </li>
+
                                                                     <li>
                                                                         <a href="javascript:;">
                                                                             <i class="fa fa-undo" aria-hidden="true"></i>

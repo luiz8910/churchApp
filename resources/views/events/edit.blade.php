@@ -48,7 +48,7 @@ License: You must have a valid license purchased only from themeforest(the above
     <div class="page-content-wrapper">
         <!-- BEGIN CONTENT BODY -->
         <!-- BEGIN PAGE HEAD-->
-        <div class="page-head">
+        <div class="page-head hidden-xs hidden-sm">
             <div class="container">
                 <!-- BEGIN PAGE TITLE -->
                 <div class="page-title">
@@ -64,20 +64,20 @@ License: You must have a valid license purchased only from themeforest(the above
         <!-- BEGIN PAGE CONTENT BODY -->
         <div class="page-content">
             <div class="container">
-                <!-- BEGIN PAGE BREADCRUMBS -->
+                <!-- BEGIN PAGE BREADCRUMBS
                 <ul class="page-breadcrumb breadcrumb">
                     <li>
-                        <a href="{{ route('index') }}">Home</a>
+                        <a href=" route('index') ">Home</a>
                         <i class="fa fa-circle"></i>
                     </li>
                     <li>
-                        <a href="{{ route('event.index') }}">Eventos</a>
+                        <a href=" route('event.index') ">Eventos</a>
                         <i class="fa fa-circle"></i>
                     </li>
                     <li>
-                        <span>"{{ $event->name }}"</span>
+                        <span>" $event->name }}"</span>
                     </li>
-                </ul>
+                </ul>-->
                 <!-- END PAGE BREADCRUMBS -->
                 <!-- BEGIN PAGE CONTENT INNER -->
                 @if(Session::has('updateUser'))
@@ -132,21 +132,32 @@ License: You must have a valid license purchased only from themeforest(the above
                                         </div>
                                         <div class="actions">
                                             <div class="btn-group">
-                                                <a class="btn purple btn-outline btn-circle btn-sm" href="javascript:;" data-toggle="dropdown" data-hover="dropdown" data-close-others="true"> Ações
+                                                @if($canCheckIn)
+                                                    @if($sub)
+                                                        <a href="javascript:;" class="btn btn-danger btn-circle" style="margin-right: 10px;"
+                                                           id="checkIn" onclick='checkOut({{ $event->id }})'>
+                                                            <i class="fa fa-close" id="i-checkIn"></i>
+                                                            Check-Out
+                                                        </a>
+                                                    @else
+                                                        <a href="javascript:;" class="btn btn-success btn-circle" style="margin-right: 10px;"
+                                                           id="checkIn" onclick='checkInEvent({{ $event->id }})'>
+                                                            <i class="fa fa-check" id="i-checkIn"></i>
+                                                            Check-In
+                                                        </a>
+                                                    @endif
+                                                @else
+                                                    <a href="javascript:;" class="btn btn-success btn-circle" style="margin-right: 10px;" disabled>
+                                                        <i class="fa fa-check" id="i-checkIn"></i>
+                                                        Check-In
+                                                    </a>
+                                                @endif
+
+                                                <a class="btn purple btn-outline btn-circle btn-sm" href="javascript:;" data-toggle="dropdown"
+                                                   data-hover="dropdown" data-close-others="true"> Ações
                                                     <i class="fa fa-angle-down"></i>
                                                 </a>
                                                 <ul class="dropdown-menu pull-right">
-                                                    <li>
-                                                        <a
-                                                            @if(isset($group))
-                                                                href="{{ route('group.event.create', ['id' => $group->id]) }}"
-                                                            @else
-                                                                href="{{ route('group.create') }}"
-                                                            @endif>
-                                                            <i class="fa fa-bookmark font-purple"></i>
-                                                            Novo Evento
-                                                        </a>
-                                                    </li>
                                                     @if(isset($group))
                                                         <li>
                                                             <a href="{{ route('group.addRemoveLoggedMember', ['id' => $group->id]) }}">
@@ -286,10 +297,10 @@ License: You must have a valid license purchased only from themeforest(the above
                                     <div class="portlet light portlet-fit ">
                                         <div class="portlet-title">
                                             <div class="caption">
-                                                <i class=" icon-layers font-red"></i>
+                                                <i class="fa fa-map-marker font-red"></i>
                                                 <span class="caption-subject font-red bold uppercase">Local do Evento</span>
                                             </div>
-                                            <div class="actions">
+                                            {{--<div class="actions">
                                                 <a class="btn btn-circle btn-icon-only btn-default"
                                                    href="javascript:;">
                                                     <i class="icon-cloud-upload"></i>
@@ -302,7 +313,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                    href="javascript:;">
                                                     <i class="icon-trash"></i>
                                                 </a>
-                                            </div>
+                                            </div>--}}
                                         </div>
                                         <div class="portlet-body">
                                             <div id="map" style="height: 304px; width: 100%;"></div>
@@ -328,7 +339,7 @@ License: You must have a valid license purchased only from themeforest(the above
                             <div class="portlet light portlet-fit ">
                                 <div class="portlet-title">
                                     <div class="caption">
-                                        <i class="icon-settings font-red"></i>
+                                        <i class="fa fa-check font-red"></i>
                                         <span class="caption-subject font-red sbold uppercase">Frequência</span>
                                     </div>
                                     <div class="actions">
@@ -347,29 +358,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 Excluir
                                             </a>
 
-                                            @if($canCheckIn)
-                                                @if($sub)
-                                                    <a href="javascript:;" class="btn btn-danger btn-circle" id="checkIn" onclick='checkOut({{ $event->id }})'>
-                                                        <i class="fa fa-close" id="i-checkIn"></i>
-                                                        Check-Out
-                                                    </a>
-                                                @else
-                                                    <a href="javascript:;" class="btn btn-success btn-circle" id="checkIn" onclick='checkInEvent({{ $event->id }})'>
-                                                        <i class="fa fa-check" id="i-checkIn"></i>
-                                                        Check-In
-                                                    </a>
-                                                @endif
-                                            @else
-                                                <a href="javascript:;" class="btn btn-success btn-circle" disabled>
-                                                    <i class="fa fa-check" id="i-checkIn"></i>
-                                                    Check-In
-                                                </a>
-                                            @endif
 
-                                            <a href="{{ route('event.create') }}" class="btn btn-primary btn-circle">
-                                                <i class="fa fa-plus"></i>
-                                                Evento
-                                            </a>
                                         </div>
                                         {!! Form::close() !!}
                                     </div>
@@ -466,7 +455,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                 <div class="portlet light ">
                                     <div class="portlet-title tabbable-line">
                                         <div class="caption caption-md">
-                                            <i class="icon-globe theme-font hide"></i>
+                                            <i class="fa fa-info-circle theme-font"></i>
                                             <span class="caption-subject font-blue-madison bold uppercase">Dados do Evento</span>
                                         </div>
 
@@ -869,8 +858,18 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 </div>
                                             </div>
 
+                                            <br>
 
-                                            <h3>Endereço</h3>
+
+                                            <div class="portlet-title tabbable-line">
+                                                <div class="caption caption-md">
+                                                    <i class="fa fa-location-arrow theme-font"></i>
+                                                    <span class="caption-subject font-blue-madison bold uppercase">Endereço</span>
+                                                </div>
+
+                                            </div>
+
+                                            <br><br>
 
                                             <div class="row">
                                                 <div class="col-md-12">

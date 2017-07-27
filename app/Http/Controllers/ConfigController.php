@@ -58,7 +58,7 @@ class ConfigController extends Controller
             'church_id' => \Auth::user()->church_id
         ]);
 
-        //$state = $this->stateRepository->all();
+
 
         //Fim Variáveis
 
@@ -79,7 +79,7 @@ class ConfigController extends Controller
 
         if($data["field"] == "")
         {
-            $request->session()->flash('error', 'Preencha o campo Nome do Campo');
+            $request->session()->flash('error.field', 'Preencha o campo Nome do Campo');
             return redirect()->back();
         }
 

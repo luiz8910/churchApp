@@ -34,7 +34,7 @@ License: You must have a valid license purchased only from themeforest(the above
         <div class="page-head">
             <div class="container">
                 <!-- BEGIN PAGE TITLE -->
-                <div class="page-title">
+                <div class="page-title hidden-xs hidden-sm">
                     <h1>Dashboard
                         <small>Resumo Geral</small>
                     </h1>
@@ -46,16 +46,16 @@ License: You must have a valid license purchased only from themeforest(the above
         <!-- BEGIN PAGE CONTENT BODY -->
         <div class="page-content">
             <div class="container">
-                <!-- BEGIN PAGE BREADCRUMBS -->
-                <ul class="page-breadcrumb breadcrumb">
+                <!-- BEGIN PAGE BREADCRUMBS
+                <ul class="page-breadcrumb breadcrumb hidden-xs hidden-sm">
                     <li>
-                        <a href="{{ route('index') }}">Home</a>
+                        <a href=" route('index') ">Home</a>
                         <i class="fa fa-circle"></i>
                     </li>
                     <li>
                         <span>Dashboard</span>
                     </li>
-                </ul>
+                </ul>-->
                 <!-- END PAGE BREADCRUMBS -->
                 <!-- BEGIN PAGE CONTENT INNER -->
                 <div class="page-content-inner">
@@ -183,11 +183,11 @@ License: You must have a valid license purchased only from themeforest(the above
                                             <table class="table table-hover table-light">
                                                 <thead>
                                                     <tr class="uppercase">
-                                                        <th> Nome </th>
+                                                        <th> Evento </th>
                                                         <th> Frequência </th>
-                                                        <th> Criado Por </th>
-                                                        <th> Pertence ao Grupo </th>
-                                                        <th> Próximo Encontro em </th>
+                                                        <th> Nome </th>
+                                                        <th> Grupo </th>
+                                                        <th> Data </th>
                                                     </tr>
                                                 </thead>
 
@@ -289,7 +289,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <tr class="uppercase">
                                                     <th> Foto </th>
                                                     <th> Nome </th>
-                                                    <th> Inicio em </th>
+                                                    <th class="hidden-xs hidden-sm"> Inicio em </th>
                                                     <th> Participantes </th>
                                                     <th> Opções </th>
 
@@ -305,8 +305,15 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             <tr>
                                                                 <td> <img src="{{ $item->imgProfile }}" style="width: 50px; height: 50px;"> </td>
                                                                 <td> <a href="{{ route('group.edit', ['group' => $item->id]) }}"> {{ $item->name }}</a></td>
-                                                                <td> {{ $item->sinceOf }} </td>
-                                                                <td> <span class="badge badge-info">{{ $countMembers[$i] }}</span></td>
+                                                                <td class="hidden-xs hidden-sm"> {{ $item->sinceOf }} </td>
+                                                                <td class="text-center hidden-md hidden-lg">
+                                                                    <span class="badge badge-info">{{ $countMembers[$i] }}</span>
+                                                                </td>
+                                                                <td class="hidden-sm hidden-xs">
+                                                                    <span class="badge badge-info">
+                                                                        {{ $countMembers[$i] }}
+                                                                    </span>
+                                                                </td>
 
                                                                 @if(Auth::getUser()->person)
 
@@ -358,7 +365,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                 <div class="portlet light portlet-fit ">
                                     <div class="portlet-title">
                                         <div class="caption">
-                                            <i class="icon-settings font-red"></i>
+                                            <i class="fa fa-calendar font-red"></i>
                                             <span class="caption-subject font-red sbold uppercase">Eventos</span>
                                         </div>
                                         <div class="actions">
@@ -405,10 +412,10 @@ License: You must have a valid license purchased only from themeforest(the above
                                             <table class="table table-hover table-light">
                                                 <thead>
                                                 <tr class="uppercase">
-                                                    <th> Criado Por</th>
-                                                    <th> Nome </th>
-                                                    <th> Próximo Encontro em </th>
-                                                    <th> Pertence ao Grupo </th>
+                                                    <th> Nome</th>
+                                                    <th> Evento </th>
+                                                    <th> Data </th>
+                                                    <th> Grupo </th>
 
                                                 </tr>
                                                 </thead>
@@ -528,7 +535,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                     <input type="hidden" value="@if(isset($location)) {{ $location }} @endif" id="location">
 
-                                    <input type="hidden" name="street" id="street"
+                                    <input type="hidden" name="street" id="streetMap"
                                            value="@if(isset($location)) {{ $event->name }} - {{ $street }} @endif">
                                 </div>
                             </div>

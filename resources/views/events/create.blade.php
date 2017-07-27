@@ -42,7 +42,7 @@ License: You must have a valid license purchased only from themeforest(the above
     <div class="page-content-wrapper">
         <!-- BEGIN CONTENT BODY -->
         <!-- BEGIN PAGE HEAD-->
-        <div class="page-head">
+        <div class="page-head hidden-xs hidden-sm">
             <div class="container">
                 <!-- BEGIN PAGE TITLE -->
                 <div class="page-title">
@@ -56,10 +56,10 @@ License: You must have a valid license purchased only from themeforest(the above
         <!-- BEGIN PAGE CONTENT BODY -->
         <div class="page-content">
             <div class="container">
-                <!-- BEGIN PAGE BREADCRUMBS -->
+                <!-- BEGIN PAGE BREADCRUMBS
                 <ul class="page-breadcrumb breadcrumb">
                     <li>
-                        <a href="{{ route('index') }}">Home</a>
+                        <a href=" route('index') ">Home</a>
                         <i class="fa fa-circle"></i>
                     </li>
                     <li>
@@ -69,7 +69,7 @@ License: You must have a valid license purchased only from themeforest(the above
                     <li>
                         <span>Novo</span>
                     </li>
-                </ul>
+                </ul>-->
 
                 @if(Session::has('invalidDate'))
 

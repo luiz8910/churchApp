@@ -39,7 +39,7 @@ License: You must have a valid license purchased only from themeforest(the above
     <div class="page-content-wrapper">
         <!-- BEGIN CONTENT BODY -->
         <!-- BEGIN PAGE HEAD-->
-        <div class="page-head">
+        <div class="page-head hidden-sm hidden-xs">
             <div class="container">
                 <!-- BEGIN PAGE TITLE -->
                 <div class="page-title">
@@ -55,16 +55,16 @@ License: You must have a valid license purchased only from themeforest(the above
         <!-- BEGIN PAGE CONTENT BODY -->
         <div class="page-content">
             <div class="container">
-                <!-- BEGIN PAGE BREADCRUMBS -->
+                <!-- BEGIN PAGE BREADCRUMBS
                 <ul class="page-breadcrumb breadcrumb">
                     <li>
-                        <a href="{{ route('index') }}">Home</a>
+                        <a href=" route('index') ">Home</a>
                         <i class="fa fa-circle"></i>
                     </li>
                     <li>
                         <span>Minha Conta</span>
                     </li>
-                </ul>
+                </ul>-->
                 <!-- END PAGE BREADCRUMBS -->
                 <!-- BEGIN PAGE CONTENT INNER -->
                 @if(Session::has('updateUser'))
@@ -87,6 +87,14 @@ License: You must have a valid license purchased only from themeforest(the above
                         {{ Session::get('email.exists') }}
                     </div>
                 @endif
+
+                @if(Session::has("error.required-fields"))
+                    <div class="alert alert-danger alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <strong>Erro!</strong> {{ Session::get("error.required-fields") }}
+                    </div>
+                @endif
+
                 <div class="page-content-inner">
                     <div class="row">
                         <div class="col-md-12">
@@ -121,10 +129,10 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <a href="">
                                                     <i class="icon-home"></i> Visão Geral </a>
                                             </li>
-                                            <li>
+                                            {{--<li>
                                                 <a href="">
                                                     <i class="icon-info"></i> Ajuda </a>
-                                            </li>
+                                            </li>--}}
                                         </ul>
                                     </div>
                                     <!-- END MENU -->
@@ -141,10 +149,10 @@ License: You must have a valid license purchased only from themeforest(the above
                                         <div class="portlet light portlet-fit ">
                                             <div class="portlet-title">
                                                 <div class="caption">
-                                                    <i class=" icon-layers font-red"></i>
-                                                    <span class="caption-subject font-red bold uppercase">Local do Evento</span>
+                                                    <i class="fa fa-map-marker font-red"></i>
+                                                    <span class="caption-subject font-red bold uppercase">Endereço</span>
                                                 </div>
-                                                <div class="actions">
+                                                {{--<div class="actions">
                                                     <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
                                                         <i class="icon-cloud-upload"></i>
                                                     </a>
@@ -154,7 +162,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
                                                         <i class="icon-trash"></i>
                                                     </a>
-                                                </div>
+                                                </div>--}}
                                             </div>
                                             <div class="portlet-body">
                                                 <div id="map" style="height: 304px; width: 100%;"></div>
@@ -195,6 +203,8 @@ License: You must have a valid license purchased only from themeforest(the above
                                         </li>
                                     </ul>
                                 </div>
+
+                                <?php $i = 0; ?>
                                 <div class="portlet-body">
                                     <div class="tab-content">
                                         <!-- PERSONAL INFO TAB -->
@@ -208,163 +218,249 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                             <div class="row">
                                                 <div class="col-md-6">
-                                                    {!! Form::FormGroup('name', $errors) !!}
-                                                    <label class="control-label">Nome</label>
-                                                    <input type="text" placeholder="João" name="name" value="{{ $person->name }}" class="form-control" />
-                                                    {!! Form::error('name', $errors) !!}
-                                                    {!! Form::endFormGroup() !!}
-                                                </div>
-
-                                                <div class="col-md-6">
-                                                    {!! Form::FormGroup('lastName', $errors) !!}
-                                                    <label class="control-label">Sobrenome</label>
-                                                    <input type="text" placeholder="da Silva" name="lastName" value="{{ $person->lastName }}" class="form-control" />
-                                                    {!! Form::error('lastName', $errors) !!}
-                                                    {!! Form::endFormGroup() !!}
-                                                </div>
-
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    {!! Form::FormGroup('cel', $errors) !!}
-                                                    <label class="control-label">Celular</label>
-                                                    <input type="text" placeholder="(15) 9123-1234" name="cel" value="{{ $person->cel }}" class="form-control tel" />
-                                                    {!! Form::error('cel', $errors) !!}
-                                                    {!! Form::endFormGroup() !!}
-                                                </div>
-
-                                                <div class="col-md-6">
-                                                    {!! Form::FormGroup('email', $errors) !!}
-                                                    <label class="control-label">Email</label>
-                                                    <div class="input-group input-icon right">
-                                                        <span class="input-group-addon">
-                                                            <i class="fa fa-envelope font-blue" id="icon-email"></i>
-                                                        </span>
-                                                        <input type="email" placeholder="email@dominio.com" value="{{ $person->user->email or null }}"
-                                                               id="email-edit" name="email" class="form-control" />
-                                                        <i class="fa fa-check font-green" id="icon-success-email" style="display: none;"></i>
-                                                        <i class="fa fa-exclamation font-red" id="icon-error-email" style="display: none;"></i>
-                                                    </div>
-
-                                                    <span class="help-block" id="emailExists" style="display: none; color: red;">
-                                                        <i class="fa fa-block"></i>
-                                                        Já existe uma conta associada a este email
-                                                    </span>
-                                                    <span class="help-block" id="invalidEmail" style="display: none; color: red;">
-                                                        <i class="fa fa-block"></i>
-                                                        Email em formato incorreto
-                                                    </span>
-                                                    <span class="help-block" id="validEmail" style="display: none; color: green;">
-                                                        <i class="fa fa-check"></i>
-                                                        Email Válido
-                                                    </span>
-
-                                                    {!! Form::error('email', $errors) !!}
-                                                    {!! Form::endFormGroup() !!}
-                                                </div>
-
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    {!! Form::FormGroup('tel', $errors) !!}
-                                                    <label class="control-label">Telefone</label>
-                                                    <input type="text" placeholder="(15) 9123-1234" name="tel" value="{{ $person->tel }}" class="form-control tel" />
-                                                    {!! Form::error('tel', $errors) !!}
-                                                    {!! Form::endFormGroup() !!}
-                                                </div>
-
-                                                <div class="col-md-6">
-                                                    {!! Form::FormGroup('gender', $errors) !!}
-                                                    <label class="control-label">Gênero</label>
-                                                    <select name="gender" class="form-control" required>
-                                                        <option value="">Selecione</option>
-                                                        <option value="M" @if($person->gender == 'M') selected @endif >Masculino</option>
-                                                        <option value="F" @if($person->gender == 'F') selected @endif >Feminino</option>
-                                                    </select>
-                                                    {!! Form::error('gender', $errors) !!}
-                                                    {!! Form::endFormGroup() !!}
-                                                </div>
-                                            </div>
-
-
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    {!! Form::FormGroup('dateBirth', $errors) !!}
-                                                    <label class="control-label">Data de Nasc.</label>
-                                                    <div class="input-group date date-picker" data-date-format="dd/mm/yyyy">
-                                                        <span class="input-group-addon">
-                                                            <i class="fa fa-calendar font-blue"></i>
-                                                        </span>
-                                                        <input type="text" placeholder="dd/mm/aaaa" value="{{ $person->dateBirth }}"
-                                                               name="dateBirth" class="form-control input-date" />
-                                                    </div>
-                                                    {!! Form::error('dateBirth', $errors) !!}
-                                                    {!! Form::endFormGroup() !!}
-                                                </div>
-                                                <div class="col-md-6">
-                                                    {!! Form::FormGroup('role', $errors) !!}
-                                                    <label class="control-label">Cargo</label>
-                                                    @if(\Auth::user()->person->role_id != $leader)
-                                                        <input type="text" class="form-control" value="{{ $person->role->name }}" readonly>
-                                                    @else
-                                                        <select class="form-control" name="role_id"
-                                                            data-placeholder="Selecione seu cargo"
-                                                            tabindex="1">
-                                                            <option value="">Selecione</option>
-                                                            @foreach($roles as $role)
-                                                                <option value="{{ $role->id }}" @if($role->id == $person->role_id) selected @endif >{{ $role->name }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    @endif
-                                                    {!! Form::error('role', $errors) !!}
-                                                    {!! Form::endFormGroup() !!}
-                                                </div>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    {!! Form::FormGroup('cpf', $errors) !!}
-                                                    <label>CPF (Sem pontos ou traços)</label>
-                                                    <div class="input-group input-icon right">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Nome</label>
+                                                        <div class="input-group">
                                                             <span class="input-group-addon">
                                                                 <i class="fa fa-user font-blue"></i>
                                                             </span>
-                                                        <input type="text" name="cpf" id="cpf" maxlength="11" class="form-control"
-                                                               placeholder="XXXXXXXXXXX" value="{{ $person->cpf }}">
-                                                        <i class="fa fa-check font-green" id="icon-success" style="display: none;"></i>
-                                                        <i class="fa fa-exclamation font-red" id="icon-error" style="display: none;"></i>
+                                                            <input type="text" placeholder="João" name="name" value="{{ $person->name }}" class="form-control"
+                                                                    @if($fields[$i]->required == 1)
+                                                                        required
+                                                                    @endif
+                                                                    <?php $i++; ?>
+                                                            />
+                                                        </div>
 
                                                     </div>
-                                                    <div class="help-block small-error">CPF Inválido</div>
-                                                    <div class="help-block small-error" id="textResponse" style="color: red;"></div>
-                                                    {!! Form::error('cpf', $errors) !!}
-                                                    {!! Form::endFormGroup() !!}
                                                 </div>
 
                                                 <div class="col-md-6">
-                                                    {!! Form::FormGroup('rg', $errors) !!}
-                                                    <label class="control-label">RG</label>
-                                                    <input type="text" placeholder="123.123.123-12" value="{{ $person->rg }}"
-                                                           name="rg" class="form-control" maxlength="9" minlength="9"/>
-                                                    {!! Form::error('rg', $errors) !!}
-                                                    {!! Form::endFormGroup() !!}
+                                                    <div class="form-group">
+                                                        <label class="control-label">Sobrenome</label>
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon">
+                                                                <i class="fa fa-user font-blue"></i>
+                                                            </span>
+                                                            <input type="text" name="lastName" class="form-control"
+                                                                   placeholder="da Silva" value="{{ $person->lastName }}"
+                                                                    @if($fields[$i]->required == 1)
+                                                                        required
+                                                                    @endif
+                                                                    <?php $i++; ?>
+                                                            >
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Email</label>
+                                                        <div class="input-group input-icon right">
+                                                            <span class="input-group-addon">
+                                                                <i class="fa fa-envelope font-blue" id="icon-email"></i>
+                                                            </span>
+                                                            <input type="email" placeholder="email@dominio.com" value="{{ $person->user->email or null }}"
+                                                                   id="email-edit" name="email" class="form-control"
+
+                                                                    @if($fields[$i]->required == 1)
+                                                                        required
+                                                                    @endif
+                                                                    <?php $i++; ?>
+                                                            />
+                                                            <i class="fa fa-check font-green" id="icon-success-email" style="display: none;"></i>
+                                                            <i class="fa fa-exclamation font-red" id="icon-error-email" style="display: none;"></i>
+                                                        </div>
+
+                                                        <span class="help-block" id="emailExists" style="display: none; color: red;">
+                                                            <i class="fa fa-block"></i>
+                                                            Já existe uma conta associada a este email
+                                                        </span>
+                                                        <span class="help-block" id="invalidEmail" style="display: none; color: red;">
+                                                            <i class="fa fa-block"></i>
+                                                            Email em formato incorreto
+                                                        </span>
+                                                        <span class="help-block" id="validEmail" style="display: none; color: green;">
+                                                            <i class="fa fa-check"></i>
+                                                            Email Válido
+                                                        </span>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="exampleInputPassword1">Celular</label>
+                                                        <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-mobile font-blue"></i>
+                                                    </span>
+                                                            <input type="text" class="form-control tel" name="cel"
+                                                                   id="exampleInputPassword1" value="{{ $person->cel }}" placeholder="(15) 9231413423"
+                                                                    @if($fields[$i]->required == 1)
+                                                                        required
+                                                                    @endif
+                                                                    <?php $i++; ?>
+                                                            >
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="exampleInputPassword1">Telefone</label>
+                                                        <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-phone font-green"></i>
+                                                    </span>
+                                                            <input type="text" class="form-control tel" name="tel"
+                                                                   id="exampleInputPassword1" value="{{ $person->tel }}"
+                                                                   placeholder="(15) 1231413423"
+                                                                    @if($fields[$i]->required == 1)
+                                                                        required
+                                                                    @endif
+                                                                    <?php $i++; ?>
+                                                            >
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Gênero</label>
+                                                        <div class="input-icon input-icon-lg">
+                                                            <select class="form-control" name="gender"
+                                                                    @if($fields[$i]->required == 1)
+                                                                        required
+                                                                    @endif
+                                                                    <?php $i++; ?>
+                                                            >
+                                                                <option value="">Selecione</option>
+                                                                <option value="M" @if($person->gender == 'M') selected @endif >Masculino</option>
+                                                                <option value="F" @if($person->gender == 'F') selected @endif >Feminino</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Data de Nasc.</label>
+                                                        <div class="input-group date date-picker" data-date-format="dd/mm/yyyy">
+                                                            <span class="input-group-addon">
+                                                                <i class="fa fa-calendar font-blue"></i>
+                                                            </span>
+                                                            <input type="text" class="form-control input-date" name="dateBirth"
+                                                                   placeholder="dd/mm/aaaa" maxlength="10" value="{{ $person->dateBirth }}"
+                                                                    @if($fields[$i]->required == 1)
+                                                                        required
+                                                                    @endif
+                                                                    <?php $i++; ?>
+                                                            >
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group" id="form-cpf">
+                                                        <label>CPF (Sem pontos ou traços)</label>
+                                                        <div class="input-group input-icon right">
+                                                            <span class="input-group-addon">
+                                                                <i class="fa fa-user font-blue"></i>
+                                                            </span>
+                                                            <input type="text" name="cpf" id="cpf" maxlength="11" class="form-control"
+                                                                   placeholder="XXXXXXXXXXX" value="{{ $person->cpf }}"
+
+                                                                    @if($fields[$i]->required == 1)
+                                                                        required
+                                                                    @endif
+                                                                    <?php $i++; ?>
+                                                            >
+                                                            <i class="fa fa-check font-green" id="icon-success-cpf" style="display: none;"></i>
+                                                            <i class="fa fa-exclamation font-red" id="icon-error-cpf" style="display: none;"></i>
+
+                                                        </div>
+                                                        <div class="help-block small-error">CPF Inválido</div>
+                                                        <div class="help-block small-error" id="textResponse" style="color: red;"></div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>RG (Sem pontos ou traços)</label>
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon">
+                                                                <i class="fa fa-user font-green"></i>
+                                                            </span>
+                                                            <input type="text" id="rg" name="rg" class="form-control"
+                                                                   placeholder="XX.XXX.XXX-X" value="{{ $person->rg }}" maxlength="9" minlength="9"
+
+                                                                   @if($fields[$i]->required == 1)
+                                                                   required
+                                                                    @endif
+                                                            <?php $i++; ?>
+                                                            >
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Cargo</label>
+                                                        <div class="input-icon input-icon-sm">
+                                                            @if(\Auth::user()->person->role_id != $leader)
+                                                                <i class="fa fa-briefcase"></i>
+                                                                <input type="text" class="form-control" value="{{ $person->role->name }}" readonly>
+                                                            @else
+                                                            <i class="fa fa-briefcase"></i>
+                                                            <select class="form-control" name="role_id"
+                                                                    @if($fields[$i]->required == 1)
+                                                                        required
+                                                                    @endif
+                                                                    <?php $i++; ?>
+                                                            >
+                                                                <option value="">Selecione</option>
+                                                                @foreach($roles as $role)
+                                                                    <option value="{{ $role->id }}" @if($role->id == $person->role_id) selected @endif >{{ $role->name }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                            @endif
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
 
                                             <div class="row">
                                                 <div class="col-md-6">
-                                                    {!! Form::FormGroup('maritalStatus', $errors) !!}
-                                                        <label class="control-label">Estado Civil</label>
-                                                        <select name="maritalStatus" id="maritalStatus" class="form-control" required>
+                                                    <div class="form-group">
+                                                        <label for="">Estado Civil</label>
+                                                        <select name="maritalStatus" id="maritalStatus" class="form-control"
+                                                                @if($fields[$i]->required == 1)
+                                                                    required
+                                                                @endif
+                                                                <?php $i++; ?>
+                                                        >
                                                             <option value="">Selecione</option>
                                                             <option value="Casado" @if($person->maritalStatus == 'Casado') selected @endif >Casado</option>
                                                             <option value="Solteiro" @if($person->maritalStatus == 'Solteiro') selected @endif >Solteiro</option>
                                                             <option value="Divorciado" @if($person->maritalStatus == 'Divorciado') selected @endif >Divorciado</option>
                                                         </select>
-                                                    {!! Form::error('maritalStatus', $errors) !!}
-                                                    {!! Form::endFormGroup() !!}
+                                                    </div>
                                                 </div>
 
                                                 <div class="col-md-6">
@@ -420,13 +516,19 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 <i class="fa fa-male font-blue"></i>
                                                             </span>
                                                         <select name="father_id" class="selectpicker form-control"
-                                                                data-live-search="true" data-size="8">
+                                                                data-live-search="true" data-size="8"
+
+                                                                @if($fields[$i]->required == 1)
+                                                                required
+                                                                @endif
+                                                        <?php $i++; ?>
+                                                        >
 
                                                             <option value="">Selecione</option>
 
                                                             @foreach($fathers as $parent)
                                                                 <option value="{{ $parent->id }}"
-                                                                @if($person->father_id == $parent->id) selected @endif
+                                                                        @if($person->father_id == $parent->id) selected @endif
                                                                 >
                                                                     {{ $parent->name }} {{ $parent->lastName }}
                                                                 </option>
@@ -445,14 +547,19 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             <span class="input-group-addon">
                                                                 <i class="fa fa-female font-red"></i>
                                                             </span>
-                                                        <select name="father_id" class="selectpicker form-control"
-                                                                data-live-search="true" data-size="8">
+                                                        <select name="mother_id" class="selectpicker form-control"
+                                                                data-live-search="true" data-size="8"
+                                                                @if($fields[$i]->required == 1)
+                                                                required
+                                                                @endif
+                                                        <?php $i++; ?>
+                                                        >
 
                                                             <option value="">Selecione</option>
 
                                                             @foreach($mothers as $parent)
                                                                 <option value="{{ $parent->id }}"
-                                                                @if($person->mother_id == $parent->id) selected @endif
+                                                                        @if($person->mother_id == $parent->id) selected @endif
                                                                 >
                                                                     {{ $parent->name }} {{ $parent->lastName }}
                                                                 </option>
@@ -461,7 +568,6 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         </select>
                                                     </div>
                                                 </div>
-
                                             </div>
 
                                             <div class="col-md-12">
@@ -667,54 +773,98 @@ License: You must have a valid license purchased only from themeforest(the above
                                             </div>
 
                                             <div class="row">
+
                                                 <div class="col-md-3 input-address">
-                                                    {!! Form::FormGroup('zipCode', $errors) !!}
-                                                    <label class="control-label">CEP</label>
-                                                    <input type="text" placeholder="12123-12" value="{{ $person->zipCode }}"
-                                                           name="zipCode" class="form-control" id="zipCode" maxlength="9" />
-                                                    {!! Form::error('zipCode', $errors) !!}
-                                                    {!! Form::endFormGroup() !!}
+                                                    <div class="form-group">
+                                                        <label>CEP (sem traços)</label>
+                                                        <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-location-arrow font-purple"></i>
+                                                        </span>
+                                                            <input type="text" id="zipCode" class="form-control"
+                                                                   name="zipCode" placeholder="XXXXXXXX" maxlength="9" value="{{ $person->zipCode }}"
+                                                                    @if($fields[$i]->required == 1)
+                                                                        required
+                                                                    @endif
+                                                                    <?php $i++; ?>
+                                                            >
+                                                        </div>
+                                                    </div>
                                                 </div>
                                                 <div class="col-md-9 input-address">
-                                                    {!! Form::FormGroup('street', $errors) !!}
-                                                    <label class="control-label">Logradouro</label>
-                                                    <input type="text" placeholder="Rua dos Bobos, 0" value="{{ $person->street }}" id="street"
-                                                           name="street" class="form-control" />
-                                                    {!! Form::error('street', $errors) !!}
-                                                    {!! Form::endFormGroup() !!}
+                                                    <div class="form-group">
+                                                        <label>Logradouro</label>
+                                                        <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-home font-purple"></i>
+                                                    </span>
+                                                            <input class="form-control" name="street" id="street" type="text"
+                                                                   value="{{ $person->street }}" placeholder="Av. Antonio Carlos Comitre, 650"
+
+                                                                   @if($fields[$i]->required == 1)
+                                                                   required
+                                                                    @endif
+                                                            <?php $i++; ?>
+                                                            >
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
 
                                             <div class="row">
                                                 <div class="col-md-4 input-address">
-                                                    {!! Form::FormGroup('neighborhood', $errors) !!}
-                                                    <label class="control-label">Bairro</label>
-                                                    <input type="text" placeholder="Vila Progresso" value="{{ $person->neighborhood }}"
-                                                           id="neighborhood" name="neighborhood" class="form-control" />
-                                                    {!! Form::error('neighborhood', $errors) !!}
-                                                    {!! Form::endFormGroup() !!}
+                                                    <div class="form-group">
+                                                        <label>Bairro</label>
+                                                        <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-home font-purple"></i>
+                                                    </span>
+                                                            <input class="form-control" name="neighborhood"
+                                                                   value="{{ $person->neighborhood }}" id="neighborhood" type="text" placeholder="Centro"
+
+                                                                    @if($fields[$i]->required == 1)
+                                                                        required
+                                                                    @endif
+                                                                    <?php $i++; ?>
+                                                            >
+                                                        </div>
+                                                    </div>
                                                 </div>
                                                 <div class="col-md-4 input-address">
-                                                    {!! Form::FormGroup('city', $errors) !!}
-                                                    <label class="control-label">Cidade</label>
-                                                    <input type="text" placeholder="Sorocaba" name="city" value="{{ $person->city }}"
-                                                           class="form-control" id="city"/>
-                                                    {!! Form::error('city', $errors) !!}
-                                                    {!! Form::endFormGroup() !!}
+                                                    <div class="form-group">
+                                                        <label>Cidade</label>
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon">
+                                                                <i class="fa fa-building font-purple"></i>
+                                                            </span>
+                                                            <input class="form-control" name="city" id="city"
+                                                                   value="{{ $person->city }}" type="text" placeholder="Sorocaba"
+
+                                                                    @if($fields[$i]->required == 1)
+                                                                        required
+                                                                    @endif
+                                                                    <?php $i++; ?>
+                                                            >
+                                                        </div>
+                                                    </div>
                                                 </div>
                                                 <div class="col-md-4 input-address">
-                                                    {!! Form::FormGroup('state', $errors) !!}
-                                                    <label class="control-label">UF:</label>
-                                                    <select name="state" class="form-control" id="state">
-                                                        <option value="">Selecione</option>
-                                                        @foreach($state as $value)
-                                                            <option value="{{ $value->initials }}" @if($value->initials == $person->state) selected @endif >
-                                                                {{ $value->state }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                    {!! Form::error('state', $errors) !!}
-                                                    {!! Form::endFormGroup() !!}
+                                                    <div class="form-group">
+                                                        <label>Estado</label>
+                                                        <select name="state" class="form-control" id="state"
+                                                                @if($fields[$i]->required == 1)
+                                                                required
+                                                                @endif
+                                                        <?php $i++; ?>
+                                                        >
+                                                            <option value="">Selecione</option>
+                                                            @foreach($state as $value)
+                                                                <option value="{{ $value->initials }}" @if($value->initials == $person->state) selected @endif >
+                                                                    {{ $value->state }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
                                                 </div>
                                             </div>
 

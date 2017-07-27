@@ -244,6 +244,8 @@ class EventController extends Controller
 
         $state = $this->stateRepository->all();
 
+        $leader = $this->getLeaderRoleId();
+
         //Fim Variáveis
 
         $church_id = $church_id ? $church_id : \Auth::user()->church_id;

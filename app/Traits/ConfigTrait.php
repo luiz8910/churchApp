@@ -10,6 +10,7 @@ namespace App\Traits;
 
 
 use App\Models\Frequency;
+use App\Models\RequiredFields;
 use App\Models\Role;
 use App\Repositories\FrequencyRepository;
 use App\Repositories\RoleRepository;
@@ -36,6 +37,46 @@ trait ConfigTrait
     {
         $this->roleRepositoryTrait = $roleRepositoryTrait;
         $this->frequencyRepositoryTrait = $frequencyRepositoryTrait;
+    }
+
+    public function verifyRequiredFields($data, $model)
+    {
+        $fields = RequiredFields::where([
+            'model' => $model,
+            'church_id' => \Auth::user()->church_id
+        ])->get();
+
+        $array = array_keys($data);
+
+        //dd($array[0]);
+
+        $i = 0;
+
+        foreach ($fields as $field)
+        {
+            while($i < count($array))
+            {
+                if($array[$i] == $field->value)
+                {
+                    if($field->required == 1 && $data[$array[$i]] == "")
+                    {
+                        return $field->field;
+                    }
+                    else
+                    {
+                        $i++;
+                    }
+                }
+                else{
+                    $i++;
+                }
+            }
+
+            $i = 0;
+
+        }
+
+        return false;
     }
 
     public function getPusherKeyTrait()

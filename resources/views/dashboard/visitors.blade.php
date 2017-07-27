@@ -32,12 +32,12 @@ License: You must have a valid license purchased only from themeforest(the above
     <div class="page-content-wrapper">
         <!-- BEGIN CONTENT BODY -->
         <!-- BEGIN PAGE HEAD-->
-        <div class="page-head">
+        <div class="page-head hidden-xs hidden-sm">
             <div class="container">
                 <!-- BEGIN PAGE TITLE -->
                 <div class="page-title">
                     <h1>Dashboard
-                        <small>dashboard & statistics</small>
+                        <small>Resumo Geral - Visitantes</small>
                     </h1>
                 </div>
                 <!-- END PAGE TITLE -->
@@ -47,16 +47,16 @@ License: You must have a valid license purchased only from themeforest(the above
         <!-- BEGIN PAGE CONTENT BODY -->
         <div class="page-content">
             <div class="container">
-                <!-- BEGIN PAGE BREADCRUMBS -->
+                <!-- BEGIN PAGE BREADCRUMBS
                 <ul class="page-breadcrumb breadcrumb">
                     <li>
-                        <a href="{{ route('index') }}">Home</a>
+                        <a href=" route('index') ">Home</a>
                         <i class="fa fa-circle"></i>
                     </li>
                     <li>
                         <span>Dashboard</span>
                     </li>
-                </ul>
+                </ul>-->
                 <!-- END PAGE BREADCRUMBS -->
                 <!-- BEGIN PAGE CONTENT INNER -->
                 <div class="page-content-inner">

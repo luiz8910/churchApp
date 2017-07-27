@@ -39,7 +39,7 @@ License: You must have a valid license purchased only from themeforest(the above
     <div class="page-content-wrapper">
         <!-- BEGIN CONTENT BODY -->
         <!-- BEGIN PAGE HEAD-->
-        <div class="page-head">
+        <div class="page-head hidden-sm hidden-xs">
             <div class="container">
                 <!-- BEGIN PAGE TITLE -->
                 <div class="page-title">
@@ -55,16 +55,16 @@ License: You must have a valid license purchased only from themeforest(the above
         <!-- BEGIN PAGE CONTENT BODY -->
         <div class="page-content">
             <div class="container">
-                <!-- BEGIN PAGE BREADCRUMBS -->
+                <!-- BEGIN PAGE BREADCRUMBS
                 <ul class="page-breadcrumb breadcrumb">
                     <li>
-                        <a href="{{ route('index') }}">Home</a>
+                        <a href=" route('index') ">Home</a>
                         <i class="fa fa-circle"></i>
                     </li>
                     <li>
                         <span>Minha Conta</span>
                     </li>
-                </ul>
+                </ul>-->
                 <!-- END PAGE BREADCRUMBS -->
                 <!-- BEGIN PAGE CONTENT INNER -->
                 @if(Session::has('updateUser'))
@@ -110,10 +110,10 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <a href="">
                                                     <i class="icon-home"></i> Visão Geral </a>
                                             </li>
-                                            <li>
+                                            {{--<li>
                                                 <a href="">
                                                     <i class="icon-info"></i> Ajuda </a>
-                                            </li>
+                                            </li>--}}
                                         </ul>
                                     </div>
                                     <!-- END MENU -->
@@ -130,10 +130,10 @@ License: You must have a valid license purchased only from themeforest(the above
                                         <div class="portlet light portlet-fit ">
                                             <div class="portlet-title">
                                                 <div class="caption">
-                                                    <i class=" icon-layers font-red"></i>
-                                                    <span class="caption-subject font-red bold uppercase">Local do Evento</span>
+                                                    <i class="fa fa-map-marker font-red"></i>
+                                                    <span class="caption-subject font-red bold uppercase">Endereço</span>
                                                 </div>
-                                                <div class="actions">
+                                                {{--<div class="actions">
                                                     <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
                                                         <i class="icon-cloud-upload"></i>
                                                     </a>
@@ -143,7 +143,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
                                                         <i class="icon-trash"></i>
                                                     </a>
-                                                </div>
+                                                </div>--}}
                                             </div>
                                             <div class="portlet-body">
                                                 <div id="map" style="height: 304px; width: 100%;"></div>

@@ -52,6 +52,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/teen-delete/{id}', 'PersonController@destroy');
 
+    Route::get('notify', 'PersonController@notify')->name('notify.user');
+
     // Fim Usuários e pessoas
 
     //Inicio Grupos
@@ -91,8 +93,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get("/showGroupEvents/{group}", 'GroupController@showGroupEvents');
 
     Route::get('/addRemoveLoggedMember/{id}', 'GroupController@addRemoveLoggedMember')->name('group.addRemoveLoggedMember');
-
-    Route::get('notify', 'PersonController@notify')->name('notify.user');
 
     // Fim Grupos
 

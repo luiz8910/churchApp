@@ -40,7 +40,7 @@ License: You must have a valid license purchased only from themeforest(the above
     <div class="page-content-wrapper">
         <!-- BEGIN CONTENT BODY -->
         <!-- BEGIN PAGE HEAD-->
-        <div class="page-head">
+        <div class="page-head hidden-sm hidden-xs">
             <div class="container">
                 <!-- BEGIN PAGE TITLE -->
                 <div class="page-title">
@@ -58,7 +58,7 @@ License: You must have a valid license purchased only from themeforest(the above
         <!-- BEGIN PAGE CONTENT BODY -->
         <div class="page-content">
             <div class="container">
-                <!-- BEGIN PAGE BREADCRUMBS -->
+                <!-- BEGIN PAGE BREADCRUMBS
                 <ul class="page-breadcrumb breadcrumb">
                     <li>
                         <a href="{{ route('index') }}">Home</a>
@@ -67,7 +67,7 @@ License: You must have a valid license purchased only from themeforest(the above
                     <li>
                         <span>Minha Conta</span>
                     </li>
-                </ul>
+                </ul>-->
                 <!-- END PAGE BREADCRUMBS -->
                 <!-- BEGIN PAGE CONTENT INNER -->
                 @if(Session::has('updateUser'))

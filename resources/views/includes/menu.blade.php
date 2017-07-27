@@ -44,6 +44,11 @@
         <!-- DOC: Remove data-hover="dropdown" and data-close-others="true" attributes below to disable the dropdown opening on mouse hover -->
         <div class="hor-menu  ">
             <ul class="nav navbar-nav">
+                <li class="menu-dropdown mega-menu-dropdown  ">
+                    <a href="{{ route('index') }}">
+                        Início
+                    </a>
+                </li>
                 <li class="menu-dropdown classic-menu-dropdown ">
                     <a href="javascript:;"> Pessoas
                         <span class="arrow"></span>

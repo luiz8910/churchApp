@@ -64,7 +64,7 @@ License: You must have a valid license purchased only from themeforest(the above
                     <div class="page-content-wrapper">
                         <!-- BEGIN CONTENT BODY -->
                         <!-- BEGIN PAGE HEAD-->
-                        <div class="page-head">
+                        <div class="page-head hidden-xs hidden-sm">
                             <div class="container">
                                 <!-- BEGIN PAGE TITLE -->
                                 <div class="page-title">
@@ -79,16 +79,16 @@ License: You must have a valid license purchased only from themeforest(the above
                         <!-- BEGIN PAGE CONTENT BODY -->
                         <div class="page-content">
                             <div class="container">
-                                <!-- BEGIN PAGE BREADCRUMBS -->
+                                <!-- BEGIN PAGE BREADCRUMBS
                                 <ul class="page-breadcrumb breadcrumb">
                                     <li>
-                                        <a href="{{ route('index') }}">Home</a>
+                                        <a href=" route('index') ">Home</a>
                                         <i class="fa fa-circle"></i>
                                     </li>
                                     <li>
                                         <span>Eventos</span>
                                     </li>
-                                </ul>
+                                </ul>-->
 
                                 <div class="alert alert-danger alert-dismissible" id="delete-group-alert" role="alert" style="display: none;">
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -150,7 +150,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <div class="portlet light portlet-fit ">
                                                     <div class="portlet-title">
                                                         <div class="caption">
-                                                            <i class="icon-settings font-red"></i>
+                                                            <i class="fa fa-calendar font-red"></i>
                                                             <span class="caption-subject font-red sbold uppercase">Eventos</span>
 
                                                         </div>

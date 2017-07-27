@@ -335,35 +335,12 @@ class PersonController extends Controller
 
         $data = $request->except(['img', 'email', 'password', 'confirm-password', '_token']);
 
-        $array = array_keys($data);
+        $verifyFields = $this->verifyRequiredFields($data, 'person');
 
-        //dd($array[0]);
-
-        $i = 0;
-
-        foreach ($fields as $field)
+        if($verifyFields)
         {
-            while($i < count($array))
-            {
-                if($array[$i] == $field->value)
-                {
-                    if($field->required == 1 && $data[$array[$i]] == "")
-                    {
-                        \Session::flash("email.exists", "Preencha o campo " . $field->field);
-                        return redirect()->route("person.create")->withInput();
-                    }
-                    else
-                    {
-                        $i++;
-                    }
-                }
-                else{
-                    $i++;
-                }
-            }
-
-            $i = 0;
-
+            \Session::flash("error.required-fields", "Preencha o campo " . $verifyFields);
+            return redirect()->route("person.create")->withInput();
         }
 
         $data['dateBirth'] = $this->formatDateBD($data['dateBirth']);
@@ -492,6 +469,11 @@ class PersonController extends Controller
 
         $countGroups[] = $this->countGroups();
 
+        $fields = $this->fieldsRepository->findWhere([
+            'model' => 'person',
+            'church_id' => \Auth::user()->church_id
+        ]);
+
         $gender = $person->gender == 'M' ? 'F' : 'M';
 
         $church_id = Auth::getUser()->church_id;
@@ -553,7 +535,7 @@ class PersonController extends Controller
             ->get();
 
         return view('people.edit', compact('person', 'state', 'location', 'roles', 'countPerson',
-            'countGroups', 'adults', 'notify', 'qtde', 'fathers', 'mothers', 'children', 'leader'));
+            'countGroups', 'adults', 'notify', 'qtde', 'fathers', 'mothers', 'children', 'leader', 'fields'));
     }
 
 
@@ -626,6 +608,14 @@ class PersonController extends Controller
 
         //Formatação correta do email
         $email = $email["email"];
+
+        $verifyFields = $this->verifyRequiredFields($data, 'person');
+
+        if($verifyFields)
+        {
+            \Session::flash("error.required-fields", "Preencha o campo " . $verifyFields);
+            return redirect()->route("person.edit", ['person' => $id])->withInput();
+        }
 
         //Formatação correta da data
         $data['dateBirth'] = $this->formatDateBD($data['dateBirth']);

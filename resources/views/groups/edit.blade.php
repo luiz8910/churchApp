@@ -52,7 +52,7 @@ License: You must have a valid license purchased only from themeforest(the above
     <div class="page-content-wrapper">
         <!-- BEGIN CONTENT BODY -->
         <!-- BEGIN PAGE HEAD-->
-        <div class="page-head">
+        <div class="page-head hidden-sm hidden-xs">
             <div class="container">
                 <!-- BEGIN PAGE TITLE -->
                 <div class="page-title">
@@ -68,20 +68,20 @@ License: You must have a valid license purchased only from themeforest(the above
         <!-- BEGIN PAGE CONTENT BODY -->
         <div class="page-content">
             <div class="container">
-                <!-- BEGIN PAGE BREADCRUMBS -->
+                <!-- BEGIN PAGE BREADCRUMBS
                 <ul class="page-breadcrumb breadcrumb">
                     <li>
-                        <a href="{{ route('index') }}">Home</a>
+                        <a href=" route('index') ">Home</a>
                         <i class="fa fa-circle"></i>
                     </li>
                     <li>
-                        <a href="{{ route('group.index') }}">Grupos</a>
+                        <a href=" route('group.index') ">Grupos</a>
                         <i class="fa fa-circle"></i>
                     </li>
                     <li>
-                        <span>Grupo "{{ $group->name }}"</span>
+                        <span>Grupo " $group->name "</span>
                     </li>
-                </ul>
+                </ul>-->
                 <!-- END PAGE BREADCRUMBS -->
                 <!-- BEGIN PAGE CONTENT INNER -->
                 @if(Session::has('updateUser'))
@@ -105,6 +105,13 @@ License: You must have a valid license purchased only from themeforest(the above
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
                                     aria-hidden="true">&times;</span></button>
                         {{ Session::get('member.deleted') }}
+                    </div>
+                @endif
+
+                @if(Session::has("error.required-fields"))
+                    <div class="alert alert-danger alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <strong>Erro!</strong> {{ Session::get("error.required-fields") }}
                     </div>
                 @endif
 
@@ -149,10 +156,10 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <a href="">
                                                     <i class="icon-home"></i> Visão Geral </a>
                                             </li>
-                                            <li>
+                                            {{--<li>
                                                 <a href="">
                                                     <i class="icon-info"></i> Detalhes </a>
-                                            </li>
+                                            </li>--}}
                                         </ul>
                                     </div>
                                     <!-- END MENU -->
@@ -365,7 +372,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                             <i class="fa fa-map-marker font-red"></i>
                                             <span class="caption-subject font-red bold uppercase">Endereços</span>
                                         </div>
-                                        <div class="actions">
+                                        {{--<div class="actions">
                                             <a class="btn btn-circle btn-icon-only btn-default"
                                                href="javascript:;">
                                                 <i class="icon-cloud-upload"></i>
@@ -378,7 +385,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                href="javascript:;">
                                                 <i class="icon-trash"></i>
                                             </a>
-                                        </div>
+                                        </div>--}}
                                     </div>
                                     <div class="portlet-body">
                                         <div id="map" style="height: 400px; width: 100%;"></div>
@@ -742,7 +749,8 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     </span>
                                                     <input type="text" name="name"
                                                            class="form-control" id="input-join-new-people"
-                                                           placeholder="Digite o nome aqui" autocomplete="off" required>
+                                                           placeholder="Digite o nome aqui" autocomplete="off"
+                                                    >
                                                 </div>
 
                                                 <span class="help-block" id="foundResults" style="margin-top:10px; margin-bottom:10px; display: none;">
@@ -845,6 +853,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                         </div>
 
                                     </div>
+                                    <?php $i = 0; ?>
                                     <div class="portlet-body">
                                         {!! Form::open(['route' => ['group.update', 'group' => $group->id], 'method' => 'PUT',
                                         'class' => 'repeater', 'enctype' => 'multipart/form-data', 'role' => 'form', 'id' => 'form']) !!}
@@ -858,7 +867,12 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                     <i class="fa fa-user font-blue"></i>
                                                                 </span>
                                                             <input type="text" name="name" class="form-control" value="{{ $group->name }}"
-                                                                   placeholder="Grupo de Jovens">
+                                                                   placeholder="Grupo de Jovens"
+                                                                    @if($fields[$i]->required == 1)
+                                                                        required
+                                                                    @endif
+                                                                    <?php $i++; ?>
+                                                            >
                                                         </div>
                                                     </div>
                                                 </div>
@@ -873,7 +887,12 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 </button>
                                                             </span>
                                                             <input type="text" class="form-control input-date" name="sinceOf"
-                                                                   value="{{ $group->sinceOf }}" placeholder="dd/mm/aaaa">
+                                                                   value="{{ $group->sinceOf }}" placeholder="dd/mm/aaaa"
+                                                                    @if($fields[$i]->required == 1)
+                                                                        required
+                                                                    @endif
+                                                                    <?php $i++; ?>
+                                                            >
                                                         </div>
 
                                                     </div>
@@ -906,7 +925,13 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 <i class="fa fa-location-arrow font-purple"></i>
                                                             </span>
                                                             <input type="text" class="form-control" id="zipCode" name="zipCode"
-                                                                   value="{{ $group->zipCode }}" placeholder="XXXXX-XXX" maxlength="9">
+                                                                   value="{{ $group->zipCode }}" placeholder="XXXXX-XXX" maxlength="9"
+                                                                    @if($fields[$i]->required == 1)
+                                                                        required
+                                                                    @endif
+                                                                    <?php $i++; ?>
+
+                                                            >
                                                         </div>
                                                     </div>
                                                 </div>
@@ -924,7 +949,12 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         </span>
                                                             <input class="form-control" name="street" type="text"
                                                                    value="{{ $group->street }}"
-                                                                   placeholder="Av. Antonio Carlos Comitre, 650" id="street">
+                                                                   placeholder="Av. Antonio Carlos Comitre, 650" id="street"
+                                                                    @if($fields[$i]->required == 1)
+                                                                        required
+                                                                    @endif
+                                                                    <?php $i++; ?>
+                                                            >
                                                         </div>
                                                     </div>
                                                 </div>
@@ -937,7 +967,12 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         </span>
                                                             <input class="form-control" name="neighborhood" type="text"
                                                                    value="{{ $group->neighborhood }}"
-                                                                   placeholder="Parque do Dolly" id="neighborhood">
+                                                                   placeholder="Parque do Dolly" id="neighborhood"
+                                                                    @if($fields[$i]->required == 1)
+                                                                        required
+                                                                    @endif
+                                                                    <?php $i++; ?>
+                                                            >
                                                         </div>
                                                     </div>
                                                 </div>
@@ -952,14 +987,24 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             <i class="fa fa-building font-purple"></i>
                                                         </span>
                                                             <input class="form-control" name="city" type="text"
-                                                                   value="{{ $group->city }}" placeholder="Sorocaba" id="city">
+                                                                   value="{{ $group->city }}" placeholder="Sorocaba" id="city"
+                                                                    @if($fields[$i]->required == 1)
+                                                                        required
+                                                                    @endif
+                                                                    <?php $i++; ?>
+                                                            >
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 input-address">
                                                     <div class="form-group">
                                                         <label>Estado</label>
-                                                        <select name="state" class="form-control" id="state">
+                                                        <select name="state" class="form-control" id="state"
+                                                                @if($fields[$i]->required == 1)
+                                                                    required
+                                                                @endif
+                                                                <?php $i++; ?>
+                                                        >
                                                             <option value="">Selecione</option>
                                                             @foreach($state as $item)
                                                                 <option value="{{ $item->initials }}"

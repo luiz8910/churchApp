@@ -353,7 +353,7 @@ class DashboardController extends Controller
             }
         }
 
-        //dd($events_recent);
+        //dd($countPerson);
 
         /*
          * Fim Recentes

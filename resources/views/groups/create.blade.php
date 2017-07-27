@@ -36,12 +36,12 @@ License: You must have a valid license purchased only from themeforest(the above
     <div class="page-content-wrapper">
         <!-- BEGIN CONTENT BODY -->
         <!-- BEGIN PAGE HEAD-->
-        <div class="page-head">
+        <div class="page-head hidden-sm hidden-xs">
             <div class="container">
                 <!-- BEGIN PAGE TITLE -->
                 <div class="page-title">
-                    <h1>Bootstrap Form Controls
-                        <small>bootstrap form controls and more</small>
+                    <h1>Cadastrar Novo Grupo
+                        <small></small>
                     </h1>
                 </div>
                 <!-- END PAGE TITLE -->
@@ -51,22 +51,30 @@ License: You must have a valid license purchased only from themeforest(the above
         <!-- BEGIN PAGE CONTENT BODY -->
         <div class="page-content">
             <div class="container">
-                <!-- BEGIN PAGE BREADCRUMBS -->
+                <!-- BEGIN PAGE BREADCRUMBS
                 <ul class="page-breadcrumb breadcrumb">
                     <li>
-                        <a href="{{ route('index') }}">Home</a>
+                        <a href=" route('index') ">Home</a>
                         <i class="fa fa-circle"></i>
                     </li>
                     <li>
-                        <a href="#">Grupos</a>
+                        <a href=" route('group.index') ">Grupos</a>
                         <i class="fa fa-circle"></i>
                     </li>
                     <li>
                         <span>Novo</span>
                     </li>
-                </ul>
+                </ul> -->
                 <!-- END PAGE BREADCRUMBS -->
                 <!-- BEGIN PAGE CONTENT INNER -->
+
+                @if(Session::has("error.required-fields"))
+                    <div class="alert alert-danger alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <strong>Erro!</strong> {{ Session::get("error.required-fields") }}
+                    </div>
+                @endif
+
                 <div class="page-content-inner">
                     <div class="row">
                         <div class="col-md-12 ">
@@ -104,6 +112,9 @@ License: You must have a valid license purchased only from themeforest(the above
                                         </div>
                                     </div>-->
                                 </div>
+
+                                <?php $i = 0; ?>
+
                                 <div class="portlet-body form">
                                     {!! Form::open(['route' => 'group.store', 'method' => 'POST', 'class' => 'repeater',
                                     'enctype' => 'multipart/form-data', 'role' => 'form', 'id' => 'form']) !!}
@@ -117,7 +128,12 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 <i class="fa fa-user font-blue"></i>
                                                             </span>
                                                         <input type="text" name="name" class="form-control"
-                                                               placeholder="Grupo de Jovens" required>
+                                                               placeholder="Grupo de Jovens" value="{{ old('name') }}"
+                                                                @if($fields[$i]->required == 1)
+                                                                    required
+                                                                @endif
+                                                                <?php $i++; ?>
+                                                        >
                                                     </div>
                                                 </div>
                                             </div>
@@ -130,7 +146,12 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 <i class="fa fa-calendar font-blue"></i>
                                                             </span>
                                                         <input type="text" class="form-control" name="sinceOf"
-                                                               value="<?php echo date('d/m/Y'); ?>" placeholder="dd/mm/aaaa" required>
+                                                               value="<?php echo date('d/m/Y'); ?>" placeholder="dd/mm/aaaa"
+                                                                @if($fields[$i]->required == 1)
+                                                                    required
+                                                                @endif
+                                                                <?php $i++; ?>
+                                                        >
                                                     </div>
 
                                                 </div>
@@ -162,7 +183,13 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         <span class="input-group-addon">
                                                             <i class="fa fa-location-arrow font-purple"></i>
                                                         </span>
-                                                        <input type="text" class="form-control" id="zipCode" name="zipCode" placeholder="XXXXX-XXX">
+                                                        <input type="text" class="form-control" id="zipCode" name="zipCode" placeholder="XXXXX-XXX"
+                                                               value="{{ old("zipCode") }}"
+                                                                @if($fields[$i]->required == 1)
+                                                                    required
+                                                                @endif
+                                                                <?php $i++; ?>
+                                                        >
                                                     </div>
                                                 </div>
                                             </div>
@@ -178,7 +205,13 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <span class="input-group-addon">
                                                         <i class="fa fa-home font-purple"></i>
                                                     </span>
-                                                        <input class="form-control" name="street" id="street" type="text" placeholder="Av. Antonio Carlos Comitre, 650" required>
+                                                        <input class="form-control" name="street" id="street" type="text" placeholder="Av. Antonio Carlos Comitre, 650"
+                                                               value="{{ old("street") }}"
+                                                                @if($fields[$i]->required == 1)
+                                                                    required
+                                                                @endif
+                                                                <?php $i++; ?>
+                                                        >
                                                     </div>
                                                 </div>
                                             </div>
@@ -190,7 +223,13 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         <i class="fa fa-home font-purple"></i>
                                                     </span>
                                                         <input class="form-control" name="neighborhood"
-                                                               id="neighborhood" type="text" placeholder="Parque do Dolly">
+                                                               id="neighborhood" type="text" placeholder="Centro"
+                                                               value="{{ old("neighborhood") }}"
+                                                                @if($fields[$i]->required == 1)
+                                                                    required
+                                                                @endif
+                                                                <?php $i++; ?>
+                                                        >
                                                     </div>
                                                 </div>
                                             </div>
@@ -204,17 +243,32 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <span class="input-group-addon">
                                                         <i class="fa fa-building font-purple"></i>
                                                     </span>
-                                                        <input class="form-control" name="city" id="city" type="text" placeholder="Sorocaba" required>
+                                                        <input class="form-control" name="city" id="city" type="text" placeholder="Sorocaba"
+                                                               value="{{ old("city") }}"
+                                                                @if($fields[$i]->required == 1)
+                                                                    required
+                                                                @endif
+                                                                <?php $i++; ?>
+                                                        >
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-6 input-address">
                                                 <div class="form-group">
                                                     <label>Estado</label>
-                                                    <select name="state" class="form-control" id="state" required>
+                                                    <select name="state" class="form-control" id="state"
+                                                            @if($fields[$i]->required == 1)
+                                                                required
+                                                            @endif
+                                                            <?php $i++; ?>
+                                                    >
                                                         <option value="">Selecione</option>
                                                         @foreach($state as $item)
-                                                            <option value="{{ $item->initials }}">{{ $item->state }}</option>
+                                                            <option value="{{ $item->initials }}"
+                                                                @if($item->initials == old("state")) selected @endif
+                                                            >
+                                                                {{ $item->state }}
+                                                            </option>
                                                         @endforeach
                                                     </select>
                                                 </div>

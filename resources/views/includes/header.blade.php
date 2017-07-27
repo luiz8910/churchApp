@@ -3,18 +3,29 @@
 <!-- BEGIN HEADER -->
 <div class="page-header">
     <!-- BEGIN HEADER TOP -->
-    <div class="page-header-top">
+    <div class="page-header-top" >
         <div class="container">
             <!-- BEGIN LOGO -->
-            <div class="page-logo">
-                <a href="
-                    @if(Auth::user()->church_id)
-                        {{ route('index') }}
-                    @else {{ route('home.visitor', ['church_id' => $church_id]) }} @endif">
-                    <img src="../teste/logo-menor-header.png" alt="logo" class="logo-default" style="width: 270px; margin-top: 7px;">
+            <div class="page-logo" >
+
+
+                <div >
+                    <a href="
+                        @if(Auth::user()->church_id)
+                            {{ route('index') }}
+                        @else {{ route('home.visitor', ['church_id' => $church_id]) }} @endif">
+
+                    <img src="../logo/Simbolo.png" alt="logo" class="logo-default hidden-md hidden-lg" style="width: 100%; margin-top: 2px; display: none;">
+
+                    <img src="../teste/logo-menor-header.png" alt="logo" class="logo-default " style="width: 270px; margin-top: 7px;">
+
+                    </a>
+                </div>
+
+
                     <!--<img src="../logo/Horizontal.png" alt="logo" class="logo-default" style="width: 270px; margin-top: -15px;">-->
                     {{--<img src="../logo/Vertical.png" alt="logo" class="logo-default" style="width: 300px; margin-top: -20px;">--}}
-                </a>
+
             </div>
             <!-- END LOGO -->
             <!-- BEGIN RESPONSIVE MENU TOGGLER -->
@@ -271,10 +282,10 @@
                     </li>
                     <!-- END USER LOGIN DROPDOWN -->
                     <!-- BEGIN QUICK SIDEBAR TOGGLER -->
-                    <li class="dropdown dropdown-extended quick-sidebar-toggler">
+                    {{--<li class="dropdown dropdown-extended quick-sidebar-toggler">
                         <span class="sr-only">Toggle Quick Sidebar</span>
                         <i class="icon-logout"></i>
-                    </li>
+                    </li>--}}
                     <!-- END QUICK SIDEBAR TOGGLER -->
                 </ul>
             </div>
