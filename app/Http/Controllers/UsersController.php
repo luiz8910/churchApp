@@ -274,7 +274,7 @@ class UsersController extends Controller
 
     public function sendPassword($email)
     {
-        $user = User::where("email", $email)->get();
+        $user = User::where("email", $email)->first();
 
         $url = env('APP_URL');
 
@@ -283,11 +283,11 @@ class UsersController extends Controller
         $time = date("H:i");
 
         if (count($user) > 0) {
-            $u = User::find($user->first()->id);
 
-            Mail::to($u)
+
+            Mail::to($user)
                 ->send(new resetPassword(
-                    $u, $url, $today, $time
+                    $user, $url, $today, $time
                 ));
 
             return json_encode(['status' => true]);
@@ -296,15 +296,27 @@ class UsersController extends Controller
         return json_encode(['status' => false]);
     }
 
-    public function hasEmail($email)
+    public function hasEmail($email, $church_id = null)
     {
         $email = DB::table('users')
             ->where(
             [
                 'email' => $email,
-                'church_id' => Auth::user()->church_id
             ]
         )->get();
+
+        if($church_id)
+        {
+            $email = DB::table('users')
+                ->where(
+                    [
+                        'email' => $email,
+                        'church_id' => $church_id
+                    ]
+                )->get();
+
+
+        }
 
         //dd($email);
 

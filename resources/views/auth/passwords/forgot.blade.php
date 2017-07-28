@@ -29,7 +29,8 @@ License: You must have a valid license purchased only from themeforest(the above
 <!-- BEGIN LOGO -->
 <div class="logo">
     <a href="javascript:;">
-        <img src="../assets/pages/img/logo-big.png" alt="" /> </a>
+        <img src="../teste/Simbolo-branco.png" alt="logo" class="logo-default" style="width: 150px; margin-top: -20px;">
+    </a>
 </div>
 <!-- END LOGO -->
 <!-- BEGIN LOGIN -->
@@ -43,11 +44,15 @@ License: You must have a valid license purchased only from themeforest(the above
         <p> Entre com seu email para recuperar sua senha </p>
         <div class="form-group has-error">
             <input class="form-control placeholder-no-fix" id="recoverEmail" type="text" autocomplete="off" placeholder="Email" name="email" />
+            <span class="help-block" id="span-validEmail" style="display: none; color: red;">
+                <i class="fa fa-exclamation"></i>
+                Entre com um email válido
+            </span>
         </div>
 
         <div class="form-actions">
             <button type="button" id="back-btn" class="btn btn-default" onclick="back()">Voltar</button>
-            <button type="button" id="btnSend" class="btn btn-success uppercase pull-right btnSend" disabled>Enviar</button>
+            <button type="submit" id="btnSend" class="btn btn-success uppercase pull-right btnSend" disabled>Enviar</button>
         </div>
 
         <div class="alert alert-danger alert-dismissible" role="alert" id="emailNotFound" style="display: none;">
@@ -67,7 +72,7 @@ License: You must have a valid license purchased only from themeforest(the above
     </form>
 <!-- END FORGOT PASSWORD FORM -->
 </div>
-<div class="copyright"> 2014 © Metronic. Admin Dashboard Template. </div>
+<div class="copyright"> 2017 © Beconnect.</div>
 @include('includes.core-scripts')
 <!-- BEGIN PAGE LEVEL PLUGINS -->
 <script src="../assets/global/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>

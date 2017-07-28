@@ -23,16 +23,15 @@ License: You must have a valid license purchased only from themeforest(the above
 @include('includes.head-edit')
 
 <!-- BEGIN PAGE LEVEL PLUGINS -->
-    <link href="../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet"
+    {{--<link href="../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet"
           type="text/css"/>
     <link href="../../assets/pages/css/profile.min.css" rel="stylesheet" type="text/css"/>
-    <link href="../../assets/global/plugins/datatables/datatables.min.css" rel="stylesheet" type="text/css"/>
-    <link href="../../assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css" rel="stylesheet"
-          type="text/css"/>
-    <link href="../../assets/global/plugins/typeahead/typeahead.css" rel="stylesheet" type="text/css"/>
-    <link href="../../assets/global/plugins/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet"
-          type="text/css"/>
-    <script src="../../js/ajax.js"></script>
+    <link href="../../assets/global/plugins/datatables/datatables.min.css" rel="stylesheet" type="text/css"/>--}}
+    {{--<link href="../../assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css" rel="stylesheet"
+          type="text/css"/>--}}
+    {{--<link href="../../assets/global/plugins/typeahead/typeahead.css" rel="stylesheet" type="text/css"/>--}}
+    {{--<link href="../../assets/global/plugins/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet"
+          type="text/css"/>--}}
     <!-- END PAGE LEVEL PLUGINS -->
 </head>
 <!-- END HEAD -->
@@ -129,33 +128,46 @@ License: You must have a valid license purchased only from themeforest(the above
                                             <i class="icon-directions font-green hide"></i>
                                             <span class="caption-subject bold font-dark uppercase "> Detalhes </span>
                                             <span class="caption-helper"></span>
+
                                         </div>
+
+                                        {{--<div class="clearfix"
+                                                style=" z-index: 1000;
+                                                        float: left; overflow: hidden;
+                                                        width: 50%; height: 100%;">
+                                            <a href="javascript:;" class="btn btn-success btn-circle pull-right" style="margin-top: 20px;" disabled>
+                                                <i class="fa fa-check"></i>
+                                                Check-In
+                                            </a>
+                                        </div>--}}
+
+
                                         <div class="actions">
                                             <div class="btn-group">
                                                 @if($canCheckIn)
                                                     @if($sub)
-                                                        <a href="javascript:;" class="btn btn-danger btn-circle" style="margin-right: 10px;"
+                                                        <a href="javascript:;" class="btn btn-danger btn-circle change-size" style="margin-right: 10px;"
                                                            id="checkIn" onclick='checkOut({{ $event->id }})'>
                                                             <i class="fa fa-close" id="i-checkIn"></i>
                                                             Check-Out
                                                         </a>
                                                     @else
-                                                        <a href="javascript:;" class="btn btn-success btn-circle" style="margin-right: 10px;"
+                                                        <a type="button" class="btn btn-success btn-circle change-size" style="margin-right: 10px;"
                                                            id="checkIn" onclick='checkInEvent({{ $event->id }})'>
                                                             <i class="fa fa-check" id="i-checkIn"></i>
                                                             Check-In
                                                         </a>
                                                     @endif
                                                 @else
-                                                    <a href="javascript:;" class="btn btn-success btn-circle" style="margin-right: 10px;" disabled>
+                                                    <a href="javascript:;" class="btn btn-success btn-lg btn-circle change-size" style="margin-right: 10px;" disabled>
                                                         <i class="fa fa-check" id="i-checkIn"></i>
                                                         Check-In
                                                     </a>
                                                 @endif
 
-                                                <a class="btn purple btn-outline btn-circle btn-sm" href="javascript:;" data-toggle="dropdown"
+                                                <a class="btn purple btn-outline btn-circle btn-sm change-size" href="javascript:;" data-toggle="dropdown"
                                                    data-hover="dropdown" data-close-others="true"> Ações
-                                                    <i class="fa fa-angle-down"></i>
+                                                    <i class="fa fa-angle-down" id="i-actions"></i>
                                                 </a>
                                                 <ul class="dropdown-menu pull-right">
                                                     @if(isset($group))
@@ -1574,10 +1586,10 @@ License: You must have a valid license purchased only from themeforest(the above
 
 @include('includes.core-scripts-edit')
 
-<script src="../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js" type="text/javascript"></script>
-<script src="../../assets/global/plugins/moment.min.js" type="text/javascript"></script>
+{{--<script src="../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js" type="text/javascript"></script>--}}
+{{--<script src="../../assets/global/plugins/moment.min.js" type="text/javascript"></script>--}}
 <!-- BEGIN PAGE LEVEL PLUGINS -->
-<script src="../../assets/global/plugins/clockface/js/clockface.js" type="text/javascript"></script>
+{{--<script src="../../assets/global/plugins/clockface/js/clockface.js" type="text/javascript"></script>--}}
 <!-- END PAGE LEVEL PLUGINS -->
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
 <!-- END PAGE LEVEL SCRIPTS -->
@@ -1595,6 +1607,7 @@ License: You must have a valid license purchased only from themeforest(the above
 <!-- END PAGE LEVEL SCRIPTS -->
 
 <script src="../../js/maps.js"></script>
+<script src="../../js/os.js"></script>
 
 
 <script async defer

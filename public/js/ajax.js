@@ -1,42 +1,55 @@
 
 
+    $("#recoverPassword").submit(function (e) {
+        sendPassword();
+
+        e.stopImmediatePropagation();
+
+        return false;
+    });
 
     $(".btnSend").click(function (e) {
 
         if(!$(".btnSend").attr('disabled'))
         {
-            var email = $("#recoverEmail").val();
-            var request = $.ajax({
-                url: "/sendPassword/" + email,
-                method: "POST",
-                dataType: "json"
-            });
-
-            request.done(function (e) {
-                console.log("done");
-                console.log(e);
-
-                if(e.status)
-                {
-                    $("#emailSent").css("display", "block");
-                }
-                else{
-                    $("#emailNotSent").css("display", "block");
-                }
-
-            });
-
-            request.fail(function (e) {
-                console.log("fail");
-                console.log(e);
-                $("#emailNotSent").css("display", "block");
-            })
+            sendPassword();
         }
 
         e.stopImmediatePropagation();
 
         return false;
     });
+
+    function sendPassword()
+    {
+        var email = $("#recoverEmail").val();
+        var request = $.ajax({
+            url: "/sendPassword/" + email,
+            method: "POST",
+            //method: "GET",
+            dataType: "json"
+        });
+
+        request.done(function (e) {
+            console.log("done");
+            console.log(e);
+
+            if(e.status)
+            {
+                $("#emailSent").css("display", "block");
+            }
+            else{
+                $("#emailNotSent").css("display", "block");
+            }
+
+        });
+
+        request.fail(function (e) {
+            console.log("fail");
+            console.log(e);
+            $("#emailNotSent").css("display", "block");
+        })
+    }
 
 
 
@@ -125,15 +138,16 @@
     }
 
 
-    $("#recoverEmail").change(function () {
-        console.log("email");
+    $("#recoverEmail").keyup(function () {
+        console.log(this.value);
 
         if(validateEmail(this.value))
         {
+            $("#span-validEmail").css("display", "none");
+
             var request = $.ajax({
                 url: "/emailTest/" + this.value,
                 method: "GET",
-                //data: this.value,
                 dataType: "json"
             });
 
@@ -154,7 +168,7 @@
             })
         }
         else{
-            alert("entre com um email válido");
+            $("#span-validEmail").css("display", "block");
         }
     });
 
