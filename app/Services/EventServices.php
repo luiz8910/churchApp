@@ -806,16 +806,22 @@ class EventServices
                     ["event_id", '=', $id]
                 ])
                 ->get();
+
+            //echo ("true");
+
         }
         else{
             //$dates contém todos os eventos que não foram excluídos
             $dates = DB::table("event_person")
                 ->where([
-                    ["deleted_at", '=', null]
+                    "deleted_at" => null
                 ])
                 ->get();
+
+            //echo ("false");
         }
 
+        //dd($dates);
 
         $arrayDates = [];
 
@@ -842,22 +848,31 @@ class EventServices
             }
         }
 
+
         //Organiza os eventos de forma ascendente
         //O indice 0 é o próximo evento
         asort($arrayDates);
 
+        $key = array_keys($arrayDates);
+
+        $key = reset($key);
+
+        //dd($arrayDates);
+
         //Separa a data do próximo Evento numa variável
-        $d = array_values($arrayDates)[0];
+        $d = date_format($arrayDates[$key], "Y-m-d");
 
         //Separa o id do próximo evento numa variável
-        $id = array_search($d, $arrayDates);
+        //$id = array_search($d, $arrayDates); // id 8
 
         /*
          * Indíce 0 corresponde a $id do próximo evento
          * Indice 1 corresponde a data do próximo evento
          * */
-        $arr[] = $arrayIds[$id];
-        $arr[] = date_format($d, "Y-m-d");
+        $arr[] = $arrayIds[$key];
+        $arr[] = $d;
+
+        //dd($arr);
 
         return $arr;
     }

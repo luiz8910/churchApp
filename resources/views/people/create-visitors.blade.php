@@ -76,6 +76,13 @@ License: You must have a valid license purchased only from themeforest(the above
                     </div>
                 @endif
 
+                @if(Session::has('error.required-fields'))
+                    <div class="alert alert-danger alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <strong>Erro!</strong> {{ Session::get('error.required-fields') }}
+                    </div>
+                @endif
+
                 <div class="page-content-inner">
                     <div class="row">
                         <div class="col-md-12 ">
@@ -128,7 +135,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 <i class="fa fa-user font-blue"></i>
                                                             </span>
                                                         <input type="text" name="name" class="form-control"
-                                                               placeholder="José" value="{{ old('name') }}" required>
+                                                               placeholder="José" value="{{ old('name') }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -140,7 +147,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 <i class="fa fa-user font-blue"></i>
                                                             </span>
                                                         <input type="text" name="lastName" class="form-control"
-                                                               placeholder="da Silva" value="{{ old('lastName') }}" required>
+                                                               placeholder="da Silva" value="{{ old('lastName') }}" >
                                                     </div>
                                                 </div>
 
@@ -157,7 +164,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 <i class="fa fa-envelope font-blue" id="icon-email"></i>
                                                             </span>
                                                         <input type="text" name="email" id="email" class="form-control"
-                                                               placeholder="email@dominio.com" value="{{ old('email') }}" required>
+                                                               placeholder="email@dominio.com" value="{{ old('email') }}" >
                                                         <i class="fa fa-check font-green" id="icon-success-email" style="display: none;"></i>
                                                         <i class="fa fa-exclamation font-red" id="icon-error-email" style="display: none;"></i>
                                                     </div>
@@ -199,7 +206,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         <i class="fa fa-phone font-green"></i>
                                                     </span>
                                                         <input type="text" class="form-control tel" name="tel"
-                                                               id="exampleInputPassword1" value="{{ old('tel') }}" placeholder="(15) 1231413423" required>
+                                                               id="exampleInputPassword1" value="{{ old('tel') }}" placeholder="(15) 1231413423" >
                                                     </div>
                                                 </div>
 
@@ -208,7 +215,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <div class="form-group">
                                                     <label>Gênero *</label>
                                                     <div class="input-icon input-icon-lg">
-                                                        <select class="form-control" name="gender" required>
+                                                        <select class="form-control" name="gender" >
                                                             <option value="">Selecione</option>
                                                             <option value="M">Masculino</option>
                                                             <option value="F">Feminino</option>
@@ -270,7 +277,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <label>Cargo</label>
                                                     <div class="input-icon input-icon-sm">
                                                         <i class="fa fa-briefcase"></i>
-                                                        <select class="form-control" name="role_id" required readonly>
+                                                        <select class="form-control" name="role_id" readonly>
                                                             <option value="3">Visitante</option>
                                                         </select>
                                                     </div>

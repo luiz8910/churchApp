@@ -10,6 +10,7 @@ use App\Models\Visitor;
 use App\Repositories\ChurchRepository;
 use App\Repositories\EventRepository;
 use App\Repositories\GroupRepository;
+use App\Repositories\RequiredFieldsRepository;
 use App\Repositories\RoleRepository;
 use App\Repositories\StateRepository;
 use App\Repositories\UserRepository;
@@ -73,6 +74,10 @@ class VisitorController extends Controller
      * @var UserRepository
      */
     private $userRepository;
+    /**
+     * @var RequiredFieldsRepository
+     */
+    private $fieldsRepository;
 
     /**
      * VisitorController constructor.
@@ -91,7 +96,8 @@ class VisitorController extends Controller
                                 StateRepository $stateRepository, ChurchRepository $churchRepository,
                                 EventRepository $eventRepository, GroupRepository $groupRepository,
                                 AgendaServices $agendaServices, EventServices $eventServices,
-                                VisitorServices $visitorServices, UserRepository $userRepository)
+                                VisitorServices $visitorServices, UserRepository $userRepository,
+                                RequiredFieldsRepository $fieldsRepository)
     {
         $this->repository = $repository;
         $this->roleRepository = $roleRepositoryTrait;
@@ -103,6 +109,7 @@ class VisitorController extends Controller
         $this->eventServices = $eventServices;
         $this->visitorServices = $visitorServices;
         $this->userRepository = $userRepository;
+        $this->fieldsRepository = $fieldsRepository;
     }
 
     /**
@@ -165,13 +172,29 @@ class VisitorController extends Controller
 
         unset($data["role_id"]);
 
-        $data['dateBirth'] = $data['dateBirth'] ? $this->formatDateBD($data['dateBirth']) : null;
+        $fields = $this->fieldsRepository->findWhere([
+            'model' => 'visitor',
+            'church_id' => \Auth::user()->church_id
+        ]);
 
-        if($data["dateBirth"] == "")
+        foreach ($fields as $field) {
+            if($field->value == "email"){
+                if($field->required == 1 && $data['email'] == ""){
+                    \Session::flash("email.exists", "Insira seu email");
+                    return redirect()->back()->withInput();
+                }
+            }
+        }
+
+        $verifyFields = $this->verifyRequiredFields($data, 'visitor');
+
+        if($verifyFields)
         {
-            $request->session()->flash("email.exists", "Insira a data de Nascimento");
+            \Session::flash("error.required-fields", "Preencha o campo " . $verifyFields);
             return redirect()->back()->withInput();
         }
+
+        $data['dateBirth'] = $data['dateBirth'] ? $this->formatDateBD($data['dateBirth']) : null;
 
         $data['imgProfile'] = 'uploads/profile/noimage.png';
 

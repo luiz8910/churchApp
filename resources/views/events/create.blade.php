@@ -79,6 +79,14 @@ License: You must have a valid license purchased only from themeforest(the above
                     </div>
                 @endif
 
+                @if(Session::has('error.required-fields'))
+
+                    <div class="alert alert-danger alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <strong>Erro!</strong> {{ Session::get('error.required-fields') }}
+                    </div>
+                @endif
+
 
                 <!-- END PAGE BREADCRUMBS -->
                 <!-- BEGIN PAGE CONTENT INNER -->
@@ -132,7 +140,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 <i class="fa fa-user font-blue"></i>
                                                             </span>
                                                         <input type="text" name="name" class="form-control"
-                                                               placeholder="Encontro de Jovens" value="{{ old('name') }}" required>
+                                                               placeholder="Encontro de Jovens" value="{{ old('name') }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -169,7 +177,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 <i class="fa fa-calendar"></i>
                                                             </button>
                                                         </span>
-                                                        <input type="text" class="form-control" name="eventDate" id="eventDate" readonly required>
+                                                        <input type="text" class="form-control" name="eventDate" id="eventDate" readonly>
                                                     </div>
 
                                                     <span class="help-block">
@@ -209,7 +217,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             <span class="input-group-addon">
                                                                 <i class="fa fa-clock-o font-blue"></i>
                                                             </span>
-                                                        <select name="startTime" class="form-control" required>
+                                                        <select name="startTime" class="form-control">
                                                             <option value="">Selecione</option>
                                                             <option value="00:00">00:00</option>
                                                             <option value="01:00">01:00</option>
@@ -369,7 +377,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         <i class="fa fa-home font-purple"></i>
                                                     </span>
                                                         <input class="form-control" name="street" id="street"
-                                                               type="text" placeholder="Av. Antonio Carlos Comitre, 650" required
+                                                               type="text" placeholder="Av. Antonio Carlos Comitre, 650"
                                                         value="{{ old('street') }}">
                                                     </div>
                                                 </div>
@@ -382,7 +390,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         <i class="fa fa-home font-purple"></i>
                                                     </span>
                                                         <input class="form-control" name="neighborhood" id="neighborhood"
-                                                               type="text" placeholder="Centro" value="{{ old('neighborhood') }}" required>
+                                                               type="text" placeholder="Centro" value="{{ old('neighborhood') }}" >
                                                     </div>
                                                 </div>
                                             </div>
@@ -397,14 +405,14 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         <i class="fa fa-building font-purple"></i>
                                                     </span>
                                                         <input class="form-control" name="city" id="city"
-                                                               type="text" placeholder="Sorocaba" value="{{ old('city') }}" required>
+                                                               type="text" placeholder="Sorocaba" value="{{ old('city') }}" >
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-6 input-address">
                                                 <div class="form-group">
                                                     <label>Estado</label>
-                                                    <select name="state" class="form-control" id="state" required>
+                                                    <select name="state" class="form-control" id="state" >
                                                         <option value="">Selecione</option>
                                                         @foreach($state as $item)
                                                             <option value="{{ $item->initials }}"

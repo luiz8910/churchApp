@@ -157,9 +157,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::group(['middleware' => 'check.role:1'], function (){
         Route::get("/configuracoes", "ConfigController@index")->name('config.index');
 
-        Route::post("/config-required/{model}", 'ConfigController@updateRule')->name('config.required.person');
+        Route::post("/config-required/{model}", 'ConfigController@updateRule')->name('config.required.fields');
 
         Route::post("/config/{model}", "ConfigController@newRule")->name('config.newRule');
+
+        Route::post("/config-model", "ConfigController@newModel")->name('config.newModel');
     });
 
     Route::get("/getPusherKey", "ConfigController@getPusherKey");

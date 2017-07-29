@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\RequiredFields;
+use App\Repositories\RegisterModelsRepository;
 use App\Repositories\RequiredFieldsRepository;
 use App\Repositories\RoleRepository;
 use App\Traits\ConfigTrait;
@@ -20,10 +21,15 @@ class ConfigController extends Controller
      * @var RequiredFieldsRepository
      */
     private $fieldsRepository;
+    /**
+     * @var RegisterModelsRepository
+     */
+    private $modelsRepository;
 
-    public function __construct(RequiredFieldsRepository $fieldsRepository)
+    public function __construct(RequiredFieldsRepository $fieldsRepository, RegisterModelsRepository $modelsRepository)
     {
         $this->fieldsRepository = $fieldsRepository;
+        $this->modelsRepository = $modelsRepository;
     }
 
     public function index()
@@ -43,27 +49,26 @@ class ConfigController extends Controller
 
         $qtde = count($notify) or 0;
 
-        $people = $this->fieldsRepository->findWhere([
-            'model' => 'person',
-            'church_id' => \Auth::user()->church_id
-        ]);
+        $church_id = \Auth::user()->church_id;
 
-        $group = $this->fieldsRepository->findWhere([
-            'model' => 'group',
-            'church_id' => \Auth::user()->church_id
-        ]);
+        $class = [];
 
-        $event = $this->fieldsRepository->findWhere([
-            'model' => 'event',
-            'church_id' => \Auth::user()->church_id
-        ]);
+        $models = $this->modelsRepository->findByField('church_id', $church_id);
 
+        foreach ($models as $model)
+        {
+            $class[] = $this->fieldsRepository->findWhere([
+                'model' => $model->model,
+                'church_id' => $church_id
+            ]);
+        }
 
+        //dd($class);
 
         //Fim Variáveis
 
         return view('config.index', compact('countPerson', 'countGroups', 'leader', 'notify', 'qtde',
-            'people', 'group', 'event'));
+            'class', 'models'));
     }
 
     /**
@@ -174,6 +179,17 @@ class ConfigController extends Controller
 
         return redirect()->route('config.index');
 
+    }
+
+    public function newModel(Request $request)
+    {
+        $data = $request->all();
+
+        $data["church_id"] = \Auth::user()->church_id;
+
+        $this->modelsRepository->create($data);
+
+        return redirect()->route('config.index');
     }
 
     public function getPusherKey()

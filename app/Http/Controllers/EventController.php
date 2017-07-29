@@ -595,6 +595,14 @@ class EventController extends Controller
             return redirect()->back()->withInput();
         }
 
+        $verifyFields = $this->verifyRequiredFields($data, 'event');
+
+        if($verifyFields)
+        {
+            \Session::flash("error.required-fields", "Preencha o campo " . $verifyFields);
+            return redirect()->route("event.create")->withInput();
+        }
+
         $endEventDate = $request->get('endEventDate');
 
         if ($endEventDate == "")
@@ -798,8 +806,6 @@ class EventController extends Controller
             $nextEventDate = $event->eventDate;
         }
 
-
-        $leader = $this->getLeaderRoleId();
 
         $preposicao = '';
 

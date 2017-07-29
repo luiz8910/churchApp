@@ -104,70 +104,110 @@ License: You must have a valid license purchased only from themeforest(the above
                                 @endif
                                 <!-- END PAGE BREADCRUMBS -->
 
-                                <!-- BEGIN PAGE CONTENT INNER -->
-                                <div class="page-content-inner">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <!-- BEGIN BORDERED TABLE PORTLET-->
-                                            <div class="portlet light portlet-fit ">
-                                                <div class="portlet-title">
-                                                    <div class="caption">
-                                                        <i class="icon-settings font-red"></i>
-                                                        <span class="caption-subject font-red sbold uppercase">Pessoas</span>
+                                <!-- Modal -->
+                                <div class="modal fade" id="newModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                <h4 class="modal-title" id="myModalLabel">Nova Classe</h4>
+                                            </div>
+
+                                            {!! Form::open(['route' => 'config.newModel', 'method' => 'POST']) !!}
+                                            <div class="modal-body">
+
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <label> Model:</label>
+                                                        <input type="text" name="model" class="form-control" required>
 
                                                     </div>
 
+                                                    <div class="col-md-4">
+                                                        <label> Text: </label>
+                                                        <input type="text" name="text" class="form-control" required>
+                                                    </div>
+
+                                                </div>
 
 
-                                                    <div class="actions">
-                                                        <div class="btn-group btn-group-devided">
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                                                <button class="btn btn-primary" type="submit">Salvar</button>
+                                            </div>
+                                            {!! Form::close() !!}
+                                        </div>
+                                    </div>
+                                </div>
 
-                                                            <div class="btn-group">
-                                                                <a class="btn red btn-outline btn-circle" href="javascript:;" data-toggle="dropdown">
-                                                                    <i class="fa fa-share"></i>
-                                                                    <span class="hidden-xs"> Opções </span>
-                                                                    <i class="fa fa-angle-down"></i>
-                                                                </a>
-                                                                <ul class="dropdown-menu pull-right" id="sample_3_tools">
-                                                                    <li>
-                                                                        <a href="javascript:;" data-toggle="modal" data-target="#newRulePerson">
-                                                                            <i class="fa fa-table" aria-hidden="true"></i>
-                                                                            Classe
-                                                                        </a>
-                                                                    </li>
+                                <?php $i = 0; ?>
 
-                                                                    <li>
-                                                                        <a href="javascript:;" data-toggle="modal" data-target="#newRulePerson">
-                                                                            <i class="fa fa-plus" aria-hidden="true"></i>
-                                                                            Nova Regra
-                                                                        </a>
-                                                                    </li>
-
-                                                                    <li>
-                                                                        <a href="javascript:;">
-                                                                            <i class="fa fa-undo" aria-hidden="true"></i>
-                                                                            Voltar ao Padrão
-                                                                        </a>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-
+                                @foreach($models as $model)
+                                    <!-- BEGIN PAGE CONTENT INNER -->
+                                    <div class="page-content-inner">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <!-- BEGIN BORDERED TABLE PORTLET-->
+                                                <div class="portlet light portlet-fit ">
+                                                    <div class="portlet-title">
+                                                        <div class="caption">
+                                                            <i class="icon-settings font-red"></i>
+                                                            <span class="caption-subject font-red sbold uppercase">{{ $model->text }}</span>
 
                                                         </div>
 
-                                                    </div>
-                                                </div>
 
-                                                <!-- Modal -->
-                                                <div class="modal fade" id="newRulePerson" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                                                    <div class="modal-dialog" role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                                <h4 class="modal-title" id="myModalLabel">Nova Regra - Pessoas</h4>
+
+                                                        <div class="actions">
+                                                            <div class="btn-group btn-group-devided">
+
+                                                                <div class="btn-group">
+                                                                    <a class="btn red btn-outline btn-circle" href="javascript:;" data-toggle="dropdown">
+                                                                        <i class="fa fa-share"></i>
+                                                                        <span class="hidden-xs"> Opções </span>
+                                                                        <i class="fa fa-angle-down"></i>
+                                                                    </a>
+                                                                    <ul class="dropdown-menu pull-right" id="sample_3_tools">
+                                                                        <li>
+                                                                            <a href="javascript:;" data-toggle="modal" data-target="#newModel">
+                                                                                <i class="fa fa-table" aria-hidden="true"></i>
+                                                                                Classe
+                                                                            </a>
+                                                                        </li>
+
+                                                                        <li>
+                                                                            <a href="javascript:;" data-toggle="modal" data-target="{{ '#newRule-' . $model->model }}">
+                                                                                <i class="fa fa-plus" aria-hidden="true"></i>
+                                                                                Nova Regra
+                                                                            </a>
+                                                                        </li>
+
+                                                                        <li>
+                                                                            <a href="javascript:;">
+                                                                                <i class="fa fa-undo" aria-hidden="true"></i>
+                                                                                Voltar ao Padrão
+                                                                            </a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+
+
                                                             </div>
 
-                                                            {!! Form::open(['route' => ['config.newRule', 'model' => 'person'], 'method' => 'POST']) !!}
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Modal -->
+                                                    <div class="modal fade" id="{{ 'newRule-' . $model->model }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                                    <h4 class="modal-title" id="myModalLabel">Nova Regra - {{ $model->text }}</h4>
+                                                                </div>
+
+                                                                {!! Form::open(['route' => ['config.newRule', 'model' => $model->model], 'method' => 'POST']) !!}
                                                                 <div class="modal-body">
 
                                                                     <div class="row">
@@ -197,200 +237,68 @@ License: You must have a valid license purchased only from themeforest(the above
 
 
                                                                 </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-                                                                <button class="btn btn-primary" type="submit">Salvar</button>
-                                                            </div>
-                                                            {!! Form::close() !!}
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-
-                                                <div class="portlet-body">
-                                                    <div class="row">
-                                                        <div class="col-md-12">
-                                                            <div class="required-fields">
-                                                                <h4>Campos Obrigatórios</h4>
-
-                                                                <br>
-
-                                                                {!! Form::open(['route' =>
-                                                                    ['config.required.person', 'model' => 'person'], 'method' => 'POST']) !!}
-
-                                                                    <fieldset>
-                                                                        @if(count($people) > 0)
-                                                                            @foreach($people as $person)
-                                                                                <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
-                                                                                    <input type="checkbox" name="{{ $person->value }}" class="checkboxes check-model" id=""
-                                                                                           value="1" @if($person->required != null) checked @endif />
-                                                                                    <span></span>
-                                                                                </label>
-                                                                                <label class="lbl-txt">{{ $person->field }}</label>
-                                                                            @endforeach
-                                                                        @endif
-
-                                                                    </fieldset>
-
-                                                                    <button class="btn btn-circle btn-primary" type="submit">
-                                                                        <i class="fa fa-check font-white"></i>
-                                                                        Enviar
-                                                                    </button>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                                                                    <button class="btn btn-primary" type="submit">Salvar</button>
+                                                                </div>
                                                                 {!! Form::close() !!}
                                                             </div>
-
                                                         </div>
                                                     </div>
 
 
+                                                    <div class="portlet-body">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="required-fields">
+                                                                    <h4>Campos Obrigatórios</h4>
 
-                                                </div>
-
-
-                                            </div>
-                                            <!-- END BORDERED TABLE PORTLET-->
-                                        </div>
-                                    </div>
-                                </div>
+                                                                    <br>
 
 
-                                <div class="page-content-inner">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <!-- BEGIN BORDERED TABLE PORTLET-->
-                                            <div class="portlet light portlet-fit ">
-                                                <div class="portlet-title">
-                                                    <div class="caption">
-                                                        <i class="icon-settings font-red"></i>
-                                                        <span class="caption-subject font-red sbold uppercase">Grupos</span>
 
-                                                    </div>
+                                                                    {!! Form::open(['route' =>
+                                                                        ['config.required.fields', 'model' => $model->model], 'method' => 'POST']) !!}
 
 
-                                                    <div class="actions">
-                                                        <div class="btn-group btn-group-devided">
-
-                                                            <div class="btn-group">
-                                                                <a class="btn red btn-outline btn-circle" href="javascript:;" data-toggle="dropdown">
-                                                                    <i class="fa fa-share"></i>
-                                                                    <span class="hidden-xs"> Opções </span>
-                                                                    <i class="fa fa-angle-down"></i>
-                                                                </a>
-                                                                <ul class="dropdown-menu pull-right" id="sample_3_tools">
-                                                                    <li>
-                                                                        <a href="javascript:;" data-toggle="modal" data-target="#newRuleGroup">
-                                                                            <i class="fa fa-plus" aria-hidden="true"></i>
-                                                                            Nova Regra
-                                                                        </a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="javascript:;">
-                                                                            <i class="fa fa-undo" aria-hidden="true"></i>
-                                                                            Voltar ao Padrão
-                                                                        </a>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-
-
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-
-                                                <!-- Modal -->
-                                                <div class="modal fade" id="newRuleGroup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                                                    <div class="modal-dialog" role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                                <h4 class="modal-title" id="myModalLabel">Nova Regra - Grupo</h4>
-                                                            </div>
-
-                                                            {!! Form::open(['route' => ['config.newRule', 'model' => 'group'], 'method' => 'POST']) !!}
-                                                            <div class="modal-body">
-
-                                                                <div class="row">
-                                                                    <div class="col-md-4">
-                                                                        <label> Valor:</label>
-                                                                        <input type="text" name="value" class="form-control" required>
-
-                                                                    </div>
-
-                                                                    <div class="col-md-4">
-                                                                        <label> Nome do Campo: </label>
-                                                                        <input type="text" name="field" class="form-control" required>
-                                                                    </div>
-
-
-                                                                    <div class="col-md-4" style="margin-top: 30px;">
                                                                         <fieldset>
-                                                                            <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
-                                                                                <input type="checkbox" name="required" class="checkboxes check-model" id=""
-                                                                                       value="1" />
-                                                                                <span></span>
-                                                                            </label>
-                                                                            <label class="lbl-txt">Obrigatório</label>
+                                                                            @if(count($class[$i]) > 0)
+                                                                                @foreach($class[$i] as $item)
+                                                                                    <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                                                                        <input type="checkbox" name="{{ $item->value }}" class="checkboxes check-model" id=""
+                                                                                               value="1" @if($item->required != null) checked @endif />
+                                                                                        <span></span>
+                                                                                    </label>
+                                                                                    <label class="lbl-txt">{{ $item->field }}</label>
+                                                                                @endforeach
+                                                                            @endif
+
                                                                         </fieldset>
-                                                                    </div>
+
+                                                                        <?php $i++; ?>
+
+                                                                        <button class="btn btn-circle btn-primary" type="submit">
+                                                                            <i class="fa fa-check font-white"></i>
+                                                                            Enviar
+                                                                        </button>
+                                                                    {!! Form::close() !!}
                                                                 </div>
 
-
                                                             </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-                                                                <button class="btn btn-primary" type="submit">Salvar</button>
-                                                            </div>
-                                                            {!! Form::close() !!}
                                                         </div>
-                                                    </div>
-                                                </div>
 
 
-                                                <div class="portlet-body">
-                                                    <div class="row">
-                                                        <div class="col-md-12">
-                                                            <div class="required-fields">
-                                                                <h4>Campos Obrigatórios</h4>
 
-                                                                <br>
-
-                                                                {!! Form::open(['route' =>
-                                                                    ['config.required.person', 'model' => 'group'], 'method' => 'POST']) !!}
-
-                                                                <fieldset>
-                                                                    @if(count($group) > 0)
-                                                                        @foreach($group as $item)
-                                                                            <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
-                                                                                <input type="checkbox" name="{{ $item->value }}" class="checkboxes check-model" id=""
-                                                                                       value="1" @if($item->required != null) checked @endif />
-                                                                                <span></span>
-                                                                            </label>
-                                                                            <label class="lbl-txt">{{ $item->field }}</label>
-                                                                        @endforeach
-                                                                    @endif
-                                                                </fieldset>
-
-                                                                <button class="btn btn-circle btn-primary" type="submit">
-                                                                    <i class="fa fa-check font-white"></i>
-                                                                    Enviar
-                                                                </button>
-                                                                {!! Form::close() !!}
-                                                            </div>
-
-                                                        </div>
                                                     </div>
 
 
-
                                                 </div>
-
-
+                                                <!-- END BORDERED TABLE PORTLET-->
                                             </div>
-                                            <!-- END BORDERED TABLE PORTLET-->
                                         </div>
                                     </div>
-                                </div>
+                                @endforeach
+
 
                             </div>
                         </div>

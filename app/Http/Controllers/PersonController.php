@@ -296,6 +296,8 @@ class PersonController extends Controller
 
         $teen = $request->get('teen') or null;
 
+        $email = $email["email"];
+
         if(!$teen)
         {
             if(!$password){
@@ -308,15 +310,13 @@ class PersonController extends Controller
 
                 return redirect()->route("person.create")->withInput();
             }
-        }
 
-        $email = $email["email"];
-
-        foreach ($fields as $field) {
-            if($field->value == "email"){
-                if($field->required == 1 && $email == ""){
-                    \Session::flash("email.exists", "Insira seu email");
-                    return redirect()->route("person.create")->withInput();
+            foreach ($fields as $field) {
+                if($field->value == "email"){
+                    if($field->required == 1 && $email == ""){
+                        \Session::flash("email.exists", "Insira seu email");
+                        return redirect()->route("person.create")->withInput();
+                    }
                 }
             }
         }
@@ -335,13 +335,26 @@ class PersonController extends Controller
 
         $data = $request->except(['img', 'email', 'password', 'confirm-password', '_token']);
 
-        $verifyFields = $this->verifyRequiredFields($data, 'person');
-
-        if($verifyFields)
+        if($teen)
         {
-            \Session::flash("error.required-fields", "Preencha o campo " . $verifyFields);
-            return redirect()->route("person.create")->withInput();
+            $verifyFields = $this->verifyRequiredFields($data, 'teen');
+
+            if($verifyFields)
+            {
+                \Session::flash("error.required-fields", "Preencha o campo " . $verifyFields);
+                return redirect()->route("teen.create")->withInput();
+            }
+
+        }else{
+            $verifyFields = $this->verifyRequiredFields($data, 'person');
+
+            if($verifyFields)
+            {
+                \Session::flash("error.required-fields", "Preencha o campo " . $verifyFields);
+                return redirect()->route("person.create")->withInput();
+            }
         }
+
 
         $data['dateBirth'] = $this->formatDateBD($data['dateBirth']);
 

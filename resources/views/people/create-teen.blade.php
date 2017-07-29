@@ -76,6 +76,13 @@ License: You must have a valid license purchased only from themeforest(the above
                     </div>
                 @endif
 
+                @if(Session::has('error.required-fields'))
+                    <div class="alert alert-danger alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <strong>Erro!</strong> {{ Session::get('error.required-fields') }}
+                    </div>
+                @endif
+
                 <div class="page-content-inner">
                     <div class="row">
                         <div class="col-md-12 ">
@@ -127,7 +134,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 <i class="fa fa-user font-blue"></i>
                                                             </span>
                                                         <input type="text" name="name" class="form-control"
-                                                               placeholder="José" value="{{ old('name') }}" required>
+                                                               placeholder="José" value="{{ old('name') }}" >
                                                     </div>
                                                 </div>
                                             </div>
@@ -139,7 +146,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 <i class="fa fa-user font-blue"></i>
                                                             </span>
                                                         <input type="text" name="lastName" class="form-control"
-                                                               placeholder="da Silva" value="{{ old('lastName') }}" required>
+                                                               placeholder="da Silva" value="{{ old('lastName') }}" >
                                                     </div>
                                                 </div>
 
@@ -181,7 +188,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <div class="form-group">
                                                     <label>Gênero</label>
                                                     <div class="input-icon input-icon-lg">
-                                                        <select class="form-control" name="gender" required>
+                                                        <select class="form-control" name="gender" >
                                                             <option value="">Selecione</option>
                                                             <option value="M" @if(old('gender') == "M") selected @endif>
                                                                 Masculino
@@ -202,7 +209,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 <i class="fa fa-calendar font-blue"></i>
                                                             </span>
                                                         <input type="text" class="form-control input-date" name="dateBirth"
-                                                               placeholder="dd/mm/aaaa" maxlength="10" value="{{ old('dateBirth') }}" required>
+                                                               placeholder="dd/mm/aaaa" maxlength="10" value="{{ old('dateBirth') }}" >
                                                     </div>
 
                                                 </div>
@@ -400,7 +407,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         <i class="fa fa-home font-purple"></i>
                                                     </span>
                                                         <input class="form-control" name="neighborhood"
-                                                               value="{{ old('neighborhood') }}" id="neighborhood" type="text" placeholder="Parque do Dolly">
+                                                               value="{{ old('neighborhood') }}" id="neighborhood" type="text" placeholder="Centro">
                                                     </div>
                                                 </div>
                                             </div>
