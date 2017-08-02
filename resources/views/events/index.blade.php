@@ -257,7 +257,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                     <th class="printable-table-header"> Frequência </th>
                                                                     <th class="printable-table-header"> Criado Por </th>
                                                                     <th class="printable-table-header"> Grupo </th>
-                                                                    <th> Check-in/Excluir </th>
+                                                                    <th> Ações </th>
                                                                 </tr>
                                                                 </thead>
 
@@ -310,20 +310,27 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                                                             <?php $deleteForm = "delete-" . $event->id; ?>
                                                                             <td>
+                                                                                <a href="{{ route('event.subscriptions', ['event' => $event->id]) }}"
+                                                                                   class="btn btn-info btn-sm btn-circle" title="Inscrições">
+                                                                                    <i class="fa fa-users"></i>
+                                                                                </a>
+
                                                                                 @if($event->checkIn === false)
 
-                                                                                    <a href="javascript:;" class="btn btn-danger btn-sm btn-circle" id="checkIn" onclick='checkOut({{ $event->id }})'>
+                                                                                    <a href="javascript:;" class="btn btn-danger btn-sm btn-circle" id="checkIn"
+                                                                                       onclick='checkOut({{ $event->id }})' title="Fazer Check-in">
                                                                                         <i class="fa fa-close" id="i-checkIn"></i>
 
                                                                                     </a>
                                                                                 @elseif($event->checkIn)
-                                                                                    <a href="javascript:;" class="btn btn-success btn-sm btn-circle" id="checkIn" onclick='checkInEvent({{ $event->id }})'>
+                                                                                    <a href="javascript:;" class="btn btn-success btn-sm btn-circle" id="checkIn"
+                                                                                       onclick='checkInEvent({{ $event->id }})' title="Fazer Check-in">
                                                                                         <i class="fa fa-check" id="i-checkIn"></i>
 
                                                                                     </a>
 
                                                                                 @elseif($event->checkIn === null)
-                                                                                    <a href="javascript:;" class="btn btn-success btn-sm btn-circle" disabled>
+                                                                                    <a href="javascript:;" class="btn btn-success btn-sm btn-circle" title="Fazer Check-in" disabled>
                                                                                         <i class="fa fa-check" id="i-checkIn"></i>
 
                                                                                     </a>

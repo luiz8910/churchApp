@@ -272,7 +272,7 @@ class GroupController extends Controller
 
             if(!$sub)
             {
-                $sub = \Auth::getUser()->person_id == $item->id ? true : false;
+                $sub = \Auth::user()->person_id == $item->id ? true : false;
             }
 
 

@@ -1249,5 +1249,94 @@ class EventController extends Controller
             );
     }
 
+    /*
+     * Lista de inscritos no evento $id
+     */
+    public function getSubEventList($id)
+    {
+        /*
+         * Lista variáveis comuns
+         */
+
+        $countPerson[] = $this->countPerson();
+
+        $countGroups[] = $this->countGroups();
+
+        $leader = $this->getLeaderRoleId();
+
+        $notify = $this->notify();
+
+        $qtde = count($notify);
+
+        //Fim Variáveis comuns
+
+        $sub = $this->eventServices->getListSubEvent($id);
+
+        $person_sub = [];
+
+        $arr = [];
+
+        foreach ($sub as $item) {
+            $arr[] = $item->person_id;
+
+            $attendance[] = count(DB::table('event_person')
+                ->where([
+                    'event_id' => $id,
+                    'person_id' => $item->person_id,
+                    'check-in' => 1
+                ])->get());
+        }
+
+        $person_sub = DB::table('people')
+            ->whereIn('id', $arr)
+            ->paginate(5);
+
+        $event = $this->repository->find($id);
+
+        $people = DB::table('people')
+            ->where(
+                [
+                    'church_id' => \Auth::user()->church_id,
+                    'deleted_at' => null
+                ])
+            ->whereNotIn('id', $arr)
+            ->get();
+
+
+
+        //dd($arr);
+
+        return view('events.subscriptions',
+            compact('people', 'countPerson', 'countGroups', 'leader',
+                'notify', 'qtde', 'event', 'sub', 'person_sub', 'attendance'));
+    }
+
+    public function eventSub(Request $request, $event)
+    {
+        $data = $request->all();
+
+        if($data["person_id"] != "")
+        {
+            $exists = $this->eventServices->subEvent($event, $data["person_id"]);
+
+            if($exists){
+                $request->session()->flash('event.sub', 'O usuário foi inscrito');
+            }
+            else{
+                $request->session()->flash('event.sub', 'Este usuário ja está inscrito');
+            }
+
+        }
+
+        return redirect()->back();
+    }
+
+    public function UnsubUser($person_id, $event_id)
+    {
+        $this->eventServices->UnsubUser($person_id, $event_id);
+
+        return json_encode(['status' => 'true']);
+    }
+
 
 }

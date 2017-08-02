@@ -34,7 +34,7 @@
 <script src="../../assets/pages/scripts/pdfmake.min.js" type="text/javascript"></script>
 <script src="../../assets/pages/scripts/vfs_fonts.js" type="text/javascript"></script>
 <script src="../../assets/global/plugins/jquery-notific8/jquery.notific8.min.js" type="text/javascript"></script>
-<script src="../../assets/pages/scripts/ui-notific8.min.js" type="text/javascript"></script>
+<script src="../../assets/pages/scripts/ui-notific8.js" type="text/javascript"></script>
 
 <!-- END THEME GLOBAL SCRIPTS -->
 <!-- BEGIN PAGE LEVEL SCRIPTS -->

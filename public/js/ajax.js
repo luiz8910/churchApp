@@ -1117,3 +1117,41 @@
             console.log(e);
         })
     }
+
+    function UnsubscribeUser(person, event)
+    {
+        var request = $.ajax({
+            url: '/delete-sub/' + person + '/' + event,
+            method: 'GET',
+            dataType: 'json'
+        });
+
+        request.done(function (e) {
+            if(e.status)
+            {
+
+                var num = $("#span-sub").text();
+
+                $("#span-sub").text(num-1);
+
+                $("#notific8-title").val("Atenção");
+                $("#notific8-text").val("Usuário foi excluído");
+
+                setTimeout(function() {
+                    $("#progress-danger").css("display", "none");
+
+                    $("#tr-"+person).remove();
+
+                    $("#notific8").trigger("click");
+
+                }, 1000);
+            }
+        });
+
+        request.fail(function (e) {
+            console.log('fail');
+            console.log(e);
+        })
+    }
+
+

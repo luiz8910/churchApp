@@ -149,6 +149,12 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post("/imgEvent/{event}", 'EventController@imgEvent')->name('event.edit.imgEvent');
 
+    Route::get("/inscricoes/{event}", "EventController@getSubEventList")->name('event.subscriptions');
+
+    Route::post("/sub/{event}", 'EventController@eventSub')->name('event.addMembers');
+
+    Route::get('/delete-sub/{person_id}/{event_id}', 'EventController@UnsubUser');
+
     // Fim Eventos
 
 

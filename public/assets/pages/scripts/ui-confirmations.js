@@ -69,6 +69,20 @@ var UIConfirmations = function () {
         });
 
 
+        $(".pop-sub").on('confirmed.bs.confirmation', function () {
+
+            $("#progress-danger").css("display", "block");
+
+            var str = this.id;
+
+            var person = str.replace("btn-person-", "");
+
+            var event = $("#event-id").val();
+
+            UnsubscribeUser(person, event);
+        });
+
+
     };
 
 

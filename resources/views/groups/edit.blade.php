@@ -648,9 +648,9 @@ License: You must have a valid license purchased only from themeforest(the above
                                         <label class="col-sm-3 control-label">Membros</label>
                                         <div class="col-sm-9">
                                             <div class="input-group">
-                                                                            <span class="input-group-addon">
-                                                                                <i class="fa fa-user"></i>
-                                                                            </span>
+                                                <span class="input-group-addon">
+                                                    <i class="fa fa-user"></i>
+                                                </span>
                                                 <select id="select_members"
                                                         class="bs-select form-control"
                                                         data-live-search="true" data-size="8">

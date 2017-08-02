@@ -12,6 +12,7 @@ namespace App\Services;
 use App\Models\Event;
 use App\Models\RecentEvents;
 use App\Repositories\EventRepository;
+use App\Repositories\EventSubscribedListRepository;
 use App\Repositories\FrequencyRepository;
 use App\Traits\ConfigTrait;
 use Auth;
@@ -30,11 +31,17 @@ class EventServices
      * @var FrequencyRepository
      */
     private $frequencyRepository;
+    /**
+     * @var EventSubscribedListRepository
+     */
+    private $listRepository;
 
-    public function __construct(EventRepository $repository, FrequencyRepository $frequencyRepositoryTrait)
+    public function __construct(EventRepository $repository, FrequencyRepository $frequencyRepositoryTrait,
+                                EventSubscribedListRepository $listRepository)
     {
         $this->repository = $repository;
         $this->frequencyRepository = $frequencyRepositoryTrait;
+        $this->listRepository = $listRepository;
     }
 
     /**
@@ -277,6 +284,7 @@ class EventServices
      * ao qual o evento pertence (se aplicável)
      * $id = id do evento
      * $eventDate = data do evento
+     * $createdBy_id = $id do criador do evento
     */
     public function subAllMembers($id, $eventDate, $createdBy_id)
     {
@@ -330,8 +338,14 @@ class EventServices
                     $this->setNextEvents($id, $eventDate, "1 days", $people[$i]->id);
                 }
 
+
+                $this->subEvent($id, $people[$i]->id);
+
                 $i++;
             }
+
+            $this->subEvent($id, $createdBy_id);
+
         }
 
         return false;
@@ -877,6 +891,10 @@ class EventServices
         return $arr;
     }
 
+    /*
+     * Usado para inserir um evento na
+     * tabela de eventos recentes
+     */
     public function newRecentEvents($id, $church_id)
     {
         RecentEvents::insert([
@@ -885,6 +903,83 @@ class EventServices
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
         ]);
+    }
+
+    /*
+     * Usado para inscrever um usuário
+     * $loop = utilizada
+    /**
+     * @param $event_id
+     * @param $person_id
+     * @param null $loop
+     * @return bool|mixed
+     */
+    public function subEvent($event_id, $person_id)
+    {
+
+        $exists = $this->listRepository->findWhere([
+            'event_id' => $event_id,
+            'person_id' => $person_id
+        ]);
+
+        if(count($exists) == 0)
+        {
+            $nextEvent = $this->getNextEvent($event_id);
+
+            $frequency = $this->repository->find($event_id)->frequency;
+
+            if($frequency == $this->weekly())
+            {
+                $this->setNextEvents($event_id, $nextEvent[1], "7 days", $person_id);
+            }
+            elseif($frequency == $this->monthly())
+            {
+                $this->setNextEvents($event_id, $nextEvent[1], "30 days", $person_id);
+            }
+            elseif ($frequency == $this->daily())
+            {
+                $this->setNextEvents($event_id, $nextEvent[1], "1 days", $person_id);
+            }
+            elseif ($frequency == $this->biweekly())
+            {
+                $this->setNextEvents($event_id, $nextEvent[1], "15 days", $person_id);
+            }
+
+
+            $data["event_id"] = $event_id;
+            $data["person_id"] = $person_id;
+            $data["sub_by"] = Auth::user()->person_id;
+            $data["church_id"] = Auth::user()->church_id;
+
+            $this->listRepository->create($data);
+
+            return true;
+        }
+
+        return false;
+
+    }
+
+    /*
+     * Recupera a lista de usuários inscritos
+     * no evento com id = $id
+     */
+    public function getListSubEvent($id)
+    {
+        return $this->listRepository->findWhere([
+            'event_id' => $id,
+            'church_id' => Auth::user()->church_id
+        ]);
+    }
+
+    public function UnsubUser($person_id, $event_id)
+    {
+        $list = $this->listRepository->findWhere([
+            'person_id' => $person_id,
+            'event_id' => $event_id
+        ])->first();
+
+        $this->listRepository->delete($list->id);
     }
 
 

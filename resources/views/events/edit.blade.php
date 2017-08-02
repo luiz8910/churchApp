@@ -185,6 +185,12 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     @if(Auth::user()->church_id && Auth::user()->person->role_id == $leader)
                                                         <li class="divider"> </li>
                                                         <li>
+                                                            <a href="{{ route('event.subscriptions', ['event' => $event->id]) }}">
+                                                                <i class="fa fa-users font-purple"></i>
+                                                                Inscrições
+                                                            </a>
+                                                        </li>
+                                                        <li>
                                                             <a href="javascript:;" id="changePicture">
                                                                 <i class="fa fa-picture-o font-purple"></i>
                                                                 Trocar Imagem
