@@ -153,6 +153,23 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             <i class="fa fa-calendar font-red"></i>
                                                             <span class="caption-subject font-red sbold uppercase">Eventos</span>
 
+                                                            <a href="javascript:;" class="btn btn-info btn-sm btn-circle hidden-xs"
+                                                               style="margin-left: 20px;">
+                                                                <i class="fa fa-users"></i>
+                                                                Inscrições
+                                                            </a>
+
+                                                            <a href="javascript:;" class="btn btn-success btn-sm btn-circle hidden-xs"
+                                                               style="margin-left: 20px;">
+                                                                <i class="fa fa-check"></i>
+                                                                Check-in
+                                                            </a>
+
+                                                            <a href="javascript:;" class="btn btn-danger btn-sm btn-circle hidden-xs"
+                                                               style="margin-left: 20px;">
+                                                                <i class="fa fa-trash"></i>
+                                                                Excluir Evento
+                                                            </a>
                                                         </div>
 
 

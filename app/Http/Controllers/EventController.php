@@ -742,12 +742,12 @@ class EventController extends Controller
             $church_id = \Auth::user()->church_id;
         }
 
-        $event = $this->repository->find($id);
+        $model = $this->repository->find($id);
 
-        $location = $this->formatGoogleMaps($event);
+        $location = $this->formatGoogleMaps($model);
 
-        $event->eventDate = $this->formatDateView($event->eventDate);
-        $event->endEventDate = $this->formatDateView($event->endEventDate);
+        $model->eventDate = $this->formatDateView($model->eventDate);
+        $model->endEventDate = $this->formatDateView($model->endEventDate);
 
         $notify = $this->notify();
 
@@ -771,7 +771,7 @@ class EventController extends Controller
             $item->frequency = $this->eventServices->userFrequency($id, $item->person_id);
         }
 
-        $group = $event->group or null;
+        $group = $model->group or null;
 
         $groups = $this->groupRepository->findByField('church_id', $church_id);
 
@@ -785,11 +785,11 @@ class EventController extends Controller
         }
 
 
-        $createdBy_id = $this->userRepository->find($event->createdBy_id)->person_id;
+        $createdBy_id = $this->userRepository->find($model->createdBy_id)->person_id;
 
-        $createdBy = $this->userRepository->find($event->createdBy_id)->person;
+        $createdBy = $this->userRepository->find($model->createdBy_id)->person;
 
-        if($event->frequency != $this->unique())
+        if($model->frequency != $this->unique())
         {
             $nextEventDate = DB::table('event_person')
                 ->select('eventDate')
@@ -803,7 +803,7 @@ class EventController extends Controller
             $nextEventDate = $nextEventDate != null ? $this->formatDateView($nextEventDate->eventDate) : null;
         }
         else{
-            $nextEventDate = $event->eventDate;
+            $nextEventDate = $model->eventDate;
         }
 
 
@@ -815,9 +815,9 @@ class EventController extends Controller
 
         $biweekly = $this->biweekly();
 
-        if($event->frequency == $weekly)
+        if($model->frequency == $weekly)
         {
-            if($event->day == "Sabado" || $event->day == "Domingo")
+            if($model->day == "Sabado" || $model->day == "Domingo")
             {
                 $preposicao = "todo";
             }
@@ -825,12 +825,12 @@ class EventController extends Controller
                 $preposicao = "toda";
             }
         }
-        elseif($event->frequency == $monthly || $event->frequency == $biweekly){
+        elseif($model->frequency == $monthly || $model->frequency == $biweekly){
             $preposicao = "todo dia";
         }
 
         return view('events.edit', compact('countPerson', 'countGroups', 'state', 'roles',
-            'event', 'location', 'notify', 'qtde', 'eventDays', 'eventFrequency', 'check',
+            'model', 'location', 'notify', 'qtde', 'eventDays', 'eventFrequency', 'check',
             'eventPeople', 'group', 'groups', 'sub', 'canCheckIn', 'createdBy_id', 'createdBy',
             'nextEventDate', 'leader', 'preposicao', 'frequencies', 'church_id', 'leader'));
     }

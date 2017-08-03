@@ -416,89 +416,9 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                         </div>
 
-                                        <h3>Endereço</h3>
+                                        <br><br>
 
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="div-loading">
-                                                    <i class="fa fa-refresh fa-spin fa-5x fa-fw"
-                                                       id="icon-loading-cep">
-                                                    </i>
-                                                    <p class="text-center" id="p-loading-cep" style="display: block;">
-                                                        Buscando Cep ...
-                                                    </p>
-                                                </div>
-
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-md-6 input-address">
-                                                <div class="form-group">
-                                                    <label>CEP (sem traços)</label>
-                                                    <div class="input-group">
-                                                        <span class="input-group-addon">
-                                                            <i class="fa fa-location-arrow font-purple"></i>
-                                                        </span>
-                                                        <input type="text" id="zipCode" class="form-control"
-                                                               name="zipCode" placeholder="XXXXXXXX" maxlength="8" value="{{ old('zipCode') }}">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-md-6 input-address">
-                                                <div class="form-group">
-                                                    <label>Logradouro</label>
-                                                    <div class="input-group">
-                                                    <span class="input-group-addon">
-                                                        <i class="fa fa-home font-purple"></i>
-                                                    </span>
-                                                        <input class="form-control" name="street" id="street" type="text"
-                                                               value="{{ old('street') }}" placeholder="Av. Antonio Carlos Comitre, 650">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 input-address">
-                                                <div class="form-group">
-                                                    <label>Bairro</label>
-                                                    <div class="input-group">
-                                                    <span class="input-group-addon">
-                                                        <i class="fa fa-home font-purple"></i>
-                                                    </span>
-                                                        <input class="form-control" name="neighborhood"
-                                                               value="{{ old('neighborhood') }}" id="neighborhood" type="text" placeholder="Parque do Dolly">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-md-6 input-address">
-                                                <div class="form-group">
-                                                    <label>Cidade</label>
-                                                    <div class="input-group">
-                                                    <span class="input-group-addon">
-                                                        <i class="fa fa-building font-purple"></i>
-                                                    </span>
-                                                        <input class="form-control" name="city" id="city"
-                                                               value="{{ old('city') }}" type="text" placeholder="Sorocaba">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 input-address">
-                                                <div class="form-group">
-                                                    <label>Estado</label>
-                                                    <select name="state" class="form-control" id="state">
-                                                        <option value="">Selecione</option>
-                                                        @foreach($state as $item)
-                                                            <option value="{{ $item->initials }}">{{ $item->state }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        @include('includes.address-create')
 
                                         <div class="row">
                                             <div class="col-md-12">

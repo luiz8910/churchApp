@@ -18,7 +18,7 @@ class Event extends Model implements Transformable
         'name', 'createdBy_id', 'eventDate', 'group_id', 'description',
         'endEventDate', 'startTime', 'endTime', 'frequency',
         'day', 'allDay', 'day_2',
-        'street', 'neighborhood', 'city', 'zipCode', 'state'
+        'street', 'neighborhood', 'city', 'zipCode', 'state', 'number'
     ];
 
     public function group()

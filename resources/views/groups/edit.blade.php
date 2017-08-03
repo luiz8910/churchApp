@@ -56,7 +56,7 @@ License: You must have a valid license purchased only from themeforest(the above
             <div class="container">
                 <!-- BEGIN PAGE TITLE -->
                 <div class="page-title">
-                    <h1>Perfil do Grupo - {{ $group->name }}
+                    <h1>Perfil do Grupo - {{ $model->name }}
                         <small></small>
                     </h1>
                 </div>
@@ -79,7 +79,7 @@ License: You must have a valid license purchased only from themeforest(the above
                         <i class="fa fa-circle"></i>
                     </li>
                     <li>
-                        <span>Grupo " $group->name "</span>
+                        <span>Grupo " $model->name "</span>
                     </li>
                 </ul>-->
                 <!-- END PAGE BREADCRUMBS -->
@@ -139,13 +139,13 @@ License: You must have a valid license purchased only from themeforest(the above
                                 <div class="portlet light profile-sidebar-portlet ">
                                     <!-- SIDEBAR USERPIC -->
                                     <div class="profile-userpic">
-                                        <img src="../../{{ $group->imgProfile }}" class="img-responsive" alt="">
+                                        <img src="../../{{ $model->imgProfile }}" class="img-responsive" alt="">
                                     </div>
                                     <!-- END SIDEBAR USERPIC -->
                                     <!-- SIDEBAR USER TITLE -->
                                     <div class="profile-usertitle">
-                                        <div class="profile-usertitle-name"> {{ $group->name }}</div>
-                                        <div class="profile-usertitle-job"> {{ $group->sinceOf }} </div>
+                                        <div class="profile-usertitle-name"> {{ $model->name }}</div>
+                                        <div class="profile-usertitle-job"> {{ $model->sinceOf }} </div>
                                     </div>
                                     <!-- END SIDEBAR USER TITLE -->
 
@@ -188,13 +188,13 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         </a>
                                                         <ul class="dropdown-menu pull-right">
                                                             <li>
-                                                                <a href="{{ route('group.event.create', ['id' => $group->id]) }}">
+                                                                <a href="{{ route('group.event.create', ['id' => $model->id]) }}">
                                                                     <i class="fa fa-bookmark font-purple"></i>
                                                                     Novo Evento
                                                                 </a>
                                                             </li>
                                                             <li>
-                                                                <a href="{{ route('group.addRemoveLoggedMember', ['id' => $group->id]) }}">
+                                                                <a href="{{ route('group.addRemoveLoggedMember', ['id' => $model->id]) }}">
                                                                     <i class="fa fa-sign-in font-purple"></i>
                                                                     @if($sub)
                                                                         Sair do grupo
@@ -232,14 +232,14 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             <h4 class="modal-title text-center" id="myModalLabel">Atenção</h4>
                                                         </div>
                                                         <div class="modal-body text-center">
-                                                            Deseja Excluir o Grupo "{{ $group->name }}" ?
+                                                            Deseja Excluir o Grupo "{{ $model->name }}" ?
                                                             <br>
                                                             (Esta ação não pode ser revertida)
                                                         </div>
 
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                                                            <button type="button" id="btn-delete-{{ $group->id }}" class="btn btn-danger group-delete">
+                                                            <button type="button" id="btn-delete-{{ $model->id }}" class="btn btn-danger group-delete">
                                                                 Excluir Grupo
                                                             </button>
                                                         </div>
@@ -250,7 +250,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                             <div class="portlet-body">
                                                 <div class="col-md-12">
                                                     <p>
-                                                        <i class="fa fa-calendar font-purple"></i> Data de Criação: {{ $group->sinceOf }}
+                                                        <i class="fa fa-calendar font-purple"></i> Data de Criação: {{ $model->sinceOf }}
                                                     </p>
 
                                                     <p>
@@ -303,18 +303,18 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                                     <p>
                                                         <i class="fa fa-map-marker font-purple"></i>
-                                                        {{ $group->street }} - {{ $group->neighborhood }} - {{ $group->city }} - {{ $group->state }}
+                                                        {{ $model->street }} - {{ $model->neighborhood }} - {{ $model->city }} - {{ $model->state }}
                                                     </p>
 
-                                                    <p id="p-note" @if($group->notes == '') style="display: none;" @endif >
+                                                    <p id="p-note" @if($model->notes == '') style="display: none;" @endif >
 
                                                         <i class="fa fa-refresh fa-spin fa-3x fa-fw"
                                                            id="icon-loading-note" style="margin-top: 20px; display: none;">
                                                         </i>
 
-                                                        <div id="div-note" @if($group->notes == '') style="display: none;" @endif>
+                                                        <div id="div-note" @if($model->notes == '') style="display: none;" @endif>
                                                             <i class="fa fa-comments font-purple"></i>
-                                                            Observações: <span> {{ $group->notes }} </span>
+                                                            Observações: <span> {{ $model->notes }} </span>
                                                         </div>
 
                                                     </p>
@@ -348,7 +348,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                 </div>
                                 <div class="modal-body">
 
-                                    <label for="note">Escreva as observações necessárias para o {{ $group->name }}</label>
+                                    <label for="note">Escreva as observações necessárias para o {{ $model->name }}</label>
                                     <textarea class="form-control" name="" id="note" cols="50" rows="10"></textarea>
 
                                 </div>
@@ -404,7 +404,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                         <input type="hidden" id="lat">
                                         <input type="hidden" id="lng">
 
-                                        <input type="hidden" id="person-0" value="{{ $group->name }}">
+                                        <input type="hidden" id="person-0" value="{{ $model->name }}">
 
                                         <?php $i = 1; ?>
                                         @foreach($members as $person)
@@ -466,7 +466,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                             {!! Form::open(['route' => 'group.destroyManyUsers', 'id' => 'form-destroyMany', 'method' => 'POST']) !!}
                                             <div id="modelToDel"></div>
 
-                                            <input type="hidden" name="group" value="{{ $group->id }}">
+                                            <input type="hidden" name="group" value="{{ $model->id }}">
 
                                             <a href="javascript:;"
                                                class="btn red btn-outline btn-sm btn-circle" id="btn-delete-model"
@@ -562,7 +562,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                                             <?php $deleteForm = "delete-" . $person->id; ?>
                                                             <td id="{{ $deleteForm }}">
-                                                                {!! Form::open(['route' => ['group.deleteMember', 'group' => $group->id, 'member' => $person->id],
+                                                                {!! Form::open(['route' => ['group.deleteMember', 'group' => $model->id, 'member' => $person->id],
                                                                         'method' => 'DELETE', 'id' => 'form-'.$deleteForm]) !!}
 
                                                                 <a href="javascript:;" class="btn btn-danger btn-sm btn-circle pop-leave-group"
@@ -638,10 +638,10 @@ License: You must have a valid license purchased only from themeforest(the above
                                             aria-label="Close"><span
                                                 aria-hidden="true">&times;</span></button>
                                     <h4 class="modal-title" id="myModalLabel">Atribuir membros
-                                        a {{ $group->name }}</h4>
+                                        a {{ $model->name }}</h4>
                                 </div>
 
-                                {!! Form::open(['route' => ['group.addMembers', 'group' => $group],
+                                {!! Form::open(['route' => ['group.addMembers', 'group' => $model],
                                         'class' => 'form-horizontal form-row-seperated', 'method' => 'POST']) !!}
                                 <div class="modal-body form">
                                     <div class="form-group">
@@ -734,14 +734,14 @@ License: You must have a valid license purchased only from themeforest(the above
                                         Membro ao Grupo</h4>
                                 </div>
 
-                                {!! Form::open(['route' => ['group.newMember', 'group' => $group],
+                                {!! Form::open(['route' => ['group.newMember', 'group' => $model],
                                         'class' => 'form-horizontal form-row-seperated', 'method' => 'POST']) !!}
                                 <div class="modal-body" style="margin-left: 10px;">
                                     <div class="row">
                                         <div class="col-md-9">
                                             <div class="form-group">
                                                 <br>
-                                                <input type="hidden" id="groupId" value="{{ $group->id }}">
+                                                <input type="hidden" id="groupId" value="{{ $model->id }}">
                                                 <label>Nome</label>
                                                 <div class="input-group">
                                                     <span class="input-group-addon">
@@ -840,7 +840,7 @@ License: You must have a valid license purchased only from themeforest(the above
                         </div>
                     </div>
 
-                    <input type="hidden" id="streetMap" value="{{ $group->street }}">
+                    <input type="hidden" id="streetMap" value="{{ $model->street }}">
 
                     @if(Auth::user()->church_id && Auth::user()->person->role_id == $leader)
                         <div class="row">
@@ -855,7 +855,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                     </div>
                                     <?php $i = 0; ?>
                                     <div class="portlet-body">
-                                        {!! Form::open(['route' => ['group.update', 'group' => $group->id], 'method' => 'PUT',
+                                        {!! Form::open(['route' => ['group.update', 'group' => $model->id], 'method' => 'post',
                                         'class' => 'repeater', 'enctype' => 'multipart/form-data', 'role' => 'form', 'id' => 'form']) !!}
                                         <div class="form-body">
                                             <div class="row">
@@ -866,7 +866,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 <span class="input-group-addon">
                                                                     <i class="fa fa-user font-blue"></i>
                                                                 </span>
-                                                            <input type="text" name="name" class="form-control" value="{{ $group->name }}"
+                                                            <input type="text" name="name" class="form-control" value="{{ $model->name }}"
                                                                    placeholder="Grupo de Jovens"
                                                                     @if($fields[$i]->required == 1)
                                                                         required
@@ -887,7 +887,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 </button>
                                                             </span>
                                                             <input type="text" class="form-control input-date" name="sinceOf"
-                                                                   value="{{ $group->sinceOf }}" placeholder="dd/mm/aaaa"
+                                                                   value="{{ $model->sinceOf }}" placeholder="dd/mm/aaaa"
                                                                     @if($fields[$i]->required == 1)
                                                                         required
                                                                     @endif
@@ -899,123 +899,9 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 </div>
                                             </div>
 
+                                            <br><br>
 
-                                            <h3>Endereço</h3>
-
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="div-loading">
-                                                        <i class="fa fa-refresh fa-spin fa-5x fa-fw"
-                                                           id="icon-loading-cep">
-                                                        </i>
-                                                        <p class="text-center" id="p-loading-cep" style="display: block;">
-                                                            Buscando Cep ...
-                                                        </p>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-md-6 input-address">
-                                                    <div class="form-group">
-                                                        <label>CEP</label>
-                                                        <div class="input-group">
-                                                            <span class="input-group-addon">
-                                                                <i class="fa fa-location-arrow font-purple"></i>
-                                                            </span>
-                                                            <input type="text" class="form-control" id="zipCode" name="zipCode"
-                                                                   value="{{ $group->zipCode }}" placeholder="XXXXX-XXX" maxlength="9"
-                                                                    @if($fields[$i]->required == 1)
-                                                                        required
-                                                                    @endif
-                                                                    <?php $i++; ?>
-
-                                                            >
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                @include('includes.address')
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-md-6 input-address">
-                                                    <div class="form-group">
-                                                        <label>Logradouro</label>
-                                                        <div class="input-group">
-                                                        <span class="input-group-addon">
-                                                            <i class="fa fa-home font-purple"></i>
-                                                        </span>
-                                                            <input class="form-control" name="street" type="text"
-                                                                   value="{{ $group->street }}"
-                                                                   placeholder="Av. Antonio Carlos Comitre, 650" id="street"
-                                                                    @if($fields[$i]->required == 1)
-                                                                        required
-                                                                    @endif
-                                                                    <?php $i++; ?>
-                                                            >
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6 input-address">
-                                                    <div class="form-group">
-                                                        <label>Bairro</label>
-                                                        <div class="input-group">
-                                                        <span class="input-group-addon">
-                                                            <i class="fa fa-home font-purple"></i>
-                                                        </span>
-                                                            <input class="form-control" name="neighborhood" type="text"
-                                                                   value="{{ $group->neighborhood }}"
-                                                                   placeholder="Parque do Dolly" id="neighborhood"
-                                                                    @if($fields[$i]->required == 1)
-                                                                        required
-                                                                    @endif
-                                                                    <?php $i++; ?>
-                                                            >
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-md-6 input-address">
-                                                    <div class="form-group">
-                                                        <label>Cidade</label>
-                                                        <div class="input-group">
-                                                        <span class="input-group-addon">
-                                                            <i class="fa fa-building font-purple"></i>
-                                                        </span>
-                                                            <input class="form-control" name="city" type="text"
-                                                                   value="{{ $group->city }}" placeholder="Sorocaba" id="city"
-                                                                    @if($fields[$i]->required == 1)
-                                                                        required
-                                                                    @endif
-                                                                    <?php $i++; ?>
-                                                            >
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6 input-address">
-                                                    <div class="form-group">
-                                                        <label>Estado</label>
-                                                        <select name="state" class="form-control" id="state"
-                                                                @if($fields[$i]->required == 1)
-                                                                    required
-                                                                @endif
-                                                                <?php $i++; ?>
-                                                        >
-                                                            <option value="">Selecione</option>
-                                                            @foreach($state as $item)
-                                                                <option value="{{ $item->initials }}"
-                                                                        @if($item->initials == $group->state) selected @endif >
-                                                                    {{ $item->state }}
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            @include('includes.address-edit')
 
                                             <div class="row">
                                                 <div class="col-md-12">
@@ -1023,10 +909,10 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         <div class="fileinput fileinput-new" data-provides="fileinput">
                                                             <div class="fileinput-new thumbnail"
                                                                  style="width: 200px; height: 150px;">
-                                                                <img src=@if($group->imgProfile == "uploads/profile/noimage.png")
+                                                                <img src=@if($model->imgProfile == "uploads/profile/noimage.png")
                                                                         "http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=no+image"
                                                                 @else
-                                                                    "../../{{ $group->imgProfile }}"
+                                                                    "../../{{ $model->imgProfile }}"
                                                                 @endif
 
                                                                 alt="" /></div>
@@ -1058,6 +944,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 </div>
                                             </div>
                                         </div>
+
                                         {!! Form::close() !!}
 
 

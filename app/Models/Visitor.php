@@ -14,7 +14,7 @@ class Visitor extends Model implements Transformable
         'facebook_id', 'google_id', 'linkedin_id',
         'name', 'lastName', 'email', 'church_id', 'tel', 'cel', 'imgProfile', 'gender',
         'dateBirth', 'cpf', 'rg', 'maritalStatus', 'partner', 'father_id', 'mother_id','mailing',
-        'hasKids', 'tag', 'specialNeeds', 'street', 'neighborhood', 'city', 'zipCode', 'state'
+        'hasKids', 'tag', 'specialNeeds', 'street', 'neighborhood', 'city', 'zipCode', 'state', 'number'
     ];
 
     protected $dates = ['deleted_at'];

@@ -12,7 +12,7 @@ class Responsible extends Model implements Transformable
 
     protected $fillable = [
         'name', 'lastName', 'email', 'tel', 'role_id', 'imgProfile', 'gender',
-        'dateBirth', 'cpf', 'rg', 'street', 'neighborhood', 'city', 'zipCode', 'state'
+        'dateBirth', 'cpf', 'rg', 'street', 'neighborhood', 'city', 'zipCode', 'state', 'number'
     ];
 
     public function churches()

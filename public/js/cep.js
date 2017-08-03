@@ -51,7 +51,8 @@ $(function() {
                         setTimeout(function () {
                             $(".div-loading").css('display', 'none');
                             $(".input-address").css('display', 'block');
-                            $("#street").val(dados.logradouro).focus();
+                            $("#street").val(dados.logradouro);
+                            $("#number").focus();
                             $("#neighborhood").val(dados.bairro);
                             $("#city").val(dados.localidade);
                             $("#state").val(dados.uf);

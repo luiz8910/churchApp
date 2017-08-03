@@ -231,15 +231,15 @@ class VisitorController extends Controller
      */
     public function edit($id)
     {
-        $visitor = $this->repository->find($id);
+        $model = $this->repository->find($id);
 
         $state = $this->stateRepository->all();
 
         $roles = $this->roleRepository->findWhereNotIn('id', [3]);
 
-        $visitor->dateBirth = $this->formatDateView($visitor->dateBirth);
+        $model->dateBirth = $this->formatDateView($model->dateBirth);
 
-        $location = $this->formatGoogleMaps($visitor);
+        $location = $this->formatGoogleMaps($model);
 
         $leader = $this->getLeaderRoleId();
 
@@ -247,7 +247,7 @@ class VisitorController extends Controller
 
         $countGroups[] = $this->countGroups();
 
-        $gender = $visitor->gender == 'M' ? 'F' : 'M';
+        $gender = $model->gender == 'M' ? 'F' : 'M';
 
         $adults = $this->repository->findWhere(['tag' => 'adult', 'gender' => $gender]);
 
@@ -255,9 +255,7 @@ class VisitorController extends Controller
 
         $qtde = count($notify);
 
-        $leader = $this->getLeaderRoleId();
-
-        return view('people.edit-visitors', compact('visitor', 'state', 'location', 'roles', 'countPerson',
+        return view('people.edit-visitors', compact('model', 'state', 'location', 'roles', 'countPerson',
             'countGroups', 'adults', 'notify', 'qtde', 'leader', 'leader'));
     }
 

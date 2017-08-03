@@ -60,13 +60,13 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('group', 'GroupController@index')->name('group.index');
 
-    Route::get('group/{group}', 'GroupController@show')->name('group.show');
+    //Route::get('group/{group}', 'GroupController@show')->name('group.show');
 
-    Route::get('groups/create', 'GroupController@create')->name('group.create');
+    Route::get('group/create', 'GroupController@create')->name('group.create');
 
     Route::post('group/store', 'GroupController@store')->name('group.store');
 
-    Route::put('group/{group}', 'GroupController@update')->name('group.update');
+    Route::post('/group-update/{group}', 'GroupController@update')->name('group.update');
 
     Route::get('group/{group}', 'GroupController@destroy')->name('group.destroy');
 

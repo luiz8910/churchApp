@@ -51,7 +51,7 @@ License: You must have a valid license purchased only from themeforest(the above
             <div class="container">
                 <!-- BEGIN PAGE TITLE -->
                 <div class="page-title">
-                    <h1>Detalhes do Evento "{{ $event->name }}"
+                    <h1>Detalhes do Evento "{{ $model->name }}"
                         <small></small>
                     </h1>
                 </div>
@@ -74,7 +74,7 @@ License: You must have a valid license purchased only from themeforest(the above
                         <i class="fa fa-circle"></i>
                     </li>
                     <li>
-                        <span>" $event->name }}"</span>
+                        <span>" $model->name }}"</span>
                     </li>
                 </ul>-->
                 <!-- END PAGE BREADCRUMBS -->
@@ -99,17 +99,17 @@ License: You must have a valid license purchased only from themeforest(the above
                 <div class="page-content-inner">
 
                     <div class="row">
-                        @if($event->imgEvent != null)
+                        @if($model->imgEvent != null)
                             <div class="col-md-12 col-sm-12 cols-xs-12">
                                 <br>
                                 <div>
-                                    <img src="../../{{ $event->imgEvent }}" style="width:100%; height: 300px;">
+                                    <img src="../../{{ $model->imgEvent }}" style="width:100%; height: 300px;">
                                 </div>
                                 <br><br>
                             </div>
                         @endif
 
-                        {!! Form::open(['route' => ['event.edit.imgEvent', 'event' => $event],
+                        {!! Form::open(['route' => ['event.edit.imgEvent', 'event' => $model],
                                             'enctype' => 'multipart/form-data', 'method' => 'POST']) !!}
 
                             <input type="file" name="file" id="file" style="display: none;">
@@ -147,13 +147,13 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 @if($canCheckIn)
                                                     @if($sub)
                                                         <a href="javascript:;" class="btn btn-danger btn-circle change-size" style="margin-right: 10px;"
-                                                           id="checkIn" onclick='checkOut({{ $event->id }})'>
+                                                           id="checkIn" onclick='checkOut({{ $model->id }})'>
                                                             <i class="fa fa-close" id="i-checkIn"></i>
                                                             Check-Out
                                                         </a>
                                                     @else
                                                         <a type="button" class="btn btn-success btn-circle change-size" style="margin-right: 10px;"
-                                                           id="checkIn" onclick='checkInEvent({{ $event->id }})'>
+                                                           id="checkIn" onclick='checkInEvent({{ $model->id }})'>
                                                             <i class="fa fa-check" id="i-checkIn"></i>
                                                             Check-In
                                                         </a>
@@ -185,7 +185,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     @if(Auth::user()->church_id && Auth::user()->person->role_id == $leader)
                                                         <li class="divider"> </li>
                                                         <li>
-                                                            <a href="{{ route('event.subscriptions', ['event' => $event->id]) }}">
+                                                            <a href="{{ route('event.subscriptions', ['event' => $model->id]) }}">
                                                                 <i class="fa fa-users font-purple"></i>
                                                                 Inscrições
                                                             </a>
@@ -217,14 +217,14 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <h4 class="modal-title text-center" id="myModalLabel">Atenção</h4>
                                                 </div>
                                                 <div class="modal-body text-center">
-                                                    Deseja Excluir o Evento "{{ $event->name }}" ?
+                                                    Deseja Excluir o Evento "{{ $model->name }}" ?
                                                     <br>
                                                     (Esta ação não pode ser revertida)
                                                 </div>
 
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                                                    <button type="button" id="btn-delete-{{ $event->id }}" class="btn btn-danger event-delete">
+                                                    <button type="button" id="btn-delete-{{ $model->id }}" class="btn btn-danger event-delete">
                                                         Excluir Evento
                                                     </button>
                                                 </div>
@@ -259,12 +259,12 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                             <p>
                                                 <i class="fa fa-clock-o font-purple"></i>
-                                                Inicio: {{ $event->startTime }} / Fim: {{ $event->endTime == '' ? 'Sem previsão' : $event->endTime }}
+                                                Inicio: {{ $model->startTime }} / Fim: {{ $model->endTime == '' ? 'Sem previsão' : $model->endTime }}
                                             </p>
 
                                             <p>
                                                 <i class="fa fa-pencil font-purple"></i>
-                                                Frequência: {{ $event->frequency }} - {{ $preposicao }} {{ $event->day }}
+                                                Frequência: {{ $model->frequency }} - {{ $preposicao }} {{ $model->day }}
                                             </p>
 
                                             <p>
@@ -281,14 +281,14 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                             <p>
                                                 <i class="fa fa-map-marker font-purple"></i>
-                                                {{ $event->street }} - {{ $event->neighborhood }} - {{ $event->city }} - {{ $event->state }}
+                                                {{ $model->street }} - {{ $model->neighborhood }} - {{ $model->city }} - {{ $model->state }}
                                             </p>
 
                                             <p>
 
                                             <div>
                                                 <i class="fa fa-comments font-purple"></i>
-                                                Observações: <span> {{ $event->description }} </span>
+                                                Observações: <span> {{ $model->description }} </span>
                                             </div>
 
                                             </p>
@@ -456,7 +456,7 @@ License: You must have a valid license purchased only from themeforest(the above
                         </div>
                     </div>
 
-                    <input type="hidden" id="streetMap" value="{{ $event->street }}">
+                    <input type="hidden" id="streetMap" value="{{ $model->street }}">
 
                     @if(Session::has('invalidDate'))
 
@@ -479,7 +479,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                     </div>
                                     <div class="portlet-body form">
-                                        {!! Form::open(['route' => ['event.update', 'event' => $event->id], 'method' => 'PUT',
+                                        {!! Form::open(['route' => ['event.update', 'event' => $model->id], 'method' => 'PUT',
                                         'role' => 'form', 'id' => 'form']) !!}
                                         <div class="form-body">
                                             <div class="row">
@@ -491,12 +491,12 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                     <i class="fa fa-user font-blue"></i>
                                                                 </span>
                                                             <input type="text" name="name" class="form-control"
-                                                                   placeholder="Encontro de Jovens" value="{{ $event->name }}" required>
+                                                                   placeholder="Encontro de Jovens" value="{{ $model->name }}" required>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div id="frequency" class="
-                                                        @if($event->frequency == "Semanal" || $event->frequency == "Mensal")
+                                                        @if($model->frequency == "Semanal" || $model->frequency == "Mensal")
                                                             col-md-3
                                                         @else
                                                             col-md-6
@@ -508,7 +508,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             <select class="form-control" name="frequency" id="select-frequency">
                                                                 @foreach($frequencies as $frequency)
                                                                     <option value="{{ $frequency->frequency }}"
-                                                                        @if($event->frequency == $frequency->frequency) selected @endif >
+                                                                        @if($model->frequency == $frequency->frequency) selected @endif >
                                                                         {{ $frequency->frequency }}
                                                                     </option>
                                                                 @endforeach
@@ -518,7 +518,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                                 </div>
 
-                                                @if($event->frequency == "Semanal")
+                                                @if($model->frequency == "Semanal")
                                                     <div class="col-md-3" id="day">
                                                         <div class="form-group">
                                                             <label>Selecione o dia da semana</label>
@@ -526,37 +526,37 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 <i class="fa fa-briefcase"></i>
                                                                 <select class="form-control" name="day" required>
                                                                     <option value="Domingo"
-                                                                        @if($event->day == "Domingo") selected @endif
+                                                                        @if($model->day == "Domingo") selected @endif
                                                                     >Domingo</option>
                                                                     <option value="Segunda-Feira"
-                                                                            @if($event->day == "Segunda-Feira") selected @endif
+                                                                            @if($model->day == "Segunda-Feira") selected @endif
                                                                     >Segunda-Feira</option>
 
                                                                     <option value="Terça-Feira"
-                                                                    @if($event->day == "Terça-Feira") selected @endif
+                                                                    @if($model->day == "Terça-Feira") selected @endif
                                                                     >Terça-Feira</option>
 
                                                                     <option value="Quarta-Feira"
-                                                                    @if($event->day == "Quarta-Feira") selected @endif
+                                                                    @if($model->day == "Quarta-Feira") selected @endif
                                                                     >Quarta-Feira</option>
 
                                                                     <option value="Quinta-Feira"
-                                                                    @if($event->day == "Quinta-Feira") selected @endif
+                                                                    @if($model->day == "Quinta-Feira") selected @endif
                                                                     >Quinta-Feira</option>
 
                                                                     <option value="Sexta-Feira"
-                                                                    @if($event->day == "Sexta-Feira") selected @endif
+                                                                    @if($model->day == "Sexta-Feira") selected @endif
                                                                     >Sexta-Feira</option>
 
                                                                     <option value="Sábado"
-                                                                    @if($event->day == "Sábado") selected @endif
+                                                                    @if($model->day == "Sábado") selected @endif
                                                                     >Sábado</option>
                                                                 </select>
                                                             </div>
                                                         </div>
                                                     </div>
 
-                                                    @elseif($event->frequency == "Mensal")
+                                                    @elseif($model->frequency == "Mensal")
                                                         <div class="col-md-3" id="day">
                                                             <div class="form-group">
                                                                 <label>Selecione o dia</label>
@@ -568,7 +568,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                                                         @while($i < $days)
                                                                             <option value="{{ $i }}"
-                                                                                    @if($event->day == $i ) selected @endif >
+                                                                                    @if($model->day == $i ) selected @endif >
                                                                                 {{ $i }}
                                                                             </option>
                                                                             <?php $i++; ?>
@@ -596,12 +596,12 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                     <i class="fa fa-calendar"></i>
                                                                 </button>
                                                             </span>
-                                                            <input type="text" class="form-control" name="eventDate" id="eventDate" readonly value="{{ $event->eventDate }}" required>
+                                                            <input type="text" class="form-control" name="eventDate" id="eventDate" readonly value="{{ $model->eventDate }}" required>
                                                         </div>
                                                         <span class="help-block">
                                                             <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
                                                                 <input type="checkbox" name="allDay" id="allDay" class="checkboxes" value="1"
-                                                                       @if($event->allDay == 1) checked @endif />
+                                                                       @if($model->allDay == 1) checked @endif />
                                                                 <span></span>Dia Inteiro
                                                             </label>
                                                         </span>
@@ -618,7 +618,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                         <i class="fa fa-calendar"></i>
                                                                     </button>
                                                                 </span>
-                                                            <input type="text" class="form-control" name="endEventDate" id="endEventDate" readonly value="{{ $event->endEventDate }}">
+                                                            <input type="text" class="form-control" name="endEventDate" id="endEventDate" readonly value="{{ $model->endEventDate }}">
                                                         </div>
                                                         <!-- /input-group -->
                                                         <span class="help-block"> Deixe em branco se a data de término é a mesma da data de ínicio </span>
@@ -639,76 +639,76 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             <select name="startTime" class="form-control" required>
                                                                 <option value="">Selecione</option>
                                                                 <option value="00:00"
-                                                                    @if($event->startTime == "00:00") selected @endif
+                                                                    @if($model->startTime == "00:00") selected @endif
                                                                 >00:00</option>
                                                                 <option value="01:00"
-                                                                    @if($event->startTime == "01:00") selected @endif
+                                                                    @if($model->startTime == "01:00") selected @endif
                                                                 >01:00</option>
                                                                 <option value="02:00"
-                                                                        @if($event->startTime == "02:00") selected @endif
+                                                                        @if($model->startTime == "02:00") selected @endif
                                                                 >02:00</option>
                                                                 <option value="03:00"
-                                                                        @if($event->startTime == "03:00") selected @endif
+                                                                        @if($model->startTime == "03:00") selected @endif
                                                                 >03:00</option>
                                                                 <option value="04:00"
-                                                                        @if($event->startTime == "04:00") selected @endif
+                                                                        @if($model->startTime == "04:00") selected @endif
                                                                 >04:00</option>
                                                                 <option value="05:00"
-                                                                        @if($event->startTime == "05:00") selected @endif
+                                                                        @if($model->startTime == "05:00") selected @endif
                                                                 >05:00</option>
                                                                 <option value="06:00"
-                                                                        @if($event->startTime == "06:00") selected @endif
+                                                                        @if($model->startTime == "06:00") selected @endif
                                                                 >06:00</option>
                                                                 <option value="07:00"
-                                                                        @if($event->startTime == "07:00") selected @endif
+                                                                        @if($model->startTime == "07:00") selected @endif
                                                                 >07:00</option>
                                                                 <option value="08:00"
-                                                                        @if($event->startTime == "08:00") selected @endif
+                                                                        @if($model->startTime == "08:00") selected @endif
                                                                 >08:00</option>
                                                                 <option value="09:00"
-                                                                        @if($event->startTime == "09:00") selected @endif
+                                                                        @if($model->startTime == "09:00") selected @endif
                                                                 >09:00</option>
                                                                 <option value="10:00"
-                                                                        @if($event->startTime == "10:00") selected @endif
+                                                                        @if($model->startTime == "10:00") selected @endif
                                                                 >10:00</option>
                                                                 <option value="11:00"
-                                                                        @if($event->startTime == "11:00") selected @endif
+                                                                        @if($model->startTime == "11:00") selected @endif
                                                                 >11:00</option>
                                                                 <option value="12:00"
-                                                                        @if($event->startTime == "12:00") selected @endif
+                                                                        @if($model->startTime == "12:00") selected @endif
                                                                 >12:00</option>
                                                                 <option value="13:00"
-                                                                        @if($event->startTime == "13:00") selected @endif
+                                                                        @if($model->startTime == "13:00") selected @endif
                                                                 >13:00</option>
                                                                 <option value="14:00"
-                                                                        @if($event->startTime == "14:00") selected @endif
+                                                                        @if($model->startTime == "14:00") selected @endif
                                                                 >14:00</option>
                                                                 <option value="15:00"
-                                                                        @if($event->startTime == "15:00") selected @endif
+                                                                        @if($model->startTime == "15:00") selected @endif
                                                                 >15:00</option>
                                                                 <option value="16:00"
-                                                                        @if($event->startTime == "16:00") selected @endif
+                                                                        @if($model->startTime == "16:00") selected @endif
                                                                 >16:00</option>
                                                                 <option value="17:00"
-                                                                        @if($event->startTime == "17:00") selected @endif
+                                                                        @if($model->startTime == "17:00") selected @endif
                                                                 >17:00</option>
                                                                 <option value="18:00"
-                                                                        @if($event->startTime == "18:00") selected @endif
+                                                                        @if($model->startTime == "18:00") selected @endif
                                                                 >18:00</option>
                                                                 <option value="19:00"
-                                                                        @if($event->startTime == "19:00") selected @endif
+                                                                        @if($model->startTime == "19:00") selected @endif
                                                                 >19:00</option>
                                                                 <option value="20:00"
-                                                                        @if($event->startTime == "20:00") selected @endif
+                                                                        @if($model->startTime == "20:00") selected @endif
                                                                 >20:00</option>
                                                                 <option value="21:00"
-                                                                        @if($event->startTime == "21:00") selected @endif
+                                                                        @if($model->startTime == "21:00") selected @endif
                                                                 >21:00</option>
                                                                 <option value="22:00"
-                                                                        @if($event->startTime == "22:00") selected @endif
+                                                                        @if($model->startTime == "22:00") selected @endif
                                                                 >22:00</option>
                                                                 <option value="23:00"
-                                                                        @if($event->startTime == "23:00") selected @endif
+                                                                        @if($model->startTime == "23:00") selected @endif
                                                                 >23:00</option>
                                                             </select>
                                                         </div>
@@ -723,7 +723,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 </span>
 
                                                             <select name="endTime" class="form-control" id="">
-                                                                @if($event->endTime == null)
+                                                                @if($model->endTime == null)
                                                                     <option value="">Selecione</option>
                                                                     <option value="00:00">00:00</option>
                                                                     <option value="01:00">01:00</option>
@@ -754,76 +754,76 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                                                     <option value="">Selecione</option>
                                                                     <option value="00:00"
-                                                                            @if($event->endTime == "00:00") selected @endif
+                                                                            @if($model->endTime == "00:00") selected @endif
                                                                     >00:00</option>
                                                                     <option value="01:00"
-                                                                            @if($event->endTime == "01:00") selected @endif
+                                                                            @if($model->endTime == "01:00") selected @endif
                                                                     >01:00</option>
                                                                     <option value="02:00"
-                                                                            @if($event->endTime == "02:00") selected @endif
+                                                                            @if($model->endTime == "02:00") selected @endif
                                                                     >02:00</option>
                                                                     <option value="03:00"
-                                                                            @if($event->endTime == "03:00") selected @endif
+                                                                            @if($model->endTime == "03:00") selected @endif
                                                                     >03:00</option>
                                                                     <option value="04:00"
-                                                                            @if($event->endTime == "04:00") selected @endif
+                                                                            @if($model->endTime == "04:00") selected @endif
                                                                     >04:00</option>
                                                                     <option value="05:00"
-                                                                            @if($event->endTime == "05:00") selected @endif
+                                                                            @if($model->endTime == "05:00") selected @endif
                                                                     >05:00</option>
                                                                     <option value="06:00"
-                                                                            @if($event->endTime == "06:00") selected @endif
+                                                                            @if($model->endTime == "06:00") selected @endif
                                                                     >06:00</option>
                                                                     <option value="07:00"
-                                                                            @if($event->endTime == "07:00") selected @endif
+                                                                            @if($model->endTime == "07:00") selected @endif
                                                                     >07:00</option>
                                                                     <option value="08:00"
-                                                                            @if($event->endTime == "08:00") selected @endif
+                                                                            @if($model->endTime == "08:00") selected @endif
                                                                     >08:00</option>
                                                                     <option value="09:00"
-                                                                            @if($event->endTime == "09:00") selected @endif
+                                                                            @if($model->endTime == "09:00") selected @endif
                                                                     >09:00</option>
                                                                     <option value="10:00"
-                                                                            @if($event->endTime == "10:00") selected @endif
+                                                                            @if($model->endTime == "10:00") selected @endif
                                                                     >10:00</option>
                                                                     <option value="11:00"
-                                                                            @if($event->endTime == "11:00") selected @endif
+                                                                            @if($model->endTime == "11:00") selected @endif
                                                                     >11:00</option>
                                                                     <option value="12:00"
-                                                                            @if($event->endTime == "12:00") selected @endif
+                                                                            @if($model->endTime == "12:00") selected @endif
                                                                     >12:00</option>
                                                                     <option value="13:00"
-                                                                            @if($event->endTime == "13:00") selected @endif
+                                                                            @if($model->endTime == "13:00") selected @endif
                                                                     >13:00</option>
                                                                     <option value="14:00"
-                                                                            @if($event->endTime == "14:00") selected @endif
+                                                                            @if($model->endTime == "14:00") selected @endif
                                                                     >14:00</option>
                                                                     <option value="15:00"
-                                                                            @if($event->endTime == "15:00") selected @endif
+                                                                            @if($model->endTime == "15:00") selected @endif
                                                                     >15:00</option>
                                                                     <option value="16:00"
-                                                                            @if($event->endTime == "16:00") selected @endif
+                                                                            @if($model->endTime == "16:00") selected @endif
                                                                     >16:00</option>
                                                                     <option value="17:00"
-                                                                            @if($event->endTime == "17:00") selected @endif
+                                                                            @if($model->endTime == "17:00") selected @endif
                                                                     >17:00</option>
                                                                     <option value="18:00"
-                                                                            @if($event->endTime == "18:00") selected @endif
+                                                                            @if($model->endTime == "18:00") selected @endif
                                                                     >18:00</option>
                                                                     <option value="19:00"
-                                                                            @if($event->endTime == "19:00") selected @endif
+                                                                            @if($model->endTime == "19:00") selected @endif
                                                                     >19:00</option>
                                                                     <option value="20:00"
-                                                                            @if($event->endTime == "20:00") selected @endif
+                                                                            @if($model->endTime == "20:00") selected @endif
                                                                     >20:00</option>
                                                                     <option value="21:00"
-                                                                            @if($event->endTime == "21:00") selected @endif
+                                                                            @if($model->endTime == "21:00") selected @endif
                                                                     >21:00</option>
                                                                     <option value="22:00"
-                                                                            @if($event->endTime == "22:00") selected @endif
+                                                                            @if($model->endTime == "22:00") selected @endif
                                                                     >22:00</option>
                                                                     <option value="23:00"
-                                                                            @if($event->endTime == "23:00") selected @endif
+                                                                            @if($model->endTime == "23:00") selected @endif
                                                                     >23:00</option>
                                                                 @endif
                                                             </select>
@@ -870,7 +870,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <label class="control-label">Descrição</label>
                                                     <textarea class="form-control" name="description"
                                                               placeholder="Digite aqui observações importantes sobre o evento"
-                                                              rows="5" >{{ $event->description }}</textarea>
+                                                              rows="5" >{{ $model->description }}</textarea>
                                                     {!! Form::error('description', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
                                                 </div>
@@ -879,102 +879,8 @@ License: You must have a valid license purchased only from themeforest(the above
                                             <br>
 
 
-                                            <div class="portlet-title tabbable-line">
-                                                <div class="caption caption-md">
-                                                    <i class="fa fa-location-arrow theme-font"></i>
-                                                    <span class="caption-subject font-blue-madison bold uppercase">Endereço</span>
-                                                </div>
+                                            @include('includes.address-edit')
 
-                                            </div>
-
-                                            <br><br>
-
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="div-loading">
-                                                        <i class="fa fa-refresh fa-spin fa-5x fa-fw"
-                                                           id="icon-loading-cep">
-                                                        </i>
-                                                        <p class="text-center" id="p-loading-cep" style="display: block;">
-                                                            Buscando Cep ...
-                                                        </p>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-md-6 input-address">
-                                                    <div class="form-group">
-                                                        <label>CEP (sem traços)</label>
-                                                        <div class="input-group">
-                                                            <span class="input-group-addon">
-                                                                <i class="fa fa-location-arrow font-purple"></i>
-                                                            </span>
-                                                            <input type="text" class="form-control" name="zipCode"
-                                                                   value="{{ $event->zipCode }}" id="zipCode" placeholder="XXXXX-XXX">
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                @include('includes.address')
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-md-6 input-address">
-                                                    <div class="form-group">
-                                                        <label>Logradouro</label>
-                                                        <div class="input-group">
-                                                        <span class="input-group-addon">
-                                                            <i class="fa fa-home font-purple"></i>
-                                                        </span>
-                                                            <input class="form-control" name="street" type="text" id="street"
-                                                                   value="{{ $event->street }}" placeholder="Av. Antonio Carlos Comitre, 650" required>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6 input-address">
-                                                    <div class="form-group">
-                                                        <label>Bairro</label>
-                                                        <div class="input-group">
-                                                        <span class="input-group-addon">
-                                                            <i class="fa fa-home font-purple"></i>
-                                                        </span>
-                                                            <input class="form-control" name="neighborhood" id="neighborhood" type="text"
-                                                                   value="{{ $event->neighborhood }}" placeholder="Parque do Dolly" required>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-md-6 input-address">
-                                                    <div class="form-group">
-                                                        <label>Cidade</label>
-                                                        <div class="input-group">
-                                                        <span class="input-group-addon">
-                                                            <i class="fa fa-building font-purple"></i>
-                                                        </span>
-                                                            <input class="form-control" name="city" id="city" type="text"
-                                                                   value="{{ $event->city }}" placeholder="Sorocaba" required>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6 input-address">
-                                                    <div class="form-group">
-                                                        <label>Estado</label>
-                                                        <select name="state" class="form-control" id="state" required>
-                                                            <option value="">Selecione</option>
-                                                            @foreach($state as $item)
-                                                                <option value="{{ $item->initials }}"
-                                                                @if($item->initials == $event->state) selected @endif >
-                                                                    {{ $item->state }}
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
                                         </div>
                                         <div class="form-actions">
                                             {!! Form::submit('Enviar', ['class' => 'btn blue', 'id' => 'btn-submit']) !!}

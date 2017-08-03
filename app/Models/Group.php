@@ -14,7 +14,7 @@ class Group extends Model implements Transformable
 
     protected $fillable = [
         'name', 'sinceOf', 'imgProfile', 'active', 'owner_id',
-        'street', 'neighborhood', 'city', 'zipCode', 'state', 'church_id'
+        'street', 'neighborhood', 'city', 'zipCode', 'state', 'church_id', 'number'
     ];
 
     protected $dates = ['deleted_at'];

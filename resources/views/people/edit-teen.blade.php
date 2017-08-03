@@ -66,7 +66,7 @@ License: You must have a valid license purchased only from themeforest(the above
                         <i class="fa fa-circle"></i>
                     </li>
                     <li>
-                        <span>Perfil de  $person->name   $person->lastName </span>
+                        <span>Perfil de  $model->name   $model->lastName </span>
                     </li>
                 </ul>-->
                 <!-- END PAGE BREADCRUMBS -->
@@ -100,13 +100,13 @@ License: You must have a valid license purchased only from themeforest(the above
                                 <div class="portlet light profile-sidebar-portlet ">
                                     <!-- SIDEBAR USERPIC -->
                                     <div class="profile-userpic">
-                                        <img src="../../{{ $person->imgProfile }}" class="img-responsive" alt="">
+                                        <img src="../../{{ $model->imgProfile }}" class="img-responsive" alt="">
                                     </div>
                                     <!-- END SIDEBAR USERPIC -->
                                     <!-- SIDEBAR USER TITLE -->
                                     <div class="profile-usertitle">
-                                        <div class="profile-usertitle-name"> {{ $person->name }} {{ $person->lastName }}</div>
-                                        <div class="profile-usertitle-job"> {{ $person->role->name }} </div>
+                                        <div class="profile-usertitle-name"> {{ $model->name }} {{ $model->lastName }}</div>
+                                        <div class="profile-usertitle-job"> {{ $model->role->name }} </div>
                                     </div>
                                     <!-- END SIDEBAR USER TITLE -->
 
@@ -195,11 +195,11 @@ License: You must have a valid license purchased only from themeforest(the above
                                     <div class="tab-content">
                                         <!-- PERSONAL INFO TAB -->
 
-                                        <input type="hidden" value="{{ $person->id }}" id="personId">
-                                        <input type="hidden" id="streetMap" value="{{ $person->street }}">
+                                        <input type="hidden" value="{{ $model->id }}" id="personId">
+                                        <input type="hidden" id="streetMap" value="{{ $model->street }}">
 
                                         <div class="tab-pane active" id="tab_1_1">
-                                            {!! Form::open(['route' => ['person.update', 'person' => $person->id], 'class' => 'repeater',
+                                            {!! Form::open(['route' => ['person.update', 'person' => $model->id], 'class' => 'repeater',
                                             'method' => 'PUT', 'role' => 'form', 'id' => 'form']) !!}
 
                                             <input type="hidden" name="teen" value="teen">
@@ -207,7 +207,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <div class="col-md-6">
                                                     {!! Form::FormGroup('name', $errors) !!}
                                                     <label class="control-label">Nome</label>
-                                                    <input type="text" placeholder="João" name="name" value="{{ $person->name }}" class="form-control" />
+                                                    <input type="text" placeholder="João" name="name" value="{{ $model->name }}" class="form-control" />
                                                     {!! Form::error('name', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
                                                 </div>
@@ -215,7 +215,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <div class="col-md-6">
                                                     {!! Form::FormGroup('lastName', $errors) !!}
                                                     <label class="control-label">Sobrenome</label>
-                                                    <input type="text" placeholder="da Silva" name="lastName" value="{{ $person->lastName }}" class="form-control" />
+                                                    <input type="text" placeholder="da Silva" name="lastName" value="{{ $model->lastName }}" class="form-control" />
                                                     {!! Form::error('lastName', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
                                                 </div>
@@ -226,7 +226,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <div class="col-md-6">
                                                     {!! Form::FormGroup('cel', $errors) !!}
                                                     <label class="control-label">Celular</label>
-                                                    <input type="text" placeholder="(15) 9123-1234" name="cel" value="{{ $person->cel }}" class="form-control tel" />
+                                                    <input type="text" placeholder="(15) 9123-1234" name="cel" value="{{ $model->cel }}" class="form-control tel" />
                                                     {!! Form::error('cel', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
                                                 </div>
@@ -234,7 +234,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <div class="col-md-6">
                                                     {!! Form::FormGroup('tel', $errors) !!}
                                                     <label class="control-label">Telefone</label>
-                                                    <input type="text" placeholder="(15) 9123-1234" name="tel" value="{{ $person->tel }}" class="form-control tel" />
+                                                    <input type="text" placeholder="(15) 9123-1234" name="tel" value="{{ $model->tel }}" class="form-control tel" />
                                                     {!! Form::error('tel', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
                                                 </div>
@@ -249,8 +249,8 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <label class="control-label">Gênero</label>
                                                     <select name="gender" class="form-control" required>
                                                         <option value="">Selecione</option>
-                                                        <option value="M" @if($person->gender == 'M') selected @endif >Masculino</option>
-                                                        <option value="F" @if($person->gender == 'F') selected @endif >Feminino</option>
+                                                        <option value="M" @if($model->gender == 'M') selected @endif >Masculino</option>
+                                                        <option value="F" @if($model->gender == 'F') selected @endif >Feminino</option>
                                                     </select>
                                                     {!! Form::error('gender', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
@@ -264,7 +264,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         <span class="input-group-addon">
                                                             <i class="fa fa-calendar font-blue"></i>
                                                         </span>
-                                                        <input type="text" placeholder="dd/mm/aaaa" value="{{ $person->dateBirth }}"
+                                                        <input type="text" placeholder="dd/mm/aaaa" value="{{ $model->dateBirth }}"
                                                                name="dateBirth" class="form-control input-date" />
                                                     </div>
                                                     {!! Form::error('dateBirth', $errors) !!}
@@ -281,7 +281,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 <i class="fa fa-user font-blue"></i>
                                                             </span>
                                                         <input type="text" name="cpf" id="cpf" maxlength="11" class="form-control"
-                                                               placeholder="XXXXXXXXXXX" value="{{ $person->cpf }}">
+                                                               placeholder="XXXXXXXXXXX" value="{{ $model->cpf }}">
                                                         <i class="fa fa-check font-green" id="icon-success" style="display: none;"></i>
                                                         <i class="fa fa-exclamation font-red" id="icon-error" style="display: none;"></i>
 
@@ -295,7 +295,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <div class="col-md-6">
                                                     {!! Form::FormGroup('rg', $errors) !!}
                                                     <label class="control-label">RG</label>
-                                                    <input type="text" placeholder="123.123.123-12" value="{{ $person->rg }}"
+                                                    <input type="text" placeholder="123.123.123-12" value="{{ $model->rg }}"
                                                            name="rg" class="form-control" maxlength="9" minlength="9"/>
                                                     {!! Form::error('rg', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
@@ -312,7 +312,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         <textarea class="form-control" name="specialNeeds"
                                                                   placeholder="Digite aqui observações importantes sobre a criança/adolescente"
                                                                   rows="5">
-                                                            {{ $person->specialNeeds }}
+                                                            {{ $model->specialNeeds }}
                                                         </textarea>
                                                     {!! Form::error('specialNeeds', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
@@ -342,7 +342,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                                             @foreach($fathers as $parent)
                                                                 <option value="{{ $parent->id }}"
-                                                                @if($person->father_id == $parent->id) selected @endif
+                                                                @if($model->father_id == $parent->id) selected @endif
                                                                 >
                                                                     {{ $parent->name }} {{ $parent->lastName }}
                                                                 </option>
@@ -368,7 +368,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                                             @foreach($mothers as $parent)
                                                                 <option value="{{ $parent->id }}"
-                                                                @if($person->mother_id == $parent->id) selected @endif
+                                                                @if($model->mother_id == $parent->id) selected @endif
                                                                 >
                                                                     {{ $parent->name }} {{ $parent->lastName }}
                                                                 </option>
@@ -422,79 +422,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                             <br><br>
 
-                                            <div class="caption caption-md">
-                                                <i class="icon-globe theme-font hide"></i>
-                                                <span class="caption-subject font-blue-madison bold uppercase">Endereço</span>
-                                            </div>
-
-                                            <hr><br>
-
-
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="div-loading">
-                                                        <i class="fa fa-refresh fa-spin fa-5x fa-fw"
-                                                           id="icon-loading-cep">
-                                                        </i>
-                                                        <p class="text-center" id="p-loading-cep" style="display: block;">
-                                                            Buscando Cep ...
-                                                        </p>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-md-3 input-address">
-                                                    {!! Form::FormGroup('zipCode', $errors) !!}
-                                                    <label class="control-label">CEP</label>
-                                                    <input type="text" placeholder="12123-12" value="{{ $person->zipCode }}"
-                                                           name="zipCode" class="form-control" id="zipCode" maxlength="9" />
-                                                    {!! Form::error('zipCode', $errors) !!}
-                                                    {!! Form::endFormGroup() !!}
-                                                </div>
-                                                <div class="col-md-9 input-address">
-                                                    {!! Form::FormGroup('street', $errors) !!}
-                                                    <label class="control-label">Logradouro</label>
-                                                    <input type="text" placeholder="Rua dos Bobos, 0" value="{{ $person->street }}" id="street"
-                                                           name="street" class="form-control" />
-                                                    {!! Form::error('street', $errors) !!}
-                                                    {!! Form::endFormGroup() !!}
-                                                </div>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-md-4 input-address">
-                                                    {!! Form::FormGroup('neighborhood', $errors) !!}
-                                                    <label class="control-label">Bairro</label>
-                                                    <input type="text" placeholder="Vila Progresso" value="{{ $person->neighborhood }}"
-                                                           id="neighborhood" name="neighborhood" class="form-control" />
-                                                    {!! Form::error('neighborhood', $errors) !!}
-                                                    {!! Form::endFormGroup() !!}
-                                                </div>
-                                                <div class="col-md-4 input-address">
-                                                    {!! Form::FormGroup('city', $errors) !!}
-                                                    <label class="control-label">Cidade</label>
-                                                    <input type="text" placeholder="Sorocaba" name="city" value="{{ $person->city }}"
-                                                           class="form-control" id="city"/>
-                                                    {!! Form::error('city', $errors) !!}
-                                                    {!! Form::endFormGroup() !!}
-                                                </div>
-                                                <div class="col-md-4 input-address">
-                                                    {!! Form::FormGroup('state', $errors) !!}
-                                                    <label class="control-label">UF:</label>
-                                                    <select name="state" class="form-control" id="state">
-                                                        <option value="">Selecione</option>
-                                                        @foreach($state as $value)
-                                                            <option value="{{ $value->initials }}" @if($value->initials == $person->state) selected @endif >
-                                                                {{ $value->state }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                    {!! Form::error('state', $errors) !!}
-                                                    {!! Form::endFormGroup() !!}
-                                                </div>
-                                            </div>
+                                            @include('includes.address-edit')
 
 
                                                 <div class="margiv-top-10">
@@ -514,14 +442,14 @@ License: You must have a valid license purchased only from themeforest(the above
                                         <!-- CHANGE AVATAR TAB -->
                                         <div class="tab-pane" id="tab_1_2">
                                             <p> Altere aqui sua foto do perfil </p>
-                                            {!! Form::open(['route' => ['person.imgEditProfile', $person->id], 'method' => 'post', 'enctype' => 'multipart/form-data', 'role' => 'form']) !!}
+                                            {!! Form::open(['route' => ['person.imgEditProfile', $model->id], 'method' => 'post', 'enctype' => 'multipart/form-data', 'role' => 'form']) !!}
                                                 <div class="form-group">
                                                     <div class="fileinput fileinput-new" data-provides="fileinput">
                                                         <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
-                                                            <img src=@if($person->imgProfile == "uploads/profile/noimage.png")
+                                                            <img src=@if($model->imgProfile == "uploads/profile/noimage.png")
                                                                         "http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=no+image"
                                                                         @else
-                                                                            "../../{{ $person->imgProfile }}"
+                                                                            "../../{{ $model->imgProfile }}"
                                                                     @endif
 
                                                                  alt="" /> </div>

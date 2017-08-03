@@ -234,7 +234,7 @@ class GroupController extends Controller
      */
     public function edit($id)
     {
-        $group = $this->repository->find($id);
+        $model = $this->repository->find($id);
 
         $countPerson[] = $this->countPerson();
 
@@ -252,12 +252,12 @@ class GroupController extends Controller
         ]);
 
         //Endereço do grupo formatado para api do google maps
-        $location = $this->formatGoogleMaps($group);
+        $location = $this->formatGoogleMaps($model);
 
         //Listagem de todos os membros do grupo
-        $members = $group->people->all();
+        $members = $model->people->all();
 
-        $pag = $this->paginate($group->people->all())->setPath('');
+        $pag = $this->paginate($model->people->all())->setPath('');
 
         $address = [];
 
@@ -290,7 +290,7 @@ class GroupController extends Controller
 
         $state = $this->stateRepository->all();
 
-        $group->sinceOf = $this->formatDateView($group->sinceOf);
+        $model->sinceOf = $this->formatDateView($model->sinceOf);
 
         $user = $this->userRepository->find(\Auth::getUser()->id);
 
@@ -301,7 +301,7 @@ class GroupController extends Controller
 
         $qtde = count($notify);
 
-        $owner_person_id = $this->userRepository->find($group->owner_id)->person_id;
+        $owner_person_id = $this->userRepository->find($model->owner_id)->person_id;
 
         $owner_name = $this->personRepository->find($owner_person_id);
 
@@ -313,7 +313,7 @@ class GroupController extends Controller
 
 
 
-        return view('groups.edit', compact('group', 'countPerson', 'countGroups',
+        return view('groups.edit', compact('model', 'countPerson', 'countGroups',
             'events', 'address', 'location', 'people', 'roles', 'state', 'members',
             'event_user', 'notify', 'qtde', 'pag', 'owner_name', 'owner_person_id',
             'qtdeMembers', 'imgProfile', 'leader', 'sub', 'leader', 'fields'));

@@ -1104,6 +1104,7 @@
             console.log(e);
             $("#zipCode").val(e.zipCode);
             $("#street").val(e.street);
+            $("#number").val(e.number);
             $("#neighborhood").val(e.neighborhood);
             $("#city").val(e.city);
             $("#state").val(e.state);

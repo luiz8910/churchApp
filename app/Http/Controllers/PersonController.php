@@ -464,19 +464,19 @@ class PersonController extends Controller
      */
     public function edit($id)
     {
-        $person = $this->repository->find($id);
+        $model = $this->repository->find($id);
 
-        $user = $person->user;
+        $user = $model->user;
 
         $state = $this->stateRepository->all();
 
         $roles = $this->roleRepository->all();
 
-        $person->dateBirth = $this->formatDateView($person->dateBirth);
+        $model->dateBirth = $this->formatDateView($model->dateBirth);
 
         $leader = $this->getLeaderRoleId();
 
-        $location = $this->formatGoogleMaps($person);
+        $location = $this->formatGoogleMaps($model);
 
         $countPerson[] = $this->countPerson();
 
@@ -487,7 +487,7 @@ class PersonController extends Controller
             'church_id' => \Auth::user()->church_id
         ]);
 
-        $gender = $person->gender == 'M' ? 'F' : 'M';
+        $gender = $model->gender == 'M' ? 'F' : 'M';
 
         $church_id = Auth::getUser()->church_id;
 
@@ -506,9 +506,9 @@ class PersonController extends Controller
 
         $children = null;
 
-        if($person->hasKids == 1)
+        if($model->hasKids == 1)
         {
-            $parent = $person->gender == "M" ? 'father_id' : 'mother_id';
+            $parent = $model->gender == "M" ? 'father_id' : 'mother_id';
 
             $children = $this->repository->findByField($parent, $user->id);
 
@@ -547,22 +547,22 @@ class PersonController extends Controller
             )
             ->get();
 
-        return view('people.edit', compact('person', 'state', 'location', 'roles', 'countPerson',
+        return view('people.edit', compact('model', 'state', 'location', 'roles', 'countPerson',
             'countGroups', 'adults', 'notify', 'qtde', 'fathers', 'mothers', 'children', 'leader', 'fields'));
     }
 
 
     public function editTeen($id)
     {
-        $person = $this->repository->find($id);
+        $model = $this->repository->find($id);
 
         $state = $this->stateRepository->all();
 
         $roles = $this->roleRepository->all();
 
-        $person->dateBirth = $this->formatDateView($person->dateBirth);
+        $model->dateBirth = $this->formatDateView($model->dateBirth);
 
-        $location = $this->formatGoogleMaps($person);
+        $location = $this->formatGoogleMaps($model);
 
         $countPerson[] = $this->countPerson();
 
@@ -600,7 +600,7 @@ class PersonController extends Controller
             )
             ->get();
 
-        return view('people.edit-teen', compact('person', 'state', 'location', 'roles', 'countPerson',
+        return view('people.edit-teen', compact('model', 'state', 'location', 'roles', 'countPerson',
             'countGroups', 'notify', 'qtde', 'fathers', 'mothers', 'leader'));
     }
 
