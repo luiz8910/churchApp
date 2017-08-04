@@ -68,7 +68,7 @@ class EventServices
     }
 
     /**
-     * Retorna a frequência do evento
+     * Retorna a frequência do evento (Os dias em que o evento ocorreu)
      * @param $id ($event_id)
      * @param $person_id
      * @return Event
@@ -102,7 +102,7 @@ class EventServices
             ->select('person_id')
             ->distinct()
             ->orderBy('person_id')
-            ->limit(5)
+            //->limit(5)
             ->get();
 
         return $event;

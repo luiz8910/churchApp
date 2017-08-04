@@ -303,7 +303,8 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                                     <p>
                                                         <i class="fa fa-map-marker font-purple"></i>
-                                                        {{ $model->street }} - {{ $model->neighborhood }} - {{ $model->city }} - {{ $model->state }}
+                                                        {{ $model->street }} , {{ $model->number }} -
+                                                        {{ $model->neighborhood }} - {{ $model->city }} - {{ $model->state }}
                                                     </p>
 
                                                     <p id="p-note" @if($model->notes == '') style="display: none;" @endif >
@@ -840,7 +841,7 @@ License: You must have a valid license purchased only from themeforest(the above
                         </div>
                     </div>
 
-                    <input type="hidden" id="streetMap" value="{{ $model->street }}">
+                    <input type="hidden" id="streetMap" value="{{ $model->street }}, {{ $model->number }}">
 
                     @if(Auth::user()->church_id && Auth::user()->person->role_id == $leader)
                         <div class="row">
@@ -855,8 +856,8 @@ License: You must have a valid license purchased only from themeforest(the above
                                     </div>
                                     <?php $i = 0; ?>
                                     <div class="portlet-body">
-                                        {!! Form::open(['route' => ['group.update', 'group' => $model->id], 'method' => 'post',
-                                        'class' => 'repeater', 'enctype' => 'multipart/form-data', 'role' => 'form', 'id' => 'form']) !!}
+                                        {!! Form::open(['route' => ['group.update', 'group' => $model->id], 'method' => 'put',
+                                        'class' => 'repeater', 'enctype' => 'multipart/form-data']) !!}
                                         <div class="form-body">
                                             <div class="row">
                                                 <div class="col-md-6">

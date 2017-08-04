@@ -281,7 +281,8 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                             <p>
                                                 <i class="fa fa-map-marker font-purple"></i>
-                                                {{ $model->street }} - {{ $model->neighborhood }} - {{ $model->city }} - {{ $model->state }}
+                                                {{ $model->street }}, {{ $model->number }} -
+                                                {{ $model->neighborhood }} - {{ $model->city }} - {{ $model->state }}
                                             </p>
 
                                             <p>
@@ -414,14 +415,18 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             @endif
                                                         </td>
                                                         <td>
-                                                            <a href="{{ route('person.edit', ['person' => $item->person_id]) }}">
+                                                            @if(Auth::user()->person_id == $item->id)
                                                                 {{ $item->name }}
-                                                            </a>
+                                                            @else
+                                                                <a href="{{ route('person.edit', ['person' => $item->id]) }}">
+                                                                    {{ $item->name }}
+                                                                </a>
+                                                            @endif
 
                                                         </td>
 
                                                         @while($i < count($eventFrequency))
-                                                            @if($item->person_id == $eventFrequency[$i]->person_id)
+                                                            @if($item->id == $eventFrequency[$i]->person_id)
                                                                 <td>
                                                                     @if($eventFrequency[$i]->$check == 1)
                                                                         <i class="fa fa-check green"></i>
@@ -444,6 +449,12 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                         </table>
 
+                                        <br>
+
+                                        <div class="pull-right">
+                                            @if(count($eventPeople) > 0 ) {{ $eventPeople->links() }} @endif
+                                        </div>
+
 
 
 
@@ -456,7 +467,7 @@ License: You must have a valid license purchased only from themeforest(the above
                         </div>
                     </div>
 
-                    <input type="hidden" id="streetMap" value="{{ $model->street }}">
+                    <input type="hidden" id="streetMap" value="{{ $model->street }}, {{ $model->number }}">
 
                     @if(Session::has('invalidDate'))
 

@@ -64,9 +64,9 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('group/create', 'GroupController@create')->name('group.create');
 
-    Route::post('group/store', 'GroupController@store')->name('group.store');
+    Route::put('/group/{group}', 'GroupController@update')->name('group.update');
 
-    Route::post('/group-update/{group}', 'GroupController@update')->name('group.update');
+    Route::post('group/store', 'GroupController@store')->name('group.store');
 
     Route::get('group/{group}', 'GroupController@destroy')->name('group.destroy');
 

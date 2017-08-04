@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Cron\CronEvents;
 use App\Events\AgendaEvent;
 use App\Models\Event;
+use App\Models\EventSubscribedList;
 use App\Models\RecentEvents;
 use App\Models\User;
 use App\Repositories\FrequencyRepository;
@@ -645,7 +646,7 @@ class EventController extends Controller
             unset($data['group_id']);
         }
 
-        $this->sendNotification($data, $event);
+        //$this->sendNotification($data, $event);
 
         if($data["frequency"] != $this->unique())
         {
@@ -765,11 +766,30 @@ class EventController extends Controller
 
         $eventPeople = $this->eventServices->eventPeople($id);
 
+        $arr = [];
+        $people = [];
+
+        foreach ($eventPeople as $item) {
+            $arr[] = $item->person_id;
+            /*$e = $this->personRepository->find($item->person_id);
+            $e->frequency = $this->eventServices->userFrequency($id, $item->person_id);
+
+            $eventPeople[] = $e;*/
+        }
+
+        $eventPeople = DB::table('people')
+            ->whereIn('id', $arr)
+            ->paginate(5);
+
         foreach ($eventPeople as $item)
         {
-            $item->name = $this->personRepository->find($item->person_id)->name;
-            $item->frequency = $this->eventServices->userFrequency($id, $item->person_id);
+            //$item->name = $this->personRepository->find($item->person_id)->name;
+            $item->frequency = $this->eventServices->userFrequency($id, $item->id);
         }
+
+        //dd($arr);
+
+        //dd($eventPeople);
 
         $group = $model->group or null;
 
@@ -958,6 +978,8 @@ class EventController extends Controller
             ->update(['deleted_at' => Carbon::now()]);
 
         RecentEvents::where('event_id', $id)->delete();
+
+        EventSubscribedList::where('event_id', $id)->delete();
 
         $event->delete();
 

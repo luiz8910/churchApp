@@ -12,6 +12,8 @@ use App\Models\Role;
 use App\Models\User;
 use App\Notifications\EventNotification;
 use App\Notifications\Notifications;
+use App\Repositories\EventSubscribedListRepository;
+use App\Repositories\GroupRepository;
 use App\Repositories\RequiredFieldsRepository;
 use App\Traits\ConfigTrait;
 use App\Traits\CountRepository;
@@ -61,15 +63,26 @@ class PersonController extends Controller
      * @var RequiredFieldsRepository
      */
     private $fieldsRepository;
+    /**
+     * @var EventSubscribedListRepository
+     */
+    private $listRepository;
+    /**
+     * @var GroupRepository
+     */
+    private $groupRepository;
 
     public function __construct(PersonRepository $repository, StateRepository $stateRepositoryTrait, RoleRepository $roleRepository,
-                                UserRepository $userRepository, RequiredFieldsRepository $fieldsRepository)
+                                UserRepository $userRepository, RequiredFieldsRepository $fieldsRepository, EventSubscribedListRepository $listRepository,
+                                GroupRepository $groupRepository)
     {
         $this->repository = $repository;
         $this->stateRepository = $stateRepositoryTrait;
         $this->roleRepository = $roleRepository;
         $this->userRepository = $userRepository;
         $this->fieldsRepository = $fieldsRepository;
+        $this->listRepository = $listRepository;
+        $this->groupRepository = $groupRepository;
     }
 
     /**
@@ -547,8 +560,34 @@ class PersonController extends Controller
             )
             ->get();
 
+        $list = $this->listRepository->findByField('person_id', $model->id);
+
+        $arr = [];
+        $events = [];
+
+        if(count($list) > 0)
+        {
+            foreach ($list as $item) {
+                $arr[] = $item->event_id;
+            }
+
+            $events = DB::table('events')
+                ->whereIn('id', $arr)
+                ->paginate(5);
+
+
+            foreach ($events as $event) {
+                //$e = $this->eventRepository->find($event->event_id);
+                $u = $this->userRepository->find($event->createdBy_id);
+                $event->createdBy_name = $u->person->name;
+                $event->createdBy_id = $u->person_id;
+                $event->group_id = $event->group_id ? $this->groupRepository->find($event->group_id)->name : "Sem Grupo";
+
+            }
+        }
+
         return view('people.edit', compact('model', 'state', 'location', 'roles', 'countPerson',
-            'countGroups', 'adults', 'notify', 'qtde', 'fathers', 'mothers', 'children', 'leader', 'fields'));
+            'countGroups', 'adults', 'notify', 'qtde', 'fathers', 'mothers', 'children', 'leader', 'fields', 'events'));
     }
 
 

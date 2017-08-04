@@ -17,7 +17,7 @@ trait FormatGoogleMaps
         {
             $place = str_replace(' ', '+', $location->street);
 
-            $place .= '+' . $location->city . '+' . $location->state;
+            $place .= '+' . $location->number . '+' . $location->city . '+' . $location->state;
 
             return $place;
         }

@@ -335,7 +335,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                                 @if($event->checkIn === false)
 
                                                                                     <a href="javascript:;" class="btn btn-danger btn-sm btn-circle" id="checkIn"
-                                                                                       onclick='checkOut({{ $event->id }})' title="Fazer Check-in">
+                                                                                       onclick='checkOut({{ $event->id }})' title="Fazer Check-out">
                                                                                         <i class="fa fa-close" id="i-checkIn"></i>
 
                                                                                     </a>

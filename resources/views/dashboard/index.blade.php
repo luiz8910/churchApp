@@ -536,7 +536,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                     <input type="hidden" value="@if(isset($location)) {{ $location }} @endif" id="location">
 
                                     <input type="hidden" name="street" id="streetMap"
-                                           value="@if(isset($location)) {{ $event->name }} - {{ $street }} @endif">
+                                           value="@if(isset($location)) {{ $event->name }} - {{ $street }}, {{ $event->number }} @endif">
                                 </div>
                             </div>
                             <!-- END BASIC PORTLET-->

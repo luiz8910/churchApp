@@ -83,6 +83,15 @@ License: You must have a valid license purchased only from themeforest(the above
                         <strong>Erro!</strong> {{ Session::get("email.exists") }}
                     </div>
                 @endif
+
+                    @if(Session::has("error.required-fields"))
+                        <div class="alert alert-danger alert-dismissible" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <strong>Erro!</strong> {{ Session::get("error.required-fields") }}
+                        </div>
+                    @endif
+
+
                 <div class="page-content-inner">
                     <div class="row">
                         <div class="col-md-12">
@@ -698,7 +707,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                 <div class="portlet light portlet-fit ">
                                     <div class="portlet-title">
                                         <div class="caption">
-                                            <i class="icon-settings font-red"></i>
+                                            <i class="fa fa-users font-red"></i>
                                             <span class="caption-subject font-red sbold uppercase">Meus Grupos</span>
                                         </div>
                                         <div class="actions">
@@ -808,6 +817,141 @@ License: You must have a valid license purchased only from themeforest(the above
                     </div>
                     <!-- END PAGE CONTENT INNER -->
 
+                    <!-- BEGIN PAGE CONTENT INNER -->
+                    <div class="page-content-inner">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <!-- BEGIN BORDERED TABLE PORTLET-->
+                                <div class="portlet light portlet-fit ">
+                                    <div class="portlet-title">
+                                        <div class="caption">
+                                            <i class="fa fa-calendar font-red"></i>
+                                            <span class="caption-subject font-red sbold uppercase">Meus Eventos (inscrições)</span>
+                                        </div>
+                                        <div class="actions">
+                                            @if(Auth::getUser()->person->role_id == 1)
+                                                <div class="btn-group btn-group-devided">
+                                                    <a role="button" class="btn btn-info btn-circle" href="{{ route('event.create') }}" style="margin-top: 2px;">
+                                                        <i class="fa fa-plus"></i>
+                                                        <span class="hidden-xs hidden-sm">Novo Evento</span>
+                                                    </a>
+
+                                                </div>
+                                            @endif
+                                            <div class="btn-group">
+                                                <a class="btn red btn-outline btn-circle" href="javascript:;" data-toggle="dropdown">
+                                                    <i class="fa fa-share"></i>
+                                                    <span class="hidden-xs"> Opções </span>
+                                                    <i class="fa fa-angle-down"></i>
+                                                </a>
+                                                <ul class="dropdown-menu pull-right" id="sample_3_tools">
+                                                    <li>
+                                                        <a href="javascript:;" data-action="0" class="tool-action">
+                                                            <i class="icon-printer"></i> Imprimir</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:;" data-action="1" class="tool-action">
+                                                            <i class="icon-check"></i> Copiar</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:;" data-action="2" class="tool-action">
+                                                            <i class="icon-doc"></i> PDF</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:;" data-action="3" class="tool-action">
+                                                            <i class="icon-paper-clip"></i> Excel</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:;" data-action="4" class="tool-action">
+                                                            <i class="icon-cloud-upload"></i> CSV</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="portlet-body">
+                                        <div class="table-scrollable table-scrollable-borderless">
+                                            <table class="table table-hover table-light">
+                                                <thead>
+                                                <tr class="uppercase">
+                                                    <th> Nome </th>
+                                                    <th> Frequência </th>
+                                                    <th> Criado Por </th>
+                                                    <th> Grupo </th>
+                                                    <th> Ações </th>
+
+                                                </tr>
+                                                </thead>
+
+                                                <input type="hidden" id="person_id" value="{{ Auth::getUser()->person_id }}">
+
+                                                <tbody>
+                                                @if(count($events) > 0)
+                                                    <?php $i = 0; ?>
+                                                    @foreach($events as $item)
+                                                        <tr>
+                                                            <td>
+                                                                <a href="{{ route('group.edit', ['group' => $item->id]) }}">
+                                                                    {{ $item->name }}
+                                                                </a>
+                                                            </td>
+                                                            <td>
+                                                                {{ $item->frequency }}
+                                                            </td>
+                                                            <td>
+                                                                @if(Auth::user()->person_id == $item->createdBy_id)
+                                                                    {{ $item->createdBy_name }}
+
+                                                                @else
+                                                                    <a href="{{ route('person.edit', ['person' => $item->createdBy_id]) }}">
+                                                                        {{ $item->createdBy_name }}
+                                                                    </a>
+                                                                @endif
+                                                            </td>
+
+                                                            <td>
+                                                                {{ $item->group_id }}
+                                                            </td>
+
+                                                            @if(Auth::getUser()->person)
+
+                                                                <?php $deleteForm = $item->id; ?>
+                                                                <td>
+
+                                                                    <a href="" class="btn btn-danger btn-sm btn-circle pop-sub"
+                                                                       title="Cancelar Inscrição"
+                                                                       data-toggle="confirmation" data-placement="top" data-original-title="Cancelar Inscrição?"
+                                                                       data-popout="true" onclick="event.preventDefault()"
+                                                                       id="btn-person-{{ $deleteForm }}">
+                                                                        <i class="fa fa-trash"></i>
+                                                                    </a>
+
+
+                                                                </td>
+
+                                                            @endif
+
+                                                        </tr>
+                                                        <?php $i++; ?>
+                                                    @endforeach
+
+                                                @endif
+                                                </tbody>
+                                            </table>
+                                            <br>
+                                            <div class="pull-right">
+                                                @if($events) {{ $events->links() }} @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- END BORDERED TABLE PORTLET-->
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- END PAGE CONTENT INNER -->
+
                     <input type="hidden" value="{{ Auth::getUser()->id }}" id="personId">
 
                     <div class="row">
@@ -850,7 +994,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     {!! Form::FormGroup('name', $errors) !!}
                                                     <label class="control-label">Nome</label>
                                                     <input type="text" placeholder="João" name="name"
-                                                           value="{{ $user->name }}"
+                                                           value="{{ $model->name }}"
                                                            class="form-control" />
                                                     {!! Form::error('name', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
@@ -860,7 +1004,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     {!! Form::FormGroup('lastName', $errors) !!}
                                                     <label class="control-label">Sobrenome</label>
                                                     <input type="text" placeholder="da Silva" name="lastName"
-                                                           value="{{ $user->lastName }}"
+                                                           value="{{ $model->lastName }}"
                                                            class="form-control" />
                                                     {!! Form::error('lastName', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
@@ -873,7 +1017,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     {!! Form::FormGroup('cel', $errors) !!}
                                                     <label class="control-label">Celular</label>
                                                     <input type="text" placeholder="(15) 9123-1234" name="cel"
-                                                           value="{{ $user->cel }}"
+                                                           value="{{ $model->cel }}"
                                                            class="form-control tel" />
                                                     {!! Form::error('cel', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
@@ -918,7 +1062,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     {!! Form::FormGroup('tel', $errors) !!}
                                                     <label class="control-label">Telefone</label>
                                                     <input type="text" placeholder="(15)99123-1234" name="tel"
-                                                           value="{{ $user->tel }}"
+                                                           value="{{ $model->tel }}"
                                                            class="form-control tel" />
                                                     {!! Form::error('tel', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
@@ -930,12 +1074,12 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <select name="gender" class="form-control" required>
                                                         <option value="">Selecione</option>
                                                         <option value="M"
-                                                            @if($user->gender == 'M')
+                                                            @if($model->gender == 'M')
                                                                 selected
                                                             @endif >Masculino
                                                 </option>
                                                 <option value="F"
-                                                    @if($user->gender == 'F')
+                                                    @if($model->gender == 'F')
                                                         selected
                                                     @endif >Feminino
                                                 </option>
@@ -955,7 +1099,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         <i class="fa fa-calendar font-blue"></i>
                                                 </span>
 
-                                                <input type="text" class="form-control input-date" value="{{ $user->dateBirth }}"
+                                                <input type="text" class="form-control input-date" value="{{ $model->dateBirth }}"
                                                        name="dateBirth" placeholder="dd/mm/aaaa" maxlength="10">
                                             </div>
                                             {!! Form::error('dateBirth', $errors) !!}
@@ -989,7 +1133,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         <i class="fa fa-user font-blue"></i>
                                                     </span>
                                                 <input type="text" name="cpf" id="cpf" maxlength="11" class="form-control"
-                                                       placeholder="XXXXXXXXXXX" value="{{ $user->cpf }}">
+                                                       placeholder="XXXXXXXXXXX" value="{{ $model->cpf }}">
                                                 <i class="fa fa-check font-green" id="icon-success" style="display: none;"></i>
                                                 <i class="fa fa-exclamation font-red" id="icon-error" style="display: none;"></i>
 
@@ -1006,7 +1150,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                             {!! Form::FormGroup('rg', $errors) !!}
                                             <label class="control-label">RG</label>
                                             <input type="text" placeholder="12312312312"
-                                                   value="{{ $user->rg }}"
+                                                   value="{{ $model->rg }}"
 
                                                    name="rg" id="rg" class="form-control" maxlength="9" minlength="9"/>
                                             {!! Form::error('rg', $errors) !!}
@@ -1024,21 +1168,21 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <option value="">Selecione</option>
                                                 <option value="Casado"
 
-                                                        @if($user->maritalStatus == 'Casado')
+                                                        @if($model->maritalStatus == 'Casado')
                                                             selected
                                                         @endif
                                                 >Casado
                                                 </option>
 
                                                 <option value="Solteiro"
-                                                        @if($user->maritalStatus == 'Solteiro')
+                                                        @if($model->maritalStatus == 'Solteiro')
                                                             selected
                                                         @endif >
                                                     Solteiro
                                                 </option>
 
                                                 <option value="Divorciado"
-                                                            @if($user->maritalStatus == 'Divorciado')
+                                                            @if($model->maritalStatus == 'Divorciado')
                                                                 selected
                                                             @endif>
                                                     Divorciado
@@ -1050,7 +1194,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                         <div class="col-md-6">
                                             <div class="form-group" id="form-partner"
-                                                    @if($user->maritalStatus != 'Casado')
+                                                    @if($model->maritalStatus != 'Casado')
                                                         hidden
                                                     @endif >
                                                 <label>Nome Cônjuge</label>
@@ -1060,7 +1204,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <option value="0">Parceiro(a) fora da igreja</option>
                                                     @foreach($adults as $adult)
                                                         <option value="{{ $adult->id }}"
-                                                                @if($adult->id == $user->partner) selected @endif
+                                                                @if($adult->id == $model->partner) selected @endif
                                                         >{{ $adult->name }} {{ $adult->lastName }}</option>
                                                     @endforeach
                                                 </select>
@@ -1068,79 +1212,9 @@ License: You must have a valid license purchased only from themeforest(the above
                                         </div>
                                     </div>
 
-                                    <h3 class="form-section">Endereço</h3>
+                                            <br><br>
 
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="div-loading">
-                                                <i class="fa fa-refresh fa-spin fa-5x fa-fw"
-                                                   id="icon-loading-cep">
-                                                </i>
-                                                <p class="text-center" id="p-loading-cep" style="display: block;">
-                                                    Buscando Cep ...
-                                                </p>
-                                            </div>
-
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-md-3 input-address">
-                                            {!! Form::FormGroup('zipCode', $errors) !!}
-                                            <label class="control-label">CEP</label>
-                                            <input type="text" placeholder="12123-12" id="zipCode"
-                                                   value="{{ $user->zipCode }}"
-
-                                                   name="zipCode" class="form-control" />
-                                            {!! Form::error('zipCode', $errors) !!}
-                                            {!! Form::endFormGroup() !!}
-                                        </div>
-                                        <div class="col-md-9 input-address">
-                                            {!! Form::FormGroup('street', $errors) !!}
-                                            <label class="control-label">Logradouro</label>
-                                            <input type="text" placeholder="Rua dos Bobos, 0" id="street"
-                                                   value="{{ $user->street }}"
-                                                   name="street" class="form-control" />
-                                            {!! Form::error('street', $errors) !!}
-                                            {!! Form::endFormGroup() !!}
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-md-4 input-address">
-                                            {!! Form::FormGroup('neighborhood', $errors) !!}
-                                            <label class="control-label">Bairro</label>
-                                            <input type="text" placeholder="Vila Progresso" id="neighborhood"
-                                                   value="{{ $user->neighborhood }}"
-                                                   name="neighborhood" class="form-control" />
-                                            {!! Form::error('neighborhood', $errors) !!}
-                                            {!! Form::endFormGroup() !!}
-                                        </div>
-                                        <div class="col-md-4 input-address">
-                                            {!! Form::FormGroup('city', $errors) !!}
-                                            <label class="control-label">Cidade</label>
-                                            <input type="text" placeholder="Sorocaba" name="city" id="city"
-                                                   value="{{ $user->city }}"
-                                                   class="form-control" />
-                                            {!! Form::error('city', $errors) !!}
-                                            {!! Form::endFormGroup() !!}
-                                        </div>
-                                        <div class="col-md-4 input-address">
-                                            {!! Form::FormGroup('state', $errors) !!}
-                                            <label class="control-label">UF:</label>
-                                            <select name="state" class="form-control" id="state">
-                                                <option value="">Selecione</option>
-                                                @foreach($state as $value)
-                                                    <option value="{{ $value->initials }}"
-                                                            @if($value->initials == $user->state) selected @endif >
-                                                        {{ $value->state }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                            {!! Form::error('state', $errors) !!}
-                                            {!! Form::endFormGroup() !!}
-                                        </div>
-                                    </div>
+                                    @include('includes.address-edit')
 
                                         <div class="margiv-top-10">
                                             {!! Form::submit('Salvar', ['class' => 'btn green', 'id' => 'btn-submit']) !!}

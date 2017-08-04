@@ -5,7 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserCreateRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Mail\resetPassword;
+use App\Models\EventSubscribedList;
 use App\Models\User;
+use App\Repositories\EventRepository;
+use App\Repositories\EventSubscribedListRepository;
+use App\Repositories\GroupRepository;
 use App\Repositories\VisitorRepository;
 use App\Traits\ConfigTrait;
 use App\Traits\CountRepository;
@@ -44,53 +48,73 @@ class UsersController extends Controller
      * @var VisitorRepository
      */
     private $visitorRepository;
+    /**
+     * @var EventSubscribedListRepository
+     */
+    private $listRepository;
+    /**
+     * @var EventRepository
+     */
+    private $eventRepository;
+    /**
+     * @var GroupRepository
+     */
+    private $groupRepository;
 
     /**
      * UsersController constructor.
      * @param UserRepository $repository
      * @param StateRepository $stateRepository
+     * @param RoleRepository $roleRepository
+     * @param PersonRepository $personRepository
+     * @param VisitorRepository $visitorRepository
+     * @param EventSubscribedListRepository $listRepository
      */
     public function __construct(UserRepository $repository, StateRepository $stateRepository,
                                 RoleRepository $roleRepository, PersonRepository $personRepository,
-                                VisitorRepository $visitorRepository)
+                                VisitorRepository $visitorRepository, EventSubscribedListRepository $listRepository,
+                                EventRepository $eventRepository, GroupRepository $groupRepository)
     {
         $this->repository = $repository;
         $this->stateRepository = $stateRepository;
         $this->roleRepository = $roleRepository;
         $this->personRepository = $personRepository;
         $this->visitorRepository = $visitorRepository;
+        $this->listRepository = $listRepository;
+        $this->eventRepository = $eventRepository;
+        $this->groupRepository = $groupRepository;
     }
 
     public function myAccount()
     {
         $changePass = true;
 
-        if(Auth::getUser()->person)
-        {
-            $user = Auth::getUser()->person;
-            $role = $user->role->name;
-        }
-        else{
-            $user = Auth::getUser()->visitors->first();
+        if (Auth::getUser()->person) {
+            $model = Auth::getUser()->person;
+            $role = $model->role->name;
+        } else {
+            $model = Auth::getUser()->visitors->first();
             $changePass = false;
             $role = "Visitante";
         }
 
         $state = $this->stateRepository->all();
 
-        $user->dateBirth = $this->formatDateView($user->dateBirth);
+        $model->dateBirth = $this->formatDateView($model->dateBirth);
 
-        $gender = $user->gender == 'M' ? 'F' : 'M';
+        $gender = $model->gender == 'M' ? 'F' : 'M';
 
-        if($user->facebook_id != null || $user->linkedin_id != null
-            || $user->google_id != null || $user->twitter_id != null)
-        {
+        if ($model->facebook_id != null || $model->linkedin_id != null
+            || $model->google_id != null || $model->twitter_id != null
+        ) {
             $changePass = false;
         }
 
         $countPerson[] = $this->countPerson();
 
         $countGroups[] = $this->countGroups();
+
+        $countMembers = [];
 
         $notify = $this->notify();
 
@@ -100,23 +124,46 @@ class UsersController extends Controller
 
         $adults = $this->personRepository->findWhere(['tag' => 'adult', 'gender' => $gender]);
 
-        $person = $this->personRepository->find($user->id);
+        $person = $this->personRepository->find($model->id);
 
         $groups = $person->groups()->paginate() or null;
 
-        $countMembers = [];
+        $list = $this->listRepository->findByField('person_id', $model->id);
 
-        if($groups)
+        $arr = [];
+        $events = [];
+
+        if(count($list) > 0)
         {
-            foreach ($groups as $group)
-            {
+            foreach ($list as $item) {
+                $arr[] = $item->event_id;
+            }
+
+            $events = DB::table('events')
+                ->whereIn('id', $arr)
+                ->paginate(5);
+
+
+            foreach ($events as $event) {
+                //$e = $this->eventRepository->find($event->event_id);
+                $u = $this->repository->find($event->createdBy_id);
+                $event->createdBy_name = $u->person->name;
+                $event->createdBy_id = $u->person_id;
+                $event->group_id = $event->group_id ? $this->groupRepository->find($event->group_id)->name : "Sem Grupo";
+
+            }
+        }
+
+
+        if ($groups) {
+            foreach ($groups as $group) {
                 $group->sinceOf = $this->formatDateView($group->sinceOf);
                 $countMembers[] = count($group->people->all());
             }
         }
 
-        return view('users.myAccount', compact('state', 'user', 'changePass', 'countPerson', 'role', 'countGroups',
-            'notify', 'qtde', 'adults', 'groups', 'countMembers', 'leader'));
+        return view('users.myAccount', compact('state', 'model', 'changePass', 'countPerson', 'role', 'countGroups',
+            'notify', 'qtde', 'adults', 'groups', 'countMembers', 'leader', 'events'));
     }
 
 
@@ -147,16 +194,27 @@ class UsersController extends Controller
 
         $email = $email["email"];
 
+        if ($email == "") {
+            $request->session()->flash("email.exists", "Preencha o campo email");
+            return redirect()->route("users.myAccount")->withInput();
+        }
+
         $user = User::select('id')->where('email', $email)->first() or null;
 
         $oldMail = $this->repository->find($id)->email;
 
-        if($user && $oldMail != $email)
-        {
-            \Session::flash("email.exists", "Existe uma conta associada para o email informado (" .$email. ")");
+        if ($user && $oldMail != $email) {
+            \Session::flash("email.exists", "Existe uma conta associada para o email informado (" . $email . ")");
 
             $request->flashExcept('password');
 
+            return redirect()->route("users.myAccount")->withInput();
+        }
+
+        $verifyFields = $this->verifyRequiredFields($data, 'person');
+
+        if ($verifyFields) {
+            $request->session()->flash("error.required-fields", "Preencha o campo " . $verifyFields);
             return redirect()->route("users.myAccount")->withInput();
         }
 
@@ -174,20 +232,18 @@ class UsersController extends Controller
             $this->updateMaritalStatus($data['partner'], $id);
         }
 
-        if(Auth::getUser()->person)
-        {
+        if (Auth::getUser()->person) {
             $user = Auth::getUser()->person;
             $role = $user->role->name;
 
             $data["role"] = $role;
-        }else{
+        } else {
             $data["role"] = "Visitante";
         }
 
-        if($data["role"] == "Visitante")
-        {
+        if ($data["role"] == "Visitante") {
             $this->visitorRepository->update($data, $id);
-        }else{
+        } else {
             $person_id = $this->repository->find($id)->person_id;
 
             $this->personRepository->update($data, $person_id);
@@ -300,13 +356,12 @@ class UsersController extends Controller
     {
         $email = DB::table('users')
             ->where(
-            [
-                'email' => $email,
-            ]
-        )->get();
+                [
+                    'email' => $email,
+                ]
+            )->get();
 
-        if($church_id)
-        {
+        if ($church_id) {
             $email = DB::table('users')
                 ->where(
                     [

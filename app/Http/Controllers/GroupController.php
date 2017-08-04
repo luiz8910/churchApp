@@ -333,13 +333,17 @@ class GroupController extends Controller
 
         $data = $request->except(['img']);
 
+        //dd($data);
         $verifyFields = $this->verifyRequiredFields($data, 'group');
 
         if($verifyFields)
         {
             \Session::flash("error.required-fields", "Preencha o campo " . $verifyFields);
-            return redirect()->route("group.update", ['group' => $id])->withInput();
+            return redirect()->route("group.edit", ['group' => $id])->withInput();
         }
+
+        print_r($data);
+        dd($verifyFields);
 
         $data['sinceOf'] = $this->formatDateBD($data['sinceOf']);
 

@@ -178,6 +178,137 @@ License: You must have a valid license purchased only from themeforest(the above
                         </div>
                     </div>
 
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <!-- BEGIN BORDERED TABLE PORTLET-->
+                            <div class="portlet light portlet-fit ">
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        <i class="fa fa-calendar font-red"></i>
+                                        <span class="caption-subject font-red sbold uppercase">Meus Eventos (inscrições)</span>
+                                    </div>
+                                    <div class="actions">
+                                        @if(Auth::getUser()->person->role_id == 1)
+                                            <div class="btn-group btn-group-devided">
+                                                <a role="button" class="btn btn-info btn-circle" href="{{ route('event.create') }}" style="margin-top: 2px;">
+                                                    <i class="fa fa-plus"></i>
+                                                    <span class="hidden-xs hidden-sm">Novo Evento</span>
+                                                </a>
+
+                                            </div>
+                                        @endif
+                                        <div class="btn-group">
+                                            <a class="btn red btn-outline btn-circle" href="javascript:;" data-toggle="dropdown">
+                                                <i class="fa fa-share"></i>
+                                                <span class="hidden-xs"> Opções </span>
+                                                <i class="fa fa-angle-down"></i>
+                                            </a>
+                                            <ul class="dropdown-menu pull-right" id="sample_3_tools">
+                                                <li>
+                                                    <a href="javascript:;" data-action="0" class="tool-action">
+                                                        <i class="icon-printer"></i> Imprimir</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;" data-action="1" class="tool-action">
+                                                        <i class="icon-check"></i> Copiar</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;" data-action="2" class="tool-action">
+                                                        <i class="icon-doc"></i> PDF</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;" data-action="3" class="tool-action">
+                                                        <i class="icon-paper-clip"></i> Excel</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;" data-action="4" class="tool-action">
+                                                        <i class="icon-cloud-upload"></i> CSV</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="portlet-body">
+                                    <div class="table-scrollable table-scrollable-borderless">
+                                        <table class="table table-hover table-light">
+                                            <thead>
+                                            <tr class="uppercase">
+                                                <th> Nome </th>
+                                                <th> Frequência </th>
+                                                <th> Criado Por </th>
+                                                <th> Grupo </th>
+                                                <th> Ações </th>
+
+                                            </tr>
+                                            </thead>
+
+                                            <input type="hidden" id="person_id" value="{{ Auth::getUser()->person_id }}">
+
+                                            <tbody>
+                                            @if(count($events) > 0)
+                                                <?php $i = 0; ?>
+                                                @foreach($events as $item)
+                                                    <tr>
+                                                        <td>
+                                                            <a href="{{ route('group.edit', ['group' => $item->id]) }}">
+                                                                {{ $item->name }}
+                                                            </a>
+                                                        </td>
+                                                        <td>
+                                                            {{ $item->frequency }}
+                                                        </td>
+                                                        <td>
+                                                            @if(Auth::user()->person_id == $item->createdBy_id)
+                                                                {{ $item->createdBy_name }}
+
+                                                            @else
+                                                                <a href="{{ route('person.edit', ['person' => $item->createdBy_id]) }}">
+                                                                    {{ $item->createdBy_name }}
+                                                                </a>
+                                                            @endif
+                                                        </td>
+
+                                                        <td>
+                                                            {{ $item->group_id }}
+                                                        </td>
+
+                                                        @if(Auth::getUser()->person)
+
+                                                            <?php $deleteForm = $item->id; ?>
+                                                            <td>
+
+                                                                <a href="" class="btn btn-danger btn-sm btn-circle pop-sub"
+                                                                   title="Cancelar Inscrição"
+                                                                   data-toggle="confirmation" data-placement="top" data-original-title="Cancelar Inscrição?"
+                                                                   data-popout="true" onclick="event.preventDefault()"
+                                                                   id="btn-person-{{ $deleteForm }}">
+                                                                    <i class="fa fa-trash"></i>
+                                                                </a>
+
+
+                                                            </td>
+
+                                                        @endif
+
+                                                    </tr>
+                                                    <?php $i++; ?>
+                                                @endforeach
+
+                                            @endif
+                                            </tbody>
+                                        </table>
+                                        <br>
+                                        <div class="pull-right">
+                                            @if($events) {{ $events->links() }} @endif
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END BORDERED TABLE PORTLET-->
+                        </div>
+                    </div>
+
                     <div class="row">
                         <div class="col-md-12">
                             <div class="portlet light ">
@@ -210,7 +341,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                         <!-- PERSONAL INFO TAB -->
 
                                         <input type="hidden" value="{{ $model->id }}" id="personId">
-                                        <input type="hidden" id="streetMap" value="{{ $model->street }}">
+                                        <input type="hidden" id="streetMap" value="{{ $model->street }}, {{ $model->number }}">
 
                                         <div class="tab-pane active" id="tab_1_1">
                                             {!! Form::open(['route' => ['person.update', 'person' => $model->id], 'class' => 'repeater',
