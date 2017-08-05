@@ -268,3 +268,5 @@ Route::get('subAllMembers', 'EventController@subAllMembers');
 Route::get('calendario', 'DashboardController@calendario');
 
 Route::get('menu', 'DashboardController@menu');
+
+Route::get('recentTable', "PersonController@clearRecentTables");

@@ -38,6 +38,7 @@ class Kernel extends ConsoleKernel
             //$cron = new CronEvents();
 
             $this->setNextEvents();
+            $this->clearRecentTables();
         });
 
         /*$schedule->call(function (){
@@ -214,5 +215,25 @@ class Kernel extends ConsoleKernel
         }
 
         return $x;
+    }
+
+    public function clearRecentTables()
+    {
+        $today = date_create();
+
+        date_add($today, date_interval_create_from_date_string("-7 days"));
+
+        DB::table('recent_users')
+            ->whereDate('created_at', '<', date_format($today, "Y-m-d"))
+            ->delete();
+
+        DB::table('recent_groups')
+            ->whereDate('created_at', '<', date_format($today, "Y-m-d"))
+            ->delete();
+
+        DB::table('recent_events')
+            ->whereDate('created_at', '<', date_format($today, "Y-m-d"))
+            ->delete();
+
     }
 }
