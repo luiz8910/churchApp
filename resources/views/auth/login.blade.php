@@ -49,6 +49,8 @@ License: You must have a valid license purchased only from themeforest(the above
             <strong>Erro!</strong> Selecione uma igreja abaixo
         </div>
 
+        <?php $churches = \App\Models\Church::all(); ?>
+
         <div class="form-group">
             <label class="control-label visible-ie8 visible-ie9">Igreja</label>
             <select name="church" id="church" class="form-control" required>
