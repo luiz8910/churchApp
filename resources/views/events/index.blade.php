@@ -284,7 +284,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 @foreach($events as $event)
                                                                     <tr class="printable-table-tr" id="tr-{{ $event->id }}">
                                                                         <td>
-                                                                            @if(Auth::user()->church_id && Auth::user()->person->role_id == 1)
+                                                                            @if(Auth::user()->church_id == $church_id && Auth::user()->person->role_id == 1)
                                                                                 <fieldset>
                                                                                     <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
                                                                                         <input type="checkbox" name="events" class="checkboxes check-model" id="check-{{ $event->id }}"
@@ -327,10 +327,12 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                                                             <?php $deleteForm = "delete-" . $event->id; ?>
                                                                             <td>
-                                                                                <a href="{{ route('event.subscriptions', ['event' => $event->id]) }}"
-                                                                                   class="btn btn-info btn-sm btn-circle" title="Inscrições">
-                                                                                    <i class="fa fa-users"></i>
-                                                                                </a>
+                                                                                @if($role != "Visitante")
+                                                                                    <a href="{{ route('event.subscriptions', ['event' => $event->id]) }}"
+                                                                                       class="btn btn-info btn-sm btn-circle" title="Inscrições">
+                                                                                        <i class="fa fa-users"></i>
+                                                                                    </a>
+                                                                                @endif
 
                                                                                 @if($event->checkIn === false)
 
@@ -353,7 +355,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                                     </a>
                                                                                 @endif
 
-                                                                                @if(Auth::user()->church_id && Auth::getUser()->person->role_id == 1)
+                                                                                @if(Auth::user()->church_id == $church_id && Auth::getUser()->person->role_id == 1)
                                                                                     <a href="javascript:;" class="btn btn-danger btn-sm btn-circle pop"
                                                                                        title="Excluir evento"
                                                                                        data-toggle="confirmation" data-placement="top" data-original-title="Deseja Excluir?"

@@ -20,7 +20,7 @@
 
             <div class="header-box-calendario">
                 <ul class="pagination ">
-                    @if(Auth::user()->church_id)
+                    @if(Auth::user()->church_id == $church_id)
                         <li>
                             <a class="btn-pagination" href="{{ route('events.agenda-mes', ['thisMonth' => $thisMonth - 2])}}">
                                 <i class="fa fa-angle-left fa-2x"></i>
@@ -50,7 +50,7 @@
                         <a href="javascript:;"> <strong>{{ $allMonths[$thisMonth] }}</strong> </a>
                     </li>
 
-                    @if(Auth::user()->church_id)
+                    @if(Auth::user()->church_id == $church_id)
                         <li>
                             <a class="btn-pagination" href="{{ route('events.agenda-mes', ['thisMonth' => $thisMonth])}}">
                                 {{ $allMonths[$thisMonth + 1] }}

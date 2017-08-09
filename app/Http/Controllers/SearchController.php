@@ -6,12 +6,14 @@ use App\Models\Event;
 use App\Models\Group;
 use App\Models\Person;
 use App\Models\User;
+use App\Traits\ConfigTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Laravel\Scout\Engines\AlgoliaEngine;
 
 class SearchController extends Controller
 {
+    use ConfigTrait;
     /**
      * @var Event
      */
@@ -74,7 +76,7 @@ class SearchController extends Controller
 
     public function findNewPeople($input)
     {
-        $church_id = \Auth::getUser()->church_id;
+        $church_id = $this->getUserChurch();
 
         $people = DB::table('people')
                     ->where(

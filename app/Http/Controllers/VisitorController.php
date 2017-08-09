@@ -174,7 +174,7 @@ class VisitorController extends Controller
 
         $fields = $this->fieldsRepository->findWhere([
             'model' => 'visitor',
-            'church_id' => \Auth::user()->church_id
+            'church_id' => $this->getUserChurch()
         ]);
 
         foreach ($fields as $field) {
@@ -216,7 +216,9 @@ class VisitorController extends Controller
 
         //$visitor->churches()->attach($church);
 
-        $user = $this->createUserLogin(null, null, $data['email'], null);
+        $password = $this->churchRepository->find($this->getUserChurch())->alias;
+
+        $user = $this->createUserLogin(null, $password, $data['email'], null);
 
         $visitor->users()->attach($user);
 
@@ -298,14 +300,14 @@ class VisitorController extends Controller
 
         //$user = $visitor->users->first() or null;
 
-        if(isset($data["password"]))
+        /*if(isset($data["password"]))
         {
             if($data["password"] != $data["confirm-password"])
             {
                 $request->session()->flash("email.exists", "As senhas não combinam");
                 return redirect()->back()->withInput();
             }
-        }
+        }*/
 
 
         if($user)
@@ -333,6 +335,14 @@ class VisitorController extends Controller
                     'email' => $data["email"],
                     'updated_at' => Carbon::now()
                 ]);
+        }
+
+        $verifyFields = $this->verifyRequiredFields($data, 'visitor');
+
+        if($verifyFields)
+        {
+            \Session::flash("error.required-fields", "Preencha o campo " . $verifyFields);
+            return redirect()->route("visitors.edit", ['visitor' => $id])->withInput();
         }
 
         $this->repository->update($data, $id);
@@ -366,9 +376,11 @@ class VisitorController extends Controller
         return view('auth.visitor', compact('churches'));
     }
 
-    /*$church = id da igreja escolhida pelo visitante*/
-    public function visitors($church)
+
+    public function visitors()
     {
+        $church = $this->getUserChurch();
+
         $countPerson[] = $this->countPerson();
 
         $countGroups[] = $this->countGroups();
@@ -501,7 +513,7 @@ class VisitorController extends Controller
 
         $text = "";
 
-        $church_id = Auth::getUser()->church_id;
+        $church_id = $this->getUserChurch();
 
         $visitors = $this->repository->findByField('church_id', $church_id);
 

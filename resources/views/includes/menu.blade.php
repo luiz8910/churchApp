@@ -44,11 +44,17 @@
         <!-- DOC: Remove data-hover="dropdown" and data-close-others="true" attributes below to disable the dropdown opening on mouse hover -->
         <div class="hor-menu  ">
             <ul class="nav navbar-nav">
-                <li class="menu-dropdown mega-menu-dropdown  ">
-                    <a href="{{ route('index') }}">
-                        Início
-                    </a>
-                </li>
+
+                    <li class="menu-dropdown mega-menu-dropdown  ">
+                        <a href="@if(Auth::user()->church_id)
+                                    {{ route('index') }}
+                                @else
+                                    javascript:;
+                                @endif">
+                            Início
+                        </a>
+                    </li>
+
                 <li class="menu-dropdown classic-menu-dropdown ">
                     <a href="javascript:;"> Pessoas
                         <span class="arrow"></span>
@@ -93,12 +99,7 @@
                     @endif
                 </li>
                 <li class="menu-dropdown mega-menu-dropdown  ">
-                    <a href="
-                        @if(Auth::user()->church_id)
-                            {{ route('event.index') }}
-                        @else
-                            javascript:;
-                        @endif "> Agendas e Eventos
+                    <a href="{{ route('event.index') }}"> Agendas e Eventos
                     </a>
                 </li>
                 <!--<li class="menu-dropdown classic-menu-dropdown ">

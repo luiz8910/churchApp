@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\DB;
 
 trait UserLoginRepository
 {
-    public function createUserLogin($id = null, $password = null, $email = null, $church = null)
+    public function createUserLogin($id = null, $password, $email = null, $church = null)
     {
         if($id)
         {
@@ -35,6 +35,7 @@ trait UserLoginRepository
                 [
                     'church_id' => $church,
                     'email' => $email,
+                    'password' => bcrypt($password),
                     'created_at' => date('Y-m-d H:i:s'),
                     'updated_at' => date('Y-m-d H:i:s'),
                 ]

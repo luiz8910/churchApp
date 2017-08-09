@@ -711,7 +711,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                             <span class="caption-subject font-red sbold uppercase">Meus Grupos</span>
                                         </div>
                                         <div class="actions">
-                                            @if(Auth::getUser()->person->role_id == 1)
+                                            @if(Auth::getUser()->person->role_id == $leader)
                                                 <div class="btn-group btn-group-devided">
                                                     <a role="button" class="btn btn-info btn-circle" href="{{ route('group.create') }}" style="margin-top: 2px;">
                                                         <i class="fa fa-plus"></i>
@@ -829,7 +829,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                             <span class="caption-subject font-red sbold uppercase">Meus Eventos (inscrições)</span>
                                         </div>
                                         <div class="actions">
-                                            @if(Auth::getUser()->person->role_id == 1)
+                                            @if(Auth::getUser()->person->role_id == $leader)
                                                 <div class="btn-group btn-group-devided">
                                                     <a role="button" class="btn btn-info btn-circle" href="{{ route('event.create') }}" style="margin-top: 2px;">
                                                         <i class="fa fa-plus"></i>

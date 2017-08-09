@@ -51,4 +51,28 @@ $(function () {
 
     });
 
+    $("#church").change(function () {
+        var data = this.value;
+
+        setCookie(data);
+    });
+
+    function setCookie(data)
+    {
+        window.localStorage.setItem('church-cookie', data);
+    }
+
+    function getCookie()
+    {
+        var cookie = window.localStorage.getItem('church-cookie');
+
+        if(cookie)
+        {
+            $("#church").val(cookie).trigger('change');
+        }
+    }
+
+    getCookie();
+
 });
+

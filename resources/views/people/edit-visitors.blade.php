@@ -80,6 +80,14 @@ License: You must have a valid license purchased only from themeforest(the above
                         {{ Session::get('email.exists') }}
                     </div>
                 @endif
+
+                @if(Session::has("error.required-fields"))
+                    <div class="alert alert-danger alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <strong>Erro!</strong> {{ Session::get("error.required-fields") }}
+                    </div>
+                @endif
+
                 <div class="page-content-inner">
                     <div class="row">
                         <div class="col-md-12">
@@ -189,7 +197,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                         <!-- PERSONAL INFO TAB -->
 
                                         <input type="hidden" value="{{ $model->id }}" id="personId">
-                                        <input type="hidden" id="streetMap" value="{{ $model->street }}">
+                                        <input type="hidden" id="streetMap" value="{{ $model->street }}, {{ $model->number }}">
 
                                         <div class="tab-pane active" id="tab_1_1">
                                             {!! Form::open(['route' => ['visitors.update', 'visitor' => $model->id],
@@ -396,7 +404,6 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                             @include('includes.address-edit')
 
-                                            @include('includes.password')
 
 
                                                 <div class="margiv-top-10">

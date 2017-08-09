@@ -64,7 +64,7 @@ trait PeopleTrait
                 }
             }
 
-            $data['church_id'] = Auth::user()->church_id;
+            $data['church_id'] = Auth::getUser()->church_id;
 
             $data['role_id'] = $role_id;
 
@@ -159,7 +159,7 @@ trait PeopleTrait
                     ->where('cpf', $cpf)
                     ->first();
 
-        $church_id = Auth::getUser()->church_id;
+        $church_id = $this->getUserChurch();
 
         if (count($person) > 0)
         {

@@ -96,6 +96,7 @@ class PersonController extends Controller
             ->where([
                 'tag' => 'adult',
                 'deleted_at' => null,
+                'church_id' => $this->getUserChurch()
             ])->paginate(5);
 
 
@@ -105,9 +106,13 @@ class PersonController extends Controller
         }
 
         $countPerson[] = $this->countPerson();
+
         $countGroups[] = $this->countGroups();
+
         $notify = $this->notify();
+
         $qtde = count($notify);
+
         $leader = $this->getLeaderRoleId();
 
         return view('people.index', compact('adults', 'countPerson', 'countGroups', 'notify', 'qtde', 'leader'));
@@ -119,6 +124,7 @@ class PersonController extends Controller
             ->where([
                 ['tag', '<>', 'adult'],
                 'deleted_at' => null,
+                'church_id' => $this->getUserChurch()
             ])->paginate(5);
 
         foreach ($teen as $item) {
@@ -187,12 +193,12 @@ class PersonController extends Controller
 
         $fields = $this->fieldsRepository->findWhere([
             'model' => 'person',
-            'church_id' => \Auth::user()->church_id
+            'church_id' => $this->getUserChurch()
         ]);
 
         //dd($fields);
 
-        $church_id = Auth::user()->church_id;
+        $church_id = $this->getUserChurch();
 
         $adults = $this->repository->findWhere(
             [
@@ -245,7 +251,7 @@ class PersonController extends Controller
 
         $leader = $this->getLeaderRoleId();
 
-        $church_id = Auth::getUser()->church_id;
+        $church_id = $this->getUserChurch();
 
         $notify = $this->notify();
 
@@ -292,7 +298,7 @@ class PersonController extends Controller
     {
         $fields = $this->fieldsRepository->findWhere([
             'model' => 'person',
-            'church_id' => \Auth::user()->church_id
+            'church_id' => $this->getUserChurch()
         ]);
 
         $file = $request->file('img');
@@ -392,7 +398,7 @@ class PersonController extends Controller
             $data["role_id"] = $member;
         }
 
-        $data["church_id"] = Auth::getUser()->church_id;
+        $data["church_id"] = $this->getUserChurch();
 
         $id = $this->repository->create($data)->id;
 
@@ -408,7 +414,7 @@ class PersonController extends Controller
             $this->updateMaritalStatus($data['partner'], $id, 'people');
         }
 
-        $church_id = $request->user()->church_id;
+        $church_id = $this->getUserChurch();
 
         if ($this->repository->isAdult($data['dateBirth'])) {
             $this->createUserLogin($id, $password, $email, $church_id);
@@ -497,12 +503,12 @@ class PersonController extends Controller
 
         $fields = $this->fieldsRepository->findWhere([
             'model' => 'person',
-            'church_id' => \Auth::user()->church_id
+            'church_id' => $this->getUserChurch()
         ]);
 
         $gender = $model->gender == 'M' ? 'F' : 'M';
 
-        $church_id = Auth::getUser()->church_id;
+        $church_id = $this->getUserChurch();
 
         $adults = $this->repository->findWhere(
             [
@@ -607,7 +613,7 @@ class PersonController extends Controller
 
         $countGroups[] = $this->countGroups();
 
-        $church_id = Auth::getUser()->church_id;
+        $church_id = $this->getUserChurch();
 
         $notify = $this->notify();
 
@@ -658,16 +664,47 @@ class PersonController extends Controller
 
         $teen = $request->get('teen') or null;
 
+        $fields = $this->fieldsRepository->findWhere([
+            'model' => 'person',
+            'church_id' => $this->getUserChurch()
+        ]);
+
         //Formatação correta do email
         $email = $email["email"];
 
-        $verifyFields = $this->verifyRequiredFields($data, 'person');
-
-        if($verifyFields)
+        if(!$teen)
         {
-            \Session::flash("error.required-fields", "Preencha o campo " . $verifyFields);
-            return redirect()->route("person.edit", ['person' => $id])->withInput();
+            foreach ($fields as $field) {
+                if($field->value == "email"){
+                    if($field->required == 1 && $email == ""){
+                        \Session::flash("email.exists", "Insira seu email");
+                        return redirect()->route("person.edit", ['person' => $id])->withInput();
+                    }
+                }
+            }
         }
+
+        if($teen)
+        {
+            $verifyFields = $this->verifyRequiredFields($data, 'teen');
+
+            if($verifyFields)
+            {
+                \Session::flash("error.required-fields", "Preencha o campo " . $verifyFields);
+                return redirect()->route("teen.edit", ['person' => $id])->withInput();
+            }
+
+        }else{
+            $verifyFields = $this->verifyRequiredFields($data, 'person');
+
+            if($verifyFields)
+            {
+                \Session::flash("error.required-fields", "Preencha o campo " . $verifyFields);
+                return redirect()->route("person.edit", ['person' => $id])->withInput();
+            }
+        }
+
+
 
         //Formatação correta da data
         $data['dateBirth'] = $this->formatDateBD($data['dateBirth']);
@@ -871,7 +908,7 @@ class PersonController extends Controller
     {
         $people = "";
 
-        $church_id = Auth::getUser()->church_id;
+        $church_id = $this->getUserChurch();
 
         if ($tag == "person") {
             $people = $this->repository->findWhere([

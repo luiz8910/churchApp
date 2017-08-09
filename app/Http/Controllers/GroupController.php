@@ -113,7 +113,10 @@ class GroupController extends Controller
 
         $leader = $this->getLeaderRoleId();
 
-        return view('groups.index', compact('groups', 'countPerson', 'countMembers', 'countGroups', 'notify', 'qtde', 'leader'));
+        $role = $this->getUserRole();
+
+        return view('groups.index', compact('groups', 'countPerson', 'countMembers',
+            'countGroups', 'notify', 'qtde', 'leader', 'role'));
     }
 
     /**
@@ -139,7 +142,7 @@ class GroupController extends Controller
 
         $fields = $this->fieldsRepository->findWhere([
             'model' => 'group',
-            'church_id' => \Auth::user()->church_id
+            'church_id' => $this->getUserChurch()
         ]);
 
         return view('groups.create', compact('countPerson', 'countGroups', 'state', 'roles',
@@ -170,7 +173,7 @@ class GroupController extends Controller
 
         $data['owner_id'] = Auth::user()->id;
 
-        $data['church_id'] = Auth::user()->church_id;
+        $data['church_id'] = $this->getUserChurch();
 
         $id = $this->repository->create($data)->id;
 
@@ -178,7 +181,7 @@ class GroupController extends Controller
 
         $this->addRemoveLoggedMember($id);
 
-        $this->groupServices->newRecentGroup($id, \Auth::user()->church_id);
+        $this->groupServices->newRecentGroup($id, $this->getUserChurch());
 
         return redirect()->route('group.edit', ['id' => $id]);
     }
@@ -248,7 +251,7 @@ class GroupController extends Controller
 
         $fields = $this->fieldsRepository->findWhere([
             'model' => 'group',
-            'church_id' => \Auth::user()->church_id
+            'church_id' => $church_id
         ]);
 
         //Endereço do grupo formatado para api do google maps
@@ -316,7 +319,7 @@ class GroupController extends Controller
         return view('groups.edit', compact('model', 'countPerson', 'countGroups',
             'events', 'address', 'location', 'people', 'roles', 'state', 'members',
             'event_user', 'notify', 'qtde', 'pag', 'owner_name', 'owner_person_id',
-            'qtdeMembers', 'imgProfile', 'leader', 'sub', 'leader', 'fields'));
+            'qtdeMembers', 'imgProfile', 'leader', 'sub', 'leader', 'fields', 'church_id'));
     }
 
 
@@ -342,8 +345,6 @@ class GroupController extends Controller
             return redirect()->route("group.edit", ['group' => $id])->withInput();
         }
 
-        print_r($data);
-        dd($verifyFields);
 
         $data['sinceOf'] = $this->formatDateBD($data['sinceOf']);
 
@@ -452,7 +453,7 @@ class GroupController extends Controller
 
         $email = $email["email"];
 
-        $church = $request->user()->church_id;
+        $church = $this->getUserChurch();
 
         $this->updateTag($this->tag($data['dateBirth']), $user->id, 'people');
 

@@ -6,12 +6,13 @@ use App\Models\User;
 use App\Repositories\PersonRepository;
 use App\Repositories\UserRepository;
 use App\Repositories\VisitorRepository;
+use App\Traits\ConfigTrait;
 use App\Traits\PeopleTrait;
 use Carbon\Carbon;
 
 class VisitorServices{
 
-    use PeopleTrait;
+    use PeopleTrait, ConfigTrait;
 
     /**
      * @var PersonRepository
@@ -56,7 +57,7 @@ class VisitorServices{
         unset($data["password"]);
 
         $data["imgProfile"] = $visitor->imgProfile;
-        $data["church_id"] = \Auth::user()->church_id;
+        $data["church_id"] = $this->getUserChurch();
 
         //dd($visitor);
 

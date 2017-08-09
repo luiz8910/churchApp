@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
+use App\Repositories\RoleRepository;
 use App\Repositories\UserRepository;
 use App\Repositories\VisitorRepository;
 use App\Traits\DateRepository;
@@ -40,16 +41,27 @@ class RegisterController extends Controller
      * @var VisitorRepository
      */
     private $visitorRepository;
+    /**
+     * @var UserRepository
+     */
+    private $userRepository;
+    /**
+     * @var RoleRepository
+     */
+    private $roleRepository;
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(VisitorRepository $visitorRepository)
+    public function __construct(VisitorRepository $visitorRepository, UserRepository $userRepository,
+                                RoleRepository $roleRepository)
     {
         $this->middleware('guest');
         $this->visitorRepository = $visitorRepository;
+        $this->userRepository = $userRepository;
+        $this->roleRepository = $roleRepository;
     }
 
     /**
@@ -111,7 +123,7 @@ class RegisterController extends Controller
     /**
      * Obtain the user information from Facebook.
      *
-     * @return Response
+     * @return boolean
      */
     public function handleProviderCallback()
     {
@@ -119,9 +131,36 @@ class RegisterController extends Controller
 
         $social = Socialite::driver('facebook')->user();
 
-        $userType = "visitor";
+        $userType = "Visitante";
 
-        if($userType == "visitor")
+        $user = $this->userRepository->findByField('facebook_id', $social->id)->first();
+
+        if(count($user) > 0)
+        {
+            if ($user->church_id == $church)
+            {
+                $userType = $this->roleRepository->find($user->person->role_id)->name;
+            }
+        }
+        else{
+            $user = $this->userRepository->findByField('email', $social->email)->first();
+
+            if(count($user) == 0)
+            {
+                \Session::flash('email.error', 'O email informado não existe');
+                return redirect()->route('login');
+            }
+
+
+            DB::table('users')
+                ->where('id', $user->id)
+                ->update(['facebook_id' => $social->getId()]);
+
+            $userType = $this->roleRepository->find($user->person->role_id)->name;
+        }
+
+
+        if($userType == "Visitante")
         {
             $visitor = $this->visitorRepository->findByField('email', $social->getEmail())->first();
 
@@ -141,15 +180,19 @@ class RegisterController extends Controller
 
                 auth()->loginUsingId($id);
 
-                return redirect()->route('home.visitor', ['church' => $church]);
+                return redirect()->route('event.index');
             }
             else{
                 \Session::flash('email.error', 'O email informado não existe');
                 return redirect()->route('login');
             }
         }
+        else{
 
-        return false;
+            auth()->loginUsingId($user->id);
+
+            return redirect()->route('index');
+        }
     }
 
     /**
@@ -222,7 +265,33 @@ class RegisterController extends Controller
 
         $userType = "visitor";
 
-        if($userType == "visitor")
+        $user = $this->userRepository->findByField('google_id', $social->id)->first();
+
+        if(count($user) > 0)
+        {
+            if ($user->church_id == $church)
+            {
+                $userType = $this->roleRepository->find($user->person->role_id)->name;
+            }
+        }
+        else{
+            $user = $this->userRepository->findByField('email', $social->email)->first();
+
+            if(count($user) == 0)
+            {
+                \Session::flash('email.error', 'O email informado não existe');
+                return redirect()->route('login');
+            }
+
+
+            DB::table('users')
+                ->where('id', $user->id)
+                ->update(['google_id' => $social->getId()]);
+
+            $userType = $this->roleRepository->find($user->person->role_id)->name;
+        }
+
+        if($userType == "Visitante")
         {
             $visitor = $this->visitorRepository->findByField('email', $social->getEmail())->first();
 
@@ -242,15 +311,19 @@ class RegisterController extends Controller
 
                 auth()->loginUsingId($id);
 
-                return redirect()->route('home.visitor', ['church' => $church]);
+                return redirect()->route('event.index');
             }
             else{
                 \Session::flash('email.error', 'O email informado não existe');
                 return redirect()->route('login');
             }
         }
+        else{
 
-        return false;
+            auth()->loginUsingId($user->id);
+
+            return redirect()->route('index');
+        }
     }
 
     public function loginVisitor(Request $request, VisitorRepository $visitorRepository)

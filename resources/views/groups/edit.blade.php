@@ -843,7 +843,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
                     <input type="hidden" id="streetMap" value="{{ $model->street }}, {{ $model->number }}">
 
-                    @if(Auth::user()->church_id && Auth::user()->person->role_id == $leader)
+                    @if(Auth::user()->church_id == $church_id && Auth::user()->person->role_id == $leader)
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="portlet light ">

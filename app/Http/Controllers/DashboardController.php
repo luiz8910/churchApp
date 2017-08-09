@@ -93,7 +93,7 @@ class DashboardController extends Controller
 
         //Fim Variáveis
 
-        $church_id = Auth::user()->church_id;
+        $church_id = $this->getUserChurch();
 
         $events = Event::where('church_id', $church_id)->paginate(5);
 
@@ -141,7 +141,7 @@ class DashboardController extends Controller
         if (count($events) == 0)
         {
             return view('dashboard.index', compact('countPerson', 'countGroups', 'events', 'notify', 'qtde',
-                'countMembers', 'street', 'groups', 'event_person', 'nextEvent', 'leader'));
+                'countMembers', 'street', 'groups', 'event_person', 'nextEvent', 'leader', 'church_id'));
         }
 
         $eventDate = [];
@@ -364,7 +364,7 @@ class DashboardController extends Controller
             'allMonths', 'allDays', 'days', 'allEvents',
             'thisMonth', 'today', 'ano', 'allEventsNames', 'allEventsTimes',
             'allEventsFrequencies', 'allEventsAddresses', 'numWeek',
-            'people', 'groups_recent', 'events_recent', 'qtde_users', 'qtde_groups', 'qtde_events', 'leader'));
+            'people', 'groups_recent', 'events_recent', 'qtde_users', 'qtde_groups', 'qtde_events', 'leader', 'church_id'));
     }
 
     public function oldindex()

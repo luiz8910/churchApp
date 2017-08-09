@@ -949,7 +949,7 @@ class EventServices
             $data["event_id"] = $event_id;
             $data["person_id"] = $person_id;
             $data["sub_by"] = Auth::user()->person_id;
-            $data["church_id"] = Auth::user()->church_id;
+            $data["church_id"] = $this->getUserChurch();
 
             $this->listRepository->create($data);
 
@@ -968,7 +968,7 @@ class EventServices
     {
         return $this->listRepository->findWhere([
             'event_id' => $id,
-            'church_id' => Auth::user()->church_id
+            'church_id' => $this->getUserChurch()
         ]);
     }
 

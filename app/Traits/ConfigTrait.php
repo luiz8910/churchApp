@@ -18,32 +18,13 @@ use Auth;
 
 trait ConfigTrait
 {
-    /**
-     * @var RoleRepository
-     */
-    private $roleRepositoryTrait;
-    /**
-     * @var FrequencyRepository
-     */
-    private $frequencyRepositoryTrait;
 
-    /**
-     * ConfigTrait constructor.
-     * @param RoleRepository $roleRepositoryTrait
-     * @param FrequencyRepository $frequencyRepositoryTrait
-     * @internal param RoleRepository $roleRepository
-     */
-    public function __construct(RoleRepository $roleRepositoryTrait, FrequencyRepository $frequencyRepositoryTrait)
-    {
-        $this->roleRepositoryTrait = $roleRepositoryTrait;
-        $this->frequencyRepositoryTrait = $frequencyRepositoryTrait;
-    }
 
     public function verifyRequiredFields($data, $model)
     {
         $fields = RequiredFields::where([
             'model' => $model,
-            'church_id' => \Auth::user()->church_id
+            'church_id' => $this->getUserChurch()
         ])->get();
 
         $array = array_keys($data);
@@ -88,12 +69,17 @@ trait ConfigTrait
 
     public function getUserChurch()
     {
-        return Auth::user()->church_id;
+        return session('church');
     }
 
     public function getLeaderRoleId()
     {
         return Role::where('name', 'Lider')->first()->id;
+    }
+
+    public function getUserRole()
+    {
+        return session('role');
     }
 
     public function daily()

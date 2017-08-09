@@ -18,12 +18,15 @@ use App\Traits\ConfigTrait;
 use App\Traits\CountRepository;
 use App\Traits\DateRepository;
 use App\Repositories\EventRepository;
+use App\Traits\EmailTrait;
 use App\Traits\FormatGoogleMaps;
 use App\Repositories\GroupRepository;
 use App\Traits\NotifyRepository;
 use App\Repositories\PersonRepository;
 use App\Repositories\StateRepository;
 use App\Repositories\UserRepository;
+use App\Traits\PeopleTrait;
+use App\Traits\UserLoginRepository;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -115,7 +118,7 @@ class EventController extends Controller
 
         //Fim Variáveis
 
-        $church_id = \Auth::user()->church_id;
+        $church_id = $this->getUserChurch();
         /*
          * Lista de Eventos
          */
@@ -213,7 +216,7 @@ class EventController extends Controller
             $allEventsFrequencies[] = $e->frequency;
 
             //Todos os endereços
-            $allEventsAddresses[] = $e->street . ", " . $e->neighborhood . "\n" . $e->city . ", " . $e->state;
+            $allEventsAddresses[] = $e->street . ", " . $e->number . " - " . $e->neighborhood . "\n" . $e->city . ", " . $e->state;
         }
 
 
@@ -223,8 +226,9 @@ class EventController extends Controller
         //Ano Atual
         $ano = date("Y");
 
+        //dd($events[0]->church_id);
 
-        $church_id = null;
+        $role = $this->getUserRole();
 
         /*
          * Fim Agenda
@@ -233,7 +237,7 @@ class EventController extends Controller
         return view("events.index", compact('countPerson', 'countGroups', 'state',
             'events', 'notify', 'qtde', 'allMonths', 'allDays', 'days', 'allEvents',
             'thisMonth', 'today', 'ano', 'allEventsNames', 'allEventsTimes',
-            'allEventsFrequencies', 'allEventsAddresses', 'numWeek', 'church_id', 'leader'));
+            'allEventsFrequencies', 'allEventsAddresses', 'numWeek', 'church_id', 'leader', 'role'));
     }
 
 
@@ -249,7 +253,7 @@ class EventController extends Controller
 
         //Fim Variáveis
 
-        $church_id = $church_id ? $church_id : \Auth::user()->church_id;
+        $church_id = $church_id ? $church_id : $this->getUserChurch();
 
         /*
          * Lista de Eventos
@@ -553,7 +557,7 @@ class EventController extends Controller
 
         $qtde = count($notify);
 
-        $groups = $this->groupRepository->findByField('church_id', \Auth::user()->church_id);
+        $groups = $this->groupRepository->findByField('church_id', $this->getUserChurch());
 
         if($id)
         {
@@ -669,7 +673,7 @@ class EventController extends Controller
 
         $this->setChurch_id($event);
 
-        $this->eventServices->newRecentEvents($event->id, \Auth::user()->church_id);
+        $this->eventServices->newRecentEvents($event->id, $this->getUserChurch());
 
         return redirect()->route('event.index');
     }
@@ -678,7 +682,7 @@ class EventController extends Controller
     {
         Event::where(['id' => $event->id])
             ->update(
-                ['church_id' => \Auth::user()->church_id]
+                ['church_id' => $this->getUserChurch()]
             );
     }
 
@@ -735,12 +739,12 @@ class EventController extends Controller
 
         $leader = $this->getLeaderRoleId();
 
-        if(\Auth::user()->church_id == null)
+        if($this->getUserChurch() == null)
         {
             $church_id = 1;
         }
         else{
-            $church_id = \Auth::user()->church_id;
+            $church_id = $this->getUserChurch();
         }
 
         $model = $this->repository->find($id);
@@ -1318,7 +1322,7 @@ class EventController extends Controller
         $people = DB::table('people')
             ->where(
                 [
-                    'church_id' => \Auth::user()->church_id,
+                    'church_id' => $this->getUserChurch(),
                     'deleted_at' => null
                 ])
             ->whereNotIn('id', $arr)

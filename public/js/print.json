@@ -3,11 +3,11 @@
                 {
                   "table": {
                     "headerRows": 1,
-                    "widths": [ "*", "auto", 100, "*" ],
+                    "widths": [ "*", "auto", 100 ],
             
                     "body":[
-                      ["Nome", "Frequência", "Criado Por", "Grupo"],
-                      ["Maratona de Netflix","Diário","Luiz","Encontro da Zueira"],["Aprender Dollynes","Semanal","Luiz","Grupo de Jovens"],["Encontro de Domingo","Semanal","Luiz","Sem Grupo"],["Debate sobre Teologia","Mensal","Luiz","Grupo dos Comunistas"],["Encontro de Jovens","Mensal","Luiz","Grupo de Jovens"],["Limpeza","Diário","Luiz","Sem Grupo"],["Manutenção Preventiva de TI","Diário","Luiz","Manutenção de TI"]
+                      ["Nome", "Início", "Quantidade"],
+                      ["Encontro da Zueira","30/05/2017","5"],["Grupo dos Comunistas","29/06/2017","3"],["Manutenção de TI","07/07/2017","2"],["Teste Grupo","07/07/2017","1"],["Grupo Teste Check-in","03/08/2017","8"],["Grupo Teste 2","08/08/2017","1"]
                     ]
                   }
                 }

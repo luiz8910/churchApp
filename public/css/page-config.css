@@ -1,0 +1,13 @@
+.box-check{
+	padding: 20px;
+
+}
+
+.label-box-check{
+	text-align: left;
+	padding:10px 0px 10px 0px !important; 
+}
+
+.ajuste-box-config {
+	display: flow-root;
+}

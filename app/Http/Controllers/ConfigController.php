@@ -49,7 +49,7 @@ class ConfigController extends Controller
 
         $qtde = count($notify) or 0;
 
-        $church_id = \Auth::user()->church_id;
+        $church_id = $this->getUserChurch();
 
         $class = [];
 
@@ -92,7 +92,7 @@ class ConfigController extends Controller
 
         $data["model"] = $model;
 
-        $data["church_id"] = \Auth::user()->church_id;
+        $data["church_id"] = $this->getUserChurch();
 
         $this->fieldsRepository->create($data);
 
@@ -109,7 +109,7 @@ class ConfigController extends Controller
     {
         $data = $request->all();
 
-        $church_id = \Auth::user()->church_id;
+        $church_id = $this->getUserChurch();
 
         unset($data["_token"]);
 
@@ -119,7 +119,6 @@ class ConfigController extends Controller
         ]);
 
         $array = array_keys($data);
-
 
         $i = 0;
         $x = 0;
@@ -185,7 +184,7 @@ class ConfigController extends Controller
     {
         $data = $request->all();
 
-        $data["church_id"] = \Auth::user()->church_id;
+        $data["church_id"] = $this->getUserChurch();
 
         $this->modelsRepository->create($data);
 
@@ -213,7 +212,7 @@ class ConfigController extends Controller
     public function getChurchZipCode()
     {
         $address = \DB::table('churches')
-            ->where('id', \Auth::user()->church_id)
+            ->where('id', $this->getUserChurch())
             ->first();
 
         return json_encode($address);

@@ -182,7 +182,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             </a>
                                                         </li>
                                                     @endif
-                                                    @if(Auth::user()->church_id && Auth::user()->person->role_id == $leader)
+                                                    @if(Auth::user()->church_id == $church_id && Auth::user()->person->role_id == $leader)
                                                         <li class="divider"> </li>
                                                         <li>
                                                             <a href="{{ route('event.subscriptions', ['event' => $model->id]) }}">
@@ -238,7 +238,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                             <p>
                                                 <i class="fa fa-user font-purple"></i> Criado Por:
 
-                                                @if(Auth::user()->church_id && Auth::user()->person_id == $createdBy_id)
+                                                @if(Auth::user()->church_id == $church_id && Auth::user()->person_id == $createdBy_id)
                                                     <label>
                                                         {{ $createdBy->name }} {{ $createdBy->lastName }}
                                                         <img src="../../{{ $createdBy->imgProfile }}" class="img-circle hidden-xs hidden-sm"
@@ -406,7 +406,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 @foreach($eventPeople as $item)
                                                     <tr>
                                                         <td>
-                                                            @if(Auth::user()->church_id && Auth::getUser()->person->role_id == 1)
+                                                            @if(Auth::user()->church_id == $church_id && Auth::getUser()->person->role_id == $leader)
                                                                 <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
                                                                     <input type="checkbox" name="events" class="checkboxes check-model" id="check-1"
                                                                            value="1" />
@@ -478,7 +478,7 @@ License: You must have a valid license purchased only from themeforest(the above
                     @endif
 
 
-                    @if(Auth::user()->church_id && Auth::getUser()->person->role_id == $leader)
+                    @if(Auth::user()->church_id == $church_id && Auth::getUser()->person->role_id == $leader)
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="portlet light ">
