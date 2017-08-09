@@ -19,7 +19,7 @@ trait AuthenticatesUsers
      */
     public function showLoginForm()
     {
-        $churches = DB::table('churches')->get();
+        $churches = DB::table('churches')->get();dd($churches);
 
         return view('auth.login', compact('churches'));
     }
