@@ -126,18 +126,38 @@ License: You must have a valid license purchased only from themeforest(the above
                                     <div class="profile-usermenu">
                                         <ul class="nav">
                                             <li class="active">
-                                                <a href="">
+                                                <a href="javascript:;">
                                                     <i class="icon-home"></i> Visão Geral </a>
                                             </li>
-                                            {{--<li>
-                                                <a href="">
-                                                    <i class="icon-info"></i> Ajuda </a>
-                                            </li>--}}
+                                            @if($role == "Lider")
+                                                <li>
+                                                    <a href="javascript:;" onclick="sendPasswordUser()">
+                                                        <i class="fa fa-unlock-alt"></i>
+
+                                                        Reenviar Senha
+                                                    </a>
+
+                                                    <div class="text-center" id="msg-spin">
+                                                        <i class="fa fa-refresh fa-spin fa-4x fa-fw" id="loading-spin"></i>
+                                                        <span class="sr-only">Loading...</span>
+                                                        <p>Enviando Senha...</p>
+                                                    </div>
+
+
+
+                                                </li>
+                                            @endif
                                         </ul>
                                     </div>
                                     <!-- END MENU -->
                                 </div>
                                 <!-- END PORTLET MAIN -->
+
+                                <input type="hidden" id="notific8-title">
+                                <input type="hidden" id="notific8-text">
+                                <input type="hidden" id="notific8-type">
+
+                                <a href="javascript:;" class="btn btn-danger" id="notific8" style="display: none;"></a>
 
                             </div>
                             <!-- END BEGIN PROFILE SIDEBAR -->

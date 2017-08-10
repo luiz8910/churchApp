@@ -296,6 +296,8 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                                     <?php $i++; ?>
 
+                                                    <div class="clear-fix"></div>
+
                                                     <br>
                                                     <button class="btn btn-circle btn-success" type="submit">
                                                         <i class="fa fa-check font-white"></i>

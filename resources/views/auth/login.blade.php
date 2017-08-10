@@ -22,19 +22,25 @@ License: You must have a valid license purchased only from themeforest(the above
 <link href="../assets/global/plugins/select2/css/select2-bootstrap.min.css" rel="stylesheet" type="text/css" />
 <!-- END PAGE LEVEL PLUGINS -->
 <!-- BEGIN PAGE LEVEL STYLES -->
-<link href="../login.css" rel="stylesheet" type="text/css" />
+{{--<link href="../css/login.css" rel="stylesheet" type="text/css" />--}}
 <link href="../css/login-modelo-2.css" rel="stylesheet" type="text/css" />
 <!-- END PAGE LEVEL STYLES -->
 
 <body class=" login">
 <!-- BEGIN LOGO -->
-<div class="logo">
+<div class="logo visible-md visible-lg">
     <a href="javascript:;">
         <img src="../logo/logo-menor-header-branco.png" alt="" />
-        {{--<img src="../teste/Simbolo-branco.png" alt="logo" class="logo-default" style="width: 150px; margin-top: -20px;">--}}
-        {{--<img src="../logo/Vertical.png" alt="logo" class="logo-default" style="width: 300px; margin-top: -20px;">--}}
     </a>
 </div>
+
+<div class="logo-mobile visible-xs visible-sm">
+    <a href="javascript:;">
+        <img src="../logo/logo-menor-header-branco.png" alt="" />
+    </a>
+</div>
+
+
 <!-- END LOGO -->
 <!-- BEGIN LOGIN -->
 <div class="content">
@@ -42,7 +48,7 @@ License: You must have a valid license purchased only from themeforest(the above
     <form class="login-form" role="form" method="POST" action="{{ url('/login') }}">
         {{ csrf_field() }}
         <h3 class="form-title font-green">Acesso ao Sistema</h3>
-        <p class="text-center"> Selecione a igreja para ter acesso </p>
+        {{--<p class="text-center"> Selecione a igreja para ter acesso </p>--}}
 
         <div class="alert alert-warning alert-dismissible" role="alert" id="selectChurch" style="display: none;">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -101,21 +107,31 @@ License: You must have a valid license purchased only from themeforest(the above
 
         <div class="form-actions">
             <button type="submit" class="btn blue uppercase">Entrar</button>
-            <label class="rememberme check mt-checkbox mt-checkbox-outline hidden-md hidden-lg">
-                <input type="checkbox" class="hidden-md hidden-lg" name="remember" value="1" />Lembrar-me
+
+            <label class="rememberme check mt-checkbox mt-checkbox-outline">
+                <input type="checkbox" name="remember" value="1" />Lembrar-me
                 <span></span>
             </label>
-            <label class="rememberme check mt-checkbox mt-checkbox-outline hidden-xs hidden-sm">
-                <input type="checkbox" class="hidden-md hidden-lg" name="remember" value="1" />Mantenha-me Conectado
-                <span></span>
-            </label>
+
             <a href="{{ route("forgot.password") }}" id="forget-password" class="forget-password">Esqueceu sua senha?</a>
 
         </div>
 
-        <div class="login-options">
-            <h4>Login Social: </h4>
-            <ul class="social-icons pull-right">
+        <div class="login-options visible-md visible-lg">
+            <h4>Login social</h4>
+            <ul class="social-icons">
+                <li>
+                    <a class="social-icon-color facebook" data-original-title="facebook" href="{{ url('pre/auth/facebook') }}"></a>
+                </li>
+                <li>
+                    <a class="social-icon-color googleplus" data-original-title="Google Plus" href="{{ url('pre/auth/google') }}"></a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="login-options-mobile visible-xs visible-sm">
+            <h4>Login social</h4>
+            <ul class="social-icons">
                 <li>
                     <a class="social-icon-color facebook" data-original-title="facebook" href="{{ url('pre/auth/facebook') }}"></a>
                 </li>

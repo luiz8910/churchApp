@@ -427,7 +427,7 @@
                                                                         </td>
                                                                     @else
                                                                         <td>
-                                                                            <a href="{{ $url }}passResetView/{{ $user->email }}"
+                                                                            <a href="{{ $url }}/passResetView/{{ $user->email }}"
                                                                                class="button button--green" target="_blank">Recuperar sua Senha</a>
                                                                         </td>
                                                                     @endif
@@ -447,7 +447,7 @@
                                         <tr>
                                             <td>
                                                 <p class="sub">Se você está tendo problemas com o botão acima, copie e cole o link abaixo no seu navegador</p>
-                                                <p class="sub">{{ $url }}passResetView/{{ $user->email }}</p>
+                                                <p class="sub">{{ $url }}/passResetView/{{ $user->email }}</p>
                                             </td>
                                         </tr>
                                     </table>

@@ -4,13 +4,22 @@ Login page
 ***/
 /* bg color */
 .login {
-  background-color: #364150 !important; }
+  background-color: #364150 !important;
+  overflow: hidden !important;
+}
 
 .login .logo {
   margin: 0 auto;
-  margin-top: 60px;
+  margin-top: 10px !important;
   padding: 15px;
   text-align: center; }
+
+.login .logo-mobile {
+  margin: 0 auto;
+  margin-top: 10px;
+  padding: 15px;
+  text-align: center;
+}
 
 .login .content {
   background-color: white;
@@ -86,8 +95,8 @@ Login page
     margin-top: -2px; }
 
 .login-options {
-  margin-top: 30px;
-  margin-bottom: 30px;
+  margin-top: 15px;
+  margin-bottom: 15px;
   overflow: hidden; }
 
 .login-options h4 {
@@ -101,6 +110,26 @@ Login page
   padding-top: 3px; }
 
 .login-options .social-icons li a {
+  border-radius: 15px 15px 15px 15px !important;
+  -moz-border-radius: 15px 15px 15px 15px !important;
+  -webkit-border-radius: 15px 15px 15px 15px !important; }
+
+.login-options-mobile {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  overflow: hidden; }
+
+.login-options-mobile h4 {
+  float: left;
+  font-weight: 600;
+  font-size: 15px;
+  color: #7d91aa !important; }
+
+.login-options-mobile .social-icons {
+  float: right;
+  padding-top: 3px; }
+
+.login-options-mobile .social-icons li a {
   border-radius: 15px 15px 15px 15px !important;
   -moz-border-radius: 15px 15px 15px 15px !important;
   -webkit-border-radius: 15px 15px 15px 15px !important; }
@@ -174,7 +203,7 @@ Login page
 /* footer copyright */
 .login .copyright {
   text-align: center;
-  margin: 0 auto 30px 0;
+  margin: 0 auto 0 0;
   padding: 10px;
   color: #7a8ca5;
   font-size: 13px; }

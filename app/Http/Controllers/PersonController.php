@@ -592,8 +592,11 @@ class PersonController extends Controller
             }
         }
 
+        $role = $this->getUserRole();
+
         return view('people.edit', compact('model', 'state', 'location', 'roles', 'countPerson',
-            'countGroups', 'adults', 'notify', 'qtde', 'fathers', 'mothers', 'children', 'leader', 'fields', 'events'));
+            'countGroups', 'adults', 'notify', 'qtde', 'fathers', 'mothers', 'children',
+            'leader', 'fields', 'events', 'role'));
     }
 
 

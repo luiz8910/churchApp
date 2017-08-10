@@ -152,9 +152,14 @@ class RegisterController extends Controller
             }
 
 
+
             DB::table('users')
                 ->where('id', $user->id)
                 ->update(['facebook_id' => $social->getId()]);
+
+            DB::table('people')
+                ->where("id", $user->person->id)
+                ->update(['imgProfile' => $social->getAvatar()]);
 
             $userType = $this->roleRepository->find($user->person->role_id)->name;
         }
@@ -287,6 +292,10 @@ class RegisterController extends Controller
             DB::table('users')
                 ->where('id', $user->id)
                 ->update(['google_id' => $social->getId()]);
+
+            DB::table('people')
+                ->where("id", $user->person->id)
+                ->update(['imgProfile' => $social->getAvatar()]);
 
             $userType = $this->roleRepository->find($user->person->role_id)->name;
         }

@@ -328,6 +328,9 @@ class UsersController extends Controller
 
     }
 
+    /*
+     * Senha reenviada no form de esqueci minha senha
+     */
     public function sendPassword($email)
     {
         $user = User::where("email", $email)->first();
@@ -347,6 +350,38 @@ class UsersController extends Controller
                 ));
 
             return json_encode(['status' => true]);
+        }
+
+        return json_encode(['status' => false]);
+    }
+
+    /*
+     * Senha Reenviada dentro do perfil do usuário selecionado
+     * Somente para líderes
+     */
+    public function sendPasswordUser($person)
+    {
+        $person = $this->personRepository->find($person);
+
+        $user = $person->user;
+
+        $url = env('APP_URL');
+
+        $today = date("d/m/Y");
+
+        $time = date("H:i");
+
+        if (count($user) > 0) {
+
+            Mail::to($user)
+                ->send(new resetPassword(
+                    $user, $url, $today, $time
+                ));
+
+            return json_encode([
+                'status' => true,
+                'email' => $user->email
+            ]);
         }
 
         return json_encode(['status' => false]);

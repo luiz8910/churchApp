@@ -20,6 +20,9 @@
         return false;
     });
 
+    /*
+     * Recupera a senha pelo form de esqueceu a senha
+     */
     function sendPassword()
     {
         var email = $("#recoverEmail").val();
@@ -51,6 +54,42 @@
         })
     }
 
+
+    /*
+     * Envia o link da senha pelo perfil do usuário
+     * Somente para líderes
+     */
+    function sendPasswordUser()
+    {
+        $("#msg-spin").css("display", 'block');
+
+        var person = $("#personId").val();
+
+        var request = $.ajax({
+            url: "/sendPassword/" + person,
+            method: "GET",
+            dataType: "json"
+        });
+
+        request.done(function (e) {
+            if(e.status)
+            {
+                $("#notific8-title").val("Atenção");
+                $("#notific8-text").val("Um email foi enviado para " + e.email);
+
+                setTimeout(function() {
+                    $("#msg-spin").css("display", "none");
+                    $("#notific8").trigger("click");
+
+                }, 1000);
+            }
+        });
+
+        request.fail(function (e) {
+            console.log("fail");
+            console.log(e);
+        });
+    }
 
 
     /*

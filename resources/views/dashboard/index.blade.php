@@ -114,17 +114,25 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     @foreach($people as $person)
                                                         <tr>
                                                             <td class="fit">
-                                                                <img class="user-pic rounded" src="../{{ $person->imgProfile }}">
+                                                                @if($person->user)
+                                                                    <img class="user-pic rounded" src="{{ $person->imgProfile }}" style="max-width: 30px;">
+                                                                @else
+                                                                    <img class="user-pic rounded" src="../{{ $person->imgProfile }}" style="max-width: 30px;">
+                                                                @endif
                                                             </td>
                                                             <td>
-                                                                @if($person->tag == "adult")
-                                                                    <a href="{{ route('person.edit', ['person' => $person->id]) }}"
-                                                                       class="primary-link">{{ $person->name }}
-                                                                    </a>
+                                                                @if(Auth::user()->person->id == $person->id)
+                                                                    {{ $person->name }}
                                                                 @else
-                                                                    <a href="{{ route('teen.edit', ['person' => $person->id]) }}"
-                                                                       class="primary-link">{{ $person->name }}
-                                                                    </a>
+                                                                    @if($person->tag == "adult")
+                                                                        <a href="{{ route('person.edit', ['person' => $person->id]) }}"
+                                                                           class="primary-link">{{ $person->name }}
+                                                                        </a>
+                                                                    @else
+                                                                        <a href="{{ route('teen.edit', ['person' => $person->id]) }}"
+                                                                           class="primary-link">{{ $person->name }}
+                                                                        </a>
+                                                                    @endif
                                                                 @endif
                                                             </td>
                                                             <td> {{ $person->user->email or null }} </td>

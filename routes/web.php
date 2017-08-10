@@ -219,6 +219,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post("/sendPassword/{email}", "UsersController@sendPassword")->name('recover.password');
 
+    Route::get("/sendPassword/{person}", "UsersController@sendPasswordUser");
+
     Route::get("/emailTest/{email}/{church_id?}", "UsersController@hasEmail");
 
     Route::get("/emailTest-edit/{email}/{id}", "UsersController@emailTestEdit");
