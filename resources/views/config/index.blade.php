@@ -296,13 +296,15 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                                     <?php $i++; ?>
 
-                                                    <div class="clear-fix"></div>
+                                                    <div class="col-md-12 box-check">
+                                                        <button class="btn btn-circle btn-success" type="submit">
+                                                            <i class="fa fa-check font-white"></i>
+                                                            Enviar
+                                                        </button>
 
-                                                    <br>
-                                                    <button class="btn btn-circle btn-success" type="submit">
-                                                        <i class="fa fa-check font-white"></i>
-                                                        Enviar
-                                                    </button>
+                                                    </div>
+
+                                                    <br><br>
                                                     {!! Form::close() !!}
 
                                                 </div>

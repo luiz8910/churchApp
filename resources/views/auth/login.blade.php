@@ -36,7 +36,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
 <div class="logo-mobile visible-xs visible-sm">
     <a href="javascript:;">
-        <img src="../logo/logo-menor-header-branco.png" alt="" />
+        <img src="../logo/logo-menor-header-branco.png" alt="" style="width: 200px;"/>
     </a>
 </div>
 
@@ -105,6 +105,8 @@ License: You must have a valid license purchased only from themeforest(the above
 
         </div>
 
+
+
         <div class="form-actions">
             <button type="submit" class="btn blue uppercase">Entrar</button>
 
@@ -113,7 +115,14 @@ License: You must have a valid license purchased only from themeforest(the above
                 <span></span>
             </label>
 
-            <a href="{{ route("forgot.password") }}" id="forget-password" class="forget-password">Esqueceu sua senha?</a>
+
+
+        </div>
+
+        <div class="form-actions-2">
+            <label class="rememberme check mt-checkbox mt-checkbox-outline">
+                <a href="{{ route("forgot.password") }}" id="forget-password" class="forget-password">Esqueceu sua senha?</a>
+            </label>
 
         </div>
 
