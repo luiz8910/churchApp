@@ -53,7 +53,8 @@ License: You must have a valid license purchased only from themeforest(the above
 <!-- BEGIN LOGO -->
 <div class="logo">
     <a href="javascript:;">
-        <img src="../assets/pages/img/logo-big.png" alt="" /> </a>
+        <img src="../teste/Simbolo-branco.png" alt="logo" class="logo-default" style="width: 150px; margin-top: -20px;">
+    </a>
 </div>
 <!-- END LOGO -->
 <!-- BEGIN LOGIN -->
@@ -90,7 +91,7 @@ License: You must have a valid license purchased only from themeforest(the above
     </div>
     <!-- END LOGIN FORM -->
 </div>
-<div class="copyright"> 2014 © Metronic. Admin Dashboard Template. </div>
+<div class="copyright"> {{ date("Y") }} © Beconnect. </div>
 <!--[if lt IE 9]>
 <script src="../assets/global/plugins/respond.min.js"></script>
 <script src="../assets/global/plugins/excanvas.min.js"></script>

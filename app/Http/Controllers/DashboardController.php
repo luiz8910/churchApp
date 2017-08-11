@@ -165,6 +165,8 @@ class DashboardController extends Controller
 
             $event->createdBy_name = $user->name;
 
+            $event->createdBy_person = $user->id;
+
             $event->imgProfileUser = $user->imgProfile;
 
 
@@ -181,7 +183,7 @@ class DashboardController extends Controller
         }
 
 
-        //dd($eventDate);
+        //dd($events[0]);
 
         if(!empty($eventDate))
         {

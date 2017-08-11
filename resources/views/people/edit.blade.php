@@ -206,7 +206,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                 <div class="portlet-title">
                                     <div class="caption">
                                         <i class="fa fa-calendar font-red"></i>
-                                        <span class="caption-subject font-red sbold uppercase">Meus Eventos (inscrições)</span>
+                                        <span class="caption-subject font-red sbold uppercase">Eventos (inscrições)</span>
                                     </div>
                                     <div class="actions">
                                         @if(Auth::getUser()->person->role_id == $leader)
@@ -271,7 +271,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 @foreach($events as $item)
                                                     <tr>
                                                         <td>
-                                                            <a href="{{ route('group.edit', ['group' => $item->id]) }}">
+                                                            <a href="{{ route('event.edit', ['event' => $item->id]) }}">
                                                                 {{ $item->name }}
                                                             </a>
                                                         </td>

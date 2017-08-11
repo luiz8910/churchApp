@@ -406,13 +406,16 @@ class EventController extends Controller
 
         $next = true;
 
+        //Recupera o cargo do usuário no sistema
+        $role = $this->getUserRole();
+
 
         //dd(count($days));
 
         return view("events.index", compact('countPerson', 'countGroups', 'state',
             'events', 'notify', 'qtde', 'allMonths', 'allDays', 'days', 'allEvents',
             'thisMonth', 'today', 'next', 'ano', 'allEventsNames', 'allEventsTimes',
-            'allEventsFrequencies', 'allEventsAddresses', 'church_id', 'leader'));
+            'allEventsFrequencies', 'allEventsAddresses', 'church_id', 'leader', 'role'));
     }
 
     public function oldindex()

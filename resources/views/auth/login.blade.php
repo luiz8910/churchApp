@@ -47,7 +47,7 @@ License: You must have a valid license purchased only from themeforest(the above
     <!-- BEGIN LOGIN FORM -->
     <form class="login-form" role="form" method="POST" action="{{ url('/login') }}">
         {{ csrf_field() }}
-        <h3 class="form-title font-green">Acesso ao Sistema</h3>
+        <h3 class="form-title font-green"></h3>
         {{--<p class="text-center"> Selecione a igreja para ter acesso </p>--}}
 
         <div class="alert alert-warning alert-dismissible" role="alert" id="selectChurch" style="display: none;">

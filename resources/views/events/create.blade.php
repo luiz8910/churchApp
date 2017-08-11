@@ -177,7 +177,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 <i class="fa fa-calendar"></i>
                                                             </button>
                                                         </span>
-                                                        <input type="text" class="form-control" name="eventDate" id="eventDate" readonly>
+                                                        <input type="text" class="form-control" name="eventDate" id="eventDate" value="{{ old('eventDate') }}" readonly>
                                                     </div>
 
                                                     <span class="help-block">
@@ -200,7 +200,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                     <i class="fa fa-calendar"></i>
                                                                 </button>
                                                             </span>
-                                                            <input type="text" class="form-control" name="endEventDate" id="endEventDate" readonly>
+                                                            <input type="text" class="form-control" name="endEventDate" id="endEventDate" value="{{ old('endEventDate') }}" readonly>
                                                         </div>
                                                         <!-- /input-group -->
                                                         <span class="help-block"> Deixe em branco se a data de término é indeterminada </span>

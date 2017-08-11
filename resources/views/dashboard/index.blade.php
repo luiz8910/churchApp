@@ -438,7 +438,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             <td>
                                                                 <span class="hidden-xs hidden-sm">
                                                                     @if(Auth::user()->id != $events[$i]->createdBy_id)
-                                                                        <a href="{{ route('person.edit', ['person' => $events[$i]->createdBy_id]) }}">
+                                                                        <a href="{{ route('person.edit', ['person' => $events[$i]->createdBy_person]) }}">
                                                                             <img src="{{ '../'.$events[$i]->imgProfileUser }}"
                                                                                  class="img-circle" style="height: 50px; width: 50px; margin-right: 10px;">
 
@@ -454,7 +454,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 </span>
                                                                 <span class="hidden-md hidden-lg" >
                                                                     @if(Auth::user()->id != $events[$i]->createdBy_id)
-                                                                        <a href="{{ route('person.edit', ['person' => $events[$i]->createdBy_id]) }}">
+                                                                        <a href="{{ route('person.edit', ['person' => $events[$i]->createdBy_person]) }}">
                                                                             <img src="{{ '../'.$events[$i]->imgProfileUser }}"
                                                                                  class="img-circle" style="height: 30px; width: 30px;">
 
