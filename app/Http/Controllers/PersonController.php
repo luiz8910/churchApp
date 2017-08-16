@@ -12,6 +12,7 @@ use App\Models\Role;
 use App\Models\User;
 use App\Notifications\EventNotification;
 use App\Notifications\Notifications;
+use App\Repositories\ChurchRepository;
 use App\Repositories\EventSubscribedListRepository;
 use App\Repositories\GroupRepository;
 use App\Repositories\RequiredFieldsRepository;
@@ -71,10 +72,14 @@ class PersonController extends Controller
      * @var GroupRepository
      */
     private $groupRepository;
+    /**
+     * @var ChurchRepository
+     */
+    private $churchRepository;
 
     public function __construct(PersonRepository $repository, StateRepository $stateRepositoryTrait, RoleRepository $roleRepository,
                                 UserRepository $userRepository, RequiredFieldsRepository $fieldsRepository, EventSubscribedListRepository $listRepository,
-                                GroupRepository $groupRepository)
+                                GroupRepository $groupRepository, ChurchRepository $churchRepository)
     {
         $this->repository = $repository;
         $this->stateRepository = $stateRepositoryTrait;
@@ -83,6 +88,7 @@ class PersonController extends Controller
         $this->fieldsRepository = $fieldsRepository;
         $this->listRepository = $listRepository;
         $this->groupRepository = $groupRepository;
+        $this->churchRepository = $churchRepository;
     }
 
     /**
@@ -305,13 +311,13 @@ class PersonController extends Controller
 
         $email = $request->only(['email']);
 
-        $password = $request->only(['password']);
+        /*$password = $request->only(['password']);
 
         $confirmPass = $request->only(['confirm-password']);
 
         $password = implode('=>', $password);
 
-        $confirmPass = implode('=>', $confirmPass);
+        $confirmPass = implode('=>', $confirmPass);*/
 
         $teen = $request->get('teen') or null;
 
@@ -319,7 +325,7 @@ class PersonController extends Controller
 
         if(!$teen)
         {
-            if(!$password){
+            /*if(!$password){
                 \Session::flash("email.exists", "Escolha uma senha");
                 return redirect()->route("person.create")->withInput();
             }
@@ -328,7 +334,7 @@ class PersonController extends Controller
                 $request->flashExcept('password');
 
                 return redirect()->route("person.create")->withInput();
-            }
+            }*/
 
             foreach ($fields as $field) {
                 if($field->value == "email"){
@@ -417,10 +423,14 @@ class PersonController extends Controller
         $church_id = $this->getUserChurch();
 
         if ($this->repository->isAdult($data['dateBirth'])) {
-            $this->createUserLogin($id, $password, $email, $church_id);
+
+            $password = $this->churchRepository->find($church_id)->alias;
+
+            $user = $this->createUserLogin($id, $password, $email, $church_id);
+
+            $this->welcome($user, $password);
 
             if ($children) {
-
                 $this->children($children, $id, $data['gender'], $data["role_id"]);
             }
 

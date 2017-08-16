@@ -8,7 +8,10 @@
 
 namespace App\Traits;
 
+use App\Mail\resetPassword;
+use App\Mail\welcome;
 use App\Models\User;
+use Illuminate\Support\Facades\Mail;
 
 trait EmailTrait
 {
@@ -33,5 +36,17 @@ trait EmailTrait
             //O email não existe no BD, portanto está liberado para uso
             return true;
         }
+    }
+
+    public function welcome($user, $password)
+    {
+        $url = env('APP_URL');
+
+        Mail::to($user)
+            ->send(new welcome(
+                $user, $url, $password
+            ));
+
+        return true;
     }
 }

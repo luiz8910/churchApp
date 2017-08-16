@@ -393,7 +393,7 @@
     </style>
 </head>
 <body>
-<span class="preheader">Clique no botão abaixo para recuperar sua senha</span>
+<span class="preheader">Novo Cadastro</span>
 <table class="email-wrapper" width="100%" cellpadding="0" cellspacing="0">
     <tr>
         <td align="center">
@@ -413,11 +413,8 @@
                             <tr>
                                 <td class="content-cell">
                                     <h1>Olá {{ $user->person->name }},</h1>
-                                    <p>Você solicitou a recuperação de sua senha do Beconnect
-                                        @if(!isset($password))
-                                            <strong>Este link expira em 24 horas</strong></p>
-                                        @endif
-                                    <!-- Action -->
+                                    <p>Seu cadastro foi realizado no Beconnect</p>
+                                <!-- Action -->
                                     <table class="body-action" align="center" width="100%" cellpadding="0" cellspacing="0">
                                         <tr>
                                             <td align="center">
@@ -428,16 +425,16 @@
                                                         <td align="center">
                                                             <table border="0" cellspacing="0" cellpadding="0">
                                                                 <tr>
-                                                                    @if(isset($password))
-                                                                        <td>
-                                                                            <label for="">Sua senha é: {{ $password }}</label>
-                                                                        </td>
-                                                                    @else
-                                                                        <td>
-                                                                            <a href="{{ $url }}/passResetView/{{ $user->email }}"
-                                                                               class="button button--purple" target="_blank">Recuperar sua Senha</a>
-                                                                        </td>
-                                                                    @endif
+                                                                    <td>
+                                                                        <label for="">Sua senha é: {{ $password }}</label>
+                                                                    </td>
+                                                                    <td>
+                                                                        <a href="{{ $url }}"
+                                                                           class="button button--purple" target="_blank">Acessar o Sistema</a>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p>Se o login for feito com redes sociais, a senha não é necessária</p>
+                                                                    </td>
                                                                 </tr>
                                                             </table>
                                                         </td>
@@ -446,7 +443,6 @@
                                             </td>
                                         </tr>
                                     </table>
-                                    <p>Esta solicitação foi feita dia {{ $today }} às {{ $time }}h (horário de brasília).</p>
                                     <p>Att,
                                         <br>Equipe Beconnect</p>
                                     <!-- Sub copy -->
@@ -454,7 +450,7 @@
                                         <tr>
                                             <td>
                                                 <p class="sub">Se você está tendo problemas com o botão acima, copie e cole o link abaixo no seu navegador</p>
-                                                <p class="sub">{{ $url }}/passResetView/{{ $user->email }}</p>
+                                                <p class="sub">{{ $url }}</p>
                                             </td>
                                         </tr>
                                     </table>

@@ -343,7 +343,6 @@ class UsersController extends Controller
 
         if (count($user) > 0) {
 
-
             Mail::to($user)
                 ->send(new resetPassword(
                     $user, $url, $today, $time

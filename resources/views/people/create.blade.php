@@ -588,7 +588,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                             </div>
                                         </div>
 
-                                        @include('includes.password')
+
                                     </div>
                                     <div class="form-actions">
                                         {!! Form::submit('Enviar', ['class' => 'btn blue', 'id' => 'btn-submit']) !!}
