@@ -33,7 +33,9 @@
         </div>
     </div>
 
-    @include('includes.address')
+    @if(!isset($route))
+        @include('includes.address')
+    @endif
 </div>
 
 <div class="row">

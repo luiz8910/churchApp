@@ -126,6 +126,31 @@ class DashboardController extends Controller
 
         $nextEvent = null;
 
+        $qtde_users = null; $qtde_groups = null; $qtde_events = null;
+
+        $next = true;
+
+        //Recupera o mês atual
+        $thisMonth = $this->agendaServices->thisMonth();
+
+        //Ano Atual
+        $ano = date("Y");
+
+        //Dia Atual
+        $today = date("Y-m-d");
+
+        //Recupera todos os meses
+        $allMonths = $this->agendaServices->allMonths();
+
+        //Recuperar todos os dias da semana
+        $allDays = $this->agendaServices->allDaysName();
+
+        //Recupera a semana atual
+        $days = $this->agendaServices->findWeek();
+
+        //Retorna todos os eventos
+        $allEvents = $this->eventServices->allEvents($church_id);
+
         if($groups)
         {
             foreach ($groups as $group)
@@ -141,7 +166,9 @@ class DashboardController extends Controller
         if (count($events) == 0)
         {
             return view('dashboard.index', compact('countPerson', 'countGroups', 'events', 'notify', 'qtde',
-                'countMembers', 'street', 'groups', 'event_person', 'nextEvent', 'leader', 'church_id'));
+                'countMembers', 'street', 'groups', 'event_person', 'nextEvent', 'leader', 'church_id',
+                'qtde_users', 'qtde_groups', 'qtde_events', 'next', 'thisMonth', 'ano', 'allMonths', 'days',
+                'allEvents', 'people', 'groups_recent', 'events_recent', 'qtde_users', 'qtde_groups', 'qtde_events'));
         }
 
         $eventDate = [];
@@ -216,18 +243,6 @@ class DashboardController extends Controller
 
         $location = $this->formatGoogleMaps($event);
 
-        //Dia Atual
-        $today = date("Y-m-d");
-
-        //Recupera todos os meses
-        $allMonths = $this->agendaServices->allMonths();
-
-        //Recuperar todos os dias da semana
-        $allDays = $this->agendaServices->allDaysName();
-
-        //Recupera a semana atual
-        $days = $this->agendaServices->findWeek();
-
         //Contador de semanas
         $cont = 1;
 
@@ -244,8 +259,7 @@ class DashboardController extends Controller
             $cont++;
         }
 
-        //Retorna todos os eventos
-        $allEvents = $this->eventServices->allEvents($church_id);
+
 
         $allEventsNames = [];
         $allEventsTimes = [];
@@ -269,11 +283,7 @@ class DashboardController extends Controller
         }
 
 
-        //Recupera o mês atual
-        $thisMonth = $this->agendaServices->thisMonth();
 
-        //Ano Atual
-        $ano = date("Y");
 
         /*
          * Fim Agenda

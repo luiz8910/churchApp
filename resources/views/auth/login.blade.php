@@ -59,7 +59,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
         <div class="form-group">
             <label class="control-label visible-ie8 visible-ie9">Igreja</label>
-            <select name="church" id="church" class="form-control" required>
+            <select name="church" id="church" class="select2 form-control" required>
                 <option value="">Selecione a Igreja</option>
                 @foreach($churches as $church)
                     <option value="{{ $church->id }}">{{ $church->name }}</option>
@@ -158,7 +158,8 @@ License: You must have a valid license purchased only from themeforest(the above
 <!-- BEGIN PAGE LEVEL PLUGINS -->
 <script src="../assets/global/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
 <script src="../assets/global/plugins/jquery-validation/js/additional-methods.min.js" type="text/javascript"></script>
-<script src="../assets/global/plugins/select2/js/select2.full.min.js" type="text/javascript"></script>
+<script src="../assets/global/plugins/select2/js/select2.full.js" type="text/javascript"></script>
+<script src="../assets/pages/scripts/components-select2.js" type="text/javascript"></script>
 <!-- END PAGE LEVEL PLUGINS -->
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
 <script src="../assets/pages/scripts/login.min.js" type="text/javascript"></script>

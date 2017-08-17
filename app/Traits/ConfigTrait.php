@@ -15,6 +15,7 @@ use App\Models\Role;
 use App\Repositories\FrequencyRepository;
 use App\Repositories\RoleRepository;
 use Auth;
+use Illuminate\Support\Facades\Route;
 
 trait ConfigTrait
 {
@@ -69,7 +70,7 @@ trait ConfigTrait
 
     public function getUserChurch()
     {
-        return session('church');
+        return session('church') ? session('church') : Auth::user()->church_id;
     }
 
     public function getLeaderRoleId()
@@ -119,5 +120,10 @@ trait ConfigTrait
     public function getDefaultWeeks()
     {
         return 6;
+    }
+
+    public function getRoute()
+    {
+        return Route::currentRouteName();
     }
 }

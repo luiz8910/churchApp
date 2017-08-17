@@ -237,8 +237,10 @@ class PersonController extends Controller
             )
             ->get();
 
+        $route = $this->getRoute();
+
         return view('people.create', compact('state', 'roles', 'countPerson', 'countGroups',
-            'adults', 'notify', 'qtde', 'fathers', 'mothers', 'leader', 'fields'));
+            'adults', 'notify', 'qtde', 'fathers', 'mothers', 'leader', 'fields', 'route'));
     }
 
     public function createTeen()
@@ -262,6 +264,8 @@ class PersonController extends Controller
         $notify = $this->notify();
 
         $qtde = count($notify);
+
+        $route = $this->getRoute();
 
         $adults = $this->repository->findWhere(['tag' => 'adult', 'church_id' => $church_id]);
 
@@ -290,8 +294,10 @@ class PersonController extends Controller
             )
             ->get();
 
+
+
         return view('people.create-teen', compact('state', 'roles', 'countPerson', 'countGroups',
-            'adults', 'notify', 'qtde', 'fathers', 'mothers', 'leader'));
+            'adults', 'notify', 'qtde', 'fathers', 'mothers', 'leader', 'route'));
     }
 
     /**
@@ -511,6 +517,8 @@ class PersonController extends Controller
 
         $countGroups[] = $this->countGroups();
 
+        $route = $this->getRoute();
+
         $fields = $this->fieldsRepository->findWhere([
             'model' => 'person',
             'church_id' => $this->getUserChurch()
@@ -606,7 +614,7 @@ class PersonController extends Controller
 
         return view('people.edit', compact('model', 'state', 'location', 'roles', 'countPerson',
             'countGroups', 'adults', 'notify', 'qtde', 'fathers', 'mothers', 'children',
-            'leader', 'fields', 'events', 'role'));
+            'leader', 'fields', 'events', 'role', 'route'));
     }
 
 
@@ -634,6 +642,8 @@ class PersonController extends Controller
 
         $leader = $this->getLeaderRoleId();
 
+        $route = $this->getRoute();
+
 
         $fathers = DB::table('people')
             ->join('users', 'users.person_id', 'people.id')
@@ -659,7 +669,7 @@ class PersonController extends Controller
             ->get();
 
         return view('people.edit-teen', compact('model', 'state', 'location', 'roles', 'countPerson',
-            'countGroups', 'notify', 'qtde', 'fathers', 'mothers', 'leader'));
+            'countGroups', 'notify', 'qtde', 'fathers', 'mothers', 'leader', 'route'));
     }
 
     /**

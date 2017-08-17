@@ -428,10 +428,12 @@
                                                                     <td>
                                                                         <label for="">Sua senha é: {{ $password }}</label>
                                                                     </td>
+
                                                                     <td>
                                                                         <a href="{{ $url }}"
                                                                            class="button button--purple" target="_blank">Acessar o Sistema</a>
                                                                     </td>
+
                                                                     <td>
                                                                         <p>Se o login for feito com redes sociais, a senha não é necessária</p>
                                                                     </td>
