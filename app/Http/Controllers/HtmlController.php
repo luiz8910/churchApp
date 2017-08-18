@@ -8,6 +8,11 @@ class HtmlController extends Controller
 {
     public function teste()
     {
-        return view('nome.view');
+        return view('dropzone');
     }
+
+	/* public function teste()
+    {
+        return view('dropzone');
+    } */
 }

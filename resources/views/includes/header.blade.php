@@ -1,4 +1,4 @@
-<?php $visitor = 3; ?>
+
 <input type="hidden" id="UserRole" value="@if(isset(Auth::user()->person)){{ Auth::user()->person->role_id }} @else {{ $visitor }} @endif ">
 <!-- BEGIN HEADER -->
 <div class="page-header">
@@ -10,10 +10,7 @@
 
 
                 <div >
-                    <a href="
-                        @if(Auth::user()->church_id)
-                            {{ route('index') }}
-                        @else {{ route('home.visitor', ['church_id' => $church_id]) }} @endif">
+                    <a href="">
 
                     <img src="../logo/Simbolo.png" alt="logo" class="logo-default hidden-md hidden-lg" style="width: 100%; margin-top: 2px; display: none;">
 
@@ -35,7 +32,6 @@
             <div class="top-menu">
                 <ul class="nav navbar-nav pull-right">
                     <!-- BEGIN NOTIFICATION DROPDOWN -->
-                    @include('includes.notifications')
                     <!-- END NOTIFICATION DROPDOWN -->
                     <!-- BEGIN TODO DROPDOWN -->
                     <li class="dropdown dropdown-extended dropdown-tasks dropdown-dark" id="header_task_bar">
