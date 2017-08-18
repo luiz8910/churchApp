@@ -122,6 +122,8 @@ class UsersController extends Controller
 
         $leader = $this->getLeaderRoleId();
 
+        $route = $this->getRoute();
+
         $adults = $this->personRepository->findWhere(['tag' => 'adult', 'gender' => $gender]);
 
         $person = $this->personRepository->find($model->id);
@@ -163,7 +165,7 @@ class UsersController extends Controller
         }
 
         return view('users.myAccount', compact('state', 'model', 'changePass', 'countPerson', 'role', 'countGroups',
-            'notify', 'qtde', 'adults', 'groups', 'countMembers', 'leader', 'events'));
+            'notify', 'qtde', 'adults', 'groups', 'countMembers', 'leader', 'events', 'route'));
     }
 
 
@@ -392,6 +394,7 @@ class UsersController extends Controller
             ->where(
                 [
                     'email' => $email,
+                    'deleted_at' => null
                 ]
             )->get();
 
@@ -400,7 +403,8 @@ class UsersController extends Controller
                 ->where(
                     [
                         'email' => $email,
-                        'church_id' => $church_id
+                        'church_id' => $church_id,
+                        'deleted_at' => null
                     ]
                 )->get();
 

@@ -2,10 +2,8 @@
 
 namespace Illuminate\Foundation\Auth;
 
-use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Lang;
 
 trait AuthenticatesUsers
@@ -19,9 +17,7 @@ trait AuthenticatesUsers
      */
     public function showLoginForm()
     {
-        $churches = DB::table('churches')->get();
-
-        return view('auth.login', compact('churches'));
+        return view('auth.login');
     }
 
     /**
@@ -117,26 +113,7 @@ trait AuthenticatesUsers
      */
     protected function authenticated(Request $request, $user)
     {
-        if (Auth::attempt(['email' => $request->get('email'), 'password' => $request->get('password')])) {
-
-            $church = $request->get('church');
-
-            session(['church' => $church]);
-
-            if($user->church_id == $church)
-            {
-                $role_id = $user->person->role_id;
-
-                $role = Role::where('id', $role_id)->first()->name;
-
-                session(['role' => $role]);
-
-            }else{
-                session(['role' => 'Visitante']);
-            }
-
-            return redirect()->intended('home');
-        }
+        //
     }
 
     /**

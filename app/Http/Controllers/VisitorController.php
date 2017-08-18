@@ -155,7 +155,10 @@ class VisitorController extends Controller
 
         $leader = $this->getLeaderRoleId();
 
-        return view('people.create-visitors', compact('state', 'countPerson', 'countGroups', 'adults', 'notify', 'qtde', 'leader'));
+        $route = $this->getRoute();
+
+        return view('people.create-visitors', compact('state', 'countPerson', 'countGroups', 'adults',
+            'notify', 'qtde', 'leader', 'route'));
     }
 
     /**
@@ -257,8 +260,10 @@ class VisitorController extends Controller
 
         $qtde = count($notify);
 
+        $route = $this->getRoute();
+
         return view('people.edit-visitors', compact('model', 'state', 'location', 'roles', 'countPerson',
-            'countGroups', 'adults', 'notify', 'qtde', 'leader', 'leader'));
+            'countGroups', 'adults', 'notify', 'qtde', 'leader', 'leader', 'route'));
     }
 
     /**

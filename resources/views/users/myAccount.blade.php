@@ -130,13 +130,13 @@ License: You must have a valid license purchased only from themeforest(the above
                                     <div class="profile-usermenu">
                                         <ul class="nav">
                                             <li class="active">
-                                                <a href="">
+                                                <a href="javascript:;">
                                                     <i class="icon-home"></i> Visão Geral </a>
                                             </li>
-                                            <li>
+                                            {{--<li>
                                                 <a href="">
                                                     <i class="icon-info"></i> Ajuda </a>
-                                            </li>
+                                            </li>--}}
                                         </ul>
                                     </div>
                                     <!-- END MENU -->
