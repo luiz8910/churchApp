@@ -35,76 +35,82 @@
 <!-- END HEAD -->
 
 <body class="page-container-bg-solid">
-<div class="page-wrapper">
-    <div class="page-wrapper-row">
-        <div class="page-wrapper-top">
-            <!-- BEGIN HEADER -->
-        @if(!isset($church_id) || $church_id == null)
-            @include('includes.header')
-        @else
-            @include('includes.header-edit')
-        @endif
-        <!-- END HEADER -->
-        </div>
-    </div>
+	<div class="page-wrapper">
+		<div class="page-wrapper-row">
+			<div class="page-wrapper-top">
+				<!-- BEGIN HEADER -->
+			@if(!isset($church_id) || $church_id == null)
+				@include('includes.header')
+			@else
+				@include('includes.header-edit')
+			@endif
+			<!-- END HEADER -->
+			</div> <!-- FIM DIV.page-wrapper-top -->
+		</div> <!-- FIM DIV.page-wrapper-row -->
 
-    <div class="page-wrapper-row full-height">
-        <div class="page-wrapper-middle">
-            <!-- BEGIN CONTAINER -->
-            <div class="page-container">
-                <!-- BEGIN CONTENT -->
-                <div class="page-content-wrapper">
-                    <!-- BEGIN CONTENT BODY -->
-                    <!-- BEGIN PAGE HEAD-->
-                    <div class="page-head">
-                        <div class="container">
-                            <!-- BEGIN PAGE TITLE -->
-                            <div class="page-title">
-                                <h1> Configurações </h1>
-                            </div>
-                            <!-- END PAGE TITLE -->
+		<div class="page-wrapper-row full-height">
+			<div class="page-wrapper-middle">
+				<div class="page-container">
+					<div class="page-content-wrapper">
+						<div class="page-head">
+							<div class="container">
+								<div class="page-title hidden-xs hidden-sm">
+									<h1>Dashboard
+										<small>Resumo Geral</small>
+									</h1>
+								</div>
+							</div> <!-- FIM DIV .container -->
+						</div> <!-- FIM DIV .page-head -->
 
+						<div class="page-content">
+							<div class="container">
+								<div class="page-content-inner">
+									<div class="row">
+										<div class="col-md-12">
+											<div class="portlet light ">
+                                                <div class="portlet-title">
+													<div class="caption font-green-haze">
+														<i class="icon-settings font-green-haze"></i>
+														<span class="caption-subject bold uppercase"> Horizontal Form</span>
+													</div> <!-- FIM DIV .caption.font-green-haze -->
+													<div class="actions">
+														<!-- <a class="btn btn-circle btn-icon-only blue" href="javascript:;">
+															<i class="icon-cloud-upload"></i>
+														</a>
+														<a class="btn btn-circle btn-icon-only green" href="javascript:;">
+															<i class="icon-wrench"></i>
+														</a>
+														<a class="btn btn-circle btn-icon-only red" href="javascript:;">
+															<i class="icon-trash"></i>
+														</a> -->
+													</div> <!-- FIM DIV .actions -->
+												</div> <!-- FIM DIV .portlet-title -->
 
-                        </div>
-                    </div>
-                    <!-- END PAGE HEAD-->
-                    <!-- BEGIN PAGE CONTENT BODY -->
-                    <div class="page-content">
-                        <div class="container">
+                                                <div class="portlet-body form">
+                                                    <div class="form-body">
+                                                        <form action="../assets/global/plugins/dropzone/upload.php" class="dropzone dropzone-file-area" id="my-dropzone" style=" margin-top: 30px; margin-bottom: 30px;">
+															<h3 class="sbold">Solte os arquivos aqui ou clique para carregar</h3>
+															<p> Aqui uma breve descrição do que o usuario deve fazer. </p>
+														</form>
+                                                    </div>  <!-- FIM DIV .form-body -->
 
-
-                            <!-- BEGIN PAGE CONTENT INNER -->
-                                <div class="page-content-inner">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <!-- BEGIN BORDERED TABLE PORTLET-->
-                                            <div class="portlet light form-fit ">
-
-
-
-
-
-
-                                            </div>
-                                        </div>
-
-
-                                    </div>
-
-
-                                </div>
-                                <!-- END BORDERED TABLE PORTLET-->
-
-
-
-            </div>
-        </div>
-    </div>
-</div>
-</div>
-</div>
-@include('includes.footer')
-</div>
+													<div class="form-actions ">
+														<button type="button" class="btn blue">Enviar</button>
+														<button type="button" class="btn default">Cancel</button>
+													</div>
+                                                </div> <!-- FIM DIV .portlet-body.form  -->
+                                            </div> <!-- FIM DIV .portlet.light -->
+										</div> <!-- FIM DIV .col-md-12 -->
+									</div> <!-- FIM DIV .row -->
+								</div> <!-- FIM DIV .page-content-inner -->
+							</div>  <!-- FIM DIV .container -->
+						</div>  <!-- FIM DIV .page-content -->
+					</div> <!-- FIM DIV .page-content-wrapper -->
+				</div> <!-- FIM DIV .page-container -->
+			</div> <!-- FIM DIV .page-wrapper-middle -->
+		</div> <!-- FIM DIV .page-wrapper-row.full-height -->
+		@include('includes.footer')
+	</div> <!-- FIM DIV.page-wrapper -->
 
 <!-- END QUICK NAV -->
 @if(!isset($church_id) || $church_id == null)

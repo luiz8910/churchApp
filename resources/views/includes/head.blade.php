@@ -41,3 +41,9 @@
 <link href="../css/style.css" rel="stylesheet" type="text/css" />
 <link href="../css/search.css" rel="stylesheet" type="text/css" />
 <meta name="csrf-token" content="{{ csrf_token() }}">
+
+
+<!-- CSS NECESSARIO PARA PAGINA DROPZONE -->
+<link href="../assets/global/plugins/dropzone/dropzone.min.css" rel="stylesheet" type="text/css" />
+<link href="../assets/global/plugins/dropzone/basic.min.css" rel="stylesheet" type="text/css" />
+<!-- FIM CSS NECESSARIO PARA PAGINA DROPZONE -->

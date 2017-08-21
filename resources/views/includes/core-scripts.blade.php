@@ -39,8 +39,12 @@
 <script src="../assets/layouts/layout3/scripts/layout.min.js" type="text/javascript"></script>
 <script src="../assets/layouts/global/scripts/quick-sidebar.min.js" type="text/javascript"></script>
 
+<!-- SCRIPTS PAGINAS DE DROPZONE -->
+<script src="../assets/global/plugins/dropzone/dropzone.min.js" type="text/javascript"></script>
+<script src="../assets/pages/scripts/form-dropzone.min.js" type="text/javascript"></script>
+<!-- FIM SCRIPTS PAGINAS DE DROPZONE -->
 
-<!-- END THEME LAYOUT SCRIPTS -->
+
 <!-- JS Próprio -->
 <script src="../js/script.js" type="text/javascript"></script>
 <script src="../js/screen.js"></script>
