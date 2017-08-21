@@ -9,6 +9,12 @@
 
         <input type="hidden" id="input-event">
         <input type="hidden" id="created_event_id">
+
+        <input type="hidden" id="notific8-title-pusher" value="Atenção">
+        <input type="hidden" id="notific8-text-pusher">
+        <input type="hidden" id="notific8-type-pusher" value="lime">
+
+        <a href="javascript:;" class="btn btn-danger" id="notific8-pusher" style="display: none;"></a>
     </a>
     <ul class="dropdown-menu white-menu">
         <li class="external" >

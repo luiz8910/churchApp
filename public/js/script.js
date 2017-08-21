@@ -146,6 +146,7 @@ $(function () {
         });
     });
 
+
     //called when key is pressed in input
     $(".time").keypress(function (e) {
         //if the letter is not digit don't type anything

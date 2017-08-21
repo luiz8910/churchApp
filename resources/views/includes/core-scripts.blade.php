@@ -75,7 +75,8 @@
         badgeNotify = 0;
 
         function newEvent(data) {
-            console.log(data.event.name);
+            console.log(data);
+
             var li = '<li>' +
                     '<a href="events/'+data.event.id+'/edit">'+
                     '<span class="time">Agora</span>'+
@@ -99,7 +100,11 @@
 
             $("#created_event_id").val(data.event.id);
 
-            $("#input-event").trigger("change");
+            //$("#input-event").trigger("change");
+
+            $("#notific8-text-pusher").val("O evento " + data.event.name + " acaba de ser criado");
+
+            $("#notific8-pusher").trigger("click");
 
             $("#input-badge-count").text(badgeNotify);
 
@@ -112,7 +117,7 @@
 
         function UserAdded(data) {
             var li = '<li>' +
-                    '<a href="person/'+data.person[0]+'/edit">'+
+                    '<a href="person/'+data.person.id+'/edit">'+
                     '<span class="time">Agora</span>'+
                     '<span class="details">'+
                     '<span class="label label-sm label-icon label-success">'+
@@ -132,13 +137,17 @@
 
             $("#badge-notify").text(badgeNotify);
 
-            $("#created_person_id").val(data.person[0]);
+            $("#created_person_id").val(data.person.id);
 
             $("#input-badge-count").text(badgeNotify).trigger("change");
 
             $("#qtdeNotify").text(badgeNotify + " Notificações");
 
             $("#eventNotify").prepend(li);
+
+            $("#notific8-text-pusher").val("O usuário " + data.person.name + " acaba de ser criado");
+
+            $("#notific8-pusher").trigger("click");
 
             console.log($("#badge-notify").text());
         }

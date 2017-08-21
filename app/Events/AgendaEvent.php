@@ -3,6 +3,7 @@
 namespace App\Events;
 
 use App\Models\Event;
+use App\Models\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -17,16 +18,20 @@ class AgendaEvent implements ShouldBroadcast
      * @var Event
      */
     public $event;
+    /**
+     * @var User
+     */
+    public $user;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(Event $event)
+    public function __construct(Event $event, User $user)
     {
-        //
         $this->event = $event;
+        $this->user = $user;
     }
 
     /**

@@ -17,7 +17,7 @@ class PersonEvent implements ShouldBroadcast
     /**
      * @var
      */
-    public $person = [];
+    public $person;
 
     /**
      * Create a new event instance.
@@ -26,7 +26,7 @@ class PersonEvent implements ShouldBroadcast
      */
     public function __construct(Person $person)
     {
-        $this->person[] = $person->id;
+        $this->person = $person;
     }
 
     /**

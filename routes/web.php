@@ -272,3 +272,7 @@ Route::get('calendario', 'DashboardController@calendario');
 Route::get('menu', 'DashboardController@menu');
 
 Route::get('recentTable', "PersonController@clearRecentTables");
+
+Route::get('/juquinha', 'HtmlController@teste');
+
+Route::get('join', 'EventController@testeJoin');

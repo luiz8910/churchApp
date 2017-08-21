@@ -313,6 +313,7 @@ class DashboardController extends Controller
         $groups_recent = [];
         $events_recent = [];
 
+
         if($qtde_users > 0)
         {
             foreach ($recent_users as $recent_user)
@@ -324,6 +325,8 @@ class DashboardController extends Controller
                 $people[] = $p;
             }
         }
+
+
 
         if($qtde_groups > 0)
         {
@@ -342,6 +345,7 @@ class DashboardController extends Controller
                 $groups_recent[] = $g;
             }
         }
+
 
         if($qtde_events > 0)
         {
@@ -364,7 +368,6 @@ class DashboardController extends Controller
                 $events_recent[] = $e;
             }
         }
-
 
 
         /*

@@ -68,15 +68,57 @@
 
     //Subscribe to the channel we specified in our Laravel Event
     var channel = pusher.subscribe('my-channel');
+    var event = pusher.subscribe('new-event');
 
     //Bind a function to a Event (the full Laravel class)
     channel.bind('App\\Events\\PersonEvent', UserAdded);
+    event.bind('App\\Events\\AgendaEvent', newEvent);
 
     badgeNotify = 0;
 
+    function newEvent(data) {
+        console.log(data.event.name);
+        var li = '<li>' +
+                '<a href="events/'+data.event.id+'/edit">'+
+                '<span class="time">Agora</span>'+
+                '<span class="details">'+
+                '<span class="label label-sm label-icon label-success">'+
+                '<i class="fa fa-plus"></i>'+
+                '</span> '+data.event.name+'</span>'+
+                '</a>'+
+                '</li>';
+
+
+
+        if($("#badge-notify").val() != "")
+        {
+            badgeNotify = parseInt($("#badge-notify").val());
+        }
+
+        badgeNotify++;
+
+        $("#badge-notify").text(badgeNotify);
+
+        $("#created_event_id").val(data.event.id);
+
+        //$("#input-event").trigger("change");
+
+        $("#notific8-text-pusher").val("O evento " + data.event.name + " acaba de ser criado");
+
+        $("#notific8-pusher").trigger("click");
+
+        $("#input-badge-count").text(badgeNotify);
+
+        $("#qtdeNotify").text(badgeNotify + " Notificações");
+
+        $("#eventNotify").prepend(li);
+
+        console.log($("#badge-notify").text());
+    }
+
     function UserAdded(data) {
         var li = '<li>' +
-                '<a href="person/'+data.person[0]+'/edit">'+
+                '<a href="person/'+data.person.name+'/edit">'+
                 '<span class="time">Agora</span>'+
                 '<span class="details">'+
                 '<span class="label label-sm label-icon label-success">'+
@@ -96,13 +138,17 @@
 
         $("#badge-notify").text(badgeNotify);
 
-        $("#created_person_id").val(data.person[0]);
+        $("#created_person_id").val(data.person.name);
 
         $("#input-badge-count").text(badgeNotify).trigger("change");
 
-        $("#qtdeNotify").text(badgeNotify + " Nova Notificação");
+        $("#qtdeNotify").text(badgeNotify + " Notificações");
 
         $("#eventNotify").prepend(li);
+
+        $("#notific8-text-pusher").val("O usuário " + data.person.name + " acaba de ser criado");
+
+        $("#notific8-pusher").trigger("click");
 
         console.log($("#badge-notify").text());
     }

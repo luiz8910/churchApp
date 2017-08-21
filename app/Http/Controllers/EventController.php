@@ -31,6 +31,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Notification;
 use Maatwebsite\Excel\Facades\Excel;
 
 
@@ -653,7 +654,7 @@ class EventController extends Controller
             unset($data['group_id']);
         }
 
-        //$this->sendNotification($data, $event);
+        $this->sendNotification($data, $event);
 
         if($data["frequency"] != $this->unique())
         {
@@ -691,40 +692,55 @@ class EventController extends Controller
 
     public function sendNotification($data, $event)
     {
-        $user = [];
+        try{
+            $user = [];
 
-        event(new AgendaEvent($event));
+            if (isset($data['group_id']))
+            {
+                $group = $this->groupRepository->find($data['group_id']);
 
-        if (isset($data['group_id']))
-        {
-            $group = $this->groupRepository->find($data['group_id']);
+                $people = $group->people->all();
 
-            $people = $group->people->all();
+                $i = 0;
+
+                while ($i < count($people))
+                {
+                    $user[] = $people[$i]->user;
+                    $i++;
+                }
+            }
 
             $i = 0;
 
-            while ($i < count($people))
+            $join = DB::table('people')
+                ->crossJoin('users', 'users.person_id', '=', 'people.id')
+                ->where(
+                    [
+                        'role_id' => $this->getLeaderRoleId(),
+                        'users.church_id' => $this->getUserChurch(),
+                        'people.deleted_at' => null
+                    ])
+                ->select('users.id')
+                ->get();
+
+
+
+            while ($i < count($join))
             {
-                $user[] = $people[$i]->user;
+                $user[] = User::find($join[$i]->id);
                 $i++;
             }
+
+            event(new AgendaEvent($event, $user));
+
+            Notification::send($user, new Notifications($data['name'], 'events/'.$event->id.'/edit'));
+
+        }catch (\Exception $exception){
+
+            var_dump($exception);
+
         }
 
-        $i = 0;
-
-        $join = DB::table('people')
-            ->crossJoin('users', 'users.person_id', '=', 'people.id')
-            ->where('role_id', $this->getLeaderRoleId())
-            ->select('users.id')
-            ->get();
-
-        while ($i < count($join))
-        {
-            $user[] = User::find($join[$i]->id);
-            $i++;
-        }
-
-        \Notification::send($user, new Notifications($data['name'], 'events/'.$event->id.'/edit'));
     }
 
 
