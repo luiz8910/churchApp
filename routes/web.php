@@ -168,6 +168,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post("/config/{model}", "ConfigController@newRule")->name('config.newRule');
 
         Route::post("/config-model", "ConfigController@newModel")->name('config.newModel');
+
+        Route::post("/getChurchContacts", "PersonController@getChurchContacts")->name('config.person.contacts');
     });
 
     Route::get("/getPusherKey", "ConfigController@getPusherKey");
@@ -276,3 +278,5 @@ Route::get('recentTable', "PersonController@clearRecentTables");
 Route::get('/juquinha', 'HtmlController@teste');
 
 Route::get('join', 'EventController@testeJoin');
+
+Route::get('surname', "PersonController@surname");

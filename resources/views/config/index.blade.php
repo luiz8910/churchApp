@@ -322,6 +322,16 @@ License: You must have a valid license purchased only from themeforest(the above
                 @endforeach
 
 
+                {!! Form::open(['route' => 'config.person.contacts', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
+                    <input type="file" name="file">
+
+                            <br><br>
+                    <button type="submit" class="btn green">
+                        <i class="fa fa-table"></i>
+                        Enviar Planilha
+                    </button>
+
+                {!! Form::close() !!}
             </div>
         </div>
     </div>

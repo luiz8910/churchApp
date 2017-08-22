@@ -1067,4 +1067,70 @@ class PersonController extends Controller
         return $this->traitCheckCPF($cpf);
     }
 
+    /*
+     * Planilha com todos os contatos da igreja
+     */
+    public function getChurchContacts(Request $request)
+    {
+        $church = $this->getUserChurch();
+
+        $file = $request->file('file');
+
+        $fileName = 'file.' . $file->getClientOriginalExtension();
+
+        $alias = $this->churchRepository->find($church)->alias;
+
+        $file->move('uploads/sheets/'.$alias.'/', $fileName);
+
+        Excel::load('uploads/sheets/'.$alias.'/' . $fileName, function ($reader) {
+
+            foreach ($reader->get() as $item)
+            {
+                $fullName = $this->surname($item->nome);
+
+                $data["name"] = $fullName[0];
+                $data["lastName"] = $fullName[1];
+
+                dd($item);
+            }
+
+
+        })->get();
+
+
+    }
+
+    public function surname($name)
+    {
+        $token = strtok($name, " ");
+
+        $i = 0;
+
+        $firstName = '';
+        $lastName = '';
+
+        while ($token !== false)
+        {
+            if($i == 0)
+            {
+                $firstName = $token;
+            }
+            else{
+                $lastName .= $token . " ";
+                $token = strtok(" ");
+            }
+
+            $i++;
+        }
+
+        $lastName = str_replace($firstName, " ", $lastName);
+
+        $lastName = trim($lastName);
+
+        $arr[] = $firstName;
+        $arr[] = $lastName;
+
+        return $arr;
+    }
+
 }
