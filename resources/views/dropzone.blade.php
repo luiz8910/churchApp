@@ -74,16 +74,36 @@
 														<span class="caption-subject bold uppercase"> Horizontal Form</span>
 													</div> <!-- FIM DIV .caption.font-green-haze -->
 													<div class="actions">
-														<!-- <a class="btn btn-circle btn-icon-only blue" href="javascript:;">
-															<i class="icon-cloud-upload"></i>
-														</a>
-														<a class="btn btn-circle btn-icon-only green" href="javascript:;">
-															<i class="icon-wrench"></i>
-														</a>
-														<a class="btn btn-circle btn-icon-only red" href="javascript:;">
-															<i class="icon-trash"></i>
-														</a> -->
-													</div> <!-- FIM DIV .actions -->
+                                                        <div class="btn-group btn-group-devided">
+                                                            <div class="btn-group">
+                                                                <a class="btn red btn-outline btn-circle" href="javascript:;" data-toggle="dropdown">
+                                                                    <i class="fa fa-share"></i>
+                                                                    <span class="hidden-xs"> Opções </span>
+                                                                    <i class="fa fa-angle-down"></i>
+                                                                </a>
+                                                                <ul class="dropdown-menu pull-right" id="sample_3_tools">
+                                                                    <li>
+                                                                        <a href="javascript:;" data-toggle="modal" data-target="#newModel">
+                                                                            <i class="fa fa-table" aria-hidden="true"></i>
+                                                                            Classe
+                                                                        </a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript:;" data-toggle="modal" data-target="#newRule-person">
+                                                                            <i class="fa fa-plus" aria-hidden="true"></i>
+                                                                            Nova Regra
+                                                                        </a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript:;">
+                                                                            <i class="fa fa-undo" aria-hidden="true"></i>
+                                                                            Voltar ao Padrão
+                                                                        </a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div> <!-- FIM DIV .actions -->
 												</div> <!-- FIM DIV .portlet-title -->
 
                                                 <div class="portlet-body form">

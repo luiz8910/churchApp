@@ -10,7 +10,7 @@ var FormDropzone = function () {
                 init: function() {
                     this.on("addedfile", function(file) {
                         // Create the remove button
-                        var removeButton = Dropzone.createElement("<a href='javascript:;'' class='btn red btn-sm btn-block'>Remove</a>");
+                        var removeButton = Dropzone.createElement("<a href='javascript:;'' class='btn red btn-sm btn-block'>Remover</a>");
                         
                         // Capture the Dropzone instance as closure.
                         var _this = this;

@@ -41,7 +41,7 @@
 
 <!-- SCRIPTS PAGINAS DE DROPZONE -->
 <script src="../assets/global/plugins/dropzone/dropzone.min.js" type="text/javascript"></script>
-<script src="../assets/pages/scripts/form-dropzone.min.js" type="text/javascript"></script>
+<script src="../assets/pages/scripts/form-dropzone.js" type="text/javascript"></script>
 <!-- FIM SCRIPTS PAGINAS DE DROPZONE -->
 
 
