@@ -54,7 +54,7 @@
 					<div class="page-content-wrapper">
 						<div class="page-head">
 							<div class="container">
-								<div class="page-title hidden-xs hidden-sm">
+								<div class="page-title">
 									<h1>Dashboard
 										<small>Resumo Geral</small>
 									</h1>
