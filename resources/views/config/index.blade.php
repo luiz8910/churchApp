@@ -35,288 +35,377 @@
 <!-- END HEAD -->
 
 <body class="page-container-bg-solid">
-<div class="page-wrapper">
-    <div class="page-wrapper-row">
-        <div class="page-wrapper-top">
-            <!-- BEGIN HEADER -->
-        @if(!isset($church_id) || $church_id == null)
-            @include('includes.header')
-        @else
-            @include('includes.header-edit')
-        @endif
-        <!-- END HEADER -->
-        </div>
-    </div>
+	<div class="page-wrapper">
+		<div class="page-wrapper-row">
+			<div class="page-wrapper-top">
+				<!-- BEGIN HEADER -->
+			@if(!isset($church_id) || $church_id == null)
+				@include('includes.header')
+			@else
+				@include('includes.header-edit')
+			@endif
+			<!-- END HEADER -->
+			</div> <!-- FIM DIV.page-wrapper-top -->
+		</div> <!-- FIM DIV.page-wrapper-row -->
 
-    <div class="page-wrapper-row full-height">
-        <div class="page-wrapper-middle">
-            <!-- BEGIN CONTAINER -->
-            <div class="page-container">
-                <!-- BEGIN CONTENT -->
-                <div class="page-content-wrapper">
-                    <!-- BEGIN CONTENT BODY -->
-                    <!-- BEGIN PAGE HEAD-->
-                    <div class="page-head">
-                        <div class="container">
-                            <!-- BEGIN PAGE TITLE -->
-                            <div class="page-title">
-                                <h1> Configurações </h1>
-                            </div>
-                            <!-- END PAGE TITLE -->
+		<div class="page-wrapper-row full-height">
+			<div class="page-wrapper-middle">
+				<div class="page-container">
+					<div class="page-content-wrapper">
+						<div class="page-head">
+							<div class="container">
+								<div class="page-title hidden-xs hidden-sm">
+									<h1>Configurações
+										<small>Permissões</small>
+									</h1>
+								</div>
+							</div> <!-- FIM DIV .container -->
+						</div> <!-- FIM DIV .page-head -->
 
-
-                        </div>
-                    </div>
-                    <!-- END PAGE HEAD-->
-                    <!-- BEGIN PAGE CONTENT BODY -->
-                    <div class="page-content">
-                        <div class="container">
-                            <!-- BEGIN PAGE BREADCRUMBS
-                            <ul class="page-breadcrumb breadcrumb">
-                                <li>
-                                    <a href=" route('index') ">Home</a>
-                                    <i class="fa fa-circle"></i>
-                                </li>
-                                <li>
-                                    <span>Configurações</span>
-                                </li>
-                            </ul>-->
-
-                            <div class="alert alert-danger alert-dismissible" id="delete-group-alert" role="alert"
-                                 style="display: none;">
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
-                                            aria-hidden="true">&times;</span></button>
-                                <strong>Atenção </strong><span id="message"></span>
-                            </div>
-
-                            @if(Session::has('error.field'))
-                                <div class="alert alert-danger alert-dismissible" role="alert">
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
-                                                aria-hidden="true">&times;</span></button>
-                                    <strong>Atenção </strong> {{ Session::get('error.field') }}
-                                </div>
-                        @endif
-                        <!-- END PAGE BREADCRUMBS -->
-
-                            <!-- Modal -->
-                            <div class="modal fade" id="newModel" tabindex="-1" role="dialog"
-                                 aria-labelledby="myModalLabel">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span></button>
-                                            <h4 class="modal-title" id="myModalLabel">Nova Classe</h4>
-                                        </div>
-
-                                        {!! Form::open(['route' => 'config.newModel', 'method' => 'POST']) !!}
-                                        <div class="modal-body">
-
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <label> Model:</label>
-                                                    <input type="text" name="model" class="form-control" required>
-
-                                                </div>
-
-                                                <div class="col-md-4">
-                                                    <label> Text: </label>
-                                                    <input type="text" name="text" class="form-control" required>
-                                                </div>
-
-                                            </div>
-
-
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">Fechar
-                                            </button>
-                                            <button class="btn btn-primary" type="submit">Salvar</button>
-                                        </div>
-                                        {!! Form::close() !!}
-                                    </div>
-                                </div>
-                            </div>
-
-                        <?php $i = 0; ?>
-
-                        @foreach($models as $model)
-                            <!-- BEGIN PAGE CONTENT INNER -->
-                                <div class="page-content-inner">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <!-- BEGIN BORDERED TABLE PORTLET-->
-                                            <div class="portlet light form-fit ">
+						<div class="page-content">
+							<div class="container">
+								<div class="page-content-inner">
+									<div class="row">
+										<div class="col-md-12">
+											<div class="portlet light ">
                                                 <div class="portlet-title">
-                                                    <div class="caption">
-                                                        <i class="icon-settings font-red"></i>
-                                                        <span class="caption-subject font-red sbold uppercase">{{ $model->text }}</span>
-
-                                                    </div>
-
-
-                                                    <div class="actions">
+													<div class="caption font-green-haze">
+														<i class="icon-settings font-red"></i>
+														<span class="caption-subject font-red bold uppercase"> Pessoas</span>
+													</div> <!-- FIM DIV .caption.font-green-haze -->
+													<div class="actions">
                                                         <div class="btn-group btn-group-devided">
-
                                                             <div class="btn-group">
-                                                                <a class="btn red btn-outline btn-circle"
-                                                                   href="javascript:;" data-toggle="dropdown">
+                                                                <a class="btn red btn-outline btn-circle" href="javascript:;" data-toggle="dropdown">
                                                                     <i class="fa fa-share"></i>
                                                                     <span class="hidden-xs"> Opções </span>
                                                                     <i class="fa fa-angle-down"></i>
                                                                 </a>
-                                                                <ul class="dropdown-menu pull-right"
-                                                                    id="sample_3_tools">
+                                                                <ul class="dropdown-menu pull-right" id="sample_3_tools">
                                                                     <li>
-                                                                        <a href="javascript:;" data-toggle="modal"
-                                                                           data-target="#newModel">
-                                                                            <i class="fa fa-table"
-                                                                               aria-hidden="true"></i>
+                                                                        <a href="javascript:;" data-toggle="modal" data-target="#newModel">
+                                                                            <i class="fa fa-table" aria-hidden="true"></i>
                                                                             Classe
                                                                         </a>
                                                                     </li>
-
                                                                     <li>
-                                                                        <a href="javascript:;" data-toggle="modal"
-                                                                           data-target="{{ '#newRule-' . $model->model }}">
-                                                                            <i class="fa fa-plus"
-                                                                               aria-hidden="true"></i>
+                                                                        <a href="javascript:;" data-toggle="modal" data-target="#newRule-person">
+                                                                            <i class="fa fa-plus" aria-hidden="true"></i>
                                                                             Nova Regra
                                                                         </a>
                                                                     </li>
-
                                                                     <li>
                                                                         <a href="javascript:;">
-                                                                            <i class="fa fa-undo"
-                                                                               aria-hidden="true"></i>
+                                                                            <i class="fa fa-undo" aria-hidden="true"></i>
                                                                             Voltar ao Padrão
                                                                         </a>
                                                                     </li>
                                                                 </ul>
                                                             </div>
-
-
                                                         </div>
+                                                    </div> <!-- FIM DIV .actions -->
+												</div> <!-- FIM DIV .portlet-title -->
 
-                                                    </div>
-                                                </div>
+                                                <div class="portlet-body form">
+                                                    <div class="portlet-body-config">
+                                                    	<div class="table-scrollable table-scrollable-borderless table-striped">
+                                                            <table class="table table-hover table-light table-striped">
+                                                                <thead>
+                                                                    <tr class="uppercase">
+                                                                        <th style="width: 90%;"> CAMPO </th>
+                                                                        <th style="width: 10%;"> REQUERIDO </th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td> Nome </td>
+                                                                        <td>
+                                                                        	<div class="md-checkbox" style="left: 30%; width: 10px;">
+																				<input type="checkbox" id="checkbox1a" class="md-check">
+																				<label for="checkbox1a">
+																					<span class="inc"></span>
+																					<span class="check"></span>
+																					<span class="box"></span>
+                                                                   				</label>
+                                                                    		</div>
+                                                                    	</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td> Nome </td>
+                                                                        <td>
+                                                                        	<div class="md-checkbox" style="left: 30%; width: 10px;">
+																				<input type="checkbox" id="checkbox2a" class="md-check">
+																				<label for="checkbox2a">
+																					<span class="inc"></span>
+																					<span class="check"></span>
+																					<span class="box"></span>
+                                                                   				</label>
+                                                                    		</div>
+                                                                    	</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td> Nome </td>
+                                                                        <td>
+                                                                        	<div class="md-checkbox" style="left: 30%; width: 10px;">
+																				<input type="checkbox" id="checkbox3a" class="md-check">
+																				<label for="checkbox3a">
+																					<span class="inc"></span>
+																					<span class="check"></span>
+																					<span class="box"></span>
+                                                                   				</label>
+                                                                    		</div>
+                                                                    	</td>
+                                                                    </tr>
 
-                                                <!-- Modal -->
-                                                <div class="modal fade" id="{{ 'newRule-' . $model->model }}"
-                                                     tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                                                    <div class="modal-dialog" role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <button type="button" class="close" data-dismiss="modal"
-                                                                        aria-label="Close"><span
-                                                                            aria-hidden="true">&times;</span></button>
-                                                                <h4 class="modal-title" id="myModalLabel">Nova Regra
-                                                                    - {{ $model->text }}</h4>
-                                                            </div>
-
-                                                            {!! Form::open(['route' => ['config.newRule', 'model' => $model->model], 'method' => 'POST']) !!}
-                                                            <div class="modal-body">
-
-                                                                <div class="row">
-                                                                    <div class="col-md-4">
-                                                                        <label> Valor:</label>
-                                                                        <input type="text" name="value"
-                                                                               class="form-control" required>
-
-                                                                    </div>
-
-                                                                    <div class="col-md-4">
-                                                                        <label> Nome do Campo: </label>
-                                                                        <input type="text" name="field"
-                                                                               class="form-control" required>
-                                                                    </div>
-
-
-                                                                    <div class="col-md-4" style="margin-top: 30px;">
-                                                                        <fieldset>
-                                                                            <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
-                                                                                <input type="checkbox" name="required"
-                                                                                       class="checkboxes check-model"
-                                                                                       id=""
-                                                                                       value="1"/>
-                                                                                <span></span>
-                                                                            </label>
-                                                                            <label class="lbl-txt">Obrigatório</label>
-                                                                        </fieldset>
-                                                                    </div>
-                                                                </div>
-
-
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-default"
-                                                                        data-dismiss="modal">Fechar
-                                                                </button>
-                                                                <button class="btn btn-primary" type="submit">Salvar
-                                                                </button>
-                                                            </div>
-                                                            {!! Form::close() !!}
+                                                                </tbody>
+                                                            </table>
                                                         </div>
-                                                    </div>
-                                                </div>
+                                                    </div>  <!-- FIM DIV .form-body -->
+
+													<div class="form-actions ">
+														<button type="button" class="btn blue">Enviar</button>
+														<button type="button" class="btn default">Cancel</button>
+													</div>
+                                                </div> <!-- FIM DIV .portlet-body.form  -->
+                                            </div> <!-- FIM DIV .portlet.light -->
+										</div> <!-- FIM DIV .col-md-12 -->
+									</div> <!-- FIM DIV .row -->
+								</div> <!-- FIM DIV .page-content-inner -->
+							</div>  <!-- FIM DIV .container -->
 
 
-                                                <div class="portlet-body form ajuste-box-config">
-
-                                                    {!! Form::open(['route' =>
-                                                        ['config.required.fields', 'model' => $model->model], 'method' => 'POST',
-                                                         'class' => 'form-horizontal form-bordered']) !!}
-
-                                                    @if(count($class[$i]) > 0)
-                                                        @foreach($class[$i] as $item)
-                                                            <div class="col-md-2 col-sm-4 col-xs-6 box-check">
-                                                                <label class="col-md-12 label-box-check">{{ $item->field }}</label><br>
-                                                                <input type="checkbox"
-                                                                       @if($item->required != null) checked @endif
-                                                                       class="make-switch switch-large" name="{{ $item->value }}"
-                                                                       data-label-icon="fa fa-fullscreen" value="1"
-                                                                       data-on-text="<i class='fa fa-check'></i>"
-                                                                       data-off-text="<i class='fa fa-times'></i>">
+							<div class="container">
+								<div class="page-content-inner">
+									<div class="row">
+										<div class="col-md-12">
+											<div class="portlet light ">
+                                                <div class="portlet-title">
+													<div class="caption font-green-haze">
+														<i class="icon-settings font-red"></i>
+														<span class="caption-subject font-red bold uppercase"> Pessoas</span>
+													</div> <!-- FIM DIV .caption.font-green-haze -->
+													<div class="actions">
+                                                        <div class="btn-group btn-group-devided">
+                                                            <div class="btn-group">
+                                                                <a class="btn red btn-outline btn-circle" href="javascript:;" data-toggle="dropdown">
+                                                                    <i class="fa fa-share"></i>
+                                                                    <span class="hidden-xs"> Opções </span>
+                                                                    <i class="fa fa-angle-down"></i>
+                                                                </a>
+                                                                <ul class="dropdown-menu pull-right" id="sample_3_tools">
+                                                                    <li>
+                                                                        <a href="javascript:;" data-toggle="modal" data-target="#newModel">
+                                                                            <i class="fa fa-table" aria-hidden="true"></i>
+                                                                            Classe
+                                                                        </a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript:;" data-toggle="modal" data-target="#newRule-person">
+                                                                            <i class="fa fa-plus" aria-hidden="true"></i>
+                                                                            Nova Regra
+                                                                        </a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript:;">
+                                                                            <i class="fa fa-undo" aria-hidden="true"></i>
+                                                                            Voltar ao Padrão
+                                                                        </a>
+                                                                    </li>
+                                                                </ul>
                                                             </div>
-                                                        @endforeach
-                                                    @endif
+                                                        </div>
+                                                    </div> <!-- FIM DIV .actions -->
+												</div> <!-- FIM DIV .portlet-title -->
 
-                                                    <?php $i++; ?>
+                                                <div class="portlet-body form">
+                                                    <div class="portlet-body-config">
+                                                    	<div class="table-scrollable table-scrollable-borderless table-striped">
+                                                            <table class="table table-hover table-light table-striped">
+                                                                <thead>
+                                                                    <tr class="uppercase">
+                                                                        <th style="width: 90%;"> CAMPO </th>
+                                                                        <th style="width: 10%;"> REQUERIDO </th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td> Nome </td>
+                                                                        <td>
+                                                                        	<div class="md-checkbox" style="left: 30%; width: 10px;">
+																				<input type="checkbox" id="checkbox1b" class="md-check">
+																				<label for="checkbox1b">
+																					<span class="inc"></span>
+																					<span class="check"></span>
+																					<span class="box"></span>
+                                                                   				</label>
+                                                                    		</div>
+                                                                    	</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td> Nome </td>
+                                                                        <td>
+                                                                        	<div class="md-checkbox" style="left: 30%; width: 10px;">
+																				<input type="checkbox" id="checkbox2b" class="md-check">
+																				<label for="checkbox2b">
+																					<span class="inc"></span>
+																					<span class="check"></span>
+																					<span class="box"></span>
+                                                                   				</label>
+                                                                    		</div>
+                                                                    	</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td> Nome </td>
+                                                                        <td>
+                                                                        	<div class="md-checkbox" style="left: 30%; width: 10px;">
+																				<input type="checkbox" id="checkbox3b" class="md-check">
+																				<label for="checkbox3b">
+																					<span class="inc"></span>
+																					<span class="check"></span>
+																					<span class="box"></span>
+                                                                   				</label>
+                                                                    		</div>
+                                                                    	</td>
+                                                                    </tr>
 
-                                                    <div class="col-md-12 box-check">
-                                                        <button class="btn btn-circle btn-success" type="submit">
-                                                            <i class="fa fa-check font-white"></i>
-                                                            Enviar
-                                                        </button>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>  <!-- FIM DIV .form-body -->
 
-                                                    </div>
-
-                                                    <br><br>
-                                                    {!! Form::close() !!}
-
-                                                </div>
-
-                                            </div>
-                                        </div>
-
-
-                                    </div>
+													<div class="form-actions ">
+														<button type="button" class="btn blue">Enviar</button>
+														<button type="button" class="btn default">Cancel</button>
+													</div>
+                                                </div> <!-- FIM DIV .portlet-body.form  -->
+                                            </div> <!-- FIM DIV .portlet.light -->
+										</div> <!-- FIM DIV .col-md-12 -->
+									</div> <!-- FIM DIV .row -->
+								</div> <!-- FIM DIV .page-content-inner -->
+							</div>  <!-- FIM DIV .container -->
 
 
-                                </div>
-                                <!-- END BORDERED TABLE PORTLET-->
 
-                @endforeach
+							<div class="container">
+								<div class="page-content-inner">
+									<div class="row">
+										<div class="col-md-12">
+											<div class="portlet light ">
+                                                <div class="portlet-title">
+													<div class="caption font-green-haze">
+														<i class="icon-settings font-red"></i>
+														<span class="caption-subject font-red bold uppercase"> Eventos</span>
+													</div> <!-- FIM DIV .caption.font-green-haze -->
+													<div class="actions">
+                                                        <div class="btn-group btn-group-devided">
+                                                            <div class="btn-group">
+                                                                <a class="btn red btn-outline btn-circle" href="javascript:;" data-toggle="dropdown">
+                                                                    <i class="fa fa-share"></i>
+                                                                    <span class="hidden-xs"> Opções </span>
+                                                                    <i class="fa fa-angle-down"></i>
+                                                                </a>
+                                                                <ul class="dropdown-menu pull-right" id="sample_3_tools">
+                                                                    <li>
+                                                                        <a href="javascript:;" data-toggle="modal" data-target="#newModel">
+                                                                            <i class="fa fa-table" aria-hidden="true"></i>
+                                                                            Classe
+                                                                        </a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript:;" data-toggle="modal" data-target="#newRule-person">
+                                                                            <i class="fa fa-plus" aria-hidden="true"></i>
+                                                                            Nova Regra
+                                                                        </a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript:;">
+                                                                            <i class="fa fa-undo" aria-hidden="true"></i>
+                                                                            Voltar ao Padrão
+                                                                        </a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div> <!-- FIM DIV .actions -->
+												</div> <!-- FIM DIV .portlet-title -->
+
+                                                <div class="portlet-body form">
+                                                    <div class="portlet-body-config">
+                                                    	<div class="table-scrollable table-scrollable-borderless table-striped">
+                                                            <table class="table table-hover table-light table-striped">
+                                                                <thead>
+                                                                    <tr class="uppercase">
+                                                                        <th style="width: 90%;"> CAMPO </th>
+                                                                        <th style="width: 10%;"> REQUERIDO </th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td> Nome </td>
+                                                                        <td>
+                                                                        	<div class="md-checkbox" style="left: 30%; width: 10px;">
+																				<input type="checkbox" id="checkbox1c" class="md-check">
+																				<label for="checkbox1c">
+																					<span class="inc"></span>
+																					<span class="check"></span>
+																					<span class="box"></span>
+                                                                   				</label>
+                                                                    		</div>
+                                                                    	</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td> Nome </td>
+                                                                        <td>
+                                                                        	<div class="md-checkbox" style="left: 30%; width: 10px;">
+																				<input type="checkbox" id="checkbox2c" class="md-check">
+																				<label for="checkbox2c">
+																					<span class="inc"></span>
+																					<span class="check"></span>
+																					<span class="box"></span>
+                                                                   				</label>
+                                                                    		</div>
+                                                                    	</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td> Nome </td>
+                                                                        <td>
+                                                                        	<div class="md-checkbox" style="left: 30%; width: 10px;">
+																				<input type="checkbox" id="checkbox3c" class="md-check">
+																				<label for="checkbox3c">
+																					<span class="inc"></span>
+																					<span class="check"></span>
+																					<span class="box"></span>
+                                                                   				</label>
+                                                                    		</div>
+                                                                    	</td>
+                                                                    </tr>
+
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>  <!-- FIM DIV .form-body -->
+
+													<div class="form-actions ">
+														<button type="button" class="btn blue">Enviar</button>
+														<button type="button" class="btn default">Cancel</button>
+													</div>
+                                                </div> <!-- FIM DIV .portlet-body.form  -->
+                                            </div> <!-- FIM DIV .portlet.light -->
+										</div> <!-- FIM DIV .col-md-12 -->
+									</div> <!-- FIM DIV .row -->
+								</div> <!-- FIM DIV .page-content-inner -->
+							</div>  <!-- FIM DIV .container -->
 
 
-            </div>
-        </div>
-    </div>
-</div>
-</div>
-</div>
-@include('includes.footer')
-</div>
+
+
+						</div>  <!-- FIM DIV .page-content -->
+					</div> <!-- FIM DIV .page-content-wrapper -->
+				</div> <!-- FIM DIV .page-container -->
+			</div> <!-- FIM DIV .page-wrapper-middle -->
+		</div> <!-- FIM DIV .page-wrapper-row.full-height -->
+	@include('includes.footer')
+	</div><!-- FIM DIV.page-wrapper -->
 
 <!-- END QUICK NAV -->
 @if(!isset($church_id) || $church_id == null)

@@ -39,6 +39,7 @@
 
 <!-- CSS Próprio -->
 <link href="../css/style.css" rel="stylesheet" type="text/css" />
+<link href="../assets/global/css/geral.css" rel="stylesheet" type="text/css" />
 <link href="../css/search.css" rel="stylesheet" type="text/css" />
 <meta name="csrf-token" content="{{ csrf_token() }}">
 

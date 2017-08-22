@@ -1,0 +1,9 @@
+
+
+/* Config padrao dos box usado nas paginas */
+
+.portlet-body-config{
+	padding: 10px !important;
+	padding-left: 0 !important;
+    padding-right: 0 !important;
+}
