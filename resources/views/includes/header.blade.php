@@ -14,7 +14,7 @@
 
                     <img src="../logo/Simbolo.png" alt="logo" class="logo-default hidden-md hidden-lg" style="width: 100%; margin-top: 2px; display: none;">
 
-                    <img src="../teste/logo-menor-header.png" alt="logo" class="logo-default " style="width: 270px; margin-top: 7px;">
+                    <img src="../teste/logo-menor-header.png" alt="logo" class="logo-default " style="width: 180px; margin-top: 15px;">
 
                     </a>
                 </div>
