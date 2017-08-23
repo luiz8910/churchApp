@@ -170,6 +170,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post("/config-model", "ConfigController@newModel")->name('config.newModel');
 
         Route::post("/getChurchContacts", "PersonController@getChurchContacts")->name('config.person.contacts');
+
+        Route::get("/importar", "ConfigController@import")->name('config.person.contacts.view');
     });
 
     Route::get("/getPusherKey", "ConfigController@getPusherKey");

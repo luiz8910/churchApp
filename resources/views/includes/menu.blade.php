@@ -115,9 +115,23 @@
                     </a>
                 </li>-->
                 @if(Auth::user()->person_id != null && Auth::user()->person->role_id == $leader)
-                    <li class="menu-dropdown classic-menu-dropdown ">
-                        <a href="{{ route("config.index") }}"> Configurações
-                        </a>
+                    <li class="menu-dropdown classic-menu-dropdown">
+                        <a href="javascript:;">Configurações</a>
+                        <ul class="dropdown-menu pull-left">
+                            <li>
+                                <a href="{{ route("config.index") }}">
+                                    <i class="fa fa-wrench"></i>
+                                    Permissões
+                                    <span></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('config.person.contacts.view') }}">
+                                    <i class="fa fa-cloud-upload"></i>
+                                    Importar
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                 @endif
             </ul>

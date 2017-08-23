@@ -217,4 +217,30 @@ class ConfigController extends Controller
 
         return json_encode($address);
     }
+
+    public function import()
+    {
+        /*
+        * Variáveis gerais p/ todas as páginas
+        *
+        */
+
+        $countPerson[] = $this->countPerson();
+
+        $countGroups[] = $this->countGroups();
+
+        $leader = $this->getLeaderRoleId();
+
+        $notify = $this->notify();
+
+        $qtde = count($notify) or 0;
+
+        $church_id = $this->getUserChurch();
+
+        /*
+         * Fim Variáveis
+         */
+
+        return view('config.dropzone', compact('countPerson', 'countGroups', 'leader', 'notify', 'qtde', 'church_id'));
+    }
 }

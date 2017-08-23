@@ -7,10 +7,11 @@ var FormDropzone = function () {
 
             Dropzone.options.myDropzone = {
                 dictDefaultMessage: "",
+                autoProcessQueue: false,
                 init: function() {
                     this.on("addedfile", function(file) {
                         // Create the remove button
-                        var removeButton = Dropzone.createElement("<a href='javascript:;'' class='btn red btn-sm btn-block'>Remove</a>");
+                        var removeButton = Dropzone.createElement("<a href='javascript:;'' class='btn red btn-sm btn-block'>Remover</a>");
                         
                         // Capture the Dropzone instance as closure.
                         var _this = this;
@@ -29,9 +30,18 @@ var FormDropzone = function () {
 
                         // Add the button to the file preview element.
                         file.previewElement.appendChild(removeButton);
+
+                        $("#my-dropzone").submit(function (e) {
+
+                            e.preventDefault();
+                            e.stopPropagation();
+                            _this.processQueue();
+                        });
                     });
                 }            
-            }
+            };
+
+
         }
     };
 }();

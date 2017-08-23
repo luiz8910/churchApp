@@ -73,7 +73,9 @@ License: You must have a valid license purchased only from themeforest(the above
                         <div class="container">
                             <!-- BEGIN PAGE TITLE -->
                             <div class="page-title">
-                                <h1> Configurações </h1>
+                                <h1> Configurações
+                                    <small>Permissões</small>
+                                </h1>
                             </div>
                             <!-- END PAGE TITLE -->
 
@@ -274,13 +276,62 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 </div>
 
 
-                                                <div class="portlet-body form ajuste-box-config">
+                                                <div class="portlet-body form">
 
                                                     {!! Form::open(['route' =>
                                                         ['config.required.fields', 'model' => $model->model], 'method' => 'POST',
                                                          'class' => 'form-horizontal form-bordered']) !!}
 
-                                                    @if(count($class[$i]) > 0)
+                                                    <div class="portlet-body-config">
+                                                        <div class="table-scrollable table-scrollable-borderless table-striped">
+                                                            <table class="table table-hover table-light table-striped">
+                                                                <thead>
+                                                                <tr class="uppercase">
+                                                                    <th style="width: 90%;"> CAMPO </th>
+                                                                    <th style="width: 10%;"> REQUERIDO </th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody>
+
+                                                                    @if(count($class[$i]) > 0)
+                                                                        @foreach($class[$i] as $item)
+                                                                            <tr>
+                                                                                <td> {{ $item->field }} </td>
+
+                                                                                <td>
+                                                                                    <div class="md-checkbox" style="left: 30%; width: 10px;">
+                                                                                        <input type="checkbox" id="checkbox-{{ $model->model."-".$item->value }}"
+                                                                                               class="md-check" name="{{ $item->value }}"
+                                                                                               @if($item->required != null) checked @endif>
+
+                                                                                        <label for="checkbox-{{ $model->model."-".$item->value }}">
+                                                                                            <span class="inc"></span>
+                                                                                            <span class="check"></span>
+                                                                                            <span class="box"></span>
+                                                                                        </label>
+                                                                                    </div>
+                                                                                </td>
+                                                                            </tr>
+                                                                        @endforeach
+                                                                    @endif
+
+                                                                    <?php $i++; ?>
+
+
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-actions ">
+                                                        <button class="btn btn-circle btn-success" type="submit">
+                                                            <i class="fa fa-check font-white"></i>
+                                                            Enviar
+                                                        </button>
+                                                    </div>
+
+
+                                                    {{--@if(count($class[$i]) > 0)
                                                         @foreach($class[$i] as $item)
                                                             <div class="col-md-2 col-sm-4 col-xs-6 box-check">
                                                                 <label class="col-md-12 label-box-check">{{ $item->field }}</label><br>
@@ -292,19 +343,10 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                        data-off-text="<i class='fa fa-times'></i>">
                                                             </div>
                                                         @endforeach
-                                                    @endif
+                                                    @endif--}}
 
-                                                    <?php $i++; ?>
 
-                                                    <div class="col-md-12 box-check">
-                                                        <button class="btn btn-circle btn-success" type="submit">
-                                                            <i class="fa fa-check font-white"></i>
-                                                            Enviar
-                                                        </button>
 
-                                                    </div>
-
-                                                    <br><br>
                                                     {!! Form::close() !!}
 
                                                 </div>
@@ -320,18 +362,6 @@ License: You must have a valid license purchased only from themeforest(the above
                                 <!-- END BORDERED TABLE PORTLET-->
 
                 @endforeach
-
-
-                {!! Form::open(['route' => 'config.person.contacts', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
-                    <input type="file" name="file">
-
-                            <br><br>
-                    <button type="submit" class="btn green">
-                        <i class="fa fa-table"></i>
-                        Enviar Planilha
-                    </button>
-
-                {!! Form::close() !!}
             </div>
         </div>
     </div>
