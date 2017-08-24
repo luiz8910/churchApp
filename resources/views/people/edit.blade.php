@@ -551,7 +551,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                             </div>
 
                                             <div class="row">
-                                                <div class="col-md-6">
+                                                <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>RG (Sem pontos ou traços)</label>
                                                         <div class="input-group">
@@ -570,7 +570,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-6">
+                                                <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Cargo</label>
                                                         <div class="input-icon input-icon-sm">
@@ -592,6 +592,25 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             </select>
                                                             @endif
                                                         </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Data de Batismo</label>
+                                                        <div class="input-group date date-picker" data-date-format="dd/mm/yyyy">
+                                                            <span class="input-group-addon">
+                                                                <i class="fa fa-calendar font-blue"></i>
+                                                            </span>
+                                                            <input type="text" class="form-control input-date" name="dateBaptism"
+                                                                   placeholder="dd/mm/aaaa" maxlength="10" value="{{ $model->dateBaptism }}"
+                                                                   @if($fields[$i]->required == 1)
+                                                                   required
+                                                                    @endif
+                                                            <?php $i++; ?>
+                                                            >
+                                                        </div>
+
                                                     </div>
                                                 </div>
                                             </div>

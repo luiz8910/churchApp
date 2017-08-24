@@ -203,7 +203,7 @@ class PersonController extends Controller
             'church_id' => $this->getUserChurch()
         ]);
 
-        //dd($fields);
+        //dd($fields[0]);
 
         $church_id = $this->getUserChurch();
 
@@ -330,7 +330,7 @@ class PersonController extends Controller
 
         $email = $email["email"];
 
-        if(!$teen)
+        /*if(!$teen)
         {
             /*if(!$password){
                 \Session::flash("email.exists", "Escolha uma senha");
@@ -341,7 +341,7 @@ class PersonController extends Controller
                 $request->flashExcept('password');
 
                 return redirect()->route("person.create")->withInput();
-            }*/
+            }
 
             foreach ($fields as $field) {
                 if($field->value == "email"){
@@ -351,7 +351,7 @@ class PersonController extends Controller
                     }
                 }
             }
-        }
+        }*/
 
 
         $user = User::select('id')->where('email', $email)->first() or null;
@@ -365,10 +365,12 @@ class PersonController extends Controller
             return redirect()->route("person.create")->withInput();
         }
 
-        $data = $request->except(['img', 'email', 'password', 'confirm-password', '_token']);
+        $data = $request->except(['img', 'password', 'confirm-password', '_token']);
 
         if($teen)
         {
+            $data["email"] = $email;
+
             $verifyFields = $this->verifyRequiredFields($data, 'teen');
 
             if($verifyFields)
@@ -378,6 +380,8 @@ class PersonController extends Controller
             }
 
         }else{
+            unset($data["email"]);
+
             $verifyFields = $this->verifyRequiredFields($data, 'person');
 
             if($verifyFields)
@@ -389,6 +393,8 @@ class PersonController extends Controller
 
 
         $data['dateBirth'] = $this->formatDateBD($data['dateBirth']);
+
+        $data['dateBaptism'] = $this->formatDateBD($data['dateBaptism']);
 
         $data['imgProfile'] = 'uploads/profile/noimage.png';
 
@@ -510,6 +516,8 @@ class PersonController extends Controller
 
         $model->dateBirth = $this->formatDateView($model->dateBirth);
 
+        $model->dateBaptism = $this->formatDateView($model->dateBaptism);
+
         $leader = $this->getLeaderRoleId();
 
         $location = $this->formatGoogleMaps($model);
@@ -628,6 +636,8 @@ class PersonController extends Controller
         $roles = $this->roleRepository->all();
 
         $model->dateBirth = $this->formatDateView($model->dateBirth);
+
+        $model->dateBaptism = $this->formatDateView($model->dateBaptism);
 
         $location = $this->formatGoogleMaps($model);
 
@@ -1092,7 +1102,7 @@ class PersonController extends Controller
                 $data["name"] = $fullName[0];
                 $data["lastName"] = $fullName[1];
 
-                dd($item);
+                echo $data["name"] . " ". $data["lastName"] . "<br>";
             }
 
 

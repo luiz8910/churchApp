@@ -250,6 +250,55 @@ License: You must have a valid license purchased only from themeforest(the above
                                             </div>
 
                                             <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Email</label>
+                                                        <div class="input-group input-icon right">
+                                                            <span class="input-group-addon">
+                                                                <i class="fa fa-envelope font-blue" id="icon-email"></i>
+                                                            </span>
+                                                            <input type="email" placeholder="email@dominio.com" value="{{ $model->email or null }}"
+                                                                   id="email-edit" name="email" class="form-control"
+
+                                                            />
+                                                            <i class="fa fa-check font-green" id="icon-success-email" style="display: none;"></i>
+                                                            <i class="fa fa-exclamation font-red" id="icon-error-email" style="display: none;"></i>
+                                                        </div>
+
+                                                        <span class="help-block" id="emailExists" style="display: none; color: red;">
+                                                            <i class="fa fa-block"></i>
+                                                            Já existe uma conta associada a este email
+                                                        </span>
+                                                        <span class="help-block" id="invalidEmail" style="display: none; color: red;">
+                                                            <i class="fa fa-block"></i>
+                                                            Email em formato incorreto
+                                                        </span>
+                                                        <span class="help-block" id="validEmail" style="display: none; color: green;">
+                                                            <i class="fa fa-check"></i>
+                                                            Email Válido
+                                                        </span>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    {!! Form::FormGroup('dateBirth', $errors) !!}
+                                                    <label class="control-label hidden-xs hidden-sm">Data de Nascimento</label>
+                                                    <label class="control-label hidden-md hidden-lg">Data de Nasc.</label>
+                                                    <div class="input-group date date-picker" data-date-format="dd/mm/yyyy">
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-calendar font-blue"></i>
+                                                        </span>
+                                                        <input type="text" placeholder="dd/mm/aaaa" value="{{ $model->dateBirth }}"
+                                                               name="dateBirth" class="form-control input-date" />
+                                                    </div>
+                                                    {!! Form::error('dateBirth', $errors) !!}
+                                                    {!! Form::endFormGroup() !!}
+
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
 
 
                                                 <div class="col-md-6">
@@ -266,16 +315,16 @@ License: You must have a valid license purchased only from themeforest(the above
 
 
                                                 <div class="col-md-6">
-                                                    {!! Form::FormGroup('dateBirth', $errors) !!}
-                                                    <label class="control-label">Data de Nasc.</label>
+                                                    {!! Form::FormGroup('dateBaptism', $errors) !!}
+                                                    <label class="control-label">Data de Batismo.</label>
                                                     <div class="input-group date date-picker" data-date-format="dd/mm/yyyy">
                                                         <span class="input-group-addon">
                                                             <i class="fa fa-calendar font-blue"></i>
                                                         </span>
-                                                        <input type="text" placeholder="dd/mm/aaaa" value="{{ $model->dateBirth }}"
-                                                               name="dateBirth" class="form-control input-date" />
+                                                        <input type="text" placeholder="dd/mm/aaaa" value="{{ $model->dateBaptism }}"
+                                                               name="dateBaptism" class="form-control input-date" />
                                                     </div>
-                                                    {!! Form::error('dateBirth', $errors) !!}
+                                                    {!! Form::error('dateBaptism', $errors) !!}
                                                     {!! Form::endFormGroup() !!}
                                                 </div>
                                             </div>

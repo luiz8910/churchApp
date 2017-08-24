@@ -10,6 +10,7 @@ var FormDropzone = function () {
                 autoProcessQueue: false,
                 init: function() {
                     this.on("addedfile", function(file) {
+                        console.log(file);
                         // Create the remove button
                         var removeButton = Dropzone.createElement("<a href='javascript:;'' class='btn red btn-sm btn-block'>Remover</a>");
                         
@@ -37,6 +38,28 @@ var FormDropzone = function () {
                             e.stopPropagation();
                             _this.processQueue();
                         });
+
+                        var xls =  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+                        var csv = 'application/vnd.ms-excel';
+
+                        if(file.type != xls && file.type != csv)
+                        {
+                            var dot = file.name.lastIndexOf('.');
+
+                            var slice = file.name.slice(dot);
+
+                            if(slice != 'xls' && slice != 'xlsx' && slice != 'csv')
+                            {
+                                var text = 'Arquivos com a extensão ' + slice + ' não são permitidos';
+
+                                $("#error-msg").click(function () {
+                                    swal("Arquivo Inválido!", text, "info");
+                                }).trigger('click');
+
+                                _this.removeFile(file);
+                            }
+
+                        }
                     });
                 }            
             };

@@ -15,7 +15,8 @@ class Person extends Model implements Transformable
     protected $fillable = [
         'name', 'lastName', 'email', 'church_id', 'tel', 'cel', 'role_id', 'imgProfile', 'gender',
         'dateBirth', 'cpf', 'rg', 'maritalStatus', 'partner', 'father_id', 'mother_id','mailing',
-        'hasKids', 'tag', 'specialNeeds', 'street', 'neighborhood', 'city', 'zipCode', 'state', 'number'
+        'hasKids', 'tag', 'specialNeeds', 'street', 'neighborhood', 'city', 'zipCode', 'state', 'number',
+        'dateBaptism'
     ];
 
     /**

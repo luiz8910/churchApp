@@ -173,13 +173,57 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <label for="exampleInputPassword1">Telefone</label>
                                                     <div class="input-group">
                                                     <span class="input-group-addon">
-                                                        <i class="fa fa-phone font-green"></i>
+                                                        <i class="fa fa-phone font-blue"></i>
                                                     </span>
                                                         <input type="text" class="form-control tel" name="tel"
                                                                id="exampleInputPassword1" value="{{ old('tel') }}" placeholder="(15) 1231413423">
                                                     </div>
                                                 </div>
 
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group" id="form-email">
+                                                    <label>Email</label>
+                                                    <div class="input-group input-icon right">
+                                                            <span class="input-group-addon">
+                                                                <i class="fa fa-envelope font-blue" id="icon-email"></i>
+                                                            </span>
+                                                        <input type="text" name="email" id="email" class="form-control"
+                                                               placeholder="email@dominio.com" value="{{ old('email') }}">
+
+                                                        <i class="fa fa-check font-green" id="icon-success-email" style="display: none;"></i>
+                                                        <i class="fa fa-exclamation font-red" id="icon-error-email" style="display: none;"></i>
+                                                    </div>
+                                                    <span class="help-block" id="emailExists" style="display: none; color: red;">
+                                                        <i class="fa fa-block"></i>
+                                                        Já existe uma conta associada a este email
+                                                    </span>
+                                                    <span class="help-block" id="invalidEmail" style="display: none; color: red;">
+                                                        <i class="fa fa-block"></i>
+                                                        Email em formato incorreto
+                                                    </span>
+                                                    <span class="help-block" id="validEmail" style="display: none; color: green;">
+                                                        <i class="fa fa-check"></i>
+                                                        Email Válido
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="hidden-md hidden-lg">Data de Nasc.</label>
+                                                    <label class="hidden-sm hidden-xs">Data de Nascimento</label>
+                                                    <div class="input-group date date-picker" data-date-format="dd/mm/yyyy">
+                                                            <span class="input-group-addon">
+                                                                <i class="fa fa-calendar font-blue"></i>
+                                                            </span>
+                                                        <input type="text" class="form-control input-date" name="dateBirth"
+                                                               placeholder="dd/mm/aaaa" maxlength="10" value="{{ old('dateBirth') }}" >
+                                                    </div>
+
+                                                </div>
                                             </div>
                                         </div>
 
@@ -203,13 +247,13 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label>Data de Nasc.</label>
+                                                    <label>Data de Batismo</label>
                                                     <div class="input-group date date-picker" data-date-format="dd/mm/yyyy">
                                                             <span class="input-group-addon">
-                                                                <i class="fa fa-calendar font-blue"></i>
+                                                                <i class="fa fa-tint font-blue"></i>
                                                             </span>
-                                                        <input type="text" class="form-control input-date" name="dateBirth"
-                                                               placeholder="dd/mm/aaaa" maxlength="10" value="{{ old('dateBirth') }}" >
+                                                        <input type="text" class="form-control input-date" name="dateBaptism"
+                                                               placeholder="dd/mm/aaaa" maxlength="10" value="{{ old('dateBaptism') }}" >
                                                     </div>
 
                                                 </div>
