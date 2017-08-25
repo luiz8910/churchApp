@@ -43,6 +43,16 @@
 <!-- BEGIN THEME LAYOUT SCRIPTS -->
 <script src="../../assets/layouts/layout3/scripts/layout.min.js" type="text/javascript"></script>
 <script src="../../assets/layouts/global/scripts/quick-sidebar.min.js" type="text/javascript"></script>
+
+<script>
+    $(document).ready(function()
+    {
+        $('#clickmewow').click(function()
+        {
+            $('#radio1003').attr('checked', 'checked');
+        });
+    })
+</script>
 <!-- END THEME LAYOUT SCRIPTS -->
 <!-- CSS Próprio -->
 <script src="../../js/script.js" type="text/javascript"></script>

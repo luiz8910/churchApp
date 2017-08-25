@@ -17,8 +17,10 @@
         <link href="../assets/pages/css/search.min.css" rel="stylesheet" type="text/css"/>
         <link href="../css/navbar.css" rel="stylesheet" type="text/css"/>
         <link href="../css/page-config.css" rel="stylesheet" type="text/css"/>
-        <link href="../css/dropzone.css" rel="stylesheet" type="text/css" />
+
         <link href="../assets/global/plugins/bootstrap-sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/global/plugins/dropzone/dropzone.min.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/global/plugins/dropzone/basic.min.css" rel="stylesheet" type="text/css" />
         <!--<script src="../js/ajax.js"></script>-->
 
 @else
@@ -28,7 +30,7 @@
         <link href="../../assets/pages/css/search.min.css" rel="stylesheet" type="text/css"/>
         <link href="../../css/navbar.css" rel="stylesheet" type="text/css"/>
         <link href="../../css/page-config.css" rel="stylesheet" type="text/css"/>
-        <link href="../../css/dropzone.css" rel="stylesheet" type="text/css" />
+        <link href="../../css/geral.css" rel="stylesheet" type="text/css" />
         <link href="../../assets/global/plugins/bootstrap-sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
         <!--<script src="../js/ajax.js"></script>-->
     @endif
@@ -57,7 +59,9 @@
                         <div class="page-head">
                             <div class="container">
                                 <div class="page-title">
-
+                                    <h1>Configurações
+                                        <small>Importações</small>
+                                    </h1>
                                 </div>
                             </div> <!-- FIM DIV .container -->
                         </div> <!-- FIM DIV .page-head -->
@@ -76,31 +80,25 @@
                                                     <div class="actions">
                                                         <div class="btn-group btn-group-devided">
                                                             <div class="btn-group">
-                                                                {{--<a class="btn red btn-outline btn-circle" href="javascript:;" data-toggle="dropdown">
+                                                                <a class="btn green btn-outline btn-circle" href="javascript:;" data-toggle="dropdown">
                                                                     <i class="fa fa-share"></i>
-                                                                    <span class="hidden-xs"> Opções </span>
+                                                                    <span class="hidden-xs"> Exportar </span>
                                                                     <i class="fa fa-angle-down"></i>
                                                                 </a>
                                                                 <ul class="dropdown-menu pull-right" id="sample_3_tools">
                                                                     <li>
-                                                                        <a href="javascript:;" data-toggle="modal" data-target="#newModel">
+                                                                        <a href="javascript:;">
                                                                             <i class="fa fa-table" aria-hidden="true"></i>
-                                                                            Classe
-                                                                        </a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="javascript:;" data-toggle="modal" data-target="#newRule-person">
-                                                                            <i class="fa fa-plus" aria-hidden="true"></i>
-                                                                            Nova Regra
+                                                                            Excel (.xls)
                                                                         </a>
                                                                     </li>
                                                                     <li>
                                                                         <a href="javascript:;">
-                                                                            <i class="fa fa-undo" aria-hidden="true"></i>
-                                                                            Voltar ao Padrão
+                                                                            <i class="fa fa-cloud-download" aria-hidden="true"></i>
+                                                                            CSV
                                                                         </a>
                                                                     </li>
-                                                                </ul>--}}
+                                                                </ul>
                                                             </div>
                                                         </div>
                                                     </div> <!-- FIM DIV .actions -->
@@ -124,7 +122,7 @@
                                                     </div>  <!-- FIM DIV .form-body -->
 
                                                     <div class="form-actions ">
-                                                        <button type="button" class="btn green" id="btn-dropzone" onclick="dropzone()" disabled>
+                                                        <button type="button" class="btn green" id="btn-dropzone" onclick="dropzone()">
                                                             <i class="fa fa-check"></i> Enviar
                                                         </button>
 
@@ -148,9 +146,9 @@
                     </div> <!-- FIM DIV .page-container -->
                 </div> <!-- FIM DIV .page-wrapper-middle -->
             </div> <!-- FIM DIV .page-wrapper-row.full-height -->
-        @include('includes.footer')
-        </div>
 
+        </div>
+        @include('includes.footer')
     </div><!-- FIM DIV.page-wrapper -->
 
 @include('includes.core-scripts-edit')

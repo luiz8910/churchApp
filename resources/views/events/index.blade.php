@@ -153,18 +153,6 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             <i class="fa fa-calendar font-red"></i>
                                                             <span class="caption-subject font-red sbold uppercase">Eventos</span>
 
-                                                            <span class="label label-primary hidden-sm hidden-xs" style="margin-left: 20px;">
-                                                                <i class="fa fa-users"></i>
-                                                                Inscrições
-                                                            </span>
-                                                            <span class="label label-success hidden-sm hidden-xs" style="margin-left: 20px;">
-                                                                <i class="fa fa-check"></i>
-                                                                Check-in
-                                                            </span>
-                                                            <span class="label label-danger hidden-sm hidden-xs" style="margin-left: 20px;">
-                                                                <i class="fa fa-trash"></i>
-                                                                Excluir Evento
-                                                            </span>
                                                         </div>
 
 
@@ -269,7 +257,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                     <th class="printable-table-header"> Frequência </th>
                                                                     <th class="printable-table-header"> Criado Por </th>
                                                                     <th class="printable-table-header"> Grupo </th>
-                                                                    <th> Ações </th>
+                                                                    <th>  </th>
                                                                 </tr>
                                                                 </thead>
 
@@ -322,43 +310,60 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                                                             <?php $deleteForm = "delete-" . $event->id; ?>
                                                                             <td>
-                                                                                @if($role != "Visitante")
-                                                                                    <a href="{{ route('event.subscriptions', ['event' => $event->id]) }}"
-                                                                                       class="btn btn-info btn-sm btn-circle" title="Inscrições">
-                                                                                        <i class="fa fa-users"></i>
-                                                                                    </a>
-                                                                                @endif
+                                                                                <div class="actions">
+                                                                                    <div class="btn-group">
+                                                                                        <a class="btn blue btn-outline btn-circle" href="javascript:;" data-toggle="dropdown">
+                                                                                            <i class="fa fa-share"></i>
+                                                                                        <span class="hidden-xs"> Opções </span>
+                                                                                        <i class="fa fa-angle-down"></i>
+                                                                                        </a>
+                                                                                        <ul class="dropdown-menu pull-right" id="sample_3_tools">
+                                                                                            <li>
+                                                                                                @if($role != "Visitante")
+                                                                                                    <a href="{{ route('event.subscriptions', ['event' => $event->id]) }}"
+                                                                                                       class="tool-action" title="Inscrições">
+                                                                                                        <i class="fa fa-users font-blue"></i>
+                                                                                                        Inscrições
+                                                                                                    </a>
+                                                                                                @endif
+                                                                                            </li>
+                                                                                            <li>
+                                                                                                @if($event->checkIn === false)
 
-                                                                                @if($event->checkIn === false)
+                                                                                                    <a href="javascript:;" class="tool-action" id="checkIn"
+                                                                                                       onclick='checkOut({{ $event->id }})' title="Fazer Check-out">
+                                                                                                        <i class="fa fa-close font-red" id="i-checkIn"></i>
+                                                                                                        Fazer Check-out
+                                                                                                    </a>
+                                                                                                @elseif($event->checkIn)
+                                                                                                    <a href="javascript:;" class="tool-action" id="checkIn"
+                                                                                                       onclick='checkInEvent({{ $event->id }})' title="Fazer Check-in">
+                                                                                                        <i class="fa fa-check font-green" id="i-checkIn"></i>
+                                                                                                        Fazer Check-in
+                                                                                                    </a>
 
-                                                                                    <a href="javascript:;" class="btn btn-danger btn-sm btn-circle" id="checkIn"
-                                                                                       onclick='checkOut({{ $event->id }})' title="Fazer Check-out">
-                                                                                        <i class="fa fa-close" id="i-checkIn"></i>
-
-                                                                                    </a>
-                                                                                @elseif($event->checkIn)
-                                                                                    <a href="javascript:;" class="btn btn-success btn-sm btn-circle" id="checkIn"
-                                                                                       onclick='checkInEvent({{ $event->id }})' title="Fazer Check-in">
-                                                                                        <i class="fa fa-check" id="i-checkIn"></i>
-
-                                                                                    </a>
-
-                                                                                @elseif($event->checkIn === null)
-                                                                                    <a href="javascript:;" class="btn btn-success btn-sm btn-circle" title="Fazer Check-in" disabled>
-                                                                                        <i class="fa fa-check" id="i-checkIn"></i>
-
-                                                                                    </a>
-                                                                                @endif
-
-                                                                                @if(Auth::user()->church_id == $church_id && Auth::getUser()->person->role_id == 1)
-                                                                                    <a href="javascript:;" class="btn btn-danger btn-sm btn-circle pop"
-                                                                                       title="Excluir evento"
-                                                                                       data-toggle="confirmation" data-placement="top" data-original-title="Deseja Excluir?"
-                                                                                       data-popout="true" onclick="event.preventDefault()"
-                                                                                       id="btn-{{ $deleteForm }}">
-                                                                                        <i class="fa fa-trash"></i>
-                                                                                    </a>
-                                                                                @endif
+                                                                                                @elseif($event->checkIn === null)
+                                                                                                    <a href="javascript:;" class="tool-action" title="Fazer Check-in" disabled>
+                                                                                                        <i class="fa fa-check font-green" id="i-checkIn"></i>
+                                                                                                        Fazer Check-in
+                                                                                                    </a>
+                                                                                                @endif
+                                                                                            </li>
+                                                                                            <li>
+                                                                                                @if(Auth::user()->church_id == $church_id && Auth::getUser()->person->role_id == 1)
+                                                                                                    <a href="javascript:;" class="tool-action pop"
+                                                                                                       title="Excluir evento"
+                                                                                                       data-toggle="confirmation" data-placement="top" data-original-title="Deseja Excluir?"
+                                                                                                       data-popout="true" onclick="event.preventDefault()"
+                                                                                                       id="btn-{{ $deleteForm }}">
+                                                                                                        <i class="fa fa-trash font-red"></i>
+                                                                                                        Inativar
+                                                                                                    </a>
+                                                                                                @endif
+                                                                                            </li>
+                                                                                        </ul>
+                                                                                    </div>
+                                                                                </div>
 
                                                                             </td>
 

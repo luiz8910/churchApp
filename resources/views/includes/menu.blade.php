@@ -128,7 +128,7 @@
                             <li>
                                 <a href="{{ route('config.person.contacts.view') }}">
                                     <i class="fa fa-cloud-upload"></i>
-                                    Importar
+                                    Importar/Exportar
                                 </a>
                             </li>
                         </ul>

@@ -1102,7 +1102,25 @@ class PersonController extends Controller
                 $data["name"] = $fullName[0];
                 $data["lastName"] = $fullName[1];
 
-                echo $data["name"] . " ". $data["lastName"] . "<br>";
+                $tel = "tel.residencial";
+                $cel = "celular";
+                $email = isset($item->email) ? "email" : "e_mail";
+                $data_nasc = "data_nasc.";
+
+                $gender = "genero";
+
+                $maritalStatus = "estado_civil";
+                $dateBaptism = "dt.batismo";
+
+                if ($item->membro == "S")
+                {
+                    $data["role_id"] = $this->roleRepository->findByField('name', 'Membro')->first()->id;
+                }
+
+                dd($item);
+
+                //echo $data["name"] . " ". $data["lastName"] . "<br>";
+                echo date_format($item->$data_nasc, "Y-m-d") . "<br>";
             }
 
 
