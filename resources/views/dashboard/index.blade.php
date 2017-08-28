@@ -47,9 +47,9 @@
 											<div class="col-md-12">
 												<div class="portlet light ">
 													<div class="portlet-title">
-														<div class="caption caption-md">
-															<i class="icon-bar-chart font-red"></i>
-															<span class="caption-subject font-red bold uppercase">Atividades Recentes</span>
+														<div class="caption font-green-haze">
+															<i class="icon-bar-chart font-green-haze"></i>
+															<span class="caption-subject bold uppercase">Atividades Recentes</span>
 															<span class="caption-helper"></span>
 														</div>
 														{{--<div class="actions">
@@ -62,7 +62,8 @@
 																	<input type="radio" name="options" class="toggle" id="option2">Mês</label>
 															</div>
 														</div>--}}
-													</div>
+													</div> <!-- FIM DIV .portlet-title -->
+
 													<div class="portlet-body">
 														<ul class="nav nav-tabs">
 															<li role="presentation" class="active">

@@ -76,8 +76,7 @@
                                                     <div class="caption font-green-haze">
                                                         <i class="icon-settings font-green-haze"></i>
                                                         <span class="caption-subject bold uppercase"> Importar base de dados</span>
-                                                        <span class="caption-subject font-red bold uppercase">Atividades Recentes</span>
-															<span class="caption-helper"></span>
+														<span class="caption-helper"></span>
                                                     </div> <!-- FIM DIV .caption.font-green-haze -->
                                                     <div class="actions">
                                                         <div class="btn-group btn-group-devided">
