@@ -176,7 +176,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                     data-original-title="Deseja Excluir?" data-popout="true" onclick="event.preventDefault()"
                                                                     id="btn-{{ $deleteForm }}">
                                                                 <i class="fa fa-trash"></i>
-                                                                Excluir
+                                                                Inativar
                                                             </button>
 
                                                         </td>

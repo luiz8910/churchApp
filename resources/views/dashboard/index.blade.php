@@ -335,6 +335,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                            data-popout="true" onclick="event.preventDefault()"
                                                                            id="btn-{{ $deleteForm }}">
                                                                             <i class="fa fa-trash"></i>
+                                                                            Sair
                                                                         </a>
 
 

@@ -14,7 +14,7 @@ class AddChurchIdEvents extends Migration
     public function up()
     {
         Schema::table('events', function(Blueprint $table){
-           $table->integer('church_id');
+           $table->integer('church_id')->nullable();
         });
     }
 
@@ -26,7 +26,7 @@ class AddChurchIdEvents extends Migration
     public function down()
     {
         Schema::table('events', function (Blueprint $table){
-            $table->dropColumn('church_id');
+            $table->dropColumn('church_id')->nullable();
         });
     }
 }

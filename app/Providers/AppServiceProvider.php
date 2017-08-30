@@ -2,10 +2,14 @@
 
 namespace App\Providers;
 
+use App\Traits\ConfigTrait;
+use App\Traits\CountRepository;
+use App\Traits\NotifyRepository;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
+    use CountRepository, NotifyRepository, ConfigTrait;
     /**
      * Bootstrap any application services.
      *

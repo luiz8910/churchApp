@@ -214,12 +214,11 @@ class EventServices
 
                 $day = date_create($year."-".$month."-".$d);
 
-                if($diff)
+                $d = date_format($day, "Y-m-d");
+
+                if($d == $event->endEventDate)
                 {
-                    if($day == $event->eventDate)
-                    {
-                        $i = $this->numNextEvents();
-                    }
+                    $i = $this->numNextEvents();
                 }
             }
 
@@ -256,7 +255,9 @@ class EventServices
 
                 if($diff)
                 {
-                    if($day == $event->eventDate)
+                    $d = date_format($day, "Y-m-d");
+
+                    if($d == $event->endEventDate)
                     {
                         $i = $this->numNextEvents();
                     }
@@ -267,6 +268,7 @@ class EventServices
 
             $i++;
         }
+
     }
 
     public function insertNewDay($id, $person_id, $day)

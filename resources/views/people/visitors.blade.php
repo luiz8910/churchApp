@@ -164,7 +164,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         <a href="" class="btn btn-danger btn-sm btn-circle"
                                                            onclick='event.preventDefault();document.getElementById("form-{{ $deleteForm }}").submit();'>
                                                             <i class="fa fa-trash"></i>
-                                                            Excluir
+                                                            Inativar
                                                         </a>
 
                                                         {!! Form::close() !!}

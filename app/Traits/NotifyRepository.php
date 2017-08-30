@@ -9,11 +9,13 @@
 namespace App\Traits;
 
 
+use Illuminate\Support\Facades\Auth;
+
 trait NotifyRepository
 {
     public function notify()
     {
-        $user = \Auth::getUser();
+        $user = Auth::user();
 
         $notify = [];
         $verify = [];

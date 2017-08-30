@@ -737,7 +737,7 @@ class EventController extends Controller
 
         }catch (\Exception $exception){
 
-            var_dump($exception);
+            echo $exception->getMessage();
 
         }
 
@@ -871,6 +871,8 @@ class EventController extends Controller
         elseif($model->frequency == $monthly || $model->frequency == $biweekly){
             $preposicao = "todo dia";
         }
+
+        $model->sub = count($this->eventServices->getListSubEvent($id));
 
         return view('events.edit', compact('countPerson', 'countGroups', 'state', 'roles',
             'model', 'location', 'notify', 'qtde', 'eventDays', 'eventFrequency', 'check',

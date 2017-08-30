@@ -37,6 +37,10 @@ var FormDropzone = function () {
                             e.preventDefault();
                             e.stopPropagation();
                             _this.processQueue();
+
+                            setTimeout(function(){
+                                location.reload();
+                            }, 10000);
                         });
 
                         var xls =  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';

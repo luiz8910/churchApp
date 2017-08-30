@@ -28,7 +28,7 @@ class AgendaEvent implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct(Event $event, User $user)
+    public function __construct(Event $event, $user)
     {
         $this->event = $event;
         $this->user = $user;

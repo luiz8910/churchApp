@@ -268,6 +268,11 @@ License: You must have a valid license purchased only from themeforest(the above
                                             </p>
 
                                             <p>
+                                                <i class="fa fa-book font-purple"></i>
+                                                Inscritos: {{ $model->sub }}
+                                            </p>
+
+                                            <p>
                                                 <i class="fa fa-users font-purple"></i>
                                                 Pertence ao Grupo:
                                                     @if(isset($group))

@@ -250,7 +250,8 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                                     <th class="printable-table-header"> Nome </th>
                                                     <th class="printable-table-header"> Presença </th>
-                                                    <th> Excluir </th>
+                                                    <th class="hidden-xs hidden-sm"> Cancelar Inscrição </th>
+                                                    <th class="hidden-md hidden-lg"> Cancelar </th>
                                                 </tr>
                                                 </thead>
 
@@ -266,7 +267,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <tr id="tr-{{ $person->id }}">
                                                         <td>
                                                             @if(Auth::user()->person_id == $person->id)
-                                                                <a href="javascript:;">
+                                                                <a href="javascript:;" style="margin-left: 10px;">
                                                                     <img src="../../{{ $person->imgProfile }}" style="width: 50px; height: 50px;">
                                                                     {{ $person->name }}
                                                                     <span class="hidden-xs hidden-sm">
@@ -274,7 +275,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                     </span>
                                                                 </a>
                                                             @else
-                                                                <a href="{{ route('person.edit', ['person' => $person->id]) }}">
+                                                                <a href="{{ route('person.edit', ['person' => $person->id]) }}" style="margin-left: 10px;">
                                                                     <img src="../../{{ $person->imgProfile }}" style="width: 50px; height: 50px;">
                                                                     {{ $person->name }}
                                                                     <span class="hidden-xs hidden-sm">

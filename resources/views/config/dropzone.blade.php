@@ -66,10 +66,32 @@
                             </div> <!-- FIM DIV .container -->
                         </div> <!-- FIM DIV .page-head -->
 
+
+
+
+
+
+                        <div class="row">
+
+                        </div>
+
+
                         <div class="page-content">
                             <div class="container">
                                 <div class="page-content-inner">
                                     <div class="row">
+
+                                        @if(Session::has('upload.success'))
+                                            <div class="col-md-12">
+                                                <div class="alert alert-success alert-dismissible" id="alert-danger" role="alert" style="display: block;">
+                                                    <button type="button" class="close" id="button-danger" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    <strong>Sucesso</strong> {{ Session::get('upload.success') }}
+                                                </div>
+                                            </div>
+
+                                            <?php echo "<script> $('.progress').css('display', 'none'); $('#btn-dropzone').css('display', 'block');</script>" ;?>
+                                        @endif
+
                                         <div class="col-md-12">
                                             <div class="portlet light ">
                                                 <div class="portlet-title">
@@ -122,7 +144,7 @@
                                                     </div>  <!-- FIM DIV .form-body -->
 
                                                     <div class="form-actions ">
-                                                        <button type="button" class="btn green" id="btn-dropzone" onclick="dropzone()">
+                                                        <button type="button" class="btn green" id="btn-dropzone" onclick="dropzone()" disabled>
                                                             <i class="fa fa-check"></i> Enviar
                                                         </button>
 

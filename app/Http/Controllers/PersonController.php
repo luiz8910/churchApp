@@ -343,15 +343,23 @@ class PersonController extends Controller
                 return redirect()->route("person.create")->withInput();
             }
 
-            foreach ($fields as $field) {
-                if($field->value == "email"){
-                    if($field->required == 1 && $email == ""){
-                        \Session::flash("email.exists", "Insira seu email");
-                        return redirect()->route("person.create")->withInput();
-                    }
-                }
-            }
+
         }*/
+
+
+        if($request->get('dateBirth') == ""){
+
+            \Session::flash("email.exists", "Insira a data de Nascimento");
+
+            if($teen)
+            {
+                return redirect()->route("teen.create")->withInput();
+            }
+            else{
+                return redirect()->route("person.create")->withInput();
+            }
+
+        }
 
 
         $user = User::select('id')->where('email', $email)->first() or null;
@@ -705,6 +713,19 @@ class PersonController extends Controller
 
         //Formatação correta do email
         $email = $email["email"];
+
+        if($request->get('dateBirth') == ""){
+
+            \Session::flash("email.exists", "Insira a data de Nascimento");
+
+            if($teen){
+                return redirect()->route("teen.edit", ['person' => $id])->withInput();
+            }else
+            {
+                return redirect()->route("person.edit", ['person' => $id])->withInput();
+            }
+
+        }
 
         if(!$teen)
         {
@@ -1091,42 +1112,125 @@ class PersonController extends Controller
 
         $alias = $this->churchRepository->find($church)->alias;
 
-        $file->move('uploads/sheets/'.$alias.'/', $fileName);
+        $path = 'uploads/sheets/'.$alias.'/';
 
-        Excel::load('uploads/sheets/'.$alias.'/' . $fileName, function ($reader) {
+        $file->move($path, $fileName);
+
+        $i = 0;
+
+        Excel::load($path . $fileName, function ($reader) use($church, $alias, $i){
 
             foreach ($reader->get() as $item)
             {
                 $fullName = $this->surname($item->nome);
 
-                $data["name"] = $fullName[0];
-                $data["lastName"] = $fullName[1];
+                $data["name"] = ucfirst($fullName[0]);
+                $data["lastName"] = ucwords($fullName[1]);
 
-                $tel = "tel.residencial";
-                $cel = "celular";
-                $email = isset($item->email) ? "email" : "e_mail";
-                $data_nasc = "data_nasc.";
+                $name = $this->repository->findByField('name', $data['name']);
 
-                $gender = "genero";
+                $stop = false;
 
-                $maritalStatus = "estado_civil";
-                $dateBaptism = "dt.batismo";
-
-                if ($item->membro == "S")
+                if(count($name) > 0)
                 {
-                    $data["role_id"] = $this->roleRepository->findByField('name', 'Membro')->first()->id;
+                    foreach ($name as $n)
+                    {
+                        if($n->name == $data["name"] && $n->lastName == $data["lastName"])
+                        {
+                            $stop = true;
+                        }
+                    }
                 }
 
-                dd($item);
+                //Novo Cadastro
+                if(!$stop) {
+                    $data_nasc = "data_nasc.";
 
-                //echo $data["name"] . " ". $data["lastName"] . "<br>";
-                echo date_format($item->$data_nasc, "Y-m-d") . "<br>";
+                    if ($item->$data_nasc != null) {
+                        $data["dateBirth"] = date_format($item->$data_nasc, "Y-m-d");
+
+
+                        $data["church_id"] = $church;
+
+                        if ($item->membro == "S") {
+                            $data["role_id"] = $this->roleRepository->findByField('name', 'Membro')->first()->id;
+
+                            if ($item->classificacao != "PLENA") {
+                                $data["deleted_at"] = Carbon::now();
+                            }
+                        } else {
+
+                            $data["role_id"] = $this->roleRepository->findByField('name', 'Visitante')->first()->id;
+
+                            if ($item->classificacao != "PLENA") {
+                                $data["deleted_at"] = Carbon::now();
+                            }
+                        }
+
+                        $data['imgProfile'] = 'uploads/profile/noimage.png';
+
+                        $tel = "tel.residencial";
+
+                        $data["tel"] = $item->$tel;
+
+                        $cel = "celular";
+
+                        $data["cel"] = $item->$cel;
+
+                        $gender = isset($item->genero) ? "genero" : isset($item->sexo) ? "sexo" : "gênero";
+
+                        $data["gender"] = $item->$gender;
+
+                        $maritalStatus = "estado_civil";
+
+                        $data["maritalStatus"] = $item->$maritalStatus == "SEPARADO" ? "Divorciado" : ucfirst($item->$maritalStatus);
+
+                        if ($data["maritalStatus"] == "Casado") {
+                            $data["partner"] = 0;
+                        }
+
+                        $data["tag"] = $this->tag($data["dateBirth"]);
+
+                        $dateBaptism = "dt.batismo";
+
+                        $data["dateBaptism"] = isset($item->$dateBaptism) ? $item->$dateBaptism != null ? date_format($item->$dateBaptism, "Y-m-d") : null : null;
+
+                        $email = isset($item->email) ? "email" : "e_mail";
+
+                        if ($data["tag"] != "adult") {
+                            $data["email"] = isset($item->$email) ? $item->$email : null;
+                        }
+
+                        $data["zipCode"] = isset($item->cep) ? $item->cep : null;
+
+                        $data["street"] = isset($item->endereco) ? $item->endereco : null;
+
+                        $data["city"] = isset($item->cidade) ? $item->cidade : null;
+
+                        $data["state"] = $item->estado == "EX" ?: $item->estado;
+
+                        /*$id = $this->repository->create($data)->id;
+
+                        if ($data["tag"] == "adult") {
+                            $this->createUserLogin($id, $alias, $item->$email, $church);
+                        }*/
+                    }
+                }
+
+                $i++;
             }
 
+            session(['qtde' => $i]);
 
-        })->get();
+        });
 
+        $qtde[] = session('qtde');
 
+        \Session::flash('upload.success', $qtde[0] . " usuários foram cadastrados");
+
+        //return redirect()->route('config.person.contacts.view');
+        return response()->json('success', 200);
+        //return response()->view('config.dropzone', $qtde, 200);
     }
 
     public function surname($name)
