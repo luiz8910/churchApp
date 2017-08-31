@@ -63,7 +63,7 @@ class ConfigController extends Controller
             ]);
         }
 
-        //dd($class);
+        //dd($models);
 
         //Fim Variáveis
 

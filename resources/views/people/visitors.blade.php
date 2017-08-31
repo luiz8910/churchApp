@@ -1,160 +1,133 @@
 <!DOCTYPE html>
-<!--
-Template Name: Metronic - Responsive Admin Dashboard Template build with Twitter Bootstrap 3.3.6
-Version: 4.5.3
-Author: KeenThemes
-Website: http://www.keenthemes.com/
-Contact: support@keenthemes.com
-Follow: www.twitter.com/keenthemes
-Like: www.facebook.com/keenthemes
-Purchase: http://themeforest.net/item/metronic-responsive-admin-dashboard-template/4021469?ref=keenthemes
-License: You must have a valid license purchased only from themeforest(the above link) in order to legally use the theme for your project.
--->
 <!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
 <!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
 <!--[if !IE]><!-->
 <html lang="en">
-<!--<![endif]-->
-<!-- BEGIN HEAD -->
+	<!-- HEAD -->
+	<head>
+		@include('includes.head')
+		<!-- BEGIN PAGE LEVEL PLUGINS -->
+		<link href="assets/global/plugins/datatables/datatables.min.css" rel="stylesheet" type="text/css" />
+		<link href="assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css" rel="stylesheet" type="text/css" />
+		<link href="assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
+		<!-- END PAGE LEVEL PLUGINS -->
+	</head>
+	<!-- END HEAD -->
 
-<head>
-    @include('includes.head')
-    <!-- BEGIN PAGE LEVEL PLUGINS -->
-    <link href="assets/global/plugins/datatables/datatables.min.css" rel="stylesheet" type="text/css" />
-    <link href="assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css" rel="stylesheet" type="text/css" />
-    <link href="assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
-    <!-- END PAGE LEVEL PLUGINS -->
-</head>
-<!-- END HEAD -->
+	<body class="page-container-bg-solid page-boxed">
+		<div class="page-wrapper">
+			<div class="page-wrapper-row">
+				<div class="page-wrapper-top">
+					<!-- BEGIN HEADER -->
+						@if(!isset($church_id) || $church_id == null)
+						@include('includes.header')
+						@else
+						@include('includes.header-edit')
+						@endif
+					<!-- END HEADER -->
+				</div> <!-- FIM DIV.page-wrapper-top -->
+			</div> <!-- FIM DIV.page-wrapper-row -->
 
-<body class="page-container-bg-solid page-boxed">
-<!-- BEGIN HEADER -->
-@include('includes.header')
-<!-- END HEADER -->
-<!-- BEGIN CONTAINER -->
-<div class="page-container">
-    <!-- BEGIN CONTENT -->
-    <div class="page-content-wrapper">
-        <!-- BEGIN CONTENT BODY -->
-        <!-- BEGIN PAGE HEAD-->
-        <div class="page-head hidden-sm hidden-xs">
-            <div class="container">
-                <!-- BEGIN PAGE TITLE -->
-                <div class="page-title">
-                    <h1>Adultos
-                        <small>membros e etc...</small>
-                    </h1>
-                </div>
-                <!-- END PAGE TITLE -->
+			<div class="page-wrapper-row full-height">
+            	<div class="page-wrapper-middle">
+					<div class="page-container">
+						<div class="page-content-wrapper">
+							<div class="page-head">
+								<div class="container">
+									<div class="page-title">
+										<h1>Visitantes
+											<small>Editar ...</small>
+										</h1>
+									</div>
+								</div> <!-- FIM DIV .container -->
+							</div> <!-- FIM DIV .page-head -->
 
-            </div>
-        </div>
-        <!-- END PAGE HEAD-->
-        <!-- BEGIN PAGE CONTENT BODY -->
-        <div class="page-content">
-            <div class="container">
-                <!-- BEGIN PAGE BREADCRUMBS
-                <ul class="page-breadcrumb breadcrumb">
-                    <li>
-                        <a href=" route('index') ">Home</a>
-                        <i class="fa fa-circle"></i>
-                    </li>
-                    <li>
-                        <a href="#">Pessoas</a>
-                        <i class="fa fa-circle"></i>
-                    </li>
-                    <li>
-                        <span>Adultos</span>
-                    </li>
-                </ul>-->
-                <!-- END PAGE BREADCRUMBS -->
-                <!-- BEGIN PAGE CONTENT INNER -->
+							<div class="page-content">
+								<div class="container">
+									<?php $route = "visitors";?>
+									<div class="page-content-inner">
+										<div class="row">
+											<div class="col-md-12">
+												<div class="portlet light">
+													<div class="portlet-title">
+														<div class="caption">
+															<i class="fa fa-user font-green-haze"></i>
+															<span class="caption-subject font-green-haze bold ">Visitantes</span>
+														</div> <!-- FIM DIV .caption -->
+														<div class="actions">
+															<div class="btn-group btn-group-devided">
+																<a role="button" class="btn btn-info btn-circle" href="{{ route('visitors.create') }}" style="margin-top: 2px;">
+																	<i class="fa fa-plus"></i>
+																	<span class="hidden-xs hidden-sm">Novo Visitante</span>
+																</a>
+															</div>
+															<div class="btn-group">
+																<a class="btn red btn-outline btn-circle" href="javascript:;" data-toggle="dropdown">
+																	<i class="fa fa-share"></i>
+																	<span class="hidden-xs"> Opções </span>
+																	<i class="fa fa-angle-down"></i>
+																</a>
+																<ul class="dropdown-menu pull-right" id="sample_3_tools">
+																	<li>
+																		<a href="javascript:;" id="print" onclick="printDiv('printable-table')"
+																		   data-action="0" class="tool-action">
+																			<i class="icon-printer"></i> Imprimir
+																		</a>
+																	</li>
+																	<!--<li>
+																		<a href="javascript:;" data-action="1" class="tool-action">
+																			<i class="icon-check"></i> Copiar</a>
+																	</li>-->
+																	<li>
+																		<a href="javascript:;" data-action="2"
+																		   onclick="printDiv('printable-table', 'pdf')" class="tool-action">
+																			<i class="icon-doc"></i> PDF</a>
+																	</li>
+																	<li>
+																		<a href="{{ route($route.'.excel', ['format' => 'xls']) }}"
+																		   data-action="3" target="_blank"
+																		   class="tool-action">
+																			<i class="icon-paper-clip"></i> Excel</a>
+																	</li>
+																	<li>
+																		<a href="{{ route($route.'.excel', ['format' => 'csv']) }}"
+																		   data-action="4" target="_blank" class="tool-action">
+																			<i class="icon-cloud-upload"></i> CSV</a>
+																	</li>
+																</ul>
+															</div> <!-- FIM DIV .btn-group -->
+														</div> <!-- FIM DIV .actions -->
+													</div> <!-- FIM DIV .portlet-title -->
 
+													<div class="portlet-body form">
+														<div class="portlet-body-config">
+															<div class="table-scrollable table-scrollable-borderless table-striped">
+																<table class="table table-hover table-light table-striped">
+																	<thead>
+																		<tr class="uppercase">
+																			<th> Foto </th>
+																			<th> Nome </th>
+																			<th> CPF </th>
+																			<th> Cargo </th>
+																			<th> Data de Nasc. </th>
+																			<th> Opções </th>
+																		</tr>
+																	</thead>
+																	<tbody>
+																		@foreach($visitors as $item)
+																		<tr>
+																			<td class="visible-xs"></td>
+																			<td>
+																				<img src="{{ $item->imgProfile }}" style="width: 50px; height: 50px;">
+																			</td>
+																			<td>
+																				<a href="{{ route('visitors.edit', ['visitor' => $item->id]) }}">
+																					{{ $item->name }} {{ $item->lastName }}</a>
+																			</td>
+																			<td> {{ $item->cpf }} </td>
+																			<td> {{ $item->role }} </td>
+																			<td> {{ $item->dateBirth }} </td>
 
-                <?php $route = "visitors";?>
-
-
-                <div class="page-content-inner">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <!-- BEGIN BORDERED TABLE PORTLET-->
-                            <div class="portlet light portlet-fit ">
-                                <div class="portlet-title">
-                                    <div class="caption">
-                                        <i class="icon-settings font-green"></i>
-                                        <span class="caption-subject font-green sbold uppercase">Visitantes</span>
-                                    </div>
-                                    <div class="actions">
-                                        <div class="btn-group btn-group-devided">
-                                            <a role="button" class="btn btn-info btn-circle" href="{{ route('visitors.create') }}" style="margin-top: 2px;">
-                                                <i class="fa fa-plus"></i>
-                                                <span class="hidden-xs hidden-sm">Novo Visitante</span>
-                                            </a>
-
-                                        </div>
-                                        <div class="btn-group">
-                                            <a class="btn red btn-outline btn-circle" href="javascript:;" data-toggle="dropdown">
-                                                <i class="fa fa-share"></i>
-                                                <span class="hidden-xs"> Opções </span>
-                                                <i class="fa fa-angle-down"></i>
-                                            </a>
-                                            <ul class="dropdown-menu pull-right" id="sample_3_tools">
-                                                <li>
-                                                    <a href="javascript:;" id="print" onclick="printDiv('printable-table')"
-                                                       data-action="0" class="tool-action">
-                                                        <i class="icon-printer"></i> Imprimir
-                                                    </a>
-                                                </li>
-                                                <!--<li>
-                                                    <a href="javascript:;" data-action="1" class="tool-action">
-                                                        <i class="icon-check"></i> Copiar</a>
-                                                </li>-->
-                                                <li>
-                                                    <a href="javascript:;" data-action="2"
-                                                       onclick="printDiv('printable-table', 'pdf')" class="tool-action">
-                                                        <i class="icon-doc"></i> PDF</a>
-                                                </li>
-                                                <li>
-                                                    <a href="{{ route($route.'.excel', ['format' => 'xls']) }}"
-                                                       data-action="3" target="_blank"
-                                                       class="tool-action">
-                                                        <i class="icon-paper-clip"></i> Excel</a>
-                                                </li>
-                                                <li>
-                                                    <a href="{{ route($route.'.excel', ['format' => 'csv']) }}"
-                                                       data-action="4" target="_blank" class="tool-action">
-                                                        <i class="icon-cloud-upload"></i> CSV</a>
-                                                </li>
-
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="portlet-body">
-                                    <div class="table-scrollable table-scrollable-borderless">
-                                        <table class="table table-hover table-light">
-                                            <thead>
-                                            <tr class="uppercase">
-                                                <th> Foto </th>
-                                                <th> Nome </th>
-                                                <th> CPF </th>
-                                                <th> Cargo </th>
-                                                <th> Data de Nasc. </th>
-                                                <th> Opções </th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            @foreach($visitors as $item)
-                                                <tr>
-                                                    <td class="visible-xs"></td>
-                                                    <td> <img src="{{ $item->imgProfile }}" style="width: 50px; height: 50px;"> </td>
-                                                    <td>
-                                                        <a href="{{ route('visitors.edit', ['visitor' => $item->id]) }}">
-                                                            {{ $item->name }} {{ $item->lastName }}</a>
-                                                    </td>
-                                                    <td> {{ $item->cpf }} </td>
-                                                    <td> {{ $item->role }} </td>
-                                                    <td> {{ $item->dateBirth }} </td>
 
                                                     <?php $deleteForm = "delete-".$item->id; ?>
                                                     <td id="{{ $deleteForm }}">
@@ -753,7 +726,7 @@ License: You must have a valid license purchased only from themeforest(the above
         </div>
     </div>
     <!-- END QUICK SIDEBAR -->
-</div>
+</div></div></div></div></div>
 <!-- END CONTAINER -->
 @include('includes.footer')
 @include('includes.core-scripts')

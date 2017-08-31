@@ -45,195 +45,186 @@
 													<div class="portlet-title">
 														<div class="caption font-green-haze">
 															<i class="icon-bar-chart font-green-haze"></i>
-															<span class="caption-subject bold uppercase">Atividades Recentes</span>
-															<span class="caption-helper"></span>
-														</div>
-														{{--<div class="actions">
-															<div class="btn-group btn-group-devided" data-toggle="buttons">
-																<label class="btn btn-transparent green btn-outline btn-circle btn-sm active">
-																	<input type="radio" name="options" class="toggle" id="option1">Hoje</label>
-																<label class="btn btn-transparent green btn-outline btn-circle btn-sm">
-																	<input type="radio" name="options" class="toggle" id="option2">Semana</label>
-																<label class="btn btn-transparent green btn-outline btn-circle btn-sm">
-																	<input type="radio" name="options" class="toggle" id="option2">Mês</label>
-															</div>
-														</div>--}}
+															<span class="caption-subject font-green-haze bold"> Atividades Recentes</span>
+														</div> <!-- FIM DIV .caption.font-green-haze -->
 													</div> <!-- FIM DIV .portlet-title -->
 
-													<div class="portlet-body">
-														<ul class="nav nav-tabs">
-															<li role="presentation" class="active">
-																<a href="#tab-users" aria-controls="tab-users" role="tab" data-toggle="tab">
-																	Usuários @if($qtde_users > 0) ({{ $qtde_users }}) @endif
-																</a>
-															</li>
-															<li role="presentation">
-																<a href="#tab-groups" aria-controls="tab-groups" role="tab" data-toggle="tab">
-																	Grupos @if($qtde_groups > 0) ({{ $qtde_groups }}) @endif
-																</a>
-															</li>
-															<li role="presentation">
-																<a href="#tab-events" aria-controls="tab-events" role="tab" data-toggle="tab">
-																	Eventos @if($qtde_events > 0) ({{ $qtde_events }}) @endif
-																</a>
-															</li>
-														</ul>
+													<div class="portlet-body form">
+														<div class="portlet-body-config">
+															<ul class="nav nav-tabs">
+																<li role="presentation" class="active">
+																	<a href="#tab-users" aria-controls="tab-users" role="tab" data-toggle="tab">
+																		Usuários @if($qtde_users > 0) ({{ $qtde_users }}) @endif
+																	</a>
+																</li>
+																<li role="presentation">
+																	<a href="#tab-groups" aria-controls="tab-groups" role="tab" data-toggle="tab">
+																		Grupos @if($qtde_groups > 0) ({{ $qtde_groups }}) @endif
+																	</a>
+																</li>
+																<li role="presentation">
+																	<a href="#tab-events" aria-controls="tab-events" role="tab" data-toggle="tab">
+																		Eventos @if($qtde_events > 0) ({{ $qtde_events }}) @endif
+																	</a>
+																</li>
+															</ul>
 
-														<div class="tab-content">
-															<div class="table-scrollable table-scrollable-borderless tab-pane fade in active" role="tabpanel" id="tab-users">
-																<table class="table table-hover table-light">
-																	<thead>
-																		<tr class="uppercase">
-																			<th colspan="2"> Membro </th>
-																			<th> Email </th>
-																			<th> Telefone </th>
-																			<th> Cargo </th>
-																		</tr>
-																	</thead>
+															<div class="tab-content">
+																<div class="table-scrollable table-scrollable-borderless tab-pane fade in active" role="tabpanel" id="tab-users">
+																	<table class="table table-hover table-light">
+																		<thead>
+																			<tr class="uppercase">
+																				<th colspan="2"> Membro </th>
+																				<th> Email </th>
+																				<th> Telefone </th>
+																				<th> Cargo </th>
+																			</tr>
+																		</thead>
 
-																	@if($qtde_users > 0)
-																		@foreach($people as $person)
-																			<tr>
-																				<td class="fit">
-																					@if($person->user)
-																						<img class="user-pic rounded" src="{{ $person->imgProfile }}" style="max-width: 30px;">
-																					@else
-																						<img class="user-pic rounded" src="../{{ $person->imgProfile }}" style="max-width: 30px;">
-																					@endif
-																				</td>
-																				<td>
-																					@if(Auth::user()->person->id == $person->id)
-																						{{ $person->name }}
-																					@else
-																						@if($person->tag == "adult")
-																							<a href="{{ route('person.edit', ['person' => $person->id]) }}"
-																							   class="primary-link">{{ $person->name }}
-																							</a>
+																		@if($qtde_users > 0)
+																			@foreach($people as $person)
+																				<tr>
+																					<td class="fit">
+																						@if($person->user)
+																							<img class="user-pic rounded" src="{{ $person->imgProfile }}" style="max-width: 30px;">
 																						@else
-																							<a href="{{ route('teen.edit', ['person' => $person->id]) }}"
-																							   class="primary-link">{{ $person->name }}
-																							</a>
+																							<img class="user-pic rounded" src="../{{ $person->imgProfile }}" style="max-width: 30px;">
 																						@endif
-																					@endif
-																				</td>
-																				<td> {{ $person->user->email or null }} </td>
-																				<td> {{ $person->tel }} </td>
-																				<td>
-																					<span class="bold theme-font">{{ $person->role_id }}</span>
-																				</td>
-																			</tr>
-																		@endforeach
+																					</td>
+																					<td>
+																						@if(Auth::user()->person->id == $person->id)
+																							{{ $person->name }}
+																						@else
+																							@if($person->tag == "adult")
+																								<a href="{{ route('person.edit', ['person' => $person->id]) }}"
+																								   class="primary-link">{{ $person->name }}
+																								</a>
+																							@else
+																								<a href="{{ route('teen.edit', ['person' => $person->id]) }}"
+																								   class="primary-link">{{ $person->name }}
+																								</a>
+																							@endif
+																						@endif
+																					</td>
+																					<td> {{ $person->user->email or null }} </td>
+																					<td> {{ $person->tel }} </td>
+																					<td>
+																						<span class="bold theme-font">{{ $person->role_id }}</span>
+																					</td>
+																				</tr>
+																			@endforeach
+																		@endif
+																	</table>
+
+																	@if($qtde_users == 0)
+																		<p class="empty_table">Não há novos Usuários</p>
 																	@endif
-																</table>
+																</div>
 
-																@if($qtde_users == 0)
-																	<p class="empty_table">Não há novos Usuários</p>
-																@endif
-															</div>
-
-															<div class="table-scrollable table-scrollable-borderless tab-pane fade in" role="tabpanel" id="tab-groups">
-																<table class="table table-hover table-light">
-																	<thead>
-																		<tr class="uppercase">
-																			<th colspan="2"> Nome </th>
-																			<th> Criado Por </th>
-																			<th> Criado Em </th>
-																		</tr>
-																	</thead>
-
-																	@if($qtde_groups > 0)
-																		@foreach($groups_recent as $item)
-																			<tr>
-																				<td class="fit">
-																					<img class="user-pic rounded" src="../{{ $item->imgProfile }}"> </td>
-																				<td>
-																					<a href="{{ route('group.edit', ['group' => $item->id]) }}" class="primary-link">
-																						{{ $item->name }}
-																					</a>
-																				</td>
-																				<td class="">
-																					<img class="user-pic rounded" src="../{{ $item->imgCreatorProfile }}">
-																					{{ $item->owner_id }}
-																				</td>
-
-																				<td> {{ $item->sinceOf }} </td>
+																<div class="table-scrollable table-scrollable-borderless tab-pane fade in" role="tabpanel" id="tab-groups">
+																	<table class="table table-hover table-light">
+																		<thead>
+																			<tr class="uppercase">
+																				<th colspan="2"> Nome </th>
+																				<th> Criado Por </th>
+																				<th> Criado Em </th>
 																			</tr>
-																		@endforeach
+																		</thead>
 
+																		@if($qtde_groups > 0)
+																			@foreach($groups_recent as $item)
+																				<tr>
+																					<td class="fit">
+																						<img class="user-pic rounded" src="../{{ $item->imgProfile }}"> </td>
+																					<td>
+																						<a href="{{ route('group.edit', ['group' => $item->id]) }}" class="primary-link">
+																							{{ $item->name }}
+																						</a>
+																					</td>
+																					<td class="">
+																						<img class="user-pic rounded" src="../{{ $item->imgCreatorProfile }}">
+																						{{ $item->owner_id }}
+																					</td>
+
+																					<td> {{ $item->sinceOf }} </td>
+																				</tr>
+																			@endforeach
+
+																		@endif
+																	</table>
+
+																	@if($qtde_groups == 0)
+																		<p class="empty_table">Não há novos grupos</p>
 																	@endif
-																</table>
+																</div>
 
-																@if($qtde_groups == 0)
-																	<p class="empty_table">Não há novos grupos</p>
-																@endif
-															</div>
-
-															<div class="table-scrollable table-scrollable-borderless tab-pane fade in" role="tabpanel" id="tab-events">
-																<table class="table table-hover table-light">
-																	<thead>
-																		<tr class="uppercase">
-																			<th> Evento </th>
-																			<th> Frequência </th>
-																			<th> Nome </th>
-																			<th> Grupo </th>
-																			<th> Data </th>
-																		</tr>
-																	</thead>
-
-																	@if($qtde_events > 0)
-
-																		@foreach($events_recent as $item)
-																			<tr>
-																				<td>
-																					<a href="{{ route('event.edit', ['event' => $item->id]) }}"
-																					   class="primary-link">
-																						{{ $item->name }}
-																					</a>
-																				</td>
-																				<td> {{ $item->frequency }} </td>
-																				<td> {{ $item->createdBy_id }} </td>
-																				<td>
-																					<span class="bold theme-font">{{ $item->group_id }}</span>
-																				</td>
-																				<td>
-																					{{ $item->nextEvent }}
-																				</td>
+																<div class="table-scrollable table-scrollable-borderless tab-pane fade in" role="tabpanel" id="tab-events">
+																	<table class="table table-hover table-light">
+																		<thead>
+																			<tr class="uppercase">
+																				<th> Evento </th>
+																				<th> Frequência </th>
+																				<th> Nome </th>
+																				<th> Grupo </th>
+																				<th> Data </th>
 																			</tr>
-																		@endforeach
+																		</thead>
+
+																		@if($qtde_events > 0)
+
+																			@foreach($events_recent as $item)
+																				<tr>
+																					<td>
+																						<a href="{{ route('event.edit', ['event' => $item->id]) }}"
+																						   class="primary-link">
+																							{{ $item->name }}
+																						</a>
+																					</td>
+																					<td> {{ $item->frequency }} </td>
+																					<td> {{ $item->createdBy_id }} </td>
+																					<td>
+																						<span class="bold theme-font">{{ $item->group_id }}</span>
+																					</td>
+																					<td>
+																						{{ $item->nextEvent }}
+																					</td>
+																				</tr>
+																			@endforeach
+																		@endif
+																	</table>
+
+																	@if($qtde_events == 0)
+																		<p class="empty_table">Não há novos Eventos</p>
 																	@endif
-																</table>
+																</div>
+															</div> <!-- FIM DIV .tab-content -->
+														</div>  <!-- FIM DIV .form-body -->
 
-																@if($qtde_events == 0)
-																	<p class="empty_table">Não há novos Eventos</p>
-																@endif
+														<!-- <div class="form-actions ">
+															<button type="button" class="btn blue">Enviar</button>
+															<button type="button" class="btn default">Cancel</button>
+														</div> -->
+													</div> <!-- FIM DIV .portlet-body.form  -->
+												</div> <!-- FIM DIV .portlet.light -->
+											</div> <!-- FIM DIV .col-md-12 -->
+										</div> <!-- FIM DIV .row -->
+									</div> <!-- FIM DIV .page-content-inner -->
+								</div>
 
-															</div>
-														</div>
+								<!-- BOX 2 -->
 
-													</div>
-												</div>
-
-
-
-											</div>
-										</div>
-
-
-										<br><br>
-
-										<!-- BEGIN PAGE CONTENT INNER -->
-										<div class="page-content-inner">
-											<div class="row">
-												<div class="col-md-12">
-													<!-- BEGIN BORDERED TABLE PORTLET-->
-													<div class="portlet light portlet-fit ">
-														<div class="portlet-title">
-															<div class="caption">
-																<i class="icon-settings font-red"></i>
-																<span class="caption-subject font-red sbold uppercase">Meus Grupos</span>
-															</div>
-															<div class="actions">
-																<div class="btn-group btn-group-devided">
+								<div class="container">
+									<div class="page-content-inner">
+										<div class="row">
+											<div class="col-md-12">
+												<div class="portlet light ">
+													<div class="portlet-title">
+														<div class="caption font-green-haze">
+															<i class="fa fa-users font-green-haze"></i>
+															<span class="caption-subject font-green-haze bold"> Meus Grupos</span>
+														</div> <!-- FIM DIV .caption.font-green-haze -->
+														<div class="actions">
+															<div class="btn-group btn-group-devided">
 																	<a role="button" class="btn btn-info btn-circle" href="{{ route('group.create') }}" style="margin-top: 2px;">
 																		<i class="fa fa-plus"></i>
 																		<span class="hidden-xs hidden-sm">Novo Grupo</span>
@@ -269,22 +260,22 @@
 																		</li>
 																	</ul>
 																</div>
-															</div>
-														</div>
-														<div class="portlet-body">
+														</div> <!-- FIM DIV .actions -->
+													</div> <!-- FIM DIV .portlet-title -->
+
+													<div class="portlet-body form">
+														<div class="portlet-body-config">
 															<div class="table-scrollable table-scrollable-borderless">
 																<table class="table table-hover table-light">
 																	<thead>
-																	<tr class="uppercase">
-																		<th> Foto </th>
-																		<th> Nome </th>
-																		<th class="hidden-xs hidden-sm"> Inicio em </th>
-																		<th> Participantes </th>
-																		<th> Opções </th>
-
-																	</tr>
+																		<tr class="uppercase">
+																			<th> Foto </th>
+																			<th> Nome </th>
+																			<th class="hidden-xs hidden-sm"> Inicio em </th>
+																			<th> Participantes </th>
+																			<th> Opções </th>
+																		</tr>
 																	</thead>
-
 																	<input type="hidden" id="person_id" value="{{ Auth::getUser()->person_id }}">
 
 																	<tbody>
@@ -335,68 +326,68 @@
 																	@if($groups) {{ $groups->links() }} @endif
 																</div>
 															</div>
-														</div>
-													</div>
-													<!-- END BORDERED TABLE PORTLET-->
-												</div>
-											</div>
+														</div>  <!-- FIM DIV .form-body -->
+													</div> <!-- FIM DIV .portlet-body.form  -->
+												</div> <!-- FIM DIV .portlet.light -->
+											</div> <!-- FIM DIV .col-md-12 -->
+										</div> <!-- FIM DIV .row -->
+									</div> <!-- FIM DIV .page-content-inner -->
+								</div> <!-- FIM DIV .container -->
 
-										</div>
-										<!-- END PAGE CONTENT INNER -->
+								<!-- BOX 3 -->
 
-										<br><br>
+								<div class="container">
+									<div class="page-content-inner">
+										<div class="row">
+											<div class="col-md-12">
+												<div class="portlet light ">
+													<div class="portlet-title">
+														<div class="caption font-green-haze">
+															<i class="fa fa-calendar font-green-haze"></i>
+															<span class="caption-subject font-green-haze bold"> Evento</span>
+														</div> <!-- FIM DIV .caption.font-green-haze -->
+														<div class="actions">
+															<div class="btn-group btn-group-devided">
+																<a role="button" class="btn btn-info btn-circle" href="{{ route('event.create') }}" style="margin-top: 2px;">
+																	<i class="fa fa-plus"></i>
+																	<span class="hidden-xs hidden-sm">Novo Evento</span>
+																</a>
 
-										<!-- BEGIN PAGE CONTENT INNER -->
-										<div class="page-content-inner">
-											<div class="row">
-												<div class="col-md-12">
-													<!-- BEGIN BORDERED TABLE PORTLET-->
-													<div class="portlet light portlet-fit ">
-														<div class="portlet-title">
-															<div class="caption">
-																<i class="fa fa-calendar font-red"></i>
-																<span class="caption-subject font-red sbold uppercase">Eventos</span>
 															</div>
-															<div class="actions">
-																<div class="btn-group btn-group-devided">
-																	<a role="button" class="btn btn-info btn-circle" href="{{ route('event.create') }}" style="margin-top: 2px;">
-																		<i class="fa fa-plus"></i>
-																		<span class="hidden-xs hidden-sm">Novo Evento</span>
-																	</a>
-
-																</div>
-																<div class="btn-group">
-																	<a class="btn red btn-outline btn-circle" href="javascript:;" data-toggle="dropdown">
-																		<i class="fa fa-share"></i>
-																		<span class="hidden-xs"> Opções </span>
-																		<i class="fa fa-angle-down"></i>
-																	</a>
-																	<ul class="dropdown-menu pull-right" id="sample_3_tools">
-																		<li>
-																			<a href="javascript:;" data-action="0" class="tool-action">
-																				<i class="icon-printer"></i> Imprimir</a>
-																		</li>
-																		<li>
-																			<a href="javascript:;" data-action="1" class="tool-action">
-																				<i class="icon-check"></i> Copiar</a>
-																		</li>
-																		<li>
-																			<a href="javascript:;" data-action="2" class="tool-action">
-																				<i class="icon-doc"></i> PDF</a>
-																		</li>
-																		<li>
-																			<a href="javascript:;" data-action="3" class="tool-action">
-																				<i class="icon-paper-clip"></i> Excel</a>
-																		</li>
-																		<li>
-																			<a href="javascript:;" data-action="4" class="tool-action">
-																				<i class="icon-cloud-upload"></i> CSV</a>
-																		</li>
-																	</ul>
-																</div>
+															<div class="btn-group">
+																<a class="btn red btn-outline btn-circle" href="javascript:;" data-toggle="dropdown">
+																	<i class="fa fa-share"></i>
+																	<span class="hidden-xs"> Opções </span>
+																	<i class="fa fa-angle-down"></i>
+																</a>
+																<ul class="dropdown-menu pull-right" id="sample_3_tools">
+																	<li>
+																		<a href="javascript:;" data-action="0" class="tool-action">
+																			<i class="icon-printer"></i> Imprimir</a>
+																	</li>
+																	<li>
+																		<a href="javascript:;" data-action="1" class="tool-action">
+																			<i class="icon-check"></i> Copiar</a>
+																	</li>
+																	<li>
+																		<a href="javascript:;" data-action="2" class="tool-action">
+																			<i class="icon-doc"></i> PDF</a>
+																	</li>
+																	<li>
+																		<a href="javascript:;" data-action="3" class="tool-action">
+																			<i class="icon-paper-clip"></i> Excel</a>
+																	</li>
+																	<li>
+																		<a href="javascript:;" data-action="4" class="tool-action">
+																			<i class="icon-cloud-upload"></i> CSV</a>
+																	</li>
+																</ul>
 															</div>
-														</div>
-														<div class="portlet-body">
+														</div> <!-- FIM DIV .actions -->
+													</div> <!-- FIM DIV .portlet-title -->
+
+													<div class="portlet-body form">
+														<div class="portlet-body-config">
 															<div class="table-scrollable table-scrollable-borderless">
 																<table class="table table-hover table-light">
 																	<thead>
@@ -478,87 +469,59 @@
 																<div class="pull-right">
 																	{{ $events->links() }}
 																</div>
+															</div>	<!-- FIM DIV .table-scrollable -->
+														</div>  <!-- FIM DIV .form-body -->
 
-															</div>
-														</div>
-													</div>
-													<!-- END BORDERED TABLE PORTLET-->
-												</div>
-											</div>
+														<!-- <div class="form-actions ">
+															<button type="button" class="btn blue">Enviar</button>
+															<button type="button" class="btn default">Cancel</button>
+														</div> -->
+													</div> <!-- FIM DIV .portlet-body.form  -->
+												</div> <!-- FIM DIV .portlet.light -->
+											</div> <!-- FIM DIV .col-md-12 -->
+										</div> <!-- FIM DIV .row -->
+									</div> <!-- FIM DIV .page-content-inner -->
+								</div> <!-- FIM DIV .container -->
 
-										</div>
-										<!-- END PAGE CONTENT INNER -->
+								<!-- BOX 4 -->
 
-
-										@include('includes.calendar')
-
-
-
-
-										<br>
+								<div class="container">
+									<div class="page-content-inner">
 										<div class="row">
+											<div class="col-md-12">
 
-											@if(Auth::getUser()->person)
-												<div class="col-md-6">
-												<!-- BEGIN BASIC PORTLET-->
-												<div class="portlet light portlet-fit ">
+													@include('includes.calendar')
+
+											</div> <!-- FIM DIV .col-md-12 -->
+										</div> <!-- FIM DIV .row -->
+									</div> <!-- FIM DIV .page-content-inner -->
+								</div> <!-- FIM DIV .container -->
+
+								<div class="container">
+									<div class="page-content-inner">
+										<div class="row">
+											<div class="col-md-6">
+												<div class="portlet light ">
 													<div class="portlet-title">
-														<div class="caption">
-															<i class=" icon-layers font-red"></i>
-															<span class="caption-subject font-red bold uppercase">Próximo Evento - dia {{ $nextEvent[1] }}</span>
-														</div>
+														<div class="caption font-green-haze">
+															<i class="icon-settings font-green-haze"></i>
+															<span class="caption-subject font-green-haze bold "> Próximo Evento - dia {{ $nextEvent[1] }}</span>
+														</div> <!-- FIM DIV .caption.font-green-haze -->
 														<div class="actions">
-															<a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
-																<i class="icon-cloud-upload"></i>
-															</a>
-															<a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
-																<i class="icon-wrench"></i>
-															</a>
-															<a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
-																<i class="icon-trash"></i>
-															</a>
-														</div>
-													</div>
-													<div class="portlet-body">
+
+														</div> <!-- FIM DIV .actions -->
+													</div> <!-- FIM DIV .portlet-title -->
+
+													<div class="portlet-body form">
 														<div id="map" style="height: 320px; width: 100%;"></div>
+													</div>  <!-- FIM DIV .form-body -->
 
-														<input type="hidden" value="@if(isset($location)) {{ $location }} @endif" id="location">
-
-														<input type="hidden" name="street" id="streetMap"
-															   value="@if(isset($location)) {{ $event->name }} - {{ $street }}, {{ $event->number }} @endif">
-													</div>
-												</div>
-												<!-- END BASIC PORTLET-->
-											</div>
-												@else
-												<div class="col-md-6">
-													<!-- BEGIN BASIC PORTLET-->
-													<div class="portlet light portlet-fit ">
-														<div class="portlet-title">
-															<div class="caption">
-																<i class=" icon-layers font-red"></i>
-																<span class="caption-subject font-red bold uppercase">Local do Evento</span>
-															</div>
-															<div class="actions">
-																<a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
-																	<i class="icon-cloud-upload"></i>
-																</a>
-																<a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
-																	<i class="icon-wrench"></i>
-																</a>
-																<a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
-																	<i class="icon-trash"></i>
-																</a>
-															</div>
-														</div>
-														<div class="portlet-body">
-															<div id="map" style="height: 320px; width: 100%;"></div>
-														</div>
-													</div>
-													<!-- END BASIC PORTLET-->
-												</div>
-
-											@endif
+														<!-- <div class="form-actions ">
+															<button type="button" class="btn blue">Enviar</button>
+															<button type="button" class="btn default">Cancel</button>
+														</div> -->
+												</div> <!-- FIM DIV .portlet-body.form  -->
+											</div> <!-- FIM DIV .col-md-6 -->
 
 											<div class="col-md-6 col-sm-6">
 												<!-- BEGIN PORTLET-->
@@ -566,7 +529,7 @@
 													<div class="portlet-title tabbable-line">
 														<div class="caption">
 															<i class="icon-globe font-green-sharp"></i>
-															<span class="caption-subject font-green-sharp bold uppercase">Feeds</span>
+															<span class="caption-subject font-green-sharp bold">Feeds</span>
 														</div>
 														<ul class="nav nav-tabs">
 															<li class="active">
@@ -899,20 +862,22 @@
 																</div>
 															</div>
 														</div>
-														<!--END TABS-->
 													</div>
 												</div>
-												<!-- END PORTLET-->
 											</div>
-										</div>
+										</div> <!-- FIM DIV .row -->
+									</div> <!-- FIM DIV .page-content-inner -->
+								</div> <!-- FIM DIV .container -->
 
+								<div class="container">
+									<div class="page-content-inner">
 										<div class="row">
 											<div class="col-md-12 col-sm-12">
 												<div class="portlet light ">
 													<div class="portlet-title">
-														<div class="caption font-red">
-															<i class="icon-bar-chart font-red"></i>
-															<span class="caption-subject bold uppercase">Frequência</span>
+														<div class="caption font-green-haze">
+															<i class="icon-bar-chart font-green-haze"></i>
+															<span class="caption-subject bold ">Frequência</span>
 															<span class="caption-helper">Culto</span>
 														</div>
 														<div class="actions">
@@ -932,576 +897,14 @@
 									<!-- END PAGE CONTENT INNER -->
 								</div>
 							</div>
-							<!-- END PAGE CONTENT BODY -->
-							<!-- END CONTENT BODY -->
+
 						</div>
 						<!-- END CONTENT -->
-						<!-- BEGIN QUICK SIDEBAR -->
-						<a href="javascript:;" class="page-quick-sidebar-toggler">
-							<i class="icon-login"></i>
-						</a>
-						<div class="page-quick-sidebar-wrapper" data-close-on-body-click="false">
-							<div class="page-quick-sidebar">
-								<ul class="nav nav-tabs">
-									<li class="active">
-										<a href="javascript:;" data-target="#quick_sidebar_tab_1" data-toggle="tab"> Users
-											<span class="badge badge-danger">2</span>
-										</a>
-									</li>
-									<li>
-										<a href="javascript:;" data-target="#quick_sidebar_tab_2" data-toggle="tab"> Alerts
-											<span class="badge badge-success">7</span>
-										</a>
-									</li>
-									<li class="dropdown">
-										<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown"> More
-											<i class="fa fa-angle-down"></i>
-										</a>
-										<ul class="dropdown-menu pull-right">
-											<li>
-												<a href="javascript:;" data-target="#quick_sidebar_tab_3" data-toggle="tab">
-													<i class="icon-bell"></i> Alerts </a>
-											</li>
-											<li>
-												<a href="javascript:;" data-target="#quick_sidebar_tab_3" data-toggle="tab">
-													<i class="icon-info"></i> Notifications </a>
-											</li>
-											<li>
-												<a href="javascript:;" data-target="#quick_sidebar_tab_3" data-toggle="tab">
-													<i class="icon-speech"></i> Activities </a>
-											</li>
-											<li class="divider"></li>
-											<li>
-												<a href="javascript:;" data-target="#quick_sidebar_tab_3" data-toggle="tab">
-													<i class="icon-settings"></i> Settings </a>
-											</li>
-										</ul>
-									</li>
-								</ul>
-								<div class="tab-content">
-									<div class="tab-pane active page-quick-sidebar-chat" id="quick_sidebar_tab_1">
-										<div class="page-quick-sidebar-chat-users" data-rail-color="#ddd" data-wrapper-class="page-quick-sidebar-list">
-											<h3 class="list-heading">Staff</h3>
-											<ul class="media-list list-items">
-												<li class="media">
-													<div class="media-status">
-														<span class="badge badge-success">8</span>
-													</div>
-													<img class="media-object" src="assets/layouts/layout/img/avatar3.jpg" alt="...">
-													<div class="media-body">
-														<h4 class="media-heading">Bob Nilson</h4>
-														<div class="media-heading-sub"> Project Manager </div>
-													</div>
-												</li>
-												<li class="media">
-													<img class="media-object" src="assets/layouts/layout/img/avatar1.jpg" alt="...">
-													<div class="media-body">
-														<h4 class="media-heading">Nick Larson</h4>
-														<div class="media-heading-sub"> Art Director </div>
-													</div>
-												</li>
-												<li class="media">
-													<div class="media-status">
-														<span class="badge badge-danger">3</span>
-													</div>
-													<img class="media-object" src="assets/layouts/layout/img/avatar4.jpg" alt="...">
-													<div class="media-body">
-														<h4 class="media-heading">Deon Hubert</h4>
-														<div class="media-heading-sub"> CTO </div>
-													</div>
-												</li>
-												<li class="media">
-													<img class="media-object" src="assets/layouts/layout/img/avatar2.jpg" alt="...">
-													<div class="media-body">
-														<h4 class="media-heading">Ella Wong</h4>
-														<div class="media-heading-sub"> CEO </div>
-													</div>
-												</li>
-											</ul>
-											<h3 class="list-heading">Customers</h3>
-											<ul class="media-list list-items">
-												<li class="media">
-													<div class="media-status">
-														<span class="badge badge-warning">2</span>
-													</div>
-													<img class="media-object" src="assets/layouts/layout/img/avatar6.jpg" alt="...">
-													<div class="media-body">
-														<h4 class="media-heading">Lara Kunis</h4>
-														<div class="media-heading-sub"> CEO, Loop Inc </div>
-														<div class="media-heading-small"> Last seen 03:10 AM </div>
-													</div>
-												</li>
-												<li class="media">
-													<div class="media-status">
-														<span class="label label-sm label-success">new</span>
-													</div>
-													<img class="media-object" src="assets/layouts/layout/img/avatar7.jpg" alt="...">
-													<div class="media-body">
-														<h4 class="media-heading">Ernie Kyllonen</h4>
-														<div class="media-heading-sub"> Project Manager,
-															<br> SmartBizz PTL </div>
-													</div>
-												</li>
-												<li class="media">
-													<img class="media-object" src="assets/layouts/layout/img/avatar8.jpg" alt="...">
-													<div class="media-body">
-														<h4 class="media-heading">Lisa Stone</h4>
-														<div class="media-heading-sub"> CTO, Keort Inc </div>
-														<div class="media-heading-small"> Last seen 13:10 PM </div>
-													</div>
-												</li>
-												<li class="media">
-													<div class="media-status">
-														<span class="badge badge-success">7</span>
-													</div>
-													<img class="media-object" src="assets/layouts/layout/img/avatar9.jpg" alt="...">
-													<div class="media-body">
-														<h4 class="media-heading">Deon Portalatin</h4>
-														<div class="media-heading-sub"> CFO, H&D LTD </div>
-													</div>
-												</li>
-												<li class="media">
-													<img class="media-object" src="assets/layouts/layout/img/avatar10.jpg" alt="...">
-													<div class="media-body">
-														<h4 class="media-heading">Irina Savikova</h4>
-														<div class="media-heading-sub"> CEO, Tizda Motors Inc </div>
-													</div>
-												</li>
-												<li class="media">
-													<div class="media-status">
-														<span class="badge badge-danger">4</span>
-													</div>
-													<img class="media-object" src="assets/layouts/layout/img/avatar11.jpg" alt="...">
-													<div class="media-body">
-														<h4 class="media-heading">Maria Gomez</h4>
-														<div class="media-heading-sub"> Manager, Infomatic Inc </div>
-														<div class="media-heading-small"> Last seen 03:10 AM </div>
-													</div>
-												</li>
-											</ul>
-										</div>
-										<div class="page-quick-sidebar-item">
-											<div class="page-quick-sidebar-chat-user">
-												<div class="page-quick-sidebar-nav">
-													<a href="javascript:;" class="page-quick-sidebar-back-to-list">
-														<i class="icon-arrow-left"></i>Back</a>
-												</div>
-												<div class="page-quick-sidebar-chat-user-messages">
-													<div class="post out">
-														<img class="avatar" alt="" src="assets/layouts/layout/img/avatar3.jpg" />
-														<div class="message">
-															<span class="arrow"></span>
-															<a href="javascript:;" class="name">Bob Nilson</a>
-															<span class="datetime">20:15</span>
-															<span class="body"> When could you send me the report ? </span>
-														</div>
-													</div>
-													<div class="post in">
-														<img class="avatar" alt="" src="assets/layouts/layout/img/avatar2.jpg" />
-														<div class="message">
-															<span class="arrow"></span>
-															<a href="javascript:;" class="name">Ella Wong</a>
-															<span class="datetime">20:15</span>
-															<span class="body"> Its almost done. I will be sending it shortly </span>
-														</div>
-													</div>
-													<div class="post out">
-														<img class="avatar" alt="" src="assets/layouts/layout/img/avatar3.jpg" />
-														<div class="message">
-															<span class="arrow"></span>
-															<a href="javascript:;" class="name">Bob Nilson</a>
-															<span class="datetime">20:15</span>
-															<span class="body"> Alright. Thanks! :) </span>
-														</div>
-													</div>
-													<div class="post in">
-														<img class="avatar" alt="" src="assets/layouts/layout/img/avatar2.jpg" />
-														<div class="message">
-															<span class="arrow"></span>
-															<a href="javascript:;" class="name">Ella Wong</a>
-															<span class="datetime">20:16</span>
-															<span class="body"> You are most welcome. Sorry for the delay. </span>
-														</div>
-													</div>
-													<div class="post out">
-														<img class="avatar" alt="" src="assets/layouts/layout/img/avatar3.jpg" />
-														<div class="message">
-															<span class="arrow"></span>
-															<a href="javascript:;" class="name">Bob Nilson</a>
-															<span class="datetime">20:17</span>
-															<span class="body"> No probs. Just take your time :) </span>
-														</div>
-													</div>
-													<div class="post in">
-														<img class="avatar" alt="" src="assets/layouts/layout/img/avatar2.jpg" />
-														<div class="message">
-															<span class="arrow"></span>
-															<a href="javascript:;" class="name">Ella Wong</a>
-															<span class="datetime">20:40</span>
-															<span class="body"> Alright. I just emailed it to you. </span>
-														</div>
-													</div>
-													<div class="post out">
-														<img class="avatar" alt="" src="assets/layouts/layout/img/avatar3.jpg" />
-														<div class="message">
-															<span class="arrow"></span>
-															<a href="javascript:;" class="name">Bob Nilson</a>
-															<span class="datetime">20:17</span>
-															<span class="body"> Great! Thanks. Will check it right away. </span>
-														</div>
-													</div>
-													<div class="post in">
-														<img class="avatar" alt="" src="assets/layouts/layout/img/avatar2.jpg" />
-														<div class="message">
-															<span class="arrow"></span>
-															<a href="javascript:;" class="name">Ella Wong</a>
-															<span class="datetime">20:40</span>
-															<span class="body"> Please let me know if you have any comment. </span>
-														</div>
-													</div>
-													<div class="post out">
-														<img class="avatar" alt="" src="assets/layouts/layout/img/avatar3.jpg" />
-														<div class="message">
-															<span class="arrow"></span>
-															<a href="javascript:;" class="name">Bob Nilson</a>
-															<span class="datetime">20:17</span>
-															<span class="body"> Sure. I will check and buzz you if anything needs to be corrected. </span>
-														</div>
-													</div>
-												</div>
-												<div class="page-quick-sidebar-chat-user-form">
-													<div class="input-group">
-														<input type="text" class="form-control" placeholder="Type a message here...">
-														<div class="input-group-btn">
-															<button type="button" class="btn green">
-																<i class="icon-paper-clip"></i>
-															</button>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="tab-pane page-quick-sidebar-alerts" id="quick_sidebar_tab_2">
-										<div class="page-quick-sidebar-alerts-list">
-											<h3 class="list-heading">General</h3>
-											<ul class="feeds list-items">
-												<li>
-													<div class="col1">
-														<div class="cont">
-															<div class="cont-col1">
-																<div class="label label-sm label-info">
-																	<i class="fa fa-check"></i>
-																</div>
-															</div>
-															<div class="cont-col2">
-																<div class="desc"> You have 4 pending tasks.
-																			<span class="label label-sm label-warning "> Take action
-																				<i class="fa fa-share"></i>
-																			</span>
-																</div>
-															</div>
-														</div>
-													</div>
-													<div class="col2">
-														<div class="date"> Just now </div>
-													</div>
-												</li>
-												<li>
-													<a href="javascript:;">
-														<div class="col1">
-															<div class="cont">
-																<div class="cont-col1">
-																	<div class="label label-sm label-success">
-																		<i class="fa fa-bar-chart-o"></i>
-																	</div>
-																</div>
-																<div class="cont-col2">
-																	<div class="desc"> Finance Report for year 2013 has been released. </div>
-																</div>
-															</div>
-														</div>
-														<div class="col2">
-															<div class="date"> 20 mins </div>
-														</div>
-													</a>
-												</li>
-												<li>
-													<div class="col1">
-														<div class="cont">
-															<div class="cont-col1">
-																<div class="label label-sm label-danger">
-																	<i class="fa fa-user"></i>
-																</div>
-															</div>
-															<div class="cont-col2">
-																<div class="desc"> You have 5 pending membership that requires a quick review. </div>
-															</div>
-														</div>
-													</div>
-													<div class="col2">
-														<div class="date"> 24 mins </div>
-													</div>
-												</li>
-												<li>
-													<div class="col1">
-														<div class="cont">
-															<div class="cont-col1">
-																<div class="label label-sm label-info">
-																	<i class="fa fa-shopping-cart"></i>
-																</div>
-															</div>
-															<div class="cont-col2">
-																<div class="desc"> New order received with
-																	<span class="label label-sm label-success"> Reference Number: DR23923 </span>
-																</div>
-															</div>
-														</div>
-													</div>
-													<div class="col2">
-														<div class="date"> 30 mins </div>
-													</div>
-												</li>
-												<li>
-													<div class="col1">
-														<div class="cont">
-															<div class="cont-col1">
-																<div class="label label-sm label-success">
-																	<i class="fa fa-user"></i>
-																</div>
-															</div>
-															<div class="cont-col2">
-																<div class="desc"> You have 5 pending membership that requires a quick review. </div>
-															</div>
-														</div>
-													</div>
-													<div class="col2">
-														<div class="date"> 24 mins </div>
-													</div>
-												</li>
-												<li>
-													<div class="col1">
-														<div class="cont">
-															<div class="cont-col1">
-																<div class="label label-sm label-info">
-																	<i class="fa fa-bell-o"></i>
-																</div>
-															</div>
-															<div class="cont-col2">
-																<div class="desc"> Web server hardware needs to be upgraded.
-																	<span class="label label-sm label-warning"> Overdue </span>
-																</div>
-															</div>
-														</div>
-													</div>
-													<div class="col2">
-														<div class="date"> 2 hours </div>
-													</div>
-												</li>
-												<li>
-													<a href="javascript:;">
-														<div class="col1">
-															<div class="cont">
-																<div class="cont-col1">
-																	<div class="label label-sm label-default">
-																		<i class="fa fa-briefcase"></i>
-																	</div>
-																</div>
-																<div class="cont-col2">
-																	<div class="desc"> IPO Report for year 2013 has been released. </div>
-																</div>
-															</div>
-														</div>
-														<div class="col2">
-															<div class="date"> 20 mins </div>
-														</div>
-													</a>
-												</li>
-											</ul>
-											<h3 class="list-heading">System</h3>
-											<ul class="feeds list-items">
-												<li>
-													<div class="col1">
-														<div class="cont">
-															<div class="cont-col1">
-																<div class="label label-sm label-info">
-																	<i class="fa fa-check"></i>
-																</div>
-															</div>
-															<div class="cont-col2">
-																<div class="desc"> You have 4 pending tasks.
-																			<span class="label label-sm label-warning "> Take action
-																				<i class="fa fa-share"></i>
-																			</span>
-																</div>
-															</div>
-														</div>
-													</div>
-													<div class="col2">
-														<div class="date"> Just now </div>
-													</div>
-												</li>
-												<li>
-													<a href="javascript:;">
-														<div class="col1">
-															<div class="cont">
-																<div class="cont-col1">
-																	<div class="label label-sm label-danger">
-																		<i class="fa fa-bar-chart-o"></i>
-																	</div>
-																</div>
-																<div class="cont-col2">
-																	<div class="desc"> Finance Report for year 2013 has been released. </div>
-																</div>
-															</div>
-														</div>
-														<div class="col2">
-															<div class="date"> 20 mins </div>
-														</div>
-													</a>
-												</li>
-												<li>
-													<div class="col1">
-														<div class="cont">
-															<div class="cont-col1">
-																<div class="label label-sm label-default">
-																	<i class="fa fa-user"></i>
-																</div>
-															</div>
-															<div class="cont-col2">
-																<div class="desc"> You have 5 pending membership that requires a quick review. </div>
-															</div>
-														</div>
-													</div>
-													<div class="col2">
-														<div class="date"> 24 mins </div>
-													</div>
-												</li>
-												<li>
-													<div class="col1">
-														<div class="cont">
-															<div class="cont-col1">
-																<div class="label label-sm label-info">
-																	<i class="fa fa-shopping-cart"></i>
-																</div>
-															</div>
-															<div class="cont-col2">
-																<div class="desc"> New order received with
-																	<span class="label label-sm label-success"> Reference Number: DR23923 </span>
-																</div>
-															</div>
-														</div>
-													</div>
-													<div class="col2">
-														<div class="date"> 30 mins </div>
-													</div>
-												</li>
-												<li>
-													<div class="col1">
-														<div class="cont">
-															<div class="cont-col1">
-																<div class="label label-sm label-success">
-																	<i class="fa fa-user"></i>
-																</div>
-															</div>
-															<div class="cont-col2">
-																<div class="desc"> You have 5 pending membership that requires a quick review. </div>
-															</div>
-														</div>
-													</div>
-													<div class="col2">
-														<div class="date"> 24 mins </div>
-													</div>
-												</li>
-												<li>
-													<div class="col1">
-														<div class="cont">
-															<div class="cont-col1">
-																<div class="label label-sm label-warning">
-																	<i class="fa fa-bell-o"></i>
-																</div>
-															</div>
-															<div class="cont-col2">
-																<div class="desc"> Web server hardware needs to be upgraded.
-																	<span class="label label-sm label-default "> Overdue </span>
-																</div>
-															</div>
-														</div>
-													</div>
-													<div class="col2">
-														<div class="date"> 2 hours </div>
-													</div>
-												</li>
-												<li>
-													<a href="javascript:;">
-														<div class="col1">
-															<div class="cont">
-																<div class="cont-col1">
-																	<div class="label label-sm label-info">
-																		<i class="fa fa-briefcase"></i>
-																	</div>
-																</div>
-																<div class="cont-col2">
-																	<div class="desc"> IPO Report for year 2013 has been released. </div>
-																</div>
-															</div>
-														</div>
-														<div class="col2">
-															<div class="date"> 20 mins </div>
-														</div>
-													</a>
-												</li>
-											</ul>
-										</div>
-									</div>
-									<div class="tab-pane page-quick-sidebar-settings" id="quick_sidebar_tab_3">
-										<div class="page-quick-sidebar-settings-list">
-											<h3 class="list-heading">General Settings</h3>
-											<ul class="list-items borderless">
-												<li> Enable Notifications
-													<input type="checkbox" class="make-switch" checked data-size="small" data-on-color="success" data-on-text="ON" data-off-color="default" data-off-text="OFF"> </li>
-												<li> Allow Tracking
-													<input type="checkbox" class="make-switch" data-size="small" data-on-color="info" data-on-text="ON" data-off-color="default" data-off-text="OFF"> </li>
-												<li> Log Errors
-													<input type="checkbox" class="make-switch" checked data-size="small" data-on-color="danger" data-on-text="ON" data-off-color="default" data-off-text="OFF"> </li>
-												<li> Auto Sumbit Issues
-													<input type="checkbox" class="make-switch" data-size="small" data-on-color="warning" data-on-text="ON" data-off-color="default" data-off-text="OFF"> </li>
-												<li> Enable SMS Alerts
-													<input type="checkbox" class="make-switch" checked data-size="small" data-on-color="success" data-on-text="ON" data-off-color="default" data-off-text="OFF"> </li>
-											</ul>
-											<h3 class="list-heading">System Settings</h3>
-											<ul class="list-items borderless">
-												<li> Security Level
-													<select class="form-control input-inline input-sm input-small">
-														<option value="1">Normal</option>
-														<option value="2" selected>Medium</option>
-														<option value="e">High</option>
-													</select>
-												</li>
-												<li> Failed Email Attempts
-													<input class="form-control input-inline input-sm input-small" value="5" /> </li>
-												<li> Secondary SMTP Port
-													<input class="form-control input-inline input-sm input-small" value="3560" /> </li>
-												<li> Notify On System Error
-													<input type="checkbox" class="make-switch" checked data-size="small" data-on-color="danger" data-on-text="ON" data-off-color="default" data-off-text="OFF"> </li>
-												<li> Notify On SMTP Error
-													<input type="checkbox" class="make-switch" checked data-size="small" data-on-color="warning" data-on-text="ON" data-off-color="default" data-off-text="OFF"> </li>
-											</ul>
-											<div class="inner-content">
-												<button class="btn btn-success">
-													<i class="icon-settings"></i> Save Changes</button>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<!-- END QUICK SIDEBAR -->
 					</div>
 
-						</div> <!-- FIM DIV .page-content-wrapper -->
-					</div> <!-- FIM DIV .page-container -->
-				</div> <!-- FIM DIV .page-wrapper-middle -->
+				</div> <!-- FIM DIV .page-content-wrapper -->
+			</div> <!-- FIM DIV .page-container -->
+		</div> <!-- FIM DIV .page-wrapper-middle -->
 
 
 
