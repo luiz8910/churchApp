@@ -98,6 +98,7 @@
                                                     <div class="caption font-green-haze">
                                                         <i class="icon-settings font-green-haze"></i>
                                                         <span class="caption-subject bold uppercase"> Importar base de dados</span>
+														<span class="caption-helper"></span>
                                                     </div> <!-- FIM DIV .caption.font-green-haze -->
                                                     <div class="actions">
                                                         <div class="btn-group btn-group-devided">
@@ -125,13 +126,6 @@
                                                         </div>
                                                     </div> <!-- FIM DIV .actions -->
                                                 </div> <!-- FIM DIV .portlet-title -->
-
-
-                                                {{--<br><br>
-                                                <button type="submit" class="btn green">
-                                                    <i class="fa fa-table"></i>
-                                                    Enviar Planilha
-                                                </button>--}}
 
                                                 <div class="portlet-body form">
                                                     <div class="form-body">

@@ -17,7 +17,11 @@
 			<div class="page-wrapper-row">
 				<div class="page-wrapper-top">
 					<!-- BEGIN HEADER -->
+						@if(!isset($church_id) || $church_id == null)
 						@include('includes.header')
+						@else
+						@include('includes.header-edit')
+						@endif
 					<!-- END HEADER -->
 				</div> <!-- FIM DIV.page-wrapper-top -->
         	</div> <!-- FIM DIV.page-wrapper-row -->
@@ -1533,7 +1537,7 @@
 
 		<script src="../js/maps.js"></script>
 
-		<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjTs0nbQbEecUygnKpThLfzRKES8nKS0A&callback=initMap"></script>
+		<script async defersrc="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjTs0nbQbEecUygnKpThLfzRKES8nKS0A&callback=initMap"></script>
 
 
 		@include('includes.charts')
