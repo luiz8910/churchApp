@@ -79,29 +79,27 @@
 														<span class="caption-helper"></span>
                                                     </div> <!-- FIM DIV .caption.font-green-haze -->
                                                     <div class="actions">
-                                                        <div class="btn-group btn-group-devided">
-                                                            <div class="btn-group">
-                                                                <a class="btn green btn-outline btn-circle" href="javascript:;" data-toggle="dropdown">
-                                                                    <i class="fa fa-share"></i>
-                                                                    <span class="hidden-xs"> Exportar </span>
-                                                                    <i class="fa fa-angle-down"></i>
-                                                                </a>
-                                                                <ul class="dropdown-menu pull-right" id="sample_3_tools">
-                                                                    <li>
-                                                                        <a href="javascript:;">
-                                                                            <i class="fa fa-table" aria-hidden="true"></i>
-                                                                            Excel (.xls)
-                                                                        </a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="javascript:;">
-                                                                            <i class="fa fa-cloud-download" aria-hidden="true"></i>
-                                                                            CSV
-                                                                        </a>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
+														<div class="btn-group">
+															<a class="btn red btn-outline btn-circle" href="javascript:;" data-toggle="dropdown">
+																<i class="fa fa-share"></i>
+																<span class="hidden-xs"> Exportar </span>
+																<i class="fa fa-angle-down"></i>
+															</a>
+															<ul class="dropdown-menu pull-right" id="sample_3_tools">
+																<li>
+																	<a href="javascript:;">
+																		<i class="fa fa-table" aria-hidden="true"></i>
+																		Excel (.xls)
+																	</a>
+																</li>
+																<li>
+																	<a href="javascript:;">
+																		<i class="fa fa-cloud-download" aria-hidden="true"></i>
+																		CSV
+																	</a>
+																</li>
+															</ul>
+														</div>
                                                     </div> <!-- FIM DIV .actions -->
                                                 </div> <!-- FIM DIV .portlet-title -->
 
