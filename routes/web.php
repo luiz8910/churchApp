@@ -54,6 +54,12 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('notify', 'PersonController@notify')->name('notify.user');
 
+    Route::get('/findUserAction/{id}', 'PersonController@findUserAction');
+
+    Route::get('/keepActions/{id}', 'PersonController@keepActions');
+
+    Route::get('/deleteActions/{id}', 'PersonController@deleteActions');
+
     // Fim Usuários e pessoas
 
     //Inicio Grupos

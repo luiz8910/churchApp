@@ -20,6 +20,7 @@
 <link href="../../assets/global/plugins/fullcalendar/fullcalendar.min.css" rel="stylesheet" type="text/css" />
 <link href="../../assets/global/plugins/jqvmap/jqvmap/jqvmap.css" rel="stylesheet" type="text/css" />
 <link href="../../assets/global/plugins/jquery-notific8/jquery.notific8.min.css" rel="stylesheet" type="text/css" />
+<link href="../../assets/global/plugins/bootstrap-sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
 <!-- END PAGE LEVEL PLUGINS -->
 <!-- BEGIN THEME GLOBAL STYLES -->
 <link href="../../assets/global/css/components.min.css" rel="stylesheet" id="style_components" type="text/css" />
@@ -32,12 +33,8 @@
 <!-- END THEME LAYOUT STYLES -->
 <link rel="shortcut icon" href="../../logo/Simbolo2.png" />
 
-<!-- BEGIN PAGE LEVEL PLUGINS -->
-<link href="../../assets/global/plugins/fullcalendar/fullcalendar.min.css" rel="stylesheet" type="text/css" />
-<!-- END PAGE LEVEL PLUGINS -->
-
 <!-- CSS Próprio -->
 <link href="../../css/style.css" rel="stylesheet" type="text/css" />
 <link href="../../css/search.css" rel="stylesheet" type="text/css" />
-<link href="../css/geral.css" rel="stylesheet" type="text/css" />
+<link href="../../css/geral.css" rel="stylesheet" type="text/css" />
 <meta name="csrf-token" content="{{ csrf_token() }}">

@@ -514,6 +514,8 @@
 
 													<div class="portlet-body form">
 														<div id="map" style="height: 320px; width: 100%;"></div>
+														<input type="hidden" value="{{ $location }}" id="location">
+														<input type="hidden" value="{{ $street }}" id="streetMap">
 													</div>  <!-- FIM DIV .form-body -->
 
 														<!-- <div class="form-actions ">

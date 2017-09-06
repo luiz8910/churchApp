@@ -13,9 +13,11 @@ use App\Models\User;
 use App\Notifications\EventNotification;
 use App\Notifications\Notifications;
 use App\Repositories\ChurchRepository;
+use App\Repositories\EventRepository;
 use App\Repositories\EventSubscribedListRepository;
 use App\Repositories\GroupRepository;
 use App\Repositories\RequiredFieldsRepository;
+use App\Services\EventServices;
 use App\Traits\ConfigTrait;
 use App\Traits\CountRepository;
 use App\Traits\DateRepository;
@@ -77,10 +79,19 @@ class PersonController extends Controller
      * @var ChurchRepository
      */
     private $churchRepository;
+    /**
+     * @var EventRepository
+     */
+    private $eventRepository;
+    /**
+     * @var EventServices
+     */
+    private $eventServices;
 
     public function __construct(PersonRepository $repository, StateRepository $stateRepositoryTrait, RoleRepository $roleRepository,
                                 UserRepository $userRepository, RequiredFieldsRepository $fieldsRepository, EventSubscribedListRepository $listRepository,
-                                GroupRepository $groupRepository, ChurchRepository $churchRepository)
+                                GroupRepository $groupRepository, ChurchRepository $churchRepository, EventRepository $eventRepository,
+                                EventServices $eventServices)
     {
         $this->repository = $repository;
         $this->stateRepository = $stateRepositoryTrait;
@@ -90,6 +101,8 @@ class PersonController extends Controller
         $this->listRepository = $listRepository;
         $this->groupRepository = $groupRepository;
         $this->churchRepository = $churchRepository;
+        $this->eventRepository = $eventRepository;
+        $this->eventServices = $eventServices;
     }
 
     /**
@@ -402,7 +415,7 @@ class PersonController extends Controller
 
         $data['dateBirth'] = $this->formatDateBD($data['dateBirth']);
 
-        $data['dateBaptism'] = $this->formatDateBD($data['dateBaptism']);
+        $data['dateBaptism'] = $data['dateBaptism'] == "" ? null :$this->formatDateBD($data['dateBaptism']);
 
         $data['imgProfile'] = 'uploads/profile/noimage.png';
 
@@ -426,6 +439,8 @@ class PersonController extends Controller
         }
 
         $data["church_id"] = $this->getUserChurch();
+
+        $data["city"] = ucwords($data["city"]);
 
         $id = $this->repository->create($data)->id;
 
@@ -524,7 +539,7 @@ class PersonController extends Controller
 
         $model->dateBirth = $this->formatDateView($model->dateBirth);
 
-        $model->dateBaptism = $this->formatDateView($model->dateBaptism);
+        $model->dateBaptism = !$model->dateBaptism ? null : $this->formatDateView($model->dateBaptism);
 
         $leader = $this->getLeaderRoleId();
 
@@ -645,7 +660,7 @@ class PersonController extends Controller
 
         $model->dateBirth = $this->formatDateView($model->dateBirth);
 
-        $model->dateBaptism = $this->formatDateView($model->dateBaptism);
+        $model->dateBaptism = !$model->dateBaptism ? null : $this->formatDateView($model->dateBaptism);
 
         $location = $this->formatGoogleMaps($model);
 
@@ -819,6 +834,8 @@ class PersonController extends Controller
 
         $this->updateTag($this->tag($data["dateBirth"]), $id, 'people');
 
+        $data["city"] = ucwords($data["city"]);
+
         $this->repository->update($data, $id);
 
         if($teen){
@@ -868,21 +885,30 @@ class PersonController extends Controller
     {
         $person = $this->repository->find($id);
 
-        $user = $person->tag == 'adult' ? $person->user->id : null;
-
-        if($user){
-            $this->userRepository->delete($user);
+        if($person->tag == "adult")
+        {
+            $user = $person->user->id;
+        }
+        else{
+            $this->destroyTeen($id);
         }
 
-        RecentUsers::where('person_id', $id)->delete();
+        if(isset($user)) {
+            $this->userRepository->delete($user);
 
-        $person->delete();
 
-        return json_encode(
-            [
-                'status' => true,
-                'name' => $person->name . " ". $person->lastName
-            ]);
+            RecentUsers::where('person_id', $id)->delete();
+
+            $person->delete();
+
+            return json_encode(
+                [
+                    'status' => true,
+                    'name' => $person->name . " " . $person->lastName
+                ]);
+        }
+
+        return false;
     }
 
     public function destroyTeen($id)
@@ -893,7 +919,11 @@ class PersonController extends Controller
 
         $person->delete();
 
-        return json_encode(true);
+        return json_encode(
+            [
+                'status' => true,
+                'name' => $person->name . " " . $person->lastName
+            ]);
     }
 
     public function detachTeen($id, $parentId)
@@ -1264,6 +1294,119 @@ class PersonController extends Controller
         $arr[] = $lastName;
 
         return $arr;
+    }
+
+    /*
+     * Usado para encontrar eventos/grupos
+     * criado pelo usuário prestes a ser excluído
+     * $id = id do usuário (person_id)
+     */
+    public function findUserAction($id)
+    {
+        $user = $this->repository->find($id)->user;
+
+        $groups = $this->groupRepository->findByField('owner_id', $user->id);
+
+        $events = $this->eventRepository->findByField('createdBy_id', $user->id);
+
+        if(count($groups) > 0 || count($events) > 0)
+        {
+            return json_encode(
+                [
+                    'status' => true,
+                    'groups' => $groups,
+                    'events' => $events
+                ]
+            );
+        }
+
+        return json_encode(['status' => false]);
+    }
+
+    /*
+     * Ativado quando o usuário é excluído, porém
+     * os eventos e/ou grupos criados pelo mesmo serão
+     * mantidos e transferidos.
+     */
+    public function keepActions($id)
+    {
+        $person = $this->repository->find($id);
+
+        $user = $person->user;
+
+        $groups = $this->groupRepository->findByField('owner_id', $user->id);
+
+        $events = $this->eventRepository->findByField('createdBy_id', $user->id);
+
+        $transfer_to = DB::table('transfer_to')
+                ->where(
+                    ['church_id' => $this->getUserChurch()]
+                )
+                ->value('person_id');
+
+        $transfer_to_user = $this->repository->find($transfer_to);
+
+        if(count($groups) > 0)
+        {
+            $data["owner_id"] = $transfer_to_user->user->id;
+
+            foreach ($groups as $group)
+            {
+                $this->groupRepository->update($data, $group->id);
+            }
+        }
+
+
+        if(count($events) > 0)
+        {
+            $data["createdBy_id"] = $transfer_to_user->user->id;
+
+            foreach ($events as $event)
+            {
+                $this->eventServices->UnsubUser($id, $event->id);
+                $this->eventServices->subEvent($event->id, $transfer_to);
+                $this->eventRepository->update($data, $event->id);
+            }
+        }
+
+        return json_encode([
+            'status' => true,
+            'name' => $transfer_to_user->name
+        ]);
+    }
+
+    /*
+     * Ativado quando o usuário é excluído, e
+     * os eventos e/ou grupos criados pelo mesmo
+     * também serão excluídos.
+     */
+    public function deleteActions($id)
+    {
+        $person = $this->repository->find($id);
+
+        $user = $person->user;
+
+        $groups = $this->groupRepository->findByField('owner_id', $user->id);
+
+        $events = $this->eventRepository->findByField('createdBy_id', $user->id);
+
+        if(count($groups) > 0)
+        {
+            foreach ($groups as $group)
+            {
+                $group->delete();
+            }
+        }
+
+        if(count($events) > 0)
+        {
+            foreach ($events as $event)
+            {
+                $event->delete();
+            }
+        }
+
+        return json_encode(['status' => true]);
     }
 
 }

@@ -205,6 +205,8 @@ class VisitorController extends Controller
 
         $data['updated_at'] = Carbon::now();
 
+        $data["city"] = ucwords($data["city"]);
+
         $id = DB::table('visitors')->insertGetId($data);
 
         $this->updateTag($this->tag($data['dateBirth']), $id, 'visitors');
@@ -349,6 +351,8 @@ class VisitorController extends Controller
             \Session::flash("error.required-fields", "Preencha o campo " . $verifyFields);
             return redirect()->route("visitors.edit", ['visitor' => $id])->withInput();
         }
+
+        $data["city"] = ucwords($data["city"]);
 
         $this->repository->update($data, $id);
 

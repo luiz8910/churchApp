@@ -646,6 +646,7 @@ class EventController extends Controller
             }
         }
 
+        $data["city"] = ucwords($data["city"]);
 
         $event = $this->repository->create($data);
 
@@ -928,6 +929,8 @@ class EventController extends Controller
                 $data['day'] = $day;
             }
         }
+
+        $data["city"] = ucwords($data["city"]);
 
         $this->repository->update($data, $id);
 

@@ -18,7 +18,6 @@
         <link href="../css/navbar.css" rel="stylesheet" type="text/css"/>
         <link href="../css/page-config.css" rel="stylesheet" type="text/css"/>
 
-        <link href="../assets/global/plugins/bootstrap-sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
         <link href="../assets/global/plugins/dropzone/dropzone.min.css" rel="stylesheet" type="text/css" />
         <link href="../assets/global/plugins/dropzone/basic.min.css" rel="stylesheet" type="text/css" />
         <!--<script src="../js/ajax.js"></script>-->
@@ -171,8 +170,6 @@
 <script src="../../assets/pages/scripts/form-dropzone.js" type="text/javascript"></script>
 <!-- FIM SCRIPTS PAGINAS DE DROPZONE -->
 <script src="../../assets/pages/scripts/search.min.js" type="text/javascript"></script>
-<script src="../../assets/global/plugins/bootstrap-sweetalert/sweetalert.min.js" type="text/javascript"></script>
-<script src="../../assets/pages/scripts/ui-sweetalert.min.js" type="text/javascript"></script>
 
 <script>
     function dropzone()

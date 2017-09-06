@@ -130,6 +130,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <i class="icon-home"></i> Visão Geral </a>
                                             </li>
                                             @if($role == "Lider")
+
                                                 <li>
                                                     <a href="javascript:;" onclick="sendPasswordUser()">
                                                         <i class="fa fa-unlock-alt"></i>
@@ -143,8 +144,13 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         <p>Enviando Senha...</p>
                                                     </div>
 
+                                                </li>
 
-
+                                                <li>
+                                                    <a href="javascript:;" id="btn-delete-{{ $model->id }}" class="deleteUser">
+                                                        <i class="fa fa-ban font-red"></i>
+                                                        Excluir Usuário
+                                                    </a>
                                                 </li>
                                             @endif
                                         </ul>
@@ -153,9 +159,10 @@ License: You must have a valid license purchased only from themeforest(the above
                                 </div>
                                 <!-- END PORTLET MAIN -->
 
+
                                 <input type="hidden" id="notific8-title">
                                 <input type="hidden" id="notific8-text">
-                                <input type="hidden" id="notific8-type">
+                                <input type="hidden" id="notific8-type" value="danger">
 
                                 <a href="javascript:;" class="btn btn-danger" id="notific8" style="display: none;"></a>
 
@@ -185,7 +192,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 </div>--}}
                                             </div>
                                             <div class="portlet-body">
-                                                <div id="map" style="height: 304px; width: 100%;"></div>
+                                                <div id="map" style="height: 320px; width: 100%;"></div>
                                                 <input type="hidden" value="{{ $location }}" id="location">
                                             </div>
                                         </div>
@@ -375,7 +382,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             <span class="input-group-addon">
                                                                 <i class="fa fa-user font-blue"></i>
                                                             </span>
-                                                            <input type="text" placeholder="João" name="name" value="{{ $model->name }}" class="form-control"
+                                                            <input type="text" placeholder="João" name="name" id="name" value="{{ $model->name }}" class="form-control"
                                                                     @if($fields[$i]->required == 1)
                                                                         required
                                                                     @endif
@@ -604,9 +611,6 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             </span>
                                                             <input type="text" class="form-control input-date" name="dateBaptism"
                                                                    placeholder="dd/mm/aaaa" maxlength="10" value="{{ $model->dateBaptism }}"
-                                                                   @if($fields[$i]->required == 1)
-                                                                   required
-                                                                    @endif
                                                             <?php $i++; ?>
                                                             >
                                                         </div>

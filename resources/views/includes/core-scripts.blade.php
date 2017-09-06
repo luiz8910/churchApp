@@ -39,6 +39,9 @@
 <script src="../assets/layouts/layout3/scripts/layout.min.js" type="text/javascript"></script>
 <script src="../assets/layouts/global/scripts/quick-sidebar.min.js" type="text/javascript"></script>
 
+<script src="../assets/global/plugins/bootstrap-sweetalert/sweetalert.min.js" type="text/javascript"></script>
+<script src="../assets/pages/scripts/ui-sweetalert.min.js" type="text/javascript"></script>
+
 
 <!-- END THEME LAYOUT SCRIPTS -->
 <!-- JS Próprio -->

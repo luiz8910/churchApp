@@ -146,6 +146,7 @@
 																				   data-original-title="Deseja Excluir?" data-popout="true"
 																				   onclick='event.preventDefault();' id="btn-delete-{{ $item->id }}">
 																					<i class="fa fa-trash"></i>
+																					Inativar
 																				</a>
 
 

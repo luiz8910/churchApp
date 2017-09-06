@@ -566,7 +566,7 @@
         });
     }
 
-    function Delete(id, route)
+    function Delete(id, route, sweet)
     {
         var request = $.ajax({
             url: route+"-delete/" + id,
@@ -579,7 +579,7 @@
         request.done(function (e) {
             console.log("done");
             console.log(e);
-            if(e.status)
+            if(e.status && sweet == null)
             {
                 console.log("status: " + e.status);
                 console.log("id: " + id);
@@ -596,7 +596,10 @@
 
                     $("#notific8").trigger("click");
 
+                    location.href = route;
+
                 }, 1000);
+
 
 
             }
@@ -992,6 +995,149 @@
         });
     }
 
+    /*
+     * Usado para procurar eventos/grupos
+     * de um usuário prestes a ser excluído
+     * id = id do usuário (person_id)
+     */
+    function findUserAction(id)
+    {
+        var request = $.ajax({
+            url: '/findUserAction/' + id,
+            method: 'GET',
+            dataType: 'json',
+            async: false
+        });
+
+        var records = new Array();
+        var status = "";
+        var fail = false;
+
+        request.done(function (e, textStatus) {
+
+            if(e.status)
+            {
+
+                for (i = 0; i < e.groups.length; i++)
+                {
+                    records.push(e.groups[i].name);
+                }
+
+                for(i = 0; i < e.events.length; i++)
+                {
+                    records.push(e.events[i].name);
+                }
+
+                console.log("records: " + records);
+
+            }
+
+            status = records.length > 0 ? null : textStatus;
+        });
+
+        request.fail(function (e) {
+            console.log("fail");
+            console.log(e);
+
+            fail = true;
+        });
+
+        return records.length == 0 && status == "success" ? "success" : fail ? false : records;
+
+    }
+
+    function sweetDeleteUser(id, name)
+    {
+        swal({
+            title: "Você tem certeza?",
+            text: "Deseja excluir o usuário " + name + "?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Sim, Excluir!",
+            cancelButtonText: "Cancelar",
+            closeOnConfirm: false
+        },
+            function(){
+
+
+                var find = findUserAction(id);
+                console.log(find);
+
+                if(find == "success")
+                {
+                    Delete(id, "/person", true);
+                    swal("Sucesso!", "O Usuário " + name + " foi excluído", "success");
+
+                    setTimeout(function () {
+                        location.href = '/person';
+                    }, 3000);
+                }
+                else if(find === false)
+                {
+                    swal("Atenção!", "Sua requisição não foi processada, verifique sua conexão", "error");
+                }
+                else{
+                    var data = find.toString();
+                    sweetConfirmations(null, data, null, name, id);
+                    //Delete(id, "/person");
+                }
+
+
+            });
+    }
+
+    function sweetConfirmations(title, data, type, name, id)
+    {
+
+        var title = title ? title : "Você tem certeza?";
+        var type = type ? type : "warning";
+        var text = "O usuário possui os seguintes grupos/eventos: " + data;
+
+        swal({
+            title: title,
+            text: text,
+            type: type,
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Sim, Excluir todos",
+            cancelButtonText: "Não, manter todos os eventos/grupos!",
+            closeOnConfirm: false,
+            closeOnCancel: false
+            },
+            function(isConfirm) {
+                if (isConfirm) {
+                    deleteActions(id);
+                    Delete(id, "/person", true);
+                    swal("Sucesso!", "O usuário " + name + " e os eventos foram excluídos com sucesso", "success");
+
+                    setTimeout(function () {
+                        location.href = '/person';
+                    }, 3000);
+                } else {
+                    var keep = keepActions(id);
+                    console.log(keep);
+                    Delete(id, "/person", true);
+
+                    swal("Atenção", "O usuário " + name + " foi excluído, e os eventos/grupos foram transferidos para " +
+                        "o usuário " + keep, "info");
+
+                    setTimeout(function () {
+                        location.href = '/person';
+                    }, 3000);
+                }
+            });
+    }
+
+    $(".deleteUser").click(function(){
+        var str = this.id;
+
+        var id = str.replace("btn-delete-", "");
+
+        var name = $("#name").val();
+
+        sweetDeleteUser(id, name);
+    });
 
     function dataChart()
     {
@@ -1192,6 +1338,63 @@
             console.log('fail');
             console.log(e);
         })
+    }
+
+    /*
+     * Ativado quando o usuário é excluído, porém
+     * os eventos e/ou grupos criados pelo mesmo serão
+     * mantidos e transferidos.
+     */
+    function keepActions(id)
+    {
+        var name = "";
+        var request = $.ajax({
+            url: "/keepActions/" + id,
+            method: "GET",
+            dataType: "json",
+            async: false
+        });
+
+        request.done(function(e){
+            if(e.status)
+            {
+                name = e.name;
+            }
+        });
+
+        request.fail(function () {
+            console.log("fail");
+            console.log(e);
+        });
+
+        return name;
+    }
+
+    /*
+     * Ativado quando o usuário é excluído, e
+     * os eventos e/ou grupos criados pelo mesmo
+     * também serão excluídos.
+     */
+    function deleteActions(id)
+    {
+        var request = $.ajax({
+            url: "/deleteActions/" + id,
+            method: "GET",
+            dataType: "json",
+            async: false
+        });
+
+        request.done(function(e){
+            if(e.status)
+            {
+                return true;
+            }
+        });
+
+        request.fail(function () {
+            console.log("fail");
+            console.log(e);
+        });
     }
 
 

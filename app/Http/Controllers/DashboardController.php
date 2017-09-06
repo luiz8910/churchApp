@@ -239,7 +239,7 @@ class DashboardController extends Controller
 
         $event = $this->eventRepository->find($nextEvent[0]);
 
-        $street = $event->street;
+        $street = $event->street . ", " . $event->number . " - " . $event->city;
 
         $location = $this->formatGoogleMaps($event);
 
@@ -295,15 +295,21 @@ class DashboardController extends Controller
 
         $recent_users = RecentUsers::where([
             'church_id' => $church_id
-        ])->get();
+        ])
+            ->limit(5)
+            ->get();
 
         $recent_groups = RecentGroups::where([
             'church_id' => $church_id
-        ])->get();
+        ])
+            ->limit(5)
+            ->get();
 
         $recent_events = RecentEvents::where([
             'church_id' => $church_id
-        ])->get();
+        ])
+            ->limit(5)
+            ->get();
 
         $qtde_users = count($recent_users);
         $qtde_groups = count($recent_groups);
@@ -349,24 +355,30 @@ class DashboardController extends Controller
 
         if($qtde_events > 0)
         {
-            foreach ($recent_events as $item)
+            try{
+                foreach ($recent_events as $item)
+                {
+                    $e = $this->eventRepository->find($item->event_id);
+
+                    $e->createdBy_id = $this->userRepository->find($e->createdBy_id)->person;
+
+                    $e->imgCreatorProfile = $e->createdBy_id->imgProfile;
+
+                    $e->createdBy_id = $e->createdBy_id->name . " " . $e->createdBy_id->lastName;
+
+                    $e->group_id = $e->group_id ? $this->groupRepository->find($e->group_id)->name : 'Sem Grupo';
+
+                    $nextEventRecent = $this->eventServices->getNextEvent($e->id);
+
+                    $e->nextEvent = $this->formatDateView($nextEventRecent[1]);
+
+                    $events_recent[] = $e;
+                }
+            }catch(\Exception $exception)
             {
-                $e = $this->eventRepository->find($item->event_id);
-
-                $e->createdBy_id = $this->userRepository->find($e->createdBy_id)->person;
-
-                $e->imgCreatorProfile = $e->createdBy_id->imgProfile;
-
-                $e->createdBy_id = $e->createdBy_id->name . " " . $e->createdBy_id->lastName;
-
-                $e->group_id = $e->group_id ? $this->groupRepository->find($e->group_id)->name : 'Sem Grupo';
-
-                $nextEventRecent = $this->eventServices->getNextEvent($e->id);
-
-                $e->nextEvent = $this->formatDateView($nextEventRecent[1]);
-
-                $events_recent[] = $e;
+                dd($exception);
             }
+
         }
 
 

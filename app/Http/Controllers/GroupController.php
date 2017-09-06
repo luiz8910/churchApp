@@ -175,6 +175,8 @@ class GroupController extends Controller
 
         $data['church_id'] = $this->getUserChurch();
 
+        $data["city"] = ucwords($data["city"]);
+
         $id = $this->repository->create($data)->id;
 
         $this->imgProfile($file, $id, $data['name']);
@@ -349,6 +351,8 @@ class GroupController extends Controller
         $data['sinceOf'] = $this->formatDateBD($data['sinceOf']);
 
         $data['church_id'] = $this->getUserChurch();
+
+        $data["city"] = ucwords($data["city"]);
 
         $this->repository->update($data, $id);
 

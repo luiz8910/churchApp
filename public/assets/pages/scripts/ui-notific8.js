@@ -10,7 +10,7 @@ var UINotific8 = function () {
                 console.log("notific8");
                 var title = $("#notific8-title").val();
                 var text = $("#notific8-text").val();
-                var type = $("#notific8-type").val() == 'danger' ? 'ruby' : 'amethyst';
+                var type = $("#notific8-type").val() == 'danger' ? 'ruby' : 'lime';
 
                 var settings = {
                     theme: type,

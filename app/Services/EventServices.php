@@ -350,6 +350,8 @@ class EventServices
 
         }
 
+        $this->subEvent($id, $createdBy_id);
+
         return false;
 
     }
@@ -823,18 +825,16 @@ class EventServices
                 ])
                 ->get();
 
-            //echo ("true");
-
         }
         else{
             //$dates contém todos os eventos que não foram excluídos
             $dates = DB::table("event_person")
+                ->join('events', 'events.id', '=', 'event_person.event_id')
                 ->where([
-                    "deleted_at" => null
+                    "events.church_id" => $this->getUserChurch(),
+                    "event_person.deleted_at" => null
                 ])
                 ->get();
-
-            //echo ("false");
         }
 
         //dd($dates);
