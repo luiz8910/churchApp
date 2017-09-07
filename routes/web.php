@@ -220,7 +220,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/visitors-excel/{format}', 'PersonController@visitorsExcel')->name('visitors.excel');
 
 //Ajax
-    Route::get('/automatic-cep/{id}', 'PersonController@automaticCep');
+    Route::get('/automatic-cep/{id}/{user}', 'PersonController@automaticCep');
 
 //Recuperação de Senha
     Route::get("/passResetView/{email}", "UsersController@passResetView");

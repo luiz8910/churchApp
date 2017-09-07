@@ -420,7 +420,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             <span class="input-group-addon">
                                                                 <i class="fa fa-male font-blue"></i>
                                                             </span>
-                                                        <select name="father_id" class="selectpicker form-control"
+                                                        <select name="father_id" id="father_id" class="selectpicker form-control"
                                                             data-live-search="true" data-size="8"
 
                                                                 @if($fields[$i]->required == 1)
@@ -450,7 +450,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             <span class="input-group-addon">
                                                                 <i class="fa fa-female font-red"></i>
                                                             </span>
-                                                        <select name="mother_id" class="selectpicker form-control"
+                                                        <select name="mother_id" id="mother_id" class="selectpicker form-control"
                                                                 data-live-search="true" data-size="8"
                                                                 @if($fields[$i]->required == 1)
                                                                     required

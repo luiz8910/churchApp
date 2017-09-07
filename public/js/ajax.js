@@ -522,10 +522,10 @@
     }
 
     $("#father_id").change(function () {
-
+        
         if($("#zipCode").val() == "")
         {
-            automaticCep(this.value);
+            automaticCep(this.value, 1);
         }
 
     });
@@ -534,16 +534,25 @@
 
         if($("#zipCode").val() == "")
         {
-            automaticCep(this.value);
+            automaticCep(this.value, 1);
         }
 
     });
 
+    $("#partner").change(function(){
 
-    function automaticCep(id)
+        if($("#zipCode").val() == "")
+        {
+            automaticCep(this.value, 0);
+        }
+    });
+
+
+    function automaticCep(id, user)
     {
+
         var request = $.ajax({
-            url: '/automatic-cep/' + id,
+            url: '/automatic-cep/' + id + '/' + user,
             method: 'GET',
             dataType:'json'
         });
@@ -552,11 +561,13 @@
             console.log("done");
             console.log(e);
 
-            if(e.cep)
+            if(e.status)
             {
                 $("#zipCode")
                     .val(e.cep)
                     .trigger('blur');
+
+                $("#number").val(e.number);
             }
         });
 

@@ -220,13 +220,16 @@ class PersonController extends Controller
 
         $church_id = $this->getUserChurch();
 
+        $partner = $this->repository->findByField('partner', null);
+
         $adults = $this->repository->findWhere(
             [
                 'tag' => 'adult',
                 'church_id' => $church_id,
-                ['maritalStatus', '<>', 'Casado']
+                ['partner', '=', 0]
             ]
-        );
+        )->union($partner);
+
 
         $fathers = DB::table('people')
             ->join('users', 'users.person_id', 'people.id')
@@ -237,6 +240,7 @@ class PersonController extends Controller
                     'users.church_id' => $church_id
                 ]
             )
+            ->whereNull('people.deleted_at')
             ->get();
 
 
@@ -249,6 +253,7 @@ class PersonController extends Controller
                     'users.church_id' => $church_id
                 ]
             )
+            ->whereNull('people.deleted_at')
             ->get();
 
         $route = $this->getRoute();
@@ -560,14 +565,32 @@ class PersonController extends Controller
 
         $church_id = $this->getUserChurch();
 
-        $adults = $this->repository->findWhere(
-            [
-                'tag' => 'adult',
-                'gender' => $gender,
-                'church_id' => $church_id,
-                ['maritalStatus', '<>', 'Casado']
-            ]
-        );
+        $partner = null;
+
+        if($model->maritalStatus == "Casado")
+        {
+            $adults = DB::table('people')
+                ->where([
+                    'tag' => 'adult',
+                    'church_id' => $church_id,
+                    'gender' => $gender,
+                ])
+                ->whereIn('partner', [null, 0, $id])
+                ->whereNull('deleted_at')
+                ->get();
+        }
+        else{
+
+            $adults = DB::table('people')
+                ->where([
+                    'tag' => 'adult',
+                    'church_id' => $church_id,
+                    'gender' => $gender,
+                ])
+                ->whereIn('partner', [null, 0])
+                ->whereNull('deleted_at')
+                ->get();
+        }
 
         $notify = $this->notify();
 
@@ -908,7 +931,6 @@ class PersonController extends Controller
                 ]);
         }
 
-        return false;
     }
 
     public function destroyTeen($id)
@@ -1115,13 +1137,26 @@ class PersonController extends Controller
         return redirect()->route('person.visitors');
     }
 
-    public function automaticCep($id)
+    public function automaticCep($id, $user)
     {
-        $user = $this->userRepository->find($id)->person_id;
+        $user = $user == 1 ? $this->userRepository->find($id)->person : null;
 
-        $cep = $this->repository->find($user)->zipCode;
+        if($user)
+        {
+            $person = $this->repository->find($user->id);
+        }
+        else{
+            $person = $this->repository->find($id);
+        }
 
-        return json_encode(['cep' => $cep]);
+
+        return json_encode(
+            [
+                'status' => true,
+                'cep' => $person->zipCode,
+                'number' => $person->number
+            ]
+        );
     }
 
     public function checkCPF($cpf)
