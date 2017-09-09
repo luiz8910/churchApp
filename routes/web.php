@@ -288,3 +288,5 @@ Route::get('/juquinha', 'HtmlController@teste');
 Route::get('join', 'EventController@testeJoin');
 
 Route::get('surname', "PersonController@surname");
+
+Route::get('updateEventDate', "DashboardController@updateEventDate");

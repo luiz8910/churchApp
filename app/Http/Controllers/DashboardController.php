@@ -697,4 +697,28 @@ class DashboardController extends Controller
     {
         return view('testes.menu');
     }
+
+    public function updateEventDate()
+    {
+        $events = DB::table("event_person")->get();
+
+        foreach ($events as $event)
+        {
+            try{
+                $event_date = date_create($event->eventDate);
+
+                DB::transaction(function () use($event, $event_date){
+                    DB::table('event_person')
+                        ->where('eventDate', $event->eventDate)
+                        ->update(['event_date' => $event_date]);
+                });
+
+
+            }catch (\Exception $exception)
+            {
+                dd($exception);
+            }
+
+        }
+    }
 }
