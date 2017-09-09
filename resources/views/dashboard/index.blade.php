@@ -500,12 +500,18 @@
 								<div class="container">
 									<div class="page-content-inner">
 										<div class="row">
-											<div class="col-md-6">
+											<div class="col-md-12">
 												<div class="portlet light ">
 													<div class="portlet-title">
 														<div class="caption font-green-haze">
 															<i class="icon-settings font-green-haze"></i>
-															<span class="caption-subject font-green-haze bold "> Próximo Evento - dia {{ $nextEvent[1] }}</span>
+															<span class="caption-subject font-green-haze bold ">
+																@if(!$nextEvent[0])
+																	Você não está inscrito em nenhum evento
+																@else
+																	Próximo Evento - dia {{ $nextEvent[1] }} - {{ $event->name }}
+																@endif
+															</span>
 														</div> <!-- FIM DIV .caption.font-green-haze -->
 														<div class="actions">
 
@@ -525,7 +531,11 @@
 												</div> <!-- FIM DIV .portlet-body.form  -->
 											</div> <!-- FIM DIV .col-md-6 -->
 
-											<div class="col-md-6 col-sm-6">
+
+										</div> <!-- FIM DIV .row -->
+
+										<div class="row">
+											<div class="col-md-12 col-sm-12">
 												<!-- BEGIN PORTLET-->
 												<div class="portlet light ">
 													<div class="portlet-title tabbable-line">
@@ -558,7 +568,7 @@
 																					</div>
 																					<div class="cont-col2">
 																						<div class="desc"> Célula de Casais (Jorge e Lígia).
-																									<span class="label label-sm label-info"> Ver mais
+																							<span class="label label-sm label-info"> Ver mais
 																										<i class="fa fa-share"></i>
 																									</span>
 																						</div>
@@ -716,7 +726,7 @@
 																					</div>
 																					<div class="cont-col2">
 																						<div class="desc"> Order #24DOP4 has been rejected.
-																									<span class="label label-sm label-danger "> Take action
+																							<span class="label label-sm label-danger "> Take action
 																										<i class="fa fa-share"></i>
 																									</span>
 																						</div>
@@ -867,7 +877,7 @@
 													</div>
 												</div>
 											</div>
-										</div> <!-- FIM DIV .row -->
+										</div>
 									</div> <!-- FIM DIV .page-content-inner -->
 								</div> <!-- FIM DIV .container -->
 

@@ -815,6 +815,8 @@ class EventServices
         //Dia Atual
         $today = date_create();
 
+        $arr = [];
+        
         if($id)
         {
             //$dates contém todos as datas do evento selecionado que não foram excluídos
@@ -825,72 +827,135 @@ class EventServices
                 ])
                 ->get();
 
+            $arrayDates = [];
+
+            $arrayIds = [];
+
+
+            for ($i = 0; $i < count($dates); $i++)
+            {
+                //Separando as datas dos eventos
+                $date = date_create($dates[$i]->eventDate);
+
+                //Obtendo a diferença entre a data atual
+                // e a data do evento
+                $diff = date_diff($today, $date);
+
+                //Se a data do evento for igual o dia atual
+                //ou datas futuras
+                if($diff->format("%r%a") > -1)
+                {
+                    //Separa o id do evento
+                    $arrayIds[$i] = $dates[$i]->event_id;
+                    //Separa a data do evento
+                    $arrayDates[$i] = $date;
+                }
+            }
+
+
+            //Organiza os eventos de forma ascendente
+            //O indice 0 é o próximo evento
+            asort($arrayDates);
+
+            $key = array_keys($arrayDates);
+
+            $key = reset($key);
+
+            //dd($arrayDates);
+
+            //Separa a data do próximo Evento numa variável
+            $d = date_format($arrayDates[$key], "Y-m-d");
+
+            //Separa o id do próximo evento numa variável
+            //$id = array_search($d, $arrayDates); // id 8
+
+            /*
+             * Indíce 0 corresponde a $id do próximo evento
+             * Indice 1 corresponde a data do próximo evento
+             * */
+            $arr[] = $arrayIds[$key];
+            $arr[] = $d;
+
+            //dd($arr);
+
+            return $arr;
+
         }
         else{
             //$dates contém todos os eventos que não foram excluídos
-            $dates = DB::table("event_person")
+
+            $t = date_format($today, "Y-m-d");
+
+            $time = date_format($today, "H:i");
+
+            $church_id = $this->getUserChurch();
+
+            $person_id = Auth::user()->person->id;
+
+            $stop = false;
+
+            $i = 1;
+
+            $dates = DB::select("SELECT ep.eventDate, e.id, e.name, e.startTime FROM event_person ep, events e, event_subscribed_lists evl
+                  WHERE ep.eventDate = '$t' AND STR_TO_DATE(e.startTime, '%H:%i') >= '$time' AND ep.deleted_at is null AND 
+                  e.deleted_at is null AND e.church_id = '$church_id' AND evl.event_id = e.id AND evl.person_id = '$person_id' limit 1");
+
+            if (count($dates) == 0)
+            {
+                $time = "00:00";
+
+                while(count($dates) == 0 || $stop)
+                {
+                    $stop = $i == 5 ?: false;
+
+                    $t = date_create();
+                    date_add($t, date_interval_create_from_date_string($i . " days"));
+                    $t = date_format($t, "Y-m-d");
+
+                    $dates = DB::select("SELECT ep.eventDate, e.id, e.name, e.startTime FROM event_person ep, events e, event_subscribed_lists evl
+                              WHERE ep.eventDate = '$t' AND STR_TO_DATE(e.startTime, '%H:%i') >= '$time' AND ep.deleted_at is null AND 
+                              e.deleted_at is null AND e.church_id = '$church_id' AND evl.event_id = e.id AND evl.person_id = '$person_id' limit 1");
+
+                    $i++;
+
+                }
+
+                if(!$stop)
+                {
+                    $arr[] = $dates[0]->id;
+                    $arr[] = $dates[0]->eventDate;
+
+
+                }else{
+                    $arr[] = null;
+                    $arr[] = null;
+                }
+
+
+                return $arr;
+            }
+            else{
+                $arr[] = $dates[0]->id;
+                $arr[] = $dates[0]->eventDate;
+
+                return $arr;
+            }
+
+
+
+            /*$dates = DB::table("event_person")
                 ->join('events', 'events.id', '=', 'event_person.event_id')
                 ->where([
                     "events.church_id" => $this->getUserChurch(),
-                    "event_person.deleted_at" => null
-                ])
-                ->get();
+                    [DB::raw(STR_TO_DATE('event_person.eventDate', '%Y-%m-%d'))]
+                ])->whereNull("event_person.deleted_at")
+                ->get();*/
         }
+
 
         //dd($dates);
 
-        $arrayDates = [];
 
-        $arrayIds = [];
-
-
-        for ($i = 0; $i < count($dates); $i++)
-        {
-            //Separando as datas dos eventos
-            $date = date_create($dates[$i]->eventDate);
-
-            //Obtendo a diferença entre a data atual
-            // e a data do evento
-            $diff = date_diff($today, $date);
-
-            //Se a data do evento for igual o dia atual
-            //ou datas futuras
-            if($diff->format("%r%a") > -1)
-            {
-                //Separa o id do evento
-                $arrayIds[$i] = $dates[$i]->event_id;
-                //Separa a data do evento
-                $arrayDates[$i] = $date;
-            }
-        }
-
-
-        //Organiza os eventos de forma ascendente
-        //O indice 0 é o próximo evento
-        asort($arrayDates);
-
-        $key = array_keys($arrayDates);
-
-        $key = reset($key);
-
-        //dd($arrayDates);
-
-        //Separa a data do próximo Evento numa variável
-        $d = date_format($arrayDates[$key], "Y-m-d");
-
-        //Separa o id do próximo evento numa variável
-        //$id = array_search($d, $arrayDates); // id 8
-
-        /*
-         * Indíce 0 corresponde a $id do próximo evento
-         * Indice 1 corresponde a data do próximo evento
-         * */
-        $arr[] = $arrayIds[$key];
-        $arr[] = $d;
-
-        //dd($arr);
-
-        return $arr;
     }
 
     /*

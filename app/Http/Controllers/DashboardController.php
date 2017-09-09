@@ -235,13 +235,22 @@ class DashboardController extends Controller
 
         $nextEvent = $this->eventServices->getNextEvent();
 
-        $nextEvent[1] = $this->formatDateView($nextEvent[1]);
+        $event = null;
+        $street = null;
+        $location = null;
 
-        $event = $this->eventRepository->find($nextEvent[0]);
+        if($nextEvent[0])
+        {
+            $nextEvent[1] = $this->formatDateView($nextEvent[1]);
 
-        $street = $event->street . ", " . $event->number . " - " . $event->city;
+            $event = $this->eventRepository->find($nextEvent[0]);
 
-        $location = $this->formatGoogleMaps($event);
+            $street = $event->street . ", " . $event->number . " - " . $event->city;
+
+            $location = $this->formatGoogleMaps($event);
+        }
+
+
 
         //Contador de semanas
         $cont = 1;
