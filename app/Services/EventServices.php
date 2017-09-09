@@ -816,7 +816,7 @@ class EventServices
         $today = date_create();
 
         $arr = [];
-        
+
         if($id)
         {
             //$dates contém todos as datas do evento selecionado que não foram excluídos
@@ -920,7 +920,7 @@ class EventServices
 
                 }
 
-                if(!$stop)
+                if(count($dates) > 0)
                 {
                     $arr[] = $dates[0]->id;
                     $arr[] = $dates[0]->eventDate;
