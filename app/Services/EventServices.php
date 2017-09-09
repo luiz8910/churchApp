@@ -891,7 +891,7 @@ class EventServices
             $church_id = $this->getUserChurch();
 
             $person_id = Auth::user()->person->id;
-            
+
 
             $dates = DB::select("SELECT ep.eventDate, e.id, e.name, e.startTime FROM event_person ep, events e, event_subscribed_lists evl
                   WHERE ep.eventDate = '$t' AND STR_TO_DATE(e.startTime, '%H:%i') >= '$time' AND ep.deleted_at is null AND 
@@ -899,9 +899,9 @@ class EventServices
 
             if (count($dates) == 0)
             {
-                $t = date_create();
+                /*$t = date_create();
                 date_add($t, date_interval_create_from_date_string("1 day"));
-                $t = date_format($t, "Y-m-d");
+                $t = date_format($t, "Y-m-d");*/
 
                 $dates = DB::select("SELECT ep.eventDate, e.id, e.name, e.startTime FROM event_person ep, events e, event_subscribed_lists evl
                               WHERE STR_TO_DATE(ep.eventDate, '%Y-%m-%d') > '$t' AND STR_TO_DATE(e.startTime, '%H:%i') >= '00:00' AND ep.deleted_at is null AND 
