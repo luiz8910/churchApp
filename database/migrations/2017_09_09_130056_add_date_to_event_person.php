@@ -14,7 +14,7 @@ class AddDateToEventPerson extends Migration
     public function up()
     {
         Schema::table('event_person', function (Blueprint $table){
-           $table->date('event_date');
+           $table->date('event_date')->nullable();
         });
     }
 
