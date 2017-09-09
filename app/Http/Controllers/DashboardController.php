@@ -705,18 +705,23 @@ class DashboardController extends Controller
         foreach ($events as $event)
         {
             try{
-                $event_date = date_create($event->eventDate);
 
-                DB::transaction(function () use($event, $event_date){
-                    DB::table('event_person')
-                        ->where('eventDate', $event->eventDate)
-                        ->update(['event_date' => $event_date]);
-                });
+                if($event->eventDate != "--")
+                {
+                    $event_date = date_create($event->eventDate);
+
+                    DB::transaction(function () use($event, $event_date){
+                        DB::table('event_person')
+                            ->where('eventDate', $event->eventDate)
+                            ->update(['event_date' => $event_date]);
+                    });
+                }
+
 
 
             }catch (\Exception $exception)
             {
-                dd($exception);
+                var_dump($exception);
             }
 
         }
