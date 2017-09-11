@@ -1075,8 +1075,11 @@
                 var find = findUserAction(id);
                 console.log(find);
 
+
+
                 if(find == "success")
                 {
+                    verifyMaritalStatus(id);
                     Delete(id, "/person", true);
                     swal("Sucesso!", "O Usuário " + name + " foi excluído", "success");
 
@@ -1089,6 +1092,7 @@
                     swal("Atenção!", "Sua requisição não foi processada, verifique sua conexão", "error");
                 }
                 else{
+                    verifyMaritalStatus(id);
                     var data = find.toString();
                     sweetConfirmations(null, data, null, name, id);
                     //Delete(id, "/person");
@@ -1355,6 +1359,7 @@
      * Ativado quando o usuário é excluído, porém
      * os eventos e/ou grupos criados pelo mesmo serão
      * mantidos e transferidos.
+     * id = person_id
      */
     function keepActions(id)
     {
@@ -1385,6 +1390,7 @@
      * Ativado quando o usuário é excluído, e
      * os eventos e/ou grupos criados pelo mesmo
      * também serão excluídos.
+     * id = person_id
      */
     function deleteActions(id)
     {
@@ -1406,6 +1412,36 @@
             console.log("fail");
             console.log(e);
         });
+    }
+
+    /*
+     * Verifica o estado civil do usuário a
+     * ser excluído. Se for casado marca o conjugê como
+     * casado com "Parceiro(a) fora da igreja"
+     * id = person_id
+     */
+    function verifyMaritalStatus(id)
+    {
+        var request = $.ajax({
+            url: '/verifyMaritalStatus/' + id,
+            method: "GET",
+            dataType: "json"
+        });
+
+        request.done(function (e) {
+            if(e.status)
+            {
+                return true;
+            }
+        });
+
+        request.fail(function (e) {
+            console.log("fail");
+            console.log(e);
+        });
+
+
+        return true;
     }
 
 

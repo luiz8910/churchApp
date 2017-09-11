@@ -1444,4 +1444,24 @@ class PersonController extends Controller
         return json_encode(['status' => true]);
     }
 
+    /*
+     * Verifica o estado civil do usuário a
+     * ser excluído. Se for casado marca o conjugê como
+     * casado com "Parceiro(a) fora da igreja"
+     * id = person_id
+     */
+    public function verifyMaritalStatus($id)
+    {
+        $person = $this->repository->find($id);
+
+        if($person->maritalStatus == "Casado" && $person->partner != 0)
+        {
+            $partner = $this->repository->find($person->partner);
+
+            $partner->partner = "0";
+        }
+
+        return json_encode(['status' => true]);
+    }
+
 }

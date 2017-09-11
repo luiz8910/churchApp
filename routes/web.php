@@ -60,6 +60,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/deleteActions/{id}', 'PersonController@deleteActions');
 
+    Route::get('/verifyMaritalStatus/{id}', "PersonController@verifyMaritalStatus");
+
     // Fim Usuários e pessoas
 
     //Inicio Grupos

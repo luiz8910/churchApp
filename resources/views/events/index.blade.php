@@ -264,6 +264,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
 
                                                                 <tbody>
+                                                                <?php $pag = 1; ?>
                                                                 @foreach($events as $event)
                                                                     <tr class="printable-table-tr" id="tr-{{ $event->id }}">
                                                                         <td>
@@ -311,7 +312,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                             <?php $deleteForm = "delete-" . $event->id; ?>
                                                                             <td>
                                                                                 <div class="actions">
-                                                                                    <div class="btn-group">
+                                                                                    <div class="btn-group @if($pag % 5 == 0 || $pag == count($events)) dropup @endif">
                                                                                         <a class="btn blue btn-outline btn-circle" href="javascript:;" data-toggle="dropdown">
                                                                                             <i class="fa fa-share"></i>
                                                                                         <span class="hidden-xs"> Opções </span>
@@ -374,6 +375,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                         </td>
 
                                                                     </tr>
+                                                                    <?php $pag++ ;?>
                                                                 @endforeach
 
                                                                 </tbody>
