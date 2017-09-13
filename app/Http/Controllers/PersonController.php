@@ -17,6 +17,7 @@ use App\Repositories\EventRepository;
 use App\Repositories\EventSubscribedListRepository;
 use App\Repositories\GroupRepository;
 use App\Repositories\RequiredFieldsRepository;
+use App\Repositories\UploadStatusRepository;
 use App\Services\EventServices;
 use App\Traits\ConfigTrait;
 use App\Traits\CountRepository;
@@ -87,11 +88,15 @@ class PersonController extends Controller
      * @var EventServices
      */
     private $eventServices;
+    /**
+     * @var UploadStatusRepository
+     */
+    private $uploadStatusRepository;
 
     public function __construct(PersonRepository $repository, StateRepository $stateRepositoryTrait, RoleRepository $roleRepository,
                                 UserRepository $userRepository, RequiredFieldsRepository $fieldsRepository, EventSubscribedListRepository $listRepository,
                                 GroupRepository $groupRepository, ChurchRepository $churchRepository, EventRepository $eventRepository,
-                                EventServices $eventServices)
+                                EventServices $eventServices, UploadStatusRepository $uploadStatusRepository)
     {
         $this->repository = $repository;
         $this->stateRepository = $stateRepositoryTrait;
@@ -103,6 +108,7 @@ class PersonController extends Controller
         $this->churchRepository = $churchRepository;
         $this->eventRepository = $eventRepository;
         $this->eventServices = $eventServices;
+        $this->uploadStatusRepository = $uploadStatusRepository;
     }
 
     /**
@@ -1171,7 +1177,9 @@ class PersonController extends Controller
     {
         $church = $this->getUserChurch();
 
-        $file = $request->file('file');//dd($file);
+        $file = $request->file('file');
+
+        $name = $file->getClientOriginalName();
 
         $fileName = 'file.' . $file->getClientOriginalExtension();
 
@@ -1272,29 +1280,35 @@ class PersonController extends Controller
 
                         $data["city"] = isset($item->cidade) ? $item->cidade : null;
 
-                        $data["state"] = $item->estado == "EX" ?: $item->estado;
+                        $data["state"] = $item->estado == "EX" ? null : $item->estado;
 
-                        /*$id = $this->repository->create($data)->id;
+                        echo $data["name"];
+
+                        $id = $this->repository->create($data)->id;
 
                         if ($data["tag"] == "adult") {
                             $this->createUserLogin($id, $alias, $item->$email, $church);
-                        }*/
+                        }
                     }
                 }
+
 
                 $i++;
             }
 
             session(['qtde' => $i]);
 
-        });
+        })->get();
 
         $qtde[] = session('qtde');
 
-        \Session::flash('upload.success', $qtde[0] . " usuários foram cadastrados");
+        //\Session::flash('upload.success', $qtde[0] . " usuários foram cadastrados");
+
+        $this->uploadComplete($name, $qtde[0]);
+
 
         //return redirect()->route('config.person.contacts.view');
-        return response()->json('success', 200);
+        //return response()->json('success', 200);
         //return response()->view('config.dropzone', $qtde, 200);
     }
 
@@ -1462,6 +1476,49 @@ class PersonController extends Controller
         }
 
         return json_encode(['status' => true]);
+    }
+
+    public function setUploadStatus($name)
+    {
+        $up = $this->uploadStatusRepository->findByField('name', $name)->first();
+
+        if(count($up) > 0)
+        {
+            $up->delete();
+        }
+
+        $data["name"] = $name;
+        $data["status"] = 0;
+
+        $this->uploadStatusRepository->create($data);
+
+        return json_encode(['status' => true]);
+    }
+
+    public function getUploadStatus($name)
+    {
+        $status = $this->uploadStatusRepository->findByField('name', $name)->first();
+
+        if ($status->status == 1)
+        {
+            return json_encode(['status' => true, 'qtde' => $status->code]);
+        }
+        else{
+            return json_encode(['status' => false]);
+        }
+    }
+
+    public function uploadComplete($name, $qtde)
+    {
+        $status = $this->uploadStatusRepository->findByField('name', $name)->first();
+
+        $data['code'] = $qtde;
+
+        $data['status'] = 1;
+
+        $this->uploadStatusRepository->update($data, $status->id);
+
+        return true;
     }
 
 }

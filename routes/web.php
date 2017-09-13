@@ -62,6 +62,10 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/verifyMaritalStatus/{id}', "PersonController@verifyMaritalStatus");
 
+    Route::get('/setUploadStatus/{name}', 'PersonController@setUploadStatus');
+
+    Route::get('/getUploadStatus/{name}', 'PersonController@getUploadStatus');
+
     // Fim Usuários e pessoas
 
     //Inicio Grupos

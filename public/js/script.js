@@ -583,6 +583,13 @@ $(function () {
         window.localStorage.removeItem('edit');
     }
 
+    if (window.localStorage.getItem('qtde') != null)
+    {
+        var qtde = window.localStorage.getItem('qtde');
 
+        swal("Sucesso!", qtde + " usuários foram cadastrados", "success");
+
+        window.localStorage.removeItem('qtde');
+    }
 
 });

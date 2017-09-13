@@ -32,16 +32,7 @@ var FormDropzone = function () {
                         // Add the button to the file preview element.
                         file.previewElement.appendChild(removeButton);
 
-                        $("#my-dropzone").submit(function (e) {
-
-                            e.preventDefault();
-                            e.stopPropagation();
-                            _this.processQueue();
-
-                            setTimeout(function(){
-                                location.reload();
-                            }, 10000);
-                        });
+                        var stop = true;
 
                         var xls =  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
                         var csv = 'application/vnd.ms-excel';
@@ -63,7 +54,69 @@ var FormDropzone = function () {
                                 _this.removeFile(file);
                             }
 
+                        }else{
+                            stop = false;
                         }
+
+
+
+                        $("#my-dropzone").submit(function (e) {
+
+                            e.preventDefault();
+                            e.stopPropagation();
+
+                            if(!stop)
+                            {
+                                $("#btn-dropzone").css('display', "none");
+                                $(".progress").css("display", "block");
+
+                                _this.processQueue();
+
+                                setUploadStatus(file.name);
+
+                                var i = 0;
+
+                                var get = false;
+
+                                var repeat = setInterval(function () {
+                                    get = getUploadStatus(file.name);
+
+                                    if(get)
+                                    {
+                                        clearInterval(repeat);
+                                        location.reload();
+                                    }
+
+                                }, 3000);
+
+
+
+                                /*while(!get)
+                                {
+                                    console.log('i: ' + i);
+
+                                    get = getUploadStatus(file.name);
+
+                                    console.log('get: ' + get);
+
+                                    i++;
+
+                                    if(i == 500)
+                                    {
+                                        get = true;
+                                    }
+
+                                }*/
+
+                                if(get)
+                                {
+                                    location.reload();
+                                }
+                            }
+
+
+                        });
+
                     });
                 }            
             };

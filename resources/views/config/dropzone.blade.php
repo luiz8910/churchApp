@@ -31,6 +31,7 @@
         <link href="../../css/page-config.css" rel="stylesheet" type="text/css"/>
         <link href="../../css/geral.css" rel="stylesheet" type="text/css" />
         <link href="../../assets/global/plugins/bootstrap-sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
+        <link href="../../uploadify/uploadify.css" rel="stylesheet" type="text/css">
         <!--<script src="../js/ajax.js"></script>-->
     @endif
 
@@ -65,14 +66,6 @@
                             </div> <!-- FIM DIV .container -->
                         </div> <!-- FIM DIV .page-head -->
 
-
-
-
-
-
-                        <div class="row">
-
-                        </div>
 
 
                         <div class="page-content">
@@ -135,7 +128,7 @@
                                                     </div>  <!-- FIM DIV .form-body -->
 
                                                     <div class="form-actions ">
-                                                        <button type="button" class="btn green" id="btn-dropzone" onclick="dropzone()" disabled>
+                                                        <button type="button" class="btn green" id="btn-dropzone" onclick="dropzone()">
                                                             <i class="fa fa-check"></i> Enviar
                                                         </button>
 
@@ -170,14 +163,14 @@
 <script src="../../assets/pages/scripts/form-dropzone.js" type="text/javascript"></script>
 <!-- FIM SCRIPTS PAGINAS DE DROPZONE -->
 <script src="../../assets/pages/scripts/search.min.js" type="text/javascript"></script>
+<script src="../../uploadify/jquery.uploadify.min.js" type="text/javascript" ></script>
 
 <script>
     function dropzone()
     {
         $("#my-dropzone").submit();
-        $("#btn-dropzone").css('display', "none");
-        $(".progress").css("display", "block");
     }
+
 </script>
 </body>
 
