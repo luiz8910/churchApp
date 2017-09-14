@@ -90,24 +90,6 @@ var FormDropzone = function () {
                                 }, 3000);
 
 
-
-                                /*while(!get)
-                                {
-                                    console.log('i: ' + i);
-
-                                    get = getUploadStatus(file.name);
-
-                                    console.log('get: ' + get);
-
-                                    i++;
-
-                                    if(i == 500)
-                                    {
-                                        get = true;
-                                    }
-
-                                }*/
-
                                 if(get)
                                 {
                                     location.reload();
