@@ -197,6 +197,10 @@ Route::group(['middleware' => 'auth'], function () {
 
     });
 
+    Route::get('/passport', function (){
+        return view('home');
+    });
+
     // Fim Configurações
 
 });
@@ -296,3 +300,32 @@ Route::get('join', 'EventController@testeJoin');
 Route::get('surname', "PersonController@surname");
 
 Route::get('updateEventDate', "DashboardController@updateEventDate");
+
+Route::get('/api', function (){
+    $query = http_build_query([
+        'client_id' => '4',
+        'redirect_uri' => 'http://localhost:9999/callback',
+        'response_type' => 'code',
+        'scope' => ''
+    ]);
+
+    return redirect("http://localhost:8000/oauth/authorize?$query");
+});
+
+Route::get('/callback', function (\Illuminate\Http\Request $request){
+    $code = $request->get('code');
+
+    $http = new \GuzzleHttp\Client();
+
+    $response = $http->post('http://localhost:8000/oauth/token', [
+       'form_params' => [
+           'client_id' => '4',
+           'client_secret' => 'Xv7jXpyKn0VMbQ9goSvNkItuEcOsYAG7qZPytaKj',
+           'redirect_uri' => 'http://localhost:9999/callback',
+           'code' => $code,
+           'grant_type' => 'authorization_code'
+       ]
+    ]);
+
+    dd(json_decode($response->getBody(), true));
+});
