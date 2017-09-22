@@ -80,8 +80,6 @@
                                                     <strong>Sucesso</strong> {{ Session::get('upload.success') }}
                                                 </div>
                                             </div>
-
-                                            <?php echo "<script> $('.progress').css('display', 'none'); $('#btn-dropzone').css('display', 'block');</script>" ;?>
                                         @endif
 
                                         <div class="col-md-12">
@@ -89,101 +87,33 @@
                                                 <div class="portlet-title">
                                                     <div class="caption font-green-haze">
                                                         <i class="icon-settings font-green-haze"></i>
-                                                        <span class="caption-subject bold uppercase"> Importar base de dados</span>
+                                                        <span class="caption-subject bold uppercase"> Importar base de dados de exemplo</span>
 														<span class="caption-helper"></span>
                                                     </div> <!-- FIM DIV .caption.font-green-haze -->
-                                                    <div class="actions">
-														<div class="btn-group">
-															<a class="btn red btn-outline btn-circle" href="javascript:;" data-toggle="dropdown">
-																<i class="fa fa-share"></i>
-																<span class="hidden-xs"> Exportar </span>
-																<i class="fa fa-angle-down"></i>
-															</a>
-															<ul class="dropdown-menu pull-right" id="sample_3_tools">
-																<li>
-																	<a href="javascript:;">
-																		<i class="fa fa-table" aria-hidden="true"></i>
-																		Excel (.xls)
-																	</a>
-																</li>
-																<li>
-																	<a href="javascript:;">
-																		<i class="fa fa-cloud-download" aria-hidden="true"></i>
-																		CSV
-																	</a>
-																</li>
-															</ul>
-														</div>
-                                                    </div> <!-- FIM DIV .actions -->
+
                                                 </div> <!-- FIM DIV .portlet-title -->
 
                                                 <div class="portlet-body form">
                                                     <div class="form-body">
-                                                        {!! Form::open(['route' => 'config.person.contacts', 'method' => 'POST', 'enctype' => 'multipart/form-data',
-                                                                'class' => 'dropzone dropzone-file-area', 'id' => 'my-dropzone', 'style' => 'margin-top: 30px; margin-bottom: 30px;']) !!}
-                                                        {{--<form action="../assets/global/plugins/dropzone/upload.php" class="dropzone dropzone-file-area" id="my-dropzone" style=" margin-top: 30px; margin-bottom: 30px;">--}}
+                                                        {{--{!! Form::open(['route' => 'config.person.contacts.example', 'method' => 'POST', 'enctype' => 'multipart/form-data',
+                                                                'class' => 'dropzone dropzone-file-area', 'id' => 'my-dropzone-example', 'style' => 'margin-top: 30px; margin-bottom: 30px;']) !!}
+                                                        --}}{{--<form action="../assets/global/plugins/dropzone/upload.php" class="dropzone dropzone-file-area" id="my-dropzone" style=" margin-top: 30px; margin-bottom: 30px;">--}}{{--
                                                             <h3 class="sbold">Solte as planilhas aqui ou clique para carregar</h3>
                                                             <p> <strong>Atenção!</strong> Somente arquivos do Excel(.xls ou .xlsx) </p>
+                                                        {!! Form::close() !!}--}}
+
+                                                        {!! Form::open(['route' => 'config.person.contacts.example', 'method' => 'POST',
+                                                                        'enctype' => 'multipart/form-data', 'id' => 'addPlan']) !!}
+                                                            <input type="file" name="file">
                                                         {!! Form::close() !!}
+
+
                                                     </div>  <!-- FIM DIV .form-body -->
 
                                                     <div class="form-actions ">
                                                         <button type="button" class="btn green" id="btn-dropzone" onclick="dropzone()">
                                                             <i class="fa fa-check"></i> Enviar
                                                         </button>
-
-                                                        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#info">
-                                                            <i class="fa fa-info-circle"></i> Instruções para upload
-                                                        </button>
-
-                                                        <div class="modal fade" id="info" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-                                                            <div class="modal-dialog modal-lg" role="document">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                                        <h4 class="modal-title" id="myModalLabel">Instruções</h4>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        <p>Upload em 3 passos</p>
-
-                                                                        <p>1. Os dados referentes ao estado civil não devem conter parentêses ou outros símbolos</p>
-                                                                        <p></p>
-
-                                                                        <p> &nbsp; &nbsp; &nbsp; Errado: Casado(a), Casada</p>
-                                                                        <p> &nbsp; &nbsp; &nbsp; Certo: Casado</p>
-
-                                                                        <p>2. Ainda sobre o estado civil do membro, as opções podem ser</p>
-                                                                            <p></p>
-                                                                            <p> &nbsp; &nbsp; &nbsp; a. Casado</p>
-                                                                            <p> &nbsp; &nbsp; &nbsp; b. Solteiro</p>
-                                                                            <p> &nbsp; &nbsp; &nbsp; c. Viúvo</p>
-                                                                            <p> &nbsp; &nbsp; &nbsp; d. Divorciado</p>
-
-                                                                        <p>3. Coluna Classificação</p>
-                                                                        <p></p>
-
-                                                                            <p> &nbsp; &nbsp; &nbsp; Classificação do membro nada mais é que a situação cadastral do membro.
-                                                                                Se classificação for <strong>"DESLIGADO"</strong> então o membro será cadastrado como inativo</p>
-                                                                        <p></p>
-                                                                        <p></p>
-
-                                                                        <p>Faça o download da planilha modelo no botão download abaixo</p>
-
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-
-                                                                        <button type="button" class="btn btn-success" onclick="downloadPlan()">
-                                                                            <i class="fa fa-download"></i> Download
-                                                                        </button>
-
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        {!! Form::open(['route' => 'download.plan', 'method' => 'GET', 'id' => 'form-downloadPlan']) !!}
-                                                        {!! Form::close() !!}
 
                                                         <div class="progress" style="display: none;">
                                                             <div class="progress-bar progress-bar-striped progress-bar-animated active" role="progressbar" aria-valuenow="100"
@@ -219,10 +149,9 @@
 <script src="../../uploadify/jquery.uploadify.min.js" type="text/javascript" ></script>
 
 <script>
-
-    function downloadPlan()
+    function dropzone()
     {
-        $("#form-downloadPlan").submit();
+        $("#addPlan").submit();
     }
 
 </script>

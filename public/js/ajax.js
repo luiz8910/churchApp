@@ -1501,4 +1501,36 @@
 
     }
 
+    function ReactivateUser(id)
+    {
+        var request = $.ajax({
+            url: '/reactivateUser/' + id,
+            method: 'GET',
+            dataType: 'json'
+        });
+
+        request.done(function(e){
+            if(e.status)
+            {
+                $("#notific8-title").val("Atenção");
+                $("#notific8-text").val("Usuário foi reativado");
+                $("#notific8-type").val(null);
+
+                setTimeout(function() {
+                    $("#progress-success").css("display", "none");
+
+                    $("#tr-"+id).remove();
+
+                    $("#notific8").trigger("click");
+
+                }, 1000);
+            }
+        });
+
+        request.fail(function (e) {
+            console.log("fail");
+            console.log(e);
+        })
+    }
+
 

@@ -84,6 +84,14 @@
                                     </span></a> <!-- Qtde de Visitantes cad.-->
                             </li>
 
+                            <li class=" ">
+                                <a href="{{ route('person.inactive') }}" class="nav-link  ">
+                                    <i class="icon-bulb"></i> Inativos
+                                    <span class="badge badge-success">
+                                        @if(isset($countPerson)){{ $countPerson[0][3] }} @else 0 @endif
+                                    </span></a> <!-- Qtde de Visitantes cad.-->
+                            </li>
+
                         </ul>
                     @endif
                 </li>

@@ -66,6 +66,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/getUploadStatus/{name}', 'PersonController@getUploadStatus');
 
+    Route::get('/reactivateUser/{person}', 'PersonController@reactivate');
+
     // Fim Usuários e pessoas
 
     //Inicio Grupos
@@ -184,6 +186,14 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post("/getChurchContacts", "PersonController@getChurchContacts")->name('config.person.contacts');
 
         Route::get("/importar", "ConfigController@import")->name('config.person.contacts.view');
+
+        Route::post("/addPlan", "ConfigController@addPlan")->name('config.person.contacts.example');
+
+        Route::get("/addPlan", "ConfigController@addPlanView")->name('config.addPlan');
+
+        Route::get('/downloadPlan', 'ConfigController@downloadPlan')->name('download.plan');
+
+        Route::get('/showPlan', 'ConfigController@showPlan')->name('show.plan');
     });
 
     Route::get("/getPusherKey", "ConfigController@getPusherKey");
@@ -228,6 +238,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/teen-excel/{format}', 'PersonController@teenExcel')->name('teen.excel');
 
     Route::get('/visitors-excel/{format}', 'PersonController@visitorsExcel')->name('visitors.excel');
+
+    Route::get('/person-inactive-excel/{format}', 'PersonController@inactiveExcel')->name('person-inactive.excel');
 
 //Ajax
     Route::get('/automatic-cep/{id}/{user}', 'PersonController@automaticCep');

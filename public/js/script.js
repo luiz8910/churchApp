@@ -592,4 +592,11 @@ $(function () {
         window.localStorage.removeItem('qtde');
     }
 
+    if (window.localStorage.getItem('plan') != null)
+    {
+        swal("Sucesso!", "Upload realizado", "success");
+
+        window.localStorage.removeItem('plan');
+    }
+
 });

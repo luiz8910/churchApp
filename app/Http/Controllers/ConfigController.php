@@ -243,4 +243,58 @@ class ConfigController extends Controller
 
         return view('config.dropzone', compact('countPerson', 'countGroups', 'leader', 'notify', 'qtde', 'church_id'));
     }
+
+    /*
+     * Adiciona uma planilha de exemplo, para instrução de upload
+     */
+    public function addPlan(Request $request)
+    {
+        $file = $request->file('file');
+
+        $fileName = 'exemplo.' . $file->getClientOriginalExtension();
+
+        $path = 'uploads/sheets/examples/';
+
+        $file->move($path, $fileName);
+
+        \Session::flash('upload.success', 'Upload Realizado');
+
+        return redirect()->route('config.addPlan');
+    }
+
+    public function addPlanView()
+    {
+        /*
+        * Variáveis gerais p/ todas as páginas
+        *
+        */
+
+        $countPerson[] = $this->countPerson();
+
+        $countGroups[] = $this->countGroups();
+
+        $leader = $this->getLeaderRoleId();
+
+        $notify = $this->notify();
+
+        $qtde = count($notify) or 0;
+
+        $church_id = $this->getUserChurch();
+
+        /*
+         * Fim Variáveis
+         */
+
+        return view('config.planExample', compact('countPerson', 'countGroups', 'leader', 'notify', 'qtde', 'church_id'));
+    }
+
+    public function showPlan()
+    {
+        return response()->file('uploads/sheets/examples/exemplo.xlsx');
+    }
+
+    public function downloadPlan()
+    {
+        return response()->download('uploads/sheets/examples/exemplo.xlsx');
+    }
 }

@@ -83,6 +83,18 @@ var UIConfirmations = function () {
         });
 
 
+        $(".pop-activate").on('confirmed.bs.confirmation', function (){
+            $("#progress-success").css("display", "block");
+
+            var str = this.id;
+
+            var id = str.replace("btn-delete-", "");
+
+            //Função para reativar o membro
+            ReactivateUser(id);
+        });
+
+
     };
 
 

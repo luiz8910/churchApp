@@ -59,7 +59,6 @@ var FormDropzone = function () {
                         }
 
 
-
                         $("#my-dropzone").submit(function (e) {
 
                             e.preventDefault();
