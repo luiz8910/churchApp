@@ -197,10 +197,52 @@ class PersonController extends Controller
             {
                 $user = $person->user()->withTrashed()->first();
 
-                $user->restore();
+                if($user){
+                    $user->restore();
+                }
+
             }
 
             $person->restore();
+
+            if($person->maritalStatus == 'Casado' && $person->partner != 0)
+            {
+                $partner = $this->repository->find($person->partner);
+
+                Person::where('id', $partner->id)->update(['partner' => $person->id]);
+            }
+
+//            if($person->hasKids)
+//            {
+//                $parent = $person->gender == 'M' ? Person::where('father_id', $person->id)->get()
+//                    : Person::where('mother_id', $person->id)->get();
+//
+//
+//            }
+
+            return json_encode(['status' => true]);
+        }
+
+        return json_encode(['status' => false]);
+    }
+
+    public function forceDelete($person)
+    {
+        $person = Person::onlyTrashed()
+            ->where('id', $person)
+            ->first();
+
+        if(count($person) > 0)
+        {
+            if ($person->tag == 'adult') {
+                $user = $person->user()->withTrashed()->first();
+
+                if($user){
+                    $user->forceDelete();
+                }
+            }
+
+            $person->forceDelete();
 
             return json_encode(['status' => true]);
         }

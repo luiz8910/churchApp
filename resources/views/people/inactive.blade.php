@@ -18,6 +18,20 @@
 <!-- END HEAD -->
 
 <body class="page-container-bg-solid page-boxed">
+
+    {{--<div id="overlay">--}}
+        {{--<div class="div-z-index col-md-6 col-xs-6">--}}
+            {{--<div class="progress" id="progress-success" style="display: block;">--}}
+                {{--<div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="100"--}}
+                     {{--aria-valuemin="0" aria-valuemax="100" style="width: 100%">--}}
+                    {{--Ativando...--}}
+                    {{--<span class="sr-only">Ativando...</span>--}}
+                {{--</div>--}}
+            {{--</div>--}}
+        {{--</div>--}}
+    {{--</div>--}}
+
+
 <div class="page-wrapper">
     <div class="page-wrapper-row">
         <div class="page-wrapper-top">

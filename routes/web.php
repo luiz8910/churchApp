@@ -32,7 +32,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('teen-detach/{id}/{parentId}', 'PersonController@detachTeen');
 
-    Route::get('inactive', 'PersonController@inactive')->name('person.inactive');
+    Route::get('inactive-person', 'PersonController@inactive')->name('person.inactive');
 
     Route::get('turnActive/{id}', 'PersonController@turnActive')->name('person.turnActive');
 
@@ -67,6 +67,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/getUploadStatus/{name}', 'PersonController@getUploadStatus');
 
     Route::get('/reactivateUser/{person}', 'PersonController@reactivate');
+
+    Route::get('/inactive-person-delete/{person}', 'PersonController@forceDelete');
 
     // Fim Usuários e pessoas
 
