@@ -30,7 +30,7 @@
 								<div class="container">
 									<div class="page-title">
 										<h1>Dashboard
-											<small>Configurações Geral</small>
+											<small>Configurações Gerais</small>
 										</h1>
 									</div>
 								</div> <!-- FIM DIV .container -->

@@ -1604,4 +1604,13 @@ class PersonController extends Controller
         return true;
     }
 
+    public function listPeople()
+    {
+        $people = $this->repository->all();
+
+        return json_encode($people);
+    }
+
+
+
 }

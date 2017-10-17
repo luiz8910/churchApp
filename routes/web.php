@@ -315,6 +315,10 @@ Route::get('surname', "PersonController@surname");
 
 Route::get('updateEventDate', "DashboardController@updateEventDate");
 
+Route::get('/people', 'PersonController@listPeople');
+
+Route::get('/api/events', 'EventController@getEventsApi');
+
 Route::get('/api', function (){
     $query = http_build_query([
         'client_id' => '4',
@@ -343,3 +347,4 @@ Route::get('/callback', function (\Illuminate\Http\Request $request){
 
     dd(json_decode($response->getBody(), true));
 });
+

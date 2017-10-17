@@ -377,9 +377,9 @@ class DashboardController extends Controller
 
                     $e->group_id = $e->group_id ? $this->groupRepository->find($e->group_id)->name : 'Sem Grupo';
 
-                    $nextEventRecent = $this->eventServices->getNextEvent($e->id);
+                    //$nextEventRecent = $this->eventServices->getNextEvent($e->id);
 
-                    $e->nextEvent = $this->formatDateView($nextEventRecent[1]);
+                    //$e->nextEvent = $this->formatDateView($nextEventRecent[1]);
 
                     $events_recent[] = $e;
                 }

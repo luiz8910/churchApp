@@ -153,13 +153,17 @@ class EventServices
     public function newEventDays($id, $eventDate, $frequency)
     {
         $show = $eventDate == date("Y-m-d") ? 1 : 0;
+
         $person_id = \Auth::user()->person_id;
+
+        $event_date = date_create($eventDate);
 
         DB::table('event_person')
             ->insert([
                 'event_id' => $id,
                 'person_id' => $person_id,
                 'eventDate' => $eventDate,
+                'event_date' => $event_date,
                 'show' => $show
             ]);
 
@@ -278,6 +282,7 @@ class EventServices
                 'event_id' => $id,
                 'person_id' => $person_id,
                 'eventDate' => date_format($day, "Y-m-d"),
+                'event_date' => $day,
                 'show' => 0
             ]);
     }
@@ -323,6 +328,7 @@ class EventServices
                         'event_id' => $id,
                         'person_id' => $people[$i]->id,
                         'eventDate' => $eventDate,
+                        'event_date' => date_create($eventDate),
                         'show' => $show
                     ]);
 
@@ -450,6 +456,7 @@ class EventServices
                         'event_id' => $id,
                         'person_id' => $user->person_id,
                         'eventDate' => $days[$i]->eventDate,
+                        'event_date' => date_create($days[$i]->eventDate),
                         'check-in' => $check,
                         'show' => 1
                     ]);
@@ -600,6 +607,7 @@ class EventServices
                             'event_id' => $id,
                             'person_id' => \Auth::user()->person_id,
                             'eventDate' => date_format($nextDay, 'Y-m-d'),
+                            'event_date' => date_create($nextDay),
                             'check-in' => 0,
                             'show' => 0
                         ]
@@ -639,6 +647,7 @@ class EventServices
                                 'event_id' => $id,
                                 'person_id' => Auth::user()->person_id,
                                 'eventDate' => date_format($date, "Y-m-d"),
+                                'event_date' => date_create($date),
                                 'check-in' => 0,
                                 'show' => 0
                             ]
@@ -678,6 +687,7 @@ class EventServices
                                 'event_id' => $id,
                                 'person_id' => Auth::user()->person_id,
                                 'eventDate' => date_format($date, "Y-m-d"),
+                                'event_date' => date_create($date),
                                 'check-in' => 0,
                                 'show' => 0
                             ]
@@ -746,6 +756,7 @@ class EventServices
                             'event_id' => $id,
                             'person_id' => Auth::user()->person_id,
                             'eventDate' => date_format($date, "Y-m-d"),
+                            'event_date' => date_create($date),
                             'check-in' => 0,
                             'show' => 0
                         ]
@@ -782,6 +793,7 @@ class EventServices
                             'event_id' => $id,
                             'person_id' => Auth::user()->person_id,
                             'eventDate' => date_format($date, "Y-m-d"),
+                            'event_date' => date_create($date),
                             'check-in' => 0,
                             'show' => 0
                         ]
@@ -799,6 +811,7 @@ class EventServices
                             'event_id' => $id,
                             'person_id' => Auth::user()->person_id,
                             'eventDate' => date_format($date, "Y-m-d"),
+                            'event_date' => date_create($date),
                             'check-in' => 0,
                             'show' => 0
                         ]
@@ -1039,7 +1052,7 @@ class EventServices
     {
         return $this->listRepository->findWhere([
             'event_id' => $id,
-            'church_id' => $this->getUserChurch()
+            //'church_id' => $this->getUserChurch()
         ]);
     }
 

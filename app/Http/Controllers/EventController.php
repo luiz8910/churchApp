@@ -1388,5 +1388,41 @@ class EventController extends Controller
         return json_encode(['status' => 'true']);
     }
 
+    public function getEventsApi()
+    {
+        $today = date_create();
+
+        $events = DB::table('event_person')
+                        ->select('events.name', 'events.id', 'events.createdBy_id', 'event_person.eventDate',
+                            'events.startTime', 'events.endTime', 'events.street', 'events.number', 'events.city',
+                            'events.frequency')
+                        ->join('events', 'event_person.event_id', 'events.id')
+                        ->whereDate('event_date', '>', $today)
+                        ->whereNull('events.deleted_at')
+                        ->orderBy('event_person.eventDate')
+                        ->distinct()
+                        ->get();
+
+        /*$events = $events->keyBy('id');
+
+        $events->forget(103);*/
+        //dd($events);
+        $events = $events->unique('id');
+
+        $events = $events->values()->all();
+
+        foreach ($events as $event)
+        {
+            $person = $this->userRepository->find($event->createdBy_id)->person;
+            $event->img_user = $person->imgProfile;
+            $event->createdBy_id = $person->name . " " . $person->lastName;
+            $event->eventDate = $this->formatDateView($event->eventDate);
+            $event->sub = count($this->eventServices->getListSubEvent($event->id));
+        }
+
+        //dd($events);
+
+        return json_encode($events);
+    }
 
 }
