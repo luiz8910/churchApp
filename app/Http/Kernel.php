@@ -4,6 +4,7 @@ namespace App\Http;
 
 use App\Http\Middleware\CheckRole;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use Tymon\JWTAuth\Middleware\GetUserFromToken;
 
 class Kernel extends HttpKernel
 {
@@ -54,6 +55,7 @@ class Kernel extends HttpKernel
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        'check.role' => CheckRole::class
+        'check.role' => CheckRole::class,
+        'jwt.auth' => GetUserFromToken::class
     ];
 }

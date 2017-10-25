@@ -24,6 +24,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Tymon\JWTAuth\Exceptions\JWTException;
+use Tymon\JWTAuth\Facades\JWTAuth;
+
 
 class UsersController extends Controller
 {
@@ -432,5 +435,28 @@ class UsersController extends Controller
     public function forgotPassword()
     {
         return view("auth.passwords.forgot");
+    }
+
+    public function login(Request $request)
+    {
+        $credentials = $request->only('email', 'password');
+
+        try{
+
+            $token = JWTAuth::attempt($credentials);
+        }catch (JWTException $exception){
+            return response()->json([
+                'error' => 'token_not_create'
+            ], 500);
+        }
+
+        if(!$token)
+        {
+            return response()->json([
+                'error' => 'Invalid Credentials'
+            ], 401);
+        }
+
+        return response()->json(compact('token'));
     }
 }

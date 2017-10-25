@@ -20,3 +20,7 @@ Route::get('/user', function (Request $request) {
 Route::get('/church', function (){
     return Auth::user()->church_id;
 })->middleware('auth:api');
+
+Route::get('/log', function (){
+    return 'token valido';
+})->middleware('jwt.auth');

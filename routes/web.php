@@ -296,7 +296,10 @@ Route::group(['middleware' => 'auth'], function () {
 //Route::get('auth/twitter/callback', 'Auth\RegisterController@handleTwitterProviderCallback');
 
 
+
 //Testes
+
+
 Route::get('cron', 'EventController@Cron');
 
 Route::get('subAllMembers', 'EventController@subAllMembers');
@@ -347,4 +350,6 @@ Route::get('/callback', function (\Illuminate\Http\Request $request){
 
     dd(json_decode($response->getBody(), true));
 });
+Route::post('/api-login', 'UsersController@login');
+
 
