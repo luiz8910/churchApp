@@ -59,6 +59,7 @@ License: You must have a valid license purchased only from themeforest(the above
             </div>
         </div>
 
+        <input type="hidden" id="event_id" value="{{ $model->id }}">
         <!-- END PAGE HEAD-->
         <!-- BEGIN PAGE CONTENT BODY -->
         <div class="page-content">
@@ -170,17 +171,19 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <i class="fa fa-angle-down" id="i-actions"></i>
                                                 </a>
                                                 <ul class="dropdown-menu pull-right">
-                                                    @if(isset($group))
-                                                        <li>
-                                                            <a href="{{ route('group.addRemoveLoggedMember', ['id' => $group->id]) }}">
-                                                                <i class="fa fa-sign-in font-purple"></i>
-                                                                @if($sub)
-                                                                    Sair do grupo do Evento
-                                                                @else
-                                                                    Entrar no grupo do Evento
-                                                                @endif
-                                                            </a>
-                                                        </li>
+                                                    @if(Auth::user()->church_id == $church_id && Auth::user()->person->role_id == $leader)
+                                                        @if(isset($group))
+                                                            <li>
+                                                                <a href="{{ route('group.addRemoveLoggedMember', ['id' => $group->id]) }}">
+                                                                    <i class="fa fa-sign-in font-purple"></i>
+                                                                    @if($sub)
+                                                                        Sair do grupo do Evento
+                                                                    @else
+                                                                        Entrar no grupo do Evento
+                                                                    @endif
+                                                                </a>
+                                                            </li>
+                                                        @endif
                                                     @endif
                                                     @if(Auth::user()->church_id == $church_id && Auth::user()->person->role_id == $leader)
                                                         <li class="divider"> </li>
@@ -188,6 +191,12 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             <a href="{{ route('event.subscriptions', ['event' => $model->id]) }}">
                                                                 <i class="fa fa-users font-purple"></i>
                                                                 Inscrições
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="javascript:;" id="check-auto">
+                                                                <i class="fa fa-check font-purple"></i>
+                                                                Check-in Automático
                                                             </a>
                                                         </li>
                                                         <li>
@@ -270,6 +279,16 @@ License: You must have a valid license purchased only from themeforest(the above
                                             <p>
                                                 <i class="fa fa-book font-purple"></i>
                                                 Inscritos: {{ $model->sub }}
+
+                                                <i class="fa fa-check font-purple" style="margin-left: 20px;"></i>
+                                                Check-in Automático:
+                                                <span id="span-check">
+                                                    @if($model->check_auto == 1)
+                                                        Sim
+                                                    @else
+                                                        Não
+                                                    @endif
+                                                </span>
                                             </p>
 
                                             <p>
@@ -520,6 +539,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <div class="form-group">
                                                         <label>Frequência</label>
                                                         <div class="input-icon input-icon-sm">
+
                                                             <i class="fa fa-briefcase"></i>
                                                             <select class="form-control" name="frequency" id="select-frequency">
                                                                 @foreach($frequencies as $frequency)

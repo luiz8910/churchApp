@@ -152,6 +152,8 @@ class EventController extends Controller
             else{
                 $event->checkIn = null;
             }
+
+            $event->user_createdBy_id = $this->userRepository->find($event->createdBy_id)->person;
         }
 
         /*
@@ -234,6 +236,8 @@ class EventController extends Controller
         /*
          * Fim Agenda
          */
+
+        //dd($events);
 
         return view("events.index", compact('countPerson', 'countGroups', 'state',
             'events', 'notify', 'qtde', 'allMonths', 'allDays', 'days', 'allEvents',
@@ -1361,21 +1365,30 @@ class EventController extends Controller
                 'notify', 'qtde', 'event', 'sub', 'person_sub', 'attendance'));
     }
 
+    /*
+     * Usado para inscrever um usuário no evento $event
+    */
     public function eventSub(Request $request, $event)
     {
         $data = $request->all();
 
         if($data["person_id"] != "")
         {
-            $exists = $this->eventServices->subEvent($event, $data["person_id"]);
+            $role = $this->getUserRole();
 
-            if($exists){
-                $request->session()->flash('event.sub', 'O usuário foi inscrito');
-            }
-            else{
-                $request->session()->flash('event.sub', 'Este usuário ja está inscrito');
-            }
+            $leader = $this->roleRepository->find($this->getLeaderRoleId())->name;
 
+            if(($event->group_id && $role == $leader) || (!$event->group_id))
+            {
+                $exists = $this->eventServices->subEvent($event, $data["person_id"]);
+
+                if($exists){
+                    $request->session()->flash('event.sub', 'O usuário foi inscrito');
+                }
+                else{
+                    $request->session()->flash('event.sub', 'Este usuário ja está inscrito');
+                }
+            }
         }
 
         return redirect()->back();
@@ -1387,6 +1400,27 @@ class EventController extends Controller
 
         return json_encode(['status' => 'true']);
     }
+
+
+    /**
+     * @param $id = $id do evento
+     */
+    public function check_auto($id, $check)
+    {
+
+        DB::table('events')
+            ->where([
+                'id' => $id
+            ])
+            ->update([
+                'check_auto' => $check
+            ]);
+
+        return json_encode(['status' => true]);
+    }
+
+
+    // ----------------------------------------------------- API --------------------------------------------------------------------------------------- //
 
     public function getEventsApi()
     {

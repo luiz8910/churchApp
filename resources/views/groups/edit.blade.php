@@ -186,39 +186,42 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         <a class="btn purple btn-outline btn-circle btn-sm" href="javascript:;" data-toggle="dropdown" data-hover="dropdown" data-close-others="true"> Ações
                                                             <i class="fa fa-angle-down"></i>
                                                         </a>
-                                                        <ul class="dropdown-menu pull-right">
-                                                            <li>
-                                                                <a href="{{ route('group.event.create', ['id' => $model->id]) }}">
-                                                                    <i class="fa fa-bookmark font-purple"></i>
-                                                                    Novo Evento
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="{{ route('group.addRemoveLoggedMember', ['id' => $model->id]) }}">
-                                                                    <i class="fa fa-sign-in font-purple"></i>
-                                                                    @if($sub)
-                                                                        Sair do grupo
-                                                                    @else
-                                                                        Entrar no grupo
-                                                                    @endif
-                                                                </a>
-                                                            </li>
-                                                            @if(Auth::getUser()->person->role_id == $leader)
-                                                                <li class="divider"> </li>
+                                                        @if(Auth::getUser()->person->role_id == $leader)
+                                                            <ul class="dropdown-menu pull-right">
                                                                 <li>
-                                                                    <a href="javascript:;" data-toggle="modal" data-target="#modal-note">
-                                                                        <i class="fa fa-book font-purple"></i>
-                                                                        Nova Nota
+                                                                    <a href="{{ route('group.event.create', ['id' => $model->id]) }}">
+                                                                        <i class="fa fa-bookmark font-purple"></i>
+                                                                        Novo Evento
                                                                     </a>
                                                                 </li>
+
                                                                 <li>
-                                                                    <a href="javascript:;" data-toggle="modal" data-target=".group-delete-modal-sm">
-                                                                        <i class="fa fa-ban font-red"></i>
-                                                                        Excluir Grupo
+                                                                    <a href="{{ route('group.addRemoveLoggedMember', ['id' => $model->id]) }}">
+                                                                        <i class="fa fa-sign-in font-purple"></i>
+                                                                        @if($sub)
+                                                                            Sair do grupo
+                                                                        @else
+                                                                            Entrar no grupo
+                                                                        @endif
                                                                     </a>
                                                                 </li>
-                                                            @endif
-                                                        </ul>
+
+                                                                    <li class="divider"> </li>
+                                                                    <li>
+                                                                        <a href="javascript:;" data-toggle="modal" data-target="#modal-note">
+                                                                            <i class="fa fa-book font-purple"></i>
+                                                                            Nova Nota
+                                                                        </a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript:;" data-toggle="modal" data-target=".group-delete-modal-sm">
+                                                                            <i class="fa fa-ban font-red"></i>
+                                                                            Excluir Grupo
+                                                                        </a>
+                                                                    </li>
+
+                                                            </ul>
+                                                        @endif
                                                     </div>
                                                 </div>
                                             </div>
@@ -436,7 +439,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                             <span class="caption-subject bold uppercase font-green-haze"> Dados do Grupo</span>
                                         </div>
 
-                                        @if(!empty($members))
+                                        @if($qtdeMembers > 1)
                                             <div id="container"></div>
                                         @endif
 
@@ -447,7 +450,7 @@ License: You must have a valid license purchased only from themeforest(the above
                         </div>
                     </div>
 
-                    @if(empty($members))
+                    @if($qtdeMembers < 2)
                         <p class="text-center" style="margin-top: -15px;">Não há dados a serem exibidos</p>
                     @endif
 
@@ -484,30 +487,32 @@ License: You must have a valid license purchased only from themeforest(the above
                                             <a class="btn purple btn-outline btn-circle btn-sm" href="javascript:;" data-toggle="dropdown" data-hover="dropdown" data-close-others="true"> Ações
                                                 <i class="fa fa-angle-down"></i>
                                             </a>
-                                            <ul class="dropdown-menu pull-right">
-                                                <li>
-                                                    <a href="javascript:;" data-toggle="modal" data-target="#myModal">
-                                                        <i class="fa fa-users font-purple"></i> Novo
-                                                    </a>
-                                                </li>
+                                            @if(Auth::getUser()->person->role_id == $leader)
+                                                <ul class="dropdown-menu pull-right">
+                                                    <li>
+                                                        <a href="javascript:;" data-toggle="modal" data-target="#myModal">
+                                                            <i class="fa fa-users font-purple"></i> Novo
+                                                        </a>
+                                                    </li>
 
-                                                <li>
-                                                    <a href="javascript:;" data-toggle="modal" data-target="#addMemberModal">
-                                                        <i class="fa fa-user font-purple"></i> Cadastro
-                                                    </a>
-                                                </li>
+                                                    <li>
+                                                        <a href="javascript:;" data-toggle="modal" data-target="#addMemberModal">
+                                                            <i class="fa fa-user font-purple"></i> Cadastro
+                                                        </a>
+                                                    </li>
 
-                                                <li class="divider"> </li>
+                                                    <li class="divider"> </li>
 
-                                                <li>
-                                                    <a href="javascript:;">
-                                                        <i class="fa fa-print font-purple"></i> Imprimir/PDF </a>
-                                                </li>
-                                                <li>
-                                                    <a href="javascript:;">
-                                                        <i class="fa fa-file-excel-o font-purple"></i> Exportar para Excel </a>
-                                                </li>
-                                            </ul>
+                                                    <li>
+                                                        <a href="javascript:;">
+                                                            <i class="fa fa-print font-purple"></i> Imprimir/PDF </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:;">
+                                                            <i class="fa fa-file-excel-o font-purple"></i> Exportar para Excel </a>
+                                                    </li>
+                                                </ul>
+                                            @endif
                                         </div>
 
 
@@ -532,7 +537,9 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <th> Email </th>
                                                 <th> Telefone </th>
                                                 <th> Celular </th>
-                                                <th> Opções </th>
+                                                @if(Auth::getUser()->person->role_id == $leader)
+                                                    <th> Opções </th>
+                                                @endif
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -561,20 +568,22 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             <td class="center"> {{ $person->cel }} </td>
                                                             <!--<span class="label label-sm label-success"> Aprovado </span>-->
 
-                                                            <?php $deleteForm = "delete-" . $person->id; ?>
-                                                            <td id="{{ $deleteForm }}">
-                                                                {!! Form::open(['route' => ['group.deleteMember', 'group' => $model->id, 'member' => $person->id],
-                                                                        'method' => 'DELETE', 'id' => 'form-'.$deleteForm]) !!}
+                                                            @if(Auth::getUser()->person->role_id == $leader)
+                                                                <?php $deleteForm = "delete-" . $person->id; ?>
+                                                                <td id="{{ $deleteForm }}">
+                                                                    {!! Form::open(['route' => ['group.deleteMember', 'group' => $model->id, 'member' => $person->id],
+                                                                            'method' => 'DELETE', 'id' => 'form-'.$deleteForm]) !!}
 
-                                                                <a href="javascript:;" class="btn btn-danger btn-sm btn-circle pop-leave-group"
-                                                                   title="Excluir membro do grupo" data-toggle="confirmation" data-placement="top"
-                                                                   data-original-title="Deseja Excluir?" data-popout="true"
-                                                                   onclick='event.preventDefault();' id="btn-delete-{{ $person->id }}">
-                                                                    <i class="fa fa-trash"></i>
-                                                                </a>
+                                                                    <a href="javascript:;" class="btn btn-danger btn-sm btn-circle pop-leave-group"
+                                                                       title="Excluir membro do grupo" data-toggle="confirmation" data-placement="top"
+                                                                       data-original-title="Deseja Excluir?" data-popout="true"
+                                                                       onclick='event.preventDefault();' id="btn-delete-{{ $person->id }}">
+                                                                        <i class="fa fa-trash"></i>
+                                                                    </a>
 
-                                                                {!! Form::close() !!}
-                                                            </td>
+                                                                    {!! Form::close() !!}
+                                                                </td>
+                                                            @endif
                                                         </tr>
                                                     @endforeach
 

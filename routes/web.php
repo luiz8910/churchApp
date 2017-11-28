@@ -171,6 +171,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/delete-sub/{person_id}/{event_id}', 'EventController@UnsubUser');
 
+    Route::get('/check_auto/{event_id}/{check}', 'EventController@check_auto');
+
     // Fim Eventos
 
 
@@ -298,7 +300,22 @@ Route::group(['middleware' => 'auth'], function () {
 
 
 //Testes
+Route::get('/map', function(){
+    $string = 'https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=AIzaSyCjTs0nbQbEecUygnKpThLfzRKES8nKS0A';
 
+    $arrContextOptions=array(
+        "ssl"=>array(
+            "verify_peer"=>false,
+            "verify_peer_name"=>false,
+        ),
+    );
+
+    $json = file_get_contents($string, false, stream_context_create($arrContextOptions));
+    $obj = json_decode($json);
+
+
+    dd($obj->results[0]->geometry->location);
+});
 
 Route::get('cron', 'EventController@Cron');
 

@@ -14,7 +14,10 @@ use App\Models\RecentEvents;
 use App\Repositories\EventRepository;
 use App\Repositories\EventSubscribedListRepository;
 use App\Repositories\FrequencyRepository;
+use App\Repositories\GeofenceRepository;
+use App\Repositories\PersonRepository;
 use App\Traits\ConfigTrait;
+use App\Traits\FormatGoogleMaps;
 use Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -22,7 +25,7 @@ use Illuminate\Support\Facades\DB;
 class EventServices
 {
 
-    use ConfigTrait;
+    use ConfigTrait, FormatGoogleMaps;
     /**
      * @var EventRepository
      */
@@ -35,13 +38,32 @@ class EventServices
      * @var EventSubscribedListRepository
      */
     private $listRepository;
+    /**
+     * @var GeofenceRepository
+     */
+    private $geofenceRepository;
+    /**
+     * @var PersonRepository
+     */
+    private $personRepository;
 
+    /**
+     * EventServices constructor.
+     * @param EventRepository $repository
+     * @param FrequencyRepository $frequencyRepositoryTrait
+     * @param EventSubscribedListRepository $listRepository
+     * @param GeofenceRepository $geofenceRepository
+     * @param PersonRepository $personRepository
+     */
     public function __construct(EventRepository $repository, FrequencyRepository $frequencyRepositoryTrait,
-                                EventSubscribedListRepository $listRepository)
+                                EventSubscribedListRepository $listRepository, GeofenceRepository $geofenceRepository,
+                                PersonRepository $personRepository)
     {
         $this->repository = $repository;
         $this->frequencyRepository = $frequencyRepositoryTrait;
         $this->listRepository = $listRepository;
+        $this->geofenceRepository = $geofenceRepository;
+        $this->personRepository = $personRepository;
     }
 
     /**
@@ -504,6 +526,24 @@ class EventServices
      * */
     public function canCheckIn($id)
     {
+        $sub = DB::table('event_subscribed_lists')
+            ->where([
+                'event_id' => $id,
+                'person_id' => Auth::user()->person->id
+            ])
+            ->get();
+
+        /*
+         * Se $sub = 0. então usuário logado
+         * não está inscrito no evento, portanto
+         * ele não pode realizar o check-in
+        */
+
+        if(count($sub) == 0)
+        {
+            return false;
+        }
+
         $today = date("Y-m-d");
         $time = date("H:i");
 
@@ -991,12 +1031,10 @@ class EventServices
 
     /*
      * Usado para inscrever um usuário
-     * $loop = utilizada
     /**
      * @param $event_id
      * @param $person_id
-     * @param null $loop
-     * @return bool|mixed
+     * @return bool
      */
     public function subEvent($event_id, $person_id)
     {
@@ -1032,16 +1070,49 @@ class EventServices
 
             $data["event_id"] = $event_id;
             $data["person_id"] = $person_id;
-            $data["sub_by"] = Auth::user()->person_id;
+            $data["sub_by"] = Auth::user()->person->id;
             $data["church_id"] = $this->getUserChurch();
 
             $this->listRepository->create($data);
+
+            $this->addGeofence($event_id, $person_id);
 
             return true;
         }
 
         return false;
 
+    }
+
+    public function addGeofence($event_id, $person_id)
+    {
+        $event = $this->repository->find($event_id);
+
+        $location = $this->formatGoogleMaps($event);
+
+        $string = 'https://maps.googleapis.com/maps/api/geocode/json?address='.$location.'&key=AIzaSyCjTs0nbQbEecUygnKpThLfzRKES8nKS0A';
+
+        $arrContextOptions=array(
+            "ssl"=>array(
+                "verify_peer"=>false,
+                "verify_peer_name"=>false,
+            ),
+        );
+
+        $json = file_get_contents($string, false, stream_context_create($arrContextOptions));
+        $obj = json_decode($json);
+
+        $geolocation = $obj->results[0]->geometry->location;
+
+        $user = $this->personRepository->find($person_id);
+
+        $data["event_id"] = $event_id;
+        $data["user_id"] = $user->user->id;
+        $data["lat"] = $geolocation->lat;
+        $data["long"] = $geolocation->lng;
+        $data["active"] = 1;
+
+        $this->geofenceRepository->create($data);
     }
 
     /*

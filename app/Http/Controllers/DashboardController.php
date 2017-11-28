@@ -165,10 +165,13 @@ class DashboardController extends Controller
 
         if (count($events) == 0)
         {
+            $location = $street = null;
+
             return view('dashboard.index', compact('countPerson', 'countGroups', 'events', 'notify', 'qtde',
                 'countMembers', 'street', 'groups', 'event_person', 'nextEvent', 'leader', 'church_id',
                 'qtde_users', 'qtde_groups', 'qtde_events', 'next', 'thisMonth', 'ano', 'allMonths', 'days',
-                'allEvents', 'people', 'groups_recent', 'events_recent', 'qtde_users', 'qtde_groups', 'qtde_events'));
+                'allEvents', 'people', 'groups_recent', 'events_recent', 'qtde_users', 'qtde_groups', 'qtde_events',
+                'location', 'street'));
         }
 
         $eventDate = [];

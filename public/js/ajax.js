@@ -1565,4 +1565,63 @@
         })
     }
 
+    $("#check-auto").click(function(){
+
+        swal({
+            title: 'Atenção',
+            text: 'Deseja Habilitar o check-in automático?',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonClass: "btn-primary",
+            confirmButtonText: "Habilitar",
+            cancelButtonText: "Desabilitar",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        }, function(isConfirm){
+            if(isConfirm)
+            {
+                swal("Sucesso!", "Os check-ins serão automáticos", "success");
+                $('#span-check').html('Sim');
+                check_auto(1);
+            }
+            else{
+                swal("Atenção!", "Os check-ins automáticos foram desabilitados", "info");
+                $('#span-check').html('Não');
+                check_auto(0);
+            }
+        });
+
+        /*var request = $.ajax({
+            url: 'enable-check-auto',
+            method: 'GET',
+            dataType: 'json'
+        });
+
+        request.done(function(e){
+
+        });
+
+        request.fail(function(e){
+            console.log('fail');
+            console.log(e);
+        })*/
+    });
+
+    function check_auto(check)
+    {
+        var id = $("#event_id").val();
+
+        var request = $.ajax({
+            url: '/check_auto/' + id + '/' + check,
+            method: 'GET',
+            dataType: 'json'
+        });
+
+        request.done(function(e) {
+            return true;
+        });
+
+        return false;
+    }
+
 

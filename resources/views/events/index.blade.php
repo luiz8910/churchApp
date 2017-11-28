@@ -288,11 +288,15 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                         <td>
                                                                             @if(\Auth::user()->id != $event->createdBy_id && Auth::user()->church_id != null)
                                                                                 <a href="{{ route('person.edit',
+                                                                                    ['person' => $event->user_createdBy_id->id]) }}" rel="external" class="printable-table">
+                                                                                    {{ $event->user_createdBy_id->name }}
+                                                                                </a>
+                                                                                {{--<a href="{{ route('person.edit',
                                                                                     ['person' => \App\Models\User::find($event->createdBy_id)->person->id]) }}" rel="external" class="printable-table">
                                                                                     {{ \App\Models\User::find($event->createdBy_id)->person->name }}
-                                                                                </a>
+                                                                                </a>--}}
                                                                             @else
-                                                                                {{ \App\Models\User::find($event->createdBy_id)->person->name }}
+                                                                                {{ $event->user_createdBy_id->name }}
                                                                             @endif
                                                                         </td>
                                                                         <td>

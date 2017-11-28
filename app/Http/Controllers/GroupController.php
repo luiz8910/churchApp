@@ -316,8 +316,6 @@ class GroupController extends Controller
 
         $qtdeMembers = count($members);
 
-
-
         return view('groups.edit', compact('model', 'countPerson', 'countGroups',
             'events', 'address', 'location', 'people', 'roles', 'state', 'members',
             'event_user', 'notify', 'qtde', 'pag', 'owner_name', 'owner_person_id',
