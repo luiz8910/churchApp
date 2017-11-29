@@ -125,6 +125,8 @@ class EventController extends Controller
          */
         $events = Event::where('church_id', $church_id)->paginate(5);
 
+        dd($events);
+
         $sub = false;
 
         /*
@@ -156,7 +158,7 @@ class EventController extends Controller
             $event->user_createdBy_id = $this->userRepository->find($event->createdBy_id)->person;
         }
 
-        dd($events);
+
 
         /*
          * Notificação, e quantidades de novas notificações
