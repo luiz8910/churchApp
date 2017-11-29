@@ -387,7 +387,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             </table>
                                                             <br>
                                                             <div class="pull-right">
-                                                                {{ $events->links() }}
+                                                                {{ $events_pag->links() }}
                                                             </div>
 
                                                             <div class="progress" id="progress-danger" style="display: none;">

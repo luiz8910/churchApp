@@ -123,9 +123,14 @@ class EventController extends Controller
         /*
          * Lista de Eventos
          */
-        $events = Event::where('church_id', $church_id)->paginate(5);
+        $events_pag = Event::where([
+            'church_id' => $church_id,
+            'deleted_at' => null
+        ])->paginate(5);
 
-        dd($events);
+        $events = $this->repository->findWhere([
+            'church_id' => $church_id
+        ]);
 
         $sub = false;
 
@@ -246,7 +251,8 @@ class EventController extends Controller
         return view("events.index", compact('countPerson', 'countGroups', 'state',
             'events', 'notify', 'qtde', 'allMonths', 'allDays', 'days', 'allEvents',
             'thisMonth', 'today', 'ano', 'allEventsNames', 'allEventsTimes',
-            'allEventsFrequencies', 'allEventsAddresses', 'numWeek', 'church_id', 'leader', 'role'));
+            'allEventsFrequencies', 'allEventsAddresses', 'numWeek', 'church_id',
+            'leader', 'role', 'events_pag'));
     }
 
 
