@@ -237,7 +237,7 @@ class EventController extends Controller
          * Fim Agenda
          */
 
-        //dd($events);
+        dd($events);
 
         return view("events.index", compact('countPerson', 'countGroups', 'state',
             'events', 'notify', 'qtde', 'allMonths', 'allDays', 'days', 'allEvents',
