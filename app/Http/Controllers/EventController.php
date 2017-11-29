@@ -132,6 +132,8 @@ class EventController extends Controller
             'church_id' => $church_id
         ]);
 
+        dd($events);
+
         $sub = false;
 
         /*
