@@ -123,14 +123,14 @@ class EventController extends Controller
         /*
          * Lista de Eventos
          */
-        $events_pag = Event::where([
+        $events = Event::where([
             'church_id' => $church_id,
             'deleted_at' => null
         ])->paginate(5);
 
-        $events = $this->repository->findWhere([
+        /*$events = $this->repository->findWhere([
             'church_id' => $church_id
-        ]);
+        ]);*/
 
 
 
@@ -164,12 +164,12 @@ class EventController extends Controller
 
             $event->user_createdBy_id = $this->userRepository->find($event->createdBy_id)->person;
 
-            echo($event->id);
+            //echo($event->id);
 
-            echo '<br>';
+            //echo '<br>';
         }
 
-        dd($events);
+        //dd($events);
 
         /*
          * Notificação, e quantidades de novas notificações
