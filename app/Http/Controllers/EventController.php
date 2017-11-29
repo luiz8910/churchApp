@@ -163,6 +163,10 @@ class EventController extends Controller
             }
 
             $event->user_createdBy_id = $this->userRepository->find($event->createdBy_id)->person;
+
+            echo($event->id);
+
+            echo '<br>';
         }
 
         dd($events);
