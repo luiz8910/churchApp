@@ -339,6 +339,8 @@ Route::get('/people', 'PersonController@listPeople');
 
 Route::get('/api/events', 'EventController@getEventsApi');
 
+Route::get('api/churches', 'ChurchController@getChurchesApi');
+
 Route::get('/api', function (){
     $query = http_build_query([
         'client_id' => '4',
