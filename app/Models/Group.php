@@ -34,4 +34,9 @@ class Group extends Model implements Transformable
         return $this->hasOne(RecentGroups::class);
     }
 
+    public function visitors()
+    {
+        return $this->belongsToMany(Visitor::class);
+    }
+
 }

@@ -13,7 +13,7 @@
                     <a href="
                         @if(Auth::user()->church_id)
                             {{ route('index') }}
-                        @else {{ route('home.visitor', ['church_id' => $church_id]) }} @endif">
+                        @endif">
 
                     <img src="../logo/Simbolo.png" alt="logo" class="logo-default hidden-md hidden-lg" style="width: 100%; margin-top: 2px; display: none;">
 

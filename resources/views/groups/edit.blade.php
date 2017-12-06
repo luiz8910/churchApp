@@ -186,41 +186,43 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         <a class="btn purple btn-outline btn-circle btn-sm" href="javascript:;" data-toggle="dropdown" data-hover="dropdown" data-close-others="true"> Ações
                                                             <i class="fa fa-angle-down"></i>
                                                         </a>
-                                                        @if(Auth::getUser()->person->role_id == $leader)
-                                                            <ul class="dropdown-menu pull-right">
-                                                                <li>
-                                                                    <a href="{{ route('group.event.create', ['id' => $model->id]) }}">
-                                                                        <i class="fa fa-bookmark font-purple"></i>
-                                                                        Novo Evento
-                                                                    </a>
-                                                                </li>
-
-                                                                <li>
-                                                                    <a href="{{ route('group.addRemoveLoggedMember', ['id' => $model->id]) }}">
-                                                                        <i class="fa fa-sign-in font-purple"></i>
-                                                                        @if($sub)
-                                                                            Sair do grupo
-                                                                        @else
-                                                                            Entrar no grupo
-                                                                        @endif
-                                                                    </a>
-                                                                </li>
-
-                                                                    <li class="divider"> </li>
+                                                        @if(Auth::getUser()->person)
+                                                            @if(Auth::getUser()->person->role_id == $leader)
+                                                                <ul class="dropdown-menu pull-right">
                                                                     <li>
-                                                                        <a href="javascript:;" data-toggle="modal" data-target="#modal-note">
-                                                                            <i class="fa fa-book font-purple"></i>
-                                                                            Nova Nota
-                                                                        </a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="javascript:;" data-toggle="modal" data-target=".group-delete-modal-sm">
-                                                                            <i class="fa fa-ban font-red"></i>
-                                                                            Excluir Grupo
+                                                                        <a href="{{ route('group.event.create', ['id' => $model->id]) }}">
+                                                                            <i class="fa fa-bookmark font-purple"></i>
+                                                                            Novo Evento
                                                                         </a>
                                                                     </li>
 
-                                                            </ul>
+                                                                    <li>
+                                                                        <a href="{{ route('group.addRemoveLoggedMember', ['id' => $model->id]) }}">
+                                                                            <i class="fa fa-sign-in font-purple"></i>
+                                                                            @if($sub)
+                                                                                Sair do grupo
+                                                                            @else
+                                                                                Entrar no grupo
+                                                                            @endif
+                                                                        </a>
+                                                                    </li>
+
+                                                                        <li class="divider"> </li>
+                                                                        <li>
+                                                                            <a href="javascript:;" data-toggle="modal" data-target="#modal-note">
+                                                                                <i class="fa fa-book font-purple"></i>
+                                                                                Nova Nota
+                                                                            </a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="javascript:;" data-toggle="modal" data-target=".group-delete-modal-sm">
+                                                                                <i class="fa fa-ban font-red"></i>
+                                                                                Excluir Grupo
+                                                                            </a>
+                                                                        </li>
+
+                                                                </ul>
+                                                            @endif
                                                         @endif
                                                     </div>
                                                 </div>
@@ -259,13 +261,12 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <p>
                                                         <i class="fa fa-user font-purple"></i> Criado Por:
 
-                                                        @if(Auth::user()->person_id == $owner_person_id)
+                                                        @if(Auth::user()->person_id == $owner_person_id || !Auth::getUser()->person)
                                                             <label>
                                                                 {{ $owner_name }}
                                                                 <img src="../../{{ $imgProfile }}" class="img-circle hidden-xs hidden-sm"
                                                                      style="width: 25px; margin-left: 10px;">
                                                             </label>
-
                                                         @else
                                                             <a href="{{ route('person.edit', ['person' => $owner_person_id]) }}">
                                                                 {{ $owner_name }}
@@ -428,30 +429,37 @@ License: You must have a valid license purchased only from themeforest(the above
                     </div>
                     <!-- END PROFILE CONTENT -->
 
-                    <div class="profile-content">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <!-- BEGIN CHART PORTLET-->
-                                <div class="portlet light ">
-                                    <div class="portlet-title">
-                                        <div class="caption">
-                                            <i class="icon-bar-chart font-green-haze"></i>
-                                            <span class="caption-subject bold uppercase font-green-haze"> Dados do Grupo</span>
+                    @if(Auth::getUser()->person)
+                        @if(Auth::getUser()->person->role_id == $leader)
+                            <div class="profile-content">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <!-- BEGIN CHART PORTLET-->
+                                        <div class="portlet light ">
+                                            <div class="portlet-title">
+                                                <div class="caption">
+                                                    <i class="icon-bar-chart font-green-haze"></i>
+                                                    <span class="caption-subject bold uppercase font-green-haze"> Dados do Grupo</span>
+                                                </div>
+
+                                                    @if($qtdeMembers > 1)
+                                                        <div id="container"></div>
+                                                    @endif
+
+
+
+                                            </div>
                                         </div>
-
-                                        @if($qtdeMembers > 1)
-                                            <div id="container"></div>
-                                        @endif
-
-
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
+                        @endif
+                    @endif
 
-                    @if($qtdeMembers < 2)
-                        <p class="text-center" style="margin-top: -15px;">Não há dados a serem exibidos</p>
+                    @if(Auth::getUser()->person)
+                        @if(Auth::getUser()->person->role_id == $leader && $qtdeMembers < 2)
+                            <p class="text-center" style="margin-top: -15px;">Não há dados a serem exibidos</p>
+                        @endif
                     @endif
 
                     <div class="row">
@@ -487,31 +495,33 @@ License: You must have a valid license purchased only from themeforest(the above
                                             <a class="btn purple btn-outline btn-circle btn-sm" href="javascript:;" data-toggle="dropdown" data-hover="dropdown" data-close-others="true"> Ações
                                                 <i class="fa fa-angle-down"></i>
                                             </a>
-                                            @if(Auth::getUser()->person->role_id == $leader)
-                                                <ul class="dropdown-menu pull-right">
-                                                    <li>
-                                                        <a href="javascript:;" data-toggle="modal" data-target="#myModal">
-                                                            <i class="fa fa-users font-purple"></i> Novo
-                                                        </a>
-                                                    </li>
+                                            @if(Auth::getUser()->person)
+                                                @if(Auth::getUser()->person->role_id == $leader)
+                                                    <ul class="dropdown-menu pull-right">
+                                                        <li>
+                                                            <a href="javascript:;" data-toggle="modal" data-target="#myModal">
+                                                                <i class="fa fa-users font-purple"></i> Novo
+                                                            </a>
+                                                        </li>
 
-                                                    <li>
-                                                        <a href="javascript:;" data-toggle="modal" data-target="#addMemberModal">
-                                                            <i class="fa fa-user font-purple"></i> Cadastro
-                                                        </a>
-                                                    </li>
+                                                        <li>
+                                                            <a href="javascript:;" data-toggle="modal" data-target="#addMemberModal">
+                                                                <i class="fa fa-user font-purple"></i> Cadastro
+                                                            </a>
+                                                        </li>
 
-                                                    <li class="divider"> </li>
+                                                        <li class="divider"> </li>
 
-                                                    <li>
-                                                        <a href="javascript:;">
-                                                            <i class="fa fa-print font-purple"></i> Imprimir/PDF </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="javascript:;">
-                                                            <i class="fa fa-file-excel-o font-purple"></i> Exportar para Excel </a>
-                                                    </li>
-                                                </ul>
+                                                        <li>
+                                                            <a href="javascript:;">
+                                                                <i class="fa fa-print font-purple"></i> Imprimir/PDF </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="javascript:;">
+                                                                <i class="fa fa-file-excel-o font-purple"></i> Exportar para Excel </a>
+                                                        </li>
+                                                    </ul>
+                                                @endif
                                             @endif
                                         </div>
 
@@ -537,8 +547,10 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <th> Email </th>
                                                 <th> Telefone </th>
                                                 <th> Celular </th>
-                                                @if(Auth::getUser()->person->role_id == $leader)
-                                                    <th> Opções </th>
+                                                @if(Auth::getUser()->person)
+                                                    @if(Auth::getUser()->person->role_id == $leader)
+                                                        <th> Opções </th>
+                                                    @endif
                                                 @endif
                                             </tr>
                                             </thead>
@@ -553,36 +565,39 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                     <span></span>
                                                                 </label>
                                                             <td>
-                                                                @if(Auth::user()->person_id != $person->id)
+                                                                @if(Auth::user()->person_id == $person->id || !Auth::getUser()->person)
+                                                                    {{ $person->name }} {{ $person->lastName }}
+
+                                                                @else
                                                                     <a href="{{ route('person.edit', ['person' => $person->id]) }}">
                                                                         {{ $person->name }} {{ $person->lastName }}
                                                                     </a>
-                                                                @else
-                                                                    {{ $person->name }} {{ $person->lastName }}
                                                                 @endif
                                                             </td>
                                                             <td>
-                                                                <a href="mailto:{{ $person->user->email or null }}"> {{ $person->user->email or null }} </a>
+                                                                <a href="javascript:;"> {{ $person->user->email or null }} </a>
                                                             </td>
                                                             <td> {{ $person->tel }} </td>
                                                             <td class="center"> {{ $person->cel }} </td>
                                                             <!--<span class="label label-sm label-success"> Aprovado </span>-->
 
-                                                            @if(Auth::getUser()->person->role_id == $leader)
-                                                                <?php $deleteForm = "delete-" . $person->id; ?>
-                                                                <td id="{{ $deleteForm }}">
-                                                                    {!! Form::open(['route' => ['group.deleteMember', 'group' => $model->id, 'member' => $person->id],
-                                                                            'method' => 'DELETE', 'id' => 'form-'.$deleteForm]) !!}
+                                                            @if(Auth::getUser()->person)
+                                                                @if(Auth::getUser()->person->role_id == $leader)
+                                                                    <?php $deleteForm = "delete-" . $person->id; ?>
+                                                                    <td id="{{ $deleteForm }}">
+                                                                        {!! Form::open(['route' => ['group.deleteMember', 'group' => $model->id, 'member' => $person->id],
+                                                                                'method' => 'DELETE', 'id' => 'form-'.$deleteForm]) !!}
 
-                                                                    <a href="javascript:;" class="btn btn-danger btn-sm btn-circle pop-leave-group"
-                                                                       title="Excluir membro do grupo" data-toggle="confirmation" data-placement="top"
-                                                                       data-original-title="Deseja Excluir?" data-popout="true"
-                                                                       onclick='event.preventDefault();' id="btn-delete-{{ $person->id }}">
-                                                                        <i class="fa fa-trash"></i>
-                                                                    </a>
+                                                                        <a href="javascript:;" class="btn btn-danger btn-sm btn-circle pop-leave-group"
+                                                                           title="Excluir membro do grupo" data-toggle="confirmation" data-placement="top"
+                                                                           data-original-title="Deseja Excluir?" data-popout="true"
+                                                                           onclick='event.preventDefault();' id="btn-delete-{{ $person->id }}">
+                                                                            <i class="fa fa-trash"></i>
+                                                                        </a>
 
-                                                                    {!! Form::close() !!}
-                                                                </td>
+                                                                        {!! Form::close() !!}
+                                                                    </td>
+                                                                @endif
                                                             @endif
                                                         </tr>
                                                     @endforeach
@@ -852,116 +867,118 @@ License: You must have a valid license purchased only from themeforest(the above
 
                     <input type="hidden" id="streetMap" value="{{ $model->street }}, {{ $model->number }}">
 
-                    @if(Auth::user()->church_id == $church_id && Auth::user()->person->role_id == $leader)
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="portlet light ">
-                                    <div class="portlet-title tabbable-line">
-                                        <div class="caption caption-md">
-                                            <i class="icon-globe theme-font hide"></i>
-                                            <span class="caption-subject font-blue-madison bold uppercase">Dados do Grupo</span>
-                                        </div>
-
-                                    </div>
-                                    <?php $i = 0; ?>
-                                    <div class="portlet-body">
-                                        {!! Form::open(['route' => ['group.update', 'group' => $model->id], 'method' => 'put',
-                                        'class' => 'repeater', 'enctype' => 'multipart/form-data']) !!}
-                                        <div class="form-body">
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label>Nome</label>
-                                                        <div class="input-group">
-                                                                <span class="input-group-addon">
-                                                                    <i class="fa fa-user font-blue"></i>
-                                                                </span>
-                                                            <input type="text" name="name" class="form-control" value="{{ $model->name }}"
-                                                                   placeholder="Grupo de Jovens"
-                                                                    @if($fields[$i]->required == 1)
-                                                                        required
-                                                                    @endif
-                                                                    <?php $i++; ?>
-                                                            >
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label>Data de Criação</label>
-                                                        <div class="input-group date date-picker" data-date-format="dd/mm/yyyy">
-                                                                <span class="input-group-btn">
-                                                                <button class="btn default" type="button">
-                                                                    <i class="fa fa-calendar font-blue"></i>
-                                                                </button>
-                                                            </span>
-                                                            <input type="text" class="form-control input-date" name="sinceOf"
-                                                                   value="{{ $model->sinceOf }}" placeholder="dd/mm/aaaa"
-                                                                    @if($fields[$i]->required == 1)
-                                                                        required
-                                                                    @endif
-                                                                    <?php $i++; ?>
-                                                            >
-                                                        </div>
-
-                                                    </div>
-                                                </div>
+                    @if(Auth::getUser()->person)
+                        @if(Auth::user()->church_id == $church_id && Auth::user()->person->role_id == $leader)
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="portlet light ">
+                                        <div class="portlet-title tabbable-line">
+                                            <div class="caption caption-md">
+                                                <i class="icon-globe theme-font hide"></i>
+                                                <span class="caption-subject font-blue-madison bold uppercase">Dados do Grupo</span>
                                             </div>
 
-                                            <br><br>
+                                        </div>
+                                        <?php $i = 0; ?>
+                                        <div class="portlet-body">
+                                            {!! Form::open(['route' => ['group.update', 'group' => $model->id], 'method' => 'put',
+                                            'class' => 'repeater', 'enctype' => 'multipart/form-data']) !!}
+                                            <div class="form-body">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label>Nome</label>
+                                                            <div class="input-group">
+                                                                    <span class="input-group-addon">
+                                                                        <i class="fa fa-user font-blue"></i>
+                                                                    </span>
+                                                                <input type="text" name="name" class="form-control" value="{{ $model->name }}"
+                                                                       placeholder="Grupo de Jovens"
+                                                                        @if($fields[$i]->required == 1)
+                                                                            required
+                                                                        @endif
+                                                                        <?php $i++; ?>
+                                                                >
+                                                            </div>
+                                                        </div>
+                                                    </div>
 
-                                            @include('includes.address-edit')
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label>Data de Criação</label>
+                                                            <div class="input-group date date-picker" data-date-format="dd/mm/yyyy">
+                                                                    <span class="input-group-btn">
+                                                                    <button class="btn default" type="button">
+                                                                        <i class="fa fa-calendar font-blue"></i>
+                                                                    </button>
+                                                                </span>
+                                                                <input type="text" class="form-control input-date" name="sinceOf"
+                                                                       value="{{ $model->sinceOf }}" placeholder="dd/mm/aaaa"
+                                                                        @if($fields[$i]->required == 1)
+                                                                            required
+                                                                        @endif
+                                                                        <?php $i++; ?>
+                                                                >
+                                                            </div>
 
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <div class="fileinput fileinput-new" data-provides="fileinput">
-                                                            <div class="fileinput-new thumbnail"
-                                                                 style="width: 200px; height: 150px;">
-                                                                <img src=@if($model->imgProfile == "uploads/profile/noimage.png")
-                                                                        "http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=no+image"
-                                                                @else
-                                                                    "../../{{ $model->imgProfile }}"
-                                                                @endif
+                                                        </div>
+                                                    </div>
+                                                </div>
 
-                                                                alt="" /></div>
-                                                            <div class="fileinput-preview fileinput-exists thumbnail"
-                                                                 style="max-width: 200px; max-height: 150px;"></div>
-                                                            <div>
-                                                                    <span class="btn default btn-file">
-                                                                        <span class="fileinput-new"> Escolher Imagem </span>
-                                                                        <span class="fileinput-exists"> Alterar </span>
-                                                                        <input type="file" name="img"> </span>
-                                                                <a href="javascript:;" class="btn default fileinput-exists"
-                                                                   data-dismiss="fileinput"> Remover </a>
+                                                <br><br>
+
+                                                @include('includes.address-edit')
+
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <div class="fileinput fileinput-new" data-provides="fileinput">
+                                                                <div class="fileinput-new thumbnail"
+                                                                     style="width: 200px; height: 150px;">
+                                                                    <img src=@if($model->imgProfile == "uploads/profile/noimage.png")
+                                                                            "http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=no+image"
+                                                                    @else
+                                                                        "../../{{ $model->imgProfile }}"
+                                                                    @endif
+
+                                                                    alt="" /></div>
+                                                                <div class="fileinput-preview fileinput-exists thumbnail"
+                                                                     style="max-width: 200px; max-height: 150px;"></div>
+                                                                <div>
+                                                                        <span class="btn default btn-file">
+                                                                            <span class="fileinput-new"> Escolher Imagem </span>
+                                                                            <span class="fileinput-exists"> Alterar </span>
+                                                                            <input type="file" name="img"> </span>
+                                                                    <a href="javascript:;" class="btn default fileinput-exists"
+                                                                       data-dismiss="fileinput"> Remover </a>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
 
 
-                                        <div class="margiv-top-10">
-                                            {!! Form::submit('Salvar', ['class' => 'btn green', 'id' => 'btn-submit']) !!}
+                                            <div class="margiv-top-10">
+                                                {!! Form::submit('Salvar', ['class' => 'btn green', 'id' => 'btn-submit']) !!}
 
-                                            <div class="progress" style="display: none;">
-                                                <div class="progress-bar progress-bar-striped active" role="progressbar"
-                                                     aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-                                                    Enviando...
-                                                    <span class="sr-only">Enviando...</span>
+                                                <div class="progress" style="display: none;">
+                                                    <div class="progress-bar progress-bar-striped active" role="progressbar"
+                                                         aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                                                        Enviando...
+                                                        <span class="sr-only">Enviando...</span>
+                                                    </div>
                                                 </div>
                                             </div>
+
+                                            {!! Form::close() !!}
+
+
                                         </div>
-
-                                        {!! Form::close() !!}
-
-
                                     </div>
                                 </div>
-                            </div>
-                    </div>
+                        </div>
+                        @endif
                     @endif
                 </div>
                 <!-- END PAGE CONTENT INNER -->

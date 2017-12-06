@@ -9,7 +9,9 @@ use App\Models\Group;
 use App\Models\RecentGroups;
 use App\Models\RequiredFields;
 use App\Models\User;
+use App\Repositories\EventSubscribedListRepository;
 use App\Repositories\RequiredFieldsRepository;
+use App\Repositories\VisitorRepository;
 use App\Traits\ConfigTrait;
 use App\Traits\CountRepository;
 use App\Traits\DateRepository;
@@ -63,6 +65,14 @@ class GroupController extends Controller
      * @var RequiredFieldsRepository
      */
     private $fieldsRepository;
+    /**
+     * @var VisitorRepository
+     */
+    private $visitorRepository;
+    /**
+     * @var EventSubscribedListRepository
+     */
+    private $listRepository;
 
     /**
      * GroupController constructor.
@@ -74,7 +84,8 @@ class GroupController extends Controller
     public function __construct(GroupRepository $repository, StateRepository $stateRepositoryTrait,
                                 RoleRepository $roleRepository, PersonRepository $personRepository,
                                 UserRepository $userRepository, GroupServices $groupServices,
-                                RequiredFieldsRepository $fieldsRepository)
+                                RequiredFieldsRepository $fieldsRepository, VisitorRepository $visitorRepository,
+                                EventSubscribedListRepository $listRepository)
     {
 
         $this->repository = $repository;
@@ -84,6 +95,8 @@ class GroupController extends Controller
         $this->userRepository = $userRepository;
         $this->groupServices = $groupServices;
         $this->fieldsRepository = $fieldsRepository;
+        $this->visitorRepository = $visitorRepository;
+        $this->listRepository = $listRepository;
     }
     /**
      * Exibe todos os grupos
@@ -262,11 +275,15 @@ class GroupController extends Controller
         //Listagem de todos os membros do grupo
         $members = $model->people->all();
 
+        //$members = $this->listRepository->findByField()
+
         $pag = $this->paginate($model->people->all())->setPath('');
 
         $address = [];
 
         $arr = [];
+
+        $type = [];
 
         $sub = false;
 
@@ -300,7 +317,7 @@ class GroupController extends Controller
         $user = $this->userRepository->find(\Auth::getUser()->id);
 
         //Eventos que o usuário está inscrito
-        $event_user[] = $user->person->events->all();//dd($event_user);
+        $event_user[] = Auth::getUser()->person ? $user->person->events->all() : null;
 
         $notify = $this->notify();
 

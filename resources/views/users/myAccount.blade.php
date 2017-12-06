@@ -711,44 +711,47 @@ License: You must have a valid license purchased only from themeforest(the above
                                             <span class="caption-subject font-red sbold uppercase">Meus Grupos</span>
                                         </div>
                                         <div class="actions">
-                                            @if(Auth::getUser()->person->role_id == $leader)
-                                                <div class="btn-group btn-group-devided">
-                                                    <a role="button" class="btn btn-info btn-circle" href="{{ route('group.create') }}" style="margin-top: 2px;">
-                                                        <i class="fa fa-plus"></i>
-                                                        <span class="hidden-xs hidden-sm">Novo Grupo</span>
-                                                    </a>
+                                            @if(Auth::getUser()->person)
+                                                @if(Auth::getUser()->person->role_id == $leader)
+                                                    <div class="btn-group btn-group-devided">
+                                                        <a role="button" class="btn btn-info btn-circle" href="{{ route('group.create') }}" style="margin-top: 2px;">
+                                                            <i class="fa fa-plus"></i>
+                                                            <span class="hidden-xs hidden-sm">Novo Grupo</span>
+                                                        </a>
 
-                                                </div>
+                                                    </div>
+
+                                                    <div class="btn-group">
+                                                        <a class="btn red btn-outline btn-circle" href="javascript:;" data-toggle="dropdown">
+                                                            <i class="fa fa-share"></i>
+                                                            <span class="hidden-xs"> Opções </span>
+                                                            <i class="fa fa-angle-down"></i>
+                                                        </a>
+                                                        <ul class="dropdown-menu pull-right" id="sample_3_tools">
+                                                            <li>
+                                                                <a href="javascript:;" data-action="0" class="tool-action">
+                                                                    <i class="icon-printer"></i> Imprimir</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript:;" data-action="1" class="tool-action">
+                                                                    <i class="icon-check"></i> Copiar</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript:;" data-action="2" class="tool-action">
+                                                                    <i class="icon-doc"></i> PDF</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript:;" data-action="3" class="tool-action">
+                                                                    <i class="icon-paper-clip"></i> Excel</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript:;" data-action="4" class="tool-action">
+                                                                    <i class="icon-cloud-upload"></i> CSV</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                @endif
                                             @endif
-                                            <div class="btn-group">
-                                                <a class="btn red btn-outline btn-circle" href="javascript:;" data-toggle="dropdown">
-                                                    <i class="fa fa-share"></i>
-                                                    <span class="hidden-xs"> Opções </span>
-                                                    <i class="fa fa-angle-down"></i>
-                                                </a>
-                                                <ul class="dropdown-menu pull-right" id="sample_3_tools">
-                                                    <li>
-                                                        <a href="javascript:;" data-action="0" class="tool-action">
-                                                            <i class="icon-printer"></i> Imprimir</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="javascript:;" data-action="1" class="tool-action">
-                                                            <i class="icon-check"></i> Copiar</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="javascript:;" data-action="2" class="tool-action">
-                                                            <i class="icon-doc"></i> PDF</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="javascript:;" data-action="3" class="tool-action">
-                                                            <i class="icon-paper-clip"></i> Excel</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="javascript:;" data-action="4" class="tool-action">
-                                                            <i class="icon-cloud-upload"></i> CSV</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
                                         </div>
                                     </div>
                                     <div class="portlet-body">
@@ -829,14 +832,16 @@ License: You must have a valid license purchased only from themeforest(the above
                                             <span class="caption-subject font-red sbold uppercase">Meus Eventos (inscrições)</span>
                                         </div>
                                         <div class="actions">
-                                            @if(Auth::getUser()->person->role_id == $leader)
-                                                <div class="btn-group btn-group-devided">
-                                                    <a role="button" class="btn btn-info btn-circle" href="{{ route('event.create') }}" style="margin-top: 2px;">
-                                                        <i class="fa fa-plus"></i>
-                                                        <span class="hidden-xs hidden-sm">Novo Evento</span>
-                                                    </a>
+                                            @if(Auth::getUser()->person)
+                                                @if(Auth::getUser()->person->role_id == $leader)
+                                                    <div class="btn-group btn-group-devided">
+                                                        <a role="button" class="btn btn-info btn-circle" href="{{ route('event.create') }}" style="margin-top: 2px;">
+                                                            <i class="fa fa-plus"></i>
+                                                            <span class="hidden-xs hidden-sm">Novo Evento</span>
+                                                        </a>
 
-                                                </div>
+                                                    </div>
+                                                @endif
                                             @endif
                                             <div class="btn-group">
                                                 <a class="btn red btn-outline btn-circle" href="javascript:;" data-toggle="dropdown">
@@ -899,13 +904,15 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 {{ $item->frequency }}
                                                             </td>
                                                             <td>
-                                                                @if(Auth::user()->person_id == $item->createdBy_id)
-                                                                    {{ $item->createdBy_name }}
-
-                                                                @else
-                                                                    <a href="{{ route('person.edit', ['person' => $item->createdBy_id]) }}">
+                                                                @if(Auth::getUser()->person)
+                                                                    @if(Auth::user()->person_id == $item->createdBy_id)
                                                                         {{ $item->createdBy_name }}
-                                                                    </a>
+
+                                                                    @else
+                                                                        <a href="{{ route('person.edit', ['person' => $item->createdBy_id]) }}">
+                                                                            {{ $item->createdBy_name }}
+                                                                        </a>
+                                                                    @endif
                                                                 @endif
                                                             </td>
 

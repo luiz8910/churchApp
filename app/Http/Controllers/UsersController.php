@@ -129,11 +129,14 @@ class UsersController extends Controller
 
         $adults = $this->personRepository->findWhere(['tag' => 'adult', 'gender' => $gender]);
 
-        $person = $this->personRepository->find($model->id);
+        $person = $role == "Visitante" ? $this->visitorRepository->find($model->id) :
+            $this->personRepository->find($model->id);
 
         $groups = $person->groups()->paginate() or null;
 
-        $list = $this->listRepository->findByField('person_id', $model->id);
+        $type = $role == "Visitante" ? 'visitor_id' : "person_id";
+
+        $list = $this->listRepository->findByField($type, $model->id);
 
         $arr = [];
         $events = [];

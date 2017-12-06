@@ -29,4 +29,9 @@ class Visitor extends Model implements Transformable
         return $this->belongsToMany(User::class);
     }
 
+    public function groups()
+    {
+        return $this->belongsToMany(Group::class);
+    }
+
 }

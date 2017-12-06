@@ -19,7 +19,7 @@ class CreateEventSubscribedListsTable extends Migration
             $table->integer('event_id')->unsigned();
             $table->foreign('event_id')->references('id')->on('events');
 
-            $table->integer('person_id')->unsigned();
+            $table->integer('person_id')->unsigned()->nullable();
             $table->foreign('person_id')->references('id')->on('people');
 
             $table->integer('sub_by')->unsigned();

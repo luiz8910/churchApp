@@ -65,6 +65,7 @@ class LoginController extends Controller
 
             }else{
                 session(['role' => 'Visitante']);
+                return redirect()->route('event.index');
             }
 
             return redirect()->intended('home');

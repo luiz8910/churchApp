@@ -526,10 +526,14 @@ class EventServices
      * */
     public function canCheckIn($id)
     {
+        $type = Auth::user()->person ? 'person_id' : 'visitor_id';
+
+        $user_id = $type == 'person_id' ? Auth::user()->person->id : Auth::user()->visitors->first()->id;
+
         $sub = DB::table('event_subscribed_lists')
             ->where([
                 'event_id' => $id,
-                'person_id' => Auth::user()->person->id
+                $type => $user_id
             ])
             ->get();
 
