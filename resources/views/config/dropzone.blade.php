@@ -225,6 +225,11 @@
         $("#form-downloadPlan").submit();
     }
 
+    function dropzone()
+    {
+        $("#my-dropzone").submit();
+    }
+
 </script>
 </body>
 
