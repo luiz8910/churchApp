@@ -14,9 +14,9 @@ class RemoveChurchIdEventSubList extends Migration
     public function up()
     {
         Schema::table('event_subscribed_lists', function(Blueprint $table){
-            $table->dropForeign('churches_id_foreign');
+            $table->dropForeign(['churches_id']);
 
-            $table->dropColumn('church_id');
+            $table->dropColumn(['church_id']);
 
             $table->integer('visitor_id')->unsigned()->nullable();
 
