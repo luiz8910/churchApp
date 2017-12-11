@@ -84,6 +84,15 @@
                                             <?php echo "<script> $('.progress').css('display', 'none'); $('#btn-dropzone').css('display', 'block');</script>" ;?>
                                         @endif
 
+                                        @if(Session::has('rollback.message'))
+                                            <div class="col-md-12">
+                                                <div class="alert alert-success alert-dismissible" role="alert" style="display: block;">
+                                                    <button type="button" class="close" id="button-danger" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    <strong>Sucesso</strong> {{ Session::get('rollback.message') }}
+                                                </div>
+                                            </div>
+                                        @endif
+
                                         <div class="col-md-12">
                                             <div class="portlet light ">
                                                 <div class="portlet-title">
@@ -95,7 +104,7 @@
                                                     <div class="actions">
 														<div class="btn-group">
 															<a class="btn red btn-outline btn-circle" href="javascript:;" data-toggle="dropdown">
-																<i class="fa fa-share"></i>
+																<i class="fa fa-cloud-download"></i>
 																<span class="hidden-xs"> Exportar </span>
 																<i class="fa fa-angle-down"></i>
 															</a>
@@ -113,6 +122,12 @@
 																	</a>
 																</li>
 															</ul>
+														</div>
+                                                        <div class="btn-group">
+															<a class="btn purple btn-outline btn-circle" href="{{ route('import.rollback-last', 'people') }}">
+																<i class="fa fa-share"></i>
+																<span class="hidden-xs"> Reverter ult. Importação </span>
+															</a>
 														</div>
                                                     </div> <!-- FIM DIV .actions -->
                                                 </div> <!-- FIM DIV .portlet-title -->
@@ -135,6 +150,12 @@
                                                         <button type="button" class="btn btn-info" data-toggle="modal" data-target="#info">
                                                             <i class="fa fa-info-circle"></i> Instruções para upload
                                                         </button>
+
+                                                        @if(Session::has('rollback.errors'))
+                                                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#error">
+                                                                <i class="fa fa-exclamation-circle"></i> Erros da ult. Importação
+                                                            </button>
+                                                        @endif
 
                                                         <div class="modal fade" id="info" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
                                                             <div class="modal-dialog modal-lg" role="document">
@@ -181,6 +202,29 @@
                                                                 </div>
                                                             </div>
                                                         </div>
+
+                                                        <div class="modal fade" id="error" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+                                                            <div class="modal-dialog modal-lg" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                                        <h4 class="modal-title" id="myModalLabel">Erros</h4>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <p>Detalhes dos Erros</p>
+
+
+
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
 
                                                         {!! Form::open(['route' => 'download.plan', 'method' => 'GET', 'id' => 'form-downloadPlan']) !!}
                                                         {!! Form::close() !!}

@@ -198,6 +198,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/downloadPlan', 'ConfigController@downloadPlan')->name('download.plan');
 
         Route::get('/showPlan', 'ConfigController@showPlan')->name('show.plan');
+
+        Route::get('rollback/{table}', 'ImportController@rollbackLast')->name('import.rollback-last');
     });
 
     Route::get("/getPusherKey", "ConfigController@getPusherKey");

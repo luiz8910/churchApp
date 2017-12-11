@@ -16,6 +16,7 @@ use App\Repositories\ChurchRepository;
 use App\Repositories\EventRepository;
 use App\Repositories\EventSubscribedListRepository;
 use App\Repositories\GroupRepository;
+use App\Repositories\ImportRepository;
 use App\Repositories\RequiredFieldsRepository;
 use App\Repositories\UploadStatusRepository;
 use App\Services\EventServices;
@@ -92,11 +93,15 @@ class PersonController extends Controller
      * @var UploadStatusRepository
      */
     private $uploadStatusRepository;
+    /**
+     * @var ImportRepository
+     */
+    private $importRepository;
 
     public function __construct(PersonRepository $repository, StateRepository $stateRepositoryTrait, RoleRepository $roleRepository,
                                 UserRepository $userRepository, RequiredFieldsRepository $fieldsRepository, EventSubscribedListRepository $listRepository,
                                 GroupRepository $groupRepository, ChurchRepository $churchRepository, EventRepository $eventRepository,
-                                EventServices $eventServices, UploadStatusRepository $uploadStatusRepository)
+                                EventServices $eventServices, UploadStatusRepository $uploadStatusRepository, ImportRepository $importRepository)
     {
         $this->repository = $repository;
         $this->stateRepository = $stateRepositoryTrait;
@@ -109,6 +114,7 @@ class PersonController extends Controller
         $this->eventRepository = $eventRepository;
         $this->eventServices = $eventServices;
         $this->uploadStatusRepository = $uploadStatusRepository;
+        $this->importRepository = $importRepository;
     }
 
     /**
@@ -1266,15 +1272,25 @@ class PersonController extends Controller
 
         $file->move($path, $fileName);
 
-        $i = 0;
+        $i = -1;
 
-        DB::transaction(function () use($church, $alias, $i, $path, $fileName, $name){
+        $import['code'] = bin2hex(random_bytes(15));
 
-        Excel::load($path . $fileName, function ($reader) use($church, $alias, $i){
+        $import['table'] = 'people';
+
+        $import['church_id'] = $church;
+
+        $this->importRepository->create($import);
+
+        DB::transaction(function () use($church, $alias, $i, $path, $fileName, $name, $import){
+
+        Excel::load($path . $fileName, function ($reader) use($church, $alias, $i, $import){
 
             foreach ($reader->get() as $item)
             {
+                    /*echo $item->nome . "\n\n";*/
 
+                    //dd($reader->get());
 
                     $fullName = $this->surname($item->nome);
 
@@ -1309,7 +1325,10 @@ class PersonController extends Controller
                             if ($item->membro == "S") {
                                 $data["role_id"] = $this->roleRepository->findByField('name', 'Membro')->first()->id;
 
-                                if ($item->classificacao != "PLENA") {
+                                if ($item->classificacao == "PLENA") {
+                                    $data["deleted_at"] = null;
+                                }
+                                else{
                                     $data["deleted_at"] = Carbon::now();
                                 }
                             } else {
@@ -1363,18 +1382,20 @@ class PersonController extends Controller
 
                             $data["state"] = $item->estado == "EX" ? null : $item->estado;
 
-                            echo $data["name"];
+                            $data["import_code"] = $import["code"];
 
                             $id = $this->repository->create($data)->id;
 
-                            if ($data["tag"] == "adult") {
+                            $i++;
+
+                            if ($data["tag"] == "adult" && isset($item->$email)) {
                                 $this->createUserLogin($id, $alias, $item->$email, $church);
                             }
                         }
                     }
 
 
-                    $i++;
+                echo $data["name"] . " " . $data["lastName"] .  "\n";
             }
 
 
