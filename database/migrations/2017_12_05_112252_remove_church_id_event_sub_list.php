@@ -18,9 +18,9 @@ class RemoveChurchIdEventSubList extends Migration
 
             $table->dropColumn(['church_id']);
 
-            $table->integer('visitor_id')->unsigned()->nullable();
+            //$table->integer('visitor_id')->unsigned()->nullable();
 
-            $table->foreign('visitor_id')->references('id')->on('visitors');
+            //$table->foreign('visitor_id')->references('id')->on('visitors');
         });
     }
 
