@@ -1258,6 +1258,8 @@ class PersonController extends Controller
      */
     public function getChurchContacts(Request $request)
     {
+        ini_set('max_execution_time', '60');
+
         $church = $this->getUserChurch();
 
         $file = $request->file('file');
