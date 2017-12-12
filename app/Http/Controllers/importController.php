@@ -42,7 +42,6 @@ class importController extends Controller
 
         if($table == 'people')
         {
-
             $people = Person::withTrashed()->where('import_code', $last->code)->get();
 
             if(count($people) > 0)
