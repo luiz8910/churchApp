@@ -1,0 +1,13 @@
+
+@media screen and (max-width: 600px) {
+    .page-header .page-header-top .menu-toggler {
+        clear: none !important;
+        margin: 50px -10px -3px -1px !important;
+        height: 70px !important;
+    }
+
+    .page-header .page-header-top .top-menu{
+        clear: none;
+    }
+}
+

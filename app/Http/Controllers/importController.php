@@ -6,6 +6,7 @@ use App\Models\Person;
 use App\Models\User;
 use App\Repositories\ImportRepository;
 use App\Repositories\PersonRepository;
+use App\Repositories\VisitorRepository;
 use App\Traits\ConfigTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -21,11 +22,16 @@ class importController extends Controller
      * @var PersonRepository
      */
     private $personRepository;
+    /**
+     * @var VisitorRepository
+     */
+    private $visitorRepository;
 
-    public function __construct(ImportRepository $repository, PersonRepository $personRepository)
+    public function __construct(ImportRepository $repository, PersonRepository $personRepository, VisitorRepository $visitorRepository)
     {
         $this->repository = $repository;
         $this->personRepository = $personRepository;
+        $this->visitorRepository = $visitorRepository;
     }
 
     public function rollbackLast($table)
@@ -39,6 +45,7 @@ class importController extends Controller
 
             ])->orderBy('created_at', 'desc')->first();
 
+        $visitors = $this->visitorRepository->findByField('import_code', $last->code);
 
         if($table == 'people')
         {
@@ -57,11 +64,24 @@ class importController extends Controller
                 }
                 
                 $this->removeInactive($people);
+
+                $qtdeVis = $this->rollbackLastVisitors($visitors);
+
+                $total = count($people) + $qtdeVis;
                 
-                \Session::flash('rollback.message', ' ' . count($people) . ' usuários foram removidos');
+                \Session::flash('rollback.message', ' ' .  $total . ' usuários foram removidos');
             }else{
 
-                \Session::flash('rollback.message', ' Não há usuários para remover');
+                if(count($visitors) > 0)
+                {
+                    $qtdeVis = $this->rollbackLastVisitors($visitors);
+
+                    \Session::flash('rollback.message', ' ' .  $qtdeVis . ' usuários foram removidos');
+                }
+                else{
+                    \Session::flash('rollback.message', ' Não há usuários para remover');
+                }
+
             }
 
         }
@@ -87,5 +107,43 @@ class importController extends Controller
 
             $person->forceDelete();
         }
+    }
+
+    public function rollbackLastVisitors($visitors)
+    {
+        if(count($visitors) > 0)
+        {
+            foreach ($visitors as $visitor)
+            {
+                if($visitor->user)
+                {
+                    $visitor->users->delete();
+                }
+
+                $visitor->delete();
+            }
+
+            $this->removeInactiveVisitor($visitors);
+
+        }
+
+        return count($visitors);
+    }
+
+    public function removeInactiveVisitor($array)
+    {
+        foreach($array as $item)
+        {
+            $visitor = $this->visitorRepository->find($item->id);
+
+            $user = $visitor->users->first();
+
+            if($user){
+                $user->forceDelete();
+            }
+
+            $visitor->forceDelete();
+        }
+
     }
 }

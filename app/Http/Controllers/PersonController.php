@@ -19,6 +19,7 @@ use App\Repositories\GroupRepository;
 use App\Repositories\ImportRepository;
 use App\Repositories\RequiredFieldsRepository;
 use App\Repositories\UploadStatusRepository;
+use App\Repositories\VisitorRepository;
 use App\Services\EventServices;
 use App\Traits\ConfigTrait;
 use App\Traits\CountRepository;
@@ -97,11 +98,16 @@ class PersonController extends Controller
      * @var ImportRepository
      */
     private $importRepository;
+    /**
+     * @var VisitorRepository
+     */
+    private $visitorRepository;
 
     public function __construct(PersonRepository $repository, StateRepository $stateRepositoryTrait, RoleRepository $roleRepository,
                                 UserRepository $userRepository, RequiredFieldsRepository $fieldsRepository, EventSubscribedListRepository $listRepository,
                                 GroupRepository $groupRepository, ChurchRepository $churchRepository, EventRepository $eventRepository,
-                                EventServices $eventServices, UploadStatusRepository $uploadStatusRepository, ImportRepository $importRepository)
+                                EventServices $eventServices, UploadStatusRepository $uploadStatusRepository, ImportRepository $importRepository,
+                                VisitorRepository $visitorRepository)
     {
         $this->repository = $repository;
         $this->stateRepository = $stateRepositoryTrait;
@@ -115,6 +121,7 @@ class PersonController extends Controller
         $this->eventServices = $eventServices;
         $this->uploadStatusRepository = $uploadStatusRepository;
         $this->importRepository = $importRepository;
+        $this->visitorRepository = $visitorRepository;
     }
 
     /**
@@ -1322,24 +1329,26 @@ class PersonController extends Controller
                             $data["dateBirth"] = date_format($item->$data_nasc, "Y-m-d");
 
 
-                            $data["church_id"] = $church;
+                            if ($item->membro == "S" && ($item->classificacao == "PLENA" ||
+                                    $item->classificacao == "DESLIGADO" || $item->classificacao == "FALECIDO")) {
 
-                            if ($item->membro == "S") {
+
+
                                 $data["role_id"] = $this->roleRepository->findByField('name', 'Membro')->first()->id;
 
                                 if ($item->classificacao == "PLENA") {
                                     $data["deleted_at"] = null;
                                 }
-                                else{
+                                else if($item->classificacao == "DESLIGADO" || $item->classificacao == "FALECIDO"){
                                     $data["deleted_at"] = Carbon::now();
                                 }
                             } else {
 
                                 $data["role_id"] = $this->roleRepository->findByField('name', 'Visitante')->first()->id;
 
-                                if ($item->classificacao != "PLENA") {
-                                    $data["deleted_at"] = Carbon::now();
-                                }
+
+                                $data["deleted_at"] = null;
+
                             }
 
                             $data['imgProfile'] = 'uploads/profile/noimage.png';
@@ -1358,7 +1367,18 @@ class PersonController extends Controller
 
                             $maritalStatus = "estado_civil";
 
-                            $data["maritalStatus"] = $item->$maritalStatus == "SEPARADO" ? "Divorciado" : ucfirst($item->$maritalStatus);
+                            $item->$maritalStatus = strtolower($item->$maritalStatus);
+
+                            $item->$maritalStatus = ucfirst($item->$maritalStatus);
+
+                            if($item->$maritalStatus == "Separado")
+                            {
+                                $data["maritalStatus"] = "Divorciado";
+                            }
+                            else{
+                                $data["maritalStatus"] = $item->$maritalStatus;
+                            }
+
 
                             if ($data["maritalStatus"] == "Casado") {
                                 $data["partner"] = 0;
@@ -1386,13 +1406,29 @@ class PersonController extends Controller
 
                             $data["import_code"] = $import["code"];
 
-                            $id = $this->repository->create($data)->id;
+                            $visitor = $this->roleRepository->findByField('name', 'Visitante')->first()->id;
+
+                            if($data["role_id"] == $visitor)
+                            {
+                                $this->visitorRepository->create($data);
+
+                                if ($data["tag"] == "adult") {
+                                    $this->createUserLogin(null, $alias, $item->$email, null);
+                                }
+                            }
+                            else{
+                                $data["church_id"] = $church;
+                                $id = $this->repository->create($data)->id;
+
+                                if ($data["tag"] == "adult") {
+                                    $this->createUserLogin($id, $alias, $item->$email, $church);
+                                }
+                            }
+
 
                             $i++;
 
-                            if ($data["tag"] == "adult" && isset($item->$email)) {
-                                $this->createUserLogin($id, $alias, $item->$email, $church);
-                            }
+
                         }
                     }
 
