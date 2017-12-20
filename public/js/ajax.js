@@ -1524,7 +1524,10 @@
                     $("#notific8").trigger("click");
 
                 }, 1000);
+
             }
+
+            location.reload();
         });
 
         request.fail(function (e) {
@@ -1622,6 +1625,85 @@
         });
 
         return false;
+    }
+
+    $("#btn-search-inactive-person").keyup(function () {
+        var id = this.id;
+
+        var str = id.replace("btn-search-", "");
+
+        var input = this.value;
+
+        if(input.length > 2)
+        {
+            $("#pagination").css('display', 'none');
+            $('tbody > tr').css('display', 'none');
+            $("#tbody-search > tr").remove();
+            generalSearch(str, input);
+        }
+        else{
+            $("#tbody-search").addClass('hide');
+            $("#tbody-search > tr").remove();
+            $("#pagination").css('display', 'block');
+            $('tbody > tr').css('display', 'table-row');
+        }
+    });
+
+    function generalSearch(model, input)
+    {
+        if(model == "inactive-person")
+        {
+            var request = $.ajax({
+                url: '/search-person/' + input + '/' + 'inactive',
+                method: 'GET',
+                dataType: 'json'
+            });
+
+            request.done(function(e){
+                if(e.status)
+                {
+                    var i = 0;
+
+                    var tr = '';
+
+                    while(i < e.data.length)
+                    {
+                        tr += '<tr><td><img src="'+ e.data[i]+'" class="imgProfile img-circle"></td><td>'+e.data[i + 1]+'</td><td>Membro</td>'+
+                            '<td>' +
+                            '<button class="btn btn-success btn-sm btn-circle pop-activate" title="Deseja Re-ativar o Membro"'+
+                            'onclick="ReactivateUser('+ e.data[i + 2] +')"'+
+                            'id="btn-delete-'+ e.data[i + 2] +'">'+
+                            '<i class="fa fa-share"></i>'+
+                            '<span class="hidden-xs hidden-sm"> Ativar</span>'+
+                            '</button>' +
+                            '<button class="btn btn-danger btn-sm btn-circle pop" title="Deseja Excluir o Membro"'+
+                            'data-toggle="confirmation" data-placement="top"'+
+                            'data-original-title="Deseja Excluir?" data-popout="true" onclick="event.preventDefault()"'+
+                            'id="btn-delete-'+ e.data[i + 2] +'">'+
+                            '<i class="fa fa-trash"></i>'+
+                            '<span class="hidden-xs hidden-sm"> Excluir</span>'+
+                            '</button>'+
+                            '</td>' +
+                            '</tr>';
+
+                        i = i + 3;
+                    }
+
+
+
+                    $("#tbody-search").removeClass('hide').append(tr);
+
+                    console.log(e.data);
+                }
+
+            });
+
+            request.fail(function(e){
+                console.log("fail");
+                console.log(e);
+            });
+
+        }
     }
 
 

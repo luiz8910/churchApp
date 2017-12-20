@@ -147,7 +147,7 @@
                                                             <i class="fa fa-check"></i> Enviar
                                                         </button>
 
-                                                        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#info">
+                                                        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#info" id="btn-info-upload">
                                                             <i class="fa fa-info-circle"></i> Instruções para upload
                                                         </button>
 

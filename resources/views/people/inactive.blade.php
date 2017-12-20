@@ -70,6 +70,15 @@
                                 </div>
                             @endif
 
+                            @if(Session::has('reactivate.success'))
+                                <div class="alert alert-success alert-dismissible" role="alert">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    {{ Session::get('reactivate.success') }}
+                                </div>
+                            @endif
+
                             <?php $route = "person-inactive";?>
 
                             <div class="page-content-inner">
@@ -80,6 +89,7 @@
                                                 <div class="caption font-green-haze">
                                                     <i class="fa fa-user font-green-haze"></i>
                                                     <span class="caption-subject font-green-haze bold ">Inativos</span>
+
                                                 </div>
                                                 <div class="actions">
                                                     {{--<div class="btn-group btn-group-devided">
@@ -89,40 +99,61 @@
                                                         </a>
 
                                                     </div>--}}
+
+
+
                                                     <div class="btn-group">
-                                                        <a class="btn red btn-outline btn-circle" href="javascript:;" data-toggle="dropdown">
-                                                            <i class="fa fa-share"></i>
-                                                            <span class="hidden-xs"> Opções </span>
-                                                            <i class="fa fa-angle-down"></i>
-                                                        </a>
-                                                        <ul class="dropdown-menu pull-right" id="sample_3_tools">
-                                                            <li>
-                                                                <a href="javascript:;" id="print" onclick="printDiv('printable-table')"
-                                                                   data-action="0" class="tool-action">
-                                                                    <i class="icon-printer"></i> Imprimir
-                                                                </a>
-                                                            </li>
-                                                            <!--<li>
-                                                                <a href="javascript:;" data-action="1" class="tool-action">
-                                                                    <i class="icon-check"></i> Copiar</a>
-                                                            </li>-->
-                                                            <li>
-                                                                <a href="javascript:;" data-action="2"
-                                                                   onclick="printDiv('printable-table', 'pdf')" class="tool-action">
-                                                                    <i class="icon-doc"></i> PDF</a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="{{ route($route.'.excel', ['format' => 'xls']) }}"
-                                                                   data-action="3" target="_blank"
-                                                                   class="tool-action">
-                                                                    <i class="icon-paper-clip"></i> Excel</a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="{{ route($route.'.excel', ['format' => 'csv']) }}"
-                                                                   data-action="4" target="_blank" class="tool-action">
-                                                                    <i class="icon-cloud-upload"></i> CSV</a>
-                                                            </li>
-                                                        </ul>
+                                                        <div class="col-lg-8">
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control" id="btn-search-inactive-person" placeholder="Digite 3 letras ou mais...">
+                                                            <span class="input-group-btn">
+                                                                <button class="btn btn-default" type="button">
+                                                                    <i class="fa fa-search font-green"></i>
+                                                                </button>
+                                                            </span>
+                                                            </div><!-- /input-group -->
+                                                        </div><!-- /.col-lg-6 -->
+
+                                                        <div class="col-lg-4">
+                                                            <a class="btn red btn-outline btn-circle" href="javascript:;" data-toggle="dropdown">
+                                                                <i class="fa fa-share"></i>
+                                                                <span class="hidden-xs"> Opções </span>
+                                                                <i class="fa fa-angle-down"></i>
+                                                            </a>
+
+                                                            <ul class="dropdown-menu pull-right" id="sample_3_tools">
+                                                                <li>
+                                                                    <a href="javascript:;" id="print" onclick="printDiv('printable-table')"
+                                                                       data-action="0" class="tool-action">
+                                                                        <i class="icon-printer"></i> Imprimir
+                                                                    </a>
+                                                                </li>
+                                                                <!--<li>
+                                                                    <a href="javascript:;" data-action="1" class="tool-action">
+                                                                        <i class="icon-check"></i> Copiar</a>
+                                                                </li>-->
+                                                                <li>
+                                                                    <a href="javascript:;" data-action="2"
+                                                                       onclick="printDiv('printable-table', 'pdf')" class="tool-action">
+                                                                        <i class="icon-doc"></i> PDF</a>
+                                                                </li>
+                                                                <li>
+                                                                    <a href="{{ route($route.'.excel', ['format' => 'xls']) }}"
+                                                                       data-action="3" target="_blank"
+                                                                       class="tool-action">
+                                                                        <i class="icon-paper-clip"></i> Excel</a>
+                                                                </li>
+                                                                <li>
+                                                                    <a href="{{ route($route.'.excel', ['format' => 'csv']) }}"
+                                                                       data-action="4" target="_blank" class="tool-action">
+                                                                        <i class="icon-cloud-upload"></i> CSV</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+
+
+                                                        
+
                                                     </div> <!-- FIM DIV .btn-group -->
                                                 </div> <!-- FIM DIV .actions -->
                                             </div> <!-- FIM DIV .portlet-title -->
@@ -139,10 +170,12 @@
                                                                 <th>  </th>
                                                             </tr>
                                                             </thead>
+                                                            <tbody class="hide" id="tbody-search"></tbody>
                                                             <tbody>
+
                                                                 @foreach($inactive as $item)
                                                                     <tr id="tr-{{ $item->id }}">
-                                                                        <td> <img src="{{ $item->imgProfile }}" style="width: 50px; height: 50px;"> </td>
+                                                                        <td> <img src="{{ $item->imgProfile }}" class="imgProfile"> </td>
 
                                                                         <td>{{ $item->name }} {{ $item->lastName }}</td>
 
@@ -174,7 +207,7 @@
                                                             </tbody>
                                                         </table>
                                                         <br>
-                                                        <div class="pull-right">
+                                                        <div class="pull-right" id="pagination">
                                                             {{ $inactive->links() }}
                                                         </div>
 

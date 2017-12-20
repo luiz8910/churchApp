@@ -64,6 +64,8 @@ var FormDropzone = function () {
                             e.preventDefault();
                             e.stopPropagation();
 
+                            $("#btn-info-upload").css('display', 'none');
+
                             if(!stop)
                             {
                                 $("#btn-dropzone").css('display', "none");

@@ -272,6 +272,10 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/search-events/{text}', 'SearchController@searchEvents');
 
+    Route::get('/search-person/{input}/{status}', 'SearchController@searchPerson');
+
+    Route::get('/searchable-models', 'SearchController@searchableModels');
+
 //Login Facebook
     Route::get('/pre/auth/facebook/{church}', 'Auth\RegisterController@preFbLogin');
 

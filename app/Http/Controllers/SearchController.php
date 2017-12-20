@@ -6,6 +6,7 @@ use App\Models\Event;
 use App\Models\Group;
 use App\Models\Person;
 use App\Models\User;
+use App\Models\Visitor;
 use App\Traits\ConfigTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -87,6 +88,65 @@ class SearchController extends Controller
                         ]
                     )
                     ->get();
+
+
+        if(count($people) > 0)
+        {
+            $arr = [];
+
+            foreach ($people as $person)
+            {
+                $arr[] = $person->imgProfile;
+                $arr[] = $person->name . " " . $person->lastName;
+                $arr[] = $person->id;
+            }
+
+            return json_encode([
+                'status' => true,
+                'data' => $arr
+            ]);
+        }
+
+        return json_encode(['status' => false]);
+    }
+
+    public function searchPerson($input, $status)
+    {
+        $church_id = $this->getUserChurch();
+
+        $symbol = $status == 'inactive' ? '<>' : '=';
+
+        $fullName = explode(" ", $input);
+
+        if(count($fullName) > 1)
+        {
+
+            $people = DB::table('people')
+                ->where(
+                    [
+                        ['name', 'like', '%'.$fullName[0].'%'],
+                        ['lastName', 'like', $fullName[1].'%'],
+                        ['church_id', '=', $church_id],
+                        ['deleted_at', $symbol, null]
+                    ]
+                )
+                ->limit(5)
+                ->get();
+        }
+        else{
+            $people = DB::table('people')
+                ->where(
+                    [
+                        ['name', 'like', '%'.$input.'%'],
+                        ['church_id', '=', $church_id],
+                        ['deleted_at', $symbol, null]
+                    ]
+                )
+                ->limit(5)
+                ->get();
+        }
+
+
 
 
         if(count($people) > 0)

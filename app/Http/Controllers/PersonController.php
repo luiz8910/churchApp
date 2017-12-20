@@ -233,6 +233,8 @@ class PersonController extends Controller
 //
 //            }
 
+            Session::flash('reactivate.success', 'O Usuário ' . $person->name . ' foi reativado');
+
             return json_encode(['status' => true]);
         }
 
@@ -1297,7 +1299,7 @@ class PersonController extends Controller
 
             foreach ($reader->get() as $item)
             {
-                    /*echo $item->nome . "\n\n";*/
+                    //echo $item->nome . "\n\n";
 
                     //dd($reader->get());
 
@@ -1367,9 +1369,17 @@ class PersonController extends Controller
 
                             $maritalStatus = "estado_civil";
 
+                            if($item->$maritalStatus == "Viúvo" || $item->$maritalStatus == "VIÚVO" || $item->$maritalStatus == "viúvo")
+                            {
+                                $item->$maritalStatus = "Viuvo";
+                            }
+
                             $item->$maritalStatus = strtolower($item->$maritalStatus);
 
+                            //echo $item->$maritalStatus . "\n\n";
+
                             $item->$maritalStatus = ucfirst($item->$maritalStatus);
+
 
                             if($item->$maritalStatus == "Separado")
                             {
@@ -1377,12 +1387,12 @@ class PersonController extends Controller
                             }
                             else{
                                 $data["maritalStatus"] = $item->$maritalStatus;
+
+                                if ($data["maritalStatus"] == "Casado") {
+                                    $data["partner"] = 0;
+                                }
                             }
 
-
-                            if ($data["maritalStatus"] == "Casado") {
-                                $data["partner"] = 0;
-                            }
 
                             $data["tag"] = $this->tag($data["dateBirth"]);
 
