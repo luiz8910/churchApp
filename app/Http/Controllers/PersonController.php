@@ -259,7 +259,7 @@ class PersonController extends Controller
 
             $person->forceDelete();
 
-            return json_encode(['status' => true]);
+            return json_encode(['status' => true, 'name' => $person->name]);
         }
 
         return json_encode(['status' => false]);

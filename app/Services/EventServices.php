@@ -441,6 +441,8 @@ class EventServices
     {
         $user = \Auth::user();
 
+        $this->subEvent($id, $user->person->id);
+
         $date = date_create(date('Y-m-d'));
 
         $event_person = DB::table('event_person')
@@ -537,13 +539,17 @@ class EventServices
             ])
             ->get();
 
+        $e = $this->repository->find($id);
+
         /*
          * Se $sub = 0. então usuário logado
          * não está inscrito no evento, portanto
          * ele não pode realizar o check-in
+         *
+         * Obs: Valído somente para eventos privados
         */
 
-        if(count($sub) == 0)
+        if(count($sub) == 0 && isset($e->group_id))
         {
             return false;
         }

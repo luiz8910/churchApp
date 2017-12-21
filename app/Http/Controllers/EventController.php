@@ -1394,7 +1394,7 @@ class EventController extends Controller
 
             $leader = $this->roleRepository->find($this->getLeaderRoleId())->name;
 
-            if(($event->group_id && $role == $leader) || (!$event->group_id))
+            if((isset($event->group_id) && $role == $leader) || (!isset($event->group_id)))
             {
                 $exists = $this->eventServices->subEvent($event, $data["person_id"]);
 
@@ -1410,6 +1410,10 @@ class EventController extends Controller
         return redirect()->back();
     }
 
+    /*
+     * Usado para desinscrever um usuário no evento $event_id
+     *
+     * */
     public function UnsubUser($person_id, $event_id)
     {
         $this->eventServices->UnsubUser($person_id, $event_id);

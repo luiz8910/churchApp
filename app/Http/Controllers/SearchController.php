@@ -131,6 +131,7 @@ class SearchController extends Controller
                     ]
                 )
                 ->limit(5)
+                ->orderBy('name', 'desc')
                 ->get();
         }
         else{
@@ -143,6 +144,7 @@ class SearchController extends Controller
                     ]
                 )
                 ->limit(5)
+                ->orderBy('name', 'desc')
                 ->get();
         }
 

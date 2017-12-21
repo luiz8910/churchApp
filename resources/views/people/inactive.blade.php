@@ -103,16 +103,18 @@
 
 
                                                     <div class="btn-group">
-                                                        <div class="col-lg-8">
-                                                            <div class="input-group">
-                                                                <input type="text" class="form-control" id="btn-search-inactive-person" placeholder="Digite 3 letras ou mais...">
-                                                            <span class="input-group-btn">
-                                                                <button class="btn btn-default" type="button">
-                                                                    <i class="fa fa-search font-green"></i>
-                                                                </button>
-                                                            </span>
-                                                            </div><!-- /input-group -->
-                                                        </div><!-- /.col-lg-6 -->
+                                                        @if(Auth::getUser()->person->role_id == $leader)
+                                                            <div class="col-lg-8">
+                                                                <div class="input-group">
+                                                                    <input type="text" class="form-control" id="btn-search-inactive-person" placeholder="Digite 3 letras ou mais...">
+                                                                <span class="input-group-btn">
+                                                                    <button class="btn btn-default" type="button">
+                                                                        <i class="fa fa-search font-green"></i>
+                                                                    </button>
+                                                                </span>
+                                                                </div><!-- /input-group -->
+                                                            </div><!-- /.col-lg-8 -->
+                                                        @endif
 
                                                         <div class="col-lg-4">
                                                             <a class="btn red btn-outline btn-circle" href="javascript:;" data-toggle="dropdown">
@@ -160,6 +162,21 @@
 
                                             <div class="portlet-body form">
                                                 <div class="portlet-body-config">
+                                                    <div class="col-md-12">
+                                                        <div class="div-loading" id="loading-results">
+                                                            <i class="fa fa-refresh fa-spin fa-5x fa-fw"
+                                                               id="icon-loading-cep">
+                                                            </i>
+                                                            <p class="text-center" id="p-loading-cep">
+                                                                Carregando ...
+                                                            </p>
+                                                        </div>
+
+                                                        <p class="text-center" id="p-zero" style="display: none;">
+                                                            Nenhum resultado
+                                                        </p>
+
+                                                    </div>
                                                     <div class="table-scrollable table-scrollable-borderless table-striped">
                                                         <table class="table table-hover table-light table-striped">
                                                             <thead>
@@ -172,7 +189,6 @@
                                                             </thead>
                                                             <tbody class="hide" id="tbody-search"></tbody>
                                                             <tbody>
-
                                                                 @foreach($inactive as $item)
                                                                     <tr id="tr-{{ $item->id }}">
                                                                         <td> <img src="{{ $item->imgProfile }}" class="imgProfile"> </td>
@@ -182,26 +198,28 @@
                                                                         <td> {{ $item->role->name }} </td>
 
 
-                                                                        <?php $deleteForm = "delete-".$item->id; ?>
-                                                                        <td>
+                                                                        @if(Auth::getUser()->person->role_id == $leader)
+                                                                            <?php $deleteForm = "delete-".$item->id; ?>
+                                                                            <td>
 
-                                                                            <button class="btn btn-success btn-sm btn-circle pop-activate" title="Deseja Re-ativar o Membro"
-                                                                                    data-toggle="confirmation" data-placement="top"
-                                                                                    data-original-title="Deseja Re-Ativar?" data-popout="true" onclick="event.preventDefault()"
-                                                                                    id="btn-{{ $deleteForm }}">
-                                                                                <i class="fa fa-share"></i>
-                                                                                <span class="hidden-xs hidden-sm">Ativar</span>
-                                                                            </button>
+                                                                                <button class="btn btn-success btn-sm btn-circle pop-activate" title="Deseja Re-ativar o Membro"
+                                                                                        data-toggle="confirmation" data-placement="top"
+                                                                                        data-original-title="Deseja Re-Ativar?" data-popout="true" onclick="event.preventDefault()"
+                                                                                        id="btn-{{ $deleteForm }}">
+                                                                                    <i class="fa fa-share"></i>
+                                                                                    <span class="hidden-xs hidden-sm">Ativar</span>
+                                                                                </button>
 
-                                                                            <button class="btn btn-danger btn-sm btn-circle pop" title="Deseja Excluir o Membro"
-                                                                                    data-toggle="confirmation" data-placement="top"
-                                                                                    data-original-title="Deseja Excluir?" data-popout="true" onclick="event.preventDefault()"
-                                                                                    id="btn-{{ $deleteForm }}">
-                                                                                <i class="fa fa-trash"></i>
-                                                                                <span class="hidden-xs hidden-sm">Excluir</span>
-                                                                            </button>
+                                                                                <button class="btn btn-danger btn-sm btn-circle pop" title="Deseja Excluir o Membro"
+                                                                                        data-toggle="confirmation" data-placement="top"
+                                                                                        data-original-title="Deseja Excluir?" data-popout="true" onclick="event.preventDefault()"
+                                                                                        id="btn-{{ $deleteForm }}">
+                                                                                    <i class="fa fa-trash"></i>
+                                                                                    <span class="hidden-xs hidden-sm">Excluir</span>
+                                                                                </button>
 
-                                                                        </td>
+                                                                            </td>
+                                                                        @endif
                                                                     </tr>
                                                                 @endforeach
                                                             </tbody>

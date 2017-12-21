@@ -601,7 +601,7 @@
                 setTimeout(function() {
                     $("#progress-danger").css("display", "none");
 
-                    searchForEvent(e.name);
+                    //searchForEvent(e.name);
 
                     $("#tr-"+id).remove();
 
@@ -1636,12 +1636,18 @@
 
         if(input.length > 2)
         {
+            $("#p-zero").css('display', 'none');
             $("#pagination").css('display', 'none');
             $('tbody > tr').css('display', 'none');
             $("#tbody-search > tr").remove();
+            $("thead").css('display', 'none');
+            $("#loading-results").css('display', 'block');
             generalSearch(str, input);
         }
         else{
+            $("thead").css('display', 'table-header-group');
+            $("#p-zero").css('display', 'none');
+            $("#loading-results").css('display', 'none');
             $("#tbody-search").addClass('hide');
             $("#tbody-search > tr").remove();
             $("#pagination").css('display', 'block');
@@ -1670,15 +1676,14 @@
                     {
                         tr += '<tr><td><img src="'+ e.data[i]+'" class="imgProfile img-circle"></td><td>'+e.data[i + 1]+'</td><td>Membro</td>'+
                             '<td>' +
-                            '<button class="btn btn-success btn-sm btn-circle pop-activate" title="Deseja Re-ativar o Membro"'+
-                            'onclick="ReactivateUser('+ e.data[i + 2] +')"'+
+                            '<button class="btn btn-success btn-sm btn-circle pop-created" title="Deseja Re-ativar o Membro"'+
+                            'onclick="sweetGeneralSearch('+ e.data[i + 2] +')"'+
                             'id="btn-delete-'+ e.data[i + 2] +'">'+
                             '<i class="fa fa-share"></i>'+
                             '<span class="hidden-xs hidden-sm"> Ativar</span>'+
                             '</button>' +
                             '<button class="btn btn-danger btn-sm btn-circle pop" title="Deseja Excluir o Membro"'+
-                            'data-toggle="confirmation" data-placement="top"'+
-                            'data-original-title="Deseja Excluir?" data-popout="true" onclick="event.preventDefault()"'+
+                            'onclick="sweetGeneralDelete('+ e.data[i + 2] +')"'+
                             'id="btn-delete-'+ e.data[i + 2] +'">'+
                             '<i class="fa fa-trash"></i>'+
                             '<span class="hidden-xs hidden-sm"> Excluir</span>'+
@@ -1689,11 +1694,17 @@
                         i = i + 3;
                     }
 
+                    $("#loading-results").css('display', 'none');
 
+                    $("thead").css('display', 'table-header-group');
 
                     $("#tbody-search").removeClass('hide').append(tr);
 
                     console.log(e.data);
+                }
+                else{
+                    $("#loading-results").css('display', 'none');
+                    $("#p-zero").css('display', 'block');
                 }
 
             });
@@ -1704,6 +1715,51 @@
             });
 
         }
+    }
+
+    function sweetGeneralSearch(id)
+    {
+
+        swal({
+            title: 'Atenção',
+            text: 'Você deseja reativar o usuário selecionado ?',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonClass: "btn-success",
+            confirmButtonText: "Sim",
+            cancelButtonText: "Não",
+            closeOnConfirm: true,
+            closeOnCancel: true
+        },
+            function(isConfirm){
+
+                if(isConfirm)
+                {
+                    ReactivateUser(id);
+                }
+        });
+    }
+
+    function sweetGeneralDelete(id)
+    {
+        swal({
+            title: 'Atenção',
+            text: 'Você deseja excluir o usuário selecionado ? \n (Os dados não poderão ser recuperados)',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Sim",
+            cancelButtonText: "Não",
+            closeOnConfirm: true,
+            closeOnCancel: true
+        },
+            function(isConfirm){
+
+                if(isConfirm)
+                {
+                    Delete(id, 'inactive-person', null);
+                }
+            });
     }
 
 
