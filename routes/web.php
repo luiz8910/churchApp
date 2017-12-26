@@ -70,6 +70,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/inactive-person-delete/{person}', 'PersonController@forceDelete');
 
+    Route::get('/make-member/{id}', 'PersonController@makeMember');
+
     // Fim Usuários e pessoas
 
     //Inicio Grupos

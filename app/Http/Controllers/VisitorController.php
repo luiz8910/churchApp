@@ -119,7 +119,7 @@ class VisitorController extends Controller
      */
     public function index()
     {
-        $visitors = Visitor::where('deleted_at' , null)->paginate(5);
+        $visitors = Visitor::where('deleted_at' , null)->orderBy('name')->paginate(5);
 
         foreach ($visitors as $item) {
             $item->dateBirth = $this->formatDateView($item->dateBirth);

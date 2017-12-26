@@ -136,7 +136,7 @@ class PersonController extends Controller
                 'tag' => 'adult',
                 'deleted_at' => null,
                 'church_id' => $this->getUserChurch()
-            ])->paginate(5);
+            ])->orderBy('name')->paginate(5);
 
 
         foreach ($adults as $item) {
@@ -183,7 +183,7 @@ class PersonController extends Controller
 
     public function inactive()
     {
-        $inactive = Person::onlyTrashed()->paginate(5);
+        $inactive = Person::onlyTrashed()->orderBy('name')->paginate(5);
 
         foreach ($inactive as $item) {
             $item->dateBirth = $this->formatDateView($item->dateBirth);
@@ -1680,6 +1680,71 @@ class PersonController extends Controller
         return json_encode($people);
     }
 
+    /*
+     * Usado para um visitante tornar-se membro
+     * $id = id do visitante
+     * */
+    public function makeMember($id)
+    {
+        try{
+            $visitor = $this->visitorRepository->find($id);
+
+            $church = $this->getUserChurch();
+
+            $visitor->church_id = $church;
+
+            $visitor->role_id = $this->roleRepository->findByField('name', 'Membro')->first()->id;
+
+            $tag = $this->tag($visitor->dateBirth);
+
+            DB::beginTransaction();
+
+            $data = $visitor->toArray();
+
+            $person_id = $this->repository->create($data)->id;
+
+            if(count($visitor->users) > 0)
+            {
+                $user = $visitor->users->first();
+
+                DB::table('users')
+                    ->where('id', $user->id)
+                    ->update(
+                        [
+                            'person_id' => $person_id,
+                            'church_id' => $church
+                        ]);
+
+                $visitor->users()->detach();
+            }
+            else{
+                if($tag == "adult")
+                {
+                    $email = isset($visitor->email) ? $visitor->email : null;
+                    $password = $this->churchRepository->find($church)->alias;
+
+                    $this->createUserLogin($person_id, $password, $email, $church);
+                }
+            }
+
+            $visitor->delete();
+
+            DB::commit();
+
+            return json_encode(['status' => true]);
+
+        }catch(\Exception $e){
 
 
+            DB::rollBack();
+
+            //dd($e);
+            return json_encode(['status' => false]);
+        }
+
+
+
+
+
+    }
 }

@@ -7,72 +7,28 @@ use App\Models\Group;
 use App\Models\Person;
 use App\Models\User;
 use App\Models\Visitor;
+use App\Repositories\RoleRepository;
 use App\Traits\ConfigTrait;
+use App\Traits\DateRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Route;
 use Laravel\Scout\Engines\AlgoliaEngine;
 
 class SearchController extends Controller
 {
-    use ConfigTrait;
-    /**
-     * @var Event
-     */
-    private $event;
-    /**
-     * @var Person
-     */
-    private $person;
-    /**
-     * @var User
-     */
-    private $user;
-    /**
-     * @var Group
-     */
-    private $group;
+    use ConfigTrait, DateRepository;
 
-    public function __construct(Event $event, Person $person, User $user, Group $group)
+
+    /**
+     * @var RoleRepository
+     */
+    private $roleRepository;
+
+    public function __construct(RoleRepository $roleRepository)
     {
-        $this->event = $event;
-        $this->person = $person;
-        $this->user = $user;
-        $this->group = $group;
-    }
 
-    public function search($text)
-    {
-        $event = $this->event->search($text)->get();
-
-        if(count($event) > 0)
-        {
-            return $event;
-        }
-
-        else{
-            $person = $this->person->search($text)->get();
-
-            if (count($person) > 0)
-            {
-                return $person;
-            }
-
-            else{
-                $group = $this->group->search($text)->get();
-
-                if(count($group) > 0)
-                {
-                    return $group;
-                }
-            }
-        }
-
-        return false;
-    }
-
-    public function searchEvents($text)
-    {
-        return $this->event->search($text)->get();
+        $this->roleRepository = $roleRepository;
     }
 
     public function findNewPeople($input)
@@ -110,6 +66,11 @@ class SearchController extends Controller
         return json_encode(['status' => false]);
     }
 
+    /**
+     * @param $input
+     * @param $status
+     * @return string
+     */
     public function searchPerson($input, $status)
     {
         $church_id = $this->getUserChurch();
@@ -118,36 +79,112 @@ class SearchController extends Controller
 
         $fullName = explode(" ", $input);
 
+        $table = $status == 'visitor' ? 'visitors' : 'people';
+
+        $url = env('APP_URL');
+
+        $route = str_replace($url, "", url()->previous());
+
+        $tag = $route == 'teen' ? '<>' : '=';
+
         if(count($fullName) > 1)
         {
 
-            $people = DB::table('people')
-                ->where(
-                    [
-                        ['name', 'like', '%'.$fullName[0].'%'],
-                        ['lastName', 'like', $fullName[1].'%'],
-                        ['church_id', '=', $church_id],
-                        ['deleted_at', $symbol, null]
-                    ]
-                )
-                ->limit(5)
-                ->orderBy('name', 'desc')
-                ->get();
+            if($table == 'visitors')
+            {
+                $people = DB::table($table)
+                    ->where(
+                        [
+                            ['name', 'like', '%'.$fullName[0].'%'],
+                            ['lastName', 'like', $fullName[1].'%'],
+                            ['deleted_at', $symbol, null]
+                        ]
+                    )
+                    ->limit(5)
+                    ->orderBy('name', 'desc')
+                    ->get();
+            }else{
+                if($status == 'inactive')
+                {
+                    $people = DB::table($table)
+                        ->where(
+                            [
+                                ['name', 'like', '%'.$fullName[0].'%'],
+                                ['lastName', 'like', $fullName[1].'%'],
+                                ['church_id', '=', $church_id],
+                                ['deleted_at', $symbol, null]
+                            ]
+                        )
+                        ->limit(5)
+                        ->orderBy('name', 'desc')
+                        ->get();
+                }else{
+                    $people = DB::table($table)
+                        ->where(
+                            [
+                                ['name', 'like', '%'.$fullName[0].'%'],
+                                ['lastName', 'like', $fullName[1].'%'],
+                                ['church_id', '=', $church_id],
+                                ['tag', $tag, 'adult'],
+                                ['deleted_at', $symbol, null]
+                            ]
+                        )
+                        ->limit(5)
+                        ->orderBy('name', 'desc')
+                        ->get();
+                }
+
+            }
+
         }
         else{
-            $people = DB::table('people')
-                ->where(
-                    [
-                        ['name', 'like', '%'.$input.'%'],
-                        ['church_id', '=', $church_id],
-                        ['deleted_at', $symbol, null]
-                    ]
-                )
-                ->limit(5)
-                ->orderBy('name', 'desc')
-                ->get();
-        }
 
+            if($table == "visitors")
+            {
+                $people = DB::table($table)
+                    ->where(
+                        [
+                            ['name', 'like', '%'.$input.'%'],
+                            ['deleted_at', $symbol, null]
+                        ]
+                    )
+                    ->limit(5)
+                    ->orderBy('name', 'desc')
+                    ->get();
+            }
+            else{
+                if($status == "inactive")
+                {
+                    $people = DB::table($table)
+                        ->where(
+                            [
+                                ['name', 'like', '%'.$input.'%'],
+                                ['church_id', '=', $church_id],
+                                ['deleted_at', $symbol, null]
+                            ]
+                        )
+                        ->limit(5)
+                        ->orderBy('name', 'desc')
+                        ->get();
+                }
+                else{
+                    $people = DB::table($table)
+                        ->where(
+                            [
+                                ['name', 'like', '%'.$input.'%'],
+                                ['church_id', '=', $church_id],
+                                ['tag', $tag, 'adult'],
+                                ['deleted_at', $symbol, null]
+                            ]
+                        )
+                        ->limit(5)
+                        ->orderBy('name', 'desc')
+                        ->get();
+                }
+
+            }
+
+        }
 
 
 
@@ -155,12 +192,47 @@ class SearchController extends Controller
         {
             $arr = [];
 
-            foreach ($people as $person)
+            if($status == "inactive")
             {
-                $arr[] = $person->imgProfile;
-                $arr[] = $person->name . " " . $person->lastName;
-                $arr[] = $person->id;
+                foreach ($people as $person)
+                {
+                    $arr[] = $person->imgProfile;
+                    $arr[] = $person->name . " " . $person->lastName;
+                    $arr[] = $person->id;
+                }
             }
+            elseif($status == "people")
+            {
+                foreach ($people as $person)
+                {
+                    $person->role = $this->roleRepository->find($person->role_id)->name;
+                    $person->dateBirth = $this->formatDateView($person->dateBirth);
+                    $person->cpf = $person->cpf ? $person->cpf : '';
+
+                    $arr[] = $person->imgProfile;
+                    $arr[] = $person->name . " " . $person->lastName;
+                    $arr[] = $person->cpf;
+                    $arr[] = $person->role;
+                    $arr[] = $person->dateBirth;
+                    $arr[] = $person->id;
+
+                }
+            }
+            else{
+
+                foreach($people as $person)
+                {
+                    $person->dateBirth = $this->formatDateView($person->dateBirth);
+                    $person->cpf = $person->cpf ? $person->cpf : '';
+
+                    $arr[] = $person->imgProfile;
+                    $arr[] = $person->name . " " . $person->lastName;
+                    $arr[] = $person->cpf;
+                    $arr[] = $person->dateBirth;
+                    $arr[] = $person->id;
+                }
+            }
+
 
             return json_encode([
                 'status' => true,

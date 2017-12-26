@@ -1059,9 +1059,24 @@
 
     function sweetDeleteUser(id, name)
     {
+
+        var text = '';
+        var msg = '';
+
+        if(name == undefined)
+        {
+            text = "Deseja excluir o usuário selecionado ?";
+            msg = "O Usuário selecionado foi excluído";
+            name = null;
+        }
+        else{
+            text = "Deseja excluir o usuário " + name + "?";
+            msg = "O Usuário " + name + " foi excluído";
+
+        }
         swal({
             title: "Você tem certeza?",
-            text: "Deseja excluir o usuário " + name + "?",
+            text: text,
             type: "warning",
             showCancelButton: true,
             confirmButtonClass: "btn-danger",
@@ -1071,17 +1086,14 @@
         },
             function(){
 
-
                 var find = findUserAction(id);
                 console.log(find);
-
-
 
                 if(find == "success")
                 {
                     verifyMaritalStatus(id);
                     Delete(id, "/person", true);
-                    swal("Sucesso!", "O Usuário " + name + " foi excluído", "success");
+                    swal("Sucesso!", msg, "success");
 
                     setTimeout(function () {
                         location.href = '/person';
@@ -1108,6 +1120,18 @@
         var title = title ? title : "Você tem certeza?";
         var type = type ? type : "warning";
         var text = "O usuário possui os seguintes grupos/eventos: " + data;
+        var msg1 = '';
+        var msg2 = '';
+
+        if(name)
+        {
+            msg1 = "O usuário " + name + " e os eventos foram excluídos com sucesso";
+            msg2 = "O usuário " + name + " foi excluído, e os eventos/grupos foram transferidos para ";
+        }
+        else{
+            msg1 = "O usuário selecionado e os eventos foram excluídos com sucesso";
+            msg2 = "O usuário selecionado foi excluído, e os eventos/grupos foram transferidos para ";
+        }
 
         swal({
             title: title,
@@ -1124,7 +1148,7 @@
                 if (isConfirm) {
                     deleteActions(id);
                     Delete(id, "/person", true);
-                    swal("Sucesso!", "O usuário " + name + " e os eventos foram excluídos com sucesso", "success");
+                    swal("Sucesso!", msg1, "success");
 
                     setTimeout(function () {
                         location.href = '/person';
@@ -1134,7 +1158,7 @@
                     console.log(keep);
                     Delete(id, "/person", true);
 
-                    swal("Atenção", "O usuário " + name + " foi excluído, e os eventos/grupos foram transferidos para " +
+                    swal("Atenção",  msg2 +
                         "o usuário " + keep, "info");
 
                     setTimeout(function () {
@@ -1627,10 +1651,9 @@
         return false;
     }
 
-    $("#btn-search-inactive-person").keyup(function () {
-        var id = this.id;
+    $("#btn-search").keyup(function () {
 
-        var str = id.replace("btn-search-", "");
+        var str = location.pathname;
 
         var input = this.value;
 
@@ -1655,11 +1678,33 @@
         }
     });
 
+    function makeMember(id)
+    {
+        var request = $.ajax({
+            url: '/make-member/' + id,
+            method: 'GET',
+            dataType: 'json'
+        });
+
+        request.done(function (e) {
+            if(e.status)
+            {
+                swal("Sucesso!", "O Usuário selecionado agora é um membro", "success");
+
+                setTimeout(function () {
+                    location.reload();
+                }, 2000);
+            }
+        })
+    }
+
     function generalSearch(model, input)
     {
-        if(model == "inactive-person")
+        var request = '';
+
+        if(model == "/inactive-person")
         {
-            var request = $.ajax({
+            request = $.ajax({
                 url: '/search-person/' + input + '/' + 'inactive',
                 method: 'GET',
                 dataType: 'json'
@@ -1683,7 +1728,7 @@
                             '<span class="hidden-xs hidden-sm"> Ativar</span>'+
                             '</button>' +
                             '<button class="btn btn-danger btn-sm btn-circle pop" title="Deseja Excluir o Membro"'+
-                            'onclick="sweetGeneralDelete('+ e.data[i + 2] +')"'+
+                            'onclick="sweetGeneralDeleteInac('+ e.data[i + 2] +')"'+
                             'id="btn-delete-'+ e.data[i + 2] +'">'+
                             '<i class="fa fa-trash"></i>'+
                             '<span class="hidden-xs hidden-sm"> Excluir</span>'+
@@ -1715,6 +1760,115 @@
             });
 
         }
+
+        else if(model == "/person" || model == '/teen')
+        {
+            request = $.ajax({
+                url: '/search-person/' + input + '/' + 'people',
+                method: 'GET',
+                dataType: 'json'
+            });
+
+            var route = location.pathname + '/';
+
+            request.done(function (e) {
+                if(e.status)
+                {
+                    var i = 0;
+
+                    var tr = '';
+
+                    while(i < e.data.length)
+                    {
+                        tr += '<tr>' +
+                            '<td>' +
+                                '<img src="'+ e.data[i]+'" class="imgProfile img-circle">' +
+                            '</td>' +
+                            '<td><a href="'+route+ e.data[i + 5]+'/edit">'+ e.data[i + 1]+'</a></td>' +
+                            '<td>'+ e.data[i + 2] +'</td>'+
+                            '<td>'+ e.data[i + 3] +'</td>'+
+                            '<td>'+ e.data[i + 4] +'</td>'+
+                            '<td>' +
+                                '<button class="btn btn-danger btn-sm btn-circle" title="Deseja Excluir o Membro"'+
+                                'onclick="sweetDeleteUser('+ e.data[i + 5] +')"'+
+                                'id="btn-delete-'+ e.data[i + 5] +'">'+
+                                '<i class="fa fa-trash"></i>'+
+                                '<span class="hidden-xs hidden-sm"> Inativar</span>'+
+                                '</button>'+
+                            '</td>' +
+                            '</tr>';
+
+                        i = i + 6;
+                    }
+
+                    $("#loading-results").css('display', 'none');
+
+                    $("thead").css('display', 'table-header-group');
+
+                    $("#tbody-search").removeClass('hide').append(tr);
+
+                    console.log(e.data);
+                }
+                else{
+                    $("#loading-results").css('display', 'none');
+                    $("#p-zero").css('display', 'block');
+                }
+            })
+        }
+        else{
+            if(model == "/visitors")
+            {
+                request = $.ajax({
+                    url: '/search-person/' + input + '/' + 'visitor',
+                    method: 'GET',
+                    dataType: 'json'
+                });
+
+
+                request.done(function (e) {
+                   if(e.status)
+                   {
+                       var i = 0;
+
+                       var tr = '';
+
+                       while(i < e.data.length)
+                       {
+                           tr += '<tr>' +
+                               '<td>' +
+                               '<img src="'+ e.data[i]+'" class="imgProfile img-circle">' +
+                               '</td>' +
+                               '<td><a href="/visitors/'+ e.data[i + 4]+'/edit">'+ e.data[i + 1]+'</a></td>' +
+                               '<td>'+ e.data[i + 2] +'</td>'+
+                               '<td>'+ e.data[i + 3] +'</td>'+
+                               '<td>' +
+                               '<button class="btn btn-success btn-sm btn-circle" title="Deseja Tornar Membro?"'+
+                               'onclick="sweetMakeMember('+ e.data[i + 4] +')"'+
+                               'id="btn-delete-'+ e.data[i + 4] +'">'+
+                               '<i class="fa fa-share"></i>'+
+                               '<span class="hidden-xs hidden-sm"> Tornar Membro</span>'+
+                               '</button>'+
+                               '</td>' +
+                               '</tr>';
+
+                           i = i + 5;
+                       }
+
+                       $("#loading-results").css('display', 'none');
+
+                       $("thead").css('display', 'table-header-group');
+
+                       $("#tbody-search").removeClass('hide').append(tr);
+
+                       console.log(e.data);
+                   }
+                   else{
+                       $("#loading-results").css('display', 'none');
+                       $("#p-zero").css('display', 'block');
+                   }
+                });
+            }
+        }
     }
 
     function sweetGeneralSearch(id)
@@ -1740,7 +1894,7 @@
         });
     }
 
-    function sweetGeneralDelete(id)
+    function sweetGeneralDeleteInac(id)
     {
         swal({
             title: 'Atenção',
@@ -1760,6 +1914,28 @@
                     Delete(id, 'inactive-person', null);
                 }
             });
+    }
+
+    function sweetMakeMember(id)
+    {
+        swal({
+            title: 'Atenção',
+            text: 'Você deseja tornar este visitante membro?',
+            type: 'info',
+            showCancelButton: true,
+            confirmButtonClass: "btn-success",
+            confirmButtonText: "Sim",
+            cancelButtonText: "Não",
+            closeOnConfirm: true,
+            closeOnCancel: true
+        },
+            function (isConfirm) {
+                if(isConfirm)
+                {
+                    makeMember(id);
+                }
+            }
+        );
     }
 
 

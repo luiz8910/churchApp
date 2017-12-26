@@ -106,7 +106,7 @@
                                                         @if(Auth::getUser()->person->role_id == $leader)
                                                             <div class="col-lg-8">
                                                                 <div class="input-group">
-                                                                    <input type="text" class="form-control" id="btn-search-inactive-person" placeholder="Digite 3 letras ou mais...">
+                                                                    <input type="text" class="form-control" id="btn-search" placeholder="Digite 3 letras ou mais...">
                                                                 <span class="input-group-btn">
                                                                     <button class="btn btn-default" type="button">
                                                                         <i class="fa fa-search font-green"></i>
