@@ -209,9 +209,9 @@ License: You must have a valid license purchased only from themeforest(the above
                                         <select class="form-control select2" id="subUser" name="person_id" required>
                                             <option></option>
                                             <optgroup label="Pessoas">
-                                                @foreach($people as $item)
-                                                    <option value="{{ $item->id }}">
-                                                        {{ $item->name }} {{ $item->lastName }}
+                                                @foreach($merged as $item)
+                                                    <option value="@if(!isset($item->church_id)) {{ $item->id . "/visit"}} @else {{ $item->id }} @endif ">
+                                                        {{ $item->name }} {{ $item->lastName }} @if(!isset($item->church_id)) (Visitante) @endif
                                                     </option>
                                                 @endforeach
                                             </optgroup>
@@ -275,7 +275,11 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                     </span>
                                                                 </a>
                                                             @else
-                                                                <a href="{{ route('person.edit', ['person' => $person->id]) }}" style="margin-left: 10px;">
+                                                                <a href="@if(isset($person->church_id))
+                                                                    {{ route('person.edit', ['person' => $person->id]) }}
+                                                                        @else
+                                                                {{ route('visitors.edit', ['person' => $person->id]) }}
+                                                                @endif"  style="margin-left: 10px;">
                                                                     <img src="../../{{ $person->imgProfile }}" style="width: 50px; height: 50px;">
                                                                     {{ $person->name }}
                                                                     <span class="hidden-xs hidden-sm">
@@ -313,9 +317,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                             </table>
                                             <br>
-                                            <div class="pull-right">
-                                                 {{ $person_sub->links() }}
-                                            </div>
+
 
                                             <div class="progress" id="progress-danger" style="display: none;">
                                                 <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" aria-valuenow="100"

@@ -1686,6 +1686,7 @@ class PersonController extends Controller
      * */
     public function makeMember($id)
     {
+        //dd($this->eventServices->getListSubVisitor($id)->first());
         try{
             $visitor = $this->visitorRepository->find($id);
 
@@ -1727,6 +1728,17 @@ class PersonController extends Controller
                 }
             }
 
+            $events = $this->eventServices->getListSubVisitor($id);
+
+            if(count($events) > 0)
+            {
+                foreach ($events as $event) {
+                    $this->eventServices->subEvent($event->event_id, $person_id);
+                }
+
+                $this->eventServices->UnsubVisitorAll($id);
+            }
+
             $visitor->delete();
 
             DB::commit();
@@ -1738,7 +1750,7 @@ class PersonController extends Controller
 
             DB::rollBack();
 
-            //dd($e);
+            dd($e);
             return json_encode(['status' => false]);
         }
 

@@ -10,6 +10,7 @@ use App\Models\RecentEvents;
 use App\Models\User;
 use App\Repositories\FrequencyRepository;
 use App\Repositories\RoleRepository;
+use App\Repositories\VisitorRepository;
 use App\Services\AgendaServices;
 use App\Services\EventServices;
 use App\Notifications\EventNotification;
@@ -74,6 +75,10 @@ class EventController extends Controller
      * @var FrequencyRepository
      */
     private $frequencyRepository;
+    /**
+     * @var VisitorRepository
+     */
+    private $visitorRepository;
 
     /**
      * EventController constructor.
@@ -83,12 +88,16 @@ class EventController extends Controller
      * @param GroupRepository $groupRepository
      * @param PersonRepository $personRepository
      * @param RoleRepository $roleRepository
+     * @param EventServices $eventServices
+     * @param AgendaServices $agendaServices
+     * @param FrequencyRepository $frequencyRepository
+     * @param VisitorRepository $visitorRepository
      */
     public function __construct(EventRepository $repository, StateRepository $stateRepositoryTrait,
                                 UserRepository $userRepository, GroupRepository $groupRepository,
                                 PersonRepository $personRepository, RoleRepository $roleRepository,
                                 EventServices $eventServices, AgendaServices $agendaServices,
-                                FrequencyRepository $frequencyRepository)
+                                FrequencyRepository $frequencyRepository, VisitorRepository $visitorRepository)
     {
         $this->repository = $repository;
         $this->stateRepository = $stateRepositoryTrait;
@@ -99,6 +108,7 @@ class EventController extends Controller
         $this->eventServices = $eventServices;
         $this->agendaServices = $agendaServices;
         $this->frequencyRepository = $frequencyRepository;
+        $this->visitorRepository = $visitorRepository;
     }
 
 
@@ -1343,23 +1353,39 @@ class EventController extends Controller
         $sub = $this->eventServices->getListSubEvent($id);
 
         $person_sub = [];
+        $visit_sub = [];
 
         $arr = [];
 
+        $vis = [];
+
         foreach ($sub as $item) {
-            $arr[] = $item->person_id;
+            if(isset($item->person_id))
+            {
+                $arr[] = $item->person_id;
+            }
+            else{
+                $vis[] = $item->visitor_id;
+            }
 
             $attendance[] = count(DB::table('event_person')
                 ->where([
                     'event_id' => $id,
-                    'person_id' => $item->person_id,
                     'check-in' => 1
                 ])->get());
         }
 
         $person_sub = DB::table('people')
             ->whereIn('id', $arr)
-            ->paginate(5);
+            ->get()
+            //->paginate(5)
+        ;
+
+        $visit_sub = DB::table('visitors')
+            ->whereIn('id', $vis)
+            ->get()
+            //->paginate(5)
+        ;
 
         $event = $this->repository->find($id);
 
@@ -1373,12 +1399,17 @@ class EventController extends Controller
             ->get();
 
 
+        $visitors = $this->visitorRepository->findWhereNotIn('id', $vis);
 
-        //dd($arr);
+        $merged = $people->merge($visitors);
+
+        $person_sub = $person_sub->merge($visit_sub);
+
 
         return view('events.subscriptions',
             compact('people', 'countPerson', 'countGroups', 'leader',
-                'notify', 'qtde', 'event', 'sub', 'person_sub', 'attendance'));
+                'notify', 'qtde', 'event', 'sub', 'person_sub',
+                'attendance', 'merged', 'merged_list'));
     }
 
     /*

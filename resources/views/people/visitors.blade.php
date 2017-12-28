@@ -165,7 +165,8 @@
 
                                                                             <?php $deleteForm = "delete-".$item->id; ?>
                                                                             <td>
-                                                                                <a href="javascript:;" class="btn btn-success btn-sm btn-circle">
+                                                                                <a href="javascript:;" class="btn btn-success btn-sm btn-circle"
+                                                                                   onclick="sweetMakeMember({{ $item->id }})">
                                                                                     <i class="fa fa-share"></i>
                                                                                     Tornar Membro
                                                                                 </a>

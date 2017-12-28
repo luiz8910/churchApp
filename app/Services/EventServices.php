@@ -299,6 +299,20 @@ class EventServices
 
     public function insertNewDay($id, $person_id, $day)
     {
+        $visitor_id = trim(strstr($person_id, "/visit", true));
+
+        if($visitor_id)
+        {
+            return DB::table('event_person')
+                ->insert([
+                    'event_id' => $id,
+                    'visitor_id' => $visitor_id,
+                    'eventDate' => date_format($day, "Y-m-d"),
+                    'event_date' => $day,
+                    'show' => 0
+                ]);
+        }
+
         return DB::table('event_person')
             ->insert([
                 'event_id' => $id,
@@ -1049,10 +1063,25 @@ class EventServices
     public function subEvent($event_id, $person_id)
     {
 
-        $exists = $this->listRepository->findWhere([
-            'event_id' => $event_id,
-            'person_id' => $person_id
-        ]);
+        $visit = trim(strstr($person_id, "/visit"));
+        $visitor_id = 0;
+
+        if($visit)
+        {
+            $visitor_id = trim(strstr($person_id, "/visit", true));
+
+            $exists = $this->listRepository->findWhere([
+                'event_id' => $event_id,
+                'visitor_id' => $visitor_id
+            ]);
+        }
+        else{
+            $exists = $this->listRepository->findWhere([
+                'event_id' => $event_id,
+                'person_id' => $person_id
+            ]);
+        }
+
 
         if(count($exists) == 0)
         {
@@ -1077,14 +1106,21 @@ class EventServices
                 $this->setNextEvents($event_id, $nextEvent[1], "15 days", $person_id);
             }
 
+            if($visitor_id != 0)
+            {
+                $data["visitor_id"] = $visitor_id;
+            }
+            else{
+                $data["person_id"] = $person_id;
+            }
 
             $data["event_id"] = $event_id;
-            $data["person_id"] = $person_id;
+
             $data["sub_by"] = Auth::user()->person->id;
 
             $this->listRepository->create($data);
 
-            $this->addGeofence($event_id, $person_id);
+            //$this->addGeofence($event_id, $person_id);
 
             return true;
         }
@@ -1145,7 +1181,38 @@ class EventServices
         $this->listRepository->delete($list->id);
     }
 
+    public function UnsubVisitor($visitor_id, $event_id)
+    {
+        $list = $this->listRepository->findWhere([
+            'visitor_id' => $visitor_id,
+            'event_id' => $event_id
+        ])->first();
 
+        $this->listRepository->delete($list->id);
+    }
+
+    public function UnsubVisitorAll($visitor_id)
+    {
+        $list = $this->listRepository->findWhere([
+            'visitor_id' => $visitor_id,
+        ])->first();
+
+        $this->listRepository->delete($list->id);
+    }
+
+    public function getListSubPerson($person_id)
+    {
+        return $this->listRepository->findWhere([
+            'person_id' => $person_id
+        ]);
+    }
+
+    public function getListSubVisitor($visitor_id)
+    {
+        return $this->listRepository->findWhere([
+            'visitor_id' => $visitor_id
+        ]);
+    }
 }
 
 
