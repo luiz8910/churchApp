@@ -144,6 +144,12 @@
                                     Importar/Exportar
                                 </a>
                             </li>
+                            <li>
+                                <a href="{{ route('feeds.index') }}">
+                                    <i class="fa fa-rss"></i>
+                                    Feeds
+                                </a>
+                            </li>
                         </ul>
                     </li>
                 @endif

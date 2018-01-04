@@ -44,6 +44,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(\App\Repositories\UploadStatusRepository::class, \App\Repositories\UploadStatusRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\GeofenceRepository::class, \App\Repositories\GeofenceRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\ImportRepository::class, \App\Repositories\ImportRepositoryEloquent::class);
+        $this->app->bind(\App\Repositories\FeedRepository::class, \App\Repositories\FeedRepositoryEloquent::class);
         //:end-bindings:
     }
 }

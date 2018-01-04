@@ -78,6 +78,11 @@ trait ConfigTrait
         return Role::where('name', 'Lider')->first()->id;
     }
 
+    public function getAdminRoleId()
+    {
+        return Role::where('name', 'Administrador')->first()->id;
+    }
+
     public function getUserRole()
     {
         return session('role');

@@ -97,13 +97,17 @@
      * Usado para realizar check-in no evento
      * @param id
      */
-    function checkInEvent(id)
+    function checkInEvent(id, type)
     {
+        var url = type == "visitor" ? '/events/checkInEventVisitor/' + id : '/events/checkInEvent/' + id;
+
         var request = $.ajax({
-            url: '/events/checkInEvent/' + id,
+            url: url,
             method: 'POST',
             dataType: 'json'
         });
+
+        console.log(type);
 
         request.done(function(e){
             if(e.status)

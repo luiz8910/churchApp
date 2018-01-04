@@ -21,10 +21,12 @@ use App\Repositories\RequiredFieldsRepository;
 use App\Repositories\UploadStatusRepository;
 use App\Repositories\VisitorRepository;
 use App\Services\EventServices;
+use App\Services\FeedServices;
 use App\Traits\ConfigTrait;
 use App\Traits\CountRepository;
 use App\Traits\DateRepository;
 use App\Traits\EmailTrait;
+use App\Traits\FeedTrait;
 use App\Traits\FormatGoogleMaps;
 use App\Traits\NotifyRepository;
 use App\Repositories\PersonRepository;
@@ -102,12 +104,16 @@ class PersonController extends Controller
      * @var VisitorRepository
      */
     private $visitorRepository;
+    /**
+     * @var FeedServices
+     */
+    private $feedServices;
 
     public function __construct(PersonRepository $repository, StateRepository $stateRepositoryTrait, RoleRepository $roleRepository,
                                 UserRepository $userRepository, RequiredFieldsRepository $fieldsRepository, EventSubscribedListRepository $listRepository,
                                 GroupRepository $groupRepository, ChurchRepository $churchRepository, EventRepository $eventRepository,
                                 EventServices $eventServices, UploadStatusRepository $uploadStatusRepository, ImportRepository $importRepository,
-                                VisitorRepository $visitorRepository)
+                                VisitorRepository $visitorRepository, FeedServices $feedServices)
     {
         $this->repository = $repository;
         $this->stateRepository = $stateRepositoryTrait;
@@ -122,6 +128,7 @@ class PersonController extends Controller
         $this->uploadStatusRepository = $uploadStatusRepository;
         $this->importRepository = $importRepository;
         $this->visitorRepository = $visitorRepository;
+        $this->feedServices = $feedServices;
     }
 
     /**
@@ -561,6 +568,8 @@ class PersonController extends Controller
         }
 
         $this->newRecentUser($id, $church_id);
+
+        $this->feedServices->newFeed(3, 'person', $id, 'Novo Usuário Cadastrado');
 
         if($teen){
             Session::flash('teen.crud', 'Usuário '. $data['name'] . ' criado com sucesso');

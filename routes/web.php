@@ -131,6 +131,10 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('visitor-imgProfile/{id}', 'VisitorController@imgEditProfile')->name('visitor.imgEditProfile');
 
+    Route::post('/events/checkInEventVisitor/{id}', 'EventController@checkInEventVisitor')->name('event.checkInEvent.visitor');
+
+    Route::post('/events/checkOutEventVisitor/{id}', 'EventController@checkOutEventVisitor')->name('event.checkOutEvent.visitor');
+
     // Fim Visitantes
 
     //Eventos
@@ -209,6 +213,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get("/markAllAsRead", "ConfigController@markAllAsRead");
 
     Route::get("/getChurchZipCode", "ConfigController@getChurchZipCode");
+
+    Route::get("/feeds", "FeedController@index")->name('feeds.index');
 
     Route::get('pusher', function () {
         return view('pusher');

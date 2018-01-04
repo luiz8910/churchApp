@@ -102,9 +102,9 @@ class EventServices
                 'event_id' => $id,
                 'show' => 1
             ])
-            ->select('eventDate', 'check-in', 'person_id')
+            ->select('eventDate', 'check-in', 'person_id', 'visitor_id')
             ->distinct()
-            ->orderBy('person_id')
+            ->orderBy('person_id', 'visitor_id')
             ->get();
 
         return $event;
@@ -121,7 +121,7 @@ class EventServices
                 'event_id' => $id,
                 'show' => 1
             ])
-            ->select('person_id')
+            ->select('person_id', 'visitor_id')
             ->distinct()
             ->orderBy('person_id')
             //->limit(5)
@@ -148,6 +148,28 @@ class EventServices
             ->distinct()
             ->limit(5)
             ->get());
+
+        //$person_id .= "/visit";
+
+        $visit = (integer) trim(strstr($person_id, '/visit', true));
+
+        if($visit)
+        {
+            $frequency = count(DB::table('event_person')
+                ->where([
+                    'event_id' => $id,
+                    'check-in' => 1,
+                    'visitor_id' => $visit,
+                    'show' => 1
+                ])
+                ->select('eventDate')
+                ->orderBy('eventDate', 'desc')
+                ->distinct()
+                ->limit(5)
+                ->get());
+
+            return $frequency / $event_qtde;
+        }
 
 
         $frequency = count(DB::table('event_person')
@@ -503,13 +525,75 @@ class EventServices
 
         }
 
-        echo json_encode(['status' => true]);
+        return json_encode(['status' => true]);
+    }
+
+    /*
+     * @param int $id
+     * $id = id do evento
+     * Usado para realizar check-in do evento selecionado
+     * Somente para Visitantes
+     * */
+    public function checkVisitor($id)
+    {
+        $user = \Auth::user();
+
+        $this->subEvent($id, $user->visitors->first()->id . "/visit");
+
+        $date = date_create(date('Y-m-d'));
+
+        $event_person = DB::table('event_person')
+            ->where([
+                'event_id' => $id,
+                'visitor_id' => $user->visitors->first()->id,
+                'eventDate' => date_format($date, "Y-m-d"),
+                'check-in' => 0
+            ])->get();
+
+        if(count($event_person) > 0)
+        {
+            DB::table('event_person')
+                ->where([
+                    'event_id' => $id,
+                    'visitor_id' => $user->visitors->first()->id,
+                    'eventDate' => date_format($date, "Y-m-d"),
+                    'check-in' => 0
+                ])->update([
+                    'check-in' => 1,
+                    'show' => 1
+                ]);
+        }
+        else{
+            $days = $this->eventDays($id);
+
+            $today = date("Y-m-d");
+
+            for($i = 0; $i < count($days); $i++)
+            {
+                $check = $days[$i]->eventDate == $today ? 1 : 0;
+
+                DB::table('event_person')
+                    ->insert([
+                        'event_id' => $id,
+                        'visitor_id' => $user->visitors->first()->id,
+                        'eventDate' => $days[$i]->eventDate,
+                        'event_date' => date_create($days[$i]->eventDate),
+                        'check-in' => $check,
+                        'show' => 1
+                    ]);
+            }
+
+
+        }
+
+        return json_encode(['status' => true]);
     }
 
     /*
      * @param int $id
      * $id = id do evento
      * Usado para realizar check-out do evento selecionado
+     * Somente para membros
      * */
     public function checkOut($id)
     {
@@ -520,6 +604,34 @@ class EventServices
             ->where(
                 [
                     'person_id' => $person,
+                    'check-in' => 1,
+                    'event_id' => $id,
+                    'eventDate' => $today,
+                    'deleted_at' => null
+                ]
+            )
+            ->update(
+                ['check-in' => 0]
+            );
+
+        return json_encode(['status' => true]);
+    }
+
+    /*
+     * @param int $id
+     * $id = id do evento
+     * Usado para realizar check-out do evento selecionado
+     * Somente para visitantes
+     * */
+    public function checkOutVisitor($id)
+    {
+        $visitor = \Auth::user()->visitors->first()->id;
+        $today = date("Y-m-d");
+
+        DB::table('event_person')
+            ->where(
+                [
+                    'visitor_id' => $visitor,
                     'check-in' => 1,
                     'event_id' => $id,
                     'eventDate' => $today,
@@ -1116,7 +1228,7 @@ class EventServices
 
             $data["event_id"] = $event_id;
 
-            $data["sub_by"] = Auth::user()->person->id;
+            $data["sub_by"] = isset(Auth::user()->person) ? Auth::user()->person->id : 0;
 
             $this->listRepository->create($data);
 

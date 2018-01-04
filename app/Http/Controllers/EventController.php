@@ -791,7 +791,7 @@ class EventController extends Controller
 
         if($this->getUserChurch() == null)
         {
-            $church_id = 1;
+            $church_id = null;
         }
         else{
             $church_id = $this->getUserChurch();
@@ -818,13 +818,24 @@ class EventController extends Controller
 
         $eventFrequency = $this->eventServices->eventFrequency($id);
 
+        //dd($eventFrequency);
+
         $eventPeople = $this->eventServices->eventPeople($id);
 
         $arr = [];
+        $vis = [];
         $people = [];
 
         foreach ($eventPeople as $item) {
-            $arr[] = $item->person_id;
+            if(isset($item->person_id))
+            {
+                $arr[] = $item->person_id;
+            }
+            else{
+                $vis[] = $item->visitor_id;
+            }
+
+
             /*$e = $this->personRepository->find($item->person_id);
             $e->frequency = $this->eventServices->userFrequency($id, $item->person_id);
 
@@ -833,7 +844,7 @@ class EventController extends Controller
 
         $eventPeople = DB::table('people')
             ->whereIn('id', $arr)
-            ->paginate(5);
+            ->get();
 
         foreach ($eventPeople as $item)
         {
@@ -841,7 +852,20 @@ class EventController extends Controller
             $item->frequency = $this->eventServices->userFrequency($id, $item->id);
         }
 
+        $eventVisitor = DB::table('visitors')
+            ->whereIn('id', $vis)
+            ->get();
+
+        foreach ($eventVisitor as $item)
+        {
+            $item->frequency = $this->eventServices->userFrequency($id, $item->id . "/visit");
+        }
+
         //dd($arr);
+
+
+
+        $eventPeople = $eventPeople->merge($eventVisitor);
 
         //dd($eventPeople);
 
@@ -1008,7 +1032,12 @@ class EventController extends Controller
     }
 
 
-
+    /*
+    * @param int $id
+    * $id = id do evento
+    * Usado para realizar check-in do evento selecionado
+     * Somente para membros
+    * */
     public function checkInEvent($id)
     {
         return $this->eventServices->check($id);
@@ -1018,10 +1047,33 @@ class EventController extends Controller
      * @param int $id
      * $id = id do evento
      * Usado para realizar check-out do evento selecionado
+     * Somente para membros
      * */
     public function checkOutEvent($id)
     {
         return $this->eventServices->checkOut($id);
+    }
+
+    /*
+     * @param int $id
+     * $id = id do evento
+     * Usado para realizar check-out do evento selecionado
+     * Somente para visitantes
+     * */
+    public function checkInEventVisitor($id)
+    {
+        return $this->eventServices->checkVisitor($id);
+    }
+
+    /*
+     * @param int $id
+     * $id = id do evento
+     * Usado para realizar check-out do evento selecionado
+     * Somente para visitantes
+     * */
+    public function checkOutEventVisitor($id)
+    {
+        return $this->eventServices->checkOutVisitor($id);
     }
 
 
