@@ -107,20 +107,22 @@
 																<div class="mt-list-container list-default">
 
 																	<ul>
-																		<li class="mt-list-item">
-																			<div class="list-icon-container done">
-																				<a href="javascript:;">
-																					<i class="fa fa-eye"></i>
-																				</a>
-																			</div>
-																			<div class="list-datetime"> 03 Jan </div>
-																			<div class="list-item-content">
-																				<h3 class="uppercase bold">
-																					<a href="javascript:;">Concept Proof</a>
-																				</h3>
-																				<p>Lorem ipsum dolor sit amet</p>
-																			</div>
-																		</li>
+																		@foreach($feeds as $feed)
+																			<li class="mt-list-item">
+																				<div class="list-icon-container done">
+																					<a href="javascript:;">
+																						<i class="fa fa-eye"></i>
+																					</a>
+																				</div>
+																				<div class="list-datetime"> {{ $feed->data }} </div>
+																				<div class="list-item-content">
+																					<h3 class="uppercase bold">
+																						<a href="javascript:;">{{ $feed->model }}</a>
+																					</h3>
+																					<p>{{ $feed->text }}</p>
+																				</div>
+																			</li>
+																		@endforeach
 																		<li class="mt-list-item">
 																			<div class="list-icon-container">
 																				<a href="javascript:;">

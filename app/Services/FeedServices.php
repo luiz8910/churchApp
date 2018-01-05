@@ -33,14 +33,22 @@ class FeedServices
         $this->personRepository = $personRepositoryTrait;
     }
 
-    public function newFeed($notif_range, $model, $model_id, $text)
+    public function newFeed($notif_range, $model, $model_id, $text, $feed_type = null, $expires_in = null)
     {
+        $dt = Carbon::now();
+        $dt = $dt->addWeek();
+
+        $feed_type = $feed_type ? $feed_type : 1;
+        $expires_in = $expires_in ? $expires_in : $dt;
+
         $data['church_id'] = $this->getUserChurch();
         $data['notification_range'] = $notif_range;
         $data['model'] = $model;
         $data['model_id'] = $model_id;
         $data['text'] = $text;
         $data['show'] = 1;
+        $data['feed_type'] = $feed_type;
+        $data['expires_in'] = $expires_in;
 
         $id = $this->repository->create($data)->id;
 

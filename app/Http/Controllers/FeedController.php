@@ -6,6 +6,7 @@ use App\Repositories\FeedRepository;
 use App\Traits\ConfigTrait;
 use App\Traits\CountRepository;
 use App\Traits\NotifyRepository;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class FeedController extends Controller
@@ -38,7 +39,19 @@ class FeedController extends Controller
 
         $role = $this->getUserRole();
 
+        $feeds = $this->repository->findWhere(
+            [
+                'church_id' => $church_id,
+                ['expires_in', '>', Carbon::now()]
+            ]
+        );
+
+        foreach ($feeds as $feed) {
+            $dt = $feed->created_at->toFormattedDateString();
+            $feed->data = $dt;
+        }
+
         return view('feeds.index', compact('groups', 'countPerson', 'countMembers',
-            'countGroups', 'notify', 'qtde', 'leader', 'role', 'church_id'));
+            'countGroups', 'notify', 'qtde', 'leader', 'role', 'church_id', 'feeds'));
     }
 }
