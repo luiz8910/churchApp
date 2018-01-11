@@ -124,16 +124,16 @@
                                                                             <input type="radio" name="sendTo" id="publico" value="1">Publico
                                                                         </label>
                                                                         <label class="radio-inline">
-                                                                            <input type="radio" name="sendTo" id="evento" value="2">Evento
+                                                                            <input type="radio" name="sendTo" id="evento" value="2" disabled>Evento
                                                                         </label>
                                                                         <label class="radio-inline">
-                                                                            <input type="radio" name="sendTo" id="grupo" value="3">Grupo
+                                                                            <input type="radio" name="sendTo" id="grupo" value="3" disabled>Grupo
                                                                         </label>
                                                                         <label class="radio-inline">
-                                                                            <input type="radio" name="sendTo" id="pessoa" value="4">Pessoa
+                                                                            <input type="radio" name="sendTo" id="pessoa" value="4" disabled>Pessoa
                                                                         </label>
                                                                         <label class="radio-inline">
-                                                                            <input type="radio" name="sendTo" id="admin" value="5">Admin
+                                                                            <input type="radio" name="sendTo" id="admin" value="5" disabled>Admin
                                                                         </label>
 
                                                                         <input type="submit" id="submit-form" hidden>
