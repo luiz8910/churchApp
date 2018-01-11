@@ -2055,7 +2055,7 @@
             {
 
                 var request = $.ajax({
-                    url: '/newFeed/' + chosenNumber + '/' + text.val() + '/' + link + '/' + expires_in,
+                    url: '/newFeed/' + chosenNumber + '/' + text.val() + '/' + link + '/',
                     method: 'GET',
                     dataType: 'json'
                 });
