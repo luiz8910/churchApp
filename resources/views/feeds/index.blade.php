@@ -68,16 +68,110 @@
 														<div class="actions">
 
 															<div class="btn-group btn-group-devided">
-																<a role="button" class="btn btn-info btn-circle" href="javascript:;" style="margin-top: 2px;">
+																<a role="button" class="btn btn-outline purple btn-circle" href="javascript:;" style="margin-top: 2px;" data-toggle="dropdown">
 																	<i class="fa fa-rss"></i>
 																	Novo Feed
+																	<i class="fa fa-angle-down"></i>
 																</a>
+                                                                <ul class="dropdown-menu pull-right" id="sample_3_tools">
+                                                                    <li>
+                                                                        <a href="javascript:;" data-toggle="modal" data-target="#newFeed">
+                                                                            <i class="fa fa-rss font-purple" aria-hidden="true"></i>
+                                                                            Feeds
+                                                                        </a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript:;">
+                                                                            <i class="fa fa-newspaper-o font-purple" aria-hidden="true"></i>
+                                                                            Notícias
+                                                                        </a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="">
+                                                                            <i class="fa fa-hand-paper-o font-purple"></i>
+                                                                            Avisos
+                                                                        </a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="">
+                                                                            <i class="fa fa-comment-o font-purple"></i>
+                                                                            Mensagens
+                                                                        </a>
+                                                                    </li>
+                                                                </ul>
 
 															</div>
 
 
 														</div> <!-- FIM DIV .actions -->
 													</div> <!-- FIM DIV .portlet-title -->
+
+                                                    <div class="modal fade" tabindex="-1" role="dialog" id="newFeed">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                                    <h4 class="modal-title">Novo Feed</h4>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <p>Enviar para:
+                                                                        <span id="span-error-feed" class="font-red" style="display: none;">
+                                                                            Verifique os erros abaixo
+                                                                        </span>
+                                                                    </p>
+                                                                    <form id="formSendTo">
+                                                                        <label class="radio-inline">
+                                                                            <input type="radio" name="sendTo" id="publico" value="1">Publico
+                                                                        </label>
+                                                                        <label class="radio-inline">
+                                                                            <input type="radio" name="sendTo" id="evento" value="2">Evento
+                                                                        </label>
+                                                                        <label class="radio-inline">
+                                                                            <input type="radio" name="sendTo" id="grupo" value="3">Grupo
+                                                                        </label>
+                                                                        <label class="radio-inline">
+                                                                            <input type="radio" name="sendTo" id="pessoa" value="4">Pessoa
+                                                                        </label>
+                                                                        <label class="radio-inline">
+                                                                            <input type="radio" name="sendTo" id="admin" value="5">Admin
+                                                                        </label>
+
+                                                                        <input type="submit" id="submit-form" hidden>
+
+                                                                    </form>
+                                                                    <br><br>
+                                                                    <label for="feed-text">Mensagem</label>
+                                                                    <span id="span-feed-text" class="font-red" style="display: none;">Digite uma mensagem abaixo</span>
+                                                                    <textarea class="form-control" rows="10" type="text" id="feed-text"></textarea>
+
+                                                                    <br>
+                                                                    <label for="feed-link">Link (Opcional) </label>
+                                                                    <input type="text" id="feed-link" class="form-control">
+
+                                                                    <br>
+                                                                    <label for="expires_in">Validade do Feed</label>
+                                                                    <select name="expires_in" id="expires_in">
+                                                                        <option value="">Selecione</option>
+                                                                        <option value="1">1 Dia</option>
+                                                                        <option value="2">1 Semana</option>
+                                                                        <option value="3">1 Mês</option>
+                                                                    </select>
+
+
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                                                                        <i class="fa fa-close"></i>
+                                                                        Fechar
+                                                                    </button>
+                                                                    <button type="button" class="btn btn-success" onclick="newFeed()">
+                                                                        <i class="fa fa-check"></i>
+                                                                        Enviar
+                                                                    </button>
+                                                                </div>
+                                                            </div><!-- /.modal-content -->
+                                                        </div><!-- /.modal-dialog -->
+                                                    </div><!-- /.modal -->
 
 													<div class="portlet-body form">
 														<div class="portlet-body-config">
@@ -117,26 +211,14 @@
 																				<div class="list-datetime"> {{ $feed->data }} </div>
 																				<div class="list-item-content">
 																					<h3 class="uppercase bold">
-																						<a href="javascript:;">{{ $feed->model }}</a>
+																						<a href="@if(isset($feed->link )) {{ $feed->link }}
+                                                                                                @else javascript:; @endif
+																						">{{ $feed->model }}</a>
 																					</h3>
 																					<p>{{ $feed->text }}</p>
 																				</div>
 																			</li>
 																		@endforeach
-																		<li class="mt-list-item">
-																			<div class="list-icon-container">
-																				<a href="javascript:;">
-																					<i class="fa fa-eye-slash"></i>
-																				</a>
-																			</div>
-																			<div class="list-datetime"> 03 Jan</div>
-																			<div class="list-item-content">
-																				<h3 class="uppercase bold">
-																					<a href="javascript:;">Listings Feature</a>
-																				</h3>
-																				<p>Lorem ipsum dolor sit amet</p>
-																			</div>
-																		</li>
 																	</ul>
 																</div>
 															</div>

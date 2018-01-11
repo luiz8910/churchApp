@@ -9,6 +9,7 @@ use App\Models\RecentUsers;
 use App\Repositories\RoleRepository;
 use App\Repositories\UserRepository;
 use App\Repositories\VisitorRepository;
+use App\Services\FeedServices;
 use App\Traits\ConfigTrait;
 use App\Traits\CountRepository;
 use App\Traits\DateRepository;
@@ -60,11 +61,16 @@ class DashboardController extends Controller
      * @var RoleRepository
      */
     private $roleRepository;
+    /**
+     * @var FeedServices
+     */
+    private $feedServices;
 
     public function __construct(EventRepository $eventRepository, GroupRepository $groupRepository,
                                 PersonRepository $personRepository, VisitorRepository $visitorRepository,
                                 AgendaServices $agendaServices, EventServices $eventServices,
-                                UserRepository $userRepository, RoleRepository $roleRepository)
+                                UserRepository $userRepository, RoleRepository $roleRepository,
+                                FeedServices $feedServices)
     {
         $this->eventRepository = $eventRepository;
         $this->groupRepository = $groupRepository;
@@ -74,6 +80,7 @@ class DashboardController extends Controller
         $this->eventServices = $eventServices;
         $this->userRepository = $userRepository;
         $this->roleRepository = $roleRepository;
+        $this->feedServices = $feedServices;
     }
 
 
@@ -162,6 +169,12 @@ class DashboardController extends Controller
                 $countMembers[] = count($g->people->all());
             }
         }
+        $feeds = null;
+
+        if($church_id)
+        {
+            $feeds = $this->feedServices->myFeeds();
+        }
 
         if (count($events) == 0)
         {
@@ -171,7 +184,7 @@ class DashboardController extends Controller
                 'countMembers', 'street', 'groups', 'event_person', 'nextEvent', 'leader', 'church_id',
                 'qtde_users', 'qtde_groups', 'qtde_events', 'next', 'thisMonth', 'ano', 'allMonths', 'days',
                 'allEvents', 'people', 'groups_recent', 'events_recent', 'qtde_users', 'qtde_groups', 'qtde_events',
-                'location', 'street'));
+                'location', 'street', 'feeds'));
         }
 
         $eventDate = [];
@@ -403,7 +416,7 @@ class DashboardController extends Controller
             'allMonths', 'allDays', 'days', 'allEvents',
             'thisMonth', 'today', 'ano', 'allEventsNames', 'allEventsTimes',
             'allEventsFrequencies', 'allEventsAddresses', 'numWeek',
-            'people', 'groups_recent', 'events_recent', 'qtde_users', 'qtde_groups', 'qtde_events', 'leader', 'church_id'));
+            'people', 'groups_recent', 'events_recent', 'qtde_users', 'qtde_groups', 'qtde_events', 'leader', 'church_id', 'feeds'));
     }
 
     public function oldindex()

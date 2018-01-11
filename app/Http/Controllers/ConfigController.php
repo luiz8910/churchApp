@@ -237,11 +237,49 @@ class ConfigController extends Controller
 
         $church_id = $this->getUserChurch();
 
+        $imports = [];
+
+        $codes = DB::table('people')
+            ->where([
+                'church_id' => $church_id,
+            ])
+            ->whereNotNull('import_code')
+            ->select('import_code')
+            ->distinct()
+            ->get();
+
+
+        //dd($codes);
+
+
+        foreach ($codes as $code) {
+            $imports[] = DB::table('imports')
+                ->where('code', $code->import_code)
+                ->get();
+        }
+
+        $i = 0;
+
+        while($i < count($codes))
+        {
+            $imports[$i][0]->day = date_create($imports[$i][0]->created_at);
+
+            $imports[$i][0]->day = date_format($imports[$i][0]->day, "d/m/Y H:i");
+
+            $imports[$i][0]->table = $imports[$i][0]->table == 'people' ? 'Pessoas' : $imports[$i][0]->table;
+
+            $i++;
+        }
+
+
+
+
         /*
          * Fim Variáveis
          */
 
-        return view('config.dropzone', compact('countPerson', 'countGroups', 'leader', 'notify', 'qtde', 'church_id'));
+        return view('config.dropzone', compact('countPerson', 'countGroups',
+            'leader', 'notify', 'qtde', 'church_id', 'imports'));
     }
 
     /*

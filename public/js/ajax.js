@@ -1942,4 +1942,141 @@
         );
     }
 
+    function sweetRollback(code, day)
+    {
+        console.log('code: ' + code);
+        console.log('day: ' + day);
+        swal({
+            title: 'Atenção',
+            text: 'Deseja desfazer a importação do dia ' + day + ' ?',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonClass: "btn-info",
+            confirmButtonText: "Sim",
+            cancelButtonText: "Não",
+            closeOnConfirm: true,
+            closeOnCancel: true
+        },
+            function(isConfirm){
+                if(isConfirm)
+                {
+                    rollbackImport(code);
+                }
+            }
+        )
+    }
+
+    function rollbackImport(code)
+    {
+        var request = $.ajax({
+            url: '/rollback-code/' + code,
+            method: 'GET',
+            dataType: 'json'
+        });
+
+        request.done(function(e){
+            if(e.status)
+            {
+                location.reload();
+            }
+            else{
+                swal('Erro', 'Um erro ocorreu: ' + e.error, 'error');
+            }
+        });
+
+        request.fail(function(e){
+            console.log("fail");
+            console.log(e);
+
+            swal('Erro', 'Verifique sua conexão, ou realize o login novamente', 'error');
+        })
+    }
+
+
+    function sweetFeed(status)
+    {
+        if(status){
+            swal('Sucesso', 'O feed foi cadastrado com sucesso', 'success');
+        }
+        else{
+            swal('Erro', 'Verifique sua conexão, ou realize o login novamente', 'error');
+        }
+
+    }
+
+
+    function newFeed()
+    {
+        var text = $("#feed-text");
+        var link = $("#feed-link").val();
+        var stop = false;
+
+        if(text.val() == "")
+        {
+            $("#span-error-feed").css('display', 'block');
+            $("#span-feed-text").css('display', 'block');
+            stop = true;
+        }
+
+        if(!stop){
+            var publico = $("#publico").is(':checked');
+            var evento = $("#evento").is(':checked');
+            var grupo = $("#grupo").is(':checked');
+            var pessoa = $("#pessoa").is(':checked');
+            var admin = $("#admin").is(':checked');
+
+            var chosenNumber = null;
+
+            if(publico)
+            {
+                chosenNumber = 1;
+            }
+            else if(evento)
+            {
+                chosenNumber = 2;
+            }
+            else if(grupo){
+                chosenNumber = 3;
+            }
+            else if(pessoa){
+                chosenNumber = 4;
+            }
+            else if(admin){
+                chosenNumber = 5;
+            }
+            else{
+                //Mostrar Erro
+                $("#span-error-feed").css('display', 'block');
+                text.addClass('has-error');
+                stop = true;
+            }
+
+            if(!stop)
+            {
+
+                var request = $.ajax({
+                    url: '/newFeed/' + chosenNumber + '/' + text.val() + '/' + link + '/' + expires_in,
+                    method: 'GET',
+                    dataType: 'json'
+                });
+
+                request.done(function(e){
+                    sweetFeed(true);
+                });
+
+                request.fail(function(e){
+                    console.log(e);
+                    sweetFeed(false);
+                });
+            }
+        }
+
+
+
+        return false;
+    }
+
+
+
+
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Person;
 use App\Models\User;
+use App\Models\Visitor;
 use App\Repositories\ImportRepository;
 use App\Repositories\PersonRepository;
 use App\Repositories\VisitorRepository;
@@ -89,10 +90,32 @@ class importController extends Controller
         return redirect()->back();
     }
 
-    public function removeInactive($array)
+    //public function removeInactive($array)
+    public function removeInactive($code)
     {
 
-        foreach ($array as $item) {
+        $people = Person::onlyTrashed()
+            ->where('import_code', $code)
+            ->get();
+
+        //dd($people);
+
+        if(count($people) > 0)
+        {
+            foreach ($people as $item)
+            {
+                $user = User::onlyTrashed()->where('person_id', $item->id)->first();
+
+                if($user != null)
+                {
+                    $user->forceDelete();
+                }
+
+                $item->forceDelete();
+            }
+        }
+
+        /*foreach ($array as $item) {
 
             $person = Person::onlyTrashed()
                 ->where('id', $item->id)
@@ -106,11 +129,28 @@ class importController extends Controller
             }
 
             $person->forceDelete();
-        }
+        }*/
     }
 
-    public function rollbackLastVisitors($visitors)
+    public function rollbackLastVisitors($code)
     {
+        $people = Person::onlyTrashed()
+            ->where('import_code', $code)
+            ->get();
+
+        //dd($people);
+
+        foreach ($people as $item)
+        {
+            $user = User::onlyTrashed()->where('person_id', $item->id)->first();
+
+            if($user != null)
+            {
+                $user->forceDelete();
+            }
+
+            $item->forceDelete();
+        }
         if(count($visitors) > 0)
         {
             foreach ($visitors as $visitor)
@@ -130,19 +170,82 @@ class importController extends Controller
         return count($visitors);
     }
 
-    public function removeInactiveVisitor($array)
+    //public function removeInactiveVisitor($array)
+    public function removeInactiveVisitor($code)
     {
-        foreach($array as $item)
-        {
-            $visitor = $this->visitorRepository->find($item->id);
+        $visitors = Visitor::onlyTrashed()->where('import_code', $code)->get();
 
-            $user = $visitor->users->first();
+        if(count($visitors) > 0){
+            foreach($visitors as $item)
+            {
+                $user = $item->users()->onlyTrashed()->first();
 
-            if($user){
-                $user->forceDelete();
+                //dd($user);
+
+                if($user != null){
+                    $user->forceDelete();
+                }
+
+                $item->forceDelete();
+            }
+        }
+
+
+    }
+
+    public function rollback($code)
+    {
+        try{
+            $members = $this->personRepository->findByField('import_code', $code);
+
+            if(count($members) > 0) {
+                foreach ($members as $member)
+                {
+                    $user = $member->user;
+
+                    if ($user) {
+                        $member->user->delete();
+                    }
+
+                    $member->delete();
+                }
+
+                $this->removeInactive($code);
             }
 
-            $visitor->forceDelete();
+
+            $visitors = $this->visitorRepository->findByField('import_code', $code);
+
+            if(count($visitors) > 0) {
+                foreach ($visitors as $visitor)
+                {
+                    $user = $visitor->users->first();
+
+                    if ($user) {
+                        $user->delete();
+                    }
+
+                    $visitor->delete();
+                }
+
+                $this->removeInactiveVisitor($code);
+            }
+
+            $total = count($members) + count($visitors);
+
+            DB::commit();
+
+            \Session::flash('rollback.message', ' ' .  $total . ' usuários foram removidos');
+
+            return json_encode(['status' => true]);
+
+        }catch(\Exception $e){
+            DB::rollback();
+
+            return json_encode([
+                'status' => false,
+                'error' => $e->getMessage() . ' ' . $e->getTrace()
+            ]);
         }
 
     }

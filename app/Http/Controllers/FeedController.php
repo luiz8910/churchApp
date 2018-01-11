@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Repositories\FeedRepository;
+use App\Repositories\PersonRepository;
+use App\Services\FeedServices;
 use App\Traits\ConfigTrait;
 use App\Traits\CountRepository;
 use App\Traits\NotifyRepository;
@@ -16,11 +18,21 @@ class FeedController extends Controller
      * @var FeedRepository
      */
     private $repository;
+    /**
+     * @var PersonRepository
+     */
+    private $personRepository;
+    /**
+     * @var FeedServices
+     */
+    private $feedServices;
 
-    public function __construct(FeedRepository $repository)
+    public function __construct(FeedRepository $repository, PersonRepository $personRepository, FeedServices $feedServices)
     {
 
         $this->repository = $repository;
+        $this->personRepository = $personRepository;
+        $this->feedServices = $feedServices;
     }
 
     public function index()
@@ -39,19 +51,16 @@ class FeedController extends Controller
 
         $role = $this->getUserRole();
 
-        $feeds = $this->repository->findWhere(
-            [
-                'church_id' => $church_id,
-                ['expires_in', '>', Carbon::now()]
-            ]
-        );
-
-        foreach ($feeds as $feed) {
-            $dt = $feed->created_at->toFormattedDateString();
-            $feed->data = $dt;
-        }
+        $feeds = $this->feedServices->feeds();
 
         return view('feeds.index', compact('groups', 'countPerson', 'countMembers',
             'countGroups', 'notify', 'qtde', 'leader', 'role', 'church_id', 'feeds'));
+    }
+
+    public function newFeed($feed_notif, $text, $link = null, $expires_in = null)
+    {
+        $result = $this->feedServices->newFeed($feed_notif, $text, $link, $expires_in);
+
+        return json_encode($result);
     }
 }

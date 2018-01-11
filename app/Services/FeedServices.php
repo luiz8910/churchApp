@@ -27,48 +27,88 @@ class FeedServices
      */
     private $personRepository;
 
-    public function __construct(FeedRepository $repository, PersonRepository $personRepositoryTrait)
+    public function __construct(FeedRepository $repository, PersonRepository $personRepository)
     {
         $this->repository = $repository;
-        $this->personRepository = $personRepositoryTrait;
+        $this->personRepository = $personRepository;
     }
 
-    public function newFeed($notif_range, $model, $model_id, $text, $feed_type = null, $expires_in = null)
+    public function newFeed($notif_range, $text, $link = null, $expires_in = null, $model = null,
+                            $model_id = null, $feed_type = null,  $people = null,
+                            $event = null, $group = null)
     {
-        $dt = Carbon::now();
-        $dt = $dt->addWeek();
+        try{
+            $dt = Carbon::now();
+            $dt = $dt->addWeek();
 
-        $feed_type = $feed_type ? $feed_type : 1;
-        $expires_in = $expires_in ? $expires_in : $dt;
+            $feed_type = $feed_type ? $feed_type : 1;
+            $expires_in = $expires_in ? $expires_in : $dt;
 
-        $data['church_id'] = $this->getUserChurch();
-        $data['notification_range'] = $notif_range;
-        $data['model'] = $model;
-        $data['model_id'] = $model_id;
-        $data['text'] = $text;
-        $data['show'] = 1;
-        $data['feed_type'] = $feed_type;
-        $data['expires_in'] = $expires_in;
+            $data['church_id'] = $this->getUserChurch();
+            $data['notification_range'] = $notif_range;
+            $data['model'] = $model;
+            $data['model_id'] = $model_id;
+            $data['text'] = $text;
+            $data['show'] = 1;
+            $data['feed_type'] = $feed_type;
+            $data['expires_in'] = $expires_in;
+            $data['link'] = $link;
 
-        $id = $this->repository->create($data)->id;
+            $id = $this->repository->create($data)->id;
 
-        switch ($notif_range){
-            case 1: $this->publicFeed($id); break;
+            switch ($notif_range){
+                case 1: $this->publicFeed($id); break;
 
-            case 2: $this->groupFeed($id); break;
+                case 2: $this->eventFeed($event, $id); break;
 
-            case 3: $this->leaderFeed($id); break;
+                case 3: $this->groupFeed($group, $id); break;
 
-            case 4: $this->adminFeed($id); break;
+                case 4: $this->people($people, $id); break;
+
+                case 5: $this->leaderFeed($id); break;
+            }
+
+            DB::commit();
+            return true;
+
+        }catch(\Exception $e){
+            DB::rollback();
+
+            return false;
         }
+
     }
 
     public function publicFeed($id)
     {
+        $people = $this->personRepository->findByField('church_id', $this->getUserChurch());
+
+        if(count($people) > 0){
+            foreach($people as $item)
+            {
+                DB::table('feeds_user')
+                    ->insert([
+                        'person_id' => $item->id,
+                        'feed_id' => $id,
+                        'created_at' => Carbon::now(),
+                        'updated_at' => Carbon::now()
+                    ]);
+            }
+        }
 
     }
 
-    public function groupFeed($id)
+    public function groupFeed($group, $id)
+    {
+
+    }
+
+    public function eventFeed($event, $id)
+    {
+
+    }
+
+    public function people($people, $id)
     {
 
     }
@@ -123,5 +163,69 @@ class FeedServices
             }
         }
 
+    }
+
+    public function feeds()
+    {
+        $church_id = $this->getUserChurch();
+
+        $feeds = $this->repository->findWhere(
+            [
+                'church_id' => $church_id,
+                ['expires_in', '>', Carbon::now()]
+            ]
+        );
+
+        foreach ($feeds as $feed) {
+            $dt = $feed->created_at->format("d/m/Y");
+            $feed->data = $dt;
+
+            if($feed->model == 'person')
+            {
+                $person = $this->personRepository->find($feed->model_id);
+
+                $feed->model = 'Pessoas';
+                $feed->link = 'person/' . $feed->model_id . '/edit';
+                $feed->text .= " - " . $person->name . " " . $person->lastName;
+            }
+        }
+
+        return $feeds;
+    }
+
+    public function myFeeds()
+    {
+        $church_id = $this->getUserChurch();
+
+        $feeds = DB::table('feeds')
+            ->join('feeds_user', 'feeds.id', 'feeds_user.feed_id')
+            ->where([
+                'feeds.church_id' => $church_id,
+                'feeds_user.person_id' => \Auth::user()->person->id,
+                ['expires_in', '>', Carbon::now()]
+            ])->get();
+
+        /*$feeds = $this->repository->findWhere(
+            [
+                'church_id' => $church_id,
+                ['expires_in', '>', Carbon::now()]
+            ]
+        );*/
+
+        foreach ($feeds as $feed) {
+            $dt = date_create($feed->created_at);
+            $feed->data = $dt->format("d/m/Y");
+
+            if($feed->model == 'person')
+            {
+                $person = $this->personRepository->find($feed->model_id);
+
+                $feed->model = 'Pessoas';
+                $feed->link = 'person/' . $feed->model_id . '/edit';
+                $feed->text .= " - " . $person->name . " " . $person->lastName;
+            }
+        }
+
+        return $feeds;
     }
 }

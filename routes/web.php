@@ -206,7 +206,15 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/showPlan', 'ConfigController@showPlan')->name('show.plan');
 
         Route::get('rollback/{table}', 'ImportController@rollbackLast')->name('import.rollback-last');
+
+        Route::get('rollback-code/{code}', 'ImportController@rollback');
+
+        Route::get('remove-inactive/{code}', 'ImportController@removeInactive');
+
+        Route::get('remove-inactive-vis/{code}', 'ImportController@removeInactiveVisitor');
     });
+
+    Route::get('/newFeed/{feed_notif}/{text}/{link?}/{expires_in?}', 'FeedController@newFeed');
 
     Route::get("/getPusherKey", "ConfigController@getPusherKey");
 

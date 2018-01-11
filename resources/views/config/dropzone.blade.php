@@ -124,10 +124,21 @@
 															</ul>
 														</div>
                                                         <div class="btn-group">
-															<a class="btn purple btn-outline btn-circle" href="{{ route('import.rollback-last', 'people') }}">
+															<a class="btn purple btn-outline btn-circle" href="javascript:;" data-toggle="dropdown">
 																<i class="fa fa-share"></i>
-																<span class="hidden-xs"> Reverter ult. Importação </span>
+																<span class="hidden-xs"> Reverter Importação </span>
+                                                                <i class="fa fa-angle-down"></i>
 															</a>
+                                                            <ul class="dropdown-menu pull-right" id="sample_3_tools">
+                                                                @foreach($imports as $import)
+                                                                    <li>
+                                                                        <a href="javascript:;" onclick="sweetRollback('{{ $import[0]->code }}', '{{ $import[0]->day }}')">
+                                                                            <i class="fa fa-undo" aria-hidden="true"></i>
+                                                                            {{ $import[0]->day }} ({{ $import[0]->table }})
+                                                                        </a>
+                                                                    </li>
+                                                                @endforeach
+                                                            </ul>
 														</div>
                                                     </div> <!-- FIM DIV .actions -->
                                                 </div> <!-- FIM DIV .portlet-title -->

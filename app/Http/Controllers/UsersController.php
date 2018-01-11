@@ -11,6 +11,7 @@ use App\Repositories\EventRepository;
 use App\Repositories\EventSubscribedListRepository;
 use App\Repositories\GroupRepository;
 use App\Repositories\VisitorRepository;
+use App\Services\FeedServices;
 use App\Traits\ConfigTrait;
 use App\Traits\CountRepository;
 use App\Traits\DateRepository;
@@ -20,6 +21,7 @@ use App\Repositories\PersonRepository;
 use App\Repositories\RoleRepository;
 use App\Repositories\StateRepository;
 use App\Repositories\UserRepository;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -63,6 +65,10 @@ class UsersController extends Controller
      * @var GroupRepository
      */
     private $groupRepository;
+    /**
+     * @var FeedServices
+     */
+    private $feedServices;
 
     /**
      * UsersController constructor.
@@ -76,7 +82,7 @@ class UsersController extends Controller
     public function __construct(UserRepository $repository, StateRepository $stateRepository,
                                 RoleRepository $roleRepository, PersonRepository $personRepository,
                                 VisitorRepository $visitorRepository, EventSubscribedListRepository $listRepository,
-                                EventRepository $eventRepository, GroupRepository $groupRepository)
+                                EventRepository $eventRepository, GroupRepository $groupRepository, FeedServices $feedServices)
     {
         $this->repository = $repository;
         $this->stateRepository = $stateRepository;
@@ -86,6 +92,7 @@ class UsersController extends Controller
         $this->listRepository = $listRepository;
         $this->eventRepository = $eventRepository;
         $this->groupRepository = $groupRepository;
+        $this->feedServices = $feedServices;
     }
 
     public function myAccount()
@@ -170,8 +177,16 @@ class UsersController extends Controller
             }
         }
 
+        $church_id = $this->getUserChurch();
+        $feeds = null;
+
+        if($church_id){
+            $feeds = $this->feedServices->myFeeds();
+        }
+
+
         return view('users.myAccount', compact('state', 'model', 'changePass', 'countPerson', 'role', 'countGroups',
-            'notify', 'qtde', 'adults', 'groups', 'countMembers', 'leader', 'events', 'route'));
+            'notify', 'qtde', 'adults', 'groups', 'countMembers', 'leader', 'events', 'route', 'feeds'));
     }
 
 

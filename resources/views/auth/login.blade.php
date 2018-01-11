@@ -153,7 +153,8 @@ License: You must have a valid license purchased only from themeforest(the above
     <!-- END LOGIN FORM -->
 
 </div>
-<div class="copyright"> 2017 © Beconnect.</div>
+<?php $year = date_create(); $year = date_format($year, "Y"); ?>
+<div class="copyright"> {{ $year }} © Beconnect.</div>
 @include('includes.core-scripts')
 <!-- BEGIN PAGE LEVEL PLUGINS -->
 <script src="../assets/global/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>

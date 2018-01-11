@@ -558,27 +558,34 @@
 															<div class="tab-pane active" id="tab_1_1">
 																<div class="scroller" style="height: 339px;" data-always-visible="1" data-rail-visible="0">
 																	<ul class="feeds">
-																		<li>
-																			<div class="col1">
-																				<div class="cont">
-																					<div class="cont-col1">
-																						<div class="label label-sm label-success">
-																							<i class="fa fa-bell-o"></i>
+																		@if($feeds)
+																			@foreach($feeds as $feed)
+																				<li>
+																					<a href="@if(isset($feed->link)) {{ $feed->link }}
+																					@else javascript:;
+                                                                                    @endif
+																							">
+																						<div class="col1">
+																							<div class="cont">
+																								<div class="cont-col1">
+																									<div class="label label-sm label-success">
+																										<i class="fa fa-bell-o"></i>
+																									</div>
+																								</div>
+																								<div class="cont-col2">
+																									<div class="desc">
+																										{{ $feed->text }}
+																									</div>
+																								</div>
+																							</div>
 																						</div>
-																					</div>
-																					<div class="cont-col2">
-																						<div class="desc"> Célula de Casais (Jorge e Lígia).
-																							<span class="label label-sm label-info"> Ver mais
-																										<i class="fa fa-share"></i>
-																									</span>
+																						<div class="col2">
+																							<div class="date"> {{ $feed->data }}</div>
 																						</div>
-																					</div>
-																				</div>
-																			</div>
-																			<div class="col2">
-																				<div class="date"> Agora </div>
-																			</div>
-																		</li>
+																					</a>
+																				</li>
+																			@endforeach
+																		@endif
 																		<li>
 																			<a href="javascript:;">
 																				<div class="col1">
