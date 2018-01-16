@@ -148,6 +148,7 @@
 <script src="../assets/global/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
 <script src="../assets/global/plugins/jquery-validation/js/additional-methods.min.js" type="text/javascript"></script>
 <script src="../assets/global/plugins/select2/js/select2.full.js" type="text/javascript"></script>
+<script src="../js/login.js" type="text/javascript"></script>
 <script type="text/javascript">
     $('.select2').select2();
 </script>
