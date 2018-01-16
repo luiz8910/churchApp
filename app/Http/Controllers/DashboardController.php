@@ -91,6 +91,7 @@ class DashboardController extends Controller
         * Variáveis gerais p/ todas as páginas
         *
         */
+        try{
 
         $countPerson[] = $this->countPerson();
 
@@ -114,18 +115,16 @@ class DashboardController extends Controller
 
         $group_ids = [];
 
-        for ($i = 0; $i < count($person->groups); $i++)
-        {
+        for ($i = 0; $i < count($person->groups); $i++) {
             $group_ids[] = $person->groups[$i]->id;
         }
 
         $groups = DB::table("groups")
-                    ->whereIn("id", $group_ids)
-                    ->paginate(5);
+            ->whereIn("id", $group_ids)
+            ->paginate(5);
 
 
-        if(count($groups) == 0)
-        {
+        if (count($groups) == 0) {
             $groups = null;
         }
 
@@ -133,7 +132,9 @@ class DashboardController extends Controller
 
         $nextEvent = null;
 
-        $qtde_users = null; $qtde_groups = null; $qtde_events = null;
+        $qtde_users = null;
+        $qtde_groups = null;
+        $qtde_events = null;
 
         $next = true;
 
@@ -158,10 +159,8 @@ class DashboardController extends Controller
         //Retorna todos os eventos
         $allEvents = $this->eventServices->allEvents($church_id);
 
-        if($groups)
-        {
-            foreach ($groups as $group)
-            {
+        if ($groups) {
+            foreach ($groups as $group) {
                 $g = $this->groupRepository->find($group->id);
 
                 $group->sinceOf = $this->formatDateView($g->sinceOf);
@@ -171,13 +170,11 @@ class DashboardController extends Controller
         }
         $feeds = null;
 
-        if($church_id)
-        {
+        if ($church_id) {
             $feeds = $this->feedServices->myFeeds();
         }
 
-        if (count($events) == 0)
-        {
+        if (count($events) == 0) {
             $location = $street = null;
 
             return view('dashboard.index', compact('countPerson', 'countGroups', 'events', 'notify', 'qtde',
@@ -190,8 +187,7 @@ class DashboardController extends Controller
         $eventDate = [];
         $i = 0;
 
-        foreach ($events as $event)
-        {
+        foreach ($events as $event) {
             $eventDate[] = DB::table('event_person')
                 ->where(
                     [
@@ -213,11 +209,9 @@ class DashboardController extends Controller
             $event->imgProfileUser = $user->imgProfile;
 
 
-            if($eventDate[$i] != null)
-            {
+            if ($eventDate[$i] != null) {
                 $eventDate[$i]->eventDate = $this->formatDateView($eventDate[$i]->eventDate);
-            }
-            else{
+            } else {
                 array_pop($eventDate);
                 $i--;
             }
@@ -228,14 +222,11 @@ class DashboardController extends Controller
 
         //dd($events[0]);
 
-        if(!empty($eventDate))
-        {
-            if($eventDate[0] != null)
-            {
-                for ($i = 0; $i < count($eventDate); $i++)
-                {
+        if (!empty($eventDate)) {
+            if ($eventDate[0] != null) {
+                for ($i = 0; $i < count($eventDate); $i++) {
 
-                    if($eventDate[$i] != null) {
+                    if ($eventDate[$i] != null) {
                         $event_person[$i] = $this->eventRepository->find($eventDate[$i]->event_id);
 
                         if ($event_person[$i]->group_id != null) {
@@ -247,16 +238,13 @@ class DashboardController extends Controller
         }
 
 
-
-
         $nextEvent = $this->eventServices->getNextEvent();
 
         $event = null;
         $street = null;
         $location = null;
 
-        if($nextEvent[0])
-        {
+        if ($nextEvent[0]) {
             $nextEvent[1] = $this->formatDateView($nextEvent[1]);
 
             $event = $this->eventRepository->find($nextEvent[0]);
@@ -267,7 +255,6 @@ class DashboardController extends Controller
         }
 
 
-
         //Contador de semanas
         $cont = 1;
 
@@ -275,15 +262,13 @@ class DashboardController extends Controller
         $numWeek = $this->getDefaultWeeks();
 
         //Listagem até a 6° semana por padrão
-        while ($cont < $numWeek)
-        {
+        while ($cont < $numWeek) {
             $time = $cont == 1 ? 'next' : $cont;
 
             $days = array_merge($days, $this->agendaServices->findWeek($time));
 
             $cont++;
         }
-
 
 
         $allEventsNames = [];
@@ -306,8 +291,6 @@ class DashboardController extends Controller
             //Todos os endereços
             $allEventsAddresses[] = $e->street . ", " . $e->neighborhood . "\n" . $e->city . ", " . $e->state;
         }
-
-
 
 
         /*
@@ -345,10 +328,8 @@ class DashboardController extends Controller
         $events_recent = [];
 
 
-        if($qtde_users > 0)
-        {
-            foreach ($recent_users as $recent_user)
-            {
+        if ($qtde_users > 0) {
+            foreach ($recent_users as $recent_user) {
                 $p = $this->personRepository->find($recent_user->person_id);
 
                 $p->role_id = $this->roleRepository->findByField('id', $p->role_id)->first()->name;
@@ -358,11 +339,8 @@ class DashboardController extends Controller
         }
 
 
-
-        if($qtde_groups > 0)
-        {
-            foreach ($recent_groups as $item)
-            {
+        if ($qtde_groups > 0) {
+            foreach ($recent_groups as $item) {
                 $g = $this->groupRepository->find($item->group_id);
 
                 $g->owner_id = $this->userRepository->find($g->owner_id)->person;
@@ -378,31 +356,26 @@ class DashboardController extends Controller
         }
 
 
-        if($qtde_events > 0)
-        {
-            try{
-                foreach ($recent_events as $item)
-                {
-                    $e = $this->eventRepository->find($item->event_id);
+        if ($qtde_events > 0) {
 
-                    $e->createdBy_id = $this->userRepository->find($e->createdBy_id)->person;
+            foreach ($recent_events as $item) {
+                $e = $this->eventRepository->find($item->event_id);
 
-                    $e->imgCreatorProfile = $e->createdBy_id->imgProfile;
+                $e->createdBy_id = $this->userRepository->find($e->createdBy_id)->person;
 
-                    $e->createdBy_id = $e->createdBy_id->name . " " . $e->createdBy_id->lastName;
+                $e->imgCreatorProfile = $e->createdBy_id->imgProfile;
 
-                    $e->group_id = $e->group_id ? $this->groupRepository->find($e->group_id)->name : 'Sem Grupo';
+                $e->createdBy_id = $e->createdBy_id->name . " " . $e->createdBy_id->lastName;
 
-                    //$nextEventRecent = $this->eventServices->getNextEvent($e->id);
+                $e->group_id = $e->group_id ? $this->groupRepository->find($e->group_id)->name : 'Sem Grupo';
 
-                    //$e->nextEvent = $this->formatDateView($nextEventRecent[1]);
+                //$nextEventRecent = $this->eventServices->getNextEvent($e->id);
 
-                    $events_recent[] = $e;
-                }
-            }catch(\Exception $exception)
-            {
-                dd($exception);
+                //$e->nextEvent = $this->formatDateView($nextEventRecent[1]);
+
+                $events_recent[] = $e;
             }
+
 
         }
 
@@ -413,6 +386,11 @@ class DashboardController extends Controller
 
         $event_list = $this->check_in();
         $is_sub = $this->isSubscribed();
+
+    }catch(\Exception $e){
+        dd($e);
+    }
+
 
 
         return view('dashboard.index', compact('countPerson', 'countGroups', 'events', 'notify', 'qtde', 'event',
