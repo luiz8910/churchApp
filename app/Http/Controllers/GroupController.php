@@ -394,6 +394,14 @@ class GroupController extends Controller
 
         RecentGroups::where('group_id', $id)->delete();
 
+        DB::table('group_person')
+            ->where('group_id', $id)
+            ->delete();
+
+        DB::table('group_visitor')
+            ->where('group_id', $id)
+            ->delete();
+
         $group->delete();
 
         return json_encode(['status' => true, 'name' => $group->name]);

@@ -83,19 +83,19 @@
                                                                     <li>
                                                                         <a href="javascript:;">
                                                                             <i class="fa fa-newspaper-o font-purple" aria-hidden="true"></i>
-                                                                            Notícias
+                                                                            Notícias (Em breve)
                                                                         </a>
                                                                     </li>
                                                                     <li>
-                                                                        <a href="">
+                                                                        <a href="javascript:;">
                                                                             <i class="fa fa-hand-paper-o font-purple"></i>
-                                                                            Avisos
+                                                                            Avisos (Em breve)
                                                                         </a>
                                                                     </li>
                                                                     <li>
-                                                                        <a href="">
+                                                                        <a href="javascript:;">
                                                                             <i class="fa fa-comment-o font-purple"></i>
-                                                                            Mensagens
+                                                                            Mensagens (Em breve)
                                                                         </a>
                                                                     </li>
                                                                 </ul>
@@ -124,21 +124,57 @@
                                                                             <input type="radio" name="sendTo" id="publico" value="1">Publico
                                                                         </label>
                                                                         <label class="radio-inline">
-                                                                            <input type="radio" name="sendTo" id="evento" value="2" disabled>Evento
+                                                                            <input type="radio" name="sendTo" id="evento" value="2">Evento
                                                                         </label>
                                                                         <label class="radio-inline">
-                                                                            <input type="radio" name="sendTo" id="grupo" value="3" disabled>Grupo
+                                                                            <input type="radio" name="sendTo" id="grupo" value="3">Grupo
                                                                         </label>
                                                                         <label class="radio-inline">
-                                                                            <input type="radio" name="sendTo" id="pessoa" value="4" disabled>Pessoa
+                                                                            <input type="radio" name="sendTo" id="pessoa" value="4">Pessoa
                                                                         </label>
-                                                                        <label class="radio-inline">
+                                                                        <!--<label class="radio-inline">
                                                                             <input type="radio" name="sendTo" id="admin" value="5" disabled>Admin
-                                                                        </label>
+                                                                        </label>-->
 
                                                                         <input type="submit" id="submit-form" hidden>
 
                                                                     </form>
+
+																	<br><br>
+
+                                                                    <div id="div-events" style="display: none;">
+                                                                        <label for="event_id">Eventos</label>
+                                                                        <span id="span-feed-event" class="font-red" style="display: none;">Selecione um evento abaixo</span>
+                                                                        <select name="event_id" id="event_id" class="form-control">
+                                                                            <option value="">Selecione</option>
+                                                                            @foreach($events as $event)
+                                                                                <option value="{{ $event->id }}">{{ $event->name }}</option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                    </div>
+
+																	<div id="div-groups" style="display: none;">
+																		<label for="group_id">Grupos</label>
+																		<span id="span-feed-group" class="font-red" style="display: none;">Selecione um grupo abaixo</span>
+																		<select name="group_id" id="group_id" class="form-control">
+																			<option value="">Selecione</option>
+																			@foreach($groups as $group)
+																				<option value="{{ $group->id }}">{{ $group->name }}</option>
+																			@endforeach
+																		</select>
+																	</div>
+
+                                                                    <div id="div-people" style="display: none;">
+                                                                        <label for="person_id">Enviar para:</label>
+                                                                        <span id="span-feed-person" class="font-red" style="display: none;">Selecione uma pessoa abaixo</span>
+                                                                        <select name="person_id" id="person_id" class="form-control">
+                                                                            <option value="">Selecione</option>
+                                                                            @foreach($people as $person)
+                                                                                <option value="{{ $person->id }}">{{ $person->name }} {{ $person->lastName }}</option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                    </div>
+																	
                                                                     <br><br>
                                                                     <label for="feed-text">Mensagem</label>
                                                                     <span id="span-feed-text" class="font-red" style="display: none;">Digite uma mensagem abaixo</span>
@@ -148,14 +184,14 @@
                                                                     <label for="feed-link">Link (Opcional) </label>
                                                                     <input type="text" id="feed-link" class="form-control">
 
-                                                                    <br>
+                                                                    <!--<br>
                                                                     <label for="expires_in">Validade do Feed</label>
-                                                                    <select name="expires_in" id="expires_in">
+                                                                    <select name="expires_in" id="expires_in" class="form-control">
                                                                         <option value="">Selecione</option>
                                                                         <option value="1">1 Dia</option>
                                                                         <option value="2">1 Semana</option>
                                                                         <option value="3">1 Mês</option>
-                                                                    </select>
+                                                                    </select>-->
 
 
                                                                 </div>

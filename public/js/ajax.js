@@ -1992,6 +1992,29 @@
         })
     }
 
+    $("#formSendTo").click(function(){
+       if($("#evento").is(':checked'))
+       {
+           $("#div-events").css('display', 'block');
+           $("#div-groups").css('display', 'none');
+           $("#div-people").css('display', 'none');
+       }
+        else if($("#grupo").is(':checked')){
+           $("#div-events").css('display', 'none');
+           $("#div-groups").css('display', 'block');
+           $("#div-people").css('display', 'none');
+       }
+       else if($("#pessoa").is(':checked')){
+           $("#div-people").css('display', 'block');
+           $("#div-groups").css('display', 'none');
+           $("#div-events").css('display', 'none');
+       }
+        else{
+           $("#div-groups").css('display', 'none');
+           $("#div-events").css('display', 'none');
+           $("#div-people").css('display', 'none');
+       }
+    });
 
     function sweetFeed(status)
     {
@@ -2011,6 +2034,8 @@
         var link = $("#feed-link").val();
         var stop = false;
 
+        //console.log(link);
+
         if(text.val() == "")
         {
             $("#span-error-feed").css('display', 'block');
@@ -2025,6 +2050,10 @@
             var pessoa = $("#pessoa").is(':checked');
             var admin = $("#admin").is(':checked');
 
+            var event_id = '';
+            var group_id = '';
+            var person_id = '';
+
             var chosenNumber = null;
 
             if(publico)
@@ -2034,12 +2063,40 @@
             else if(evento)
             {
                 chosenNumber = 2;
+
+                event_id = $("#event_id").val();
+
+                console.log(event_id);
+
+                if(event_id == ""){
+                    $("#span-feed-event").css('display', 'block');
+                    stop = true;
+                }
             }
             else if(grupo){
                 chosenNumber = 3;
+
+                group_id = $("#group_id").val();
+
+                console.log(group_id);
+
+                if(group_id == ""){
+                    $("#span-feed-group").css('display', 'block');
+                    stop = true;
+                }
             }
             else if(pessoa){
                 chosenNumber = 4;
+
+                person_id = $("#person_id").val();
+
+                console.log(person_id);
+
+                if(person_id == "")
+                {
+                    $("#span-feed-person").css('display', 'block');
+                    stop = true;
+                }
             }
             else if(admin){
                 chosenNumber = 5;
@@ -2053,19 +2110,62 @@
 
             if(!stop)
             {
+                var request = '';
 
-                var request = $.ajax({
-                    url: '/newFeed/' + chosenNumber + '/' + text.val() + '/' + link + '/',
-                    method: 'GET',
-                    dataType: 'json'
-                });
+                switch (chosenNumber)
+                {
+                    case 1:
+                        request = $.ajax({
+                            url: '/newFeed/' + chosenNumber + '/' + text.val() + '/' + link,
+                            method: 'GET',
+                            dataType: 'json'
+                        });
+
+                        break;
+
+                    case 2:
+                        request = $.ajax({
+                            url: '/event-newFeed/' + event_id + '/' + text.val() + '/' + link,
+                            method: 'GET',
+                            dataType: 'json'
+                        });
+                        break;
+
+                    case 3:
+                        request = $.ajax({
+                            url: '/group-newFeed/' + group_id + '/' + text.val() + '/' + link,
+                            method: 'GET',
+                            dataType: 'json'
+                        });
+                        break;
+
+                    case 4:
+                        request = $.ajax({
+                            url: '/person-newFeed/' + person_id + '/' + text.val() + '/' + link,
+                            method: 'GET',
+                            dataType: 'json'
+                        });
+                        break;
+
+                }
 
                 request.done(function(e){
+                    $("#newFeed").modal('hide');
+                    $("#eventNewFeed").modal('hide');
+
                     sweetFeed(true);
+
+                    setTimeout(function(){
+                        location.reload();
+                    }, 2000);
                 });
 
                 request.fail(function(e){
-                    console.log(e);
+                    $("#newFeed").modal('hide');
+                    $("#eventNewFeed").modal('hide');
+
+                    console.log(e.msg);
+
                     sweetFeed(false);
                 });
             }

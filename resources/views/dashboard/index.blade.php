@@ -392,10 +392,10 @@
 																<table class="table table-hover table-light">
 																	<thead>
 																	<tr class="uppercase">
-																		<th> Nome</th>
 																		<th> Evento </th>
 																		<th> Data </th>
 																		<th> Grupo </th>
+                                                                        <th> Ações </th>
 
 																	</tr>
 																	</thead>
@@ -407,41 +407,6 @@
 																		<?php $i = 0; ?>
 																		@foreach($event_person as $item)
 																			<tr>
-																				<td>
-																					<span class="hidden-xs hidden-sm">
-																						@if(Auth::user()->id != $events[$i]->createdBy_id)
-																							<a href="{{ route('person.edit', ['person' => $events[$i]->createdBy_person]) }}">
-																								<img src="{{ '../'.$events[$i]->imgProfileUser }}"
-																									 class="img-circle" style="height: 50px; width: 50px; margin-right: 10px;">
-
-																								{{ $events[$i]->createdBy_name }}
-																							</a>
-
-																							@else
-																								<img src="{{ '../'.$events[$i]->imgProfileUser }}"
-																									 class="img-circle" style="height: 50px; width: 50px; margin-right: 10px;">
-
-																								{{ $events[$i]->createdBy_name }}
-																						@endif
-																					</span>
-																					<span class="hidden-md hidden-lg" >
-																						@if(Auth::user()->id != $events[$i]->createdBy_id)
-																							<a href="{{ route('person.edit', ['person' => $events[$i]->createdBy_person]) }}">
-																								<img src="{{ '../'.$events[$i]->imgProfileUser }}"
-																									 class="img-circle" style="height: 30px; width: 30px;">
-
-																								{{ $events[$i]->createdBy_name }}
-																							</a>
-
-																						@else
-																							<img src="{{ '../'.$events[$i]->imgProfileUser }}"
-																								 class="img-circle" style="height: 30px; width: 30px;">
-
-																							{{ $events[$i]->createdBy_name }}
-																						@endif
-																					</span>
-
-																				</td>
 																				<td> <a href="{{ route('event.edit', ['event' => $item->id]) }}"> {{ $item->name }}</a></td>
 																				<td>
 																					@if(isset($eventDate[$i]->eventDate))
@@ -457,6 +422,39 @@
 																						Sem Grupo
 																					@endif
 																				</td>
+																				<td>
+
+																					@if(array_key_exists($item->id, $event_list))
+																						@if($event_list[$item->id])
+																							@if($is_sub[$item->id])
+																								<a href="javascript:;"
+																								   class="btn btn-danger btn-circle change-size"
+																								   style="margin-right: 10px;"
+																								   id="checkIn" onclick='checkOut({{ Auth::getUser()->person->id }})'>
+																									<i class="fa fa-close" id="i-checkIn"></i>
+																									Check-Out
+																								</a>
+																							@else
+																							<a type="button" class="btn btn-success btn-circle change-size"
+																							   style="margin-right: 10px;"
+																							   id="checkIn"
+																							   onclick='checkInEvent({{ Auth::getUser()->person->id }}, "person")'>
+																								<i class="fa fa-check" id="i-checkIn"></i>
+																								Check-In
+																							</a>
+																							@endif
+																						@else
+																							<a type="button" class="btn btn-success btn-circle change-size"
+																							   style="margin-right: 10px;"
+																							   id="checkIn" disabled>
+																								<i class="fa fa-check" id="i-checkIn"></i>
+																								Check-In
+																							</a>
+																						@endif
+																					@endif
+
+
+                                                                                </td>
 
 																			</tr>
 																			<?php $i++; ?>

@@ -11,6 +11,7 @@ use App\Repositories\EventRepository;
 use App\Repositories\EventSubscribedListRepository;
 use App\Repositories\GroupRepository;
 use App\Repositories\VisitorRepository;
+use App\Services\EventServices;
 use App\Services\FeedServices;
 use App\Traits\ConfigTrait;
 use App\Traits\CountRepository;
@@ -69,6 +70,10 @@ class UsersController extends Controller
      * @var FeedServices
      */
     private $feedServices;
+    /**
+     * @var EventServices
+     */
+    private $eventServices;
 
     /**
      * UsersController constructor.
@@ -82,7 +87,8 @@ class UsersController extends Controller
     public function __construct(UserRepository $repository, StateRepository $stateRepository,
                                 RoleRepository $roleRepository, PersonRepository $personRepository,
                                 VisitorRepository $visitorRepository, EventSubscribedListRepository $listRepository,
-                                EventRepository $eventRepository, GroupRepository $groupRepository, FeedServices $feedServices)
+                                EventRepository $eventRepository, GroupRepository $groupRepository,
+                                FeedServices $feedServices, EventServices $eventServices)
     {
         $this->repository = $repository;
         $this->stateRepository = $stateRepository;
@@ -93,17 +99,18 @@ class UsersController extends Controller
         $this->eventRepository = $eventRepository;
         $this->groupRepository = $groupRepository;
         $this->feedServices = $feedServices;
+        $this->eventServices = $eventServices;
     }
 
     public function myAccount()
     {
         $changePass = true;
 
-        if (Auth::getUser()->person) {
-            $model = Auth::getUser()->person;
+        if (Auth::user()->person) {
+            $model = Auth::user()->person;
             $role = $model->role->name;
         } else {
-            $model = Auth::getUser()->visitors->first();
+            $model = Auth::user()->visitors->first();
             $changePass = false;
             $role = "Visitante";
         }
@@ -141,9 +148,14 @@ class UsersController extends Controller
 
         $groups = $person->groups()->paginate() or null;
 
-        $type = $role == "Visitante" ? 'visitor_id' : "person_id";
+        if($role == "Visitante")
+        {
+            $list = $this->eventServices->getListSubVisitor($model->id);
+        }
+        else{
+            $list = $this->eventServices->getListSubPerson($model->id);
+        }
 
-        $list = $this->listRepository->findByField($type, $model->id);
 
         $arr = [];
         $events = [];

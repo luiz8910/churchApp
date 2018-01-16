@@ -411,12 +411,92 @@ class DashboardController extends Controller
          * Fim Recentes
          * */
 
+        $event_list = $this->check_in();
+        $is_sub = $this->isSubscribed();
+
+
         return view('dashboard.index', compact('countPerson', 'countGroups', 'events', 'notify', 'qtde', 'event',
             'countMembers', 'nextEvent', 'location', 'street', 'groups', 'eventDate', 'event_person',
-            'allMonths', 'allDays', 'days', 'allEvents',
-            'thisMonth', 'today', 'ano', 'allEventsNames', 'allEventsTimes',
-            'allEventsFrequencies', 'allEventsAddresses', 'numWeek',
-            'people', 'groups_recent', 'events_recent', 'qtde_users', 'qtde_groups', 'qtde_events', 'leader', 'church_id', 'feeds'));
+            'allMonths', 'allDays', 'days', 'allEvents', 'thisMonth', 'today', 'ano', 'allEventsNames', 'allEventsTimes',
+            'allEventsFrequencies', 'allEventsAddresses', 'numWeek', 'people', 'groups_recent', 'events_recent',
+            'qtde_users', 'qtde_groups', 'qtde_events', 'leader', 'church_id', 'feeds', 'event_list', 'is_sub'));
+    }
+
+    public function check_in()
+    {
+        $list = [];
+
+        // Verifica se é um membro
+        if(Auth::user()->person)
+        {
+            //User logado é membro
+            $model = Auth::user()->person->id;
+            //Lista de eventos em que o membro logado está inscrito
+            $event_list = $this->eventServices->getListSubPerson($model);
+        }
+        else{
+            //se if condição == false então o user logado
+            //é visitante
+            $model = Auth::user()->visitors->first()->id;
+            //Lista de eventos em que o visitante logado está inscrito
+            $event_list = $this->eventServices->getListSubVisitor($model);
+        }
+
+        foreach($event_list as $item)
+        {
+            //echo $item->event_id . '<br>';
+            /*
+             * Lista de eventos em que é permitido fazer o check-in
+             * baseado na hora atual e/ou se o usuário está inscrito
+             * @return boolean
+             */
+            $list[$item->event_id] = $this->eventServices->canCheckIn($item->event_id);
+        }
+
+        /*
+         * @return array | boolean
+         */
+        return $list;
+    }
+
+    /*
+     * Verifica se o usuário ja deu check-in
+     */
+    public function isSubscribed()
+    {
+        $list = [];
+
+        // Verifica se é um membro
+        if(Auth::user()->person)
+        {
+            //User logado é membro
+            $model = Auth::user()->person->id;
+            //Lista de eventos em que o membro logado está inscrito
+            $event_list = $this->eventServices->getListSubPerson($model);
+        }
+        else{
+            //se if condição == false então o user logado
+            //é visitante
+            $model = Auth::user()->visitors->first()->id;
+            //Lista de eventos em que o visitante logado está inscrito
+            $event_list = $this->eventServices->getListSubVisitor($model);
+        }
+
+        foreach($event_list as $item)
+        {
+            //echo $item->event_id . '<br>';
+            /*
+             * Lista de eventos em que é permitido fazer o check-in
+             * baseado na hora atual e/ou se o usuário está inscrito
+             * @return boolean
+             */
+            $list[$item->event_id] = $this->eventServices->isSubscribed($item->event_id);
+        }
+
+        /*
+         * @return array | boolean
+         */
+        return $list;
     }
 
     public function oldindex()

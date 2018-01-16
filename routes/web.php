@@ -214,7 +214,13 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('remove-inactive-vis/{code}', 'ImportController@removeInactiveVisitor');
     });
 
-    Route::get('/newFeed/{feed_notif}/{text}/{link?}/{expires_in?}', 'FeedController@newFeed');
+    Route::get('/newFeed/{feed_notif}/{text}/{link}/{expires_in?}', 'FeedController@newFeed');
+
+    Route::get('/event-newFeed/{event}/{text}/{link?}/{expires_in?}', 'FeedController@eventFeed');
+
+    Route::get('/group-newFeed/{event}/{text}/{link?}/{expires_in?}', 'FeedController@groupFeed');
+
+    Route::get('/person-newFeed/{event}/{text}/{link?}/{expires_in?}', 'FeedController@personFeed');
 
     Route::get("/getPusherKey", "ConfigController@getPusherKey");
 
@@ -392,5 +398,7 @@ Route::get('/callback', function (\Illuminate\Http\Request $request){
     dd(json_decode($response->getBody(), true));
 });
 Route::post('/api-login', 'UsersController@login');
+
+Route::get('list-person', 'DashboardController@check_in');
 
 

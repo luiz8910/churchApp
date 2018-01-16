@@ -9,6 +9,7 @@
 namespace App\Services;
 
 
+use App\Repositories\EventRepository;
 use App\Repositories\FeedRepository;
 use App\Repositories\PersonRepository;
 use App\Traits\ConfigTrait;
@@ -26,18 +27,24 @@ class FeedServices
      * @var PersonRepository
      */
     private $personRepository;
+    /**
+     * @var EventRepository
+     */
+    private $eventRepository;
 
-    public function __construct(FeedRepository $repository, PersonRepository $personRepository)
+    public function __construct(FeedRepository $repository, PersonRepository $personRepository,
+                                EventRepository $eventRepository)
     {
         $this->repository = $repository;
         $this->personRepository = $personRepository;
+        $this->eventRepository = $eventRepository;
     }
 
     public function newFeed($notif_range, $text, $link = null, $expires_in = null, $model = null,
-                            $model_id = null, $feed_type = null,  $people = null,
+                            $model_id = null, $feed_type = null, $people = null,
                             $event = null, $group = null)
     {
-        try{
+        try {
             $dt = Carbon::now();
             $dt = $dt->addWeek();
 
@@ -56,22 +63,32 @@ class FeedServices
 
             $id = $this->repository->create($data)->id;
 
-            switch ($notif_range){
-                case 1: $this->publicFeed($id); break;
+            switch ($notif_range) {
+                case 1:
+                    $this->publicFeed($id);
+                    break;
 
-                case 2: $this->eventFeed($event, $id); break;
+                case 2:
+                    $this->eventFeed($event, $id);
+                    break;
 
-                case 3: $this->groupFeed($group, $id); break;
+                case 3:
+                    $this->groupFeed($group, $id);
+                    break;
 
-                case 4: $this->people($people, $id); break;
+                case 4:
+                    $this->people($people, $id);
+                    break;
 
-                case 5: $this->leaderFeed($id); break;
+                case 5:
+                    $this->leaderFeed($id);
+                    break;
             }
 
             DB::commit();
             return true;
 
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             DB::rollback();
 
             return false;
@@ -83,9 +100,8 @@ class FeedServices
     {
         $people = $this->personRepository->findByField('church_id', $this->getUserChurch());
 
-        if(count($people) > 0){
-            foreach($people as $item)
-            {
+        if (count($people) > 0) {
+            foreach ($people as $item) {
                 DB::table('feeds_user')
                     ->insert([
                         'person_id' => $item->id,
@@ -124,7 +140,7 @@ class FeedServices
             'role_id' => $role_leader
         ]);
 
-        if(count($leaders) > 0){
+        if (count($leaders) > 0) {
             foreach ($leaders as $leader) {
                 DB::table('feeds_user')
                     ->insert([
@@ -151,7 +167,7 @@ class FeedServices
             'role_id' => $role_admin
         ]);
 
-        if(count($admins) > 0){
+        if (count($admins) > 0) {
             foreach ($admins as $admin) {
                 DB::table('feeds_user')
                     ->insert([
@@ -180,8 +196,7 @@ class FeedServices
             $dt = $feed->created_at->format("d/m/Y");
             $feed->data = $dt;
 
-            if($feed->model == 'person')
-            {
+            if ($feed->model == 'person') {
                 $person = $this->personRepository->find($feed->model_id);
 
                 $feed->model = 'Pessoas';
@@ -197,13 +212,26 @@ class FeedServices
     {
         $church_id = $this->getUserChurch();
 
-        $feeds = DB::table('feeds')
-            ->join('feeds_user', 'feeds.id', 'feeds_user.feed_id')
-            ->where([
-                'feeds.church_id' => $church_id,
-                'feeds_user.person_id' => \Auth::user()->person->id,
-                ['expires_in', '>', Carbon::now()]
-            ])->get();
+        if(\Auth::user()->person)
+        {
+            $feeds = DB::table('feeds')
+                ->join('feeds_user', 'feeds.id', 'feeds_user.feed_id')
+                ->where([
+                    'feeds.church_id' => $church_id,
+                    'feeds_user.person_id' => \Auth::user()->person->id,
+                    ['expires_in', '>', Carbon::now()]
+                ])->orderBy('feeds.created_at', 'desc')->get();
+        }
+        else{
+            $feeds = DB::table('feeds')
+                ->join('feeds_user', 'feeds.id', 'feeds_user.feed_id')
+                ->where([
+                    'feeds.church_id' => $church_id,
+                    'feeds_user.visitor_id' => \Auth::user()->visitors->first()->id,
+                    ['expires_in', '>', Carbon::now()]
+                ])->orderBy('feeds.created_at', 'desc')->get();
+        }
+
 
         /*$feeds = $this->repository->findWhere(
             [
@@ -216,8 +244,7 @@ class FeedServices
             $dt = date_create($feed->created_at);
             $feed->data = $dt->format("d/m/Y");
 
-            if($feed->model == 'person')
-            {
+            if ($feed->model == 'person') {
                 $person = $this->personRepository->find($feed->model_id);
 
                 $feed->model = 'Pessoas';

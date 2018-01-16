@@ -1283,6 +1283,9 @@ class EventServices
         ]);
     }
 
+    /*
+     * Desinscreve o membro do evento selecionado
+     */
     public function UnsubUser($person_id, $event_id)
     {
         $list = $this->listRepository->findWhere([
@@ -1293,6 +1296,9 @@ class EventServices
         $this->listRepository->delete($list->id);
     }
 
+    /*
+     * Desinscreve o visitante do evento selecionado
+     */
     public function UnsubVisitor($visitor_id, $event_id)
     {
         $list = $this->listRepository->findWhere([
@@ -1303,6 +1309,10 @@ class EventServices
         $this->listRepository->delete($list->id);
     }
 
+    /*
+     * Desinscreve o visitante de todos os eventos
+     * em que o mesmo participa
+     */
     public function UnsubVisitorAll($visitor_id)
     {
         $list = $this->listRepository->findWhere([
@@ -1312,6 +1322,10 @@ class EventServices
         $this->listRepository->delete($list->id);
     }
 
+    /*
+     * Recupera a lista de eventos em que o membro
+     * está inscrito
+     * */
     public function getListSubPerson($person_id)
     {
         return $this->listRepository->findWhere([
@@ -1319,6 +1333,10 @@ class EventServices
         ]);
     }
 
+    /*
+     * Recupera a lista de eventos em que o visitante
+     * está inscrito
+     * */
     public function getListSubVisitor($visitor_id)
     {
         return $this->listRepository->findWhere([

@@ -1007,7 +1007,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     @foreach($events as $item)
                                                         <tr>
                                                             <td>
-                                                                <a href="{{ route('group.edit', ['group' => $item->id]) }}">
+                                                                <a href="{{ route('event.edit', ['event' => $item->id]) }}">
                                                                     {{ $item->name }}
                                                                 </a>
                                                             </td>

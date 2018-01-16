@@ -11,10 +11,21 @@ namespace App\Services;
 
 use App\Models\Event;
 use App\Models\RecentGroups;
+use App\Repositories\GroupRepository;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class GroupServices
 {
+    /**
+     * @var GroupRepository
+     */
+    private $repository;
+
+    public function __construct(GroupRepository $repository)
+    {
+        $this->repository = $repository;
+    }
 
     public function listGroupEvents($group, $church_id)
     {
@@ -38,5 +49,15 @@ class GroupServices
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
         ]);
+    }
+
+    public function getListSubGroup($group)
+    {
+        return DB::table('group_person')
+            ->where([
+                'group_id' => $group,
+                'deleted_at' => null
+            ])
+            ->get();
     }
 }
