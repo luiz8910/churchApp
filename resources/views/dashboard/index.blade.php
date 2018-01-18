@@ -354,6 +354,7 @@
 																</a>
 
 															</div>
+
 															<div class="btn-group">
 																<a class="btn red btn-outline btn-circle" href="javascript:;" data-toggle="dropdown">
 																	<i class="fa fa-share"></i>

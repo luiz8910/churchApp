@@ -55,10 +55,10 @@
                     <h6 class="color-white pb-3">LOGIN SOCIAL</h6>
                     <ul class="list-unstyled pt-4 login-social-list d-flex">
                         <li>
-                            <a href="{{ url('pre/auth/facebook') }}"><i class="fab fa-3x fa-facebook"></i></a>
+                            <a href="{{ url('pre/auth/facebook') }}" class="facebook"><i class="fab fa-3x fa-facebook"></i></a>
                         </li>
                         <li>
-                            <a href="{{ url('pre/auth/google') }}"><i class="fab fa-3x fa-google-plus-square"></i></a>
+                            <a href="{{ url('pre/auth/google') }}" class="googleplus"><i class="fab fa-3x fa-google-plus-square"></i></a>
                         </li>
                     </ul>
                 </div>

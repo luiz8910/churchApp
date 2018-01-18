@@ -127,77 +127,88 @@ class RegisterController extends Controller
      */
     public function handleProviderCallback()
     {
-        $church = session('church');
+        try{
 
-        $social = Socialite::driver('facebook')->user();
+            $church = session('church');
 
-        $userType = "Visitante";
+            $social = Socialite::driver('facebook')->user();
 
-        $user = $this->userRepository->findByField('facebook_id', $social->id)->first();
+            $userType = "Visitante";
 
-        if(count($user) > 0)
-        {
-            if ($user->church_id == $church)
+            $user = $this->userRepository->findByField('facebook_id', $social->id)->first();
+
+            if(count($user) > 0)
             {
-                $userType = $this->roleRepository->find($user->person->role_id)->name;
-            }
-        }
-        else{
-            $user = $this->userRepository->findByField('email', $social->email)->first();
-
-            if(count($user) == 0)
-            {
-                \Session::flash('email.error', 'O email informado não existe');
-                return redirect()->route('login');
-            }
-
-
-
-            DB::table('users')
-                ->where('id', $user->id)
-                ->update(['facebook_id' => $social->getId()]);
-
-            DB::table('people')
-                ->where("id", $user->person->id)
-                ->update(['imgProfile' => $social->getAvatar()]);
-
-            $userType = $this->roleRepository->find($user->person->role_id)->name;
-        }
-
-
-        if($userType == "Visitante")
-        {
-            $visitor = $this->visitorRepository->findByField('email', $social->getEmail())->first();
-
-            if(count($visitor) > 0){
-
-                $data['facebook_id'] = $social->getId();
-                $data['name'] = $social->getName();
-                $data['imgProfile'] = $social->getAvatar();
-
-                $id = $visitor->users()->first()->id;
-
-                $this->visitorRepository->update($data, $visitor->id);
-
-                DB::table('users')
-                    ->where('id', $id)
-                    ->update(['facebook_id' => $social->getId()]);
-
-                auth()->loginUsingId($id);
-
-                return redirect()->route('event.index');
+                if ($user->church_id == $church)
+                {
+                    $userType = $this->roleRepository->find($user->person->role_id)->name;
+                }
             }
             else{
-                \Session::flash('email.error', 'O email informado não existe');
-                return redirect()->route('login');
+                $user = $this->userRepository->findByField('email', $social->email)->first();
+
+                if(count($user) == 0)
+                {
+                    \Session::flash('email.error', 'O email informado não existe');
+                    return redirect()->route('login');
+                }
+
+
+                DB::table('users')
+                    ->where('id', $user->id)
+                    ->update(['facebook_id' => $social->getId()]);
+
+                DB::table('people')
+                    ->where("id", $user->person->id)
+                    ->update(['imgProfile' => $social->getAvatar()]);
+
+                $userType = $this->roleRepository->find($user->person->role_id)->name;
             }
-        }
-        else{
 
-            auth()->loginUsingId($user->id);
 
-            return redirect()->route('index');
+            if($userType == "Visitante")
+            {
+                $visitor = $this->visitorRepository->findByField('email', $social->getEmail())->first();
+
+                if(count($visitor) > 0){
+
+                    $data['facebook_id'] = $social->getId();
+                    $data['name'] = $social->getName();
+                    $data['imgProfile'] = $social->getAvatar();
+
+                    $id = $visitor->users()->first()->id;
+
+                    $this->visitorRepository->update($data, $visitor->id);
+
+                    DB::table('users')
+                        ->where('id', $id)
+                        ->update(['facebook_id' => $social->getId()]);
+
+                    auth()->loginUsingId($id);
+                    DB::commit();
+
+                    return redirect()->route('event.index');
+                }
+                else{
+                    \Session::flash('email.error', 'O email informado não existe');
+                    return redirect()->route('login');
+                }
+            }
+            else{
+
+                auth()->loginUsingId($user->id);
+                DB::commit();
+
+                return redirect()->route('index');
+            }
+
+
+        }catch(\Exception $e){
+            DB::rollback();
+
+            dd($e);
         }
+
     }
 
     /**
