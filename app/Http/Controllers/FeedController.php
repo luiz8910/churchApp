@@ -12,13 +12,15 @@ use App\Services\GroupServices;
 use App\Traits\ConfigTrait;
 use App\Traits\CountRepository;
 use App\Traits\NotifyRepository;
+use App\Traits\PaginateTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 
 class FeedController extends Controller
 {
-    use CountRepository, NotifyRepository, ConfigTrait;
+    use CountRepository, NotifyRepository, ConfigTrait, PaginateTrait;
     /**
      * @var FeedRepository
      */
@@ -81,6 +83,8 @@ class FeedController extends Controller
 
         $feeds = $this->feedServices->feeds();
 
+        $feeds = $this->paginate($feeds->toArray(), 5)->setPath('');
+
         $events = $this->eventRepository->findByField('church_id', $church_id);
 
         $groups = $this->groupRepository->findByField('church_id', $church_id);
@@ -91,6 +95,8 @@ class FeedController extends Controller
             'countGroups', 'notify', 'qtde', 'leader', 'role', 'church_id', 'feeds',
             'events', 'groups', 'people'));
     }
+
+
 
     public function newFeed($feed_notif, $text, $link = null, $expires_in = null)
     {

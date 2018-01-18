@@ -599,4 +599,10 @@ $(function () {
         window.localStorage.removeItem('plan');
     }
 
+    /*$("#container-pagination").cleverInfiniteScroll({
+        contentsWrapperSelector: "#container-pagination",
+        contentSelector: ".feeds",
+        nextSelector: "#next",
+        loadImage: "ajax-loader.gif"
+    })*/
 });

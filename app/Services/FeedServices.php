@@ -185,16 +185,20 @@ class FeedServices
     {
         $church_id = $this->getUserChurch();
 
-        $feeds = $this->repository->findWhere(
-            [
-                'church_id' => $church_id,
-                ['expires_in', '>', Carbon::now()]
-            ]
-        );
+        $feeds = DB::table('feeds')->where([
+            'church_id' => $church_id,
+            'show' => 1,
+            ['expires_in', '>', Carbon::now()]
+        ])->get();
+
+
+
+        //dd($feeds->get());
 
         foreach ($feeds as $feed) {
-            $dt = $feed->created_at->format("d/m/Y");
-            $feed->data = $dt;
+            $dt = date_create($feed->created_at);
+
+            $feed->data = date_format($dt, "d/m/Y");
 
             if ($feed->model == 'person') {
                 $person = $this->personRepository->find($feed->model_id);
@@ -204,6 +208,8 @@ class FeedServices
                 $feed->text .= " - " . $person->name . " " . $person->lastName;
             }
         }
+
+        //dd($feeds);
 
         return $feeds;
     }

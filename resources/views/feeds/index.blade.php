@@ -45,7 +45,7 @@
 							</div> <!-- FIM DIV .page-head -->
 
 							<div class="page-content">
-								<div class="container">
+								<div class="container" id="container-pagination">
 									<div class="alert alert-danger alert-dismissible" id="delete-group-alert" role="alert" style="display: none;">
 										<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 											<span aria-hidden="true">&times;</span>
@@ -236,7 +236,7 @@
 																</div>
 																<div class="mt-list-container list-default">
 
-																	<ul>
+																	<ul class="feeds">
 																		@foreach($feeds as $feed)
 																			<li class="mt-list-item">
 																				<div class="list-icon-container done">
@@ -255,10 +255,39 @@
 																				</div>
 																			</li>
 																		@endforeach
+
 																	</ul>
+
+
+
+
+                                                                    <nav aria-label="Page navigation" style="display: none;">
+                                                                        <ul class="pagination">
+                                                                            <li>
+                                                                                <a href="#" aria-label="Previous">
+                                                                                    <span aria-hidden="true">&laquo;</span>
+                                                                                </a>
+                                                                            </li>
+                                                                            <li><a href="/feeds?page=1">1</a></li>
+                                                                            <li><a href="/feeds?page=2">2</a></li>
+                                                                            <li><a href="/feeds?page=3">3</a></li>
+                                                                            <li>
+                                                                                <a href="" aria-label="Next" id="next">
+                                                                                    <span aria-hidden="true">&raquo;</span>
+                                                                                </a>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </nav>
+
+
 																</div>
+
+
 															</div>
 														</div> <!-- FIM DIV .portlet-body-config -->
+                                                        <div class="pull-right">
+                                                            {{ $feeds->links() }}
+                                                        </div>
 													</div> <!-- FIM DIV .portlet-body.form -->
 												</div> <!-- FIM DIV .portlet.light -->
 											</div> <!-- FIM DIV .col-md-12 -->

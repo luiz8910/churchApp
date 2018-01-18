@@ -247,6 +247,10 @@ Route::group(['middleware' => 'auth'], function () {
 
     Auth::routes();
 
+    Route::get('/privacy', function(){
+        return view('config.privacypolicy');
+    });
+
     Route::get('/events-ajax', 'EventController@getListEvents');
 
     Route::get('/events-excel/{format}', 'EventController@excel')->name('events.excel');

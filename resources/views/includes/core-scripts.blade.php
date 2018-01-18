@@ -42,6 +42,8 @@
 <script src="../assets/global/plugins/bootstrap-sweetalert/sweetalert.min.js" type="text/javascript"></script>
 <script src="../assets/pages/scripts/ui-sweetalert.min.js" type="text/javascript"></script>
 
+<script src="../js/jquery.clever-infinite-scroll.js"></script>
+
 
 <!-- END THEME LAYOUT SCRIPTS -->
 <!-- JS Próprio -->
