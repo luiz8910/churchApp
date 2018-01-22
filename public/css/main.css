@@ -1555,7 +1555,11 @@ button {
     right: inherit;
     left: inherit; }
   .inner-text {
-    font-size: 20px; } }
+    font-size: 20px; }
+  .login-social-list {
+    justify-content: center;
+  }
+}
 
 @media screen and (max-width: 360px) {
   #pricing {
