@@ -1384,6 +1384,168 @@ class EventController extends Controller
     /*
      * Lista de inscritos no evento $id
      */
+    public function getSubEventListAjax($id)
+    {
+        try{
+            $sub = $this->eventServices->getListSubEvent($id);
+
+            $person_sub = [];
+            $visit_sub = [];
+
+            $arr = [];
+
+            $vis = [];
+
+            foreach ($sub as $item) {
+                if(isset($item->person_id))
+                {
+                    $arr[] = $item->person_id;
+                }
+                else{
+                    $vis[] = $item->visitor_id;
+                }
+
+                $attendance[] = count(DB::table('event_person')
+                    ->where([
+                        'event_id' => $id,
+                        'check-in' => 1
+                    ])->get());
+            }
+
+            $person_sub = DB::table('people')
+                ->whereIn('id', $arr)
+                ->get()
+                //->paginate(5)
+            ;
+
+            $visit_sub = DB::table('visitors')
+                ->whereIn('id', $vis)
+                ->get()
+                //->paginate(5)
+            ;
+
+            $event = $this->repository->find($id);
+
+            $people = DB::table('people')
+                ->where(
+                    [
+                        'church_id' => $this->getUserChurch(),
+                        'deleted_at' => null
+                    ])
+                ->whereNotIn('id', $arr)
+                ->get();
+
+
+            $visitors = $this->visitorRepository->findWhereNotIn('id', $vis);
+
+            $merged = $people->merge($visitors);
+
+            $person_sub = $person_sub->merge($visit_sub);
+
+            return json_encode([
+                'status' => true,
+                'data' => $merged
+            ]);
+
+
+        }catch(\Exception $e){
+            DB::rollback();
+
+            return json_encode([
+                'status' => false,
+                'msg' => $e->getMessage()
+            ]);
+        }
+    }
+
+    /*
+     * Usado para recuperar a lista de usuários inscritos,
+     * para posteriormente realizar check-in em lote.
+     */
+    public function getCheckInListAjax($event)
+    {
+        $sub = $this->eventServices->getListSubEvent($event);
+
+        $arr = [];
+
+        $vis = [];
+
+        foreach ($sub as $item) {
+            if(isset($item->person_id))
+            {
+                $arr[] = $item->person_id;
+            }
+            else{
+                $vis[] = $item->visitor_id;
+            }
+        }
+
+        $person_sub = DB::table('people')
+            ->whereIn('id', $arr)
+            ->get();
+
+        $visit_sub = DB::table('visitors')
+            ->whereIn('id', $vis)
+            ->get();
+
+        //dd($person_sub);
+
+        $merged = $person_sub->merge($visit_sub); //dd($merged);
+
+        return json_encode([
+            'status' => true,
+            'data' => $merged
+        ]);
+    }
+
+    public function subPeople($people, $event)
+    {
+        $people = \GuzzleHttp\json_decode($people);
+
+        foreach($people as $item)
+        {
+            $item = str_replace("-", "/", $item);
+
+            $this->eventServices->subEvent($event, $item);
+        }
+
+        return json_encode(['status' => true]);
+    }
+
+    public function checkInPeople($people, $event)
+    {
+        $people = \GuzzleHttp\json_decode($people);
+
+        foreach ($people as $item)
+        {
+            $item = str_replace("-", "/", $item, $count);
+
+            if($count == 0){
+                $isSub = $this->eventServices->isSubPeople($event, $item);
+
+                if(!$isSub)
+                {
+                    $this->eventServices->checkInBatch($event, $item);
+                }
+
+            }
+            else{
+                $isSub = $this->eventServices->isSubVisitor($event, $item);
+
+                if(!$isSub)
+                {
+                    $this->eventServices->checkInVisitorBatch($event, $item);
+                }
+
+            }
+        }
+
+        return json_encode(['status' => true]);
+    }
+
+    /*
+     * Lista de inscritos no evento $id
+     */
     public function getSubEventList($id)
     {
         /*

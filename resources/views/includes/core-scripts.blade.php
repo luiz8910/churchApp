@@ -42,6 +42,12 @@
 <script src="../assets/global/plugins/bootstrap-sweetalert/sweetalert.min.js" type="text/javascript"></script>
 <script src="../assets/pages/scripts/ui-sweetalert.min.js" type="text/javascript"></script>
 
+<script src="../assets/global/plugins/bootstrap-multiselect/js/bootstrap-multiselect.js" type="text/javascript"></script>
+<script src="../assets/pages/scripts/components-bootstrap-multiselect.min.js" type="text/javascript"></script>
+
+<script src="../assets/global/plugins/select2/js/select2.full.min.js" type="text/javascript"></script>
+<script src="../assets/pages/scripts/components-select2.min.js" type="text/javascript"></script>
+
 <script src="../js/jquery.clever-infinite-scroll.js"></script>
 
 

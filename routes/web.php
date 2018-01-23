@@ -175,6 +175,14 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post("/sub/{event}", 'EventController@eventSub')->name('event.addMembers');
 
+    Route::get('/getSubEventListAjax/{event}', 'EventController@getSubEventListAjax');
+
+    Route::get('/getCheckInListAjax/{event}', 'EventController@getCheckInListAjax');
+
+    Route::get('/subPeople/{people}/{event}', 'EventController@subPeople');
+
+    Route::get('/checkInPeople/{people}/{event}', 'EventController@checkInPeople');
+
     Route::get('/delete-sub/{person_id}/{event_id}', 'EventController@UnsubUser');
 
     Route::get('/check_auto/{event_id}/{check}', 'EventController@check_auto');

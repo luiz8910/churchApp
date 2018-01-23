@@ -93,299 +93,301 @@ class DashboardController extends Controller
         */
         try{
 
-        $countPerson[] = $this->countPerson();
+            $countPerson[] = $this->countPerson();
 
-        $countGroups[] = $this->countGroups();
+            $countGroups[] = $this->countGroups();
 
-        $leader = $this->getLeaderRoleId();
+            $leader = $this->getLeaderRoleId();
 
-        //Fim Variáveis
+            //Fim Variáveis
 
-        $church_id = $this->getUserChurch();
+            $church_id = $this->getUserChurch();
 
-        $events = Event::where('church_id', $church_id)->paginate(5);
+            $events = Event::where('church_id', $church_id)->paginate(5);
 
-        $notify = $this->notify();
+            $notify = $this->notify();
 
-        $qtde = count($notify) or 0;
+            $qtde = count($notify) or 0;
 
-        $id = Auth::user()->person_id;
+            $id = Auth::user()->person_id;
 
-        $person = $this->personRepository->find($id);
+            $person = $this->personRepository->find($id);
 
-        $group_ids = [];
+            $group_ids = [];
 
-        for ($i = 0; $i < count($person->groups); $i++) {
-            $group_ids[] = $person->groups[$i]->id;
-        }
-
-        $groups = DB::table("groups")
-            ->whereIn("id", $group_ids)
-            ->paginate(5);
-
-
-        if (count($groups) == 0) {
-            $groups = null;
-        }
-
-        $event_person = [];
-
-        $nextEvent = null;
-
-        $qtde_users = null;
-        $qtde_groups = null;
-        $qtde_events = null;
-
-        $next = true;
-
-        //Recupera o mês atual
-        $thisMonth = $this->agendaServices->thisMonth();
-
-        //Ano Atual
-        $ano = date("Y");
-
-        //Dia Atual
-        $today = date("Y-m-d");
-
-        //Recupera todos os meses
-        $allMonths = $this->agendaServices->allMonths();
-
-        //Recuperar todos os dias da semana
-        $allDays = $this->agendaServices->allDaysName();
-
-        //Recupera a semana atual
-        $days = $this->agendaServices->findWeek();
-
-        //Retorna todos os eventos
-        $allEvents = $this->eventServices->allEvents($church_id);
-
-        if ($groups) {
-            foreach ($groups as $group) {
-                $g = $this->groupRepository->find($group->id);
-
-                $group->sinceOf = $this->formatDateView($g->sinceOf);
-
-                $countMembers[] = count($g->people->all());
-            }
-        }
-        $feeds = null;
-
-        if ($church_id) {
-            $feeds = $this->feedServices->myFeeds();
-        }
-
-        if (count($events) == 0) {
-            $location = $street = null;
-
-            return view('dashboard.index', compact('countPerson', 'countGroups', 'events', 'notify', 'qtde',
-                'countMembers', 'street', 'groups', 'event_person', 'nextEvent', 'leader', 'church_id',
-                'qtde_users', 'qtde_groups', 'qtde_events', 'next', 'thisMonth', 'ano', 'allMonths', 'days',
-                'allEvents', 'people', 'groups_recent', 'events_recent', 'qtde_users', 'qtde_groups', 'qtde_events',
-                'location', 'street', 'feeds'));
-        }
-
-        $eventDate = [];
-        $i = 0;
-
-        foreach ($events as $event) {
-            $eventDate[] = DB::table('event_person')
-                ->where(
-                    [
-                        'event_id' => $event->id,
-                        'person_id' => Auth::user()->person_id,
-                        'show' => 0,
-                        'deleted_at' => null
-                    ])
-                ->first();
-
-            // Incluir dados da coluna criado por ( foto e primeiro nome )
-
-            $user = $this->userRepository->find($event->createdBy_id)->person;
-
-            $event->createdBy_name = $user->name;
-
-            $event->createdBy_person = $user->id;
-
-            $event->imgProfileUser = $user->imgProfile;
-
-
-            if ($eventDate[$i] != null) {
-                $eventDate[$i]->eventDate = $this->formatDateView($eventDate[$i]->eventDate);
-            } else {
-                array_pop($eventDate);
-                $i--;
+            for ($i = 0; $i < count($person->groups); $i++) {
+                $group_ids[] = $person->groups[$i]->id;
             }
 
-            $i++;
-        }
+            $groups = DB::table("groups")
+                ->whereIn("id", $group_ids)
+                ->paginate(5);
 
 
-        //dd($events[0]);
+            if (count($groups) == 0) {
+                $groups = null;
+            }
 
-        if (!empty($eventDate)) {
-            if ($eventDate[0] != null) {
-                for ($i = 0; $i < count($eventDate); $i++) {
+            $event_person = [];
 
-                    if ($eventDate[$i] != null) {
-                        $event_person[$i] = $this->eventRepository->find($eventDate[$i]->event_id);
+            $nextEvent = null;
 
-                        if ($event_person[$i]->group_id != null) {
-                            $event_person[$i]->group_name = $this->groupRepository->find($event_person[$i]->group_id)->name;
+            $qtde_users = null;
+            $qtde_groups = null;
+            $qtde_events = null;
+
+            $next = true;
+
+            //Recupera o mês atual
+            $thisMonth = $this->agendaServices->thisMonth();
+
+            //Ano Atual
+            $ano = date("Y");
+
+            //Dia Atual
+            $today = date("Y-m-d");
+
+            //Recupera todos os meses
+            $allMonths = $this->agendaServices->allMonths();
+
+            //Recuperar todos os dias da semana
+            $allDays = $this->agendaServices->allDaysName();
+
+            //Recupera a semana atual
+            $days = $this->agendaServices->findWeek();
+
+            //Retorna todos os eventos
+            $allEvents = $this->eventServices->allEvents($church_id);
+
+            if ($groups) {
+                foreach ($groups as $group) {
+                    $g = $this->groupRepository->find($group->id);
+
+                    $group->sinceOf = $this->formatDateView($g->sinceOf);
+
+                    $countMembers[] = count($g->people->all());
+                }
+            }
+            $feeds = null;
+
+            if ($church_id) {
+                $feeds = $this->feedServices->myFeeds();
+            }
+
+            if (count($events) == 0) {
+                $location = $street = null;
+
+                return view('dashboard.index', compact('countPerson', 'countGroups', 'events', 'notify', 'qtde',
+                    'countMembers', 'street', 'groups', 'event_person', 'nextEvent', 'leader', 'church_id',
+                    'qtde_users', 'qtde_groups', 'qtde_events', 'next', 'thisMonth', 'ano', 'allMonths', 'days',
+                    'allEvents', 'people', 'groups_recent', 'events_recent', 'qtde_users', 'qtde_groups', 'qtde_events',
+                    'location', 'street', 'feeds'));
+            }
+
+            $eventDate = [];
+            $i = 0;
+
+            foreach ($events as $event) {
+                $eventDate[] = DB::table('event_person')
+                    ->where(
+                        [
+                            'event_id' => $event->id,
+                            'person_id' => Auth::user()->person_id,
+                            'show' => 0,
+                            'deleted_at' => null
+                        ])
+                    ->first();
+
+                // Incluir dados da coluna criado por ( foto e primeiro nome )
+
+                $user = $this->userRepository->find($event->createdBy_id)->person;
+
+                $event->createdBy_name = $user->name;
+
+                $event->createdBy_person = $user->id;
+
+                $event->imgProfileUser = $user->imgProfile;
+
+
+                if ($eventDate[$i] != null) {
+                    $eventDate[$i]->eventDate = $this->formatDateView($eventDate[$i]->eventDate);
+                } else {
+                    array_pop($eventDate);
+                    $i--;
+                }
+
+                $i++;
+            }
+
+
+            //dd($events[0]);
+
+            if (!empty($eventDate)) {
+                if ($eventDate[0] != null) {
+                    for ($i = 0; $i < count($eventDate); $i++) {
+
+                        if ($eventDate[$i] != null) {
+                            $event_person[$i] = $this->eventRepository->find($eventDate[$i]->event_id);
+
+                            if ($event_person[$i]->group_id != null) {
+                                $event_person[$i]->group_name = $this->groupRepository->find($event_person[$i]->group_id)->name;
+                            }
                         }
                     }
                 }
             }
-        }
 
 
-        $nextEvent = $this->eventServices->getNextEvent();
+            $nextEvent = $this->eventServices->getNextEvent();
 
-        $event = null;
-        $street = null;
-        $location = null;
+            $event = null;
+            $street = null;
+            $location = null;
 
-        if ($nextEvent[0]) {
-            $nextEvent[1] = $this->formatDateView($nextEvent[1]);
+            if ($nextEvent[0]) {
+                $nextEvent[1] = $this->formatDateView($nextEvent[1]);
 
-            $event = $this->eventRepository->find($nextEvent[0]);
+                $event = $this->eventRepository->find($nextEvent[0]);
 
-            $street = $event->street . ", " . $event->number . " - " . $event->city;
+                $street = $event->street . ", " . $event->number . " - " . $event->city;
 
-            $location = $this->formatGoogleMaps($event);
-        }
-
-
-        //Contador de semanas
-        $cont = 1;
-
-        //Numero de Semanas
-        $numWeek = $this->getDefaultWeeks();
-
-        //Listagem até a 6° semana por padrão
-        while ($cont < $numWeek) {
-            $time = $cont == 1 ? 'next' : $cont;
-
-            $days = array_merge($days, $this->agendaServices->findWeek($time));
-
-            $cont++;
-        }
-
-
-        $allEventsNames = [];
-        $allEventsTimes = [];
-        $allEventsFrequencies = [];
-        $allEventsAddresses = [];
-
-        foreach ($allEvents as $allEvent) {
-            $e = $this->eventRepository->find($allEvent->event_id);
-
-            //Nome de todos os eventos
-            $allEventsNames[] = $e->name;
-
-            //Hora de inicio de todos os eventos
-            $allEventsTimes[] = $e->startTime;
-
-            //Frequência de todos os eventos
-            $allEventsFrequencies[] = $e->frequency;
-
-            //Todos os endereços
-            $allEventsAddresses[] = $e->street . ", " . $e->neighborhood . "\n" . $e->city . ", " . $e->state;
-        }
-
-
-        /*
-         * Fim Agenda
-         */
-
-        /*
-         * Início Recent Users, Group e Events
-         * */
-
-        $recent_users = RecentUsers::where([
-            'church_id' => $church_id
-        ])
-            ->limit(5)
-            ->get();
-
-        $recent_groups = RecentGroups::where([
-            'church_id' => $church_id
-        ])
-            ->limit(5)
-            ->get();
-
-        $recent_events = RecentEvents::where([
-            'church_id' => $church_id
-        ])
-            ->limit(5)
-            ->get();
-
-        $qtde_users = count($recent_users);
-        $qtde_groups = count($recent_groups);
-        $qtde_events = count($recent_events);
-
-        $people = [];
-        $groups_recent = [];
-        $events_recent = [];
-
-
-        if ($qtde_users > 0) {
-            foreach ($recent_users as $recent_user) {
-                $p = $this->personRepository->find($recent_user->person_id);
-
-                $p->role_id = $this->roleRepository->findByField('id', $p->role_id)->first()->name;
-
-                $people[] = $p;
-            }
-        }
-
-
-        if ($qtde_groups > 0) {
-            foreach ($recent_groups as $item) {
-                $g = $this->groupRepository->find($item->group_id);
-
-                $g->owner_id = $this->userRepository->find($g->owner_id)->person;
-
-                $g->imgCreatorProfile = $g->owner_id->imgProfile;
-
-                $g->owner_id = $g->owner_id->name . " " . $g->owner_id->lastName;
-
-                $g->sinceOf = $this->formatDateView($g->sinceOf);
-
-                $groups_recent[] = $g;
-            }
-        }
-
-
-        if ($qtde_events > 0) {
-
-            foreach ($recent_events as $item) {
-                $e = $this->eventRepository->find($item->event_id);
-
-                $e->createdBy_id = $this->userRepository->find($e->createdBy_id)->person;
-
-                $e->imgCreatorProfile = $e->createdBy_id->imgProfile;
-
-                $e->createdBy_id = $e->createdBy_id->name . " " . $e->createdBy_id->lastName;
-
-                $e->group_id = $e->group_id ? $this->groupRepository->find($e->group_id)->name : 'Sem Grupo';
-
-                //$nextEventRecent = $this->eventServices->getNextEvent($e->id);
-
-                //$e->nextEvent = $this->formatDateView($nextEventRecent[1]);
-
-                $events_recent[] = $e;
+                $location = $this->formatGoogleMaps($event);
             }
 
 
-        }
+            //Contador de semanas
+            $cont = 1;
+
+            //Numero de Semanas
+            $numWeek = $this->getDefaultWeeks();
+
+            //Listagem até a 6° semana por padrão
+            while ($cont < $numWeek) {
+                $time = $cont == 1 ? 'next' : $cont;
+
+                $days = array_merge($days, $this->agendaServices->findWeek($time));
+
+                $cont++;
+            }
 
 
-        /*
-         * Fim Recentes
-         * */
+            $allEventsNames = [];
+            $allEventsTimes = [];
+            $allEventsFrequencies = [];
+            $allEventsAddresses = [];
 
-        $event_list = $this->check_in();
-        $is_sub = $this->isSubscribed();
+            foreach ($allEvents as $allEvent) {
+                $e = $this->eventRepository->find($allEvent->event_id);
+
+                //Nome de todos os eventos
+                $allEventsNames[] = $e->name;
+
+                //Hora de inicio de todos os eventos
+                $allEventsTimes[] = $e->startTime;
+
+                //Frequência de todos os eventos
+                $allEventsFrequencies[] = $e->frequency;
+
+                //Todos os endereços
+                $allEventsAddresses[] = $e->street . ", " . $e->neighborhood . "\n" . $e->city . ", " . $e->state;
+            }
+
+
+            /*
+             * Fim Agenda
+             */
+
+            /*
+             * Início Recent Users, Group e Events
+             * */
+
+            $recent_users = RecentUsers::where([
+                'church_id' => $church_id
+            ])
+                ->limit(5)
+                ->get();
+
+            $recent_groups = RecentGroups::where([
+                'church_id' => $church_id
+            ])
+                ->limit(5)
+                ->get();
+
+            $recent_events = RecentEvents::where([
+                'church_id' => $church_id
+            ])
+                ->limit(5)
+                ->get();
+
+            $qtde_users = count($recent_users);
+            $qtde_groups = count($recent_groups);
+            $qtde_events = count($recent_events);
+
+            $people = [];
+            $groups_recent = [];
+            $events_recent = [];
+
+
+            if ($qtde_users > 0) {
+                foreach ($recent_users as $recent_user) {
+                    $p = $this->personRepository->find($recent_user->person_id);
+
+                    $p->role_id = $this->roleRepository->findByField('id', $p->role_id)->first()->name;
+
+                    $people[] = $p;
+                }
+            }
+
+
+            if ($qtde_groups > 0) {
+                foreach ($recent_groups as $item) {
+                    $g = $this->groupRepository->find($item->group_id);
+
+                    $g->owner_id = $this->userRepository->find($g->owner_id)->person;
+
+                    $g->imgCreatorProfile = $g->owner_id->imgProfile;
+
+                    $g->owner_id = $g->owner_id->name . " " . $g->owner_id->lastName;
+
+                    $g->sinceOf = $this->formatDateView($g->sinceOf);
+
+                    $groups_recent[] = $g;
+                }
+            }
+
+
+            if ($qtde_events > 0) {
+
+                foreach ($recent_events as $item) {
+                    $e = $this->eventRepository->find($item->event_id);
+
+                    $e->createdBy_id = $this->userRepository->find($e->createdBy_id)->person;
+
+                    $e->imgCreatorProfile = $e->createdBy_id->imgProfile;
+
+                    $e->createdBy_id = $e->createdBy_id->name . " " . $e->createdBy_id->lastName;
+
+                    $e->group_id = $e->group_id ? $this->groupRepository->find($e->group_id)->name : 'Sem Grupo';
+
+                    //$nextEventRecent = $this->eventServices->getNextEvent($e->id);
+
+                    //$e->nextEvent = $this->formatDateView($nextEventRecent[1]);
+
+                    $events_recent[] = $e;
+                }
+
+
+            }
+
+
+            /*
+             * Fim Recentes
+             * */
+
+            $event_list = $this->check_in();
+            $is_sub = $this->isSubscribed();
+
+            $events_to_sub = $this->eventRepository->findByField('church_id', $church_id);
 
     }catch(\Exception $e){
         dd($e);
@@ -394,10 +396,11 @@ class DashboardController extends Controller
 
 
         return view('dashboard.index', compact('countPerson', 'countGroups', 'events', 'notify', 'qtde', 'event',
-            'countMembers', 'nextEvent', 'location', 'street', 'groups', 'eventDate', 'event_person',
-            'allMonths', 'allDays', 'days', 'allEvents', 'thisMonth', 'today', 'ano', 'allEventsNames', 'allEventsTimes',
+            'countMembers', 'nextEvent', 'location', 'street', 'groups', 'eventDate', 'event_person', 'allMonths',
+            'allDays', 'days', 'allEvents', 'thisMonth', 'today', 'ano', 'allEventsNames', 'allEventsTimes',
             'allEventsFrequencies', 'allEventsAddresses', 'numWeek', 'people', 'groups_recent', 'events_recent',
-            'qtde_users', 'qtde_groups', 'qtde_events', 'leader', 'church_id', 'feeds', 'event_list', 'is_sub'));
+            'qtde_users', 'qtde_groups', 'qtde_events', 'leader', 'church_id', 'feeds', 'event_list', 'is_sub',
+            'events_to_sub'));
     }
 
     public function check_in()

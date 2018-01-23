@@ -362,30 +362,183 @@
 																	<i class="fa fa-angle-down"></i>
 																</a>
 																<ul class="dropdown-menu pull-right" id="sample_3_tools">
+                                                                    <li>
+                                                                        <a href="javascript:;" class="tool-action" data-toggle="modal" data-target="#newSub">
+                                                                            <i class="fa fa-check font-purple"></i>
+                                                                            Nova Inscrição
+
+                                                                        </a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript:;" class="tool-action" data-toggle="modal" data-target="#modalCheck-in">
+                                                                            <i class="fa fa-calendar-check-o font-purple"></i>
+                                                                            Check-in de Inscritos
+                                                                        </a>
+                                                                    </li>
+
+                                                                    <li class="divider"></li>
+
 																	<li>
 																		<a href="javascript:;" data-action="0" class="tool-action">
-																			<i class="icon-printer"></i> Imprimir</a>
+																			<i class="icon-printer font-purple"></i> Imprimir</a>
 																	</li>
 																	<li>
 																		<a href="javascript:;" data-action="1" class="tool-action">
-																			<i class="icon-check"></i> Copiar</a>
+																			<i class="icon-check font-purple"></i> Copiar</a>
 																	</li>
 																	<li>
 																		<a href="javascript:;" data-action="2" class="tool-action">
-																			<i class="icon-doc"></i> PDF</a>
+																			<i class="icon-doc font-purple"></i> PDF</a>
 																	</li>
 																	<li>
 																		<a href="javascript:;" data-action="3" class="tool-action">
-																			<i class="icon-paper-clip"></i> Excel</a>
+																			<i class="icon-paper-clip font-purple"></i> Excel</a>
 																	</li>
 																	<li>
 																		<a href="javascript:;" data-action="4" class="tool-action">
-																			<i class="icon-cloud-upload"></i> CSV</a>
+																			<i class="icon-cloud-upload font-purple"></i> CSV</a>
 																	</li>
 																</ul>
 															</div>
 														</div> <!-- FIM DIV .actions -->
 													</div> <!-- FIM DIV .portlet-title -->
+
+                                                    <!-- Modal -->
+                                                    <div class="modal fade" id="newSub" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                                    <h4 class="modal-title text-center" id="myModalLabel">Nova Inscrição</h4>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <label for="select_event_id">Escolha o evento</label>
+                                                                    <select name="select_event_id" id="select_event_id" class="form-control">
+                                                                        <option value="">Selecione</option>
+                                                                        @foreach($events_to_sub as $item)
+                                                                            <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                                                        @endforeach
+                                                                    </select>
+
+                                                                    <br>
+                                                                    <div class="row">
+                                                                        <div class="col-md-12">
+                                                                            <div class="div-loading text-center" id="div-loading" style="display: none;">
+                                                                                <i class="fa fa-refresh fa-spin fa-4x fa-fw"
+                                                                                   id="icon-loading-people">
+                                                                                </i>
+                                                                                <p class="text-center" id="p-loading-people" style="display: block;">
+                                                                                    Buscando Pessoas ...
+                                                                                </p>
+                                                                            </div>
+
+                                                                        </div>
+                                                                    </div>
+                                                                    <br>
+
+
+
+                                                                    <form action="#" class="" id="form-people" style="display: none;" onsubmit="event.preventDefault();">
+																		<div class="form-group">
+                                                                            <label for="sub_people">Pessoas</label>
+                                                                            <select class="form-control select2-multiple" id="sub_people"
+                                                                                    name="sub_people" multiple>
+                                                                                <optgroup label="Membros" id="opt-group">
+                                                                                    <!-- <option> serão gerados dinamicamente -->
+                                                                                </optgroup>
+
+                                                                                <optgroup label="Visitantes" id="opt-group-visitor">
+                                                                                    <!-- <option> serão gerados dinamicamente -->
+                                                                                </optgroup>
+
+                                                                            </select>
+
+																		</div>
+
+																	</form>
+
+																</div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                                                                        <i class="fa fa-close"></i>
+                                                                        Fechar
+                                                                    </button>
+                                                                    <button type="button" class="btn btn-success" id="submit-form-people" disabled>
+                                                                        <i class="fa fa-check"></i>
+                                                                        Salvar
+                                                                    </button>
+                                                                </div>
+															</div>
+														</div>
+													</div>
+
+													<div class="modal fade" id="modalCheck-in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+														<div class="modal-dialog" role="document">
+															<div class="modal-content">
+																<div class="modal-header">
+																	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+																	<h4 class="modal-title text-center" id="myModalLabel">Check-in</h4>
+																</div>
+																<div class="modal-body">
+																	<label for="select_event_id_check">Escolha o evento</label>
+																	<select name="select_event_id_check" id="select_event_id_check" class="form-control">
+																		<option value="">Selecione</option>
+																		@foreach($events_to_sub as $item)
+																			<option value="{{ $item->id }}">{{ $item->name }}</option>
+																		@endforeach
+																	</select>
+
+																	<br>
+																	<div class="row">
+																		<div class="col-md-12">
+																			<div class="div-loading text-center" id="div-loading-check" style="display: none;">
+																				<i class="fa fa-refresh fa-spin fa-4x fa-fw"
+																				   id="icon-loading-people">
+																				</i>
+																				<p class="text-center" id="p-loading-people-check" style="display: block;">
+																					Buscando Pessoas ...
+																				</p>
+																			</div>
+
+																		</div>
+																	</div>
+																	<br>
+
+
+
+																	<form action="#" class="" id="form-people-check" style="display: none;" onsubmit="event.preventDefault();">
+																		<div class="form-group">
+																			<label for="people_check">Pessoas</label>
+																			<select class="form-control select2-multiple" id="people_check"
+																					name="people_check" multiple>
+																				<optgroup label="Membros" id="opt-group-check">
+                                                                                    <!-- <option> serão gerados dinamicamente -->
+																				</optgroup>
+
+																				<optgroup label="Visitantes" id="opt-group-check-visitor">
+                                                                                    <!-- <option> serão gerados dinamicamente -->
+																				</optgroup>
+
+																			</select>
+
+																		</div>
+
+																	</form>
+
+																</div>
+																<div class="modal-footer">
+																	<button type="button" class="btn btn-default" data-dismiss="modal">
+																		<i class="fa fa-close"></i>
+																		Fechar
+																	</button>
+																	<button type="button" class="btn btn-success" id="submit-form-people-check" disabled>
+																		<i class="fa fa-check"></i>
+																		Salvar
+																	</button>
+																</div>
+															</div>
+														</div>
+													</div>
 
 													<div class="portlet-body form">
 														<div class="portlet-body-config">

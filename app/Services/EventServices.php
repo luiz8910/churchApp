@@ -468,6 +468,50 @@ class EventServices
         return count($sub) > 0 ? true : false;
     }
 
+    public function isSubPeople($id, $person_id)
+    {
+        $today = date("Y-m-d");
+
+        $sub = DB::table('event_person')
+            ->where(
+                [
+                    'person_id' => $person_id,
+                    'check-in' => 1,
+                    'event_id' => $id,
+                    'eventDate' => $today,
+                    'deleted_at' => null
+                ])
+            ->first();
+
+
+        return count($sub) > 0 ? true : false;
+    }
+
+    public function isSubVisitor($id, $visitor_id)
+    {
+        $today = date("Y-m-d");
+
+        $visit = trim(strstr($visitor_id, "/visit"));
+
+        if($visit) {
+            $visitor_id = trim(strstr($visitor_id, "/visit", true));
+        }
+
+        $sub = DB::table('event_person')
+            ->where(
+                [
+                    'visitor_id' => $visitor_id,
+                    'check-in' => 1,
+                    'event_id' => $id,
+                    'eventDate' => $today,
+                    'deleted_at' => null
+                ])
+            ->first();
+
+
+        return count($sub) > 0 ? true : false;
+    }
+
     /*
      * @param int $id
      * $id = id do evento
@@ -475,57 +519,68 @@ class EventServices
      * */
     public function check($id)
     {
-        $user = \Auth::user();
+        try{
+            $user = \Auth::user();
 
-        $this->subEvent($id, $user->person->id);
+            $this->subEvent($id, $user->person->id);
 
-        $date = date_create(date('Y-m-d'));
+            $date = date_create(date('Y-m-d'));
 
-        $event_person = DB::table('event_person')
-            ->where([
-                'event_id' => $id,
-                'person_id' => $user->person_id,
-                'eventDate' => date_format($date, "Y-m-d"),
-                'check-in' => 0
-            ])->get();
-
-        if(count($event_person) > 0)
-        {
-            DB::table('event_person')
+            $event_person = DB::table('event_person')
                 ->where([
                     'event_id' => $id,
                     'person_id' => $user->person_id,
                     'eventDate' => date_format($date, "Y-m-d"),
                     'check-in' => 0
-                ])->update([
-                    'check-in' => 1,
-                    'show' => 1
-                ]);
-        }
-        else{
-            $days = $this->eventDays($id);
+                ])->get();
 
-            $today = date("Y-m-d");
-
-            for($i = 0; $i < count($days); $i++)
+            if(count($event_person) > 0)
             {
-                $check = $days[$i]->eventDate == $today ? 1 : 0;
-
                 DB::table('event_person')
-                    ->insert([
+                    ->where([
                         'event_id' => $id,
                         'person_id' => $user->person_id,
-                        'eventDate' => $days[$i]->eventDate,
-                        'event_date' => date_create($days[$i]->eventDate),
-                        'check-in' => $check,
+                        'eventDate' => date_format($date, "Y-m-d"),
+                        'check-in' => 0
+                    ])->update([
+                        'check-in' => 1,
                         'show' => 1
                     ]);
             }
+            else{
+                $days = $this->eventDays($id);
+
+                $today = date("Y-m-d");
+
+                for($i = 0; $i < count($days); $i++)
+                {
+                    $check = $days[$i]->eventDate == $today ? 1 : 0;
+
+                    DB::table('event_person')
+                        ->insert([
+                            'event_id' => $id,
+                            'person_id' => $user->person_id,
+                            'eventDate' => $days[$i]->eventDate,
+                            'event_date' => date_create($days[$i]->eventDate),
+                            'check-in' => $check,
+                            'show' => 1
+                        ]);
+                }
 
 
+            }
+
+            DB::commit();
+
+            return json_encode(['status' => true]);
+        }catch(\Exception $e){
+            DB::rollback();
+
+            return json_encode(['status' => false]);
         }
 
-        return json_encode(['status' => true]);
+
+
     }
 
     /*
@@ -536,57 +591,67 @@ class EventServices
      * */
     public function checkVisitor($id)
     {
-        $user = \Auth::user();
+        try{
 
-        $this->subEvent($id, $user->visitors->first()->id . "/visit");
+            $user = \Auth::user();
 
-        $date = date_create(date('Y-m-d'));
+            $this->subEvent($id, $user->visitors->first()->id . "/visit");
 
-        $event_person = DB::table('event_person')
-            ->where([
-                'event_id' => $id,
-                'visitor_id' => $user->visitors->first()->id,
-                'eventDate' => date_format($date, "Y-m-d"),
-                'check-in' => 0
-            ])->get();
+            $date = date_create(date('Y-m-d'));
 
-        if(count($event_person) > 0)
-        {
-            DB::table('event_person')
+            $event_person = DB::table('event_person')
                 ->where([
                     'event_id' => $id,
                     'visitor_id' => $user->visitors->first()->id,
                     'eventDate' => date_format($date, "Y-m-d"),
                     'check-in' => 0
-                ])->update([
-                    'check-in' => 1,
-                    'show' => 1
-                ]);
-        }
-        else{
-            $days = $this->eventDays($id);
+                ])->get();
 
-            $today = date("Y-m-d");
-
-            for($i = 0; $i < count($days); $i++)
+            if(count($event_person) > 0)
             {
-                $check = $days[$i]->eventDate == $today ? 1 : 0;
-
                 DB::table('event_person')
-                    ->insert([
+                    ->where([
                         'event_id' => $id,
                         'visitor_id' => $user->visitors->first()->id,
-                        'eventDate' => $days[$i]->eventDate,
-                        'event_date' => date_create($days[$i]->eventDate),
-                        'check-in' => $check,
+                        'eventDate' => date_format($date, "Y-m-d"),
+                        'check-in' => 0
+                    ])->update([
+                        'check-in' => 1,
                         'show' => 1
                     ]);
             }
+            else{
+                $days = $this->eventDays($id);
+
+                $today = date("Y-m-d");
+
+                for($i = 0; $i < count($days); $i++)
+                {
+                    $check = $days[$i]->eventDate == $today ? 1 : 0;
+
+                    DB::table('event_person')
+                        ->insert([
+                            'event_id' => $id,
+                            'visitor_id' => $user->visitors->first()->id,
+                            'eventDate' => $days[$i]->eventDate,
+                            'event_date' => date_create($days[$i]->eventDate),
+                            'check-in' => $check,
+                            'show' => 1
+                        ]);
+                }
 
 
+            }
+
+            DB::commit();
+
+            return json_encode(['status' => true]);
+
+        }catch(\Exception $e){
+            DB::rollback();
+
+            return json_encode(['status' => false]);
         }
-
-        return json_encode(['status' => true]);
     }
 
     /*
@@ -783,7 +848,7 @@ class EventServices
                             'event_id' => $id,
                             'person_id' => \Auth::user()->person_id,
                             'eventDate' => date_format($nextDay, 'Y-m-d'),
-                            'event_date' => date_create($nextDay),
+                            'event_date' => $nextDay,
                             'check-in' => 0,
                             'show' => 0
                         ]
@@ -1175,69 +1240,80 @@ class EventServices
     public function subEvent($event_id, $person_id)
     {
 
-        $visit = trim(strstr($person_id, "/visit"));
-        $visitor_id = 0;
+        try{
 
-        if($visit)
-        {
-            $visitor_id = trim(strstr($person_id, "/visit", true));
+            $visit = trim(strstr($person_id, "/visit"));
+            $visitor_id = 0;
 
-            $exists = $this->listRepository->findWhere([
-                'event_id' => $event_id,
-                'visitor_id' => $visitor_id
-            ]);
-        }
-        else{
-            $exists = $this->listRepository->findWhere([
-                'event_id' => $event_id,
-                'person_id' => $person_id
-            ]);
-        }
-
-
-        if(count($exists) == 0)
-        {
-            $nextEvent = $this->getNextEvent($event_id);
-
-            $frequency = $this->repository->find($event_id)->frequency;
-
-            if($frequency == $this->weekly())
+            if($visit)
             {
-                $this->setNextEvents($event_id, $nextEvent[1], "7 days", $person_id);
-            }
-            elseif($frequency == $this->monthly())
-            {
-                $this->setNextEvents($event_id, $nextEvent[1], "30 days", $person_id);
-            }
-            elseif ($frequency == $this->daily())
-            {
-                $this->setNextEvents($event_id, $nextEvent[1], "1 days", $person_id);
-            }
-            elseif ($frequency == $this->biweekly())
-            {
-                $this->setNextEvents($event_id, $nextEvent[1], "15 days", $person_id);
-            }
+                $visitor_id = trim(strstr($person_id, "/visit", true));
 
-            if($visitor_id != 0)
-            {
-                $data["visitor_id"] = $visitor_id;
+                $exists = $this->listRepository->findWhere([
+                    'event_id' => $event_id,
+                    'visitor_id' => $visitor_id
+                ]);
             }
             else{
-                $data["person_id"] = $person_id;
+                $exists = $this->listRepository->findWhere([
+                    'event_id' => $event_id,
+                    'person_id' => $person_id
+                ]);
             }
 
-            $data["event_id"] = $event_id;
 
-            $data["sub_by"] = isset(Auth::user()->person) ? Auth::user()->person->id : 0;
+            if(count($exists) == 0)
+            {
+                $nextEvent = $this->getNextEvent($event_id);
 
-            $this->listRepository->create($data);
+                $frequency = $this->repository->find($event_id)->frequency;
 
-            //$this->addGeofence($event_id, $person_id);
+                if($frequency == $this->weekly())
+                {
+                    $this->setNextEvents($event_id, $nextEvent[1], "7 days", $person_id);
+                }
+                elseif($frequency == $this->monthly())
+                {
+                    $this->setNextEvents($event_id, $nextEvent[1], "30 days", $person_id);
+                }
+                elseif ($frequency == $this->daily())
+                {
+                    $this->setNextEvents($event_id, $nextEvent[1], "1 days", $person_id);
+                }
+                elseif ($frequency == $this->biweekly())
+                {
+                    $this->setNextEvents($event_id, $nextEvent[1], "15 days", $person_id);
+                }
 
-            return true;
+                if($visitor_id != 0)
+                {
+                    $data["visitor_id"] = $visitor_id;
+                }
+                else{
+                    $data["person_id"] = $person_id;
+                }
+
+                $data["event_id"] = $event_id;
+
+                $data["sub_by"] = isset(Auth::user()->person) ? Auth::user()->person->id : 0;
+
+                $this->listRepository->create($data);
+
+                //$this->addGeofence($event_id, $person_id);
+
+                DB::commit();
+
+                return true;
+            }
+
+            return false;
+
+        }catch(\Exception $e){
+
+            DB::rollback();
+
+            return false;
         }
-
-        return false;
 
     }
 
@@ -1342,6 +1418,139 @@ class EventServices
         return $this->listRepository->findWhere([
             'visitor_id' => $visitor_id
         ]);
+    }
+
+    /*
+     * Check-in em lote
+     */
+    public function checkInBatch($event_id, $person_id)
+    {
+        try{
+
+            $this->subEvent($event_id, $person_id);
+
+            $date = date_create(date('Y-m-d'));
+
+            $event_person = DB::table('event_person')
+                ->where([
+                    'event_id' => $event_id,
+                    'person_id' => $person_id,
+                    'eventDate' => date_format($date, "Y-m-d"),
+                    'check-in' => 0
+                ])->get();
+
+            if(count($event_person) > 0)
+            {
+                DB::table('event_person')
+                    ->where([
+                        'event_id' => $event_id,
+                        'person_id' => $person_id,
+                        'eventDate' => date_format($date, "Y-m-d"),
+                        'check-in' => 0
+                    ])->update([
+                        'check-in' => 1,
+                        'show' => 1
+                    ]);
+            }
+            else{
+                $days = $this->eventDays($event_id);
+
+                $today = date("Y-m-d");
+
+                for($i = 0; $i < count($days); $i++)
+                {
+                    $check = $days[$i]->eventDate == $today ? 1 : 0;
+
+                    DB::table('event_person')
+                        ->insert([
+                            'event_id' => $event_id,
+                            'person_id' => $person_id,
+                            'eventDate' => $days[$i]->eventDate,
+                            'event_date' => date_create($days[$i]->eventDate),
+                            'check-in' => $check,
+                            'show' => 1
+                        ]);
+                }
+
+
+            }
+
+            DB::commit();
+
+            return json_encode(['status' => true]);
+        }catch(\Exception $e){
+            DB::rollback();
+
+            return json_encode(['status' => false]);
+        }
+    }
+
+    /*
+     * Check-in de visitantes em lote
+     */
+    public function checkInVisitorBatch($event_id, $visitor_id)
+    {
+
+        try{
+
+            $this->subEvent($event_id, $visitor_id);
+
+            $date = date_create(date('Y-m-d'));
+
+            $event_person = DB::table('event_person')
+                ->where([
+                    'event_id' => $event_id,
+                    'visitor_id' => $visitor_id,
+                    'eventDate' => date_format($date, "Y-m-d"),
+                    'check-in' => 0
+                ])->get();
+
+            if(count($event_person) > 0)
+            {
+                DB::table('event_person')
+                    ->where([
+                        'event_id' => $event_id,
+                        'visitor_id' => $visitor_id,
+                        'eventDate' => date_format($date, "Y-m-d"),
+                        'check-in' => 0
+                    ])->update([
+                        'check-in' => 1,
+                        'show' => 1
+                    ]);
+            }
+            else{
+                $days = $this->eventDays($event_id);
+
+                $today = date("Y-m-d");
+
+                for($i = 0; $i < count($days); $i++)
+                {
+                    $check = $days[$i]->eventDate == $today ? 1 : 0;
+
+                    DB::table('event_person')
+                        ->insert([
+                            'event_id' => $event_id,
+                            'visitor_id' => $visitor_id,
+                            'eventDate' => $days[$i]->eventDate,
+                            'event_date' => date_create($days[$i]->eventDate),
+                            'check-in' => $check,
+                            'show' => 1
+                        ]);
+                }
+
+
+            }
+
+            DB::commit();
+
+            return json_encode(['status' => true]);
+
+        }catch(\Exception $e){
+            DB::rollback();
+
+            return json_encode(['status' => false]);
+        }
+
     }
 }
 

@@ -599,6 +599,12 @@ $(function () {
         window.localStorage.removeItem('plan');
     }
 
+    $(".select2-search__field").attr('placeholder', 'Selecione');
+
+    $(".select2-multiple .select2").select2({
+        dropdownParent: $('#newSub')
+    });
+
     /*$("#container-pagination").cleverInfiniteScroll({
         contentsWrapperSelector: "#container-pagination",
         contentSelector: ".feeds",
@@ -606,3 +612,5 @@ $(function () {
         loadImage: "ajax-loader.gif"
     })*/
 });
+
+

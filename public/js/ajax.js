@@ -2176,6 +2176,261 @@
         return false;
     }
 
+    $("#submit-form-people").click(function(){
+        var form = $("#form-people");
+
+        form.submit();
+
+        var event = $("#select_event_id").val();
+
+        subPeople(form.serializeArray(), event);
+    });
+
+    function subPeople(array, event)
+    {
+        var values = [];
+
+        for(var i = 0; i < array.length; i++)
+        {
+            values.push(array[i].value);
+        }
+
+        values = JSON.stringify(values);
+
+        //console.log(arr);
+        var request = $.ajax({
+            url: '/subPeople/' + values + "/" + event,
+            method: 'GET',
+            dataType: 'json'
+        });
+
+        request.done(function(e){
+            if(e.status){
+                $("#newSub").modal('hide');
+                swal('Sucesso', array.length + ' usuários foram inscritos', 'success');
+
+                setTimeout(function(){
+                    location.reload();
+                }, 2000);
+            }
+        });
+
+        request.fail(function(e){
+            console.log("fail");
+            console.log(e);
+
+            $("#newSub").modal('hide');
+
+            swal("Atenção", "Um erro ocorreu", 'error');
+        });
+    }
+
+    $("#select_event_id").change(function(){
+
+        if(this.value != ""){
+            var value = this.value;
+
+            $("#form-people").css('display', 'none');
+            $("#div-loading").css('display', 'block');
+
+            setTimeout(function(){
+                showPeopleEvents(value);
+                $("#form-people").css('display', 'block');
+            }, 2000);
+
+        }
+        else{
+            $("#form-people").css('display', 'none');
+            $("#opt-group").append("");
+            $("#submit-form-people").attr('disabled', true);
+            $("#div-loading").css('display', 'none');
+        }
+
+    });
+
+    function showPeopleEvents(event)
+    {
+
+        var request = $.ajax({
+            url: "/getSubEventListAjax/" + event,
+            method: 'GET',
+            dataType: 'json'
+        });
+
+        request.done(function(e){
+            if(e.status){
+
+                //console.log(e.data);
+
+                var option = '';
+                var visitor = '';
+
+                for(var i = 0; i < e.data.length; i++)
+                {
+                    if(e.data[i].church_id){
+                        option += "<option value='"+ e.data[i].id+"'>"+ e.data[i].name + " " + e.data[i].lastName +  "</option>";
+                    }
+                    else{
+                        visitor += "<option value='"+ e.data[i].id +"-visit'>"+ e.data[i].name + " " + e.data[i].lastName + "</option>";
+                    }
+
+
+                }
+
+                //console.log(option);
+
+                $("#opt-group").append(option);
+                $("#opt-group-visitor").append(visitor);
+
+
+                $("#div-loading").css('display', 'none');
+                $("#form-people").css('display', 'block');
+                $("#submit-form-people").attr('disabled', null);
+
+            }
+        });
+
+        request.fail(function(e){
+            console.log("fail");
+            console.log(e);
+
+            $("#div-loading").css('display', 'none');
+
+            $("#newSub").modal('hide');
+
+            swal('Atenção', e.msg, 'error');
+        })
+    }
+
+    $("#select_event_id_check").change(function(){
+
+        if(this.value != ""){
+            var value = this.value;
+
+            $("#form-people-check").css('display', 'none');
+            $("#div-loading-check").css('display', 'block');
+
+            setTimeout(function(){
+                showPeopleCheckIn(value);
+                $("#form-people-check").css('display', 'block');
+            }, 2000);
+
+        }
+        else{
+            $("#form-people-check").css('display', 'none');
+            $("#opt-group").append("");
+            $("#submit-form-people-check").attr('disabled', true);
+            $("#div-loading-check").css('display', 'none');
+        }
+
+    });
+
+
+    function showPeopleCheckIn(event)
+    {
+
+        var request = $.ajax({
+            url: "/getCheckInListAjax/" + event,
+            method: 'GET',
+            dataType: 'json'
+        });
+
+        request.done(function(e){
+            if(e.status){
+
+                //console.log(e.data);
+
+                var option = '';
+                var visitor = '';
+
+                for(var i = 0; i < e.data.length; i++)
+                {
+                    if(e.data[i].church_id){
+
+                        option += "<option value='"+ e.data[i].id+"'>"+ e.data[i].name + " " + e.data[i].lastName +  "</option>";
+                    }
+                    else{
+
+                        visitor += "<option value='"+ e.data[i].id +"-visit'>"+ e.data[i].name + " " + e.data[i].lastName + "</option>";
+                    }
+
+
+                }
+
+                //console.log(option);
+
+                $("#opt-group-check").append(option);
+                $("#opt-group-check-visitor").append(visitor);
+
+
+                $("#div-loading-check").css('display', 'none');
+                $("#form-people-check").css('display', 'block');
+                $("#submit-form-people-check").attr('disabled', null);
+
+            }
+        });
+
+        request.fail(function(e){
+            console.log("fail");
+            console.log(e);
+
+            $("#div-loading-check").css('display', 'none');
+
+            $("#modalCheck-in").modal('hide');
+
+            swal('Atenção', e.msg, 'error');
+        })
+    }
+
+    $("#submit-form-people-check").click(function(){
+        var form = $("#form-people-check");
+
+        form.submit();
+
+        var event = $("#select_event_id_check").val();
+
+        peopleCheckIn(form.serializeArray(), event);
+    });
+
+    function peopleCheckIn(array, event)
+    {
+        var values = [];
+
+        for(var i = 0; i < array.length; i++)
+        {
+            values.push(array[i].value);
+        }
+
+        values = JSON.stringify(values);
+
+        //console.log(arr);
+        var request = $.ajax({
+            url: '/checkInPeople/' + values + "/" + event,
+            method: 'GET',
+            dataType: 'json'
+        });
+
+        request.done(function(e){
+            if(e.status){
+                $("#modalCheck-in").modal('hide');
+                swal('Sucesso', array.length + ' usuários confirmaram presença', 'success');
+
+                setTimeout(function(){
+                    location.reload();
+                }, 2000);
+            }
+        });
+
+        request.fail(function(e){
+            console.log("fail");
+            console.log(e);
+
+            $("#modalCheck-in").modal('hide');
+
+            swal("Atenção", "Um erro ocorreu", 'error');
+        });
+    }
+
 
 
 
