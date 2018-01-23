@@ -37,7 +37,7 @@
     });
 </script>
 
-<body class="overflow-hidden">
+<body>
 <div class="container-fluid xs-remove-fixed fixed-top pt-3" id="navbar">
     <nav class="navbar container navbar-toggleable-md navbar-light bg-transparent flex-row flex-sm-block justify-content-center align-items-center">
         <a class="navbar-brand d-none d-sm-inline" href="{{ url('') }}"><img src="../images/logo-branco.png" srcset="../images/logo-branco@2x.png 2x, ../images/logo-branco@3x.png 3x" class="logo"></a>
@@ -52,7 +52,7 @@
         <div class="d-none d-sm-flex col-sm-5 pt-15 bg-internal">
             <div class="row w-100">
                 <div class="col-6 ml-auto">
-                    <h6 class="color-white pb-3">LOGIN SOCIAL</h6>
+                    <h6 class="color-white pb-3">ACESSAR COM</h6>
                     <ul class="list-unstyled pt-4 login-social-list d-flex">
                         <li>
                             <a href="{{ url('pre/auth/facebook') }}" class="facebook"><i class="fab fa-3x fa-facebook"></i></a>
@@ -134,11 +134,18 @@
             </div>
         </div>
 
-        <div class="hidden-sm-up col-12 transparent-grape pb-5">
+        <div class="hidden-sm-up col-12 transparent-grape">
             <div class="row text-center">
                 <div class="col">
-                    <h6 class="color-white mt-5 pb-3 text-center">AINDA NÃO TEM UMA CONTA?</h6>
-                    <a href="#" class="btn btn-primary">FAZER CADASTRO</a>
+                    <h6 class="color-white py-3 text-center">ACESSAR COM</h6>
+                    <ul class="list-unstyled login-social-list d-flex">
+                        <li>
+                            <a href="{{ url('pre/auth/facebook') }}"><i class="fab fa-3x fa-facebook"></i></a>
+                        </li>
+                        <li>
+                            <a href="{{ url('pre/auth/google') }}"><i class="fab fa-3x fa-google-plus-square"></i></a>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
