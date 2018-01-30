@@ -192,7 +192,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     // Inicio Configurações
 
-    Route::group(['middleware' => 'check.role:1'], function (){
+    Route::group(['middleware' => 'check.role:1,5'], function (){
         Route::get("/configuracoes", "ConfigController@index")->name('config.index');
 
         Route::post("/config-required/{model}", 'ConfigController@updateRule')->name('config.required.fields');
@@ -220,15 +220,19 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('remove-inactive/{code}', 'ImportController@removeInactive');
 
         Route::get('remove-inactive-vis/{code}', 'ImportController@removeInactiveVisitor');
+
+        Route::get('/newFeed/{feed_notif}/{text}/{link}/{expires_in?}', 'FeedController@newFeed');
+
+        Route::get('/event-newFeed/{event}/{text}/{link?}/{expires_in?}', 'FeedController@eventFeed');
+
+        Route::get('/group-newFeed/{event}/{text}/{link?}/{expires_in?}', 'FeedController@groupFeed');
+
+        Route::get('/person-newFeed/{event}/{text}/{link?}/{expires_in?}', 'FeedController@personFeed');
+
+        Route::get("/feeds", "FeedController@index")->name('feeds.index');
     });
 
-    Route::get('/newFeed/{feed_notif}/{text}/{link}/{expires_in?}', 'FeedController@newFeed');
 
-    Route::get('/event-newFeed/{event}/{text}/{link?}/{expires_in?}', 'FeedController@eventFeed');
-
-    Route::get('/group-newFeed/{event}/{text}/{link?}/{expires_in?}', 'FeedController@groupFeed');
-
-    Route::get('/person-newFeed/{event}/{text}/{link?}/{expires_in?}', 'FeedController@personFeed');
 
     Route::get("/getPusherKey", "ConfigController@getPusherKey");
 
@@ -236,7 +240,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get("/getChurchZipCode", "ConfigController@getChurchZipCode");
 
-    Route::get("/feeds", "FeedController@index")->name('feeds.index');
+
 
     Route::get('pusher', function () {
         return view('pusher');
@@ -304,9 +308,13 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get("join-new-people/{input}", "SearchController@findNewPeople");
 
-    Route::get('/search-events/{text}', 'SearchController@searchEvents');
+    //Route::get('/search-events/{text}', 'SearchController@searchEvents');
 
     Route::get('/search-person/{input}/{status}', 'SearchController@searchPerson');
+
+    Route::get('/search-group/{input}', 'SearchController@searchGroup');
+
+    Route::get('/search-event/{input}', 'SearchController@searchEvent');
 
     Route::get('/searchable-models', 'SearchController@searchableModels');
 
@@ -412,5 +420,7 @@ Route::get('/callback', function (\Illuminate\Http\Request $request){
 Route::post('/api-login', 'UsersController@login');
 
 Route::get('list-person', 'DashboardController@check_in');
+
+Route::get('check-in', 'DashboardController@checkin');
 
 

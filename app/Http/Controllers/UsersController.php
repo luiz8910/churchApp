@@ -139,6 +139,8 @@ class UsersController extends Controller
 
         $leader = $this->getLeaderRoleId();
 
+        $admin = $this->getAdminRoleId();
+
         $route = $this->getRoute();
 
         $adults = $this->personRepository->findWhere(['tag' => 'adult', 'gender' => $gender]);
@@ -198,7 +200,7 @@ class UsersController extends Controller
 
 
         return view('users.myAccount', compact('state', 'model', 'changePass', 'countPerson', 'role', 'countGroups',
-            'notify', 'qtde', 'adults', 'groups', 'countMembers', 'leader', 'events', 'route', 'feeds'));
+            'notify', 'qtde', 'adults', 'groups', 'countMembers', 'leader', 'events', 'route', 'feeds', 'admin'));
     }
 
 

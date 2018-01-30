@@ -157,15 +157,77 @@ License: You must have a valid license purchased only from themeforest(the above
 
 
                                                         <div class="actions">
+                                                            <div class="btn-group btn-group-sm">
+                                                                @if(Auth::getUser()->person->role_id == $leader
+                                                                    || Auth::getUser()->person->role_id == $admin)
+
+                                                                    <div class="col-lg-6">
+                                                                        <div class="input-group">
+                                                                            <input type="text" class="form-control" id="btn-search" placeholder="Digite 3 letras ou mais...">
+																				<span class="input-group-btn">
+																					<button class="btn btn-default" type="button">
+                                                                                        <i class="fa fa-search font-green"></i>
+                                                                                    </button>
+																				</span>
+                                                                        </div><!-- /input-group -->
+                                                                    </div><!-- /.col-lg-8 -->
+
+                                                                    <div class="col-lg-3">
+                                                                        <div class="btn-group-devided">
+                                                                            <a role="button" class="btn btn-info btn-circle btn-sm" href="{{ route('event.create') }}" style="margin-top: 2px;">
+                                                                                <i class="fa fa-plus"></i>
+                                                                                <span class="hidden-xs hidden-sm">Novo Evento</span>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+
+
+
+                                                                    <div class="col-lg-3">
+                                                                        <a class="btn red btn-outline btn-circle btn-sm" href="javascript:;" data-toggle="dropdown">
+                                                                            <i class="fa fa-share"></i>
+                                                                            <span class="hidden-xs"> Opções </span>
+                                                                            <i class="fa fa-angle-down"></i>
+                                                                        </a>
+                                                                        <ul class="dropdown-menu pull-right" id="sample_3_tools">
+                                                                            <li>
+                                                                                <a href="javascript:;" id="print" onclick="printDiv('printable-table')"
+                                                                                   data-action="0" class="tool-action">
+                                                                                    <i class="icon-printer"></i> Imprimir
+                                                                                </a>
+                                                                            </li>
+                                                                            <!--<li>
+                                                                                <a href="javascript:;" data-action="1" class="tool-action">
+                                                                                    <i class="icon-check"></i> Copiar</a>
+                                                                            </li>-->
+                                                                            <li>
+                                                                                <a href="javascript:;" data-action="2"
+                                                                                   onclick="printDiv('printable-table', 'pdf')" class="tool-action">
+                                                                                    <i class="icon-doc"></i> PDF</a>
+                                                                            </li>
+                                                                            <li>
+                                                                                <a href="{{ route($route.'.excel', ['format' => 'xls']) }}"
+                                                                                   data-action="3" target="_blank"
+                                                                                   class="tool-action">
+                                                                                    <i class="icon-paper-clip"></i> Excel</a>
+                                                                            </li>
+                                                                            <li>
+                                                                                <a href="{{ route($route.'.excel', ['format' => 'csv']) }}"
+                                                                                   data-action="4" target="_blank" class="tool-action">
+                                                                                    <i class="icon-cloud-upload"></i> CSV</a>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+
+                                                                @endif
+                                                            </div>
+
                                                             {!! Form::open(['route' => 'event.destroyMany', 'id' => 'form-destroyMany', 'method' => 'GET']) !!}
                                                             <div class="btn-group btn-group-devided">
 
                                                                 <div id="modelToDel">
 
                                                                 </div>
-
-
-
 
                                                                 <a href=""
                                                                    class="btn btn-danger btn-circle" id="btn-delete-model"
@@ -175,142 +237,99 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                     Excluir
                                                                 </a>
 
-                                                                <a href="javascript:;" onclick="newEvent()" class="btn btn-primary btn-circle">
-                                                                    <i class="fa fa-plus"></i>
-                                                                    Evento
-                                                                </a>
-
-
-
-                                                                <div class="btn-group">
-                                                                    <a class="btn red btn-outline btn-circle" href="javascript:;" data-toggle="dropdown">
-                                                                        <i class="fa fa-share"></i>
-                                                                        <span class="hidden-xs"> Opções </span>
-                                                                        <i class="fa fa-angle-down"></i>
-                                                                    </a>
-                                                                    <ul class="dropdown-menu pull-right" id="sample_3_tools">
-                                                                        <li>
-                                                                            <a href="javascript:;" id="print" onclick="printDiv('printable-table')"
-                                                                               data-action="0" class="tool-action">
-                                                                                <i class="icon-printer"></i> Imprimir
-                                                                            </a>
-                                                                        </li>
-                                                                        <!--<li>
-                                                                            <a href="javascript:;" data-action="1" class="tool-action">
-                                                                                <i class="icon-check"></i> Copiar</a>
-                                                                        </li>-->
-                                                                        <li>
-                                                                            <a href="javascript:;" data-action="2"
-                                                                               onclick="printDiv('printable-table', 'pdf')" class="tool-action">
-                                                                                <i class="icon-doc"></i> PDF</a>
-                                                                        </li>
-                                                                        <li>
-                                                                            <a href="{{ route($route.'.excel', ['format' => 'xls']) }}"
-                                                                               data-action="3" target="_blank"
-                                                                               class="tool-action">
-                                                                                <i class="icon-paper-clip"></i> Excel</a>
-                                                                        </li>
-                                                                        <li>
-                                                                            <a href="{{ route($route.'.excel', ['format' => 'csv']) }}"
-                                                                               data-action="4" target="_blank" class="tool-action">
-                                                                                <i class="icon-cloud-upload"></i> CSV</a>
-                                                                        </li>
-
-                                                                    </ul>
-                                                                </div>
-
 
                                                             </div>
                                                             {!! Form::close() !!}
 
                                                         </div>
                                                     </div>
-                                                    <div class="portlet-body">
-                                                        <div class="row">
+                                                    <div class="portlet-body form">
+                                                        <div class="portlet-body-config">
                                                             <div class="col-md-12">
-                                                                <div class="pull-right hidden-xs hidden-sm">
-                                                                    <!--<a href="javascript:;" class="btn btn-default btn-circle" style="margin-left: 3px;">
-                                                                        <i class="fa fa-search"></i>
-                                                                    </a>-->
-
-                                                                    <input type="text" class="form-control" id="search-input" placeholder="Pesquisar Eventos">
-
-                                                                    <ul id="ul-results">
-
-                                                                    </ul>
+                                                                <div class="div-loading" id="loading-results">
+                                                                    <i class="fa fa-refresh fa-spin fa-5x fa-fw"
+                                                                       id="icon-loading-cep">
+                                                                    </i>
+                                                                    <p class="text-center" id="p-loading-cep">
+                                                                        Carregando ...
+                                                                    </p>
                                                                 </div>
 
+                                                                <p class="text-center" id="p-zero" style="display: none;">
+                                                                    Nenhum resultado
+                                                                </p>
+
                                                             </div>
-                                                        </div>
-                                                        <div class="table-scrollable table-scrollable-borderless">
-                                                            <table class="table table-hover table-light">
-                                                                <thead>
-                                                                <tr class="uppercase">
-                                                                    <th>#
-                                                                        {{--<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
-                                                                            <input type="checkbox" name="events" class="checkboxes check-model" id="check-0"
-                                                                                   value="0" />
-                                                                            <span></span>
-                                                                        </label>--}}
-                                                                    </th>
-                                                                    <th class="printable-table-header"> Nome </th>
-                                                                    <th class="printable-table-header"> Frequência </th>
-                                                                    <th class="printable-table-header"> Criado Por </th>
-                                                                    <th class="printable-table-header"> Grupo </th>
-                                                                    <th>  </th>
-                                                                </tr>
-                                                                </thead>
 
+                                                            <div class="table-scrollable table-scrollable-borderless">
+                                                                <table class="table table-hover table-light">
+                                                                    <thead>
+                                                                    <tr class="uppercase">
+                                                                        <th>#
+                                                                            {{--<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                                                                <input type="checkbox" name="events" class="checkboxes check-model" id="check-0"
+                                                                                       value="0" />
+                                                                                <span></span>
+                                                                            </label>--}}
+                                                                        </th>
+                                                                        <th class="printable-table-header"> Nome </th>
+                                                                        <th class="printable-table-header"> Frequência </th>
+                                                                        <th class="printable-table-header"> Criado Por </th>
+                                                                        <th class="printable-table-header"> Grupo </th>
+                                                                        <th>  </th>
+                                                                    </tr>
+                                                                    </thead>
 
+                                                                    <tbody class="hide" id="tbody-search"></tbody>
 
-                                                                <tbody>
-                                                                <?php $pag = 1; ?>
-                                                                @foreach($events as $event)
-                                                                    <tr class="printable-table-tr" id="tr-{{ $event->id }}">
-                                                                        <td>
-                                                                            @if(Auth::user()->church_id == $church_id && Auth::user()->person->role_id == 1)
-                                                                                <fieldset>
-                                                                                    <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
-                                                                                        <input type="checkbox" name="events" class="checkboxes check-model" id="check-{{ $event->id }}"
-                                                                                               value="{{ $event->id }}" />
-                                                                                        <span></span>
-                                                                                    </label>
-                                                                                </fieldset>
+                                                                    <tbody>
+                                                                    <?php $pag = 1; ?>
+                                                                    @foreach($events as $event)
+                                                                        <tr class="printable-table-tr" id="tr-{{ $event->id }}">
+                                                                            <td>
+                                                                                @if(Auth::user()->church_id == $church_id && Auth::user()->person->role_id == 1)
+                                                                                    <fieldset>
+                                                                                        <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                                                                            <input type="checkbox" name="events" class="checkboxes check-model" id="check-{{ $event->id }}"
+                                                                                                   value="{{ $event->id }}" />
+                                                                                            <span></span>
+                                                                                        </label>
+                                                                                    </fieldset>
 
-                                                                            @endif
-                                                                        </td>
-                                                                        <td>
-                                                                            <a href="{{ route('event.edit', ['event' => $event->id]) }}" rel="external" class="printable-table">
-                                                                                {{ $event->name }}
-                                                                            </a>
-                                                                        </td>
-                                                                        <td class="printable-table"> {{ $event->frequency }} </td>
-                                                                        <td>
-                                                                            @if(\Auth::user()->id != $event->createdBy_id && Auth::user()->church_id != null)
-                                                                                <a href="{{ route('person.edit',
-                                                                                    ['person' => $event->user_createdBy_id->id]) }}" rel="external" class="printable-table">
-                                                                                    {{ $event->user_createdBy_id->name }}
-                                                                                </a>
-                                                                                {{--<a href="{{ route('person.edit',
-                                                                                    ['person' => \App\Models\User::find($event->createdBy_id)->person->id]) }}" rel="external" class="printable-table">
-                                                                                    {{ \App\Models\User::find($event->createdBy_id)->person->name }}
-                                                                                </a>--}}
-                                                                            @else
-                                                                                {{ $event->user_createdBy_id->name }}
-                                                                            @endif
-                                                                        </td>
-                                                                        <td>
-                                                                            @if($event->group_id)
-                                                                                @if(Auth::user()->church_id != null)
-                                                                                <a href="{{ route("group.edit", ['group' => $event->group_id]) }}" rel="external" class="printable-table">
-                                                                                    {{ $event['group_name'] }}
-                                                                                </a>
-                                                                                @else
-                                                                                    {{ $event['group_name'] }}
                                                                                 @endif
-                                                                            @else Sem Grupo
-                                                                            @endif
-                                                                        </td>
+                                                                            </td>
+                                                                            <td>
+                                                                                <a href="{{ route('event.edit', ['event' => $event->id]) }}" rel="external" class="printable-table">
+                                                                                    {{ $event->name }}
+                                                                                </a>
+                                                                            </td>
+                                                                            <td class="printable-table"> {{ $event->frequency }} </td>
+                                                                            <td>
+                                                                                @if(\Auth::user()->id != $event->createdBy_id && Auth::user()->church_id != null)
+                                                                                    <a href="{{ route('person.edit',
+                                                                                    ['person' => $event->user_createdBy_id->id]) }}" rel="external" class="printable-table">
+                                                                                        {{ $event->user_createdBy_id->name }}
+                                                                                    </a>
+                                                                                    {{--<a href="{{ route('person.edit',
+                                                                                        ['person' => \App\Models\User::find($event->createdBy_id)->person->id]) }}" rel="external" class="printable-table">
+                                                                                        {{ \App\Models\User::find($event->createdBy_id)->person->name }}
+                                                                                    </a>--}}
+                                                                                @else
+                                                                                    {{ $event->user_createdBy_id->name }}
+                                                                                @endif
+                                                                            </td>
+                                                                            <td>
+                                                                                @if($event->group_id)
+                                                                                    @if(Auth::user()->church_id != null)
+                                                                                        <a href="{{ route("group.edit", ['group' => $event->group_id]) }}" rel="external" class="printable-table">
+                                                                                            {{ $event['group_name'] }}
+                                                                                        </a>
+                                                                                    @else
+                                                                                        {{ $event['group_name'] }}
+                                                                                    @endif
+                                                                                @else Sem Grupo
+                                                                                @endif
+                                                                            </td>
 
 
                                                                             <?php $deleteForm = "delete-" . $event->id; ?>
@@ -319,8 +338,8 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                                     <div class="btn-group @if($pag % 5 == 0 || $pag == count($events)) dropup @endif">
                                                                                         <a class="btn blue btn-outline btn-circle" href="javascript:;" data-toggle="dropdown">
                                                                                             <i class="fa fa-share"></i>
-                                                                                        <span class="hidden-xs"> Opções </span>
-                                                                                        <i class="fa fa-angle-down"></i>
+                                                                                            <span class="hidden-xs"> Opções </span>
+                                                                                            <i class="fa fa-angle-down"></i>
                                                                                         </a>
                                                                                         <ul class="dropdown-menu pull-right" id="sample_3_tools">
                                                                                             <li>
@@ -374,37 +393,40 @@ License: You must have a valid license purchased only from themeforest(the above
 
 
 
-                                                                        <td>
+                                                                            <td>
 
-                                                                        </td>
+                                                                            </td>
 
-                                                                    </tr>
-                                                                    <?php $pag++ ;?>
-                                                                @endforeach
+                                                                        </tr>
+                                                                        <?php $pag++ ;?>
+                                                                    @endforeach
 
-                                                                </tbody>
+                                                                    </tbody>
 
-                                                            </table>
-                                                            <br>
-                                                            <div class="pull-right">
-                                                                {{ $events->links() }}
-                                                            </div>
-
-                                                            <div class="progress" id="progress-danger" style="display: none;">
-                                                                <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" aria-valuenow="100"
-                                                                     aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-                                                                    Excluindo...
-                                                                    <span class="sr-only">Excluindo...</span>
+                                                                </table>
+                                                                <br>
+                                                                <div class="pull-right">
+                                                                    {{ $events->links() }}
                                                                 </div>
+
+                                                                <div class="progress" id="progress-danger" style="display: none;">
+                                                                    <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" aria-valuenow="100"
+                                                                         aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                                                                        Excluindo...
+                                                                        <span class="sr-only">Excluindo...</span>
+                                                                    </div>
+                                                                </div>
+
+                                                                <input type="hidden" id="notific8-title">
+                                                                <input type="hidden" id="notific8-text">
+                                                                <input type="hidden" id="notific8-type" value="danger">
+
+                                                                <a href="javascript:;" class="btn btn-danger" id="notific8" style="display: none;"></a>
+
                                                             </div>
-
-                                                            <input type="hidden" id="notific8-title">
-                                                            <input type="hidden" id="notific8-text">
-                                                            <input type="hidden" id="notific8-type" value="danger">
-
-                                                            <a href="javascript:;" class="btn btn-danger" id="notific8" style="display: none;"></a>
-
                                                         </div>
+
+
                                                     </div>
 
 

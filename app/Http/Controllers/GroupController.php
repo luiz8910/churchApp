@@ -126,10 +126,12 @@ class GroupController extends Controller
 
         $leader = $this->getLeaderRoleId();
 
+        $admin = $this->getAdminRoleId();
+
         $role = $this->getUserRole();
 
         return view('groups.index', compact('groups', 'countPerson', 'countMembers',
-            'countGroups', 'notify', 'qtde', 'leader', 'role'));
+            'countGroups', 'notify', 'qtde', 'leader', 'role', 'admin'));
     }
 
     /**
@@ -153,13 +155,15 @@ class GroupController extends Controller
 
         $leader = $this->getLeaderRoleId();
 
+        $admin = $this->getAdminRoleId();
+
         $fields = $this->fieldsRepository->findWhere([
             'model' => 'group',
             'church_id' => $this->getUserChurch()
         ]);
 
         return view('groups.create', compact('countPerson', 'countGroups', 'state', 'roles',
-            'notify', 'qtde', 'leader', 'fields'));
+            'notify', 'qtde', 'leader', 'fields', 'admin'));
     }
 
     /**
@@ -264,6 +268,8 @@ class GroupController extends Controller
 
         $leader = $this->getLeaderRoleId();
 
+        $admin = $this->getAdminRoleId();
+
         $fields = $this->fieldsRepository->findWhere([
             'model' => 'group',
             'church_id' => $church_id
@@ -327,7 +333,14 @@ class GroupController extends Controller
 
         $owner_name = $this->personRepository->find($owner_person_id);
 
-        $imgProfile = $owner_name->imgProfile;
+        if($owner_name->user->facebook_id || $owner_name->user->google_id)
+        {
+            $imgProfile = $owner_name->imgProfile;
+        }
+        else{
+            $imgProfile = "../../" . $owner_name->imgProfile;
+        }
+
 
         $owner_name = $owner_name->name . " " . $owner_name->lastName;
 
@@ -336,7 +349,8 @@ class GroupController extends Controller
         return view('groups.edit', compact('model', 'countPerson', 'countGroups',
             'events', 'address', 'location', 'people', 'roles', 'state', 'members',
             'event_user', 'notify', 'qtde', 'pag', 'owner_name', 'owner_person_id',
-            'qtdeMembers', 'imgProfile', 'leader', 'sub', 'leader', 'fields', 'church_id'));
+            'qtdeMembers', 'imgProfile', 'leader', 'sub', 'leader', 'fields',
+            'church_id', 'admin'));
     }
 
 

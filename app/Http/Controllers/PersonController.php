@@ -161,7 +161,10 @@ class PersonController extends Controller
 
         $leader = $this->getLeaderRoleId();
 
-        return view('people.index', compact('adults', 'countPerson', 'countGroups', 'notify', 'qtde', 'leader'));
+        $admin = $this->getAdminRoleId();
+
+        return view('people.index', compact('adults', 'countPerson', 'countGroups', 'notify', 'qtde',
+            'leader', 'admin'));
     }
 
     public function teenagers()
@@ -179,12 +182,18 @@ class PersonController extends Controller
         }
 
         $countPerson[] = $this->countPerson();
+
         $countGroups[] = $this->countGroups();
+
         $notify = $this->notify();
+
         $qtde = count($notify);
+
         $leader = $this->getLeaderRoleId();
 
-        return view('people.teenagers', compact('teen', 'countPerson', 'countGroups', 'notify', 'qtde', 'leader'));
+        $admin = $this->getAdminRoleId();
+
+        return view('people.teenagers', compact('teen', 'countPerson', 'countGroups', 'notify', 'qtde', 'leader', 'admin'));
     }
 
 
@@ -197,12 +206,18 @@ class PersonController extends Controller
         }
 
         $countPerson[] = $this->countPerson();
+
         $countGroups[] = $this->countGroups();
+
         $notify = $this->notify();
+
         $qtde = count($notify);
+
         $leader = $this->getLeaderRoleId();
 
-        return view('people.inactive', compact('inactive', 'countPerson', 'countGroups', 'notify', 'qtde', 'leader'));
+        $admin = $this->getAdminRoleId();
+
+        return view('people.inactive', compact('inactive', 'countPerson', 'countGroups', 'notify', 'qtde', 'leader', 'admin'));
     }
 
     public function reactivate($person)
@@ -291,6 +306,8 @@ class PersonController extends Controller
 
         $leader = $this->getLeaderRoleId();
 
+        $admin = $this->getAdminRoleId();
+
         $notify = $this->notify();
 
         $qtde = count($notify);
@@ -343,7 +360,8 @@ class PersonController extends Controller
         $route = $this->getRoute();
 
         return view('people.create', compact('state', 'roles', 'countPerson', 'countGroups',
-            'adults', 'notify', 'qtde', 'fathers', 'mothers', 'leader', 'fields', 'route'));
+            'adults', 'notify', 'qtde', 'fathers', 'mothers', 'leader', 'fields', 'route',
+            'admin'));
     }
 
     public function createTeen()
@@ -361,6 +379,8 @@ class PersonController extends Controller
         $countGroups[] = $this->countGroups();
 
         $leader = $this->getLeaderRoleId();
+
+        $admin = $this->getAdminRoleId();
 
         $church_id = $this->getUserChurch();
 
@@ -400,7 +420,7 @@ class PersonController extends Controller
 
 
         return view('people.create-teen', compact('state', 'roles', 'countPerson', 'countGroups',
-            'adults', 'notify', 'qtde', 'fathers', 'mothers', 'leader', 'route'));
+            'adults', 'notify', 'qtde', 'fathers', 'mothers', 'leader', 'route', 'admin'));
     }
 
     /**
@@ -634,6 +654,8 @@ class PersonController extends Controller
 
         $leader = $this->getLeaderRoleId();
 
+        $admin = $this->getAdminRoleId();
+
         $location = $this->formatGoogleMaps($model);
 
         $countPerson[] = $this->countPerson();
@@ -755,7 +777,7 @@ class PersonController extends Controller
 
         return view('people.edit', compact('model', 'state', 'location', 'roles', 'countPerson',
             'countGroups', 'adults', 'notify', 'qtde', 'fathers', 'mothers', 'children',
-            'leader', 'fields', 'events', 'role', 'route'));
+            'leader', 'fields', 'events', 'role', 'route', 'admin'));
     }
 
 
@@ -785,6 +807,8 @@ class PersonController extends Controller
 
         $leader = $this->getLeaderRoleId();
 
+        $admin = $this->getAdminRoleId();
+
         $route = $this->getRoute();
 
 
@@ -812,7 +836,7 @@ class PersonController extends Controller
             ->get();
 
         return view('people.edit-teen', compact('model', 'state', 'location', 'roles', 'countPerson',
-            'countGroups', 'notify', 'qtde', 'fathers', 'mothers', 'leader', 'route'));
+            'countGroups', 'notify', 'qtde', 'fathers', 'mothers', 'leader', 'route', 'admin'));
     }
 
     /**

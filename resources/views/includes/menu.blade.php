@@ -126,8 +126,8 @@
                     <a href="javascript:;"> Relatórios
                     </a>
                 </li>-->
-                @if(!isset($leader)) <?php $leader = 1; ?> @endif
-                @if(Auth::user()->person_id != null && Auth::user()->person->role_id == $leader)
+                @if(!isset($leader) || !isset($admin)) <?php $leader = 1; $admin = 5;?> @endif
+                @if(Auth::user()->person_id != null && (Auth::user()->person->role_id == $leader || Auth::user()->person->role_id == $admin))
                     <li class="menu-dropdown classic-menu-dropdown">
                         <a href="javascript:;">Configurações</a>
                         <ul class="dropdown-menu pull-left">

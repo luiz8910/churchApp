@@ -186,7 +186,8 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <i class="fa fa-angle-down" id="i-actions"></i>
                                                 </a>
                                                 <ul class="dropdown-menu pull-right">
-                                                    @if(Auth::user()->church_id == $church_id && Auth::user()->person->role_id == $leader)
+                                                    @if(Auth::user()->church_id == $church_id
+                                                        && (Auth::user()->person->role_id == $leader || Auth::user()->person->role_id == $admin))
                                                         @if(isset($group))
                                                             <li>
                                                                 <a href="{{ route('group.addRemoveLoggedMember', ['id' => $group->id]) }}">
@@ -200,7 +201,8 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             </li>
                                                         @endif
                                                     @endif
-                                                    @if(Auth::user()->church_id == $church_id && Auth::user()->person->role_id == $leader)
+                                                    @if(Auth::user()->church_id == $church_id
+                                                        && (Auth::user()->person->role_id == $leader || Auth::user()->person->role_id == $admin))
                                                         <li class="divider"></li>
                                                         <li>
                                                             <a href="{{ route('event.subscriptions', ['event' => $model->id]) }}">
@@ -458,7 +460,8 @@ License: You must have a valid license purchased only from themeforest(the above
                                             @foreach($eventPeople as $item)
                                                 <tr>
                                                     <td>
-                                                        @if(Auth::user()->church_id == $church_id && Auth::getUser()->person->role_id == $leader)
+                                                        @if(Auth::user()->church_id == $church_id
+                                                            && (Auth::getUser()->person->role_id == $leader || Auth::user()->person->role_id == $admin))
                                                             <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
                                                                 <input type="checkbox" name="events"
                                                                        class="checkboxes check-model" id="check-1"
@@ -557,7 +560,8 @@ License: You must have a valid license purchased only from themeforest(the above
                     @endif
 
 
-                    @if(Auth::user()->church_id == $church_id && Auth::getUser()->person->role_id == $leader)
+                    @if(Auth::user()->church_id == $church_id
+                        && (Auth::getUser()->person->role_id == $leader || Auth::user()->person->role_id == $admin))
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="portlet light ">

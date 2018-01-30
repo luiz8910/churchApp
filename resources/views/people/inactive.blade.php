@@ -103,7 +103,8 @@
 
 
                                                     <div class="btn-group">
-                                                        @if(Auth::getUser()->person->role_id == $leader)
+                                                        @if(Auth::getUser()->person->role_id == $leader
+                                                        || Auth::user()->person->role_id == $admin)
                                                             <div class="col-lg-8">
                                                                 <div class="input-group">
                                                                     <input type="text" class="form-control" id="btn-search" placeholder="Digite 3 letras ou mais...">

@@ -216,7 +216,8 @@ License: You must have a valid license purchased only from themeforest(the above
                                         <span class="caption-subject font-red sbold uppercase">Eventos (inscrições)</span>
                                     </div>
                                     <div class="actions">
-                                        @if(Auth::getUser()->person->role_id == $leader)
+                                        @if(Auth::getUser()->person->role_id == $leader
+                                            || Auth::user()->person->role_id == $admin)
                                             <div class="btn-group btn-group-devided">
                                                 <a role="button" class="btn btn-info btn-circle" href="{{ route('event.create') }}" style="margin-top: 2px;">
                                                     <i class="fa fa-plus"></i>
@@ -270,7 +271,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                             </tr>
                                             </thead>
 
-                                            <input type="hidden" id="person_id" value="{{ Auth::getUser()->person_id }}">
+                                            <input type="hidden" id="person_id" value="{{ Auth::user()->person_id }}">
 
                                             <tbody>
                                             @if(count($events) > 0)
@@ -581,22 +582,22 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <div class="form-group">
                                                         <label>Cargo</label>
                                                         <div class="input-icon input-icon-sm">
-                                                            @if(\Auth::user()->person->role_id != $leader)
+                                                            @if(Auth::user()->person->role_id == $leader || Auth::user()->person->role_id == $admin)
+                                                                <i class="fa fa-briefcase"></i>
+                                                                <select class="form-control" name="role_id"
+                                                                        @if($fields[$i]->required == 1)
+                                                                        required
+                                                                        @endif
+                                                                <?php $i++; ?>
+                                                                >
+                                                                    <option value="">Selecione</option>
+                                                                    @foreach($roles as $role)
+                                                                        <option value="{{ $role->id }}" @if($role->id == $model->role_id) selected @endif >{{ $role->name }}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                            @else
                                                                 <i class="fa fa-briefcase"></i>
                                                                 <input type="text" class="form-control" value="{{ $model->role->name }}" readonly>
-                                                            @else
-                                                            <i class="fa fa-briefcase"></i>
-                                                            <select class="form-control" name="role_id"
-                                                                    @if($fields[$i]->required == 1)
-                                                                        required
-                                                                    @endif
-                                                                    <?php $i++; ?>
-                                                            >
-                                                                <option value="">Selecione</option>
-                                                                @foreach($roles as $role)
-                                                                    <option value="{{ $role->id }}" @if($role->id == $model->role_id) selected @endif >{{ $role->name }}</option>
-                                                                @endforeach
-                                                            </select>
                                                             @endif
                                                         </div>
                                                     </div>

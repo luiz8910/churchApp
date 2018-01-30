@@ -99,6 +99,8 @@ class DashboardController extends Controller
 
             $leader = $this->getLeaderRoleId();
 
+            $admin = $this->getAdminRoleId();
+
             //Fim Variáveis
 
             $church_id = $this->getUserChurch();
@@ -181,7 +183,7 @@ class DashboardController extends Controller
                     'countMembers', 'street', 'groups', 'event_person', 'nextEvent', 'leader', 'church_id',
                     'qtde_users', 'qtde_groups', 'qtde_events', 'next', 'thisMonth', 'ano', 'allMonths', 'days',
                     'allEvents', 'people', 'groups_recent', 'events_recent', 'qtde_users', 'qtde_groups', 'qtde_events',
-                    'location', 'street', 'feeds'));
+                    'location', 'street', 'feeds', 'admin'));
             }
 
             $eventDate = [];
@@ -387,7 +389,18 @@ class DashboardController extends Controller
             $event_list = $this->check_in();
             $is_sub = $this->isSubscribed();
 
-            $events_to_sub = $this->eventRepository->findByField('church_id', $church_id);
+            $check_in_now = $this->eventServices->checkInNow();
+
+            $events_to_sub = [];//$this->eventRepository->findByField('church_id', $church_id);
+
+            if($check_in_now)
+            {
+                foreach($check_in_now as $item)
+                {
+                    $events_to_sub[] = $this->eventRepository->find($item->id);
+                }
+            }
+
 
     }catch(\Exception $e){
         dd($e);
@@ -400,7 +413,7 @@ class DashboardController extends Controller
             'allDays', 'days', 'allEvents', 'thisMonth', 'today', 'ano', 'allEventsNames', 'allEventsTimes',
             'allEventsFrequencies', 'allEventsAddresses', 'numWeek', 'people', 'groups_recent', 'events_recent',
             'qtde_users', 'qtde_groups', 'qtde_events', 'leader', 'church_id', 'feeds', 'event_list', 'is_sub',
-            'events_to_sub'));
+            'events_to_sub', 'admin'));
     }
 
     public function check_in()
@@ -802,5 +815,23 @@ class DashboardController extends Controller
             }
 
         }
+    }
+
+    public function checkin()
+    {
+        $events = $this->eventServices->checkInNow();
+
+        $arr = [];
+
+        foreach ($events as $event) {
+            $arr[] = $this->eventRepository->find($event->id);
+        }
+
+        foreach($arr as $a)
+        {
+            echo $a->id ." - ";
+        }
+
+        //return $arr;
     }
 }

@@ -187,7 +187,8 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             <i class="fa fa-angle-down"></i>
                                                         </a>
                                                         @if(Auth::getUser()->person)
-                                                            @if(Auth::getUser()->person->role_id == $leader)
+                                                            @if(Auth::getUser()->person->role_id == $leader
+                                                            || Auth::user()->person->role_id == $admin)
                                                                 <ul class="dropdown-menu pull-right">
                                                                     <li>
                                                                         <a href="{{ route('group.event.create', ['id' => $model->id]) }}">
@@ -261,16 +262,18 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <p>
                                                         <i class="fa fa-user font-purple"></i> Criado Por:
 
-                                                        @if(Auth::user()->person_id == $owner_person_id || !Auth::getUser()->person)
+                                                        @if(Auth::user()->person_id == $owner_person_id || !Auth::user()->person)
                                                             <label>
                                                                 {{ $owner_name }}
-                                                                <img src="../../{{ $imgProfile }}" class="img-circle hidden-xs hidden-sm"
-                                                                     style="width: 25px; margin-left: 10px;">
+
+                                                                    <img src="{{ $imgProfile }}" class="img-circle hidden-xs hidden-sm"
+                                                                         style="width: 25px; margin-left: 10px;">
+
                                                             </label>
                                                         @else
                                                             <a href="{{ route('person.edit', ['person' => $owner_person_id]) }}">
                                                                 {{ $owner_name }}
-                                                                <img src="../../{{ $imgProfile }}" class="img-circle hidden-xs hidden-sm"
+                                                                <img src="{{ $imgProfile }}" class="img-circle hidden-xs hidden-sm"
                                                                      style="width: 25px; margin-left: 10px;">
                                                             </a>
                                                         @endif
@@ -430,7 +433,7 @@ License: You must have a valid license purchased only from themeforest(the above
                     <!-- END PROFILE CONTENT -->
 
                     @if(Auth::getUser()->person)
-                        @if(Auth::getUser()->person->role_id == $leader)
+                        @if(Auth::getUser()->person->role_id == $leader || Auth::user()->person->role_id == $admin)
                             <div class="profile-content">
                                 <div class="row">
                                     <div class="col-md-12">
@@ -457,7 +460,8 @@ License: You must have a valid license purchased only from themeforest(the above
                     @endif
 
                     @if(Auth::getUser()->person)
-                        @if(Auth::getUser()->person->role_id == $leader && $qtdeMembers < 2)
+                        @if((Auth::getUser()->person->role_id == $leader || Auth::user()->person->role_id == $admin)
+                            && $qtdeMembers < 2)
                             <p class="text-center" style="margin-top: -15px;">Não há dados a serem exibidos</p>
                         @endif
                     @endif
@@ -496,7 +500,8 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <i class="fa fa-angle-down"></i>
                                             </a>
                                             @if(Auth::getUser()->person)
-                                                @if(Auth::getUser()->person->role_id == $leader)
+                                                @if(Auth::getUser()->person->role_id == $leader
+                                                    || Auth::user()->person->role_id == $admin)
                                                     <ul class="dropdown-menu pull-right">
                                                         <li>
                                                             <a href="javascript:;" data-toggle="modal" data-target="#myModal">
@@ -548,7 +553,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <th> Telefone </th>
                                                 <th> Celular </th>
                                                 @if(Auth::getUser()->person)
-                                                    @if(Auth::getUser()->person->role_id == $leader)
+                                                    @if(Auth::getUser()->person->role_id == $leader || Auth::user()->person->role_id == $admin)
                                                         <th> Opções </th>
                                                     @endif
                                                 @endif
@@ -582,7 +587,8 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             <!--<span class="label label-sm label-success"> Aprovado </span>-->
 
                                                             @if(Auth::getUser()->person)
-                                                                @if(Auth::getUser()->person->role_id == $leader)
+                                                                @if(Auth::getUser()->person->role_id == $leader
+                                                                    || Auth::user()->person->role_id == $admin)
                                                                     <?php $deleteForm = "delete-" . $person->id; ?>
                                                                     <td id="{{ $deleteForm }}">
                                                                         {!! Form::open(['route' => ['group.deleteMember', 'group' => $model->id, 'member' => $person->id],
@@ -868,7 +874,8 @@ License: You must have a valid license purchased only from themeforest(the above
                     <input type="hidden" id="streetMap" value="{{ $model->street }}, {{ $model->number }}">
 
                     @if(Auth::getUser()->person)
-                        @if(Auth::user()->church_id == $church_id && Auth::user()->person->role_id == $leader)
+                        @if(Auth::user()->church_id == $church_id &&
+                            (Auth::user()->person->role_id == $leader || Auth::user()->person->role_id == $admin))
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="portlet light ">

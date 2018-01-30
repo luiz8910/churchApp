@@ -125,6 +125,8 @@ class EventController extends Controller
 
         $leader = $this->getLeaderRoleId();
 
+        $admin = $this->getAdminRoleId();
+
         $state = $this->stateRepository->all();
 
         //Fim Variáveis
@@ -268,7 +270,7 @@ class EventController extends Controller
             'events', 'notify', 'qtde', 'allMonths', 'allDays', 'days', 'allEvents',
             'thisMonth', 'today', 'ano', 'allEventsNames', 'allEventsTimes',
             'allEventsFrequencies', 'allEventsAddresses', 'numWeek', 'church_id',
-            'leader', 'role', 'events_pag'));
+            'leader', 'role', 'events_pag', 'admin'));
     }
 
 
@@ -281,6 +283,8 @@ class EventController extends Controller
         $state = $this->stateRepository->all();
 
         $leader = $this->getLeaderRoleId();
+
+        $admin = $this->getAdminRoleId();
 
         //Fim Variáveis
 
@@ -446,7 +450,7 @@ class EventController extends Controller
         return view("events.index", compact('countPerson', 'countGroups', 'state',
             'events', 'notify', 'qtde', 'allMonths', 'allDays', 'days', 'allEvents',
             'thisMonth', 'today', 'next', 'ano', 'allEventsNames', 'allEventsTimes',
-            'allEventsFrequencies', 'allEventsAddresses', 'church_id', 'leader', 'role'));
+            'allEventsFrequencies', 'allEventsAddresses', 'church_id', 'leader', 'role', 'admin'));
     }
 
     public function oldindex()
@@ -585,6 +589,8 @@ class EventController extends Controller
 
         $leader = $this->getLeaderRoleId();
 
+        $admin = $this->getAdminRoleId();
+
         $frequencies = $this->frequencyRepository->all();
 
         $notify = $this->notify();
@@ -596,11 +602,11 @@ class EventController extends Controller
         if($id)
         {
             return view('events.create', compact('countPerson', 'countGroups', 'state', 'roles',
-                'id', 'notify', 'qtde', 'groups', 'frequencies', 'leader'));
+                'id', 'notify', 'qtde', 'groups', 'frequencies', 'leader', 'admin'));
         }
         else{
             return view('events.create', compact('countPerson', 'countGroups', 'state', 'roles',
-                'notify', 'qtde', 'groups', 'frequencies', 'leader'));
+                'notify', 'qtde', 'groups', 'frequencies', 'leader', 'admin'));
         }
 
 
@@ -789,6 +795,8 @@ class EventController extends Controller
 
         $leader = $this->getLeaderRoleId();
 
+        $admin = $this->getAdminRoleId();
+
         if($this->getUserChurch() == null)
         {
             $church_id = null;
@@ -932,7 +940,7 @@ class EventController extends Controller
         return view('events.edit', compact('countPerson', 'countGroups', 'state', 'roles',
             'model', 'location', 'notify', 'qtde', 'eventDays', 'eventFrequency', 'check',
             'eventPeople', 'group', 'groups', 'sub', 'canCheckIn', 'createdBy_id', 'createdBy',
-            'nextEventDate', 'leader', 'preposicao', 'frequencies', 'church_id', 'leader'));
+            'nextEventDate', 'leader', 'preposicao', 'frequencies', 'church_id', 'leader', 'admin'));
     }
 
     public function update(Request $request, $id)
@@ -1558,6 +1566,8 @@ class EventController extends Controller
 
         $leader = $this->getLeaderRoleId();
 
+        $admin = $this->getAdminRoleId();
+
         $notify = $this->notify();
 
         $qtde = count($notify);
@@ -1587,6 +1597,8 @@ class EventController extends Controller
                     'event_id' => $id,
                     'check-in' => 1
                 ])->get());
+
+            //$attendance com valor incorreto
         }
 
         $person_sub = DB::table('people')
@@ -1600,6 +1612,30 @@ class EventController extends Controller
             ->get()
             //->paginate(5)
         ;
+
+        foreach($person_sub as $p)
+        {
+            $user = $this->personRepository->find($p->id)->user;
+
+            $p->social_media = false;
+
+            if($user->facebook_id || $user->google_id)
+            {
+                $p->social_media = true;
+            }
+        }
+
+        foreach ($visit_sub as $v)
+        {
+            $user = $this->visitorRepository->find($v->id)->users()->first();
+
+            $v->social_media = false;
+
+            if($user->facebook_id || $user->google_id)
+            {
+                $v->social_media = true;
+            }
+        }
 
         $event = $this->repository->find($id);
 
@@ -1623,7 +1659,7 @@ class EventController extends Controller
         return view('events.subscriptions',
             compact('people', 'countPerson', 'countGroups', 'leader',
                 'notify', 'qtde', 'event', 'sub', 'person_sub',
-                'attendance', 'merged', 'merged_list'));
+                'attendance', 'merged', 'merged_list', 'admin'));
     }
 
     /*

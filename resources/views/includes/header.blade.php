@@ -237,26 +237,37 @@
                     <li class="dropdown dropdown-user dropdown-dark">
                         <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"
                            data-close-others="true">
-                            <?php $img = isset(Auth::getUser()->person) ?
-                                    "../" . Auth::getUser()->person->imgProfile :
-                                    "../" . Auth::getUser()->visitors->first()->imgProfile; ?>
+                            <?php
 
-                            <img alt="" class="img-circle" src="
-                            @if(Auth::getUser()->person )
-                                @if(!isset($next))
-                                    {{ Auth::getUser()->person->imgProfile }}
-                                @else
-                                    {{ $img }}
-                                @endif
-                            @elseif(Auth::getUser()->visitors)
-                                {{ Auth::getUser()->visitors->first()->imgProfile }}
-                            @endif ">
-                            <span class="username username-hide-mobile">
-                                @if(Auth::getUser()->person)
-                                    {{ Auth::getUser()->person->name }}
-                                @else
-                                    {{ Auth::getUser()->visitors->first()->name }}
-                                @endif</span>
+                            $img = '';
+
+                                if(isset(Auth::user()->person))
+                                {
+                                    $name = Auth::user()->person->name;
+
+                                    if(Auth::user()->facebook_id || Auth::user()->google_id)
+                                    {
+                                        $img = Auth::user()->person->imgProfile;
+                                    }
+                                    else{
+                                        $img = "../" . Auth::user()->person->imgProfile;
+                                    }
+                                }else{
+                                    $name = Auth::user()->visitors->first()->name;
+
+                                    if(Auth::user()->first()->facebook_id || Auth::user()->first()->google_id)
+                                    {
+                                        $img = Auth::user()->visitors->first()->imgProfile;
+                                    }
+                                    else{
+                                        $img = "../" . Auth::user()->visitors->first()->imgProfile;
+                                    }
+                                }
+
+                                 ?>
+
+                            <img alt="" class="img-circle" src="{{ $img }}">
+                            <span class="username username-hide-mobile">{{ $name }}</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-default">
                             <li>

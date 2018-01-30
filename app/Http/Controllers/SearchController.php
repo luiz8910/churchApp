@@ -7,7 +7,9 @@ use App\Models\Group;
 use App\Models\Person;
 use App\Models\User;
 use App\Models\Visitor;
+use App\Repositories\GroupRepository;
 use App\Repositories\RoleRepository;
+use App\Repositories\UserRepository;
 use App\Traits\ConfigTrait;
 use App\Traits\DateRepository;
 use Illuminate\Http\Request;
@@ -24,11 +26,22 @@ class SearchController extends Controller
      * @var RoleRepository
      */
     private $roleRepository;
+    /**
+     * @var UserRepository
+     */
+    private $userRepository;
+    /**
+     * @var GroupRepository
+     */
+    private $groupRepository;
 
-    public function __construct(RoleRepository $roleRepository)
+    public function __construct(RoleRepository $roleRepository, UserRepository $userRepository,
+                                GroupRepository $groupRepository)
     {
 
         $this->roleRepository = $roleRepository;
+        $this->userRepository = $userRepository;
+        $this->groupRepository = $groupRepository;
     }
 
     public function findNewPeople($input)
@@ -233,6 +246,128 @@ class SearchController extends Controller
                 }
             }
 
+
+            return json_encode([
+                'status' => true,
+                'data' => $arr
+            ]);
+        }
+
+        return json_encode(['status' => false]);
+    }
+
+    public function searchGroup($input)
+    {
+        $church_id = $this->getUserChurch();
+
+        $fullName = explode(" ", $input);
+
+        if(count($fullName) > 1)
+        {
+            $groups = DB::table('groups')
+                ->where(
+                    [
+                        ['name', 'like', '%'.$fullName[0].'%'],
+                        ['lastName', 'like', $fullName[1].'%'],
+                        ['deleted_at', '=', null]
+                    ]
+                )
+                ->limit(5)
+                ->orderBy('name', 'desc')
+                ->get();
+        }
+        else{
+
+            $groups = DB::table('groups')
+                ->where(
+                    [
+                        ['name', 'like', '%'.$input.'%'],
+                        ['church_id', '=', $church_id],
+                        ['deleted_at', '=', null]
+                    ]
+                )
+                ->limit(5)
+                ->orderBy('name', 'desc')
+                ->get();
+        }
+
+        if(count($groups) > 0)
+        {
+            $arr = [];
+
+            foreach($groups as $group)
+            {
+                $group->qtde = count(DB::table('group_person')->where([
+                    'group_id' => $group->id
+                ])->get());
+
+                $arr[] = $group->imgProfile;
+                $arr[] = $group->name;
+                $arr[] = $this->formatDateView($group->sinceOf);
+                $arr[] = $group->qtde;
+                $arr[] = $group->id;
+            }
+
+            return json_encode([
+                'status' => true,
+                'data' => $arr
+            ]);
+        }
+
+        return json_encode(['status' => false]);
+    }
+
+    function searchEvent($input)
+    {
+        $church_id = $this->getUserChurch();
+
+        $fullName = explode(" ", $input);
+
+        if(count($fullName) > 1)
+        {
+            $events = DB::table('events')
+                ->where(
+                    [
+                        ['name', 'like', '%'.$fullName[0].'%'],
+                        ['church_id', '=', $church_id],
+                        ['deleted_at', '=', null]
+                    ]
+                )
+                ->limit(5)
+                ->orderBy('name', 'desc')
+                ->get();
+        }
+        else{
+
+            $events = DB::table('events')
+                ->where(
+                    [
+                        ['name', 'like', '%'.$input.'%'],
+                        ['church_id', '=', $church_id],
+                        ['deleted_at', '=', null]
+                    ]
+                )
+                ->limit(5)
+                ->orderBy('name', 'desc')
+                ->get();
+        }
+
+        if(count($events) > 0)
+        {
+            $arr = [];
+
+            foreach($events as $event)
+            {
+                $event->createdBy = $this->userRepository->find($event->createdBy_id)->person;
+
+                $event->group = $event->group_id ? $this->groupRepository->find($event->group_id)->name : 'Sem Grupo';
+
+                $arr[] = $event->name;
+                $arr[] = $event->frequency;
+                $arr[] = $event->createdBy->name . " " . $event->createdBy->lastName;
+                $arr[] = $event->group;
+                $arr[] = $event->id;
+            }
 
             return json_encode([
                 'status' => true,

@@ -126,12 +126,18 @@ class VisitorController extends Controller
         }
 
         $countPerson[] = $this->countPerson();
+
         $countGroups[] = $this->countGroups();
+
         $notify = $this->notify();
+
         $qtde = count($notify);
+
         $leader = $this->getLeaderRoleId();
 
-        return view('people.visitors', compact('visitors', 'countPerson', 'countGroups', 'notify', 'qtde', 'leader'));
+        $admin = $this->getAdminRoleId();
+
+        return view('people.visitors', compact('visitors', 'countPerson', 'countGroups', 'notify', 'qtde', 'leader', 'admin'));
     }
 
     /**
@@ -155,10 +161,12 @@ class VisitorController extends Controller
 
         $leader = $this->getLeaderRoleId();
 
+        $admin = $this->getAdminRoleId();
+
         $route = $this->getRoute();
 
         return view('people.create-visitors', compact('state', 'countPerson', 'countGroups', 'adults',
-            'notify', 'qtde', 'leader', 'route'));
+            'notify', 'qtde', 'leader', 'route', 'admin'));
     }
 
     /**
@@ -250,6 +258,8 @@ class VisitorController extends Controller
 
         $leader = $this->getLeaderRoleId();
 
+        $admin = $this->getAdminRoleId();
+
         $countPerson[] = $this->countPerson();
 
         $countGroups[] = $this->countGroups();
@@ -265,7 +275,7 @@ class VisitorController extends Controller
         $route = $this->getRoute();
 
         return view('people.edit-visitors', compact('model', 'state', 'location', 'roles', 'countPerson',
-            'countGroups', 'adults', 'notify', 'qtde', 'leader', 'leader', 'route'));
+            'countGroups', 'adults', 'notify', 'qtde', 'leader', 'leader', 'route', 'admin'));
     }
 
     /**
@@ -396,6 +406,8 @@ class VisitorController extends Controller
 
         $leader = $this->getLeaderRoleId();
 
+        $admin = $this->getAdminRoleId();
+
         $events = Event::where('church_id', $church)->paginate(5);
 
         //$notify = $this->notify();
@@ -406,7 +418,7 @@ class VisitorController extends Controller
 
         if (count($events) == 0) {
             return view('dashboard.visitors', compact('countPerson', 'countGroups', 'events',
-                'countMembers', 'street', 'groups', 'leader'));
+                'countMembers', 'street', 'groups', 'leader', 'admin'));
         }
 
         $groups = Group::where('church_id', $church)->paginate(5);
@@ -490,7 +502,7 @@ class VisitorController extends Controller
             'street', 'groups', 'countMembers', 'allMonths', 'days',
             'allMonths', 'allDays', 'days', 'allEvents',
             'thisMonth', 'today', 'ano', 'allEventsNames', 'allEventsTimes',
-            'allEventsFrequencies', 'allEventsAddresses', 'numWeek', 'church_id'));
+            'allEventsFrequencies', 'allEventsAddresses', 'numWeek', 'church_id', 'admin'));
     }
 
 

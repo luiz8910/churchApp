@@ -1552,6 +1552,41 @@ class EventServices
         }
 
     }
+
+    public function checkInNow()
+    {
+        $church_id = $this->getUserChurch();
+
+        $date = date_create();
+        //$date = date_create('2018-01-26 00:00:00');
+
+        $tomorrow = date_format($date, "Y-m-d");
+
+        $tomorrow = date_create($tomorrow);
+
+        date_add($tomorrow, date_interval_create_from_date_string("1 day"));
+
+        //$tomorrow = date_create('2018-01-29 00:00:00');
+
+        $result = DB::table('event_person')
+            ->join('events', 'events.id', '=', 'event_person.event_id')
+            ->where('events.church_id', $church_id)
+            ->whereNull('event_person.deleted_at')
+            ->whereBetween('event_person.event_date', [$date, $tomorrow])
+            ->select('events.id')
+            ->distinct()
+            ->get()
+            ;
+
+        if(count($result) > 0)
+        {
+            $collection = collect($result);
+
+            return $collection;
+        }
+
+        return false;
+    }
 }
 
 

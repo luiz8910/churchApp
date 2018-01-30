@@ -69,64 +69,67 @@
 														</div>
 														<div class="actions">
 															<div class="btn-group btn-group-sm">
-																	@if(Auth::getUser()->person->role_id == $leader)
+																	@if(Auth::user()->person->role_id == $leader
+																	|| Auth::user()->person->role_id == $admin)
 																		<div class="col-lg-6">
 																			<div class="input-group">
 																				<input type="text" class="form-control" id="btn-search" placeholder="Digite 3 letras ou mais...">
-																	<span class="input-group-btn">
-																		<button class="btn btn-default" type="button">
-																			<i class="fa fa-search font-green"></i>
-																		</button>
-																	</span>
+																				<span class="input-group-btn">
+																					<button class="btn btn-default" type="button">
+																						<i class="fa fa-search font-green"></i>
+																					</button>
+																				</span>
 																			</div><!-- /input-group -->
 																		</div><!-- /.col-lg-8 -->
-																	@endif
 
-																	<div class="col-lg-3">
-																		<div class="btn-group-devided">
-																			<a role="button" class="btn btn-info btn-circle btn-sm" href="{{ route('person.create') }}" style="margin-top: 2px;">
-																				<i class="fa fa-plus"></i>
-																				<span class="hidden-xs hidden-sm">Novo Membro</span>
-																			</a>
 
-																		</div>
-																	</div>
+                                                                        <div class="col-lg-3">
+                                                                            <div class="btn-group-devided">
+                                                                                <a role="button" class="btn btn-info btn-circle btn-sm" href="{{ route('person.create') }}" style="margin-top: 2px;">
+                                                                                    <i class="fa fa-plus"></i>
+                                                                                    <span class="hidden-xs hidden-sm">Novo Membro</span>
+                                                                                </a>
 
-																	<div class="col-lg-3">
-																		<a class="btn red btn-outline btn-circle btn-sm" href="javascript:;" data-toggle="dropdown">
-																			<i class="fa fa-share"></i>
-																			<span class="hidden-xs"> Opções </span>
-																			<i class="fa fa-angle-down"></i>
-																		</a>
-																		<ul class="dropdown-menu pull-right" id="sample_3_tools">
-																			<li>
-																				<a href="javascript:;" id="print" onclick="printDiv('printable-table')"
-																				   data-action="0" class="tool-action">
-																					<i class="icon-printer"></i> Imprimir
-																				</a>
-																			</li>
-																			<!--<li>
-                                                                                <a href="javascript:;" data-action="1" class="tool-action">
-                                                                                    <i class="icon-check"></i> Copiar</a>
-                                                                            </li>-->
-																			<li>
-																				<a href="javascript:;" data-action="2"
-																				   onclick="printDiv('printable-table', 'pdf')" class="tool-action">
-																					<i class="icon-doc"></i> PDF</a>
-																			</li>
-																			<li>
-																				<a href="{{ route($route.'.excel', ['format' => 'xls']) }}"
-																				   data-action="3" target="_blank"
-																				   class="tool-action">
-																					<i class="icon-paper-clip"></i> Excel</a>
-																			</li>
-																			<li>
-																				<a href="{{ route($route.'.excel', ['format' => 'csv']) }}"
-																				   data-action="4" target="_blank" class="tool-action">
-																					<i class="icon-cloud-upload"></i> CSV</a>
-																			</li>
-																		</ul>
-																	</div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="col-lg-3">
+                                                                            <a class="btn red btn-outline btn-circle btn-sm" href="javascript:;" data-toggle="dropdown">
+                                                                                <i class="fa fa-share"></i>
+                                                                                <span class="hidden-xs"> Opções </span>
+                                                                                <i class="fa fa-angle-down"></i>
+                                                                            </a>
+                                                                            <ul class="dropdown-menu pull-right" id="sample_3_tools">
+                                                                                <li>
+                                                                                    <a href="javascript:;" id="print" onclick="printDiv('printable-table')"
+                                                                                       data-action="0" class="tool-action">
+                                                                                        <i class="icon-printer"></i> Imprimir
+                                                                                    </a>
+                                                                                </li>
+                                                                                <!--<li>
+                                                                                    <a href="javascript:;" data-action="1" class="tool-action">
+                                                                                        <i class="icon-check"></i> Copiar</a>
+                                                                                </li>-->
+                                                                                <li>
+                                                                                    <a href="javascript:;" data-action="2"
+                                                                                       onclick="printDiv('printable-table', 'pdf')" class="tool-action">
+                                                                                        <i class="icon-doc"></i> PDF</a>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <a href="{{ route($route.'.excel', ['format' => 'xls']) }}"
+                                                                                       data-action="3" target="_blank"
+                                                                                       class="tool-action">
+                                                                                        <i class="icon-paper-clip"></i> Excel</a>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <a href="{{ route($route.'.excel', ['format' => 'csv']) }}"
+                                                                                       data-action="4" target="_blank" class="tool-action">
+                                                                                        <i class="icon-cloud-upload"></i> CSV</a>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </div>
+
+																@endif
 
 															</div> <!-- FIM DIV .btn-group -->
 														</div> <!-- FIM DIV .actions -->

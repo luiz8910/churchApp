@@ -30,7 +30,7 @@ class CheckRole
      * @param  int $role
      * @return mixed
      */
-    public function handle($request, Closure $next, $role)
+    public function handle($request, Closure $next, $role, $role2)
     {
         if(!Auth::check())
         {
@@ -42,7 +42,7 @@ class CheckRole
 
         $role_id = Auth::user()->person ? Auth::user()->person->role_id : $visitors_id;
 
-        if($role_id <> $role)
+        if($role_id <> $role && $role_id <> $role2)
         {
             return redirect("/");
         }

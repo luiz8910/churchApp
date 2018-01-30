@@ -56,7 +56,8 @@
 														</div> <!-- FIM DIV .caption -->
                                                         <div class="actions">
                                                             <div class="btn-group btn-group-sm">
-                                                                @if(Auth::getUser()->person->role_id == $leader)
+                                                                @if(Auth::getUser()->person->role_id == $leader
+                                                                || Auth::user()->person->role_id == $admin)
                                                                     <div class="col-lg-6">
                                                                         <div class="input-group">
                                                                             <input type="text" class="form-control" id="btn-search" placeholder="Digite 3 letras ou mais...">

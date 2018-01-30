@@ -268,7 +268,11 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         <td>
                                                             @if(Auth::user()->person_id == $person->id)
                                                                 <a href="javascript:;" style="margin-left: 10px;">
-                                                                    <img src="../../{{ $person->imgProfile }}" style="width: 50px; height: 50px;">
+                                                                    @if($person->social_media)
+                                                                        <img src="{{ $person->imgProfile }}" style="width: 50px; height: 50px;">
+                                                                    @else
+                                                                        <img src="../../{{ $person->imgProfile }}" style="width: 50px; height: 50px;">
+                                                                    @endif
                                                                     {{ $person->name }}
                                                                     <span class="hidden-xs hidden-sm">
                                                                         {{ $person->lastName }}
@@ -280,7 +284,12 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                         @else
                                                                 {{ route('visitors.edit', ['person' => $person->id]) }}
                                                                 @endif"  style="margin-left: 10px;">
-                                                                    <img src="../../{{ $person->imgProfile }}" style="width: 50px; height: 50px;">
+
+                                                                    @if($person->social_media)
+                                                                        <img src="{{ $person->imgProfile }}" style="width: 50px; height: 50px;">
+                                                                    @else
+                                                                        <img src="../../{{ $person->imgProfile }}" style="width: 50px; height: 50px;">
+                                                                    @endif
                                                                     {{ $person->name }}
                                                                     <span class="hidden-xs hidden-sm">
                                                                         {{ $person->lastName }}

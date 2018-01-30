@@ -51,6 +51,8 @@ class ConfigController extends Controller
 
         $church_id = $this->getUserChurch();
 
+        $admin = $this->getAdminRoleId();
+
         $class = [];
 
         $models = $this->modelsRepository->findByField('church_id', $church_id);
@@ -68,7 +70,7 @@ class ConfigController extends Controller
         //Fim Variáveis
 
         return view('config.index', compact('countPerson', 'countGroups', 'leader', 'notify', 'qtde',
-            'class', 'models'));
+            'class', 'models', 'admin'));
     }
 
     /**
@@ -231,6 +233,8 @@ class ConfigController extends Controller
 
         $leader = $this->getLeaderRoleId();
 
+        $admin = $this->getAdminRoleId();
+
         $notify = $this->notify();
 
         $qtde = count($notify) or 0;
@@ -279,7 +283,7 @@ class ConfigController extends Controller
          */
 
         return view('config.dropzone', compact('countPerson', 'countGroups',
-            'leader', 'notify', 'qtde', 'church_id', 'imports'));
+            'leader', 'notify', 'qtde', 'church_id', 'imports', 'admin'));
     }
 
     /*
@@ -313,6 +317,8 @@ class ConfigController extends Controller
 
         $leader = $this->getLeaderRoleId();
 
+        $admin = $this->getAdminRoleId();
+
         $notify = $this->notify();
 
         $qtde = count($notify) or 0;
@@ -323,7 +329,8 @@ class ConfigController extends Controller
          * Fim Variáveis
          */
 
-        return view('config.planExample', compact('countPerson', 'countGroups', 'leader', 'notify', 'qtde', 'church_id'));
+        return view('config.planExample', compact('countPerson', 'countGroups', 'leader', 'notify',
+            'qtde', 'church_id', 'admin'));
     }
 
     public function showPlan()

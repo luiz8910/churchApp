@@ -79,6 +79,8 @@ class FeedController extends Controller
 
         $leader = $this->getLeaderRoleId();
 
+        $admin = $this->getAdminRoleId();
+
         $role = $this->getUserRole();
 
         $feeds = $this->feedServices->feeds();
@@ -93,7 +95,7 @@ class FeedController extends Controller
 
         return view('feeds.index', compact('groups', 'countPerson', 'countMembers',
             'countGroups', 'notify', 'qtde', 'leader', 'role', 'church_id', 'feeds',
-            'events', 'groups', 'people'));
+            'events', 'groups', 'people', 'admin'));
     }
 
 

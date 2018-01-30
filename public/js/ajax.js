@@ -1705,6 +1705,7 @@
     function generalSearch(model, input)
     {
         var request = '';
+        var route = location.pathname + '/';
 
         if(model == "/inactive-person")
         {
@@ -1764,7 +1765,6 @@
             });
 
         }
-
         else if(model == "/person" || model == '/teen')
         {
             request = $.ajax({
@@ -1773,7 +1773,7 @@
                 dataType: 'json'
             });
 
-            var route = location.pathname + '/';
+
 
             request.done(function (e) {
                 if(e.status)
@@ -1819,59 +1819,168 @@
                 }
             })
         }
-        else{
-            if(model == "/visitors")
-            {
-                request = $.ajax({
-                    url: '/search-person/' + input + '/' + 'visitor',
-                    method: 'GET',
-                    dataType: 'json'
-                });
+        else if(model == "/visitors")
+        {
+            request = $.ajax({
+                url: '/search-person/' + input + '/' + 'visitor',
+                method: 'GET',
+                dataType: 'json'
+            });
 
 
-                request.done(function (e) {
-                   if(e.status)
+            request.done(function (e) {
+               if(e.status)
+               {
+                   var i = 0;
+
+                   var tr = '';
+
+                   while(i < e.data.length)
                    {
-                       var i = 0;
+                       tr += '<tr>' +
+                           '<td>' +
+                           '<img src="'+ e.data[i]+'" class="imgProfile img-circle">' +
+                           '</td>' +
+                           '<td><a href="/visitors/'+ e.data[i + 4]+'/edit">'+ e.data[i + 1]+'</a></td>' +
+                           '<td>'+ e.data[i + 2] +'</td>'+
+                           '<td>'+ e.data[i + 3] +'</td>'+
+                           '<td>' +
+                           '<button class="btn btn-success btn-sm btn-circle" title="Deseja Tornar Membro?"'+
+                           'onclick="sweetMakeMember('+ e.data[i + 4] +')"'+
+                           'id="btn-delete-'+ e.data[i + 4] +'">'+
+                           '<i class="fa fa-share"></i>'+
+                           '<span class="hidden-xs hidden-sm"> Tornar Membro</span>'+
+                           '</button>'+
+                           '</td>' +
+                           '</tr>';
 
-                       var tr = '';
-
-                       while(i < e.data.length)
-                       {
-                           tr += '<tr>' +
-                               '<td>' +
-                               '<img src="'+ e.data[i]+'" class="imgProfile img-circle">' +
-                               '</td>' +
-                               '<td><a href="/visitors/'+ e.data[i + 4]+'/edit">'+ e.data[i + 1]+'</a></td>' +
-                               '<td>'+ e.data[i + 2] +'</td>'+
-                               '<td>'+ e.data[i + 3] +'</td>'+
-                               '<td>' +
-                               '<button class="btn btn-success btn-sm btn-circle" title="Deseja Tornar Membro?"'+
-                               'onclick="sweetMakeMember('+ e.data[i + 4] +')"'+
-                               'id="btn-delete-'+ e.data[i + 4] +'">'+
-                               '<i class="fa fa-share"></i>'+
-                               '<span class="hidden-xs hidden-sm"> Tornar Membro</span>'+
-                               '</button>'+
-                               '</td>' +
-                               '</tr>';
-
-                           i = i + 5;
-                       }
-
-                       $("#loading-results").css('display', 'none');
-
-                       $("thead").css('display', 'table-header-group');
-
-                       $("#tbody-search").removeClass('hide').append(tr);
-
-                       console.log(e.data);
+                       i = i + 5;
                    }
-                   else{
-                       $("#loading-results").css('display', 'none');
-                       $("#p-zero").css('display', 'block');
-                   }
-                });
-            }
+
+                   $("#loading-results").css('display', 'none');
+
+                   $("thead").css('display', 'table-header-group');
+
+                   $("#tbody-search").removeClass('hide').append(tr);
+
+                   console.log(e.data);
+               }
+               else{
+                   $("#loading-results").css('display', 'none');
+                   $("#p-zero").css('display', 'block');
+               }
+            });
+        }
+        else if(model == "/group")
+        {
+            request = $.ajax({
+                url: '/search-group/' + input,
+                method: 'GET',
+                dataType: 'json'
+            });
+
+            request.done(function (e) {
+                if(e.status)
+                {
+                    var i = 0;
+
+                    var tr = '';
+
+                    while(i < e.data.length)
+                    {
+                        tr += '<tr>' +
+                            '<td>' +
+                            '<img src="'+ e.data[i]+'" class="imgProfile img-circle">' +
+                            '</td>' +
+                            '<td><a href="'+route+ e.data[i + 4]+'/edit">'+ e.data[i + 1]+'</a></td>' +
+                            '<td>'+ e.data[i + 2] +'</td>'+
+                            '<td><span class="badge badge-success">'+ e.data[i + 3] +'</td></span>'+
+                            '<td>' +
+                            '<button class="btn btn-danger btn-sm btn-circle" title="Deseja Excluir o Grupo?"'+
+                            'onclick="sweetDeleteGroup('+ e.data[i + 4] +')"'+
+                            'id="btn-delete-'+ e.data[i + 4] +'">'+
+                            '<i class="fa fa-trash"></i>'+
+                            '<span class="hidden-xs hidden-sm"> Inativar</span>'+
+                            '</button>'+
+                            '</td>' +
+                            '</tr>';
+
+                        i = i + 5;
+                    }
+
+                    $("#loading-results").css('display', 'none');
+
+                    $("thead").css('display', 'table-header-group');
+
+                    $("#tbody-search").removeClass('hide').append(tr);
+
+                    console.log(e.data);
+                }
+                else{
+                    $("#loading-results").css('display', 'none');
+                    $("#p-zero").css('display', 'block');
+                }
+            })
+        }
+        else if(model == "/events")
+        {
+            request = $.ajax({
+                url: '/search-event/' + input,
+                method: 'GET',
+                dataType: 'json'
+            });
+
+            request.done(function (e) {
+                if(e.status)
+                {
+                    var i = 0;
+
+                    var tr = '';
+
+                    while(i < e.data.length)
+                    {
+                        tr += '<tr>' +
+                            '<td>' +
+                            '<fieldset>'+
+                            '<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">'+
+                                '<input type="checkbox" name="events" class="checkboxes check-model" id="check-'+ e.data[i + 4]+'"'+
+                                'value="'+ e.data[i + 4]+'" />'+
+                                '<span></span>'+
+                                '</label>'+
+                            '</fieldset>'+
+                            '</td>'+
+                            '<td>' +
+                            '<a href="'+route+ e.data[i + 4]+'/edit">'+ e.data[i]+'</a>' +
+                            '</td>' +
+                            '<td>'+ e.data[i + 1] +'</td>' +
+                            '<td>'+ e.data[i + 2] +'</td>'+
+                            '<td>'+ e.data[i + 3] +'</td>'+
+                            '<td>' +
+                            '<button class="btn btn-danger btn-sm btn-circle" title="Deseja Excluir o Evento?"'+
+                            'onclick="sweetDeleteEvent('+ e.data[i + 4] +')"'+
+                            'id="btn-delete-'+ e.data[i + 4] +'">'+
+                            '<i class="fa fa-trash"></i>'+
+                            '<span class="hidden-xs hidden-sm"> Inativar</span>'+
+                            '</button>'+
+                            '</td>' +
+                            '</tr>';
+
+                        i = i + 5;
+                    }
+
+                    $("#loading-results").css('display', 'none');
+
+                    $("thead").css('display', 'table-header-group');
+
+                    $("#tbody-search").removeClass('hide').append(tr);
+
+                    console.log(e.data);
+                }
+                else{
+                    $("#loading-results").css('display', 'none');
+                    $("#p-zero").css('display', 'block');
+                }
+            })
         }
     }
 
@@ -1964,6 +2073,49 @@
                 }
             }
         )
+    }
+
+    function sweetDeleteGroup(group)
+    {
+        swal({
+                title: 'Atenção',
+                text: 'Deseja excluir o grupo selecionado ?',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonClass: "btn-info",
+                confirmButtonText: "Sim",
+                cancelButtonText: "Não",
+                closeOnConfirm: true,
+                closeOnCancel: true
+            },
+            function(isConfirm){
+                if(isConfirm)
+                {
+                    Delete(group, '/group', null);
+                }
+            }
+        )
+    }
+
+    function sweetDeleteEvent(event)
+    {
+        swal({
+            title: 'Atenção',
+            text: 'Deseja excluir o evento selecionado?',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonClass: "btn-info",
+            confirmButtonText: "Sim",
+            cancelButtonText: "Não",
+            closeOnConfirm: true,
+            closeOnCancel: true
+        },
+        function(isConfirm){
+            if(isConfirm)
+            {
+                Delete(event, '/event', null);
+            }
+        })
     }
 
     function rollbackImport(code)
