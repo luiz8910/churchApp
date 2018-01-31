@@ -191,54 +191,91 @@ class EventServices
     /**
      * Cria datas de eventos futuros (5 datas por default)
      * @param $id (event_id)
-     * @param $eventDate (data do primeiro evento)
-     * @param $frequency (frequência do evento)
+     * @param $data['eventDate'] (data do primeiro evento)
+     * @param $data['frequency'] (frequência do evento)
      */
-    public function newEventDays($id, $eventDate, $frequency)
+    public function newEventDays($id, $data)
     {
-        $show = $eventDate == date("Y-m-d") ? 1 : 0;
+        $show = $data['eventDate'] == date("Y-m-d") ? 1 : 0;
 
         $person_id = \Auth::user()->person_id;
 
-        $event_date = date_create($eventDate);
+        $event_date = date_create($data['eventDate'] . $data['startTime']);
 
-        DB::table('event_person')
-            ->insert([
-                'event_id' => $id,
-                'person_id' => $person_id,
-                'eventDate' => $eventDate,
-                'event_date' => $event_date,
-                'show' => $show
-            ]);
+        if($data['endTime'] == "" || $data['endTime'] == null)
+        {
+            if($data['endEventDate'] == $data['eventDate'])
+            {
+                $endTime = date_create();
+
+                date_add($endTime, date_interval_create_from_date_string("1 day"));
+
+                $endTime = date_format($endTime, "Y-m-d");
+
+                $endTime = date_create($endTime);
+
+                DB::table('event_person')
+                    ->insert([
+                        'event_id' => $id,
+                        'person_id' => $person_id,
+                        'eventDate' => $data['eventDate'],
+                        'event_date' => $event_date,
+                        'end_event_date' => $endTime,
+                        'show' => $show
+                    ]);
+            }
+            else{
+                DB::table('event_person')
+                    ->insert([
+                        'event_id' => $id,
+                        'person_id' => $person_id,
+                        'eventDate' => $data['eventDate'],
+                        'event_date' => $event_date,
+                        'end_event_date' => date_create($data['endEventDate'] . $data['endTime']),
+                        'show' => $show
+                    ]);
+            }
+        }
+        else{
+            DB::table('event_person')
+                ->insert([
+                    'event_id' => $id,
+                    'person_id' => $person_id,
+                    'eventDate' => $data['eventDate'],
+                    'event_date' => $event_date,
+                    'end_event_date' => date_create($data['endEventDate'] . $data['endTime']),
+                    'show' => $show
+                ]);
+        }
 
 
-        if($frequency == $this->weekly())
+        if($data['frequency'] == $this->weekly())
         {
-            $this->setNextEvents($id, $eventDate, "7 days", $person_id);
+            $this->setNextEvents($id, $data['eventDate'], "7 days", $person_id);
         }
-        elseif($frequency == $this->monthly())
+        elseif($data['frequency'] == $this->monthly())
         {
-            $this->setNextEvents($id, $eventDate, "30 days", $person_id);
+            $this->setNextEvents($id, $data['eventDate'], "30 days", $person_id);
         }
-        elseif ($frequency == $this->daily())
+        elseif ($data['frequency'] == $this->daily())
         {
-            $this->setNextEvents($id, $eventDate, "1 days", $person_id);
+            $this->setNextEvents($id, $data['eventDate'], "1 days", $person_id);
         }
-        elseif ($frequency == $this->biweekly())
+        elseif ($data['frequency'] == $this->biweekly())
         {
-            $this->setNextEvents($id, $eventDate, "15 days", $person_id);
+            $this->setNextEvents($id, $data['eventDate'], "15 days", $person_id);
         }
 
-        $this->subAllMembers($id, $eventDate, $person_id);
+        $this->subAllMembers($id, $data['eventDate'], $person_id);
     }
 
     public function setNextEvents($id, $eventDate, $days, $person_id)
     {
-        $day = date_create($eventDate);
-
         $i = 0;
 
         $event = Event::find($id);
+
+        $day = date_create($eventDate.$event->startTime);
 
         $diff = $event->eventDate != $event->endEventDate ? true : false;
 
@@ -260,7 +297,7 @@ class EventServices
                     $year++;
                 }
 
-                $day = date_create($year."-".$month."-".$d);
+                $day = date_create($year."-".$month."-".$d.$event->startTime);
 
                 $d = date_format($day, "Y-m-d");
 
@@ -278,7 +315,7 @@ class EventServices
 
                 if ($i == 0)
                 {
-                    $day_2 = date_create($year."-".$month."-".$event->day_2);
+                    $day_2 = date_create($year."-".$month."-".$event->day_2.$event->startTime);
                     $this->insertNewDay($id, $person_id, $day_2);
                 }
 
@@ -290,8 +327,8 @@ class EventServices
                     $year++;
                 }
 
-                $day = date_create($year."-".$month."-".$d);
-                $day_2 = date_create($year."-".$month."-".$event->day_2);
+                $day = date_create($year."-".$month."-".$d.$event->startTime);
+                $day_2 = date_create($year."-".$month."-".$event->day_2.$event->startTime);
 
 
                 $this->insertNewDay($id, $person_id, $day_2);
@@ -323,6 +360,12 @@ class EventServices
     {
         $visitor_id = trim(strstr($person_id, "/visit", true));
 
+        $event = $this->repository->find($id);
+
+        $endTime = date_create(date_format($day, "Y-m-d"));
+
+        date_add($endTime, date_interval_create_from_date_string("1 day"));
+
         if($visitor_id)
         {
             return DB::table('event_person')
@@ -335,14 +378,72 @@ class EventServices
                 ]);
         }
 
-        return DB::table('event_person')
-            ->insert([
-                'event_id' => $id,
-                'person_id' => $person_id,
-                'eventDate' => date_format($day, "Y-m-d"),
-                'event_date' => $day,
-                'show' => 0
-            ]);
+        if($event->endTime == "" || $event->endTime == null)
+        {
+            if($event->eventDate == $event->endEventDate)
+            {
+
+
+
+                //$endTime = date_format($endTime, "Y-m-d");
+
+                //$endTime = date_create($endTime);
+
+                return DB::table('event_person')
+                    ->insert([
+                        'event_id' => $id,
+                        'person_id' => $person_id,
+                        'eventDate' => date_format($day, "Y-m-d"),
+                        'event_date' => $day,
+                        'end_event_date' => $endTime,
+                        'show' => 0
+                    ]);
+
+            }
+            else{
+                return DB::table('event_person')
+                    ->insert([
+                        'event_id' => $id,
+                        'person_id' => $person_id,
+                        'eventDate' => date_format($day, "Y-m-d"),
+                        'event_date' => $day,
+                        'end_event_date' => date_create($event->endEventDate.$event->endTime),
+                        'show' => 0
+                    ]);
+            }
+        }
+        else{
+            if($event->eventDate == $event->endEventDate)
+            {
+                $dateDay = date_format($day, "Y-m-d");
+
+                return DB::table('event_person')
+                    ->insert([
+                        'event_id' => $id,
+                        'person_id' => $person_id,
+                        'eventDate' => date_format($day, "Y-m-d"),
+                        'event_date' => $day,
+                        'end_event_date' => date_create($dateDay.$event->endTime),
+                        'show' => 0
+                    ]);
+            }
+            else{
+                return DB::table('event_person')
+                    ->insert([
+                        'event_id' => $id,
+                        'person_id' => $person_id,
+                        'eventDate' => date_format($day, "Y-m-d"),
+                        'event_date' => $day,
+                        'end_event_date' => date_create($event->endEventDate.$event->endTime),
+                        'show' => 0
+                    ]);
+            }
+
+
+
+        }
+
+
     }
 
     /* Inscreve todos os membros do grupo
@@ -381,14 +482,53 @@ class EventServices
             while ($i < count($people))
             {
 
-                DB::table('event_person')
-                    ->insert([
-                        'event_id' => $id,
-                        'person_id' => $people[$i]->id,
-                        'eventDate' => $eventDate,
-                        'event_date' => date_create($eventDate),
-                        'show' => $show
-                    ]);
+                if($event->endTime == "" || $event->endTime == null)
+                {
+                    if($event->eventDate == $event->endEventDate)
+                    {
+                        $endTime = date_create();
+
+                        date_add($endTime, date_interval_create_from_date_string("1 day"));
+
+                        $endTime = date_format($endTime, "Y-m-d");
+
+                        $endTime = date_create($endTime);
+
+                        DB::table('event_person')
+                            ->insert([
+                                'event_id' => $id,
+                                'person_id' => $people[$i]->id,
+                                'eventDate' => $eventDate,
+                                'event_date' => date_create($eventDate.$event->startTime),
+                                'end_event_date' => $endTime,
+                                'show' => $show
+                            ]);
+                    }
+                    else{
+                        DB::table('event_person')
+                            ->insert([
+                                'event_id' => $id,
+                                'person_id' => $people[$i]->id,
+                                'eventDate' => $eventDate,
+                                'event_date' => date_create($eventDate.$event->startTime),
+                                'end_event_date' => date_create($event->endEventDate . $event->endTime),
+                                'show' => $show
+                            ]);
+                    }
+
+                }
+                else{
+                    DB::table('event_person')
+                        ->insert([
+                            'event_id' => $id,
+                            'person_id' => $people[$i]->id,
+                            'eventDate' => $eventDate,
+                            'event_date' => date_create($eventDate.$event->startTime),
+                            'end_event_date' => date_create($event->endEventDate.$event->endTime),
+                            'show' => $show
+                        ]);
+                }
+
 
 
                 if($frequency == $this->weekly())
@@ -1557,26 +1697,28 @@ class EventServices
     {
         $church_id = $this->getUserChurch();
 
-        $date = date_create();
-        //$date = date_create('2018-01-26 00:00:00');
+        $midnight = date_format(date_create(), 'Y-m-d');
 
-        $tomorrow = date_format($date, "Y-m-d");
+        $midnight = date_create($midnight);
 
-        $tomorrow = date_create($tomorrow);
-
-        date_add($tomorrow, date_interval_create_from_date_string("1 day"));
-
-        //$tomorrow = date_create('2018-01-29 00:00:00');
+        //$now = date_create();
+        $now = date_create();
 
         $result = DB::table('event_person')
             ->join('events', 'events.id', '=', 'event_person.event_id')
-            ->where('events.church_id', $church_id)
-            ->whereNull('event_person.deleted_at')
-            ->whereBetween('event_person.event_date', [$date, $tomorrow])
+            ->where([
+                'events.church_id' => $church_id,
+                'event_person.deleted_at' => null,
+                ['event_person.event_date', '>=', $midnight],
+                ['event_person.event_date', '<=', $now],
+                ['event_person.end_event_date', '>=', $now],
+            ])
             ->select('events.id')
             ->distinct()
             ->get()
             ;
+
+        //dd($result);
 
         if(count($result) > 0)
         {

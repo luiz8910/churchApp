@@ -2113,7 +2113,7 @@
         function(isConfirm){
             if(isConfirm)
             {
-                Delete(event, '/event', null);
+                Delete(event, '/events', null);
             }
         })
     }

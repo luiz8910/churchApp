@@ -819,7 +819,7 @@ class DashboardController extends Controller
 
     public function checkin()
     {
-        $events = $this->eventServices->checkInNow();
+        $events = $this->eventServices->checkInNow();//dd($events);
 
         $arr = [];
 
