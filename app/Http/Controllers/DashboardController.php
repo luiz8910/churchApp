@@ -391,13 +391,14 @@ class DashboardController extends Controller
 
             $check_in_now = $this->eventServices->checkInNow();
 
-            $events_to_sub = [];//$this->eventRepository->findByField('church_id', $church_id);
+            $events_to_sub = $this->eventRepository->findByField('church_id', $church_id);
+            $events_to_check = [];
 
             if($check_in_now)
             {
                 foreach($check_in_now as $item)
                 {
-                    $events_to_sub[] = $this->eventRepository->find($item->id);
+                    $events_to_check[] = $this->eventRepository->find($item->id);
                 }
             }
 
@@ -413,7 +414,7 @@ class DashboardController extends Controller
             'allDays', 'days', 'allEvents', 'thisMonth', 'today', 'ano', 'allEventsNames', 'allEventsTimes',
             'allEventsFrequencies', 'allEventsAddresses', 'numWeek', 'people', 'groups_recent', 'events_recent',
             'qtde_users', 'qtde_groups', 'qtde_events', 'leader', 'church_id', 'feeds', 'event_list', 'is_sub',
-            'events_to_sub', 'admin'));
+            'events_to_sub', 'events_to_check','admin'));
     }
 
     public function check_in()

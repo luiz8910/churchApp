@@ -481,14 +481,14 @@
 																</div>
 																<div class="modal-body">
 
-																	@if(count($events_to_sub) == 0)
+																	@if(count($events_to_check) == 0)
                                                                         <p class="text-center">Não há eventos disponíveis para check-in</p>
 
                                                                     @else
                                                                         <label for="select_event_id_check">Escolha o evento</label>
                                                                         <select name="select_event_id_check" id="select_event_id_check" class="form-control">
                                                                             <option value="">Selecione</option>
-                                                                            @foreach($events_to_sub as $item)
+                                                                            @foreach($events_to_check as $item)
                                                                                 <option value="{{ $item->id }}">{{ $item->name }}</option>
                                                                             @endforeach
                                                                         </select>
