@@ -368,14 +368,60 @@ class EventServices
 
         if($visitor_id)
         {
-            return DB::table('event_person')
-                ->insert([
-                    'event_id' => $id,
-                    'visitor_id' => $visitor_id,
-                    'eventDate' => date_format($day, "Y-m-d"),
-                    'event_date' => $day,
-                    'show' => 0
-                ]);
+            if($event->endTime == "" || $event->endTime == null)
+            {
+                if($event->eventDate == $event->endEventDate)
+                {
+                    return DB::table('event_person')
+                        ->insert([
+                            'event_id' => $id,
+                            'visitor_id' => $visitor_id,
+                            'eventDate' => date_format($day, "Y-m-d"),
+                            'event_date' => $day,
+                            'end_event_date' => $endTime,
+                            'show' => 0
+                        ]);
+                }
+                else{
+                    return DB::table('event_person')
+                        ->insert([
+                            'event_id' => $id,
+                            'visitor_id' => $visitor_id,
+                            'eventDate' => date_format($day, "Y-m-d"),
+                            'event_date' => $day,
+                            'end_event_date' => date_create($event->endEventDate.$event->endTime),
+                            'show' => 0
+                        ]);
+                }
+            }
+            else{
+
+                if($event->eventDate == $event->endEventDate)
+                {
+                    $dateDay = date_format($day, "Y-m-d");
+
+                    return DB::table('event_person')
+                        ->insert([
+                            'event_id' => $id,
+                            'visitor_id' => $visitor_id,
+                            'eventDate' => date_format($day, "Y-m-d"),
+                            'event_date' => $day,
+                            'end_event_date' => date_create($dateDay.$event->endTime),
+                            'show' => 0
+                        ]);
+                }
+                else{
+                    return DB::table('event_person')
+                        ->insert([
+                            'event_id' => $id,
+                            'visitor_id' => $visitor_id,
+                            'eventDate' => date_format($day, "Y-m-d"),
+                            'event_date' => $day,
+                            'end_event_date' => date_create($event->endEventDate.$event->endTime),
+                            'show' => 0
+                        ]);
+                }
+            }
         }
 
         if($event->endTime == "" || $event->endTime == null)
