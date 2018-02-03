@@ -307,25 +307,25 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                             <td>
                                                                                 @if(\Auth::user()->id != $event->createdBy_id && Auth::user()->church_id != null)
                                                                                     <a href="{{ route('person.edit',
-                                                                                    ['person' => $event->user_createdBy_id->id]) }}" rel="external" class="printable-table">
-                                                                                        {{ $event->user_createdBy_id->name }}
+                                                                                    ['person' => $event->createdBy_id]) }}" rel="external" class="printable-table">
+                                                                                        {{ $event->createdBy_name }}
                                                                                     </a>
                                                                                     {{--<a href="{{ route('person.edit',
                                                                                         ['person' => \App\Models\User::find($event->createdBy_id)->person->id]) }}" rel="external" class="printable-table">
                                                                                         {{ \App\Models\User::find($event->createdBy_id)->person->name }}
                                                                                     </a>--}}
                                                                                 @else
-                                                                                    {{ $event->user_createdBy_id->name }}
+                                                                                    {{ $event->createdBy_name }}
                                                                                 @endif
                                                                             </td>
                                                                             <td>
                                                                                 @if($event->group_id)
                                                                                     @if(Auth::user()->church_id != null)
                                                                                         <a href="{{ route("group.edit", ['group' => $event->group_id]) }}" rel="external" class="printable-table">
-                                                                                            {{ $event['group_name'] }}
+                                                                                            {{ $event->group_name }}
                                                                                         </a>
                                                                                     @else
-                                                                                        {{ $event['group_name'] }}
+                                                                                        {{ $event->group_name }}
                                                                                     @endif
                                                                                 @else Sem Grupo
                                                                                 @endif

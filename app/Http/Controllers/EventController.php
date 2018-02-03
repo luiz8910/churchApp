@@ -303,9 +303,11 @@ class EventController extends Controller
 
             if($event->group_id)
             {
-                $event['group_name'] = $this->groupRepository->find($event->group_id)->name;
+                $event->group_name = $this->groupRepository->find($event->group_id)->name;
             }
 
+            $fullName = $this->userRepository->find($event->createdBy_id)->person;
+            $event->createdBy_name = $fullName->name . " " . $fullName->lastName;
             //$event->created_at = $this->formatDateView($event->created_at);
         }
 
@@ -445,7 +447,7 @@ class EventController extends Controller
         $role = $this->getUserRole();
 
 
-        //dd(count($days));
+        //dd($events);
 
         return view("events.index", compact('countPerson', 'countGroups', 'state',
             'events', 'notify', 'qtde', 'allMonths', 'allDays', 'days', 'allEvents',
@@ -1680,17 +1682,46 @@ class EventController extends Controller
             {
                 $p->social_media = true;
             }
+
+            $p->presence = 0;
+
+            $presence = count(DB::table('event_person')
+                ->where([
+                    'event_id' => $id,
+                    'person_id' => $p->id
+                ])->get());
+
+            if($presence > 0)
+            {
+                $p->presence = $presence;
+            }
         }
 
         foreach ($visit_sub as $v)
         {
             $user = $this->visitorRepository->find($v->id)->users()->first();
 
-            $v->social_media = false;
+            $v->social_media = false; //echo $v->id . "<br>";
 
-            if($user->facebook_id || $user->google_id)
+            if($user)
             {
-                $v->social_media = true;
+                if($user->facebook_id || $user->google_id)
+                {
+                    $v->social_media = true;
+                }
+            }
+
+            $v->presence = 0;
+
+            $presence = count(DB::table('event_person')
+                ->where([
+                    'event_id' => $id,
+                    'visitor_id' => $v->id
+                ])->get());
+
+            if($presence > 0)
+            {
+                $v->presence = $presence;
             }
         }
 
@@ -1716,7 +1747,7 @@ class EventController extends Controller
         return view('events.subscriptions',
             compact('people', 'countPerson', 'countGroups', 'leader',
                 'notify', 'qtde', 'event', 'sub', 'person_sub',
-                'attendance', 'merged', 'merged_list', 'admin'));
+                'merged', 'merged_list', 'admin'));
     }
 
     /*

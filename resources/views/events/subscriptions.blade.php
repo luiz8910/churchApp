@@ -299,7 +299,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                                         </td>
                                                         <td>
-                                                            {{ $attendance[$i] }}
+                                                            {{ $person->presence }}
                                                             <span class="hidden-xs hidden-sm">
                                                                 participações
                                                             </span>
