@@ -2,9 +2,10 @@
  * Created by Luiz on 06/06/2017.
  */
 
-    //Função abaixo localiza-se no arquivo ajax.js
+    //Funções abaixo localizam-se no arquivo ajax.js
     dataChart();
 
+    eventChartReport();
 
     function simpleChart(data)
     {
@@ -232,6 +233,256 @@
                     }
                 },
                 id: 'versions'
+            }],
+            responsive: {
+                rules: [{
+                    condition: {
+                        maxWidth: 400
+                    },
+                    chartOptions: {
+                        series: [{
+                            id: 'versions',
+                            dataLabels: {
+                                enabled: false
+                            }
+                        }]
+                    }
+                }]
+            }
+        });
+    }
+
+    function eventReport(days, qtdePeople, frequency, name)
+    {
+        Highcharts.chart('container', {
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'column'
+            },
+            title: {
+                text: 'Presença no evento: ' + name
+            },
+            subtitle:{
+                text: 'Total de Inscritos: ' + qtdePeople
+            },
+            xAxis: {
+                categories: days,
+                crosshair: true
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Membros Presentes'
+                }
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.y}</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                        style: {
+                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                        }
+                    }
+                }
+            },
+            series: [{
+                name: 'Frequência',
+                colorByPoint: true,
+                data: [{
+                    name: days[0],
+                    y: frequency[0]
+                }, {
+                    name: days[1],
+                    y: frequency[1]
+                    //sliced: true,
+                    //selected: true
+                }, {
+                    name: days[2],
+                    y: frequency[2]
+                }, {
+                    name: days[3],
+                    y: frequency[3]
+                }, {
+                    name: days[4],
+                    y: frequency[4]
+
+                },]
+            }],
+            responsive: {
+                rules: [{
+                    condition: {
+                        maxWidth: 400
+                    },
+                    chartOptions: {
+                        series: [{
+                            id: 'versions',
+                            dataLabels: {
+                                enabled: false
+                            }
+                        }]
+                    }
+                }]
+            }
+        });
+
+        eventReportPortlet(days, qtdePeople, frequency, name);
+    }
+
+    function eventReportPortlet(days, qtdePeople, frequency, name)
+    {
+        Highcharts.chart('container-2', {
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'column'
+            },
+            title: {
+                text: 'Presença no evento: ' + name
+            },
+            subtitle:{
+                text: 'Total de Inscritos: ' + qtdePeople
+            },
+            xAxis: {
+                categories: days,
+                crosshair: true
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Membros Presentes'
+                }
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.y}</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                        style: {
+                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                        }
+                    }
+                }
+            },
+            series: [{
+                name: 'Frequência',
+                colorByPoint: true,
+                data: [{
+                    name: days[0],
+                    y: frequency[0]
+                }, {
+                    name: days[1],
+                    y: frequency[1]
+                    //sliced: true,
+                    //selected: true
+                }, {
+                    name: days[2],
+                    y: frequency[2]
+                }, {
+                    name: days[3],
+                    y: frequency[3]
+                }, {
+                    name: days[4],
+                    y: frequency[4]
+
+                },]
+            }],
+            responsive: {
+                rules: [{
+                    condition: {
+                        maxWidth: 400
+                    },
+                    chartOptions: {
+                        series: [{
+                            id: 'versions',
+                            dataLabels: {
+                                enabled: false
+                            }
+                        }]
+                    }
+                }]
+            }
+        });
+
+        eventReportStyledTabs(days, qtdePeople, frequency, name);
+    }
+
+    function eventReportStyledTabs(days, qtdePeople, frequency, name)
+    {
+        Highcharts.chart('container-3', {
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'column'
+            },
+            title: {
+                text: 'Presença no evento: ' + name
+            },
+            subtitle:{
+                text: 'Total de Inscritos: ' + qtdePeople
+            },
+            xAxis: {
+                categories: days,
+                crosshair: true
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Membros Presentes'
+                }
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.y}</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                        style: {
+                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                        }
+                    }
+                }
+            },
+            series: [{
+                name: 'Frequência',
+                colorByPoint: true,
+                data: [{
+                    name: days[0],
+                    y: frequency[0]
+                }, {
+                    name: days[1],
+                    y: frequency[1]
+                    //sliced: true,
+                    //selected: true
+                }, {
+                    name: days[2],
+                    y: frequency[2]
+                }, {
+                    name: days[3],
+                    y: frequency[3]
+                }, {
+                    name: days[4],
+                    y: frequency[4]
+
+                },]
             }],
             responsive: {
                 rules: [{

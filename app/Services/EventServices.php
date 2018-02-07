@@ -85,7 +85,6 @@ class EventServices
             ->get();
 
 
-
         return $eventDate;
     }
 
@@ -128,6 +127,22 @@ class EventServices
             ->get();
 
         return $event;
+    }
+
+    /*
+     * Retorna quantos pessoas compareceram no dia $date
+     * no evento $event
+     */
+    public function eventFrequencyByDate($event, $date)
+    {
+        return count(DB::table('event_person')
+            ->where([
+                'event_id' => $event,
+                'eventDate' => $date,
+                'check-in' => 1
+            ])
+            ->distinct()
+            ->get());
     }
 
     /**
@@ -1774,6 +1789,23 @@ class EventServices
         }
 
         return false;
+    }
+
+    public function getLastEvent()
+    {
+        $church_id = $this->getUserChurch();
+
+        $lastEvent = DB::table('event_person')
+            ->join('events', 'events.id', '=', 'event_person.event_id')
+            ->where(
+                [
+                    'events.church_id' => $church_id,
+                    ['event_person.event_date', '<=', '2018-02-07 00:00:00'],
+                    'event_person.deleted_at' => null
+                ]
+            )->select('events.id')->orderBy('event_date', 'desc')->limit(1)->get();
+
+        return $lastEvent;
     }
 }
 

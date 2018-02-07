@@ -1848,4 +1848,9 @@ class EventController extends Controller
         return json_encode($events);
     }
 
+    public function getLastEvent()
+    {
+        return $this->eventServices->getLastEvent();
+    }
+
 }

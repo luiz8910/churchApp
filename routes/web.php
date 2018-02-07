@@ -190,9 +190,9 @@ Route::group(['middleware' => 'auth'], function () {
     // Fim Eventos
 
 
-    // Inicio Configurações
-
     Route::group(['middleware' => 'check.role:1,5'], function (){
+        // Inicio Configurações
+
         Route::get("/configuracoes", "ConfigController@index")->name('config.index');
 
         Route::post("/config-required/{model}", 'ConfigController@updateRule')->name('config.required.fields');
@@ -230,6 +230,12 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/person-newFeed/{event}/{text}/{link?}/{expires_in?}', 'FeedController@personFeed');
 
         Route::get("/feeds", "FeedController@index")->name('feeds.index');
+
+        //Relatórios
+
+        Route::get('/relatorios', "ReportController@index")->name('report.index');
+
+        Route::get('/getReport', 'ReportController@getReport');
     });
 
 
@@ -422,5 +428,7 @@ Route::post('/api-login', 'UsersController@login');
 Route::get('list-person', 'DashboardController@check_in');
 
 Route::get('check-in', 'DashboardController@checkin');
+
+Route::get('getLastEvent', 'EventController@getLastEvent');
 
 

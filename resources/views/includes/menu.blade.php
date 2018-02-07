@@ -153,6 +153,15 @@
                         </ul>
                     </li>
                 @endif
+
+                @if(Auth::user()->person_id != null && (Auth::user()->person->role_id == $leader
+                || Auth::user()->person->role_id == $admin))
+                    <li class="menu-dropdown mega-menu-dropdown">
+                        <a href="{{ route("report.index") }}">
+                            Relatórios
+                        </a>
+                    </li>
+                @endif
             </ul>
         </div>
         <!-- END MEGA MENU -->

@@ -1184,27 +1184,74 @@
 
     function dataChart()
     {
-        var group = $("#groupId").val();
+        var route = location.pathname;
 
-        var request = $.ajax({
-            url:"/getChartData/" + group,
-            method: "GET",
-            dataType:'json',
-            async: false
-        });
+        if(route.search('/group') != -1)
+        {
+            var group = $("#groupId").val();
 
-        request.done(function(e){
+            var request = $.ajax({
+                url:"/getChartData/" + group,
+                method: "GET",
+                dataType:'json',
+                async: false
+            });
 
-            if(e.status)
-            {
-                return simpleChart(e.data);
-            }
-        });
+            request.done(function(e){
 
-        request.fail(function (e) {
-            console.log("fail");
-            console.log(e);
-        })
+                if(e.status)
+                {
+                    //return eventReport(e.data);
+                    return simpleChart(e.data);
+                }
+            });
+
+            request.fail(function (e) {
+                console.log("fail");
+                console.log(e);
+            })
+        }
+
+    }
+
+    function eventChartReport()
+    {
+        if(location.pathname.search('relatorios') != -1)
+        {
+            var request = $.ajax({
+                url: '/getReport',
+                method: 'GET',
+                dataType: 'json'
+            });
+
+            request.done(function(e){
+                if(e.status)
+                {
+
+                    console.log("Days: " + e.days);
+                    console.log("qtde: " + e.qtdePeople);
+                    console.log("Frequency: " + e.frequency);
+                    console.log("name: " + e.name);
+
+                    return eventReport(e.days, e.qtdePeople, e.frequency, e.name);
+                }
+                else{
+                    swal('Atenção', 'Verifique o console para log de erros', 'error');
+
+                    console.log(e.msg);
+                }
+            });
+
+            request.fail(function(e){
+                console.log('fail');
+                console.log(e);
+
+                swal('Atenção', 'Verifique o console para log de erros', 'error');
+            });
+
+
+        }
+
     }
 
     $(".group-delete").click(function(){

@@ -39,4 +39,13 @@ trait DateRepository
 
         return $day.'/'.$month.'/'.$year;
     }
+
+    public function formatReport($date)
+    {
+        $month = substr($date, 5, 2);
+
+        $day = substr($date, 8, 2);
+
+        return $day.'/'.$month;
+    }
 }
