@@ -1573,6 +1573,8 @@ class EventController extends Controller
         {
             $item = str_replace("-", "/", $item);
 
+            $this->eventServices->subToday($event, $item);
+
             $this->eventServices->subEvent($event, $item);
         }
 
@@ -1581,33 +1583,62 @@ class EventController extends Controller
 
     public function checkInPeople($people, $event)
     {
-        $people = \GuzzleHttp\json_decode($people);
+        $people = $people == 0 ? false : \GuzzleHttp\json_decode($people);
 
-        foreach ($people as $item)
+        if(!$people)
         {
-            $item = str_replace("-", "/", $item, $count);
+            try{
+                $this->eventServices->checkInAll($event);
 
-            if($count == 0){
-                $isSub = $this->eventServices->isSubPeople($event, $item);
+                $qtde = count($this->eventServices->getListSubEvent($event));
 
-                if(!$isSub)
-                {
-                    $this->eventServices->checkInBatch($event, $item);
-                }
+                DB::commit();
 
+                return json_encode([
+                    'status' => true,
+                    'qtde' => $qtde
+                ]);
+
+            }catch(\Exception $e)
+            {
+                DB::rollback();
+
+                return json_encode([
+                    'status' => false,
+                    'msg' => $e->getMessage()
+                ]);
             }
-            else{
-                $isSub = $this->eventServices->isSubVisitor($event, $item);
 
-                if(!$isSub)
-                {
-                    $this->eventServices->checkInVisitorBatch($event, $item);
+        }
+        else{
+            foreach ($people as $item)
+            {
+                $item = str_replace("-", "/", $item, $count);
+
+                if($count == 0){
+                    $isSub = $this->eventServices->isSubPeople($event, $item);
+
+                    if(!$isSub)
+                    {
+                        $this->eventServices->checkInBatch($event, $item);
+                    }
+
                 }
+                else{
+                    $isSub = $this->eventServices->isSubVisitor($event, $item);
 
+                    if(!$isSub)
+                    {
+                        $this->eventServices->checkInVisitorBatch($event, $item);
+                    }
+
+                }
             }
+
+            return json_encode(['status' => true]);
         }
 
-        return json_encode(['status' => true]);
+
     }
 
     /*
@@ -1846,11 +1877,6 @@ class EventController extends Controller
         //dd($events);
 
         return json_encode($events);
-    }
-
-    public function getLastEvent()
-    {
-        return $this->eventServices->getLastEvent();
     }
 
 }

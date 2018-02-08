@@ -179,17 +179,41 @@ class Kernel extends ConsoleKernel
             $nextEvent = date_add($lastEvent, date_interval_create_from_date_string($days));
         }
 
+        $e = DB::table('events')
+            ->where('id', $event->id)
+            ->get();
 
+        $event_date = date_create(date_format($nextEvent, "Y-m-d") . $e->startTime);
+        $end_event_date = date_create(date_format($nextEvent, "Y-m-d") . $e->endTime);
 
-        DB::table('event_person')
-            ->insert(
-                [
-                    'event_id' => $event->event_id,
-                    'person_id' => $event->person_id,
-                    'eventDate' => date_format($nextEvent, "Y-m-d"),
-                    'show' => 0
-                ]
-            );
+        if($event->person_id)
+        {
+            DB::table('event_person')
+                ->insert(
+                    [
+                        'event_id' => $event->event_id,
+                        'person_id' => $event->person_id,
+                        'eventDate' => date_format($nextEvent, "Y-m-d"),
+                        'event_date' => $event_date,
+                        'end_event_date' => $end_event_date,
+                        'show' => 0
+                    ]
+                );
+        }
+        else{
+            DB::table('event_person')
+                ->insert(
+                    [
+                        'event_id' => $event->event_id,
+                        'visitor_id' => $event->visitor_id,
+                        'eventDate' => date_format($nextEvent, "Y-m-d"),
+                        'event_date' => $event_date,
+                        'end_event_date' => $end_event_date,
+                        'show' => 0
+                    ]
+                );
+        }
+
     }
 
     public function getDayNumber($day)

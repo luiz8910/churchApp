@@ -515,7 +515,9 @@
 
 																	<form action="#" class="" id="form-people-check" style="display: none;" onsubmit="event.preventDefault();">
 																		<div class="form-group">
-																			<label for="people_check">Pessoas</label>
+																			<label for="people_check">
+                                                                                Pessoas
+                                                                            </label>
 																			<select class="form-control select2-multiple" id="people_check"
 																					name="people_check" multiple>
 																				<optgroup label="Membros" id="opt-group-check">
@@ -529,6 +531,20 @@
 																			</select>
 
 																		</div>
+
+                                                                        <span class="badge badge-primary badge-roundless" id="span-select-all" style="display: none;"> Todos Selecionados </span>
+
+                                                                        <br><br>
+
+                                                                        <!-- Check-in de todos os inscritos no evento selecionado -->
+                                                                        <fieldset id="fieldset-check" style="display: none;">
+                                                                            <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                                                                <input type="checkbox" name="check-all" class="checkboxes check-model" id="check-all"
+                                                                                       value="" />
+                                                                                <span></span>
+                                                                            </label>
+                                                                            Check-in para todos os inscritos
+                                                                        </fieldset>
 
 																	</form>
 

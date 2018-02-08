@@ -1795,17 +1795,104 @@ class EventServices
     {
         $church_id = $this->getUserChurch();
 
+        $today = date_create();
+
+        $today = date_format($today, 'Y-m-d H:i:s');
+
         $lastEvent = DB::table('event_person')
             ->join('events', 'events.id', '=', 'event_person.event_id')
             ->where(
                 [
                     'events.church_id' => $church_id,
-                    ['event_person.event_date', '<=', '2018-02-07 00:00:00'],
+                    ['event_person.event_date', '<=', $today],
                     'event_person.deleted_at' => null
                 ]
             )->select('events.id')->orderBy('event_date', 'desc')->limit(1)->get();
 
         return $lastEvent;
+    }
+
+    public function checkInAll($event)
+    {
+        $today = date_create();
+
+        $today = date_format($today, 'Y-m-d');
+
+        return DB::table('event_person')
+            ->where([
+                'event_id' => $event,
+                'eventDate' => $today
+            ])->update(['check-in' => 1]);
+    }
+
+    public function subToday($event, $person_id)
+    {
+        $e = $this->repository->find($event);
+
+        if($e->eventDate == $e->endEventDate)
+        {
+            if($e->endTime == null || $e->endTime == "")
+            {
+                $t = date_create();
+
+                date_add($t, date_interval_create_from_date_string("1 day"));
+            }
+            else{
+                $t = date_create();
+
+                $t = date_format($t, "Y-m-d");
+
+                $t = date_create($t . $e->endTime);
+
+                date_add($t, date_interval_create_from_date_string("1 day"));
+            }
+        }
+        else{
+            if($e->endTime == null || $e->endTime == "")
+            {
+                $t = date_create($e->endEventDate . '00:00:00');
+
+                date_add($t, date_interval_create_from_date_string("1 day"));
+            }
+            else{
+                $t = date_create($e->endEventDate . $e->endTime);
+            }
+        }
+
+        $today = date_create();
+
+        $today = date_format($today, 'Y-m-d');
+
+        $visit = trim(strstr($person_id, "/visit"));
+        $visitor_id = 0;
+
+        if($visit) {
+            $visitor_id = trim(strstr($person_id, "/visit", true));
+
+            DB::table('event_person')
+                ->insert([
+                    'event_id' => $event,
+                    'visitor_id' => $visitor_id,
+                    'eventDate' => $today,
+                    'check-in' => 0,
+                    'show' => 1,
+                    'event_date' => date_create($today.$e->startTime),
+                    'end_event_date' => $t
+                ]);
+        }
+        else{
+            DB::table('event_person')
+                ->insert([
+                    'event_id' => $event,
+                    'person_id' => $person_id,
+                    'eventDate' => $today,
+                    'check-in' => 0,
+                    'show' => 1,
+                    'event_date' => date_create($today.$e->startTime),
+                    'end_event_date' => $t
+                ]);
+        }
+
     }
 }
 
