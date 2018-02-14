@@ -1716,11 +1716,7 @@ class EventController extends Controller
 
             $p->presence = 0;
 
-            $presence = count(DB::table('event_person')
-                ->where([
-                    'event_id' => $id,
-                    'person_id' => $p->id
-                ])->get());
+            $presence = $this->eventServices->presenceMember($id, $p->id);
 
             if($presence > 0)
             {
@@ -1744,11 +1740,7 @@ class EventController extends Controller
 
             $v->presence = 0;
 
-            $presence = count(DB::table('event_person')
-                ->where([
-                    'event_id' => $id,
-                    'visitor_id' => $v->id
-                ])->get());
+            $presence = $this->eventServices->presenceVisitor($id, $v->id);
 
             if($presence > 0)
             {

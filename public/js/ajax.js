@@ -1172,6 +1172,174 @@ function eventChartReport() {
 
 }
 
+function eventChartAgeRange()
+{
+    if(location.pathname.search('relatorios-eventos') != -1)
+    {
+        var request = $.ajax({
+            url: '/ageRange',
+            method: 'GET',
+            dataType: 'json'
+        });
+
+        request.done(function(e){
+            if(e.status)
+            {
+
+                return eventAgeRange(e.data);
+            }
+
+        });
+
+        request.fail(function(e){
+           console.log('fail');
+           console.log(e);
+        });
+    }
+}
+
+function eventChartMemberVisitor()
+{
+    if(location.pathname.search('relatorios-eventos') != -1)
+    {
+        var request = $.ajax({
+            url: '/member_visitor',
+            method: 'GET',
+            dataType: 'json'
+        });
+
+        request.done(function(e){
+            if(e.status)
+            {
+
+                return eventMemberVisitor(e.data);
+            }
+
+        });
+
+        request.fail(function(e){
+            console.log('fail');
+            console.log(e);
+        });
+    }
+}
+
+function eventChartMemberFrequency(person_id)
+{
+
+    var request = $.ajax({
+        url: '/memberFrequency/' + person_id,
+        method: 'GET',
+        dataType: 'json'
+    });
+
+    request.done(function(e){
+        if(e.status)
+        {
+            $("#form-member").css('display', 'none');
+
+            eventMemberFrequency(e.data);
+
+            $("#container-member-frequency").css('display', 'block');
+
+            $("#container-member-frequency-app").css('display', 'block');
+
+            $("#btn-member").css('display', 'block');
+        }
+    });
+
+    request.fail(function(e){
+        console.log('fail');
+        console.log(e);
+    })
+
+}
+
+function eventChartVisitorFrequency(visitor_id)
+{
+
+    var request = $.ajax({
+        url: '/visitorFrequency/' + visitor_id,
+        method: 'GET',
+        dataType: 'json'
+    });
+
+    request.done(function(e){
+        if(e.status)
+        {
+            $("#form-visitor").css('display', 'none');
+
+            eventMemberFrequency(e.data);
+
+            $("#container-visitor-frequency").css('display', 'block');
+
+            $("#container-visitor-frequency-app").css('display', 'block');
+
+            $("#btn-visitor").css('display', 'block');
+        }
+    });
+
+    request.fail(function(e){
+        console.log('fail');
+        console.log(e);
+    })
+
+}
+
+$("#form-member").submit(function(e){
+    e.preventDefault();
+
+    $("#btn-form-member").css('display', 'none');
+
+    $("#btn-fake").css('display', 'block');
+
+    var person_id = $("#members").val();
+
+    return eventChartMemberFrequency(person_id);
+});
+
+$("#btn-member").click(function(){
+
+    $(this).css('display', 'none');
+
+    $("#container-member-frequency").css('display', 'none');
+
+    $("#container-member-frequency-app").css('display', 'none');
+
+    $("#form-member").css('display', 'block');
+
+    $("#btn-form-member").css('display', 'block');
+
+    $("#btn-fake").css('display', 'none');
+});
+
+$("#form-visitor").submit(function(e){
+    e.preventDefault();
+
+    $("#btn-form-visitor").css('display', 'none');
+
+    $("#btn-fake-visitor").css('display', 'block');
+
+    var visitor_id = $("#visitors").val();
+
+    return eventChartVisitorFrequency(visitor_id);
+});
+
+$("#btn-visitor").click(function(){
+
+    $(this).css('display', 'none');
+
+    $("#container-visitor-frequency").css('display', 'none');
+
+    $("#container-visitor-frequency-app").css('display', 'none');
+
+    $("#form-visitor").css('display', 'block');
+
+    $("#btn-form-visitor").css('display', 'block');
+
+    $("#btn-fake-visitor").css('display', 'none');
+});
+
 $(".group-delete").click(function () {
     var text = "Excluindo...";
 

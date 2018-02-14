@@ -404,7 +404,7 @@
 													</div> <!-- FIM DIV .portlet-title -->
 
                                                     <!-- Modal -->
-                                                    <div class="modal fade" id="newSub" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                                    <div class="modal fade" id="newSub" role="dialog" aria-labelledby="myModalLabel">
                                                         <div class="modal-dialog" role="document">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
@@ -413,7 +413,7 @@
                                                                 </div>
                                                                 <div class="modal-body">
                                                                     <label for="select_event_id">Escolha o evento</label>
-                                                                    <select name="select_event_id" id="select_event_id" class="form-control">
+                                                                    <select name="select_event_id" id="select_event_id" class="form-control select2">
                                                                         <option value="">Selecione</option>
                                                                         @foreach($events_to_sub as $item)
                                                                             <option value="{{ $item->id }}">{{ $item->name }}</option>
@@ -472,7 +472,7 @@
 														</div>
 													</div>
 
-													<div class="modal fade" id="modalCheck-in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+													<div class="modal fade" id="modalCheck-in" role="dialog" aria-labelledby="myModalLabel">
 														<div class="modal-dialog" role="document">
 															<div class="modal-content">
 																<div class="modal-header">
@@ -486,7 +486,7 @@
 
                                                                     @else
                                                                         <label for="select_event_id_check">Escolha o evento</label>
-                                                                        <select name="select_event_id_check" id="select_event_id_check" class="form-control">
+                                                                        <select name="select_event_id_check" id="select_event_id_check" class="form-control select2">
                                                                             <option value="">Selecione</option>
                                                                             @foreach($events_to_check as $item)
                                                                                 <option value="{{ $item->id }}">{{ $item->name }}</option>

@@ -157,9 +157,26 @@
                 @if(Auth::user()->person_id != null && (Auth::user()->person->role_id == $leader
                 || Auth::user()->person->role_id == $admin))
                     <li class="menu-dropdown mega-menu-dropdown">
-                        <a href="{{ route("report.index") }}">
+                        <a href="javascript:;">
                             Relatórios
                         </a>
+
+                        <ul class="dropdown-menu pull-left">
+                            <li>
+                                <a href="{{ route("report.index") }}">
+                                    <i class="fa fa-calendar"></i>
+                                    Eventos
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="javascript:;">
+                                    <i class="fa fa-users"></i>
+                                    Grupos
+                                </a>
+                            </li>
+
+                        </ul>
                     </li>
                 @endif
             </ul>

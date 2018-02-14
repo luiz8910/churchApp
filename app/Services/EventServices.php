@@ -1754,6 +1754,12 @@ class EventServices
 
     }
 
+    /*
+     * Recupera quais eventos tem os check-in disponíveis
+     * para a hora e dia atual
+     * @return IDs dos eventos disponíveis
+     * Se @return == false, então não há eventos disponíveis
+     */
     public function checkInNow()
     {
         $church_id = $this->getUserChurch();
@@ -1791,6 +1797,9 @@ class EventServices
         return false;
     }
 
+    /*
+     * Recupera o último evento realizado
+     */
     public function getLastEvent()
     {
         $church_id = $this->getUserChurch();
@@ -1812,6 +1821,10 @@ class EventServices
         return $lastEvent;
     }
 
+    /*
+     * Realiza o check-in de todos os membros inscritos
+     * no evento = $event
+     */
     public function checkInAll($event)
     {
         $today = date_create();
@@ -1825,6 +1838,10 @@ class EventServices
             ])->update(['check-in' => 1]);
     }
 
+    /*
+     * Quando é usado a inscrição em lote, este método
+     * insere todos os usuários relacionados com o dia atual
+     */
     public function subToday($event, $person_id)
     {
         $e = $this->repository->find($event);
@@ -1893,6 +1910,121 @@ class EventServices
                 ]);
         }
 
+    }
+
+    /*
+     * Retorna a qtde de vezes em que um membro($person_id)
+     * participou de um evento $event
+     */
+    public function presenceMember($event, $person_id)
+    {
+        return count(DB::table('event_person')
+            ->where([
+                'event_id' => $event,
+                'person_id' => $person_id
+            ])->get());
+    }
+
+    /*
+     * Retorna a qtde de vezes em que um visitante($visitor_id)
+     * participou de um evento $event
+     */
+    public function presenceVisitor($event, $visitor_id)
+    {
+        return count(DB::table('event_person')
+            ->where([
+                'event_id' => $event,
+                'visitor_id' => $visitor_id
+            ])->get());
+    }
+
+    /*
+     * Retorna a porcentagem de presenças de um membro($person_id)
+     * em um evento $event
+     */
+    public function memberFrequencyPercentage($person_id, $event)
+    {
+        $event_qtde = count(DB::table('event_person')
+            ->where([
+                'event_id' => $event,
+                'show' => 1
+            ])
+            ->select('eventDate')
+            ->orderBy('eventDate', 'desc')
+            ->distinct()
+            ->get());
+
+        $frequency = count(DB::table('event_person')
+            ->where([
+                'event_id' => $event,
+                'check-in' => 1,
+                'person_id' => $person_id,
+                'show' => 1
+            ])
+            ->select('eventDate')
+            ->orderBy('eventDate', 'desc')
+            ->distinct()
+            ->get());
+
+        return $frequency > 0 ? $frequency / $event_qtde : 0;
+    }
+
+    /*
+     * Retorna a qtde de presenças de um membro($person_id)
+     * em um evento $event
+     */
+    public function memberFrequencyQtde($person_id, $event)
+    {
+        $frequency = count(DB::table('event_person')
+            ->where([
+                'event_id' => $event,
+                'check-in' => 1,
+                'person_id' => $person_id,
+                'show' => 1
+            ])
+            ->select('eventDate')
+            ->orderBy('eventDate', 'desc')
+            ->distinct()
+            ->get());
+
+        return $frequency;
+    }
+
+    /*
+     * Retorna a qtde de presenças de um visitante($visitor_id)
+     * em um evento $event
+     */
+    public function visitorFrequencyQtde($visitor_id, $event)
+    {
+        $frequency = count(DB::table('event_person')
+            ->where([
+                'event_id' => $event,
+                'check-in' => 1,
+                'visitor_id' => $visitor_id,
+                'show' => 1
+            ])
+            ->select('eventDate')
+            ->orderBy('eventDate', 'desc')
+            ->distinct()
+            ->get());
+
+        return $frequency;
+    }
+
+    /*
+     * Retorna a qtde de vezes em que um
+     * evento $event foi realizado
+     */
+    public function getEventTimes($event)
+    {
+        return count(DB::table('event_person')
+            ->where([
+                'event_id' => $event,
+                'show' => 1
+            ])
+            ->select('eventDate')
+            ->distinct()
+            ->get());
     }
 }
 

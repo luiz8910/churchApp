@@ -48,7 +48,7 @@
 							</div> <!-- FIM DIV .page-head -->
 
                             <!-- Modal -->
-                            <div class="modal fade" id="modalChooseEvent" role="dialog" aria-hidden="true">
+                            <div class="modal fade" id="modalChooseEvent" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -56,16 +56,13 @@
                                             <h4 class="modal-title text-center" id="myModalLabel">Escolha o Evento</h4>
                                         </div>
                                         <div class="modal-body">
-                                            <form action="#" class="form-horizontal">
-
-                                                <label for="chooseEvent" class="form-control-label">Escolha o Evento</label>
-                                                <select name="chooseEvent" id="chooseEvent" class="form-control select2">
-                                                    @foreach($events as $event)
-                                                        <option value="{{ $event->id }}">{{ $event->name }}</option>
-                                                    @endforeach
-                                                </select>
-
-                                            </form>
+                                            <label for="chooseEvent">Escolha o Evento</label>
+                                            <select name="chooseEvent" id="chooseEvent">
+                                                <option value="">Selecione</option>
+                                                @foreach($events as $event)
+                                                    <option value="{{ $event->id }}">{{ $event->name }}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-default" data-dismiss="modal">
@@ -154,111 +151,19 @@
                                                                     <p> &nbsp; </p>
                                                                     <p> &nbsp; </p>
 
-                                                                    <div id="container" class="hidden-xs hidden-sm" style="min-width: 1100px !important; height: 500px !important;"></div>
-                                                                    <div id="container-app" class="hidden-lg hidden-md"></div>
+                                                                    <div id="container" style="min-width: 1100px !important; height: 500px !important;"></div>
                                                                 </div>
                                                                 <div class="tab-pane" id="tab2">
-                                                                    <div id="container-age-range" class="hidden-xs hidden-sm" style="min-width: 1100px !important; height: 500px !important;"></div>
-                                                                    <div id="container-age-range-app" class="hidden-lg hidden-md" ></div>
+                                                                    <p> Howdy, I'm in Section 2. </p>
                                                                 </div>
                                                                 <div class="tab-pane" id="tab3">
-                                                                    <div id="container-member_visitor" class="hidden-xs hidden-sm" style="min-width: 800px !important; height: 600px !important;"></div>
-                                                                    <div id="container-member_visitor-app" class="hidden-lg hidden-md" ></div>
+                                                                    <p> Howdy, I'm in Section 3. </p>
                                                                 </div>
                                                                 <div class="tab-pane" id="tab4">
-
-                                                                    <button class="btn btn-info pull-right" id="btn-member" style="display: none;">
-                                                                        <i class="fa fa-user"></i>
-                                                                            Escolher outro membro
-                                                                    </button>
-
-                                                                    <p>&nbsp;</p>
-
-                                                                    <form action="#" id="form-member">
-                                                                        <div class="row">
-                                                                            <div class="col-md-6">
-                                                                                <div class="form-group">
-                                                                                    <label for="members">Escolha o Membro</label>
-                                                                                    <select name="members" id="members" class="form-control select2" required>
-                                                                                        <option value="">Selecione um membro</option>
-                                                                                        @foreach($members as $member)
-                                                                                            <option value="{{ $member->id }}">{{ $member->name }} {{ $member->lastName }}</option>
-                                                                                        @endforeach
-                                                                                    </select>
-
-                                                                                </div>
-
-                                                                            </div>
-
-                                                                            <div class="col-md-3">
-                                                                                <div class="form-group">
-                                                                                    <br>
-                                                                                    <button type="submit" class="btn btn-success" id="btn-form-member"  style="margin-top: 5px;">
-                                                                                        <i class="fa fa-check"></i> Ir
-                                                                                    </button>
-
-                                                                                    <button id="btn-fake" class="btn btn-success" style="display: none; margin-top: 5px;">
-                                                                                        <i class="fa fa-refresh fa-spin fa-fw"></i>
-                                                                                    </button>
-
-                                                                                </div>
-
-                                                                            </div>
-                                                                        </div>
-
-
-                                                                    </form>
-
-
-                                                                    <div id="container-member-frequency" class="hidden-xs hidden-sm" style="min-width: 1100px !important; height: 500px !important; display: none;"></div>
-                                                                    <div id="container-member-frequency-app" class="hidden-lg hidden-md" style="display: none;"></div>
+                                                                    <p> Howdy, I'm in Section 4. </p>
                                                                 </div>
                                                                 <div class="tab-pane" id="tab5">
-
-                                                                    <button class="btn btn-info pull-right" id="btn-member" style="display: none;">
-                                                                        <i class="fa fa-user"></i>
-                                                                        Escolher outro visitante
-                                                                    </button>
-
-                                                                    <p>&nbsp;</p>
-
-                                                                    <form action="#" id="form-visitor">
-                                                                        <div class="row">
-                                                                            <div class="col-md-6">
-                                                                                <div class="form-group">
-                                                                                    <label for="visitors">Escolha um Visitante</label>
-                                                                                    <select name="visitors" id="visitors" class="form-control select2" required>
-                                                                                        <option value="">Selecione um Visitante</option>
-                                                                                        @foreach($visitors as $visitor)
-                                                                                            <option value="{{ $visitor->id }}">{{ $visitor->name }} {{ $visitor->lastName }}</option>
-                                                                                        @endforeach
-                                                                                    </select>
-
-                                                                                </div>
-
-                                                                            </div>
-
-                                                                            <div class="col-md-3">
-                                                                                <div class="form-group">
-                                                                                    <br>
-                                                                                    <button type="submit" class="btn btn-success" id="btn-form-visitor" style="margin-top: 5px;">
-                                                                                        <i class="fa fa-check" id="fa-check"></i> Ir
-                                                                                    </button>
-
-                                                                                    <button id="btn-fake-visitor" class="btn btn-success" style="display: none; margin-top: 5px;">
-                                                                                        <i class="fa fa-refresh fa-spin fa-fw" id="fa-refresh"></i>
-                                                                                    </button>
-
-                                                                                </div>
-
-                                                                            </div>
-                                                                        </div>
-
-
-                                                                    </form>
-
-                                                                    <div id="container-visitor-frequency" class="hidden-xs hidden-sm" style="min-width: 1100px !important; height: 500px !important; display: none;"></div>
-                                                                    <div id="container-visitor-frequency-app" class="hidden-lg hidden-md" style="display: none;"></div>
+                                                                    <p> Howdy, I'm in Section 5. </p>
                                                                 </div>
                                                                 <div class="tab-pane" id="tab6">
                                                                     <p> Howdy, I'm in Section 6. </p>
@@ -280,11 +185,103 @@
                                                     </div>
                                                 </div>
                                                 <!-- END TAB PORTLET-->
+                                                <!-- BEGIN TAB PORTLET-->
+                                                <div class="portlet light ">
+                                                    <div class="portlet-title tabbable-line">
+                                                        <div class="caption">
+                                                            <i class="icon-share font-dark"></i>
+                                                            <span class="caption-subject font-dark bold uppercase">Eventos</span>
+                                                        </div>
+                                                        <ul class="nav nav-tabs">
+                                                            <li>
+                                                                <a href="#portlet_tab3" data-toggle="tab"> Tab 3 </a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="#portlet_tab2" data-toggle="tab"> Tab 2 </a>
+                                                            </li>
+                                                            <li class="active">
+                                                                <a href="#portlet_tab1" data-toggle="tab"> Último Evento </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="portlet-body">
+                                                        <div class="tab-content">
+                                                            <div class="tab-pane active" id="portlet_tab1">
+                                                                <div id="container-2"></div>
+                                                            </div>
+                                                            <div class="tab-pane" id="portlet_tab2">
+                                                                <p> Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo
+                                                                    duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+                                                                    tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo. </p>
+                                                                <p>
+                                                                    <a class="btn red" href="ui_tabs_accordions_navs.html#portlet_tab2" target="_blank"> Activate this tab via URL </a>
+                                                                </p>
+                                                            </div>
+                                                            <div class="tab-pane" id="portlet_tab3">
+                                                                <p> Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit
+                                                                    esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te
+                                                                    feugait nulla facilisi. </p>
+                                                                <p>
+                                                                    <a class="btn blue" href="ui_tabs_accordions_navs.html#portlet_tab3" target="_blank"> Activate this tab via URL </a>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- END TAB PORTLET-->
 
+                                                <div class="portlet box blue">
+                                                    <div class="portlet-title">
+                                                        <div class="caption">
+                                                            <i class="fa fa-gift"></i>Eventos </div>
+                                                        <div class="tools">
+                                                            <a href="javascript:;" class="collapse"> </a>
+                                                            <a href="#portlet-config" data-toggle="modal" class="config"> </a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="portlet-body">
+                                                        <div class="tabbable-custom nav-justified">
+                                                            <ul class="nav nav-tabs nav-justified">
+                                                                <li class="active">
+                                                                    <a href="#tab_1_1_1" data-toggle="tab"> Último Evento </a>
+                                                                </li>
+                                                                <li>
+                                                                    <a href="#tab_1_1_2" data-toggle="tab"> Section 2 </a>
+                                                                </li>
+                                                                <li>
+                                                                    <a href="#tab_1_1_3" data-toggle="tab"> Section 3 </a>
+                                                                </li>
+                                                            </ul>
+                                                            <div class="tab-content">
+                                                                <div class="tab-pane active" id="tab_1_1_1">
+                                                                    <div id="container-3"></div>
+                                                                </div>
+                                                                <div class="tab-pane" id="tab_1_1_2">
+                                                                    <p> Howdy, I'm in Section 2. </p>
+                                                                    <p> Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate
+                                                                        velit esse molestie consequat. Ut wisi enim ad minim veniam, quis nostrud exerci tation. </p>
+                                                                    <p>
+                                                                        <a class="btn green" href="ui_tabs_accordions_navs.html#tab_1_1_2" target="_blank"> Activate this tab via URL </a>
+                                                                    </p>
+                                                                </div>
+                                                                <div class="tab-pane" id="tab_1_1_3">
+                                                                    <p> Howdy, I'm in Section 3. </p>
+                                                                    <p> Duis autem vel eum iriure dolor in hendrerit in vulputate. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+                                                                        Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat </p>
+                                                                    <p>
+                                                                        <a class="btn yellow" href="ui_tabs_accordions_navs.html#tab_1_1_3" target="_blank"> Activate this tab via URL </a>
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
 
 
                                         </div>
+
+                                                        {{--<div id="container"></div>--}}
 
 
                                         </div>

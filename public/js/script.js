@@ -600,6 +600,7 @@ $(function () {
     }
 
     $(".select2-search__field").attr('placeholder', 'Selecione');
+    $(".select2-selection__placeholder").text('Selecione');
 
     $(".select2-multiple .select2").select2({
         dropdownParent: $('#newSub')

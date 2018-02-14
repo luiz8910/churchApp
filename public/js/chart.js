@@ -7,6 +7,10 @@
 
     eventChartReport();
 
+    eventChartAgeRange();
+
+    eventChartMemberVisitor();
+
     function simpleChart(data)
     {
 
@@ -333,73 +337,549 @@
             }
         });
 
-        eventReportPortlet(days, qtdePeople, frequency, name);
+        eventReportApp(days, qtdePeople, frequency, name);
     }
 
-    function eventReportPortlet(days, qtdePeople, frequency, name)
-    {
-        Highcharts.chart('container-2', {
-            chart: {
-                plotBackgroundColor: null,
-                plotBorderWidth: null,
-                plotShadow: false,
-                type: 'column'
-            },
+function eventReportApp(days, qtdePeople, frequency, name)
+{
+    Highcharts.chart('container-app', {
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'column'
+        },
+        title: {
+            text: 'Presença no evento: ' + name
+        },
+        subtitle:{
+            text: 'Total de Inscritos: ' + qtdePeople
+        },
+        xAxis: {
+            categories: days,
+            crosshair: true
+        },
+        yAxis: {
+            min: 0,
             title: {
-                text: 'Presença no evento: ' + name
-            },
-            subtitle:{
-                text: 'Total de Inscritos: ' + qtdePeople
-            },
-            xAxis: {
-                categories: days,
-                crosshair: true
-            },
-            yAxis: {
-                min: 0,
-                title: {
-                    text: 'Membros Presentes'
-                }
-            },
-            tooltip: {
-                pointFormat: '{series.name}: <b>{point.y}</b>'
-            },
-            plotOptions: {
-                pie: {
-                    allowPointSelect: true,
-                    cursor: 'pointer',
-                    dataLabels: {
-                        enabled: true,
-                        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-                        style: {
-                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
-                        }
+                text: 'Membros Presentes'
+            }
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.y}</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                    style: {
+                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
                     }
                 }
-            },
-            series: [{
-                name: 'Frequência',
-                colorByPoint: true,
-                data: [{
-                    name: days[0],
-                    y: frequency[0]
-                }, {
-                    name: days[1],
-                    y: frequency[1]
-                    //sliced: true,
-                    //selected: true
-                }, {
-                    name: days[2],
-                    y: frequency[2]
-                }, {
-                    name: days[3],
-                    y: frequency[3]
-                }, {
-                    name: days[4],
-                    y: frequency[4]
+            }
+        },
+        series: [{
+            name: 'Frequência',
+            colorByPoint: true,
+            data: [{
+                name: days[0],
+                y: frequency[0]
+            }, {
+                name: days[1],
+                y: frequency[1]
+                //sliced: true,
+                //selected: true
+            }, {
+                name: days[2],
+                y: frequency[2]
+            }, {
+                name: days[3],
+                y: frequency[3]
+            }, {
+                name: days[4],
+                y: frequency[4]
 
-                },]
-            }],
+            },]
+        }],
+        responsive: {
+            rules: [{
+                condition: {
+                    maxWidth: 400
+                },
+                chartOptions: {
+                    series: [{
+                        id: 'versions',
+                        dataLabels: {
+                            enabled: false
+                        }
+                    }]
+                }
+            }]
+        }
+    });
+}
+
+function eventAgeRange(data)
+{
+    Highcharts.chart('container-age-range', {
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'column'
+        },
+        title: {
+            text: 'Faixa etária do evento: ' + data.name
+        },
+        subtitle:{
+            text: 'Total de Inscritos: ' + data.qtdePeople
+        },
+        xAxis: {
+            categories: ['0 á 10 anos', '11 á 17 anos', '18 á 120 anos'],
+            crosshair: true
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Qtde. Pessoas'
+            }
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.y}</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                    style: {
+                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                    }
+                }
+            }
+        },
+        series: [{
+            name: 'Quantidade',
+            colorByPoint: true,
+            data: [{
+                name: '0 á 10 anos',
+                y: data.kids
+            }, {
+                name: '11 á 17 anos',
+                y: data.teens
+                //sliced: true,
+                //selected: true
+            }, {
+                name: '18 á 120 anos',
+                y: data.adults
+            },]
+        }],
+        responsive: {
+            rules: [{
+                condition: {
+                    maxWidth: 400
+                },
+                chartOptions: {
+                    series: [{
+                        id: 'versions',
+                        dataLabels: {
+                            enabled: false
+                        }
+                    }]
+                }
+            }]
+        }
+    });
+
+    eventAgeRangeApp(data);
+}
+
+function eventAgeRangeApp(data)
+{
+    Highcharts.chart('container-age-range-app', {
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'column'
+        },
+        title: {
+            text: 'Faixa etária do evento: ' + data.name
+        },
+        subtitle:{
+            text: 'Total de Inscritos: ' + data.qtdePeople
+        },
+        xAxis: {
+            categories: ['0 á 10 anos', '11 á 17 anos', '18 á 120 anos'],
+            crosshair: true
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Qtde. Pessoas'
+            }
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.y}</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                    style: {
+                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                    }
+                }
+            }
+        },
+        series: [{
+            name: 'Quantidade',
+            colorByPoint: true,
+            data: [{
+                name: '0 á 10 anos',
+                y: data.kids
+            }, {
+                name: '11 á 17 anos',
+                y: data.teens
+                //sliced: true,
+                //selected: true
+            }, {
+                name: '18 á 120 anos',
+                y: data.adults
+            },]
+        }],
+        responsive: {
+            rules: [{
+                condition: {
+                    maxWidth: 400
+                },
+                chartOptions: {
+                    series: [{
+                        id: 'versions',
+                        dataLabels: {
+                            enabled: false
+                        }
+                    }]
+                }
+            }]
+        }
+    });
+
+}
+
+function eventMemberVisitor(data)
+{
+    Highcharts.chart('container-member_visitor', {
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'column'
+        },
+        title: {
+            text: 'Tipo de Pessoas no evento: ' + data.name
+        },
+        subtitle:{
+            text: 'Total de Inscritos: ' + data.qtdePeople
+        },
+        xAxis: {
+            categories: ['Membros', 'Visitantes'],
+            crosshair: true
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Qtde. Pessoas'
+            }
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.y}</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                    style: {
+                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                    }
+                }
+            }
+        },
+        series: [{
+            name: 'Quantidade',
+            colorByPoint: true,
+            data: [{
+                name: 'Membros',
+                y: data.members
+            }, {
+                name: 'Visitantes',
+                y: data.visitors
+                //sliced: true,
+                //selected: true
+            },]
+        }],
+        responsive: {
+            rules: [{
+                condition: {
+                    maxWidth: 400
+                },
+                chartOptions: {
+                    series: [{
+                        id: 'versions',
+                        dataLabels: {
+                            enabled: false
+                        }
+                    }]
+                }
+            }]
+        }
+    });
+
+    eventMemberVisitorApp(data);
+}
+
+function eventMemberVisitorApp(data)
+{
+    Highcharts.chart('container-member_visitor-app', {
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'column'
+        },
+        title: {
+            text: 'Tipo de Pessoas no evento: ' + data.name
+        },
+        subtitle:{
+            text: 'Total de Inscritos: ' + data.qtdePeople
+        },
+        xAxis: {
+            categories: ['Membros', 'Visitantes'],
+            crosshair: true
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Classificação'
+            }
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.y}</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                    style: {
+                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                    }
+                }
+            }
+        },
+        series: [{
+            name: 'Classificação',
+            colorByPoint: true,
+            data: [{
+                name: 'Membros',
+                y: data.members
+            }, {
+                name: 'Visitantes',
+                y: data.visitors
+                //sliced: true,
+                //selected: true
+            },]
+        }],
+        responsive: {
+            rules: [{
+                condition: {
+                    maxWidth: 400
+                },
+                chartOptions: {
+                    series: [{
+                        id: 'versions',
+                        dataLabels: {
+                            enabled: false
+                        }
+                    }]
+                }
+            }]
+        }
+    });
+}
+
+function eventMemberFrequency(data)
+{
+
+    var y = [];
+
+    for(var i = 0; i < data.names.length; i++)
+    {
+        var x = {
+            name: data.names[i],
+            y: data.qtdePresence[i]
+        };
+
+        y.push(x);
+    }
+
+    var chart = '';
+
+    if(data.type = 'person')
+    {
+        chart = 'container-member-frequency';
+    }
+    else{
+        chart = 'container-visitor-frequency';
+    }
+
+    Highcharts.chart(chart, {
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'column'
+        },
+        title: {
+            text: 'Inscrições do usuário: ' + data.personName
+        },
+        subtitle:{
+            text: 'Total de Eventos: ' + data.qtdeEvents
+        },
+        xAxis: {
+            categories: data.names,
+            crosshair: true
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Presenças em Eventos'
+            }
+        },
+        tooltip: {
+            pointFormat: 'Quantidade: <b>{point.y}</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                    style: {
+                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                    }
+                }
+            }
+        },
+        series: [{
+            name: 'Média de Presença: ' + data.average + '%',
+            colorByPoint: true,
+            data: y,
+
+        responsive: {
+            rules: [{
+                condition: {
+                    maxWidth: 400
+                },
+                chartOptions: {
+                    series: [{
+                        id: 'versions',
+                        dataLabels: {
+                            enabled: false
+                        }
+                    }]
+                }
+            }]
+        }
+
+        }]
+
+    });
+
+    eventMemberFrequencyApp(data);
+}
+
+function eventMemberFrequencyApp(data)
+{
+
+    var y = [];
+
+    for(var i = 0; i < data.names.length; i++)
+    {
+        var x = {
+            name: data.names[i],
+            y: data.qtdePresence[i]
+        };
+
+        y.push(x);
+    }
+
+    if(data.type = 'person')
+    {
+        chart = 'container-member-frequency-app';
+    }
+    else{
+        chart = 'container-visitor-frequency-app';
+    }
+
+    Highcharts.chart(chart, {
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'column'
+        },
+        title: {
+            text: 'Inscrições do usuário: ' + data.personName
+        },
+        subtitle:{
+            text: 'Total de Eventos: ' + data.qtdeEvents
+        },
+        xAxis: {
+            categories: data.names,
+            crosshair: true
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Presenças em Eventos'
+            }
+        },
+        tooltip: {
+            pointFormat: 'Quantidade: <b>{point.y}</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                    style: {
+                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                    }
+                }
+            }
+        },
+        series: [{
+            name: 'Média de Presença: ' + data.average + '%',
+            colorByPoint: true,
+            data: y,
+
             responsive: {
                 rules: [{
                     condition: {
@@ -415,89 +895,8 @@
                     }
                 }]
             }
-        });
 
-        eventReportStyledTabs(days, qtdePeople, frequency, name);
-    }
+        }]
 
-    function eventReportStyledTabs(days, qtdePeople, frequency, name)
-    {
-        Highcharts.chart('container-3', {
-            chart: {
-                plotBackgroundColor: null,
-                plotBorderWidth: null,
-                plotShadow: false,
-                type: 'column'
-            },
-            title: {
-                text: 'Presença no evento: ' + name
-            },
-            subtitle:{
-                text: 'Total de Inscritos: ' + qtdePeople
-            },
-            xAxis: {
-                categories: days,
-                crosshair: true
-            },
-            yAxis: {
-                min: 0,
-                title: {
-                    text: 'Membros Presentes'
-                }
-            },
-            tooltip: {
-                pointFormat: '{series.name}: <b>{point.y}</b>'
-            },
-            plotOptions: {
-                pie: {
-                    allowPointSelect: true,
-                    cursor: 'pointer',
-                    dataLabels: {
-                        enabled: true,
-                        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-                        style: {
-                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
-                        }
-                    }
-                }
-            },
-            series: [{
-                name: 'Frequência',
-                colorByPoint: true,
-                data: [{
-                    name: days[0],
-                    y: frequency[0]
-                }, {
-                    name: days[1],
-                    y: frequency[1]
-                    //sliced: true,
-                    //selected: true
-                }, {
-                    name: days[2],
-                    y: frequency[2]
-                }, {
-                    name: days[3],
-                    y: frequency[3]
-                }, {
-                    name: days[4],
-                    y: frequency[4]
-
-                },]
-            }],
-            responsive: {
-                rules: [{
-                    condition: {
-                        maxWidth: 400
-                    },
-                    chartOptions: {
-                        series: [{
-                            id: 'versions',
-                            dataLabels: {
-                                enabled: false
-                            }
-                        }]
-                    }
-                }]
-            }
-        });
-    }
+    });
+}

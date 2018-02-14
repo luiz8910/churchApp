@@ -233,9 +233,19 @@ Route::group(['middleware' => 'auth'], function () {
 
         //Relatórios
 
-        Route::get('/relatorios', "ReportController@index")->name('report.index');
+        Route::get('/relatorios-eventos', "ReportController@index")->name('report.index');
+
+        Route::get('/relatorios-eventos/{id}', "ReportController@index")->name('report.index-id');
 
         Route::get('/getReport', 'ReportController@getReport');
+
+        Route::get('/ageRange', 'ReportController@ageRange');
+
+        Route::get('/member_visitor', 'ReportController@member_visitor');
+
+        Route::get('/memberFrequency/{person_id}', 'ReportController@memberFrequency');
+
+        Route::get('/visitorFrequency/{visitor_id}', 'ReportController@visitorFrequency');
     });
 
 

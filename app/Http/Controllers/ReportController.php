@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Repositories\EventRepository;
+use App\Repositories\EventSubscribedListRepository;
+use App\Repositories\PersonRepository;
 use App\Repositories\ReportRepository;
+use App\Repositories\VisitorRepository;
 use App\Services\EventServices;
 use App\Traits\ConfigTrait;
 use App\Traits\CountRepository;
@@ -27,15 +30,32 @@ class ReportController extends Controller
      * @var EventServices
      */
     private $eventServices;
+    /**
+     * @var EventSubscribedListRepository
+     */
+    private $listRepository;
+    /**
+     * @var PersonRepository
+     */
+    private $personRepository;
+    /**
+     * @var VisitorRepository
+     */
+    private $visitorRepository;
 
-    public function __construct(ReportRepository $repository, EventRepository $eventRepository, EventServices $eventServices)
+    public function __construct(ReportRepository $repository, EventRepository $eventRepository,
+                                EventServices $eventServices, EventSubscribedListRepository $listRepository,
+                                PersonRepository $personRepository, VisitorRepository $visitorRepository)
     {
         $this->repository = $repository;
         $this->eventRepository = $eventRepository;
         $this->eventServices = $eventServices;
+        $this->listRepository = $listRepository;
+        $this->personRepository = $personRepository;
+        $this->visitorRepository = $visitorRepository;
     }
 
-    public function index()
+    public function index($event = null)
     {
         /*
          * Lista variáveis comuns
@@ -55,12 +75,26 @@ class ReportController extends Controller
 
         //Fim Variáveis comuns
 
-        return view('reports.index', compact('countPerson', 'countGroups', 'leader', 'admin', 'notify', 'qtde'));
+        $events = $this->eventRepository->findByField('church_id', $this->getUserChurch());
+
+        $members = $this->personRepository->findByField('church_id', $this->getUserChurch());
+
+        $visitors = $this->visitorRepository->all();
+
+        if ($event) {
+
+            return view('reports.index-id', compact('countPerson', 'countGroups', 'leader',
+                'admin', 'notify', 'qtde', 'events', 'members', 'visitors'));
+        }
+
+
+        return view('reports.index', compact('countPerson', 'countGroups', 'leader',
+            'admin', 'notify', 'qtde', 'events', 'members', 'visitors'));
     }
 
     public function getReport()
     {
-        try{
+        try {
 
             $lastEvent = $this->eventServices->getLastEvent();
 
@@ -76,39 +110,12 @@ class ReportController extends Controller
 
             $i = 0;
 
-            while($i < count($eventDays))
-            {
+            while ($i < count($eventDays)) {
                 $eventFrequency[] = $this->eventServices->eventFrequencyByDate($event->id, $eventDays[$i]->eventDate);
                 $eventDays[$i] = $this->formatReport($eventDays[$i]->eventDate);
 
                 $i++;
             }
-
-
-            /*foreach ($eventPeople as $item) {
-                if($item->person_id)
-                {
-                    $qtde[] = count(DB::table('event_person')
-                        ->where([
-                            'event_id' => $event->id,
-                            'person_id' => $item->person_id,
-                            'check-in' => 1
-                        ])
-                        ->distinct()
-                        ->get());
-                }
-                else{
-                    $qtde[] = count(DB::table('event_person')
-                        ->where([
-                            'event_id' => $event->id,
-                            'visitor_id' => $item->visitor_id,
-                            'check-in' => 1
-                        ])
-                        ->distinct()
-                        ->get());
-                }
-
-            }*/
 
             DB::commit();
 
@@ -120,8 +127,7 @@ class ReportController extends Controller
                 'name' => $event->name
             ]);
 
-        }catch(\Exception $e)
-        {
+        } catch (\Exception $e) {
             DB::rollback();
 
             return json_encode([
@@ -129,7 +135,264 @@ class ReportController extends Controller
                 'msg' => $e->getMessage()
             ]);
         }
+    }
 
-        //dd($eventFrequency);
+    public function ageRange($event = null)
+    {
+        $kids = 0;
+        $teens = 0;
+        $adults = 0;
+
+        if (!$event) {
+
+            $event = $this->eventServices->getLastEvent();
+            $event = $this->eventRepository->find($event[0]->id);
+
+        }
+
+        $list = $this->listRepository->findByField('event_id', $event->id);
+
+
+        foreach ($list as $l)
+        {
+
+            if ($l->person_id) {
+                $person = $this->personRepository->find($l->person_id);
+
+                if($person->tag == 'kid')
+                {
+                    $kids += 1;
+                }
+                elseif($person->tag == 'teen')
+                {
+                    $teens += 1;
+                }
+                else{
+                    $adults += 1;
+                }
+            }
+            elseif($l->visitor_id){
+                $visitor = $this->visitorRepository->find($l->visitor_id);
+
+                if($visitor->tag == 'kid')
+                {
+                    $kids += 1;
+                }
+                elseif($visitor->tag == 'teen')
+                {
+                    $teens += 1;
+                }
+                else{
+                    $adults += 1;
+                }
+            }
+        }
+
+        $data = new \stdClass();
+
+        $data->kids = $kids;
+        $data->teens = $teens;
+        $data->adults = $adults;
+        $data->name = $event->name;
+        $data->qtdePeople = count($list);
+
+
+        return json_encode([
+            'status' => true,
+            'data' => $data
+        ]);
+
+    }
+
+    public function member_visitor($event = null)
+    {
+        $member = 0;
+        $visitor = 0;
+
+        if (!$event) {
+
+            $event = $this->eventServices->getLastEvent();
+            $event = $this->eventRepository->find($event[0]->id);
+
+        }
+
+        $list = $this->listRepository->findByField('event_id', $event->id);
+
+        foreach ($list as $l) {
+
+            if($l->person_id)
+            {
+                $member += 1;
+            }
+            else{
+                $visitor += 1;
+            }
+        }
+
+        $data = new \stdClass();
+
+        $data->members = $member;
+        $data->visitors = $visitor;
+        $data->name = $event->name;
+        $data->qtdePeople = count($list);
+
+
+        return json_encode([
+            'status' => true,
+            'data' => $data
+        ]);
+    }
+
+
+    public function memberFrequency($person_id)
+    {
+        $eventFrequencyPercentage = [];
+
+        $eventNames = [];
+
+        $eventQtde = [];
+
+        $eventTimes = [];
+        
+        $events = $this->eventServices->getListSubPerson($person_id);
+
+        $person = $this->personRepository->find($person_id);
+
+        foreach ($events as $event) {
+
+            $eventNames[] = $this->eventRepository->find($event->event_id)->name;
+
+            $qtde = $this->eventServices->memberFrequencyQtde($person_id, $event->event_id);
+
+            $times = $this->eventServices->getEventTimes($event->event_id);
+
+            $eventQtde[] = $qtde;
+
+            $eventTimes[] = $times;
+
+            if($times > 0)
+            {
+                $number = ($qtde / $times) * 100;
+                $number = number_format($number, 2, ",", ".");
+            }
+            else{
+                $number = 0;
+            }
+
+            $eventFrequencyPercentage[] = $number;
+        }
+
+        //Quantidade de todas as datas de todos os eventos em que o usuário está inscrito
+        $totalEvents = 0;
+
+        //Quantidade de todas as datas de todos os eventos em que o usuário compareceu
+        $totalQtde = 0;
+
+        $i = 0;
+
+        while($i < count($eventTimes))
+        {
+            $totalEvents += $eventTimes[$i];
+
+            $totalQtde += $eventQtde[$i];
+
+            $i++;
+        }
+
+        $average = $totalEvents > 0 ? ($totalQtde / $totalEvents) * 100 : 0;
+
+        $average = number_format($average, 2, ',', '.');
+
+        $data = new \stdClass();
+
+        $data->names = $eventNames;
+        $data->qtdePresence = $eventQtde;
+        $data->qtdeTimes = $eventTimes;
+        $data->frequencyPercentage = $eventFrequencyPercentage;
+        $data->average = $average;
+        $data->personName = $person->name . " " . $person->lastName;
+        $data->qtdeEvents = count($events);
+        $data->type = 'person';
+
+        return json_encode([
+            'status' => true,
+            'data' => $data
+        ]);
+    }
+
+    public function visitorFrequency($visitor_id)
+    {
+        $eventFrequencyPercentage = [];
+
+        $eventNames = [];
+
+        $eventQtde = [];
+
+        $eventTimes = [];
+
+        $events = $this->eventServices->getListSubVisitor($visitor_id);
+
+        $visitor = $this->visitorRepository->find($visitor_id);
+
+        foreach ($events as $event) {
+
+            $eventNames[] = $this->eventRepository->find($event->event_id)->name;
+
+            $qtde = $this->eventServices->visitorFrequencyQtde($visitor_id, $event->event_id);
+
+            $times = $this->eventServices->getEventTimes($event->event_id);
+
+            $eventQtde[] = $qtde;
+
+            $eventTimes[] = $times;
+
+            if($times > 0)
+            {
+                $number = ($qtde / $times) * 100;
+                $number = number_format($number, 2, ",", ".");
+            }
+            else{
+                $number = 0;
+            }
+
+            $eventFrequencyPercentage[] = $number;
+        }
+
+        //Quantidade de todas as datas de todos os eventos em que o usuário está inscrito
+        $totalEvents = 0;
+
+        //Quantidade de todas as datas de todos os eventos em que o usuário compareceu
+        $totalQtde = 0;
+
+        $i = 0;
+
+        while($i < count($eventTimes))
+        {
+            $totalEvents += $eventTimes[$i];
+
+            $totalQtde += $eventQtde[$i];
+
+            $i++;
+        }
+
+        $average = $totalEvents > 0 ? ($totalQtde / $totalEvents) * 100 : 0;
+
+        $average = number_format($average, 2, ',', '.');
+
+        $data = new \stdClass();
+
+        $data->names = $eventNames;
+        $data->qtdePresence = $eventQtde;
+        $data->qtdeTimes = $eventTimes;
+        $data->frequencyPercentage = $eventFrequencyPercentage;
+        $data->average = $average;
+        $data->personName = $visitor->name . " " . $visitor->lastName;
+        $data->qtdeEvents = count($events);
+        $data->type = 'visitor';
+
+        return json_encode([
+            'status' => true,
+            'data' => $data
+        ]);
     }
 }
