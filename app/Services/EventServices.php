@@ -1347,21 +1347,34 @@ class EventServices
 
             $person_id = Auth::user()->person->id;
 
+            $dates = DB::table('event_person')
+                ->join('event_subscribed_lists', 'event_subscribed_lists.event_id', '=', 'event_person.event_id')
+                ->where([
+                        'event_person.deleted_at' => null,
+                        'event_subscribed_lists.person_id' => $person_id,
+                        ['event_person.event_date', '<', $today]
+                    ]
+                )
+                ->distinct()
+                ->limit(1)
+                ->orderBy('event_person.event_date', 'DESC')
+                ->get();
 
-            $dates = DB::select("SELECT ep.eventDate, e.id, e.name, e.startTime FROM event_person ep, events e, event_subscribed_lists evl
-                  WHERE ep.eventDate = '$t' AND STR_TO_DATE(e.startTime, '%H:%i') >= '$time' AND ep.deleted_at is null AND 
-                  e.deleted_at is null AND e.church_id = '$church_id' AND evl.event_id = e.id AND evl.person_id = '$person_id' limit 1");
+
+            /*$dates = DB::select("SELECT ep.eventDate, e.id, e.name, e.startTime FROM event_person ep, events e, event_subscribed_lists evl
+                  WHERE ep.eventDate = '$t' AND STR_TO_DATE(e.startTime, '%H:%i') >= '$time' AND ep.deleted_at is null AND
+                  e.deleted_at is null AND e.church_id = '$church_id' AND evl.event_id = e.id AND evl.person_id = '$person_id' limit 1");*/
 
             if (count($dates) == 0)
             {
                 /*$t = date_create();
                 date_add($t, date_interval_create_from_date_string("1 day"));
-                $t = date_format($t, "Y-m-d");*/
+                $t = date_format($t, "Y-m-d");
 
                 $dates = DB::select("SELECT ep.eventDate, e.id, e.name, e.startTime FROM event_person ep, events e, event_subscribed_lists evl
                               WHERE STR_TO_DATE(ep.eventDate, '%Y-%m-%d') > '$t' AND STR_TO_DATE(e.startTime, '%H:%i') >= '00:00' AND ep.deleted_at is null AND 
                               e.deleted_at is null AND e.church_id = '$church_id' AND evl.event_id = e.id AND evl.person_id = '$person_id' ORDER BY e.startTime limit 1");
-
+                */
 
                 /*while(count($dates) == 0 || $stop)
                 {
@@ -1377,24 +1390,24 @@ class EventServices
 
                     $i++;
 
-                }*/
+                }
 
                 if(count($dates) > 0)
                 {
-                    $arr[] = $dates[0]->id;
+                    $arr[] = $dates[0]->event_id;
                     $arr[] = $dates[0]->eventDate;
 
 
                 }else{
-                    $arr[] = null;
-                    $arr[] = null;
-                }
 
+                }*/
+                $arr[] = null;
+                $arr[] = null;
 
                 return $arr;
             }
             else{
-                $arr[] = $dates[0]->id;
+                $arr[] = $dates[0]->event_id;
                 $arr[] = $dates[0]->eventDate;
 
                 return $arr;

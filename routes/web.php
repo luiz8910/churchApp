@@ -249,6 +249,7 @@ Route::group(['middleware' => 'auth'], function () {
     });
 
 
+    Route::get('nextEvent', 'DashboardController@nextEvent');
 
     Route::get("/getPusherKey", "ConfigController@getPusherKey");
 

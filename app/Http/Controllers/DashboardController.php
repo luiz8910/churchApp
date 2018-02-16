@@ -105,7 +105,7 @@ class DashboardController extends Controller
 
             $church_id = $this->getUserChurch();
 
-            $events = Event::where('church_id', $church_id)->paginate(5);
+            $events = Event::where(['church_id' => $church_id, 'deleted_at' => null])->paginate(5);
 
             $notify = $this->notify();
 
@@ -791,7 +791,7 @@ class DashboardController extends Controller
 
     public function updateEventDate()
     {
-        $events = DB::table("event_person")->get();
+        $events = DB::table("event_person")->where('deleted_at', null)->get();
 
         foreach ($events as $event)
         {
@@ -801,11 +801,10 @@ class DashboardController extends Controller
                 {
                     $event_date = date_create($event->eventDate);
 
-                    DB::transaction(function () use($event, $event_date){
+
                         DB::table('event_person')
                             ->where('eventDate', $event->eventDate)
                             ->update(['event_date' => $event_date]);
-                    });
                 }
 
 
@@ -834,5 +833,42 @@ class DashboardController extends Controller
         }
 
         //return $arr;
+    }
+
+    public function nextEvent()
+    {
+        //Dia Atual
+        $today = date_create();
+
+        $arr = [];
+
+        //$dates contém todos os eventos que não foram excluídos
+
+        $t = date_format($today, "Y-m-d");
+
+        $time = date_format($today, "H:i");
+
+        $church_id = $this->getUserChurch();
+
+        $today = date_format($today, 'Y-m-d H:i:s');
+
+        $person_id = Auth::user()->person->id;
+
+        $dates = DB::table('event_person')
+            ->join('event_subscribed_lists', 'event_subscribed_lists.event_id', '=', 'event_person.event_id')
+            ->where([
+                         'event_person.deleted_at' => null,
+                         'event_subscribed_lists.person_id' => $person_id,
+                        ['event_person.event_date', '<', $today]
+                    ]
+            )
+            ->distinct()
+            ->limit(1)
+            ->orderBy('event_person.event_date', 'DESC')
+            ->get();
+
+
+
+        dd($dates);
     }
 }
