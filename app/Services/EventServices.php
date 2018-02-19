@@ -1351,6 +1351,7 @@ class EventServices
                 ->join('event_subscribed_lists', 'event_subscribed_lists.event_id', '=', 'event_person.event_id')
                 ->where([
                         'event_person.deleted_at' => null,
+                        'event_subscribed_lists.deleted_at' => null,
                         'event_subscribed_lists.person_id' => $person_id,
                         ['event_person.event_date', '<', $today]
                     ]
