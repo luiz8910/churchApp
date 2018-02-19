@@ -11,6 +11,16 @@
 
     eventChartMemberVisitor();
 
+    function exportXLS()
+    {
+        if(location.pathname.search('relatorios-eventos') != -1)
+        {
+            location.href = '/exportExcelReport';
+
+            swal('Sucesso', 'O Download da planilha ultimo-evento.xls foi realizado', 'success');
+        }
+    }
+
     function simpleChart(data)
     {
 
@@ -258,6 +268,18 @@
 
     function eventReport(days, qtdePeople, frequency, name)
     {
+        var y = [];
+
+        for(var i = 0; i < days.length; i++)
+        {
+            var x = {
+                name: days[i],
+                y: frequency[i]
+            };
+
+            y.push(x);
+        }
+
         Highcharts.chart('container', {
             chart: {
                 plotBackgroundColor: null,
@@ -300,25 +322,7 @@
             series: [{
                 name: 'Frequência',
                 colorByPoint: true,
-                data: [{
-                    name: days[0],
-                    y: frequency[0]
-                }, {
-                    name: days[1],
-                    y: frequency[1]
-                    //sliced: true,
-                    //selected: true
-                }, {
-                    name: days[2],
-                    y: frequency[2]
-                }, {
-                    name: days[3],
-                    y: frequency[3]
-                }, {
-                    name: days[4],
-                    y: frequency[4]
-
-                },]
+                data: y
             }],
             responsive: {
                 rules: [{
@@ -342,6 +346,18 @@
 
 function eventReportApp(days, qtdePeople, frequency, name)
 {
+    var y = [];
+
+    for(var i = 0; i < days.length; i++)
+    {
+        var x = {
+            name: days[i],
+            y: frequency[i]
+        };
+
+        y.push(x);
+    }
+
     Highcharts.chart('container-app', {
         chart: {
             plotBackgroundColor: null,
@@ -384,25 +400,7 @@ function eventReportApp(days, qtdePeople, frequency, name)
         series: [{
             name: 'Frequência',
             colorByPoint: true,
-            data: [{
-                name: days[0],
-                y: frequency[0]
-            }, {
-                name: days[1],
-                y: frequency[1]
-                //sliced: true,
-                //selected: true
-            }, {
-                name: days[2],
-                y: frequency[2]
-            }, {
-                name: days[3],
-                y: frequency[3]
-            }, {
-                name: days[4],
-                y: frequency[4]
-
-            },]
+            data: y
         }],
         responsive: {
             rules: [{
@@ -438,7 +436,7 @@ function eventAgeRange(data)
             text: 'Total de Inscritos: ' + data.qtdePeople
         },
         xAxis: {
-            categories: ['0 á 10 anos', '11 á 17 anos', '18 á 120 anos'],
+            categories: ['0 á 10 anos', '11 á 17 anos', '18+'],
             crosshair: true
         },
         yAxis: {
@@ -475,7 +473,7 @@ function eventAgeRange(data)
                 //sliced: true,
                 //selected: true
             }, {
-                name: '18 á 120 anos',
+                name: '18+',
                 y: data.adults
             },]
         }],
@@ -515,7 +513,7 @@ function eventAgeRangeApp(data)
             text: 'Total de Inscritos: ' + data.qtdePeople
         },
         xAxis: {
-            categories: ['0 á 10 anos', '11 á 17 anos', '18 á 120 anos'],
+            categories: ['0 á 10 anos', '11 á 17 anos', '18+ anos'],
             crosshair: true
         },
         yAxis: {
@@ -552,7 +550,7 @@ function eventAgeRangeApp(data)
                 //sliced: true,
                 //selected: true
             }, {
-                name: '18 á 120 anos',
+                name: '18+',
                 y: data.adults
             },]
         }],
@@ -738,7 +736,7 @@ function eventMemberFrequency(data)
 
     var chart = '';
 
-    if(data.type = 'person')
+    if(data.type == 'person')
     {
         chart = 'container-member-frequency';
     }

@@ -246,6 +246,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/memberFrequency/{person_id}', 'ReportController@memberFrequency');
 
         Route::get('/visitorFrequency/{visitor_id}', 'ReportController@visitorFrequency');
+
+        Route::get('/exportExcelReport', 'ReportController@exportExcel');
     });
 
 

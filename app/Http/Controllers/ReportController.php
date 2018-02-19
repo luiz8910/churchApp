@@ -14,6 +14,7 @@ use App\Traits\DateRepository;
 use App\Traits\NotifyRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ReportController extends Controller
 {
@@ -92,6 +93,9 @@ class ReportController extends Controller
             'admin', 'notify', 'qtde', 'events', 'members', 'visitors'));
     }
 
+    /*
+     * Frequencia do último evento
+     */
     public function getReport()
     {
         try {
@@ -103,8 +107,6 @@ class ReportController extends Controller
             $eventDays = $this->eventServices->eventDays($event->id);
 
             $eventPeople = count($this->eventServices->eventPeople($event->id));
-
-            $qtde = [];
 
             $eventFrequency = [];
 
@@ -137,6 +139,9 @@ class ReportController extends Controller
         }
     }
 
+    /*
+     * Faixa etária do último evento
+     */
     public function ageRange($event = null)
     {
         $kids = 0;
@@ -204,6 +209,9 @@ class ReportController extends Controller
 
     }
 
+    /*
+     * Relacão membro por visitante do último evento
+     */
     public function member_visitor($event = null)
     {
         $member = 0;
@@ -244,6 +252,10 @@ class ReportController extends Controller
     }
 
 
+    /*
+     * Frequência do membro para cada evento em que o mesmo
+     * está inscrito
+     */
     public function memberFrequency($person_id)
     {
         $eventFrequencyPercentage = [];
@@ -260,8 +272,6 @@ class ReportController extends Controller
 
         foreach ($events as $event) {
 
-            $eventNames[] = $this->eventRepository->find($event->event_id)->name;
-
             $qtde = $this->eventServices->memberFrequencyQtde($person_id, $event->event_id);
 
             $times = $this->eventServices->getEventTimes($event->event_id);
@@ -269,6 +279,8 @@ class ReportController extends Controller
             $eventQtde[] = $qtde;
 
             $eventTimes[] = $times;
+
+            $eventNames[] = $this->eventRepository->find($event->event_id)->name . "(" . $times . ")";
 
             if($times > 0)
             {
@@ -299,6 +311,7 @@ class ReportController extends Controller
             $i++;
         }
 
+        //$average = média de presença de todos os eventos
         $average = $totalEvents > 0 ? ($totalQtde / $totalEvents) * 100 : 0;
 
         $average = number_format($average, 2, ',', '.');
@@ -307,7 +320,6 @@ class ReportController extends Controller
 
         $data->names = $eventNames;
         $data->qtdePresence = $eventQtde;
-        $data->qtdeTimes = $eventTimes;
         $data->frequencyPercentage = $eventFrequencyPercentage;
         $data->average = $average;
         $data->personName = $person->name . " " . $person->lastName;
@@ -320,6 +332,10 @@ class ReportController extends Controller
         ]);
     }
 
+    /*
+     * Frequência do visitante para cada evento em que o mesmo
+     * está inscrito
+     */
     public function visitorFrequency($visitor_id)
     {
         $eventFrequencyPercentage = [];
@@ -394,5 +410,62 @@ class ReportController extends Controller
             'status' => true,
             'data' => $data
         ]);
+    }
+
+
+    public function exportExcel($event = null)
+    {
+
+        if(!$event)
+        {
+            $event = $this->eventServices->getLastEvent();
+
+            //Frequência
+
+            $data = \GuzzleHttp\json_decode($this->getReport());
+
+            $i = 0;
+
+            //dd(count($data->days));
+
+            $d = array();
+
+            while($i < count($data->days)) {
+
+                array_push($d, array($data->days[$i], $data->frequency[$i]));
+
+                $i++;
+            }
+
+            /*$d = array(
+                array($days[0], $frequency[0]),
+                array('data 1', 'data 2')
+            );*/
+
+            //dd($d);
+
+            Excel::create('ultimo-evento', function($excel) use ($d, $data){
+
+                $excel->sheet($data->name, function($sheet) use ($d, $data) {
+
+                    /*$sheet->fromArray(array(
+                        $data
+                    ))->row(1, array(
+                        'Data', 'Frequência'
+                    ))
+                    ;*/
+
+                    $sheet->row(1, array($data->name))
+                        ->row(2, array(
+                        'Data', 'Frequencia'
+                    ))->rows($d)->freezeFirstRow();
+
+                });
+            })->download('xlsx');
+
+        }
+
+
+
     }
 }

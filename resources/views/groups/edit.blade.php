@@ -660,7 +660,7 @@ License: You must have a valid license purchased only from themeforest(the above
                     </div>
 
 
-                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+                    <div class="modal fade" id="myModal" role="dialog"
                          aria-labelledby="myModalLabel">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content form">
@@ -683,7 +683,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <i class="fa fa-user"></i>
                                                 </span>
                                                 <select id="select_members"
-                                                        class="bs-select form-control"
+                                                        class="select2 form-control"
                                                         data-live-search="true" data-size="8">
                                                     @foreach($people as $person)
                                                         <option value="{{ $person->id }}">{{ $person->name }} {{ $person->lastName}}</option>

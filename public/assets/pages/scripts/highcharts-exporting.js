@@ -36,6 +36,7 @@
             downloadJPEG: "Download de imagem no formato .JPEG",
             downloadPDF: "Download do gráfico em .PDF",
             downloadSVG: "Download de vetor .SVG",
+            downloadXLS: "Download de Planilha .XLS",
             contextButtonTitle: "Chart context menu"
         });
         k.navigation = {
@@ -123,6 +124,12 @@
                                 type: "image/svg+xml"
                             })
                         }
+                    }, {
+                        textKey: "downloadXLS",
+                        onclick: function(){
+                            return exportXLS()
+                        }
+
                     }]
                 }
             }

@@ -106,7 +106,7 @@
                                                                             Escolher Evento
                                                                         </a>
                                                                     </li>
-                                                                    <li class="divider"> </li>
+                                                                    {{--<li class="divider"> </li>
                                                                     <li>
                                                                         <a href="javascript:;">Option 2</a>
                                                                     </li>
@@ -115,7 +115,7 @@
                                                                     </li>
                                                                     <li>
                                                                         <a href="javascript:;">Option 4</a>
-                                                                    </li>
+                                                                    </li>--}}
                                                                 </ul>
                                                             </div>
                                                         </div>
@@ -139,7 +139,7 @@
                                                                 <li>
                                                                     <a href="#tab5" data-toggle="tab">Frequência por visitante</a>
                                                                 </li>
-                                                                <li>
+                                                                {{--<li>
                                                                     <a href="#tab6" data-toggle="tab">Section 6</a>
                                                                 </li>
                                                                 <li>
@@ -147,7 +147,7 @@
                                                                 </li>
                                                                 <li>
                                                                     <a href="#tab8" data-toggle="tab">Section 8</a>
-                                                                </li>
+                                                                </li>--}}
                                                             </ul>
                                                             <div class="tab-content">
                                                                 <div class="tab-pane active" id="tab1">
@@ -215,7 +215,7 @@
                                                                 </div>
                                                                 <div class="tab-pane" id="tab5">
 
-                                                                    <button class="btn btn-info pull-right" id="btn-member" style="display: none;">
+                                                                    <button class="btn btn-info pull-right" id="btn-visitor" style="display: none;">
                                                                         <i class="fa fa-user"></i>
                                                                         Escolher outro visitante
                                                                     </button>
@@ -260,7 +260,7 @@
                                                                     <div id="container-visitor-frequency" class="hidden-xs hidden-sm" style="min-width: 1100px !important; height: 500px !important; display: none;"></div>
                                                                     <div id="container-visitor-frequency-app" class="hidden-lg hidden-md" style="display: none;"></div>
                                                                 </div>
-                                                                <div class="tab-pane" id="tab6">
+                                                                {{--<div class="tab-pane" id="tab6">
                                                                     <p> Howdy, I'm in Section 6. </p>
                                                                 </div>
                                                                 <div class="tab-pane" id="tab7">
@@ -271,7 +271,7 @@
                                                                 </div>
                                                                 <div class="tab-pane" id="tab9">
                                                                     <p> Howdy, I'm in Section 9. </p>
-                                                                </div>
+                                                                </div>--}}
                                                             </div>
                                                         </div>
                                                         <p> &nbsp; </p>
