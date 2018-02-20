@@ -415,9 +415,11 @@
                                                                     <label for="select_event_id">Escolha o evento</label>
                                                                     <select name="select_event_id" id="select_event_id" class="form-control select2">
                                                                         <option value="">Selecione</option>
-                                                                        @foreach($events_to_sub as $item)
-                                                                            <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                                                        @endforeach
+																		@if(isset($events_to_sub))
+																			@foreach($events_to_sub as $item)
+																				<option value="{{ $item->id }}">{{ $item->name }}</option>
+																			@endforeach
+																		@endif
                                                                     </select>
 
                                                                     <br>
