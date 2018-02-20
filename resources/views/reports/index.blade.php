@@ -160,6 +160,8 @@
                                                                     <div id="container-app" class="hidden-lg hidden-md chart"></div>
                                                                 </div>
                                                                 <div class="tab-pane" id="tab2">
+                                                                    <p> &nbsp; </p>
+                                                                    <p> &nbsp; </p>
 
                                                                     @include('includes.noEvent')
 
@@ -167,6 +169,8 @@
                                                                     <div id="container-age-range-app" class="hidden-lg hidden-md chart" ></div>
                                                                 </div>
                                                                 <div class="tab-pane" id="tab3">
+                                                                    <p> &nbsp; </p>
+                                                                    <p> &nbsp; </p>
 
                                                                     @include('includes.noEvent')
 
@@ -174,6 +178,8 @@
                                                                     <div id="container-member_visitor-app" class="hidden-lg hidden-md chart" ></div>
                                                                 </div>
                                                                 <div class="tab-pane" id="tab4">
+                                                                    <p> &nbsp; </p>
+                                                                    <p> &nbsp; </p>
 
                                                                     @include('includes.noEvent')
 
@@ -225,6 +231,8 @@
                                                                     <div id="container-member-frequency-app" class="hidden-lg hidden-md chart" style="display: none;"></div>
                                                                 </div>
                                                                 <div class="tab-pane" id="tab5">
+                                                                    <p> &nbsp; </p>
+                                                                    <p> &nbsp; </p>
 
                                                                     @include('includes.noEvent')
 
