@@ -15,6 +15,7 @@ use App\Traits\NotifyRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
+use GuzzleHttp;
 
 class ReportController extends Controller
 {
@@ -422,13 +423,14 @@ class ReportController extends Controller
 
             //Frequência
 
-            $data = \GuzzleHttp\json_decode($this->getReport());
+            $data = json_decode($this->getReport());
 
             $i = 0;
 
             //dd(count($data->days));
 
             $d = array();
+
 
             while($i < count($data->days)) {
 
@@ -437,6 +439,19 @@ class ReportController extends Controller
                 $i++;
             }
 
+            $ageRange = json_decode($this->ageRange());
+
+            $age = array(
+                array($ageRange->data->kids, $ageRange->data->teens, $ageRange->data->adults)
+            );
+
+            $memVis = json_decode($this->member_visitor());
+
+            $m = array(
+                array($memVis->data->members, $memVis->data->visitors)
+            );
+
+
             /*$d = array(
                 array($days[0], $frequency[0]),
                 array('data 1', 'data 2')
@@ -444,22 +459,31 @@ class ReportController extends Controller
 
             //dd($d);
 
-            Excel::create('ultimo-evento', function($excel) use ($d, $data){
+            Excel::create('ultimo-evento', function($excel) use ($d, $data, $age, $m){
 
                 $excel->sheet($data->name, function($sheet) use ($d, $data) {
-
-                    /*$sheet->fromArray(array(
-                        $data
-                    ))->row(1, array(
-                        'Data', 'Frequência'
-                    ))
-                    ;*/
 
                     $sheet->row(1, array($data->name))
                         ->row(2, array(
                         'Data', 'Frequencia'
                     ))->rows($d)->freezeFirstRow();
 
+                });
+
+                $excel->sheet('Faixa Etária', function($sheet) use ($age){
+
+                    $sheet->row(1, array('Faixa Etária'))
+                        ->row(2, array(
+                            'Crianças', 'Adolescentes', 'Adultos'
+                        ))->rows($age)->freezeFirstRow();
+                });
+
+                $excel->sheet('Membros e Visitantes', function($sheet) use ($m){
+
+                    $sheet->row(1, array('Membros x Visitantes'))
+                        ->row(2, array(
+                            'Membros', 'Visitantes'
+                        ))->rows($m)->freezeFirstRow();
                 });
             })->download('xlsx');
 
