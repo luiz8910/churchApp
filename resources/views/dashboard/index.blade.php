@@ -483,18 +483,23 @@
 																</div>
 																<div class="modal-body">
 
-																	@if(count($events_to_check) == 0)
-                                                                        <p class="text-center">Não há eventos disponíveis para check-in</p>
+																	@if(!isset($events_to_check))
+																		<?php $events_to_check = 0; ?>
+																	@endif
 
-                                                                    @else
-                                                                        <label for="select_event_id_check">Escolha o evento</label>
-                                                                        <select name="select_event_id_check" id="select_event_id_check" class="form-control select2">
-                                                                            <option value="">Selecione</option>
-                                                                            @foreach($events_to_check as $item)
-                                                                                <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                                                            @endforeach
-                                                                        </select>
-                                                                    @endif
+																		@if(count($events_to_check) == 0 || $events_to_check == 0)
+																			<p class="text-center">Não há eventos disponíveis para check-in</p>
+
+																		@else
+																			<label for="select_event_id_check">Escolha o evento</label>
+																			<select name="select_event_id_check" id="select_event_id_check" class="form-control select2">
+																				<option value="">Selecione</option>
+																				@foreach($events_to_check as $item)
+																					<option value="{{ $item->id }}">{{ $item->name }}</option>
+																				@endforeach
+																			</select>
+																		@endif
+
 
 
 																	<br>
