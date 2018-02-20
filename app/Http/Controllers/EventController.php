@@ -1154,9 +1154,11 @@ class EventController extends Controller
             ->where(['event_id' => $id])
             ->update(['deleted_at' => Carbon::now()]);
 
-        RecentEvents::where('event_id', $id)->delete();
+        DB::table('recent_events')->where('event_id', $id)->delete();
 
-        EventSubscribedList::where('event_id', $id)->delete();
+        DB::table('event_subscribed_lists')
+            ->where(['event_id' => $id])
+            ->update(['deleted_at' => Carbon::now()]);
 
         $event->delete();
 

@@ -1070,7 +1070,7 @@
 									</div> <!-- FIM DIV .page-content-inner -->
 								</div> <!-- FIM DIV .container -->
 
-								<div class="container">
+								{{--<div class="container">
 									<div class="page-content-inner">
 										<div class="row">
 											<div class="col-md-12 col-sm-12">
@@ -1096,7 +1096,7 @@
 										</div>
 									</div>
 									<!-- END PAGE CONTENT INNER -->
-								</div>
+								</div>--}}
 							</div>
 
 						</div>

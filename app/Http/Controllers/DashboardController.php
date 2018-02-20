@@ -240,7 +240,7 @@ class DashboardController extends Controller
             }
 
 
-            $nextEvent = $this->eventServices->getNextEvent();dd($nextEvent);
+            $nextEvent = $this->eventServices->getNextEvent();
 
             $event = null;
             $street = null;
