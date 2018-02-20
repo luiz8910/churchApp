@@ -103,32 +103,45 @@ class ReportController extends Controller
 
             $lastEvent = $this->eventServices->getLastEvent();
 
-            $event = $this->eventRepository->find($lastEvent[0]->id);
+            if(count($lastEvent) > 0)
+            {
+                $event = $this->eventRepository->find($lastEvent[0]->id);
 
-            $eventDays = $this->eventServices->eventDays($event->id);
+                $eventDays = $this->eventServices->eventDays($event->id);
 
-            $eventPeople = count($this->eventServices->eventPeople($event->id));
+                $eventPeople = count($this->eventServices->eventPeople($event->id));
 
-            $eventFrequency = [];
+                $eventFrequency = [];
 
-            $i = 0;
+                $i = 0;
 
-            while ($i < count($eventDays)) {
-                $eventFrequency[] = $this->eventServices->eventFrequencyByDate($event->id, $eventDays[$i]->eventDate);
-                $eventDays[$i] = $this->formatReport($eventDays[$i]->eventDate);
+                while ($i < count($eventDays)) {
+                    $eventFrequency[] = $this->eventServices->eventFrequencyByDate($event->id, $eventDays[$i]->eventDate);
+                    $eventDays[$i] = $this->formatReport($eventDays[$i]->eventDate);
 
-                $i++;
+                    $i++;
+                }
+
+                DB::commit();
+
+                return json_encode([
+                    'status' => true,
+                    'days' => $eventDays,
+                    'qtdePeople' => $eventPeople,
+                    'frequency' => $eventFrequency,
+                    'name' => $event->name,
+                    'noEvent' => false
+                ]);
             }
+
 
             DB::commit();
 
             return json_encode([
                 'status' => true,
-                'days' => $eventDays,
-                'qtdePeople' => $eventPeople,
-                'frequency' => $eventFrequency,
-                'name' => $event->name
+                'noEvent' => true
             ]);
+
 
         } catch (\Exception $e) {
             DB::rollback();
@@ -152,62 +165,64 @@ class ReportController extends Controller
         if (!$event) {
 
             $event = $this->eventServices->getLastEvent();
-            $event = $this->eventRepository->find($event[0]->id);
+
+            if(count($event) > 0)
+            {
+                $event = $this->eventRepository->find($event[0]->id);
+
+
+                $list = $this->listRepository->findByField('event_id', $event->id);
+
+
+                foreach ($list as $l) {
+
+                    if ($l->person_id) {
+                        $person = $this->personRepository->find($l->person_id);
+
+                        if ($person->tag == 'kid') {
+                            $kids += 1;
+                        } elseif ($person->tag == 'teen') {
+                            $teens += 1;
+                        } else {
+                            $adults += 1;
+                        }
+                    } elseif ($l->visitor_id) {
+                        $visitor = $this->visitorRepository->find($l->visitor_id);
+
+                        if ($visitor->tag == 'kid') {
+                            $kids += 1;
+                        } elseif ($visitor->tag == 'teen') {
+                            $teens += 1;
+                        } else {
+                            $adults += 1;
+                        }
+                    }
+                }
+
+                $data = new \stdClass();
+
+                $data->kids = $kids;
+                $data->teens = $teens;
+                $data->adults = $adults;
+                $data->name = $event->name;
+                $data->qtdePeople = count($list);
+
+
+                return json_encode([
+                    'status' => true,
+                    'data' => $data,
+                    'noEvent' => false
+                ]);
+            }
+            else{
+                return json_encode([
+                    'status' => true,
+                    'noEvent' => true
+                ]);
+            }
+
 
         }
-
-        $list = $this->listRepository->findByField('event_id', $event->id);
-
-
-        foreach ($list as $l)
-        {
-
-            if ($l->person_id) {
-                $person = $this->personRepository->find($l->person_id);
-
-                if($person->tag == 'kid')
-                {
-                    $kids += 1;
-                }
-                elseif($person->tag == 'teen')
-                {
-                    $teens += 1;
-                }
-                else{
-                    $adults += 1;
-                }
-            }
-            elseif($l->visitor_id){
-                $visitor = $this->visitorRepository->find($l->visitor_id);
-
-                if($visitor->tag == 'kid')
-                {
-                    $kids += 1;
-                }
-                elseif($visitor->tag == 'teen')
-                {
-                    $teens += 1;
-                }
-                else{
-                    $adults += 1;
-                }
-            }
-        }
-
-        $data = new \stdClass();
-
-        $data->kids = $kids;
-        $data->teens = $teens;
-        $data->adults = $adults;
-        $data->name = $event->name;
-        $data->qtdePeople = count($list);
-
-
-        return json_encode([
-            'status' => true,
-            'data' => $data
-        ]);
-
     }
 
     /*
@@ -221,35 +236,45 @@ class ReportController extends Controller
         if (!$event) {
 
             $event = $this->eventServices->getLastEvent();
-            $event = $this->eventRepository->find($event[0]->id);
 
-        }
-
-        $list = $this->listRepository->findByField('event_id', $event->id);
-
-        foreach ($list as $l) {
-
-            if($l->person_id)
+            if(count($event) > 0)
             {
-                $member += 1;
+                $event = $this->eventRepository->find($event[0]->id);
+
+
+                $list = $this->listRepository->findByField('event_id', $event->id);
+
+                foreach ($list as $l) {
+
+                    if ($l->person_id) {
+                        $member += 1;
+                    } else {
+                        $visitor += 1;
+                    }
+                }
+
+                $data = new \stdClass();
+
+                $data->members = $member;
+                $data->visitors = $visitor;
+                $data->name = $event->name;
+                $data->qtdePeople = count($list);
+
+
+                return json_encode([
+                    'status' => true,
+                    'data' => $data,
+                    'noEvent' => false
+                ]);
             }
             else{
-                $visitor += 1;
+                return json_encode([
+                    'status' => true,
+                    'noEvent' => true
+                ]);
             }
+
         }
-
-        $data = new \stdClass();
-
-        $data->members = $member;
-        $data->visitors = $visitor;
-        $data->name = $event->name;
-        $data->qtdePeople = count($list);
-
-
-        return json_encode([
-            'status' => true,
-            'data' => $data
-        ]);
     }
 
 

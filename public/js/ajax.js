@@ -1144,7 +1144,7 @@ function eventChartReport() {
         });
 
         request.done(function (e) {
-            if (e.status) {
+            if (e.status && !e.noEvent) {
 
                 console.log("Days: " + e.days);
                 console.log("qtde: " + e.qtdePeople);
@@ -1153,7 +1153,13 @@ function eventChartReport() {
 
                 return eventReport(e.days, e.qtdePeople, e.frequency, e.name);
             }
-            else {
+            else if(e.status && e.noEvent){
+                $(".chart").css('display', 'none');
+                $(".noEvent").css('display', 'block');
+
+                swal('Atenção', 'Não há eventos criados para exibir relatórios', 'info');
+            }
+            else{
                 swal('Atenção', 'Verifique o console para log de erros', 'error');
 
                 console.log(e.msg);
@@ -1183,11 +1189,11 @@ function eventChartAgeRange()
         });
 
         request.done(function(e){
-            if(e.status)
+            if(e.status && !e.noEvent)
             {
-
                 return eventAgeRange(e.data);
             }
+
 
         });
 
@@ -1209,7 +1215,7 @@ function eventChartMemberVisitor()
         });
 
         request.done(function(e){
-            if(e.status)
+            if(e.status && !e.noEvent)
             {
 
                 return eventMemberVisitor(e.data);

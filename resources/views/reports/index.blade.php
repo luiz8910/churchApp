@@ -154,18 +154,29 @@
                                                                     <p> &nbsp; </p>
                                                                     <p> &nbsp; </p>
 
-                                                                    <div id="container" class="hidden-xs hidden-sm" style="min-width: 1100px !important; height: 500px !important;"></div>
-                                                                    <div id="container-app" class="hidden-lg hidden-md"></div>
+                                                                    @include('includes.noEvent')
+
+                                                                    <div id="container" class="hidden-xs hidden-sm chart" style="min-width: 1100px !important; height: 500px !important;"></div>
+                                                                    <div id="container-app" class="hidden-lg hidden-md chart"></div>
                                                                 </div>
                                                                 <div class="tab-pane" id="tab2">
-                                                                    <div id="container-age-range" class="hidden-xs hidden-sm" style="min-width: 1100px !important; height: 500px !important;"></div>
-                                                                    <div id="container-age-range-app" class="hidden-lg hidden-md" ></div>
+
+                                                                    @include('includes.noEvent')
+
+                                                                    <div id="container-age-range" class="hidden-xs hidden-sm chart" style="min-width: 1100px !important; height: 500px !important;"></div>
+                                                                    <div id="container-age-range-app" class="hidden-lg hidden-md chart" ></div>
                                                                 </div>
                                                                 <div class="tab-pane" id="tab3">
-                                                                    <div id="container-member_visitor" class="hidden-xs hidden-sm" style="min-width: 800px !important; height: 600px !important;"></div>
-                                                                    <div id="container-member_visitor-app" class="hidden-lg hidden-md" ></div>
+
+                                                                    @include('includes.noEvent')
+
+                                                                    <div id="container-member_visitor" class="hidden-xs hidden-sm chart" style="min-width: 800px !important; height: 600px !important;"></div>
+                                                                    <div id="container-member_visitor-app" class="hidden-lg hidden-md chart" ></div>
                                                                 </div>
                                                                 <div class="tab-pane" id="tab4">
+
+                                                                    @include('includes.noEvent')
+
 
                                                                     <button class="btn btn-info pull-right" id="btn-member" style="display: none;">
                                                                         <i class="fa fa-user"></i>
@@ -210,10 +221,12 @@
                                                                     </form>
 
 
-                                                                    <div id="container-member-frequency" class="hidden-xs hidden-sm" style="min-width: 1100px !important; height: 500px !important; display: none;"></div>
-                                                                    <div id="container-member-frequency-app" class="hidden-lg hidden-md" style="display: none;"></div>
+                                                                    <div id="container-member-frequency" class="hidden-xs hidden-sm chart" style="min-width: 1100px !important; height: 500px !important; display: none;"></div>
+                                                                    <div id="container-member-frequency-app" class="hidden-lg hidden-md chart" style="display: none;"></div>
                                                                 </div>
                                                                 <div class="tab-pane" id="tab5">
+
+                                                                    @include('includes.noEvent')
 
                                                                     <button class="btn btn-info pull-right" id="btn-visitor" style="display: none;">
                                                                         <i class="fa fa-user"></i>
@@ -257,8 +270,8 @@
 
                                                                     </form>
 
-                                                                    <div id="container-visitor-frequency" class="hidden-xs hidden-sm" style="min-width: 1100px !important; height: 500px !important; display: none;"></div>
-                                                                    <div id="container-visitor-frequency-app" class="hidden-lg hidden-md" style="display: none;"></div>
+                                                                    <div id="container-visitor-frequency" class="hidden-xs hidden-sm chart" style="min-width: 1100px !important; height: 500px !important; display: none;"></div>
+                                                                    <div id="container-visitor-frequency-app" class="hidden-lg hidden-md chart" style="display: none;"></div>
                                                                 </div>
                                                                 {{--<div class="tab-pane" id="tab6">
                                                                     <p> Howdy, I'm in Section 6. </p>
