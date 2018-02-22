@@ -12,9 +12,9 @@
 */
 
 Route::group(['middleware' => 'auth'], function () {
-    Route::get('/', 'DashboardController@index')->name('index');
+    Route::get('/sistema', 'DashboardController@index');
 
-    Route::get('/home', 'DashboardController@index');
+    Route::get('/home', 'DashboardController@index')->name('index');
 
     // Início Usuários e pessoas
 
@@ -281,6 +281,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/privacy', function(){
         return view('config.privacypolicy');
     });
+
+    //Rotas do site
+    Route::get('/', 'SiteController@index');
+
+    Route::post('/contact-site/{data}', 'ContactSiteController@store');
+
+    //Fim Rotas Site
 
     Route::get('/events-ajax', 'EventController@getListEvents');
 

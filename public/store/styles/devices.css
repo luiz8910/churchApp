@@ -1,0 +1,598 @@
+/* iOS */
+/* iphone5 */
+.ios {
+  /* iphone6 */
+}
+.ios-iphone5c-blue {
+  background: url("../images/devices/ios_iphone5c_blue.png") no-repeat;
+}
+.ios-iphone5c-green {
+  background: url("../images/devices/ios_iphone5c_green.png") no-repeat;
+}
+.ios-iphone5c-red {
+  background: url("../images/devices/ios_iphone5c_red.png") no-repeat;
+}
+.ios-iphone5c-white {
+  background: url("../images/devices/ios_iphone5c_white.png") no-repeat;
+}
+.ios-iphone5c-yellow {
+  background: url("../images/devices/ios_iphone5c_yellow.png") no-repeat;
+}
+.ios-iphone5s-black {
+  background: url("../images/devices/ios_iphone5s_black.png") no-repeat;
+}
+.ios-iphone5s-white {
+  background: url("../images/devices/ios_iphone5s_white.png") no-repeat;
+}
+.ios-iphone5c-blue .img-screen-wrapper,
+.ios-iphone5c-green .img-screen-wrapper,
+.ios-iphone5c-red .img-screen-wrapper,
+.ios-iphone5c-white .img-screen-wrapper,
+.ios-iphone5c-yellow .img-screen-wrapper,
+.ios-iphone5s-black .img-screen-wrapper,
+.ios-iphone5s-white .img-screen-wrapper {
+  position: absolute;
+  top: 108px;
+  left: 53px;
+  width: 246px;
+  height: 437px;
+}
+.ios-iphone5c-blue .highlight,
+.ios-iphone5c-green .highlight,
+.ios-iphone5c-red .highlight,
+.ios-iphone5c-white .highlight,
+.ios-iphone5c-yellow .highlight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 350px;
+  height: 650px;
+  background: url("../images/devices/highlight/ios_iphone5c_highlight.png") no-repeat;
+}
+.ios-iphone5s-black .highlight,
+.ios-iphone5s-white .highlight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 350px;
+  height: 650px;
+  background: url("../images/devices/highlight/ios_iphone5s_highlight.png") no-repeat;
+}
+.ios-iphone5c-blue.shadow:before,
+.ios-iphone5c-green.shadow:before,
+.ios-iphone5c-red.shadow:before,
+.ios-iphone5c-white.shadow:before,
+.ios-iphone5c-yellow.shadow:before {
+  display: block;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 350px;
+  height: 650px;
+  background: url("../images/devices/shadow/ios_iphone5c_shadow.png") no-repeat;
+}
+.ios-iphone5s-black.shadow:before,
+.ios-iphone5s-white.shadow:before {
+  display: block;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 350px;
+  height: 650px;
+  background: url("../images/devices/shadow/ios_iphone5s_shadow.png") no-repeat;
+}
+.ios-iphone6-black {
+  background: url("../images/devices/ios_iphone6_black.png") no-repeat;
+}
+.ios-iphone6-silver {
+  background: url("../images/devices/ios_iphone6_silver.png") no-repeat;
+}
+.ios-iphone6-gold {
+  background: url("../images/devices/ios_iphone6_gold.png") no-repeat;
+}
+.ios-iphone6plus-black {
+  background: url("../images/devices/ios_iphone6plus_black.png") no-repeat;
+}
+.ios-iphone6plus-silver {
+  background: url("../images/devices/ios_iphone6plus_silver.png") no-repeat;
+}
+.ios-iphone6plus-gold {
+  background: url("../images/devices/ios_iphone6plus_gold.png") no-repeat;
+}
+.ios-iphone6-black .img-screen-wrapper,
+.ios-iphone6-silver .img-screen-wrapper,
+.ios-iphone6-gold .img-screen-wrapper {
+  position: absolute;
+  top: 94px;
+  left: 45px;
+  width: 260px;
+  height: 462px;
+}
+.ios-iphone6plus-black .img-screen-wrapper,
+.ios-iphone6plus-silver .img-screen-wrapper,
+.ios-iphone6plus-gold .img-screen-wrapper {
+  position: absolute;
+  top: 81px;
+  left: 40px;
+  width: 270px;
+  height: 480px;
+}
+.ios-iphone6-black .highlight,
+.ios-iphone6-silver .highlight,
+.ios-iphone6-gold .highlight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 350px;
+  height: 650px;
+  background: url("../images/devices/highlight/ios_iphone6_highlight.png") no-repeat;
+}
+.ios-iphone6plus-black .highlight,
+.ios-iphone6plus-silver .highlight,
+.ios-iphone6plus-gold .highlight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 350px;
+  height: 650px;
+  background: url("../images/devices/highlight/ios_iphone6plus_highlight.png") no-repeat;
+}
+.ios-iphone6-black.shadow:before,
+.ios-iphone6-silver.shadow:before,
+.ios-iphone6-gold.shadow:before {
+  display: block;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 350px;
+  height: 650px;
+  background: url("../images/devices/shadow/ios_iphone6_shadow.png") no-repeat;
+}
+.ios-iphone6plus-black.shadow:before,
+.ios-iphone6plus-silver.shadow:before,
+.ios-iphone6plus-gold.shadow:before {
+  display: block;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 350px;
+  height: 650px;
+  background: url("../images/devices/shadow/ios_iphone6plus_shadow.png") no-repeat;
+}
+/* iOS tablet (iPad Air) */
+.ios-tablet-air-black {
+  background: url("../images/devices/tablets/ipad_air_black.png") no-repeat;
+}
+.ios-tablet-air-white {
+ 
+}
+.ios-tablet-air-black .img-screen-wrapper,
+.ios-tablet-air-white .img-screen-wrapper {
+  position: absolute;
+  top: 59px;
+  left: 33px;
+  width: 384px;
+  height: 512px;
+}
+.ios-tablet-air-black .highlight,
+.ios-tablet-air-white .highlight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 450px;
+  height: 630px;
+  background: url("../images/devices/tablets/highlight/ipad_air_highlight.png") no-repeat;
+}
+.ios-tablet-air-black.shadow:before,
+.ios-tablet-air-white.shadow:before {
+  display: block;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 450px;
+  height: 630px;
+  background: url("../images/devices/tablets/shadow/ipad_air_shadow.png") no-repeat;
+}
+.ios-tablet-air-black-landscape {
+  background: url("../images/devices/tablets/ipad_air_black_landscape.png") no-repeat;
+}
+.ios-tablet-air-white-landscape {
+  background: url("../images/devices/tablets/ipad_air_white_landscape.png") no-repeat;
+}
+.ios-tablet-air-black-landscape .img-screen-wrapper,
+.ios-tablet-air-white-landscape .img-screen-wrapper {
+  position: absolute;
+  top: 33px;
+  left: 59px;
+  width: 512px;
+  height: 384px;
+}
+.ios-tablet-air-black-landscape .highlight,
+.ios-tablet-air-white-landscape .highlight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 630px;
+  height: 450px;
+  background: url("../images/devices/tablets/highlight/ipad_air_landscape_highlight.png") no-repeat;
+}
+.ios-tablet-air-black-landscape.shadow:before,
+.ios-tablet-air-white-landscape.shadow:before {
+  display: block;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 630px;
+  height: 450px;
+  background: url("../images/devices/tablets/shadow/ipad_air_landscape_shadow.png") no-repeat;
+}
+/* Android (Nexus 5) */
+.android-nexus5-black {
+  background: url("../images/devices/android_nexus5_black.png") no-repeat;
+}
+.android-nexus5-white {
+  background: url("../images/devices/android_nexus5_white.png") no-repeat;
+}
+.android-nexus5-black .img-screen-wrapper,
+.android-nexus5-white .img-screen-wrapper {
+  position: absolute;
+  top: 79px;
+  left: 40px;
+  width: 270px;
+  height: 480px;
+}
+.android-nexus5-black .highlight,
+.android-nexus5-white .highlight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 350px;
+  height: 650px;
+  background: url("../images/devices/highlight/android_nexus5_highlight.png") no-repeat;
+}
+.android-nexus5-black.shadow:before,
+.android-nexus5-white.shadow:before {
+  display: block;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 350px;
+  height: 650px;
+  background: url("../images/devices/shadow/android_nexus5_shadow.png") no-repeat;
+}
+/* Android (Nexus 10) */
+.android-tablet-nexus10 {
+  background: url("../images/devices/tablets/nexus10.png") no-repeat;
+}
+.android-tablet-nexus10 .img-screen-wrapper {
+  position: absolute;
+  top: 60px;
+  left: 67px;
+  width: 318px;
+  height: 509px;
+}
+.android-tablet-nexus10 .highlight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 450px;
+  height: 630px;
+  background: url("../images/devices/tablets/highlight/nexus10_highlight.png") no-repeat;
+}
+.android-tablet-nexus10.shadow:before {
+  display: block;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 450px;
+  height: 630px;
+  background: url("../images/devices/tablets/shadow/nexus10_shadow.png") no-repeat;
+}
+.android-tablet-nexus10-landscape {
+  background: url("../images/devices/tablets/nexus10_landscape.png") no-repeat;
+}
+.android-tablet-nexus10-landscape .img-screen-wrapper {
+  position: absolute;
+  top: 65px;
+  left: 60px;
+  width: 509px;
+  height: 318px;
+}
+.android-tablet-nexus10-landscape .highlight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 630px;
+  height: 450px;
+  background: url("../images/devices/tablets/highlight/nexus10_landscape_highlight.png") no-repeat;
+}
+.android-tablet-nexus10-landscape.shadow:before {
+  display: block;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 630px;
+  height: 450px;
+  background: url("../images/devices/tablets/shadow/nexus10_landscape_shadow.png") no-repeat;
+}
+/* Windows Phone (Lumia) */
+.windowsphone-lumia-black {
+  background: url("../images/devices/windows-phone_black.png") no-repeat;
+}
+.windowsphone-lumia-white {
+  background: url("../images/devices/windows-phone_white.png") no-repeat;
+}
+.windowsphone-lumia-blue {
+  background: url("../images/devices/windows-phone_blue.png") no-repeat;
+}
+.windowsphone-lumia-grey {
+  background: url("../images/devices/windows-phone_grey.png") no-repeat;
+}
+.windowsphone-lumia-red {
+  background: url("../images/devices/windows-phone_red.png") no-repeat;
+}
+.windowsphone-lumia-yellow {
+  background: url("../images/devices/windows-phone_yellow.png") no-repeat;
+}
+.windowsphone-lumia-black .img-screen-wrapper,
+.windowsphone-lumia-white .img-screen-wrapper,
+.windowsphone-lumia-blue .img-screen-wrapper,
+.windowsphone-lumia-grey .img-screen-wrapper,
+.windowsphone-lumia-red .img-screen-wrapper,
+.windowsphone-lumia-yellow .img-screen-wrapper {
+  position: absolute;
+  top: 79px;
+  left: 41px;
+  width: 268px;
+  height: 447px;
+}
+.windowsphone-lumia-black .highlight,
+.windowsphone-lumia-white .highlight,
+.windowsphone-lumia-blue .highlight,
+.windowsphone-lumia-grey .highlight,
+.windowsphone-lumia-red .highlight,
+.windowsphone-lumia-yellow .highlight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 350px;
+  height: 650px;
+  background: url("../images/devices/highlight/windows-phone_lumia_highlight.png") no-repeat;
+}
+.windowsphone-lumia-black.shadow:before,
+.windowsphone-lumia-white.shadow:before,
+.windowsphone-lumia-blue.shadow:before,
+.windowsphone-lumia-grey.shadow:before,
+.windowsphone-lumia-red.shadow:before,
+.windowsphone-lumia-yellow.shadow:before {
+  display: block;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 350px;
+  height: 650px;
+  background: url("../images/devices/shadow/windows-phone_lumia_shadow.png") no-repeat;
+}
+/* Windows Phone (Lumia 2520) */
+.windowsphone-tablet-lumia {
+  background: url("../images/devices/tablets/lumia2520.png") no-repeat;
+}
+.windowsphone-tablet-lumia .img-screen-wrapper {
+  position: absolute;
+  top: 54px;
+  left: 81px;
+  width: 292px;
+  height: 519px;
+}
+.windowsphone-tablet-lumia .highlight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 450px;
+  height: 630px;
+  background: url("../images/devices/tablets/highlight/lumia2520_highlight.png") no-repeat;
+}
+.windowsphone-tablet-lumia.shadow:before {
+  display: block;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 450px;
+  height: 630px;
+  background: url("../images/devices/tablets/shadow/lumia2520_shadow.png") no-repeat;
+}
+.windowsphone-tablet-lumia-landscape {
+  background: url("../images/devices/tablets/lumia2520_landscape.png") no-repeat;
+}
+.windowsphone-tablet-lumia-landscape .img-screen-wrapper {
+  position: absolute;
+  top: 79px;
+  left: 56px;
+  width: 519px;
+  height: 292px;
+}
+.windowsphone-tablet-lumia-landscape .highlight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 630px;
+  height: 450px;
+  background: url("../images/devices/tablets/highlight/lumia2520_landscape_highlight.png") no-repeat;
+}
+.windowsphone-tablet-lumia-landscape.shadow:before {
+  display: block;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 630px;
+  height: 450px;
+  background: url("../images/devices/tablets/shadow/lumia2520_landscape_shadow.png") no-repeat;
+}
+/* screenshot wrapper */
+.img-screen-wrapper img {
+  width: 100%;
+  height: 100%;
+}
+.highlight {
+  pointer-events: none;
+}
+/* 10. High Resolution support
+-------------------------------------------------------------------*/
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  /* phones */
+  .ios-iphone5c-blue {
+    background: url("../images/devices/ios_iphone5c_blue@2x.png") no-repeat;
+    background-size: 350px 650px;
+  }
+  .ios-iphone5c-green {
+    background: url("../images/devices/ios_iphone5c_green@2x.png") no-repeat;
+    background-size: 350px 650px;
+  }
+  .ios-iphone5c-red {
+    background: url("../images/devices/ios_iphone5c_red@2x.png") no-repeat;
+    background-size: 350px 650px;
+  }
+  .ios-iphone5c-white {
+    background: url("../images/devices/ios_iphone5c_white@2x.png") no-repeat;
+    background-size: 350px 650px;
+  }
+  .ios-iphone5c-yellow {
+    background: url("../images/devices/ios_iphone5c_yellow@2x.png") no-repeat;
+    background-size: 350px 650px;
+  }
+  .ios-iphone5s-black {
+    background: url("../images/devices/ios_iphone5s_black@2x.png") no-repeat;
+    background-size: 350px 650px;
+  }
+  .ios-iphone5s-white {
+    background: url("../images/devices/ios_iphone5s_white@2x.png") no-repeat;
+    background-size: 350px 650px;
+  }
+  .ios-iphone6-black {
+    background: url("../images/devices/ios_iphone6plus_black@2x.png") no-repeat;
+    background-size: 350px 650px;
+  }
+  .ios-iphone6-silver {
+    background: url("../images/devices/ios_iphone6_silver@2x.png") no-repeat;
+    background-size: 350px 650px;
+  }
+  .ios-iphone6-gold {
+    background: url("../images/devices/ios_iphone6_gold@2x.png") no-repeat;
+    background-size: 350px 650px;
+  }
+  .ios-iphone6plus-black {
+    background: url("../images/devices/ios_iphone6plus_black@2x.png") no-repeat;
+    background-size: 350px 650px;
+  }
+  .ios-iphone6plus-silver {
+    background: url("../images/devices/ios_iphone6plus_silver@2x.png") no-repeat;
+    background-size: 350px 650px;
+  }
+  .ios-iphone6plus-gold {
+    background: url("../images/devices/ios_iphone6plus_gold@2x.png") no-repeat;
+    background-size: 350px 650px;
+  }
+  .android-nexus5-black {
+    background: url("../images/devices/android_nexus5_black@2x.png") no-repeat;
+    background-size: 350px 650px;
+  }
+  .android-nexus5-white {
+    background: url("../images/devices/android_nexus5_white@2x.png") no-repeat;
+    background-size: 350px 650px;
+  }
+  .windowsphone-lumia-black {
+    background: url("../images/devices/windows-phone_black@2x.png") no-repeat;
+    background-size: 350px 650px;
+  }
+  .windowsphone-lumia-white {
+    background: url("../images/devices/windows-phone_white@2x.png") no-repeat;
+    background-size: 350px 650px;
+  }
+  .windowsphone-lumia-blue {
+    background: url("../images/devices/windows-phone_blue@2x.png") no-repeat;
+    background-size: 350px 650px;
+  }
+  .windowsphone-lumia-grey {
+    background: url("../images/devices/windows-phone_grey@2x.png") no-repeat;
+    background-size: 350px 650px;
+  }
+  .windowsphone-lumia-red {
+    background: url("../images/devices/windows-phone_red@2x.png") no-repeat;
+    background-size: 350px 650px;
+  }
+  .windowsphone-lumia-yellow {
+    background: url("../images/devices/windows-phone_yellow@2x.png") no-repeat;
+    background-size: 350px 650px;
+  }
+  /* tablets */
+  .ios-tablet-air-black {
+    background: url("../images/devices/tablets/ipad_air_black@2x.png") no-repeat;
+    background-size: 450px 630px;
+  }
+  .ios-tablet-air-white {
+    background: url("../images/devices/tablets/ipad_air_white@2x.png") no-repeat;
+    background-size: 450px 630px;
+  }
+  .ios-tablet-air-black-landscape {
+    background: url("../images/devices/tablets/ipad_air_black_landscape@2x.png") no-repeat;
+    background-size: 630px 450px;
+  }
+  .ios-tablet-air-white-landscape {
+    background: url("../images/devices/tablets/ipad_air_white_landscape@2x.png") no-repeat;
+    background-size: 630px 450px;
+  }
+  .android-tablet-nexus10 {
+    background: url("../images/devices/tablets/nexus10@2x.png") no-repeat;
+    background-size: 450px 630px;
+  }
+  .android-tablet-nexus10-landscape {
+    background: url("../images/devices/tablets/nexus10_landscape@2x.png") no-repeat;
+    background-size: 630px 450px;
+  }
+  .windowsphone-tablet-lumia {
+    background: url("../images/devices/tablets/lumia2520@2x.png") no-repeat;
+    background-size: 450px 630px;
+  }
+  .windowsphone-tablet-lumia-landscape {
+    background: url("../images/devices/tablets/lumia2520_landscape@2x.png") no-repeat;
+    background-size: 630px 450px;
+  }
+}
+
+/* Devices */
+.device-mobile {
+  position: relative;
+  margin: 0 auto;
+  width: 350px;
+  height: 650px;
+}
+.device-mobile-landscape {
+  position: relative;
+  margin: 0 auto;
+  width: 650px;
+  height: 350px;
+}
+.device-tablet {
+  position: relative;
+  margin: 0 auto;
+  width: 450px;
+
+}
+.device-tablet-landscape {
+  position: relative;
+  margin: 0 auto;
+  width: 630px;
+  height: 450px;
+}

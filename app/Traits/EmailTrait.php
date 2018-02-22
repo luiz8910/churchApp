@@ -10,7 +10,8 @@ namespace App\Traits;
 
 use App\Mail\resetPassword;
 use App\Mail\welcome;
-use App\Models\User;
+use App\Mail\Contact_Site;
+use App\Models\ContactSite;use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 
 trait EmailTrait
@@ -46,6 +47,17 @@ trait EmailTrait
             ->send(new welcome(
                 $user, $url, $password
             ));
+
+        return true;
+    }
+
+    public function contact_site($name, $email, $tel, $msg)
+    {
+        Mail::to('luiz.sanches8910@gmail.com')
+            ->send(new Contact_Site($name, $email, $tel, $msg));
+
+        //Mail::to('dagokeio@gmail.com')->send(new Contact_Site($name, $email, $tel, $msg));
+
 
         return true;
     }
