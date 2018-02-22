@@ -29,6 +29,7 @@ class ContactSiteController extends Controller
 
         if($this->repository->create($d))
         {
+            //Envio de Email
             $this->contact_site($d['name'], $d['email'], $d['tel'], $d['msg']);
 
             return json_encode(['status' => true]);

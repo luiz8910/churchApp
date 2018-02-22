@@ -34,6 +34,10 @@ $(function(){
             if(e.status)
             {
                 swal('Sucesso', 'Sua mensagem foi enviada', 'success');
+
+                setTimeout(function(){
+                    location.reload();
+                }, 2000);
             }
             else{
                 swal('Atenção', 'Não foi possível enviar sua mensagem, verifique sua conexão com a internet', 'error');
