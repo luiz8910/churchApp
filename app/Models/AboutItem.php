@@ -6,12 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
-class Site extends Model implements Transformable
+class AboutItem extends Model implements Transformable
 {
     use TransformableTrait;
 
-    protected $fillable = [
-        'text_1', 'text_2', 'text_3', 'text_4'
-    ];
+    protected $fillable = ['title', 'text'];
+
+    protected $table = 'about__items';
 
 }

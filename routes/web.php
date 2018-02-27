@@ -289,6 +289,34 @@ Route::group(['middleware' => 'auth'], function () {
 
     //Fim Rotas Site
 
+    /*
+     * Admin do Site
+     */
+
+    Route::get('/admin', 'SiteController@adminHome')->name('admin.home');
+
+    Route::get('/admin-features', 'SiteController@adminFeatures')->name('admin.features');
+
+    Route::post('/newFeature/{data}', 'SiteController@newFeature');
+
+    Route::get('/delete-feature/{id}', 'SiteController@deleteFeature');
+
+    Route::post('/new-feature-item/{data}/{id}', 'SiteController@newFeatureItem');
+
+    Route::get('/deleteItemFeature/{id}', 'SiteController@deleteItemFeature');
+
+    Route::post('/editFeatures/{data}/{id}', 'SiteController@editFeatures');
+
+    Route::post('/edit-main-site/{data}', 'SiteController@editMain');
+
+    Route::post('/edit-about-site/{data}', 'SiteController@editAbout');
+
+    Route::post('/edit-about-item-site/{data}', 'SiteController@editAboutItem');
+
+    Route::post('/edit-features-site/{data}', 'SiteController@editFeatures');
+
+    // Fim Admin site
+
     Route::get('/events-ajax', 'EventController@getListEvents');
 
     Route::get('/events-excel/{format}', 'EventController@excel')->name('events.excel');

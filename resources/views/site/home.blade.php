@@ -42,8 +42,10 @@
 
 <div class="container-fluid" id="header">
     <div class="container">
-        <h1 class="my-0">Conectando pessoas e comunidades.</h1>
-        <h3 class="py-5 mb-3">Não perca tempo, seja a conexão.</h3>
+        <h1 class="my-0">{{ $main->text_1 }}</h1>
+
+        <h3 class="py-5 mb-3">{{ $main->text_2 }}</h3>
+
         <a href="javascript:;" class="btn btn-primary">Faça um teste grátis</a>
     </div>
 
@@ -56,8 +58,10 @@
             <div class="col-sm-6 pt-10 xs-bg-white-lilac pb-5 pb-sm-0">
                 <div class="row">
                     <div class="col">
-                        <h6 class="text-uppercase">O que fazemos</h6>
-                        <p class="inner-text py-3">Nascemos para ser o maior serviço de conexão entre pessoas e comunidades da América Latina.</p>
+                        <h6 class="text-uppercase">{{ $about->text_1 }}</h6>
+
+                        <p class="inner-text py-3">{{ $about->text_2 }}</p>
+
                         <a href="#" class="follow-link">Saiba mais <i class="fas fa-caret-right"></i></a>
                     </div>
                 </div>
@@ -69,23 +73,26 @@
                         <div class="row">
                             <div class="col-sm-6 mb-5">
                                 <img src="/store/images/ic-atendimento.png" srcset="/store/images/ic-atendimento@2x.png 2x, /store/images/ic-atendimento@3x.png 3x" class="ic_atendimento mb-4">
-                                <h4>Comunicar</h4>
-                                <p class="item-inner-text">Getting Cheap Airfare For Last Minute Travel</p>
+                                <h4>{{ $about_item[0]->title }}</h4> <!-- Comunicar -->
+                                <p class="item-inner-text">{{ $about_item[1]->text }}</p>
                             </div>
                             <div class="col-sm-6 mb-5 mb-sm-0">
                                 <img src="/store/images/ic-descomplicar.png" srcset="/store/images/ic-descomplicar@2x.png 2x, /store/images/ic-descomplicar@3x.png 3x" class="ic_descomplicar mb-4">
-                                <h4>Descomplicar</h4>
-                                <p class="item-inner-text">Unmatched Toner Cartridge Quality 20 Less Than Oem Price</p>
+                                <h4>{{ $about_item[1]->title }}</h4>
+                                {{--<h4>Descomplicar</h4>--}}
+                                <p class="item-inner-text">{{ $about_item[1]->text }}</p>
                             </div>
                             <div class="col-sm-6 mb-5 mb-sm-0">
                                 <img src="/store/images/ic-engajar.png" srcset="/store/images/ic-engajar@2x.png 2x, /store/images/ic-engajar@3x.png 3x" class="ic_engajar mb-4">
-                                <h4>Engajar</h4>
-                                <p class="item-inner-text">Atendimento via chat 24 horas por dia 7 dias por semana.</p>
+                                <h4>{{ $about_item[2]->title }}</h4>
+                                {{--<h4>Engajar</h4>--}}
+                                <p class="item-inner-text">{{ $about_item[3]->text }}</p>
                             </div>
                             <div class="col-sm-6 mb-5 mb-sm-0">
                                 <img src="/store/images/ic-comunicar.png" srcset="/store/images/ic-comunicar@2x.png 2x, /store/images/ic-comunicar@3x.png 3x" class="ic_comunicar mb-4">
-                                <h4>Conectar</h4>
-                                <p class="item-inner-text">Unmatched Toner Cartridge Quality 20 Less Than Oem Price</p>
+                                <h4>{{ $about_item[3]->title }}</h4>
+                                {{--<h4>Conectar</h4>--}}
+                                <p class="item-inner-text">{{ $about_item[3]->text }}</p>
                             </div>
                         </div>
                     </div>
@@ -187,37 +194,43 @@
                     <div id="carousel-app-description">
                         <div class="carousel-inner">
                             <div id="slick-carousel-app-description">
-                                <div class="item">
-                                    <div class="row">
-                                        <div class="col">
-                                            <div class="row">
-                                                <div class="col-12">
-                                                    <h3 class="slide-title">Login com <span class="font-weight-bold">redes sociais</span></h3>
-                                                </div>
-                                                <div class="col-12">
-                                                    <p class="inner-text">Usando o serviço Beconnect seus vizitantes poderão fazer login através de redes sociais, facilitando o acesso e a
-                                                        recorrencia.</p>
-                                                </div>
-                                                <div class="col-12">
-                                                    <ul class="list-unstyled pt-4 slide-list">
-                                                        <li><img src="/store/images/ic-face.png" srcset="/store/images/ic-face@2x.png 2x, /store/images/ic-face@3x.png 3x" class="ic-face"> Facebook
-                                                            connect
-                                                        </li>
-                                                        <li><img src="/store/images/ic-twitter.png" srcset="/store/images/ic-twitter@2x.png 2x, /store/images/ic-twitter@3x.png 3x"
-                                                                 class="ic-twitter">
-                                                            Twitter login
-                                                        </li>
-                                                        <li><img src="/store/images/ic-google.png" srcset="/store/images/ic-google@2x.png 2x, /store/images/ic-google@3x.png 3x" class="ic_google">
-                                                            Google
-                                                            login
-                                                        </li>
-                                                    </ul>
+                                @foreach($features as $feature)
+                                    <div class="item">
+                                        <div class="row">
+                                            <div class="col">
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        {{--<h3 class="slide-title">Login com <span class="font-weight-bold">redes sociais</span></h3>--}}
+                                                        <h3 class="slide-title">{{ $feature->title }}</h3>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <p class="inner-text">{{ $feature->text }}</p>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <ul class="list-unstyled pt-4 slide-list">
+                                                            @foreach($feature_item as $item)
+                                                            <li>
+                                                                @if($item->feature_id == $feature->id)
+                                                                    {{ $item->text }}
+                                                                @endif
+                                                                {{--<img src="/store/images/ic-face.png" srcset="/store/images/ic-face@2x.png 2x, /store/images/ic-face@3x.png 3x" class="ic-face">--}}
+
+                                                            </li>
+                                                            @endforeach
+
+                                                                {{--<img src="/store/images/ic-twitter.png" srcset="/store/images/ic-twitter@2x.png 2x, /store/images/ic-twitter@3x.png 3x"
+                                                                     class="ic-twitter">--}}
+
+                                                                {{--<img src="/store/images/ic-google.png" srcset="/store/images/ic-google@2x.png 2x, /store/images/ic-google@3x.png 3x" class="ic_google">--}}
+
+                                                        </ul>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="item">
+                                @endforeach
+                                {{--<div class="item">
                                     <div class="row">
                                         <div class="col">
                                             <div class="row">
@@ -341,7 +354,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div>--}}
                             </div>
                         </div>
                     </div>
