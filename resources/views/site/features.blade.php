@@ -24,8 +24,8 @@
             margin-right:5px;
         }
     </style>
-    <link rel="stylesheet" href="//frontend.reklamor.com/fancybox/jquery.fancybox.css" media="screen">
-    <script src="//frontend.reklamor.com/fancybox/jquery.fancybox.js"></script>
+    {{--<link rel="stylesheet" href="//frontend.reklamor.com/fancybox/jquery.fancybox.css" media="screen">
+    <script src="//frontend.reklamor.com/fancybox/jquery.fancybox.js"></script>--}}
 </head>
 <!-- END HEAD -->
 
@@ -462,10 +462,10 @@
 <!-- END CONTAINER -->
 @include('includes.footer')
 @include('includes.core-scripts')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.repeater/1.2.1/jquery.repeater.min.js"></script>
+
 <script src="../js/site.js"></script>
 
-<script>
+{{--<script>
     $(document).ready(function(){
         //FANCYBOX
         //https://github.com/fancyapps/fancyBox
@@ -483,7 +483,7 @@
 
         });
     });
-</script>
+</script>--}}
 
 <!-- BEGIN PAGE LEVEL PLUGINS -->
 
