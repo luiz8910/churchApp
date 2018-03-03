@@ -13,6 +13,7 @@ $(function(){
         {
             for(var i = 0; i < data.length; i ++)
             {
+                data[x].value = data[x].value.replace('?', "--");
                 values.push(data[i].value);
             }
 
@@ -73,6 +74,7 @@ $(function(){
         {
             for(var x = 0; x < data.length; x++)
             {
+                data[x].value = data[x].value.replace('?', "--");
                 values.push(data[x].value);
             }
 
@@ -164,6 +166,14 @@ $(function(){
         $("#edit-features").css('display', 'block');
     });
 
+    $(".btn-faq").click(function(){
+        var str = this.id;
+
+        var id = str.replace('btn-faq-', '');
+
+        $("#edit-faq-"+id).css('display', 'block');
+    });
+
     $("#form-main").submit(function(e){
         e.preventDefault();
 
@@ -197,6 +207,44 @@ $(function(){
         Request(url, data, null, 'POST');
 
         //editAboutItem(data);
+    });
+
+    $(".form-faq-edit").submit(function(e){
+        e.preventDefault();
+
+        var data = $(this).serializeArray();
+
+        var id = data[2].value;
+
+        var url = '/edit-faq/';
+
+        Request(url, data, id, 'POST');
+    });
+
+    $("#form-new-faq").submit(function(e){
+        e.preventDefault();
+
+        var data = $(this).serializeArray();
+
+        var url = '/new-faq/';
+
+        $('#new-faq').modal('hide');
+
+        Request(url, data, null, 'POST');
+    });
+
+    $('.delete-faq').click(function(){
+        var str = this.id;
+
+        var id = str.replace('delete-faq-', '');
+
+        var url = '/delete-faq/';
+
+        sweetAlertDel(id, url, true);
+
+
+
+
     });
 
     function editMain(data)
@@ -491,9 +539,16 @@ $(function(){
 
         var id = str.replace('btn-delete-', "");
 
+        var url = '/delete-feature/';
+
+        sweetAlertDel(id, url);
+    });
+
+    function sweetAlertDel(id, url, static_page)
+    {
         swal({
                 title: 'Atenção',
-                text: 'Deseja excluir a feature selecionada?',
+                text: 'Deseja excluir o item selecionado?',
                 type: 'warning',
                 showCancelButton: true,
                 confirmButtonClass: "btn-danger",
@@ -504,12 +559,14 @@ $(function(){
             },
             function (isConfirm) {
                 if (isConfirm) {
-                    var url = '/delete-feature/';
-                    Request(url, null, id, null);
+
+                    Request(url, null, id, null, static_page);
+
+                    $('#tr-faq-'+id).remove();
 
                 }
             });
-    });
+    }
 
     function deleteFeature(id)
     {

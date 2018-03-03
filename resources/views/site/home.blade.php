@@ -503,67 +503,24 @@
         </div>
         <div class="col-sm-6">
             <div id="accordion" role="tablist">
-                <div class="card list">
-                    <div class="card-header" role="tab" id="headingOne">
-                        <h6 class="mb-0">
-                            <a class="collapsed" data-toggle="collapse" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                                <span class="fw-600">Quando eu começo a pagar?</span> <i class="fas fa-sort-down float-right"></i>
-                            </a>
-                        </h6>
-                    </div>
+                @foreach($faq as $f)
+                    <div class="card list">
+                        <div class="card-header" role="tab" id="heading-{{ $f->id }}">
+                            <h6 class="mb-0">
+                                <a class="collapsed" data-toggle="collapse" href="#collapse-{{ $f->id }}" aria-expanded="false" aria-controls="collapse-{{ $f->id }}">
+                                    <span class="fw-600">{{ $f->question }}</span> <i class="fas fa-sort-down float-right"></i>
+                                </a>
+                            </h6>
+                        </div>
 
-                    <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
-                        <div class="card-body inner-text py-3 fs-20">
-                            Tenha controle e números precisos de suas finanças, checkins dos seus mebros, eventos, e mural de informações sobre seus membros precisos de suas finanças, checkins dos
-                            seus mebros, eventos.
+                        <div id="collapse-{{ $f->id }}" class="collapse" role="tabpanel" aria-labelledby="heading-{{ $f->id }}" data-parent="#accordion">
+                            <div class="card-body inner-text py-3 fs-20">
+                                {{ $f->answer }}
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="card list">
-                    <div class="card-header" role="tab" id="headingTwo">
-                        <h6 class="mb-0">
-                            <a class="collapsed" data-toggle="collapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                <span class="fw-600">Como funcionam os planos?</span> <i class="fas fa-sort-down float-right"></i>
-                            </a>
-                        </h6>
-                    </div>
-                    <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion">
-                        <div class="card-body inner-text py-3 fs-20">
-                            Tenha controle e números precisos de suas finanças, checkins dos seus mebros, eventos, e mural de informações sobre seus membros precisos de suas finanças, checkins dos
-                            seus mebros, eventos.
-                        </div>
-                    </div>
-                </div>
-                <div class="card list">
-                    <div class="card-header" role="tab" id="headingThree">
-                        <h6 class="mb-0">
-                            <a class="collapsed" data-toggle="collapse" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                <span class="fw-600">Posso cancelar quando quiser?</span> <i class="fas fa-sort-down float-right"></i>
-                            </a>
-                        </h6>
-                    </div>
-                    <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion">
-                        <div class="card-body inner-text py-3 fs-20">
-                            Tenha controle e números precisos de suas finanças, checkins dos seus mebros, eventos, e mural de informações sobre seus membros precisos de suas finanças, checkins dos
-                            seus mebros, eventos.
-                        </div>
-                    </div>
-                </div>
-                <div class="card list">
-                    <div class="card-header" role="tab" id="headingThree">
-                        <h6 class="mb-0">
-                            <a class="collapsed" data-toggle="collapse" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                <span class="fw-600">Qual melhor plano para minha comunidade?</span> <i class="fas fa-sort-down float-right"></i>
-                            </a>
-                        </h6>
-                    </div>
-                    <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion">
-                        <div class="card-body inner-text py-3 fs-20">
-                            Tenha controle e números precisos de suas finanças, checkins dos seus mebros, eventos, e mural de informações sobre seus membros precisos de suas finanças, checkins dos
-                            seus mebros, eventos.
-                        </div>
-                    </div>
-                </div>
+                @endforeach
+                
             </div>
         </div>
     </div>

@@ -73,15 +73,27 @@
 														</div> <!-- FIM DIV .caption.font-green-haze -->
 
                                                         <div class="actions">
+
                                                             <div class="btn-group btn-group-sm">
+                                                                <div class="col-lg-6">
+                                                                    <div class="btn-group-devided">
+                                                                        <a role="button" class="btn purple btn-circle btn-sm" data-toggle="modal" data-target="#new-faq"
+                                                                           href="javascript:;" style="margin-top: 2px;">
+                                                                            <i class="fa fa-plus"></i>
+                                                                            <span class="hidden-xs hidden-sm">Novo FAQ</span>
+                                                                            <span class="hidden-md hidden-lg">FAQ</span>
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
 
 
-                                                                <div class="col-lg-3">
+                                                                <div class="col-lg-6">
                                                                     <div class="btn-group-devided">
                                                                         <a role="button" class="btn btn-info btn-circle btn-sm" data-toggle="modal" data-target="#new-icon"
                                                                            href="javascript:;" style="margin-top: 2px;">
                                                                             <i class="fa fa-plus"></i>
                                                                             <span class="hidden-xs hidden-sm">Novo Ícone</span>
+                                                                            <span class="hidden-md hidden-lg">Ícone</span>
                                                                         </a>
                                                                     </div>
                                                                 </div>
@@ -133,6 +145,50 @@
                                                         </div>
                                                     </div>
 
+                                                    <!-- Modal -->
+                                                    <div class="modal fade" id="new-faq" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                                    <h4 class="modal-title text-center" id="myModalLabel">Novo Faq</h4>
+                                                                </div>
+                                                                <form id="form-new-faq" method="POST" >
+                                                                    <div class="modal-body">
+
+                                                                        <div class="row">
+                                                                            <div class="col-md-12">
+                                                                                <div class="form-group">
+                                                                                    <label for="question-faq">Pergunta</label>
+                                                                                    <input type="text" class="form-control" id="question-faq" name="question-faq"
+                                                                                           required placeholder="Digite a pergunta">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="row">
+                                                                            <div class="col-md-12">
+                                                                                <div class="form-group">
+                                                                                    <label for="answer-faq">Resposta</label>
+                                                                                    <input type="text" class="form-control" id="answer-faq" name="answer-faq"
+                                                                                           required placeholder="Digite a resposta">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                                                                        <button type="submit" class="btn btn-success">
+                                                                            <i class="fa fa-check"></i>
+                                                                            Salvar
+                                                                        </button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
 
                                                     <div class="portlet-body form">
 														<div class="portlet-body-config">
@@ -151,6 +207,12 @@
                                                                 <li role="presentation">
                                                                     <a href="#tab-about-item" aria-controls="tab-about-item" role="tab" data-toggle="tab" class="hide-a">
                                                                         Sobre (Itens)
+                                                                    </a>
+                                                                </li>
+
+                                                                <li role="presentation">
+                                                                    <a href="#tab-faq" aria-controls="tab-faq" role="tab" data-toggle="tab" class="hide-a">
+                                                                        FAQ
                                                                     </a>
                                                                 </li>
 															</ul>
@@ -211,10 +273,12 @@
                                                                         <tr class="uppercase">
                                                                             <th> Título </th>
                                                                             <th> Subtítulo </th>
-                                                                            <th> <a href="javascript:;" class="btn blue btn-circle btn-outline" id="btn-about-item">
+                                                                            <th>
+                                                                                <a href="javascript:;" class="btn blue btn-circle btn-outline" id="btn-about-item">
                                                                                     <i class="fa fa-pencil"></i>
                                                                                     Editar
-                                                                                </a> </th>
+                                                                                </a>
+                                                                            </th>
                                                                         </tr>
                                                                         </thead>
 
@@ -227,6 +291,43 @@
 
                                                                     </table>
 
+                                                                </div>
+
+                                                                <div class="table-scrollable table-scrollable-borderless tab-pane fade in" role="tabpanel" id="tab-faq">
+                                                                    <table class="table table-hover table-light">
+                                                                        <thead>
+                                                                        <tr class="uppercase">
+                                                                            <th> Pergunta </th>
+                                                                            <th> Resposta </th>
+                                                                            <th>Opções</th>
+                                                                        </tr>
+                                                                        </thead>
+
+                                                                        @foreach($faq as $f)
+                                                                            <tr id="tr-faq-{{ $f->id }}">
+                                                                                <td>{{ $f->question }}</td>
+                                                                                <td>
+                                                                                    @if(strlen($f->answer) > 50)
+                                                                                        <?php $str = substr($f->answer, 0, 50) . " ..."; ?>
+                                                                                        {{ $str }}
+                                                                                    @else
+                                                                                        {{ $f->answer }}
+                                                                                    @endif
+                                                                                </td>
+                                                                                <td>
+                                                                                    <a href="javascript:;" class="btn blue btn-circle btn-outline btn-faq" id="btn-faq-{{ $f->id }}">
+                                                                                        <i class="fa fa-pencil"></i>
+                                                                                        Editar
+                                                                                    </a>
+                                                                                    <a href="javascript:;" class="btn red btn-circle btn-outline delete-faq" id="delete-faq-{{ $f->id }}">
+                                                                                        <i class="fa fa-trash"></i>
+                                                                                        Excluir
+                                                                                    </a>
+                                                                                </td>
+                                                                            </tr>
+                                                                        @endforeach
+
+                                                                    </table>
                                                                 </div>
 
 
@@ -245,196 +346,15 @@
 									</div> <!-- FIM DIV .page-content-inner -->
 								</div>
 
-                                <div class="container"  >
-                                    <div id="edit-main" style="display: none;" class="page-content-inner hide-container">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="portlet light ">
-                                                    <div class="portlet-title">
-                                                        <div class="caption font-purple">
-                                                            <i class="icon-settings font-purple"></i>
-                                                            <span class="caption-subject bold uppercase"> Principal </span>
-                                                        </div>
+                                @include('includes.container-main')
 
-                                                    </div>
-                                                    <div class="portlet-body form">
-                                                        <form role="form" id="form-main" method="post">
-                                                            <div class="form-body">
-                                                                <div class="form-group">
-                                                                    <label>Título</label>
-                                                                    <div class="input-group">
-                                                                        <span class="input-group-addon">
-                                                                            <i class="fa fa-font font-purple"></i>
-                                                                        </span>
-                                                                        <input type="text" class="form-control" id="title-main" name="title-main" value="{{ $main->text_1 }}"
-                                                                               placeholder="Digite o título" required>
-                                                                    </div>
-                                                                </div>
+                                @include('includes.container-about')
 
-                                                                <div class="form-group">
-                                                                    <label>Subtítulo</label>
-                                                                    <textarea class="form-control" rows="3" id="subTitle-main" name="subTitle-main"
-                                                                              required >{{ $main->text_2 }}</textarea>
-                                                                </div>
+                                @include('includes.container-about-itens')
 
-                                                            </div>
-                                                            <div class="form-actions">
-                                                                <button type="submit" class="btn purple">
-                                                                    <i class="fa fa-check"></i>
-                                                                    Salvar
-                                                                </button>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div> <!-- FIM DIV .col-md-12 -->
-                                        </div> <!-- FIM DIV .row -->
-                                    </div> <!-- FIM DIV .page-content-inner -->
-                                </div>
+                                @include('includes.container-faq')
 
-                                <div class="container" >
-                                    <div id="edit-about" style="display: none;" class="page-content-inner hide-container">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="portlet light ">
-                                                    <div class="portlet-title">
-                                                        <div class="caption font-purple">
-                                                            <i class="icon-settings font-purple"></i>
-                                                            <span class="caption-subject bold uppercase"> Sobre </span>
-                                                        </div>
 
-                                                    </div>
-                                                    <div class="portlet-body form">
-                                                        <form role="form" id="form-about" method="post">
-                                                            <div class="form-body">
-                                                                <div class="form-group">
-                                                                    <label>Título</label>
-                                                                    <div class="input-group">
-                                                                        <span class="input-group-addon">
-                                                                            <i class="fa fa-font font-purple"></i>
-                                                                        </span>
-                                                                        <input type="text" class="form-control" id="title-main" name="title-about" value="{{ $about->text_1 }}"
-                                                                               placeholder="Digite o título" required>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="form-group">
-                                                                    <label>Subtítulo</label>
-                                                                    <textarea class="form-control" rows="3" id="subTitle-about" name="subTitle-main"
-                                                                              required >{{ $about->text_2 }}</textarea>
-                                                                </div>
-
-                                                            </div>
-                                                            <div class="form-actions">
-                                                                <button type="submit" class="btn purple">
-                                                                    <i class="fa fa-check"></i>
-                                                                    Salvar
-                                                                </button>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div> <!-- FIM DIV .col-md-12 -->
-                                        </div> <!-- FIM DIV .row -->
-                                    </div> <!-- FIM DIV .page-content-inner -->
-                                </div>
-
-                                <div class="container" >
-                                    <div id="edit-about-item" style="display: none;" class="page-content-inner hide-container">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="portlet light ">
-                                                    <div class="portlet-title">
-                                                        <div class="caption font-purple">
-                                                            <i class="icon-settings font-purple"></i>
-                                                            <span class="caption-subject bold uppercase"> Sobre (Itens) </span>
-                                                        </div>
-
-                                                    </div>
-                                                    <div class="portlet-body form">
-                                                        <form role="form" id="form-about-item" method="post">
-                                                            <div class="form-body">
-                                                                @foreach($about_item as $item)
-                                                                    <div class="form-group">
-                                                                        <label>Título</label>
-                                                                        <div class="input-group">
-                                                                            <span class="input-group-addon">
-                                                                                <i class="fa fa-font font-purple"></i>
-                                                                            </span>
-                                                                            <input type="text" class="form-control" name="title-about-item" value="{{ $item->title }}"
-                                                                                   placeholder="Digite o título" required>
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="form-group">
-                                                                        <label>Subtítulo</label>
-                                                                        <textarea class="form-control" rows="3" name="subTitle-main"
-                                                                                  required >{{ $item->text }}</textarea>
-                                                                    </div>
-
-                                                                @endforeach
-
-                                                            </div>
-                                                            <div class="form-actions">
-                                                                <button type="submit" class="btn purple">
-                                                                    <i class="fa fa-check"></i>
-                                                                    Salvar
-                                                                </button>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div> <!-- FIM DIV .col-md-12 -->
-                                        </div> <!-- FIM DIV .row -->
-                                    </div> <!-- FIM DIV .page-content-inner -->
-                                </div>
-
-                                <div class="container">
-                                    <div id="edit-features" style="display: none;" class="page-content-inner hide-container">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="portlet light ">
-                                                    <div class="portlet-title">
-                                                        <div class="caption font-purple">
-                                                            <i class="icon-settings font-purple"></i>
-                                                            <span class="caption-subject bold uppercase"> Principal </span>
-                                                        </div>
-
-                                                    </div>
-                                                    <div class="portlet-body form">
-                                                        <form role="form" id="form-main" method="post">
-                                                            <div class="form-body">
-                                                                <div class="form-group">
-                                                                    <label>Título</label>
-                                                                    <div class="input-group">
-                                                                        <span class="input-group-addon">
-                                                                            <i class="fa fa-font font-purple"></i>
-                                                                        </span>
-                                                                        <input type="text" class="form-control" id="title-main" name="title-main" value="{{ $main->text_1 }}"
-                                                                               placeholder="Digite o título" required>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="form-group">
-                                                                    <label>Subtítulo</label>
-                                                                    <textarea class="form-control" rows="3" id="subTitle-main" name="subTitle-main"
-                                                                              required >{{ $main->text_2 }}</textarea>
-                                                                </div>
-
-                                                            </div>
-                                                            <div class="form-actions">
-                                                                <button type="submit" class="btn purple">
-                                                                    <i class="fa fa-check"></i>
-                                                                    Salvar
-                                                                </button>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div> <!-- FIM DIV .col-md-12 -->
-                                        </div> <!-- FIM DIV .row -->
-                                    </div> <!-- FIM DIV .page-content-inner -->
-                                </div>
 							</div>
 
 						</div>

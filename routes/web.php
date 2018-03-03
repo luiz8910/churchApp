@@ -321,6 +321,12 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/change-icon/{feature_item_id}/{icon_id}', 'SiteController@changeIcons');
 
+    Route::post('/new-faq/{data}', 'SiteController@newFaq');
+
+    Route::post('/edit-faq/{data}/{id}', 'SiteController@editFaq');
+
+    Route::get('/delete-faq/{id}', 'SiteController@deleteFaq');
+
     // Fim Admin site
 
     Route::get('/events-ajax', 'EventController@getListEvents');

@@ -64,10 +64,6 @@
 
                 </li>
 
-                <li class="menu-dropdown classic-menu-dropdown ">
-                    <a href="javascript:;"> FAQ</a>
-
-                </li>
                 <li class="menu-dropdown mega-menu-dropdown  ">
                     <a href="javascript:;"> Contatos
                     </a>

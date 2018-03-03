@@ -265,25 +265,25 @@
 
                                                     <br><br>
 
-                                                    <div class="row">
-                                                        <div class="col-md-12">
-                                                            <button type="submit" class="btn purple">
-                                                                <i class="fa fa-check"></i>
-                                                                Salvar
-                                                            </button>
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <button type="submit" class="btn purple">
+                                                                    <i class="fa fa-check"></i>
+                                                                    Salvar
+                                                                </button>
 
-                                                            <button type="button" class="btn btn-success btn-new-item" id="btn-new-1" onclick="newItem();">
-                                                                <i class="fa fa-plus"></i>
-                                                                Novo
-                                                            </button>
+                                                                <button type="button" class="btn btn-success btn-new-item" id="btn-new-1" onclick="newItem();">
+                                                                    <i class="fa fa-plus"></i>
+                                                                    Novo
+                                                                </button>
 
-                                                            <button type="button" class="btn btn-default close-btn">
-                                                                <i class="fa fa-close"></i>
-                                                                Fechar
-                                                            </button>
+                                                                <button type="button" class="btn btn-default close-btn">
+                                                                    <i class="fa fa-close"></i>
+                                                                    Fechar
+                                                                </button>
+                                                            </div>
+
                                                         </div>
-
-                                                    </div>
 
 
                                                 </form>

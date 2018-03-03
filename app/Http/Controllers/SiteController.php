@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Repositories\AboutItemRepository;
+use App\Repositories\FaqRepository;
 use App\Repositories\FeaturesItemRepository;
 use App\Repositories\FeaturesRepository;
 use App\Repositories\IconRepository;
@@ -34,16 +35,21 @@ class SiteController extends Controller
      * @var IconRepository
      */
     private $iconRepository;
+    /**
+     * @var FaqRepository
+     */
+    private $faqRepository;
 
     public function __construct(SiteRepository $repository, AboutItemRepository $aboutItemRepository,
                                 FeaturesRepository $featuresRepository, FeaturesItemRepository $featuresItemRepository,
-                                IconRepository $iconRepository)
+                                IconRepository $iconRepository, FaqRepository $faqRepository)
     {
         $this->repository = $repository;
         $this->aboutItemRepository = $aboutItemRepository;
         $this->featuresRepository = $featuresRepository;
         $this->featuresItemRepository = $featuresItemRepository;
         $this->iconRepository = $iconRepository;
+        $this->faqRepository = $faqRepository;
     }
 
     public function index()
@@ -71,9 +77,11 @@ class SiteController extends Controller
 
         }
 
+        $faq = $this->faqRepository->all();
+
         //dd($feature_item);
 
-        return view('site.home', compact('main', 'about', 'about_item', 'features', 'feature_item'));
+        return view('site.home', compact('main', 'about', 'about_item', 'features', 'feature_item', 'faq'));
     }
 
     public function adminHome()
@@ -84,7 +92,9 @@ class SiteController extends Controller
 
         $about_item = $this->aboutItemRepository->all();
 
-        return view('site.admin', compact('main', 'about', 'about_item'));
+        $faq = $this->faqRepository->all();
+
+        return view('site.admin', compact('main', 'about', 'about_item', 'faq'));
     }
 
     public function adminFeatures()
@@ -119,6 +129,14 @@ class SiteController extends Controller
     {
         $data = \GuzzleHttp\json_decode($data);
 
+        $i = 0;
+
+        while($i < count($data))
+        {
+            $data[$i] = str_replace("--", '?', $data[$i]);
+            $i++;
+        }
+
         $id = $this->repository->findByField('type', 'main')->first()->id;
 
         $stop = false;
@@ -150,6 +168,14 @@ class SiteController extends Controller
     public function editAbout($data)
     {
         $data = \GuzzleHttp\json_decode($data);
+
+        $i = 0;
+
+        while($i < count($data))
+        {
+            $data[$i] = str_replace("--", '?', $data[$i]);
+            $i++;
+        }
 
         $id = $this->repository->findByField('type', 'about')->first()->id;
 
@@ -183,6 +209,14 @@ class SiteController extends Controller
     {
         $data = \GuzzleHttp\json_decode($data);
 
+        $i = 0;
+
+        while($i < count($data))
+        {
+            $data[$i] = str_replace("--", '?', $data[$i]);
+            $i++;
+        }
+
         //print_r($data);
 
         $i = 0;
@@ -210,6 +244,14 @@ class SiteController extends Controller
     public function newFeature($data)
     {
         $data = \GuzzleHttp\json_decode($data);
+
+        $i = 0;
+
+        while($i < count($data))
+        {
+            $data[$i] = str_replace("--", '?', $data[$i]);
+            $i++;
+        }
 
         $d['title'] = $data[0];
         $d['text'] = $data[1];
@@ -257,6 +299,14 @@ class SiteController extends Controller
     {
         $data = \GuzzleHttp\json_decode($data);
 
+        $i = 0;
+
+        while($i < count($data))
+        {
+            $data[$i] = str_replace("--", '?', $data[$i]);
+            $i++;
+        }
+
         foreach ($data as $item)
         {
             $d['text'] = $item;
@@ -293,6 +343,14 @@ class SiteController extends Controller
     public function editFeatures($data, $id)
     {
         $data = \GuzzleHttp\json_decode($data);
+
+        $i = 0;
+
+        while($i < count($data))
+        {
+            $data[$i] = str_replace("--", '?', $data[$i]);
+            $i++;
+        }
 
         try{
 
@@ -409,6 +467,62 @@ class SiteController extends Controller
 
         return json_encode(['status' => false]);
 
+    }
 
+    public function newFaq($data)
+    {
+        $data = \GuzzleHttp\json_decode($data);
+
+        $i = 0;
+
+        while($i < count($data))
+        {
+            $data[$i] = str_replace("--", '?', $data[$i]);
+            $i++;
+        }
+
+        $d['question'] = $data[0];
+        $d['answer'] = $data[1];
+
+        if($this->faqRepository->create($d))
+        {
+            return json_encode(['status' => true]);
+        }
+
+        return json_encode(['status' => false]);
+
+    }
+
+    public function editFaq($data, $id)
+    {
+        $data = \GuzzleHttp\json_decode($data);
+
+        $i = 0;
+
+        while($i < count($data))
+        {
+            $data[$i] = str_replace("--", '?', $data[$i]);
+            $i++;
+        }
+
+        $d['question'] = $data[0];
+        $d['answer'] = $data[1];
+
+        if($this->faqRepository->update($d, $id))
+        {
+            return json_encode(['status' => true]);
+        }
+
+        return json_encode(['status' => false]);
+    }
+
+    public function deleteFaq($id)
+    {
+        if($this->faqRepository->delete($id))
+        {
+            return json_encode(['status' => true]);
+        }
+
+        return json_encode(['status' => false]);
     }
 }
