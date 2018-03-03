@@ -8,6 +8,24 @@
 
 <head>
     @include('includes.head')
+    <style>
+        .gallery
+        {
+            display: inline-block;
+            margin-top: 20px;
+        }
+        .blur {
+            -webkit-filter: blur(4px)
+
+        }
+
+        .float {
+            float:left;
+            margin-right:5px;
+        }
+    </style>
+    <link rel="stylesheet" href="//frontend.reklamor.com/fancybox/jquery.fancybox.css" media="screen">
+    <script src="//frontend.reklamor.com/fancybox/jquery.fancybox.js"></script>
 </head>
 <!-- END HEAD -->
 
@@ -319,11 +337,18 @@
                                                             @if($feature->id == $item->feature_id)
                                                                 <div id="div-remove-{{ $item->id }}">
                                                                     <div class="row">
+
                                                                         <div class="col-md-9">
 
-                                                                            <input type="text" class="form-control" name="feature_id-{{ $item->id }}"
-                                                                                   value="{{ $item->text }}" placeholder="Digite o texto"
-                                                                                   id="input-text-{{ $item->id }}" required>
+                                                                            <div class="input-group">
+                                                                                <span class="input-group-addon" id="basic-addon1">
+                                                                                    <span><img src="{{ $item->icon_name }}" alt="" id="img-{{ $item->id }}"
+                                                                                               class="icon-add" style="width:20px;height:20px"></span></span>
+                                                                                <input type="text" class="form-control" name="feature_id-{{ $item->id }}"
+                                                                                       value="{{ $item->text }}" placeholder="Digite o texto"
+                                                                                       id="input-text-{{ $item->id }}" required>
+                                                                            </div>
+
                                                                         </div>
 
                                                                         <div class="col-md-3">
@@ -379,6 +404,59 @@
     </div> <!-- FIM DIV .page-container -->
 </div> <!-- FIM DIV .page-wrapper-middle -->
 
+<button type="button" data-toggle="modal" id="trigger-modal" data-target="#modal-icon" hidden>Launch modal</button>
+<!-- Modal -->
+<div class="modal fade" id="modal-icon" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title text-center" id="myModalLabel">Escolha um ícone</h4>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class='list-group gallery'>
+                        @foreach($icons as $icon)
+                            <div class='col-sm-4 col-xs-6 col-md-3 col-lg-3'>
+                                <a class="fancybox " rel="ligthbox" href="javascript:;">
+                                    <img class="icon-img" id="icon_id-{{ $icon->id }}"
+                                         alt="" src="{{ $icon->path }}" style="height: 20px; width: 20px; margin-top: 10px;"/>
+                                </a>
+                            </div> <!-- col-6 / end -->
+                        @endforeach
+
+
+
+                        {{--<div class='col-sm-4 col-xs-6 col-md-3 col-lg-3'>
+                            <a class="fancybox thumbnail" rel="ligthbox" href="http://placehold.it/800x600.png">
+                                <img class="img-responsive" alt="" src="http://placehold.it/320x320" />
+                            </a>
+                        </div> <!-- col-6 / end -->--}}
+
+
+                    </div> <!-- list-group / end -->
+                </div> <!-- row / end -->
+
+            </div>
+
+            <div class="modal-footer">
+                <label>Sua Escolha foi: <span id="none-selected">Nenhum</span></label>
+
+                <a class="fancybox" rel="ligthbox" href="javascript:;" id="img-selected-a" style="display: none;">
+                    <img id="img-selected" src="" style="height: 30px; width: 30px; margin-right: 10px;"/>
+                </a>
+
+                <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                <button type="button" id="btn-submit-icon" class="btn btn-success">
+                    <i class="fa fa-check"></i>
+                    Salvar
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
 
 
 <!-- END CONTAINER -->
@@ -388,54 +466,24 @@
 <script src="../js/site.js"></script>
 
 <script>
-    $('.repeater').repeater({
-        // (Optional)
-        // start with an empty list of repeaters. Set your first (and only)
-        // "data-repeater-item" with style="display:none;" and pass the
-        // following configuration flag
-        initEmpty: true,
-        // (Optional)
-        // "defaultValues" sets the values of added items.  The keys of
-        // defaultValues refer to the value of the input's name attribute.
-        // If a default value is not specified for an input, then it will
-        // have its value cleared.
-        defaultValues: {
-            'text-input': ''
-        },
-        // (Optional)
-        // "show" is called just after an item is added.  The item is hidden
-        // at this point.  If a show callback is not given the item will
-        // have $(this).show() called on it.
-        show: function () {
-            $(this).slideDown();
-        },
-        // (Optional)
-        // "hide" is called when a user clicks on a data-repeater-delete
-        // element.  The item is still visible.  "hide" is passed a function
-        // as its first argument which will properly remove the item.
-        // "hide" allows for a confirmation step, to send a delete request
-        // to the server, etc.  If a hide callback is not given the item
-        // will be deleted.
-        hide: function (deleteElement) {
-            if (confirm('Tem certeza que deseja excluir?')) {
-                $(this).slideUp(deleteElement);
+    $(document).ready(function(){
+        //FANCYBOX
+        //https://github.com/fancyapps/fancyBox
+        $(".fancybox").fancybox({
+            openEffect: "none",
+            closeEffect: "none",
+            padding:0, margin:0,
+
+            beforeShow: function () {
+                $("body *:not(.fancybox-overlay, .fancybox-overlay *)").addClass("blur");
+            },
+            afterClose: function () {
+                $("body *:not(.fancybox-overlay, .fancybox-overlay *)").removeClass("blur");
             }
-        },
-        // (Optional)
-        // You can use this if you need to manually re-index the list
-        // for example if you are using a drag and drop library to reorder
-        // list items.
-        //ready: function (setIndexes) {
-        //  $dragAndDrop.on('drop', setIndexes);
-        //},
-        // (Optional)
-        // Removes the delete button from the first list item,
-        // defaults to false.
-        isFirstItemUndeletable: true
+
+        });
     });
 </script>
-
-
 
 <!-- BEGIN PAGE LEVEL PLUGINS -->
 

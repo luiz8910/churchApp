@@ -315,6 +315,12 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('/edit-features-site/{data}', 'SiteController@editFeatures');
 
+    Route::post('/new-icon', 'SiteController@uploadIcons');
+
+    Route::post('/new-icons', 'SiteController@uploadIconsBatch');
+
+    Route::get('/change-icon/{feature_item_id}/{icon_id}', 'SiteController@changeIcons');
+
     // Fim Admin site
 
     Route::get('/events-ajax', 'EventController@getListEvents');

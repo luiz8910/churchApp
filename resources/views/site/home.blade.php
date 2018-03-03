@@ -209,13 +209,20 @@
                                                     <div class="col-12">
                                                         <ul class="list-unstyled pt-4 slide-list">
                                                             @foreach($feature_item as $item)
-                                                            <li>
-                                                                @if($item->feature_id == $feature->id)
-                                                                    {{ $item->text }}
-                                                                @endif
-                                                                {{--<img src="/store/images/ic-face.png" srcset="/store/images/ic-face@2x.png 2x, /store/images/ic-face@3x.png 3x" class="ic-face">--}}
+                                                                <li>
+                                                                    @if($item->feature_id == $feature->id)
+                                                                        @if($item->icon_name)
+                                                                            <img src="{{ $item->icon_name->path }}" srcset="{{ $item->icon_name->path }}@2x.png 2x, {{ $item->icon_name->path }}@3x.png 3x" class="ic-face">
+                                                                        @else
+                                                                            <img src="/store/images/ic-twitter.png" srcset="/store/images/ic-twitter@2x.png 2x, /store/images/ic-twitter@3x.png 3x"
+                                                                                  class="ic-twitter">
+                                                                        @endif
 
-                                                            </li>
+                                                                            {{ $item->text }}
+                                                                    @endif
+                                                                    {{----}}
+
+                                                                </li>
                                                             @endforeach
 
                                                                 {{--<img src="/store/images/ic-twitter.png" srcset="/store/images/ic-twitter@2x.png 2x, /store/images/ic-twitter@3x.png 3x"

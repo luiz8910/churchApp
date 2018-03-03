@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
-class FeaturesItem extends Model implements Transformable
+class Icon extends Model implements Transformable
 {
     use TransformableTrait;
 
-    protected $fillable = ['text', 'feature_id', 'icon_id'];
+    protected $fillable = ['path'];
 
 }

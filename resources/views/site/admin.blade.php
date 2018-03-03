@@ -8,6 +8,7 @@
 
 	<head>
 		@include('includes.head')
+        <link href="../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet" type="text/css" />
 	</head>
 	<!-- END HEAD -->
 
@@ -37,6 +38,29 @@
 
 							<div class="page-content">
 								<div class="container">
+                                    @if(Session::has("img.success"))
+                                        <div class="alert alert-success alert-dismissible" role="alert">
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <strong>Sucesso!</strong> {{ Session::get("img.success") }}
+                                        </div>
+                                    @endif
+
+                                    @if(Session::has("img.error"))
+                                        <div class="alert alert-danger alert-dismissible" role="alert">
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <strong>Erro!</strong> {{ Session::get("img.error") }}
+                                        </div>
+                                    @endif
+
+                                        <div class="col-lg-3" style="display: none;">
+                                            <form action="{{ url('/new-icons') }}" method="post" enctype="multipart/form-data">
+                                                <input type="file" name="file[]" multiple>
+
+                                                <button type="submit" class="btn btn-primary">Upload</button>
+                                            </form>
+
+
+                                        </div>
 									<div class="page-content-inner">
 										<div class="row">
 											<div class="col-md-12">
@@ -45,10 +69,72 @@
 														<div class="caption font-green-haze">
 															<i class="icon-bar-chart font-green-haze"></i>
 															<span class="caption-subject font-green-haze bold"> Edições do Site</span>
+
 														</div> <!-- FIM DIV .caption.font-green-haze -->
+
+                                                        <div class="actions">
+                                                            <div class="btn-group btn-group-sm">
+
+
+                                                                <div class="col-lg-3">
+                                                                    <div class="btn-group-devided">
+                                                                        <a role="button" class="btn btn-info btn-circle btn-sm" data-toggle="modal" data-target="#new-icon"
+                                                                           href="javascript:;" style="margin-top: 2px;">
+                                                                            <i class="fa fa-plus"></i>
+                                                                            <span class="hidden-xs hidden-sm">Novo Ícone</span>
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
 													</div> <!-- FIM DIV .portlet-title -->
 
-													<div class="portlet-body form">
+                                                    <!-- Modal -->
+                                                    <div class="modal fade" id="new-icon" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                                    <h4 class="modal-title text-center" id="myModalLabel">Upload de ícones</h4>
+                                                                </div>
+                                                                <form action="{{ url('/new-icon') }}" method="POST" enctype="multipart/form-data">
+                                                                    <div class="modal-body">
+
+                                                                        <div class="row">
+                                                                            <div class="col-md-12">
+                                                                                <div class="form-group text-center">
+                                                                                    <div class="fileinput fileinput-new" data-provides="fileinput">
+                                                                                        <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
+                                                                                            <img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=ícone" alt="" /> </div>
+                                                                                        <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"> </div>
+                                                                                        <div>
+                                                                                            <span class="btn default btn-file">
+                                                                                                <span class="fileinput-new"> Escolher Imagem </span>
+                                                                                                <span class="fileinput-exists"> Alterar </span>
+                                                                                                <input type="file" name="img"> </span>
+                                                                                            <a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Remover </a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                                                                        <button type="submit" class="btn btn-success">
+                                                                            <i class="fa fa-check"></i>
+                                                                            Upload
+                                                                        </button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="portlet-body form">
 														<div class="portlet-body-config">
 															<ul class="nav nav-tabs">
                                                                 <li role="presentation" class="active">
@@ -365,6 +451,7 @@
 		@include('includes.footer')
 		@include('includes.core-scripts')
         <script src="../js/site.js"></script>
+        <script src="../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js" type="text/javascript"></script>
 		<!-- BEGIN PAGE LEVEL PLUGINS -->
 
 

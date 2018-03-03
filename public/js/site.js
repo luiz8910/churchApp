@@ -4,6 +4,150 @@
 
 $(function(){
 
+    function Request(url, data, id, method, static_page)
+    {
+        var values = [];
+        var request = '';
+
+        if(data && !id)
+        {
+            for(var i = 0; i < data.length; i ++)
+            {
+                values.push(data[i].value);
+            }
+
+            values = JSON.stringify(values);
+
+            request = $.ajax({
+                url: url + values,
+                method: method ? method : 'GET',
+                dataType: 'json'
+            });
+
+            request.done(function(e){
+                if(e.status)
+                {
+                    SuccessMsg(static_page);
+                }
+                else{
+
+                    ErrorMsg();
+
+                }
+            });
+
+            request.fail(function(e){
+                console.log('fail');
+                console.log(e);
+
+                ErrorMsg();
+            });
+        }
+
+        else if(!data && id)
+        {
+            request = $.ajax({
+                url: url + id,
+                method: method ? method : 'GET',
+                dataType: 'json'
+            });
+
+            request.done(function(e){
+                if(e.status){
+                    SuccessMsg(static_page);
+                }
+                else{
+                    ErrorMsg();
+                }
+            });
+
+            request.fail(function(e){
+                console.log('fail');
+                console.log(e);
+
+                ErrorMsg();
+            });
+        }
+
+        else if(data && id)
+        {
+            for(var x = 0; x < data.length; x++)
+            {
+                values.push(data[x].value);
+            }
+
+            values = JSON.stringify(values);
+
+            request = $.ajax({
+                url: url + values + '/' + id,
+                method: method ? method : 'GET',
+                dataType: 'json'
+            });
+
+            request.done(function(e){
+                if(e.status){
+                    SuccessMsg(static_page);
+                }
+                else{
+                    ErrorMsg();
+                }
+            });
+
+            request.fail(function(e){
+                console.log('fail');
+                console.log(e);
+
+                ErrorMsg();
+            });
+        }
+
+    }
+
+    function SimpleRequest(url, data, id, method, static_page)
+    {
+        var request = '';
+
+        if(data && id)
+        {
+            request = $.ajax({
+                url: url + data + '/' + id,
+                method: method ? method : 'GET',
+                dataType: 'json'
+            });
+
+            request.done(function(e){
+                if(e.status){
+                    SuccessMsg(static_page);
+                }
+                else{
+                    ErrorMsg();
+                }
+            });
+
+            request.fail(function(e){
+                console.log('fail');
+                console.log(e);
+
+                ErrorMsg();
+            });
+        }
+
+    }
+
+    checkList();
+
+    function checkList()
+    {
+        $('li').each(function(){
+
+            if($.trim($(this).text()) == ''){
+                $(this).remove();
+            }
+
+        });
+
+    }
+
     $("#btn-main").click(function(){
        $("#edit-main").css('display', 'block');
     });
@@ -25,7 +169,11 @@ $(function(){
 
         var data = $(this).serializeArray();
 
-        editMain(data);
+        var url = '/edit-main-site/';
+
+        Request(url, data, null, 'POST');
+
+        //editMain(data);
     });
 
     $("#form-about").submit(function(e){
@@ -33,7 +181,10 @@ $(function(){
 
         var data = $(this).serializeArray();
 
-        editAbout(data);
+        var url = '/edit-about-site/';
+
+        Request(url, data, null, 'POST');
+        //editAbout(data);
     });
 
     $("#form-about-item").submit(function(e){
@@ -41,7 +192,11 @@ $(function(){
 
         var data = $(this).serializeArray();
 
-        editAboutItem(data);
+        var url = '/edit-about-item-site/';
+
+        Request(url, data, null, 'POST');
+
+        //editAboutItem(data);
     });
 
     function editMain(data)
@@ -218,7 +373,11 @@ $(function(){
 
         //console.log(data);
 
-        contactForm(data);
+        var url = '/contact-site/';
+
+        Request(url, data, null, 'POST');
+
+        //contactForm(data);
     });
 
     function contactForm(data)
@@ -290,7 +449,11 @@ $(function(){
 
         var data = $(this).serializeArray();
 
-        var values = [];
+        var url = '/newFeature/';
+
+        Request(url, data, null, 'POST');
+
+        /*var values = [];
 
         for(var i = 0; i < data.length; i++)
         {
@@ -319,7 +482,7 @@ $(function(){
             console.log(e);
 
             ErrorMsg();
-        });
+        });*/
     });
 
     $(".btn-delete").click(function(){
@@ -341,7 +504,9 @@ $(function(){
             },
             function (isConfirm) {
                 if (isConfirm) {
-                    deleteFeature(id);
+                    var url = '/delete-feature/';
+                    Request(url, null, id, null);
+
                 }
             });
     });
@@ -388,7 +553,13 @@ $(function(){
 
         var data = $(this).serializeArray();
 
-        var values = [];
+        var id = localStorage.getItem('feature_id');
+
+        var url = '/new-feature-item/';
+
+        Request(url, data, id, 'POST');
+
+        /*var values = [];
 
         for(var i = 0; i < data.length; i++)
         {
@@ -396,8 +567,6 @@ $(function(){
         }
 
         values = JSON.stringify(values);
-
-        var id = localStorage.getItem('feature_id');
 
         var request = $.ajax({
             url: "/new-feature-item/" + values + "/" + id,
@@ -419,7 +588,7 @@ $(function(){
             console.log(e);
 
             ErrorMsg();
-        })
+        })*/
     });
 
 
@@ -449,7 +618,13 @@ $(function(){
             },
             function (isConfirm) {
                 if (isConfirm) {
-                    deleteItemFeature(id);
+                    $("#div-remove-"+id).remove();
+
+                    var url = '/deleteItemFeature/';
+
+                    Request(url, null, id, null, true);
+
+                    //deleteItemFeature(id);
                 }
             });
 
@@ -458,6 +633,7 @@ $(function(){
     function deleteItemFeature(id)
     {
         $("#div-remove-"+id).remove();
+
 
         var request = $.ajax({
             url: '/deleteItemFeature/' + id,
@@ -521,19 +697,52 @@ $(function(){
         });
     });
 
-    checkList();
+    $(".icon-add").click(function(){
+        var str = this.id;
 
-    function checkList()
+        var id = str.replace('img-', '');
+
+        localStorage.setItem('feature_id', id);
+
+        $("#trigger-modal").trigger('click');
+    });
+
+
+
+    $(".icon-img").click(function()
     {
-        $('li').each(function(){
+        var src = $(this).attr('src');
 
-            if($.trim($(this).text()) == ''){
-                $(this).remove();
-            }
-            
-        });
+        var icon_id = this.id; icon_id = icon_id.replace('icon_id-', '');
 
-    }
+        localStorage.setItem('icon_id', icon_id);
+
+        $('#none-selected').css('display', 'none');
+
+        $('#img-selected').attr('src', src);
+
+        $('#img-selected-a').css('display', 'inline');
+    });
+
+    $("#btn-submit-icon").click(function(){
+
+        var feature_id = localStorage.getItem('feature_id');
+
+        var icon_id = localStorage.getItem('icon_id');
+
+        $("#modal-icon").modal('hide');
+
+        if(feature_id && icon_id)
+        {
+            localStorage.removeItem('feature_id');
+
+            localStorage.removeItem('icon_id');
+
+            var url = '/change-icon/';
+
+            SimpleRequest(url, feature_id, icon_id);
+        }
+    })
 
 
 });
