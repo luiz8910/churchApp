@@ -13,7 +13,7 @@ $(function(){
         {
             for(var i = 0; i < data.length; i ++)
             {
-                data[x].value = data[x].value.replace('?', "--");
+                data[i].value = data[i].value.replace('?', "--");
                 values.push(data[i].value);
             }
 
