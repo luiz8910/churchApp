@@ -74,7 +74,7 @@
                             <div class="col-sm-6 mb-5">
                                 <img src="/store/images/ic-atendimento.png" srcset="/store/images/ic-atendimento@2x.png 2x, /store/images/ic-atendimento@3x.png 3x" class="ic_atendimento mb-4">
                                 <h4>{{ $about_item[0]->title }}</h4> <!-- Comunicar -->
-                                <p class="item-inner-text">{{ $about_item[1]->text }}</p>
+                                <p class="item-inner-text">{{ $about_item[0]->text }}</p>
                             </div>
                             <div class="col-sm-6 mb-5 mb-sm-0">
                                 <img src="/store/images/ic-descomplicar.png" srcset="/store/images/ic-descomplicar@2x.png 2x, /store/images/ic-descomplicar@3x.png 3x" class="ic_descomplicar mb-4">
@@ -86,7 +86,7 @@
                                 <img src="/store/images/ic-engajar.png" srcset="/store/images/ic-engajar@2x.png 2x, /store/images/ic-engajar@3x.png 3x" class="ic_engajar mb-4">
                                 <h4>{{ $about_item[2]->title }}</h4>
                                 {{--<h4>Engajar</h4>--}}
-                                <p class="item-inner-text">{{ $about_item[3]->text }}</p>
+                                <p class="item-inner-text">{{ $about_item[2]->text }}</p>
                             </div>
                             <div class="col-sm-6 mb-5 mb-sm-0">
                                 <img src="/store/images/ic-comunicar.png" srcset="/store/images/ic-comunicar@2x.png 2x, /store/images/ic-comunicar@3x.png 3x" class="ic_comunicar mb-4">
