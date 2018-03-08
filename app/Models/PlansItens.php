@@ -10,6 +10,6 @@ class PlansItens extends Model implements Transformable
 {
     use TransformableTrait;
 
-    protected $fillable = ['text', 'plan_id'];
+    protected $fillable = ['text'];
 
 }

@@ -892,7 +892,7 @@ $(function(){
 
     $("#btn-new-plan-item").click(function () {
 
-        var url = '/new-plan-item/';
+        var url = '/new-plan-item';
 
         var form = '<div class="row"> <div class="col-md-12"> <div class="form-group"> <label for="text_item">Texto (Vantagens) </label> <input type="text" name="text" id="text_item" class="form-control" placeholder="Digite aqui uma das vantagens dos planos" required> </div> </div> </div>'
 
