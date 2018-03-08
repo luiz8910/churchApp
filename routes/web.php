@@ -339,7 +339,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/deletePlan/{id}', 'SiteController@deletePlan');
 
-    Route::post('/new-plan-item', 'SiteController@newPlanItem');
+    Route::any('/new-plan-item', 'SiteController@newPlanItem');
 
     Route::get('/delete-plan-item/{id}', 'SiteController@deletePlanItem');
 
