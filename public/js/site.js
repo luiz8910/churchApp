@@ -135,8 +135,19 @@ $(function(){
         }
 
     }
+    
+    function clearTextArea()
+    {
+        $('textarea').each(function () {
+
+            var trim = $.trim($(this).text());
+
+            $(this).text(trim);
+        })
+    }
 
     checkList();
+    clearTextArea();
 
     function checkList()
     {
@@ -563,6 +574,7 @@ $(function(){
                     Request(url, null, id, null, static_page);
 
                     $('#tr-faq-'+id).remove();
+                    $('#tr-'+id).remove();
 
                 }
             });
@@ -799,7 +811,158 @@ $(function(){
 
             SimpleRequest(url, feature_id, icon_id);
         }
-    })
+    });
+
+    $("#newPlan").click(function(){
+        var url = $("#url").val();
+
+        var append = option('type_id');
+
+        var form = '<div class="row"> <div class="col-md-12"> <div class="form-group"> <label for="name">Nome:</label> <input type="text" name="name" id="name" class="form-control" placeholder="Nome" required> </div></div></div><div class="row"> <div class="col-md-12"> <div class="form-group"> <label for="description">Descrição</label> <textarea name="description" id="description" cols="30" rows="5" placeholder="Descrição" required class="form-control"></textarea> </div></div></div><div class="row"> <div class="col-md-12"> <div class="form-group"> <label for="price">Preço</label> <div class="input-group"> <span class="input-group-addon" id="basic-addon1">$</span> <input type="number" name="price" id="price" class="form-control" placeholder="Preço" required aria-describedby="basic-addon1"> </div></div></div></div><div class="row"> <div class="col-md-12"> <div class="form-group"> <label for="type_id">Frequência de cobrança</label> '+append+' </div></div></div><div class="row"> <div class="col-md-12"> <div class="form-group"> <fieldset id="fieldset-check"> <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline"> <input type="checkbox" name="check-insert" class="checkboxes check-model" id="check-insert" value="1"/> <span></span> </label> Mais popular </fieldset> </div></div></div>';
+
+        setFormData(url, form);
+    });
+
+    $("#newPlanFrequency").click(function(){
+        var url = $("#url2").val();
+
+        var form = '<div class="row"> <div class="col-md-12"> <div class="form-group"> <label for="type">Tipo:</label> <input type="text" name="type" id="type" class="form-control" placeholder="Tipo" required> </div></div></div><div class="row"> <div class="col-md-12"> <div class="form-group"> <label for="selected_text">Texto selecionado</label> <input name="selected_text" id="selected_text" placeholder="Texto selecionado" required class="form-control"/> </div></div></div><div class="row"> <div class="col-md-12"> <div class="form-group"> <label for="adjective">Adjetivo</label> <input type="text" name="adjective" id="adjective" class="form-control" placeholder="Mensais, Anual, Trimestrais" required> </div></div></div><div class="row"> <div class="col-md-12"> <div class="form-group"> <label for="save_money">Economia</label> <div class="input-group"> <span class="input-group-addon" id="basic-addon1">%</span> <input type="number" name="save_money" id="save_money" class="form-control" placeholder="20%, 30%" aria-describedby="basic-addon1"> </div></div></div></div>';
+
+        setFormData(url, form)
+    });
+
+    $('.btn-edit-plan').click(function () {
+        var str = this.id;
+
+        var id = str.replace('btn-edit-plan-', '');
+
+        $('.container-plan-edit-'+id).css('display', 'block');
+    });
+
+
+
+    function option(component_id)
+    {
+        var values = [];
+        var txt = [];
+        var append = '<select name="'+component_id+'" id="'+component_id+'" class="form-control" required> <option value="">Selecione</option>';
+
+
+        $("#"+component_id+" option").each(function () {
+            var val = $(this).val();
+            var text = $(this).text();
+
+            values.push(val);
+            txt.push(text);
+        });
+
+        for(var i = 1; i < values.length; i++)
+        {
+            append += '<option value="'+values[i]+'"> '+txt[i]+'</option>';
+        }
+
+        append += '</select>';
+
+        return append;
+    }
+
+    function setFormData(url, form)
+    {
+        $("#div-form").remove();
+
+        $("#form-insert").attr('action', url);
+
+        $(".modal-body").append('<div id="div-form"></div>');
+
+        $("#div-form").append(form);
+
+        $('#btn-insert-modal').trigger('click');
+    }
+
+    $(".btn-delete-plan").click(function () {
+        var str = this.id;
+
+        var id = str.replace('btn-delete-plan-', '');
+
+        var url = '/deletePlan/';
+
+        sweetAlertDel(id, url, true);
+
+    });
+
+    $("#btn-new-plan-item").click(function () {
+
+        var url = '/new-plan-item/';
+
+        var form = '<div class="row"> <div class="col-md-12"> <div class="form-group"> <label for="text_item">Texto (Vantagens) </label> <input type="text" name="text" id="text_item" class="form-control" placeholder="Digite aqui uma das vantagens dos planos" required> </div> </div> </div>'
+
+        setFormData(url, form);
+    });
+
+    $(".btn-delete-plan-item").click(function () {
+        var str = this.id;
+
+        var id = str.replace('btn-delete-plan-item-', '');
+
+        var url = '/delete-plan-item/';
+
+        sweetAlertDel(id, url)
+    });
+
+    $('.btn-edit-type-plan').click(function () {
+        var str = this.id;
+
+        var id = str.replace('btn-edit-type-plan-', '');
+
+        $(".container-type-plan-edit-"+id).css('display', 'block');
+    });
+
+    $('.btn-delete-type-plan').click(function () {
+        var str = this.id;
+
+        var id = str.replace('btn-delete-type-plan-', '');
+
+        var url = '/delete-plan-type/';
+
+        sweetAlertDel(id, url);
+    });
+
+    typePlanSelected();
+
+    $('.btn-type').click(function () {
+
+        var str = this.id;
+
+        var id = str.replace("btn-type-", '');
+
+        typePlanSelected(id);
+    });
+
+    function typePlanSelected(type_id)
+    {
+        $('.type-card').css('display', 'none');
+
+        if(type_id)
+        {
+            $(".type-id-"+type_id).css('display', 'block');
+        }
+        else{
+
+            $('.type-class').each(function () {
+
+                if ($('#'+this.id).is(':checked'))
+                {
+                    var str = this.id;
+
+                    var id = str.replace("option-", '');
+
+                    $(".type-id-"+id).css('display', 'block');
+                }
+
+            })
+        }
+
+    }
 
 
 });
@@ -833,7 +996,6 @@ $(function(){
 
     function deleteItem(id)
     {
-        console.log('delete: ' + id);
 
         if(id == 1){
             $("#input-1").val('');

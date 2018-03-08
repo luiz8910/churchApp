@@ -51,7 +51,7 @@
                 </li>
 
                 <li class="menu-dropdown classic-menu-dropdown ">
-                    <a href="javascript:;"> Planos
+                    <a href="{{ route('admin.plans') }}"> Planos
                         <span class="arrow"></span>
                     </a>
 
@@ -64,10 +64,6 @@
 
                 </li>
 
-                <li class="menu-dropdown mega-menu-dropdown  ">
-                    <a href="javascript:;"> Contatos
-                    </a>
-                </li>
                 <!--<li class="menu-dropdown classic-menu-dropdown ">
                     <a href="javascript:;"> Doações
                     </a>

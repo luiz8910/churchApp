@@ -297,6 +297,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/admin-features', 'SiteController@adminFeatures')->name('admin.features');
 
+    Route::get('/admin-plans', 'SiteController@adminPlans')->name('admin.plans');
+
     Route::post('/newFeature/{data}', 'SiteController@newFeature');
 
     Route::get('/delete-feature/{id}', 'SiteController@deleteFeature');
@@ -326,6 +328,22 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/edit-faq/{data}/{id}', 'SiteController@editFaq');
 
     Route::get('/delete-faq/{id}', 'SiteController@deleteFaq');
+
+    Route::post('/newPlan', 'SiteController@newPlan')->name('admin.new-plan');
+
+    Route::post('/newPlanType', 'SiteController@newPlanType')->name('admin.new-plan-type');
+
+    Route::post('/editPlan', 'SiteController@editPlan')->name('admin.edit-plan');
+
+    Route::post('/editPlanType', 'SiteController@editPlanType')->name('admin.edit-plan-type');
+
+    Route::get('/deletePlan/{id}', 'SiteController@deletePlan');
+
+    Route::post('/new-plan-item', 'SiteController@newPlanItem');
+
+    Route::get('/delete-plan-item/{id}', 'SiteController@deletePlanItem');
+
+    Route::get('/delete-plan-type/{id}', 'SiteController@deletePlanType');
 
     // Fim Admin site
 

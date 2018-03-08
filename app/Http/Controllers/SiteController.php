@@ -7,10 +7,15 @@ use App\Repositories\FaqRepository;
 use App\Repositories\FeaturesItemRepository;
 use App\Repositories\FeaturesRepository;
 use App\Repositories\IconRepository;
+use App\Repositories\PlansItensRepository;
+use App\Repositories\PlansRepository;
 use App\Repositories\SiteRepository;
+use App\Repositories\TypePlansRepository;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 
 class SiteController extends Controller
@@ -39,10 +44,23 @@ class SiteController extends Controller
      * @var FaqRepository
      */
     private $faqRepository;
+    /**
+     * @var PlansRepository
+     */
+    private $plansRepository;
+    /**
+     * @var PlansItensRepository
+     */
+    private $plansItensRepository;
+    /**
+     * @var TypePlansRepository
+     */
+    private $typePlansRepository;
 
     public function __construct(SiteRepository $repository, AboutItemRepository $aboutItemRepository,
                                 FeaturesRepository $featuresRepository, FeaturesItemRepository $featuresItemRepository,
-                                IconRepository $iconRepository, FaqRepository $faqRepository)
+                                IconRepository $iconRepository, FaqRepository $faqRepository, PlansRepository $plansRepository,
+                                PlansItensRepository $plansItensRepository, TypePlansRepository $typePlansRepository)
     {
         $this->repository = $repository;
         $this->aboutItemRepository = $aboutItemRepository;
@@ -50,6 +68,9 @@ class SiteController extends Controller
         $this->featuresItemRepository = $featuresItemRepository;
         $this->iconRepository = $iconRepository;
         $this->faqRepository = $faqRepository;
+        $this->plansRepository = $plansRepository;
+        $this->plansItensRepository = $plansItensRepository;
+        $this->typePlansRepository = $typePlansRepository;
     }
 
     public function index()
@@ -79,9 +100,21 @@ class SiteController extends Controller
 
         $faq = $this->faqRepository->all();
 
-        //dd($feature_item);
+        $plans = $this->plansRepository->orderBy('price')->all();
 
-        return view('site.home', compact('main', 'about', 'about_item', 'features', 'feature_item', 'faq'));
+        $plans_item = $this->plansItensRepository->all();
+
+        $plans_types = $this->typePlansRepository->orderBy('save_money')->all();
+
+        $plan_features = DB::table('plan_features')->get();
+
+        foreach ($plans as $plan) {
+            $plan->type_name = $this->typePlansRepository->find($plan->type_id)->type;
+        }
+
+
+        return view('site.home', compact('main', 'about', 'about_item',
+            'features', 'feature_item', 'faq', 'plans', 'plans_item', 'plans_types', 'plan_features'));
     }
 
     public function adminHome()
@@ -119,6 +152,29 @@ class SiteController extends Controller
 
         return view('site.features', compact('features', 'features_item', 'icons'));
     }
+
+    public function adminPlans()
+    {
+        $plans = $this->plansRepository->orderBy('type_id')->all();
+
+        $plans_item = $this->plansItensRepository->all();
+
+        $plans_types = $this->typePlansRepository->orderBy('save_money')->all();
+
+        $plan_features = DB::table('plan_features')->get();
+
+        foreach ($plans as $plan) {
+            $plan->type_name = $this->typePlansRepository->find($plan->type_id)->type;
+        }
+
+        $url = '/newPlan';
+
+        $url2 = '/newPlanType';
+
+        return view('site.plans', compact('plans', 'plans_item', 'url', 'url2', 'plans_types', 'plan_features'));
+    }
+
+
 
     public function adminContact()
     {
@@ -520,6 +576,201 @@ class SiteController extends Controller
     {
         if($this->faqRepository->delete($id))
         {
+            return json_encode(['status' => true]);
+        }
+
+        return json_encode(['status' => false]);
+    }
+
+    public function newPlan(Request $request)
+    {
+        $data = $request->all();
+
+        if($request->exists('check-insert'))
+        {
+            $data['most_popular'] = 1;
+
+            DB::table('plans')
+                ->where([
+                    'type_id' => $data['type_id'],
+                    'most_popular' => 1
+                    ])->update(['most_popular' => 0]);
+
+        }
+        else{
+            $data['most_popular'] = 0;
+        }
+
+        $data['description'] = trim($data['description']);
+
+        if($this->plansRepository->create($data))
+        {
+            $request->session()->flash('success.msg', 'Plano inserido com sucesso');
+
+        }else{
+
+            $request->session()->flash('error.msg', 'Um erro ocorreu');
+        }
+
+        return redirect()->back();
+
+    }
+
+    public function newPlanType(Request $request)
+    {
+        $data = $request->all();
+
+        if(!$data['save_money'])
+        {
+            $data['save_money'] = 0;
+        }
+
+        if($this->typePlansRepository->create($data))
+        {
+            $request->session()->flash('success.msg', 'Tipo inserido com sucesso');
+
+        }else{
+
+            $request->session()->flash('error.msg', 'Um erro ocorreu');
+        }
+
+        return redirect()->back();
+    }
+
+    public function editPlan(Request $request)
+    {
+        $data = $request->except(['input-id', 'item']);
+
+        $id = $request->get('input-id');
+
+        $itens = $request->get('item');
+
+        if($request->exists('most_popular'))
+        {
+            $data['most_popular'] = 1;
+
+            DB::table('plans')
+                ->where([
+                    'type_id' => $data['type_id'],
+                    'most_popular' => 1
+                ])->update(['most_popular' => 0]);
+
+        }
+        else{
+            $data['most_popular'] = 0;
+        }
+
+        $data['description'] = trim($data['description']);
+
+        if($this->plansRepository->update($data, $id))
+        {
+            if($itens)
+            {
+                foreach ($itens as $item)
+                {
+                    $exists = DB::table('plan_features')
+                        ->where([
+                            'plan_id' => $id,
+                            'plan_item_id' => $item
+                        ])->get();
+
+                    if(count($exists) == 0)
+                    {
+                        DB::table('plan_features')
+                            ->insert([
+                                'plan_id' => $id,
+                                'plan_item_id' => $item,
+                                'created_at' => Carbon::now(),
+                                'updated_at' => Carbon::now()
+                            ]);
+                    }
+
+                }
+            }
+
+
+            $request->session()->flash('success.msg', 'Plano atualizado com sucesso');
+
+        }else{
+
+            $request->session()->flash('error.msg', 'Um erro ocorreu');
+        }
+
+        return redirect()->back();
+    }
+
+    public function deletePlan($id)
+    {
+        if($this->plansRepository->delete($id))
+        {
+            DB::table('plan_features')
+                ->where('plan_id', $id)
+                ->delete();
+
+            return json_encode(['status' => true]);
+        }
+
+        return json_encode(['status' => false]);
+    }
+
+    public function newPlanItem(Request $request)
+    {
+        $data['text'] = $request->get('text');
+
+        if($this->plansItensRepository->create($data))
+        {
+            $request->session()->flash('success.msg', 'Novo Item criado com sucesso');
+
+        }else{
+
+            $request->session()->flash('error.msg', 'Um erro ocorreu');
+        }
+
+        return redirect()->back();
+    }
+
+    public function deletePlanItem($id)
+    {
+        if($this->plansItensRepository->delete($id))
+        {
+            DB::table('plan_features')
+                ->where('plan_item_id', $id)
+                ->delete();
+
+            return json_encode(['status' => true]);
+        }
+
+        return json_encode(['status' => false]);
+    }
+
+    public function editPlanType(Request $request)
+    {
+        $data = $request->except('input-id');
+
+        $id = $request->get('input-id');
+
+        if($this->typePlansRepository->update($data, $id))
+        {
+            $request->session()->flash('success.msg', 'Tipo de plano alterado com sucesso');
+
+        }else{
+
+            $request->session()->flash('error.msg', 'Um erro ocorreu');
+        }
+
+        return redirect()->back();
+    }
+
+    public function deletePlanType($id)
+    {
+        if($this->typePlansRepository->delete($id))
+        {
+            $plans = $this->plansRepository->findByField('type_id', $id);
+
+            foreach ($plans as $plan) {
+                $this->deletePlan($plan->id);
+            }
+
             return json_encode(['status' => true]);
         }
 

@@ -8,13 +8,6 @@
 
 <head>
     @include('includes.head')
-    <style>
-        .gallery
-        {
-            display: inline-block;
-            margin-top: 20px;
-        }
-    </style>
     {{--<link rel="stylesheet" href="//frontend.reklamor.com/fancybox/jquery.fancybox.css" media="screen">
     <script src="//frontend.reklamor.com/fancybox/jquery.fancybox.js"></script>--}}
 </head>
@@ -38,13 +31,13 @@
                         <div class="container">
                             <div class="page-title">
                                 <h1>Admin
-                                    <small>Características</small>
+                                    <small>Planos</small>
                                 </h1>
                             </div>
                         </div> <!-- FIM DIV .container -->
                     </div> <!-- FIM DIV .page-head -->
 
-                    @include('includes.features-content')
+                    @include('includes.plans-content')
 
 
                 </div>
@@ -55,7 +48,7 @@
     </div> <!-- FIM DIV .page-container -->
 </div> <!-- FIM DIV .page-wrapper-middle -->
 
-<button type="button" data-toggle="modal" id="trigger-modal" data-target="#modal-icon" hidden>Launch modal</button>
+{{--<button type="button" data-toggle="modal" id="trigger-modal" data-target="#modal-icon" hidden>Launch modal</button>
 <!-- Modal -->
 <div class="modal fade" id="modal-icon" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
@@ -97,7 +90,7 @@
 
         </div>
     </div>
-</div>
+</div>--}}
 
 
 <!-- END CONTAINER -->

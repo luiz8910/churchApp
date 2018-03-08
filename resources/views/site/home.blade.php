@@ -385,68 +385,76 @@
 
 <div class="container" id="pricing-second">
     <div class="row">
-        <div class="col-sm-5 mx-auto mb-5">
+        <div class="col-sm-5 mx-auto mb-5" style="margin-top: 50px;">
             <div class="btn-group pricing-options" data-toggle="buttons">
-                <label class="btn btn-secondary active">
-                    <input type="radio" name="options" id="option1" autocomplete="off" checked> Pago mensalmente
-                </label>
-                <label class="btn btn-secondary">
+                <?php $i = 0; ?>
+                @foreach($plans_types as $plan_type)
+                    <label id="btn-type-{{ $plan_type->id }}" class="btn btn-secondary btn-type @if($i == 0 ) active @endif">
+                        @if($plan_type->save_money > 0)
+                            <span>Economize {{ $plan_type->save_money }}% <i class="fas fa-caret-down"></i></span>
+                        @endif
+                        <input type="radio" name="options" class="type-class" id="option-{{ $plan_type->id }}" autocomplete="off" @if($i == 0 ) checked @endif>
+                            {{ $plan_type->selected_text }}
+                    </label>
+                    <?php $i++; ?>
+                @endforeach
+
+                {{--<label class="btn btn-secondary">
                     <span>Economize 20% <i class="fas fa-caret-down"></i></span>
                     <input type="radio" name="options" id="option2" autocomplete="off"> Pago anualmente
-                </label>
+                </label>--}}
             </div>
         </div>
     </div>
 
     <div class="row ">
-        <div class="col-xs-12 col-lg-3 match-height mb-5 mb-sm-0">
-            <div class="card-price text-xs-center">
-                <div class="card-block">
-                    <h4 class="card-title">Bronze</h4>
-                    <p class="card-subtitle">Plano para pequenas igrejas com poucos visitantes.</p>
+        @foreach($plans as $plan)
+
+                <div class="col-xs-12 col-lg-3 match-height mb-5 mb-sm-0 type-card type-id-{{ $plan->type_id }}">
+                    <div class="card-price text-xs-center">
+                        @if($plan->most_popular == 1)
+                            <span class="card-alert">MAIS POPULAR</span>
+                        @endif
+                        <div class="card-block">
+                            <h4 class="card-title">{{ $plan->name }}</h4>
+                            <p class="card-subtitle">{{ $plan->description }}</p>
+                        </div>
+                        <div class="col-12 px-0">
+                            <hr/>
+                        </div>
+                        <div class="card-block">
+                            <ul class="list-group">
+
+                                @foreach($plan_features as $feature)
+                                    @if($feature->plan_id == $plan->id)
+                                        @foreach($plans_item as $item)
+                                            @if($feature->plan_item_id == $item->id)
+                                                <li class="list-group-item py-2"><i class="fas fa-check mr-2"></i> {{ $item->text }}</li>
+                                            @endif
+                                        @endforeach
+                                    @endif
+                                @endforeach
+
+                            </ul>
+
+                        </div>
+                        <div class="card-header">
+                            @foreach($plans_types as $type)
+                                @if($plan->type_id == $type->id)
+                                    <br>
+                                    <h3 class="display-2"><span class="currency">R$</span>{{ $plan->price }}<span class="period">{{ $type->adjective }}</span></h3>
+                                @endif
+                            @endforeach
+                        </div>
+                        <div class="card-block">
+                            <a href="#" class="btn btn-gradient mt-2 btn-block">TESTE GRÁTIS</a>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-12 px-0">
-                    <hr/>
-                </div>
-                <div class="card-block">
-                    <ul class="list-group">
-                        <li class="list-group-item py-2"><i class="fas fa-check mr-2"></i> 100 Usuários ativos</li>
-                        <li class="list-group-item py-2"><i class="fas fa-check mr-2"></i> 2 administradores</li>
-                    </ul>
-                </div>
-                <div class="card-header">
-                    <h3 class="display-2"><span class="currency">R$</span>29<span class="period">MENSAIS</span></h3>
-                </div>
-                <div class="card-block">
-                    <a href="#" class="btn btn-gradient mt-2 btn-block">TESTE GRÁTIS</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-xs-12 col-lg-3 match-height mb-5 mb-sm-0">
-            <div class="card-price text-xs-center">
-                <span class="card-alert">MAIS POPULAR</span>
-                <div class="card-block">
-                    <h4 class="card-title">Prata</h4>
-                    <p class="card-subtitle">Plano para pequenas igrejas com poucos visitantes.</p>
-                </div>
-                <div class="col-12 px-0">
-                    <hr/>
-                </div>
-                <div class="card-block">
-                    <ul class="list-group">
-                        <li class="list-group-item py-2"><i class="fas fa-check mr-2"></i> 200 Usuários ativos</li>
-                        <li class="list-group-item py-2"><i class="fas fa-check mr-2"></i> 2 administradores</li>
-                    </ul>
-                </div>
-                <div class="card-header">
-                    <h3 class="display-2"><span class="currency">R$</span>49<span class="period">MENSAIS</span></h3>
-                </div>
-                <div class="card-block">
-                    <a href="#" class="btn btn-gradient mt-2 btn-block">TESTE GRÁTIS</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-xs-12 col-lg-3 match-height mb-5 mb-sm-0">
+        @endforeach
+
+
+        {{--<<div class="col-xs-12 col-lg-3 match-height mb-5 mb-sm-0">
             <div class="card-price text-xs-center">
                 <div class="card-block">
                     <h4 class="card-title">Ouro</h4>
@@ -493,7 +501,7 @@
                     <a href="#" class="btn btn-gradient mt-2 btn-block">TESTE GRÁTIS</a>
                 </div>
             </div>
-        </div>
+        </div>--}}
     </div>
 
     <div class="row mt-5 pt-5">
