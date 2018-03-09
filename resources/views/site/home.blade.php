@@ -46,7 +46,7 @@
 
         <h3 class="py-5 mb-3">{{ $main->text_2 }}</h3>
 
-        <a href="javascript:;" class="btn btn-primary">Faça um teste grátis</a>
+        <a href="#pricings" smooth-scroll="true" class="btn btn-primary">Faça um teste grátis</a>
     </div>
 
     <a href="#o-que-fazemos" smooth-scroll="true"><img src="/store/images/ic-descer.png" srcset="/store/images/ic-descer@2x.png 2x, /store/images/ic-descer@3x.png 3x" class="ic_descer"></a>
@@ -447,7 +447,7 @@
                             @endforeach
                         </div>
                         <div class="card-block">
-                            <a href="#" class="btn btn-gradient mt-2 btn-block">TESTE GRÁTIS</a>
+                            <a href="{{ route('site.trial', ['id' => $plan->id]) }}" class="btn btn-gradient mt-2 btn-block">TESTE GRÁTIS</a>
                         </div>
                     </div>
                 </div>

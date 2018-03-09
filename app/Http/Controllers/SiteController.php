@@ -776,4 +776,17 @@ class SiteController extends Controller
 
         return json_encode(['status' => false]);
     }
+
+    public function trial($id)
+    {
+        $plan = $this->plansRepository->find($id);
+
+        $plan_type = $this->typePlansRepository->find($plan->type_id);
+
+        $plan_features = DB::table('plan_features')->where('plan_id', $id)->get();
+
+        $plan_items = $this->plansItensRepository->all();
+
+        return view('site.confirmation-trial', compact('plan', 'plan_type', 'plan_items', 'plan_features'));
+    }
 }

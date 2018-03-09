@@ -283,9 +283,11 @@ Route::group(['middleware' => 'auth'], function () {
     });
 
     //Rotas do site
-    Route::get('/', 'SiteController@index');
+    Route::get('/', 'SiteController@index')->name('site.home');
 
     Route::post('/contact-site/{data}', 'ContactSiteController@store');
+
+    Route::get('/teste-gratis/{id}', 'SiteController@trial')->name('site.trial');
 
     //Fim Rotas Site
 
