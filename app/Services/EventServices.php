@@ -10,6 +10,7 @@ namespace App\Services;
 
 
 use App\Models\Event;
+use App\Models\EventSubscribedList;
 use App\Models\RecentEvents;
 use App\Repositories\EventRepository;
 use App\Repositories\EventSubscribedListRepository;
@@ -1347,7 +1348,48 @@ class EventServices
 
             $person_id = Auth::user()->person->id;
 
-            $dates = DB::table('event_person')
+            $list = EventSubscribedList::where('person_id', $person_id)->orderBy('created_at', 'DESC')->get();
+
+            $events = DB::table('event_person')->where([
+                'event_person.deleted_at' => null,
+                ['event_person.event_date', '>=', $today]
+            ])->select('event_id', 'event_date')->distinct()->orderBy('event_person.event_date')->get();
+            
+            $my_event = '';
+            $my_event_date = '';
+
+            if(count($events) > 0)
+            {
+                foreach($events as $event)
+                {
+                    foreach ($list as $item) {
+                       if($item->event_id == $event->event_id)
+                       {
+                           $my_event = $event->event_id;
+                           $my_event_date = $event->event_date;
+
+                           break 2;
+                       }
+                    }
+                }
+
+                $arr[] = $my_event;
+                $arr[] = $my_event_date;
+                
+
+                return $arr;
+            }
+            else{
+
+                $arr[] = null;
+                $arr[] = null;
+
+                return $arr;
+            }
+
+
+
+            /*$dates = DB::table('event_person')
                 ->join('event_subscribed_lists', 'event_subscribed_lists.event_id', '=', 'event_person.event_id')
                 ->where([
                         'event_person.deleted_at' => null,
@@ -1359,16 +1401,16 @@ class EventServices
                 ->distinct()
                 ->limit(1)
                 ->orderBy('event_person.event_date', 'DESC')
-                ->get();
+                ->get();*/
 
 
             /*$dates = DB::select("SELECT ep.eventDate, e.id, e.name, e.startTime FROM event_person ep, events e, event_subscribed_lists evl
                   WHERE ep.eventDate = '$t' AND STR_TO_DATE(e.startTime, '%H:%i') >= '$time' AND ep.deleted_at is null AND
                   e.deleted_at is null AND e.church_id = '$church_id' AND evl.event_id = e.id AND evl.person_id = '$person_id' limit 1");*/
 
-            if (count($dates) == 0)
+            /*if (count($dates) == 0)
             {
-                /*$t = date_create();
+                $t = date_create();
                 date_add($t, date_interval_create_from_date_string("1 day"));
                 $t = date_format($t, "Y-m-d");
 
@@ -1401,7 +1443,7 @@ class EventServices
 
                 }else{
 
-                }*/
+                }
                 $arr[] = null;
                 $arr[] = null;
 
@@ -1409,10 +1451,10 @@ class EventServices
             }
             else{
                 $arr[] = $dates[0]->event_id;
-                $arr[] = $dates[0]->eventDate;
+                $arr[] = $dates[0]->event_date;
 
                 return $arr;
-            }
+            }*/
 
 
 
