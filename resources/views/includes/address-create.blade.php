@@ -19,6 +19,7 @@
     </div>
 </div>
 
+
 <div class="row">
     <div class="col-md-6 input-address">
         <div class="form-group">
@@ -33,7 +34,7 @@
         </div>
     </div>
 
-    @if(!isset($route))
+    @if(!isset($route) && Auth::check())
         @include('includes.address')
     @endif
 </div>

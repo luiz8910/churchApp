@@ -63,7 +63,12 @@ class LoginController extends Controller
 
                 session(['role' => $role]);
 
-            }else{
+            }
+            elseif($user->person_id)
+            {
+                return view('auth.login');
+            }
+            else{
                 session(['role' => 'Visitante']);
                 return redirect()->route('event.index');
             }

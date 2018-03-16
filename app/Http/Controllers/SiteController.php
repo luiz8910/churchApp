@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Plans;
 use App\Repositories\AboutItemRepository;
 use App\Repositories\FaqRepository;
 use App\Repositories\FeaturesItemRepository;
@@ -787,6 +788,48 @@ class SiteController extends Controller
 
         $plan_items = $this->plansItensRepository->all();
 
-        return view('site.confirmation-trial', compact('plan', 'plan_type', 'plan_items', 'plan_features'));
+        $plans_types = $this->typePlansRepository->all();
+
+        /*
+         * Usado quando um plano tem mais de uma frequencia de pagamento
+         * Exemplo:
+         * O plano x pode ser pago anualmente e mensalmente
+         * Então $multi_plan = true
+         */
+
+        $multi_plan = false;
+
+        $types = $this->plansRepository->findByField('name', $plan->name);
+
+        if(count($types) > 1)
+        {
+            $multi_plan = true;
+        }
+
+        return view('site.confirmation-trial', compact('plan', 'plan_type', 'plan_items',
+            'plan_features', 'plans_types', 'types', 'multi_plan'));
+    }
+
+    public function changePlan($type, $id)
+    {
+        $name = $this->plansRepository->find($id)->name;
+
+        $plan = DB::table('plans')->where([
+            'name' => $name,
+            ['id', '<>', $id],
+            'type_id' => $type
+        ])->whereNull('deleted_at')->first();
+
+        if(count($plan) > 0)
+        {
+            return json_encode(['status' => true, 'id' => $plan->id]);
+        }
+
+        return json_encode(['status' => false]);
+    }
+
+    public function signupTrial()
+    {
+        return view('site.signup-trial');
     }
 }

@@ -34,7 +34,7 @@ class CheckRole
     {
         if(!Auth::check())
         {
-            return redirect('/');
+            return redirect('/home');
         }
 
         //Id do cargo/role de visitante
@@ -44,7 +44,7 @@ class CheckRole
 
         if($role_id <> $role && $role_id <> $role2)
         {
-            return redirect("/");
+            return redirect("/home");
         }
 
         return $next($request);

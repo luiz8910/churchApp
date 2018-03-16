@@ -964,6 +964,180 @@ $(function(){
 
     }
 
+    $(".type-plan-select").change(function(){
+        console.log('type-plan-select');
+
+        var plan_id = this.id.replace('type-plan-', '');
+
+        var type = this.value;
+
+        var url = '/change-plan/';
+
+        var request = '';
+
+
+        request = $.ajax({
+            url: url + type + '/' + plan_id,
+            method: 'GET',
+            dataType: 'json'
+        });
+
+        request.done(function(e){
+            if(e.status){
+                location.href = '/teste-gratis/' + e.id;
+            }
+            else{
+                ErrorMsg();
+            }
+        });
+
+        request.fail(function(e){
+            console.log('fail');
+            console.log(e);
+
+            ErrorMsg();
+        });
+
+
+    });
+
+    $("#credit_card_number").keyup(function(){
+        var value = this.value;
+        var input = $("#credit_card_number");
+        var company = $("#company");
+
+        if(value.length == 1)
+        {
+            if(value == 4)
+            {
+                input.removeClass('mastercard').addClass('visa');
+                company.val('visa');
+            }
+            else if(value == 5)
+            {
+                input.removeClass('visa').addClass('mastercard');
+                company.val('mastercard');
+            }
+        }
+        else if(value.length == 0){
+
+            input.removeClass('mastercard').removeClass('visa');
+            company.val('');
+
+        }
+        else if(value.length == 4 && (value == 2221 || value == 2720))
+        {
+            input.removeClass('visa').addClass('mastercard');
+            company.val('mastercard');
+        }
+    }).blur(function(){
+        var input = $("#credit_card_number");
+        var span = $("#span-error-number");
+
+        if(input.val().length == 16)
+        {
+            var request = $.ajax({
+                url: '/verify-credit-card/' + input.val(),
+                method: 'GET',
+                dataType: 'json'
+            });
+
+            request.done(function(e){
+                if(e.status)
+                {
+                    if(e.cardExists)
+                    {
+                        input.addClass('has-error-input');
+                        span.text('Este cartão já existe em nossa base de dados').css('display', 'block');
+                    }
+                    else{
+                        input.removeClass('has-error-input');
+                        span.css('display', 'none');
+                    }
+                }
+            });
+
+            request.fail(function(e){
+                console.log('fail');
+                console.log(e);
+
+                ErrorMsg();
+            })
+        }
+
+
+    });
+
+    $("#expire_date").keyup(function(e){
+
+        var value = this.value;
+
+        if(value.length == 2 && e.which != 8)
+        {
+            if(value <= 12 && value > 0)
+            {
+                value += '/';
+            }
+            else{
+                value = '';
+            }
+        }
+
+        $("#expire_date").val(value);
+
+    }).blur(function(){
+        console.log('blur');
+
+        var value = this.value;
+
+        var span = $("#span-error");
+
+        if(value.length < 5)
+        {
+            $("#expire_date").addClass('has-error-input');
+
+            span.text('Data com formato incorreto').css('display', 'block');
+        }
+        else{
+            $("#expire_date").removeClass('has-error-input');
+
+            span.css('display', 'none');
+
+            var date = new Date();
+
+            var month = date.getMonth() + 1;
+
+            var year = date.getFullYear();
+
+            var input_year = "20" + value.charAt(3) + value.charAt(4);
+
+            var input_month = value.charAt(0) + value.charAt(1);
+
+            if(input_year < year)
+            {
+                $("#expire_date").addClass('has-error-input');
+
+                span.text('Cartão de Crédito vencido').css('display', 'block');
+            }
+
+            else if(input_year == year && input_month < month){
+
+                $("#expire_date").addClass('has-error-input');
+
+                span.text('Cartão de Crédito vencido').css('display', 'block');
+            }
+
+            else{
+                $("#expire_date").removeClass('has-error-input');
+
+                span.css('display', 'none');
+            }
+        }
+
+
+    });
+
+
 
 });
 

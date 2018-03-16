@@ -82,6 +82,24 @@
     </script>
     <link href="../assets/global/plugins/bootstrap-sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
 
+    <style>
+        .has-error-input{
+            border: 1px solid red !important;
+        }
+
+        .mastercard{
+            background: url('../store/images/mastercard.png') no-repeat scroll 350px 7px;
+            background-size: 50px;
+            padding-left: 30px;
+        }
+
+        .visa{
+            background: url('../store/images/visa.png') no-repeat scroll 350px 7px;
+            background-size: 50px;
+            padding-left: 30px;
+        }
+    </style>
+
 </head>
 
 <body>

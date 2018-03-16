@@ -11,9 +11,9 @@ class Church extends Model implements Transformable
     use TransformableTrait;
 
     protected $fillable = [
-        'name', 'responsible_id', 'email', 'telefone', 'cnpj',
+        'name', 'responsible_id', 'email', 'tel', 'cnpj',
         'street', 'neighborhood', 'city', 'zipCode', 'state',
-        'number', 'alias'
+        'number', 'alias', 'plan_id'
     ];
 
     protected $dates = ['deleted_at'];

@@ -78,41 +78,89 @@
                         </div>
                     </div>
 
-                    <form class="form-dark">
+                    <form class="form-dark" action="{{ route('new.church-responsible', ['plan_id' => $plan->id]) }}" method="post">
+
                         <div class="form-group d-flex justify-content-between align-items-center border-bottom">
-                            <select class="form-control w-normal border-0" name="periodo">
-                                <option>Cobrança {{ $plan_type->type }}</option>
-                            </select>
+                            @if($multi_plan)
+                                <select class="form-control w-normal border-0 type-plan-select" name="plan" id="type-plan-{{ $plan->id }}">
+                                    @foreach($types as $t)
+
+                                        @foreach($plans_types as $item)
+
+                                            @if($t->type_id == $item->id)
+
+                                                <option value="{{ $item->id }}" @if($t->type_id == $plan_type->id) selected @endif>
+
+                                                    Cobrança {{ $item->type }}
+
+                                                </option>
+
+                                            @endif
+
+                                        @endforeach
+
+
+                                    @endforeach
+                                </select>
+
+                            @else
+                                <select class="form-control w-normal border-0" name="periodo">
+                                    <option value="{{ $plan_type->id }}">Cobrança {{ $plan_type->type }}</option>
+                                </select>
+                            @endif
+
                             <span class="font-weight-bold fs-22">R$ {{ $plan->price }}  /  {{ $plan_type->adjective }}</span>
                         </div>
 
                         <div class="form-group">
+                            <label class="has-float-label" aria-label="Nome">
+                                <input class="form-control" type="text" placeholder="Nome" name="name" required/>
+                                <span>Nome</span>
+                            </label>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="has-float-label" aria-label="Email">
+                                <input class="form-control" type="email" placeholder="Email" name="email" required/>
+                                <span>Email</span>
+                            </label>
+                        </div>
+
+
+
+                        <div class="form-group">
                             <label class="has-float-label" aria-label="Nome no cartão">
-                                <input class="form-control" type="text" placeholder="Nome no cartão" name="cartao_nome"/>
+                                <input class="form-control" type="text" placeholder="Nome no cartão" name="person_name" required/>
                                 <span>Nome no cartão</span>
                             </label>
                         </div>
 
                         <div class="form-group">
                             <label class="has-float-label" aria-label="Número do cartão de crédito">
-                                <input class="form-control" type="text" placeholder="Número do cartão de crédito" name="cartao_numero"/>
+                                <input class="form-control number" id="credit_card_number" type="text"
+                                       placeholder="Número do cartão de crédito" name="number" maxlength="16" required/>
                                 <span>Número do cartão de crédito</span>
+
                             </label>
+                            <span style="color: red; display: none;" id="span-error-number"></span>
+                            <input type="hidden" id="company" name="company">
                         </div>
 
                         <div class="row">
                             <div class="col-sm-9">
                                 <div class="form-group">
                                     <label class="has-float-label" aria-label="Data de expiração">
-                                        <input class="form-control" type="text" placeholder="Data de expiração" name="cartao_expira"/>
-                                        <span>Data de expiração</span>
+                                        <input class="form-control number" type="text" id="expire_date" placeholder="mm/AA"
+                                               maxlength="5" name="expires_in" required/>
+                                        <span>Data de expiração (mm/AA) </span>
                                     </label>
+                                    <span style="color: red; display: none;" id="span-error"></span>
                                 </div>
                             </div>
                             <div class="col-sm-3">
                                 <div class="form-group">
                                     <label class="has-float-label" aria-label="CVC">
-                                        <input class="form-control" type="text" placeholder="CVC" name="cartao_cvc"/>
+                                        <input class="form-control number" type="text" placeholder="CVC" name="cvc" required/>
                                         <span>CVC</span>
                                     </label>
                                 </div>
@@ -126,16 +174,20 @@
 
                         <div class="form-group pt-3 d-flex justify-content-between align-items-baseline">
                             <label class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input">
+                                <input type="checkbox" class="custom-control-input" required>
                                 <span class="custom-control-indicator"><i class="fas fa-check"></i></span>
                                 <span class="custom-control-description"><a href="#">Li e aceito os termos de uso</a></span>
                             </label>
 
-                            <button type="submit" class="btn btn-secondary float-right hidden-xs-down">CONFIRMAR ASSINATURA</button>
+                            <button type="submit" class="btn btn-secondary float-right hidden-xs-down">
+                                <i class="fa fa-arrow-right"></i>
+                                Próxima Etapa
+                            </button>
                         </div>
 
                         <div class="form-group text-center hidden-sm-up">
-                            <button type="submit" class="btn btn-secondary px-5">CONFIRMAR ASSINATURA</button>
+                            <i class="fa fa-arrow-right"></i>
+                            <button type="submit" class="btn btn-secondary px-5">Próxima etapa</button>
                         </div>
                     </form>
                 </div>
@@ -152,4 +204,6 @@
         </div>
     </div>
 </div>
+@include('includes.core-scripts')
+<script src="../js/site.js"></script>
 @include('includes.footer-site')

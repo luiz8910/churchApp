@@ -289,6 +289,16 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/teste-gratis/{id}', 'SiteController@trial')->name('site.trial');
 
+    Route::get('/change-plan/{type}/{id}', 'SiteController@changePlan');
+
+    Route::get('/confirma-cadastro/{id}', 'ChurchController@postConfirmation')->name('post.confirmation');
+
+    Route::post('new-responsible/{plan}', 'ChurchController@newResponsible')->name('new.church-responsible');
+
+    Route::get('/verify-credit-card/{number}', 'ChurchController@verifyCreditCard');
+
+    Route::post('/responsible-side-data', 'ChurchController@storeResponsible')->name('responsible.store');
+
     //Fim Rotas Site
 
     /*

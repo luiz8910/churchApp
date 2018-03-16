@@ -56,6 +56,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(\App\Repositories\PlansRepository::class, \App\Repositories\PlansRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\TypePlansRepository::class, \App\Repositories\TypePlansRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\PlansItensRepository::class, \App\Repositories\PlansItensRepositoryEloquent::class);
+        $this->app->bind(\App\Repositories\CreditCardRepository::class, \App\Repositories\CreditCardRepositoryEloquent::class);
         //:end-bindings:
     }
 }

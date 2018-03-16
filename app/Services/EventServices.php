@@ -1375,7 +1375,7 @@ class EventServices
 
                 $arr[] = $my_event;
                 $arr[] = $my_event_date;
-                
+
 
                 return $arr;
             }

@@ -169,12 +169,7 @@
                                 </a>
                             </li>
 
-                            <li>
-                                <a href="javascript:;">
-                                    <i class="fa fa-users"></i>
-                                    Grupos
-                                </a>
-                            </li>
+
 
                         </ul>
                     </li>

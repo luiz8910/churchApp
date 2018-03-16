@@ -213,4 +213,36 @@ trait PeopleTrait
         ]);
     }
 
+    public function surname($name)
+    {
+        $token = strtok($name, " ");
+
+        $i = 0;
+
+        $firstName = '';
+        $lastName = '';
+
+        while ($token !== false)
+        {
+            if($i == 0)
+            {
+                $firstName = $token;
+            }
+            else{
+                $lastName .= $token . " ";
+                $token = strtok(" ");
+            }
+
+            $i++;
+        }
+
+        $lastName = str_replace($firstName, " ", $lastName);
+
+        $lastName = trim($lastName);
+
+        $arr[] = $firstName;
+        $arr[] = $lastName;
+
+        return $arr;
+    }
 }

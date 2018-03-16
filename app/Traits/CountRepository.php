@@ -10,20 +10,32 @@ namespace App\Traits;
 
 
 use App\Models\Group;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 trait CountRepository
 {
+
+
     public function countPerson()
     {
+        $church = session('church') ? session('church') : Auth::user()->church_id;
+
         $countAdults = count(DB::table('people')
-            ->where('tag', 'adult')
-            ->where('deleted_at', null)
+            ->where(
+                [
+                    'tag' => 'adult',
+                    'deleted_at' => null,
+                    'church_id' => $church
+                ])
             ->get());
 
         $countTeens = count(DB::table('people')
-            ->where('tag', '<>', 'adult')
-            ->where('deleted_at', null)
+            ->where([
+                    ['tag', '<>', 'adult'],
+                    'deleted_at' => null,
+                    'church_id' => $church
+                ])
             ->get());
 
         $countVisitors = count(DB::table('visitors')
@@ -31,7 +43,10 @@ trait CountRepository
             ->get());
 
         $countInactive = count(DB::table('people')
-            ->where('deleted_at', '<>', null)
+            ->where([
+                ['deleted_at', '<>', null],
+                'church_id' => $church
+            ])
             ->get());
 
 
@@ -45,10 +60,15 @@ trait CountRepository
 
     public function countGroups()
     {
+        $church = session('church') ? session('church') : Auth::user()->church_id;
+
         $all = count(Group::withTrashed()->get());
 
         $active = count(DB::table('groups')
-            ->where('deleted_at', null)->get());
+            ->where([
+                'deleted_at' => null,
+                'church_id' => $church
+            ])->get());
 
 
         $inactive = count(DB::table('groups')
