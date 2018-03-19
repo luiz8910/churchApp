@@ -312,7 +312,13 @@ class GroupController extends Controller
 
 
         //Listagem de todas as pessoas que não pertencem ao grupo
-        $people = $this->personRepository->findWhereNotIn('id', $arr);
+        //$people = $this->personRepository->findWhereNotIn('id', $arr);
+
+        $people = DB::table('people')
+            ->whereNotIn('id', $arr)
+            ->where('church_id', $church_id)
+            ->whereNull('deleted_at')
+            ->get();
 
         $roles = $this->roleRepository->all();
 
