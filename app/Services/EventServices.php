@@ -1977,8 +1977,9 @@ class EventServices
         return count(DB::table('event_person')
             ->where([
                 'event_id' => $event,
-                'person_id' => $person_id
-            ])->get());
+                'person_id' => $person_id,
+                'check-in' => 1
+            ])->distinct()->get());
     }
 
     /*
