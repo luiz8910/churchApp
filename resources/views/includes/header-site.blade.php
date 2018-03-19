@@ -43,6 +43,15 @@
     <!-- Slick Carousel -->
     <script src="../bower_components/slick-carousel/slick/slick.min.js"></script>
 
+    <!-- matchHeight -->
+    <script src="../bower_components/jquery-match-height/dist/jquery.matchHeight-min.js"></script>
+    <script>
+        $(function() {
+            $('.match-height-head').matchHeight();
+            $('.match-height-body').matchHeight();
+        });
+    </script>
+
     <script type="text/javascript">
         function isMobile() {
             return (/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|ipad|iris|kindle|Android|Silk|lge |maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i.test(navigator.userAgent)
