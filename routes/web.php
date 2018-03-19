@@ -278,6 +278,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Auth::routes();
 
+    Route::any('/log-out', 'Auth\LoginController@logout')->name('log-out');
+
     Route::get('/privacy', function(){
         return view('config.privacypolicy');
     });
@@ -381,7 +383,6 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/person-inactive-excel/{format}', 'PersonController@inactiveExcel')->name('person-inactive.excel');
 
-//Ajax
     Route::get('/automatic-cep/{id}/{user}', 'PersonController@automaticCep');
 
 //Recuperação de Senha
@@ -471,7 +472,7 @@ Route::get('menu', 'DashboardController@menu');
 
 Route::get('recentTable', "PersonController@clearRecentTables");
 
-Route::get('/juquinha', 'HtmlController@teste');
+//Route::get('/juquinha', 'HtmlController@teste');
 
 Route::get('join', 'EventController@testeJoin');
 

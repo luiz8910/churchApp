@@ -66,7 +66,7 @@ class LoginController extends Controller
             }
             elseif($user->person_id)
             {
-                return view('auth.login');
+                return redirect()->route('log-out');
             }
             else{
                 session(['role' => 'Visitante']);
