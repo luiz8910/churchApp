@@ -455,7 +455,8 @@
     margin-bottom: 1rem; }
   .card-price .card-block {
     padding-top: 0;
-    height: 6rem; }
+    /*height: 6rem;*/
+  }
   .card-price .list-group-item {
     border: 0px;
     padding: .25rem;

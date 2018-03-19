@@ -410,19 +410,19 @@
     <div class="row ">
         @foreach($plans as $plan)
 
-                <div class="col-xs-12 col-lg-3 match-height mb-5 mb-sm-0 type-card type-id-{{ $plan->type_id }}">
+                <div class="col-xs-12 col-lg-3 match-height mb-5 mb-sm-0 type-card type-id-{{ $plan->type_id }} mx-auto">
                     <div class="card-price text-xs-center">
                         @if($plan->most_popular == 1)
                             <span class="card-alert">MAIS POPULAR</span>
                         @endif
-                        <div class="card-block">
+                        <div class="card-block match-height-head">
                             <h4 class="card-title">{{ $plan->name }}</h4>
                             <p class="card-subtitle">{{ $plan->description }}</p>
                         </div>
                         <div class="col-12 px-0">
                             <hr/>
                         </div>
-                        <div class="card-block">
+                        <div class="card-block match-height-body">
                             <ul class="list-group">
 
                                 @foreach($plan_features as $feature)
