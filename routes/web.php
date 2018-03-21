@@ -359,6 +359,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/delete-plan-type/{id}', 'SiteController@deletePlanType');
 
+    Route::get('/igrejas', 'ChurchController@index')->name('admin.churches');
+
     // Fim Admin site
 
     Route::get('/events-ajax', 'EventController@getListEvents');

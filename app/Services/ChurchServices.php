@@ -91,7 +91,6 @@ class ChurchServices{
                         ['model' => 'group', 'value' => 'state', 'field' => 'UF', 'required' => 1, 'church_id' => $church, 'updated_at' => Carbon::now(), 'created_at' => Carbon::now()],
                         ['model' => 'group', 'value' => 'number', 'field' => 'Número', 'required' => 1, 'church_id' => $church, 'updated_at' => Carbon::now(), 'created_at' => Carbon::now()],
 
-
                         ['model' => 'event', 'value' => 'name', 'field' => 'Nome', 'required' => 1, 'church_id' => $church, 'updated_at' => Carbon::now(), 'created_at' => Carbon::now()],
                         ['model' => 'event', 'value' => 'frequency', 'field' => 'Frequência', 'required' => 1, 'church_id' => $church, 'updated_at' => Carbon::now(), 'created_at' => Carbon::now()],
                         ['model' => 'event', 'value' => 'eventDate', 'field' => 'Data do Prox. Evento', 'required' => 1, 'church_id' => $church, 'updated_at' => Carbon::now(), 'created_at' => Carbon::now()],

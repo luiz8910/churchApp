@@ -64,6 +64,15 @@
 
                 </li>
 
+                <li class="menu-dropdown classic-menu-dropdown ">
+                    <a href="{{ route('admin.churches') }}"> Igrejas
+                        <span class="arrow"></span>
+                    </a>
+
+                </li>
+
+
+
                 <!--<li class="menu-dropdown classic-menu-dropdown ">
                     <a href="javascript:;"> Doações
                     </a>
