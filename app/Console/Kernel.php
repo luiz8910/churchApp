@@ -138,6 +138,15 @@ class Kernel extends ConsoleKernel
                     }
 
                 }
+                elseif($e->frequency == "Quinzenal")
+                {
+                    $todayNumber = date('d');
+
+                    if($todayNumber == $e->day || $todayNumber == $e->day_2)
+                    {
+                        $this->setDays($event, $last, '15 days');
+                    }
+                }
                 elseif($e->frequency == "Mensal")
                 {
                     $todayNumber = date('d');
@@ -180,7 +189,7 @@ class Kernel extends ConsoleKernel
         }
 
         $e = DB::table('events')
-            ->where('id', $event->id)
+            ->where('id', $event->event_id)
             ->get();
 
         $event_date = date_create(date_format($nextEvent, "Y-m-d") . $e->startTime);
