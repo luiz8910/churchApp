@@ -190,7 +190,7 @@ class Kernel extends ConsoleKernel
 
         $e = DB::table('events')
             ->where('id', $event->event_id)
-            ->get();
+            ->first();
 
         $event_date = date_create(date_format($nextEvent, "Y-m-d") . $e->startTime);
         $end_event_date = date_create(date_format($nextEvent, "Y-m-d") . $e->endTime);
