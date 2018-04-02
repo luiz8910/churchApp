@@ -60,11 +60,11 @@
                     <p class="text-center">Exemplo de Lista de Parâmetros (Se correto retorna true)</p>
 
                     <pre>
-                        email = admin@admin.com
-                        password = senha123
-                        church = 1
+                        email = admin@admin.com (Obrigatório)
+                        password = senha123 (Obrigatório)
+                        church = 1 (Obrigatório)
                     </pre>
-                    
+
 
                 </div>
             </div>
