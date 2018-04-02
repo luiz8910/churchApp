@@ -1,5 +1,7 @@
 <?php
 
+use App\Services\PagSeguroServices;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -523,5 +525,30 @@ Route::get('list-person', 'DashboardController@check_in');
 Route::get('check-in', 'DashboardController@checkin');
 
 Route::get('getLastEvent', 'EventController@getLastEvent');
+
+Route::get('/checkout-pagseguro/{id}', function($id){
+
+    $data['email'] = 'luiz.sanches8910@gmail.com';
+
+    $data['token'] = 'B9435321E5E04AD099AB3E714430A8A9';
+
+    $response = (new PagSeguroServices())->request(PagSeguroServices::SESSION_SANDBOX, $data);
+
+    $session = new \SimpleXMLElement($response->getContents());
+
+    $session = $session->id;
+
+    //$amount = number_format(500, 2, '.', '');
+
+    return view('pagseguro', compact('id', 'session'));
+});
+
+Route::get('/pagseguro/{plan_id}', 'ChurchController@payment')->name('pagseguro.payment');
+
+Route::post('transaction', 'ChurchController@transaction')->name('new.transaction');
+
+Route::get('docs', function(){
+    return view('api');
+});
 
 

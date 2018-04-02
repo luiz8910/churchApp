@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\Role;
+use App\Models\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -75,5 +76,29 @@ class LoginController extends Controller
 
             return redirect()->intended('home');
         }
+    }
+
+    public function loginApp(Request $request)
+    {
+        $email = $request->get('email');
+
+        $password = $request->get('password');
+
+        $church = $request->get('church');
+
+        if(Auth::attempt(['email' => $email, 'password' => $password])){
+
+            $user = User::where('email', $email)->first();
+
+            if($user->church_id == $church)
+            {
+                return json_encode(true);
+            }
+
+            return json_encode(false);
+
+        }
+
+        return json_encode(false);
     }
 }
