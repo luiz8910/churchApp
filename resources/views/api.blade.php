@@ -71,6 +71,78 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Lista dos Próximos 5 eventos</h3>
+                </div>
+                <div class="panel-body">
+
+                    https://beconnect.com.br/api/next-events/{church}
+                    <span class="label label-primary">GET</span>
+
+                    <br><br>
+
+                    <p class="text-center">Exemplo de Retorno</p>
+
+                    <pre>
+                        0 => {
+                              +"name": "Evento da API"
+                              +"id": 31
+                              +"createdBy_id": 1
+                              +"event_date": "2018-04-04 10:00:00"
+                              +"endTime": ""
+                              +"street": "Rua Luzerne Proença Arruda"
+                              +"number": "137"
+                              +"city": "Sorocaba"
+                              +"frequency": "Semanal"
+                              +"deleted_at": null
+                            }
+
+                        1 => {
+                              +"name": "Evento do Joãozinho"
+                              +"id": 32
+                              +"createdBy_id": 1
+                              +"event_date": "2018-04-06 08:00:00"
+                              +"endTime": "18:00"
+                              +"street": "Rua Luzerne Proença Arruda"
+                              +"number": "137"
+                              +"city": "Sorocaba"
+                              +"frequency": "Semanal"
+                              +"deleted_at": null
+                            }
+                    </pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Lista de todos os Grupos da Igreja</h3>
+                </div>
+                <div class="panel-body">
+
+                    https://beconnect.com.br/api/groups/{church}
+                    <span class="label label-primary">GET</span>
+
+                    <br><br>
+
+                    <p class="text-center">Exemplo de Retorno</p>
+
+                    <pre>
+                        [{"id":2,"name":"Grupo de Jovens","sinceOf":"04\/12\/2017"},
+                        {"id":3,"name":"Grupo de Estudo","sinceOf":"21\/12\/2017"},
+                        {"id":4,"name":"Grupo Teste Exclus\u00e3o","sinceOf":"25\/01\/2018"}]
+                    </pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 

@@ -30,3 +30,7 @@ Route::get('/church-list', 'ChurchController@churchesApi');
 //Route::get('/login/{email}/{password}/{church}', 'Auth\LoginController@loginApp');
 
 Route::post('/login', 'Auth\LoginController@loginApp');
+
+Route::get('/next-events/{church}', 'EventController@getEventsApi');
+
+Route::get('groups/{church}', 'GroupController@groupListApp');

@@ -1836,19 +1836,20 @@ class EventController extends Controller
 
     // ----------------------------------------------------- API --------------------------------------------------------------------------------------- //
 
-    public function getEventsApi()
+    public function getEventsApi($church)
     {
         $today = date_create();
 
         $events = DB::table('event_person')
-                        ->select('events.name', 'events.id', 'events.createdBy_id', 'event_person.eventDate',
-                            'events.startTime', 'events.endTime', 'events.street', 'events.number', 'events.city',
-                            'events.frequency')
-                        ->join('events', 'event_person.event_id', 'events.id')
+                        ->select('events.name', 'events.id', 'events.createdBy_id', 'event_person.event_date',
+                            'events.endTime', 'events.street', 'events.number', 'events.city', 'events.frequency', 'event_person.deleted_at')
+                        ->join('events', 'event_person.event_id', '=', 'events.id')
+                        ->where('events.church_id', $church)
                         ->whereDate('event_date', '>', $today)
                         ->whereNull('events.deleted_at')
-                        ->orderBy('event_person.eventDate')
+                        ->orderBy('event_person.event_date')
                         ->distinct()
+                        ->limit(5)
                         ->get();
 
         /*$events = $events->keyBy('id');

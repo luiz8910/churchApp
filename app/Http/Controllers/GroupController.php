@@ -920,4 +920,25 @@ class GroupController extends Controller
             ]
         );
     }
+
+
+    public function groupListApp($church)
+    {
+        //$groups = Group::withTrashed()->get();
+
+        $groups = Group::select('id', 'name', 'sinceOf')->where('church_id', $church)->get();
+
+        if(count($groups) > 0)
+        {
+            foreach ($groups as $group)
+            {
+                $group->sinceOf = $this->formatDateView($group->sinceOf);
+            }
+
+            return json_encode($groups);
+        }
+
+        return json_encode(false);
+
+    }
 }
