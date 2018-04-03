@@ -1863,10 +1863,15 @@ class EventController extends Controller
         foreach ($events as $event)
         {
             $person = $this->userRepository->find($event->createdBy_id)->person;
+
             $event->img_user = $person->imgProfile;
+
             $event->createdBy_id = $person->name . " " . $person->lastName;
-            $event->eventDate = $this->formatDateView($event->eventDate);
+
+            $event->eventDate = date_format(date_create($event->event_date), 'd-m-Y');//$this->formatDateView($event->eventDate);
+
             $event->sub = count($this->eventServices->getListSubEvent($event->id));
+
         }
 
         //dd($events);
