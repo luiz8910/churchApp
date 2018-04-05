@@ -37,3 +37,4 @@ Route::get('groups/{church}', 'GroupController@groupListApp');
 
 Route::get('my-groups/{person_id}', 'GroupController@myGroupsApp');
 
+Route::get('group-people/{group_id}', 'GroupController@groupPeopleApp');

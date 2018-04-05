@@ -62,7 +62,7 @@
                     <pre>
                         email = admin@admin.com (Obrigatório)
                         password = senha123 (Obrigatório)
-                        church = 1 (Obrigatório)
+                        church = 1 (Obrigatório) <span class="label label-info"">Inteiro</span>
                     </pre>
 
                     <p class="text-center">Exemplo de Retorno</p>
@@ -93,6 +93,9 @@
 
                     https://beconnect.com.br/api/next-events/{church}
                     <span class="label label-primary">GET</span>
+
+                    <br>
+                    church = id da igreja <span class="label label-info" style="font-size: 12px;">Inteiro</span>
 
                     <br><br>
 
@@ -141,6 +144,9 @@
                     https://beconnect.com.br/api/groups/{church}
                     <span class="label label-primary">GET</span>
 
+                    <br>
+                    church = id da igreja <span class="label label-info" style="font-size: 12px;">Inteiro</span>
+
                     <br><br>
 
                     <p class="text-center">Exemplo de Retorno</p>
@@ -165,6 +171,9 @@
                 <div class="panel-body">
                     https://beconnect.com.br/api/my-groups/{person_id}
                     <span class="label label-primary">GET</span>
+
+                    <br>
+                    person_id = id do membro logado <span class="label label-info" style="font-size: 12px;">Inteiro</span>
 
                     <br><br>
 
@@ -203,6 +212,32 @@
                 </div>
                 <div class="panel-body">
 
+                    https://beconnect.com.br/api/group-people/{group_id}
+                    <span class="label label-primary">GET</span>
+
+                    <br>
+                    group_id = id do grupo escolhido <span class="label label-info" style="font-size: 12px;">Inteiro</span>
+
+                    <br><br>
+
+                    <p class="text-center">Exemplo de Retorno</p>
+
+                    <pre>
+                        Se o grupo selecionado conter 1 ou mais participantes
+
+                        {"status":true,
+
+                        "people":[
+
+                            {"id":1,"name":"Admin","lastName":"Admin","imgProfile":"uploads\/profile\/1-Admin.jpg"},
+                            {"id":2,"name":"Bruce ","lastName":"Wayne","imgProfile":"uploads\/profile\/2-Bruce .jpg"},
+                            {"id":3,"name":"Dollynho","lastName":"da Silva","imgProfile":"uploads\/profile\/3-Dollynho.jpg"}
+                        ]}
+
+                        Se o grupo não conter nenhum participante
+
+                        {"status":false}
+                    </pre>
                 </div>
             </div>
         </div>

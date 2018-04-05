@@ -959,4 +959,27 @@ class GroupController extends Controller
 
 
     }
+
+
+    public function groupPeopleApp($group_id)
+    {
+        $group = $this->repository->find($group_id);
+
+        if(count($group->people) > 0)
+        {
+            $people = [];
+
+            foreach ($group->people as $item)
+            {
+                $people[] = $this->personRepository->find($item->id, ['id', 'name', 'lastName', 'imgProfile']);
+            }
+
+            return json_encode([
+                'status' => true,
+                'people' => $people
+            ]);
+        }
+
+        return json_encode(['status' => false]);
+    }
 }
