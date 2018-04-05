@@ -57,12 +57,24 @@
 
                     <br><br>
 
-                    <p class="text-center">Exemplo de Lista de Parâmetros (Se correto retorna true)</p>
+                    <p class="text-center">Exemplo de Lista de Parâmetros</p>
 
                     <pre>
                         email = admin@admin.com (Obrigatório)
                         password = senha123 (Obrigatório)
                         church = 1 (Obrigatório)
+                    </pre>
+
+                    <p class="text-center">Exemplo de Retorno</p>
+
+                    <pre>
+                        Login Válido
+                            {"status":true,"person_id":1}
+
+                        Ou
+
+                        Login Inválido
+                            {"status":false}
                     </pre>
 
 
@@ -138,6 +150,59 @@
                         {"id":3,"name":"Grupo de Estudo","sinceOf":"21\/12\/2017"},
                         {"id":4,"name":"Grupo Teste Exclus\u00e3o","sinceOf":"25\/01\/2018"}]
                     </pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Grupos em que o usuário logado pertence</h3>
+                </div>
+
+                <div class="panel-body">
+                    https://beconnect.com.br/api/my-groups/{person_id}
+                    <span class="label label-primary">GET</span>
+
+                    <br><br>
+
+                    <p class="text-center">Exemplo de Retorno</p>
+
+                    <pre>
+                        Caso o membro esteja inscrito em 1 ou mais grupos
+
+                        {"status":true,
+
+                        "groups":[
+                            {"id":2,"name":"Grupo de Jovens","sinceOf":"2017-12-04","imgProfile":"uploads\/group\/2-Grupo de Jovens.jpeg",
+                                "owner_id":1,"street":"Rua Luzerne Proen\u00e7a Arruda","neighborhood":"Vila Progresso","city":"Sorocaba",
+                                "zipCode":"18075730","state":"SP","created_at":"2017-12-04 20:30:27","updated_at":"2017-12-04 20:30:27",
+                                "deleted_at":null,"notes":null,"number":"137","church_id":1,"pivot":{"person_id":1,"group_id":2}},
+
+                            {"id":3,"name":"Grupo de Estudo","sinceOf":"2017-12-21","imgProfile":"uploads\/group\/grupo.jpg","owner_id":1,
+                                "street":"Rua Luzerne Proen\u00e7a Arruda","neighborhood":"Vila Progresso","city":"Sorocaba",
+                                "zipCode":"18075730","state":"SP","created_at":"2017-12-21 12:29:55","updated_at":"2017-12-21 12:29:55",
+                                "deleted_at":null,"notes":null,"number":"137","church_id":1}]}
+
+                        Caso o membro não esteja inscrito em nenhum grupo
+
+                        {"status":false}
+                    </pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Membros do grupo selecionado</h3>
+                </div>
+                <div class="panel-body">
+
                 </div>
             </div>
         </div>

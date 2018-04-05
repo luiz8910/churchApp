@@ -36,3 +36,4 @@ Route::get('/next-events/{church}', 'EventController@getEventsApi');
 Route::get('groups/{church}', 'GroupController@groupListApp');
 
 Route::get('my-groups/{person_id}', 'GroupController@myGroupsApp');
+

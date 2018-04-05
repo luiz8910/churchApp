@@ -947,7 +947,16 @@ class GroupController extends Controller
     {
         $person = $this->personRepository->find($person_id);
 
-        dd($person->groups);
+        if(count($person->groups) > 0)
+        {
+            return json_encode([
+                'status' => true,
+                'groups' => $person->groups
+            ]);
+        }
+
+        return json_encode(['status' => false]);
+
 
     }
 }

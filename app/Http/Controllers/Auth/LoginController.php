@@ -92,13 +92,16 @@ class LoginController extends Controller
 
             if($user->church_id == $church)
             {
-                return json_encode(true);
+                return json_encode([
+                    'status' => true,
+                    'person_id' => $user->person->id
+                ]);
             }
 
-            return json_encode(false);
+            return json_encode(['status' => false]);
 
         }
 
-        return json_encode(false);
+        return json_encode(['status' => false]);
     }
 }
