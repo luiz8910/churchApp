@@ -7,8 +7,6 @@ $(function () {
 
     $("#church").change(function () {
         var value = this.value;
-        var fb = $(".facebook").attr("href");
-        var goo = $(".googleplus").attr("href");
 
         if(value == "")
         {
@@ -20,10 +18,10 @@ $(function () {
         }
         else{
             $(".facebook")
-                .attr("href", fb + '/' + value);
+                .attr("href", original_fb_href + '/' + value);
 
             $(".googleplus")
-                .attr("href", goo + '/' + value);
+                .attr("href", original_goo_href + '/' + value);
         }
 
 

@@ -941,4 +941,13 @@ class GroupController extends Controller
         return json_encode(false);
 
     }
+
+
+    public function myGroupsApp($person_id)
+    {
+        $person = $this->personRepository->find($person_id);
+
+        dd($person->groups);
+
+    }
 }
