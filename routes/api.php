@@ -25,7 +25,7 @@ Route::get('/log', function (){
     return 'token valido';
 })->middleware('jwt.auth');
 
-Route::get('/church-list', 'ChurchController@churchesApi');
+Route::get('/church-list', 'ChurchController@churchesApi')->middleware('cors');
 
 //Route::get('/login/{email}/{password}/{church}', 'Auth\LoginController@loginApp');
 

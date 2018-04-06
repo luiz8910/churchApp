@@ -551,4 +551,8 @@ Route::get('docs', function(){
     return view('api');
 });
 
+Route::get('teste-api', function(){
+    return view('teste-api');
+});
+
 
