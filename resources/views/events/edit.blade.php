@@ -21,6 +21,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
 <head>
     @include('includes.head-edit')
+    <link href="../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet" type="text/css" />
 
             <!-- BEGIN PAGE LEVEL PLUGINS -->
     {{--<link href="../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet"
@@ -100,24 +101,9 @@ License: You must have a valid license purchased only from themeforest(the above
                 <div class="page-content-inner">
 
                     <div class="row">
-                        @if($model->imgEvent != null)
-                            <div class="col-md-12 col-sm-12 cols-xs-12">
-                                <br>
-                                <div>
-                                    <img src="../../{{ $model->imgEvent }}" style="width:100%; height: 300px;">
-                                </div>
-                                <br><br>
-                            </div>
-                        @endif
 
-                        {!! Form::open(['route' => ['event.edit.imgEvent', 'event' => $model],
-                                            'enctype' => 'multipart/form-data', 'method' => 'POST']) !!}
 
-                        <input type="file" name="file" id="file" style="display: none;">
 
-                        <input type="submit" id="submit-img" hidden>
-
-                        {!! Form::close() !!}
 
 
                         <div class="page-content-inner">
@@ -217,7 +203,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             </a>
                                                         </li>
                                                         <li>
-                                                            <a href="javascript:;" id="changePicture">
+                                                            <a href="javascript:;" data-target="#changePicture" data-toggle="modal">
                                                                 <i class="fa fa-picture-o font-purple"></i>
                                                                 Trocar Imagem
                                                             </a>
@@ -231,6 +217,75 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         </li>
                                                     @endif
                                                 </ul>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="modal fade" tabindex="-1" role="dialog" id="changePicture" aria-labelledby="mySmallModalLabel">
+                                        <div class="modal-dialog modal-md" role="document">
+
+                                            <div class="modal-content">
+
+                                                <div class="modal-header">
+
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close"><span aria-hidden="true">&times;</span>
+                                                    </button>
+
+                                                    <h4 class="modal-title text-center" id="myModalLabel">Escolha uma imagem para o evento</h4>
+
+                                                </div>
+
+
+                                                    {!! Form::open(['route' => ['event.edit.imgEvent', 'event' => $model],
+                                                        'enctype' => 'multipart/form-data', 'method' => 'POST', 'id' => 'img-submit']) !!}
+
+                                                        {{--<input type="file" name="file" id="file" style="display: none;">
+
+                                                        <input type="submit" id="submit-img" hidden>--}}
+
+                                                        <div class="modal-body text-center">
+
+                                                            <div class="form-group">
+                                                                <div class="fileinput fileinput-new" data-provides="fileinput">
+                                                                    <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
+                                                                        <img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=Imagem+do+Evento" alt="" /> </div>
+                                                                    <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"> </div>
+                                                                    <div>
+                                                                        <span class="btn default btn-file">
+                                                                            <span class="fileinput-new"> Escolher Imagem </span>
+                                                                            <span class="fileinput-exists"> Alterar </span>
+                                                                            <input type="file" name="file" id="file"> </span>
+                                                                        <a href="javascript:;" id="removeImg"
+                                                                           class="btn default fileinput-exists" data-dismiss="fileinput"> Remover </a>
+                                                                    </div>
+                                                                    <br>
+
+                                                                    <span class="text-center" id="img-error" style="color: red; display: none;"></span>
+
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+
+
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">
+                                                                <i class="fa fa-close"></i>
+                                                                Cancelar
+                                                            </button>
+                                                            <button type="submit"
+                                                                    class="btn btn-success" id="btn-upload-img" disabled>
+                                                                <i class="fa fa-check"></i>
+                                                                Upload
+                                                            </button>
+                                                        </div>
+
+                                                    {!! Form::close() !!}
+
+
+
                                             </div>
                                         </div>
                                     </div>
@@ -266,7 +321,17 @@ License: You must have a valid license purchased only from themeforest(the above
                                     </div>
 
                                     <div class="portlet-body">
-                                        <div class="col-md-12">
+                                        @if($model->imgEvent != null)
+                                            <div class="col-md-4 cols-xs-12">
+                                                <br>
+                                                <div>
+                                                    <img src="../../{{ $model->imgEvent }}" style="width:100%; height: 300px;">
+                                                </div>
+                                                <br><br>
+                                            </div>
+                                        @endif
+
+                                        <div class="col-md-8 col-xs-12">
 
                                             <p>
                                                 <i class="fa fa-user font-purple"></i> Criado Por:
@@ -1672,6 +1737,7 @@ License: You must have a valid license purchased only from themeforest(the above
 <script src="../../assets/global/plugins/datatables/datatables.min.js" type="text/javascript"></script>
 <script src="../../assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js"
         type="text/javascript"></script>
+<script src="../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js" type="text/javascript"></script>
 <!-- END PAGE LEVEL PLUGINS -->
 
 <!-- BEGIN PAGE LEVEL SCRIPTS -->

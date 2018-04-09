@@ -107,6 +107,9 @@
                               +"id": 31
                               +"createdBy_id": 1
                               +"event_date": "2018-04-04 10:00:00"
+                              +"group_id": "3"
+                              +"description":"Descrição"
+                              +"imgEvent":"uploads\/event\/33-Evento de Teste.jpg"
                               +"endTime": ""
                               +"street": "Rua Luzerne Proença Arruda"
                               +"number": "137"
@@ -120,6 +123,9 @@
                               +"id": 32
                               +"createdBy_id": 1
                               +"event_date": "2018-04-06 08:00:00"
+                              +"group_id": ""
+                              +"description":""
+                              +"imgEvent":""
                               +"endTime": "18:00"
                               +"street": "Rua Luzerne Proença Arruda"
                               +"number": "137"

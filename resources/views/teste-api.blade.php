@@ -23,7 +23,7 @@
         function request()
         {
             var request = $.ajax({
-                url: 'https://beconnect.com.br/church-list',
+                url: 'https://beconnect.com.br/api/church-list',
                 method: 'GET',
                 dataType: 'json'
             });

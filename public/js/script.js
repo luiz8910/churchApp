@@ -568,12 +568,57 @@ $(function () {
     });
 
 
-    $("#changePicture").click(function () {
+    /*$("#changePicture").click(function () {
        $("#file").trigger("click");
     });
 
-    $("#file").change(function () {
+     $("#file").change(function () {
         $("#submit-img").trigger("click");
+    });*/
+
+    $("#file").change(function(){
+
+        $("#btn-upload-img").attr('disabled', true);
+
+        var interval = setInterval(function(){
+            var img = $(".fileinput-preview > img")[0];
+
+            if(img.naturalWidth)
+            {
+                if(img.naturalWidth > 800 || img.naturalHeight > 800)
+                {
+                    $("#removeImg").trigger('click');
+
+                    $('#img-error')
+                        .text('Envie uma imagem menor que 800x800')
+                        .css('display', 'block');
+                }
+
+                else if(img.naturalWidth < 150 || img.naturalHeight < 150)
+                {
+                    $("#removeImg").trigger('click');
+
+                    $('#img-error')
+                        .text('Envie uma imagem maior que 150x150')
+                        .css('display', 'block');
+                }
+
+                else{
+                    $('#img-error').css('display', 'none');
+
+                    $("#btn-upload-img").attr('disabled', null);
+                }
+
+                clearInterval(interval)
+            }
+
+            else{
+                $("#btn-upload-img").attr('disabled', null);
+
+            }
+
+        }, 500);
+
     });
 
     if(window.localStorage.getItem('edit') != null)

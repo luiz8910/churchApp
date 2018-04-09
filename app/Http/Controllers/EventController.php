@@ -1841,7 +1841,8 @@ class EventController extends Controller
         $today = date_create();
 
         $events = DB::table('event_person')
-                        ->select('events.name', 'events.id', 'events.createdBy_id', 'event_person.event_date',
+                        ->select('events.name', 'events.id', 'events.createdBy_id', 'event_person.event_date', 'events.group_id',
+                            'events.description', 'events.imgEvent',
                             'events.endTime', 'events.street', 'events.number', 'events.city', 'events.frequency', 'event_person.deleted_at')
                         ->join('events', 'event_person.event_id', '=', 'events.id')
                         ->where('events.church_id', $church)
