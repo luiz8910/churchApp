@@ -921,6 +921,8 @@ class GroupController extends Controller
         );
     }
 
+//-------------------------------------------------- API --------------------------------------------------------------------------
+
 
     public function groupListApp($church)
     {
@@ -933,6 +935,10 @@ class GroupController extends Controller
             foreach ($groups as $group)
             {
                 $group->sinceOf = $this->formatDateView($group->sinceOf);
+
+                $people = DB::table('group_person')->where('group_id', $group->id)->get();
+
+                $group->members = count($people);
             }
 
             return json_encode($groups);

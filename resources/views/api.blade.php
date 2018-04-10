@@ -85,17 +85,26 @@
 
     <div class="row">
         <div class="col-md-12">
+            <h3 class="text-center">Eventos</h3>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Lista dos Próximos 5 eventos</h3>
+                    <h3 class="panel-title">Lista dos Próximos X eventos</h3>
                 </div>
                 <div class="panel-body">
 
-                    https://beconnect.com.br/api/next-events/{church}
+                    https://beconnect.com.br/api/next-events/{qtde}/{church}
                     <span class="label label-primary">GET</span>
 
+                    <br><br>
+                    qtde = Quantidade de Próximos eventos a serem exibidos <span class="label label-info" style="font-size: 12px;">Inteiro</span>
                     <br>
                     church = id da igreja <span class="label label-info" style="font-size: 12px;">Inteiro</span>
+
 
                     <br><br>
 
@@ -141,6 +150,12 @@
 
     <div class="row">
         <div class="col-md-12">
+            <h3 class="text-center">Grupos</h3>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     <h3 class="panel-title">Lista de todos os Grupos da Igreja</h3>
@@ -150,7 +165,7 @@
                     https://beconnect.com.br/api/groups/{church}
                     <span class="label label-primary">GET</span>
 
-                    <br>
+                    <br><br>
                     church = id da igreja <span class="label label-info" style="font-size: 12px;">Inteiro</span>
 
                     <br><br>
@@ -158,9 +173,11 @@
                     <p class="text-center">Exemplo de Retorno</p>
 
                     <pre>
-                        [{"id":2,"name":"Grupo de Jovens","sinceOf":"04\/12\/2017"},
-                        {"id":3,"name":"Grupo de Estudo","sinceOf":"21\/12\/2017"},
-                        {"id":4,"name":"Grupo Teste Exclus\u00e3o","sinceOf":"25\/01\/2018"}]
+                        [
+                            {"id":2,"name":"Grupo de Jovens","sinceOf":"04\/12\/2017","members":10},
+                            {"id":3,"name":"Grupo de Estudo","sinceOf":"21\/12\/2017","members":1},
+                            {"id":4,"name":"Grupo Teste Exclus\u00e3o","sinceOf":"25\/01\/2018","members":1}
+                        ]
                     </pre>
                 </div>
             </div>
@@ -178,7 +195,7 @@
                     https://beconnect.com.br/api/my-groups/{person_id}
                     <span class="label label-primary">GET</span>
 
-                    <br>
+                    <br><br>
                     person_id = id do membro logado <span class="label label-info" style="font-size: 12px;">Inteiro</span>
 
                     <br><br>
@@ -221,7 +238,7 @@
                     https://beconnect.com.br/api/group-people/{group_id}
                     <span class="label label-primary">GET</span>
 
-                    <br>
+                    <br><br>
                     group_id = id do grupo escolhido <span class="label label-info" style="font-size: 12px;">Inteiro</span>
 
                     <br><br>

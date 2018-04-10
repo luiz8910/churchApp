@@ -25,13 +25,24 @@ Route::get('/log', function (){
     return 'token valido';
 })->middleware('jwt.auth');
 
+//------------------------- Igrejas ------------------------------------------------------------------------------------
+
 Route::get('/church-list', 'ChurchController@churchesApi')->middleware('cors');
 
 //Route::get('/login/{email}/{password}/{church}', 'Auth\LoginController@loginApp');
 
+//------------------------- Login ------------------------------------------------------------------------------------
+
 Route::post('/login', 'Auth\LoginController@loginApp');
 
-Route::get('/next-events/{church}', 'EventController@getEventsApi');
+//------------------------- Eventos ------------------------------------------------------------------------------------
+
+Route::get('/next-events/{qtde}/{church}', 'EventController@getEventsApi');
+
+Route::get('/events-next-week/{church}', 'EventController@getNextWeekEvents');
+
+
+//------------------------- Grupos -------------------------------------------------------------------------------------
 
 Route::get('groups/{church}', 'GroupController@groupListApp');
 

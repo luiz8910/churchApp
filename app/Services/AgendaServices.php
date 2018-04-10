@@ -239,4 +239,16 @@ class AgendaServices
 
         return $days;
     }
+
+    public function nextWeek()
+    {
+        $today = date_create();
+
+        $add = 8 - date('N');
+
+        date_add($today, date_interval_create_from_date_string($add . ' days'));
+
+        return $today;
+
+    }
 }

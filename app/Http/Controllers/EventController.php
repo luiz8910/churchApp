@@ -1836,7 +1836,7 @@ class EventController extends Controller
 
     // ----------------------------------------------------- API --------------------------------------------------------------------------------------- //
 
-    public function getEventsApi($church)
+    public function getEventsApi($qtde, $church)
     {
         $today = date_create();
 
@@ -1850,7 +1850,7 @@ class EventController extends Controller
                         ->whereNull('events.deleted_at')
                         ->orderBy('event_person.event_date')
                         ->distinct()
-                        ->limit(5)
+                        ->limit($qtde)
                         ->get();
 
         /*$events = $events->keyBy('id');
@@ -1879,5 +1879,15 @@ class EventController extends Controller
 
         return json_encode($events);
     }
+
+    public function getNextWeekEvents($church)
+    {
+        $nextMonday = $this->agendaServices->nextWeek();
+
+        $stop = false;
+
+
+    }
+
 
 }
