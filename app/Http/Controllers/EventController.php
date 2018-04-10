@@ -1884,9 +1884,46 @@ class EventController extends Controller
     {
         $nextMonday = $this->agendaServices->nextWeek();
 
-        $stop = false;
+        $endWeek = date_add($nextMonday, date_interval_create_from_date_string('7 days'));
 
+        $nextMonday = $this->agendaServices->nextWeek();
 
+        $events = DB::table('event_person')
+
+            ->select('events.name', 'events.id', 'events.createdBy_id', 'event_person.event_date', 'events.group_id',
+                'events.description', 'events.imgEvent', 'events.endTime', 'events.street', 'events.number',
+                'events.city', 'events.frequency', 'event_person.deleted_at')
+
+            ->join('events', 'events.id', 'event_person.event_id')
+
+            ->whereBetween('event_person.event_date', [$nextMonday, $endWeek])
+
+            ->where(
+                [
+                    'events.church_id' => $church,
+                    'event_person.deleted_at' => null
+                ])
+
+            ->distinct()
+            ->get();
+        //}
+
+        foreach ($events as $event)
+        {
+
+            $person = $this->userRepository->find($event->createdBy_id)->person;
+
+            $event->img_user = $person->imgProfile;
+
+            $event->createdBy_id = $person->name . " " . $person->lastName;
+
+            $event->eventDate = date_format(date_create($event->event_date), 'd-m-Y');//$this->formatDateView($event->eventDate);
+
+            $event->sub = count($this->eventServices->getListSubEvent($event->id));
+
+        }
+
+        return $events;
     }
 
 

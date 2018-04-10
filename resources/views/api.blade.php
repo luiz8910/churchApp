@@ -150,6 +150,91 @@
 
     <div class="row">
         <div class="col-md-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Lista de Eventos da Próxima Semana</h3>
+                </div>
+
+                <div class="panel-body">
+
+                    https://beconnect.com.br/api/events-next-week/{church}
+                    <span class="label label-primary">GET</span>
+
+                    <br><br>
+                    church = id da igreja <span class="label label-info" style="font-size: 12px;">Inteiro</span>
+
+                    <br><br>
+
+                    <p class="text-center">Exemplo de Retorno</p>
+
+                    <pre>
+
+                        [
+                            {"name":"Encontro das XYZ",
+                                "id":35,"createdBy_id":"Luiz Admin","event_date":"2018-04-16 10:00:00","group_id":3,"description":"",
+                                "imgEvent":null,"endTime":"","street":"Rua Pastor Maur\u00edcio Ara\u00fajo de Lima","number":"123",
+                                "city":"Votorantim","frequency":"Di\u00e1rio","deleted_at":null,
+                                "img_user":"https:\/\/graph.facebook.com\/v2.8\/1091593140969198\/picture?type=normal","eventDate":"16-04-2018","sub":2},
+
+                            {"name":"Encontro das XYZ","id":35,"createdBy_id":"Luiz Admin","event_date":"2018-04-17 10:00:00","group_id":3,
+                            "description":"","imgEvent":null,"endTime":"","street":"Rua Pastor Maur\u00edcio Ara\u00fajo de Lima","number":"123",
+                            "city":"Votorantim","frequency":"Di\u00e1rio","deleted_at":null,
+                            "img_user":"https:\/\/graph.facebook.com\/v2.8\/1091593140969198\/picture?type=normal",
+                            "eventDate":"17-04-2018","sub":2},
+
+                            {"name":"Encontro das XYZ","id":35,"createdBy_id":"Luiz Admin",
+                            "event_date":"2018-04-18 10:00:00","group_id":3,"description":"","imgEvent":null,"endTime":"",
+                            "street":"Rua Pastor Maur\u00edcio Ara\u00fajo de Lima","number":"123","city":"Votorantim",
+                            "frequency":"Di\u00e1rio","deleted_at":null,"img_user":"https:\/\/graph.facebook.com\/v2.8\/1091593140969198\/picture?type=normal",
+                            "eventDate":"18-04-2018","sub":2},
+
+                            {"name":"Encontro das XYZ","id":35,"createdBy_id":"Luiz Admin",
+                            "event_date":"2018-04-19 10:00:00","group_id":3,"description":"","imgEvent":null,"endTime":"",
+                            "street":"Rua Pastor Maur\u00edcio Ara\u00fajo de Lima","number":"123","city":"Votorantim",
+                            "frequency":"Di\u00e1rio","deleted_at":null,"img_user":"https:\/\/graph.facebook.com\/v2.8\/1091593140969198\/picture?type=normal",
+                            "eventDate":"19-04-2018","sub":2},
+
+                            {"name":"Encontro das XYZ","id":35,"createdBy_id":"Luiz Admin",
+                            "event_date":"2018-04-20 10:00:00","group_id":3,"description":"","imgEvent":null,"endTime":"",
+                            "street":"Rua Pastor Maur\u00edcio Ara\u00fajo de Lima","number":"123","city":"Votorantim",
+                            "frequency":"Di\u00e1rio","deleted_at":null,"img_user":"https:\/\/graph.facebook.com\/v2.8\/1091593140969198\/picture?type=normal",
+                            "eventDate":"20-04-2018","sub":2},
+
+                            {"name":"Evento ABC","id":36,"createdBy_id":"Luiz Admin","event_date":"2018-04-18 10:00:00","group_id":null,
+                            "description":"","imgEvent":null,"endTime":"","street":"Rua Augusto Antunes Vieira","number":"39",
+                            "city":"Sorocaba","frequency":"Di\u00e1rio","deleted_at":null,
+                            "img_user":"https:\/\/graph.facebook.com\/v2.8\/1091593140969198\/picture?type=normal",
+                            "eventDate":"18-04-2018","sub":1},
+
+                            {"name":"Evento ABC","id":36,"createdBy_id":"Luiz Admin","event_date":"2018-04-19 10:00:00","group_id":null,
+                            "description":"","imgEvent":null,"endTime":"","street":"Rua Augusto Antunes Vieira","number":"39",
+                            "city":"Sorocaba","frequency":"Di\u00e1rio","deleted_at":null,
+                            "img_user":"https:\/\/graph.facebook.com\/v2.8\/1091593140969198\/picture?type=normal",
+                            "eventDate":"19-04-2018","sub":1},
+
+                            {"name":"Evento ABC","id":36,"createdBy_id":"Luiz Admin","event_date":"2018-04-20 10:00:00","group_id":null,
+                            "description":"","imgEvent":null,"endTime":"","street":"Rua Augusto Antunes Vieira","number":"39","city":"Sorocaba",
+                            "frequency":"Di\u00e1rio","deleted_at":null,
+                            "img_user":"https:\/\/graph.facebook.com\/v2.8\/1091593140969198\/picture?type=normal","eventDate":"20-04-2018","sub":1},
+
+                            {"name":"Evento ABC","id":36,"createdBy_id":"Luiz Admin","event_date":"2018-04-21 10:00:00","group_id":null,
+                            "description":"","imgEvent":null,"endTime":"","street":"Rua Augusto Antunes Vieira","number":"39",
+                            "city":"Sorocaba","frequency":"Di\u00e1rio","deleted_at":null,
+                            "img_user":"https:\/\/graph.facebook.com\/v2.8\/1091593140969198\/picture?type=normal","eventDate":"21-04-2018","sub":1},
+
+                            {"name":"Evento ABC","id":36,"createdBy_id":"Luiz Admin","event_date":"2018-04-22 10:00:00","group_id":null,
+                            "description":"","imgEvent":null,"endTime":"","street":"Rua Augusto Antunes Vieira","number":"39",
+                            "city":"Sorocaba","frequency":"Di\u00e1rio","deleted_at":null,
+                            "img_user":"https:\/\/graph.facebook.com\/v2.8\/1091593140969198\/picture?type=normal","eventDate":"22-04-2018","sub":1}
+                        ]
+                    </pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
             <h3 class="text-center">Grupos</h3>
         </div>
     </div>

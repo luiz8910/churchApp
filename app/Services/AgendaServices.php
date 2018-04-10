@@ -242,7 +242,7 @@ class AgendaServices
 
     public function nextWeek()
     {
-        $today = date_create();
+        $today = date_create(date('Y-m-d'));
 
         $add = 8 - date('N');
 
