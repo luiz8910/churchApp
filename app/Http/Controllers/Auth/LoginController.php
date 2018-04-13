@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\Role;
 use App\Models\User;
+use App\Repositories\RoleRepository;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -30,15 +31,20 @@ class LoginController extends Controller
      * @var string
      */
     protected $redirectTo = '/home';
+    /**
+     * @var RoleRepository
+     */
+    private $roleRepository;
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(RoleRepository $roleRepository)
     {
         $this->middleware('guest', ['except' => 'logout']);
+        $this->roleRepository = $roleRepository;
     }
 
     /**
@@ -92,9 +98,16 @@ class LoginController extends Controller
 
             if($user->church_id == $church)
             {
+
+                $role_id = $user->person->role_id;
+
+                $role = $this->roleRepository->find($role_id)->name;
+
                 return json_encode([
                     'status' => true,
-                    'person_id' => $user->person->id
+                    'person_id' => $user->person->id,
+                    'role_id' => $role_id,
+                    'role' => $role
                 ]);
             }
 

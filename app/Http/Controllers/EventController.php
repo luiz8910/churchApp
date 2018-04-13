@@ -1923,7 +1923,7 @@ class EventController extends Controller
 
         }
 
-        return $events;
+        return json_encode($events);
     }
 
 

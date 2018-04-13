@@ -62,14 +62,14 @@
                     <pre>
                         email = admin@admin.com (Obrigatório)
                         password = senha123 (Obrigatório)
-                        church = 1 (Obrigatório) <span class="label label-info"">Inteiro</span>
+                        church = 1 (Obrigatório) <span class="label label-info">Inteiro</span>
                     </pre>
 
                     <p class="text-center">Exemplo de Retorno</p>
 
                     <pre>
                         Login Válido
-                            {"status":true,"person_id":1}
+                            {"status":true,"person_id":1,"role_id":1,"role":"Lider"}
 
                         Ou
 
@@ -166,6 +166,10 @@
                     <br><br>
 
                     <p class="text-center">Exemplo de Retorno</p>
+
+                    <br>
+
+                    <span class="label label-info text-center" style="font-size: 12px;">Obs: atributo sub = quantidade de membros inscritos no evento</span>
 
                     <pre>
 
