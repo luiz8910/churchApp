@@ -1926,5 +1926,32 @@ class EventController extends Controller
         return json_encode($events);
     }
 
+    public function recentEventsApp($church)
+    {
+        $events = DB::table('recent_events')
+            ->select('event_id')
+            ->where('church_id', $church)
+            ->get();
+
+        if(count($events) > 0)
+        {
+            foreach($events as $event)
+            {
+                $model = $this->repository->find($event->event_id);
+
+                $event->name = $model->name;
+
+                $event->imgEvent = $model->imgEvent;
+            }
+
+            return json_encode([
+                'status' => true,
+                'events' => $events
+            ]);
+        }
+
+        return json_encode(['status' => false]);
+    }
+
 
 }

@@ -355,6 +355,153 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="text-center">Atividades Recentes</h3>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Grupos Recentes</h3>
+                </div>
+
+                <div class="panel-body">
+
+                    https://beconnect.com.br/api/recent-groups/{church}
+                    <span class="label label-primary">GET</span>
+
+                    <br><br>
+                    church = id da igreja <span class="label label-info" style="font-size: 12px;">Inteiro</span>
+
+                    <br><br>
+
+                    <p class="text-center">Exemplo de Retorno</p>
+
+                    <pre>
+
+                        Se quantidade de grupos recentes > 0
+
+                        {"status":true,
+
+                            "groups":[
+                                {"group_id":2,"name":"Grupo de Jovens","imgProfile":"uploads\/group\/2-Grupo de Jovens.jpeg"},
+                                {"group_id":3,"name":"Grupo de Estudo","imgProfile":"uploads\/group\/grupo.jpg"},
+                                {"group_id":4,"name":"Grupo Teste Exclus\u00e3o","imgProfile":"uploads\/group\/grupo.jpg"}
+                            ]
+                        }
+
+                        Se quantidade = 0
+
+                        {"status":false}
+                    </pre>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Eventos Recentes</h3>
+                </div>
+
+                <div class="panel-body">
+
+                    https://beconnect.com.br/api/recent-events/{church}
+                    <span class="label label-primary">GET</span>
+
+                    <br><br>
+                    church = id da igreja <span class="label label-info" style="font-size: 12px;">Inteiro</span>
+
+                    <br><br>
+
+                    <p class="text-center">Exemplo de Retorno</p>
+
+                    <pre>
+
+                        Se quantidade de eventos recentes > 0
+
+                        {"status":true,
+
+                            "events":[
+                                {"event_id":3,"name":"Encontro de Jovens","imgEvent":null},
+                                {"event_id":4,"name":"Teste Evento P\u00fablico","imgEvent":null},
+                                {"event_id":5,"name":"Evento Grupo de Estudo","imgEvent":null},
+                                {"event_id":6,"name":"Evento de Estudo","imgEvent":null},
+                                {"event_id":9,"name":"Check-in","imgEvent":null},
+                                {"event_id":26,"name":"Teste check-in visitantes","imgEvent":null},
+                                {"event_id":28,"name":"Evento de Teste Inscri\u00e7\u00e3o","imgEvent":null},
+                                {"event_id":29,"name":"Visitantes","imgEvent":null},
+                                {"event_id":30,"name":"Evento do Batman","imgEvent":null},
+                                {"event_id":31,"name":"Evento do super man","imgEvent":null},
+                                {"event_id":32,"name":"Evento do Deadpool","imgEvent":null},
+                                {"event_id":33,"name":"Evento do X","imgEvent":"uploads\/event\/33-Evento X.jpg"},
+                                {"event_id":34,"name":"Teste Inscri\u00e7\u00e3o Grupo de Jovens","imgEvent":null},
+                                {"event_id":35,"name":"Encontro dos XYZ","imgEvent":null},
+                                {"event_id":36,"name":"Evento BLA BLA","imgEvent":null}
+                            ]
+                        }
+
+                        Se quantidade = 0
+
+                        {"status":false}
+                    </pre>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Membros Recentes</h3>
+                </div>
+
+                <div class="panel-body">
+
+                    https://beconnect.com.br/api/recent-people/{church}
+                    <span class="label label-primary">GET</span>
+
+                    <br><br>
+                    church = id da igreja <span class="label label-info" style="font-size: 12px;">Inteiro</span>
+
+                    <br><br>
+
+                    <p class="text-center">Exemplo de Retorno</p>
+
+                    <pre>
+
+                        Se quantidade de membros recentes > 0
+
+                        {"status":true,
+
+                            "people":[
+                                {"person_id":3,"name":"Dollynho","imgProfile":"uploads\/profile\/3-Dollynho.jpg"},
+                                {"person_id":5,"name":"Pedro Lucas ","imgProfile":"uploads\/profile\/5-Pedro Lucas .jpg"},
+                                {"person_id":1718,"name":"Eduardo","imgProfile":"uploads\/profile\/1718-Eduardo.jpg"},
+                                {"person_id":1719,"name":"Maria","imgProfile":"uploads\/profile\/1719-Maria.jpg"},
+                                {"person_id":1900,"name":"Luiz","imgProfile":"https:\/\/graph.facebook.com\/v2.8\/1091593140969198\/picture?type=normal"}
+                            ]
+                        }
+
+                        Se quantidade = 0
+
+                        {"status":false}
+                    </pre>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 </div>
 
 

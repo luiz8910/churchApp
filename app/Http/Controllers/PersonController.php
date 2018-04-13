@@ -1761,4 +1761,34 @@ class PersonController extends Controller
 
 
     }
+
+//--------------------------------------------------------- API --------------------------------------------------------
+
+    public function recentPeopleApp($church)
+    {
+
+        $people = DB::table('recent_users')
+            ->select('person_id')
+            ->where('church_id', $church)
+            ->get();
+
+        if(count($people) > 0)
+        {
+            foreach($people as $person)
+            {
+                $model = $this->repository->find($person->person_id);
+
+                $person->name = $model->name;
+
+                $person->imgProfile = $model->imgProfile;
+            }
+
+            return json_encode([
+                'status' => true,
+                'people' => $people
+            ]);
+        }
+
+        return json_encode(['status' => false]);
+    }
 }

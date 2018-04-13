@@ -41,6 +41,8 @@ Route::get('/next-events/{qtde}/{church}', 'EventController@getEventsApi');
 
 Route::get('/events-next-week/{church}', 'EventController@getNextWeekEvents');
 
+Route::get('recent-events/{church}', 'EventController@recentEventsApp');
+
 
 //------------------------- Grupos -------------------------------------------------------------------------------------
 
@@ -49,3 +51,10 @@ Route::get('groups/{church}', 'GroupController@groupListApp');
 Route::get('my-groups/{person_id}', 'GroupController@myGroupsApp');
 
 Route::get('group-people/{group_id}', 'GroupController@groupPeopleApp');
+
+Route::get('recent-groups/{church}', 'GroupController@recentGroupsApp');
+
+
+//------------------------- Pessoas ------------------------------------------------------------------------------------
+
+Route::get('/recent-people/{church}', 'PersonController@recentPeopleApp');

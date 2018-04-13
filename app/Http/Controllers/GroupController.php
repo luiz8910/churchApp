@@ -988,4 +988,32 @@ class GroupController extends Controller
 
         return json_encode(['status' => false]);
     }
+
+    public function recentGroupsApp($church)
+    {
+        $groups = DB::table('recent_groups')
+            ->select('group_id')
+            ->where('church_id', $church)
+            ->get();
+
+        if(count($groups) > 0)
+        {
+            foreach($groups as $group)
+            {
+                $model = $this->repository->find($group->group_id);
+
+                $group->name = $model->name;
+
+                $group->imgProfile = $model->imgProfile;
+            }
+
+            return json_encode([
+                'status' => true,
+                'groups' => $groups
+            ]);
+        }
+
+        return json_encode(['status' => false]);
+
+    }
 }
