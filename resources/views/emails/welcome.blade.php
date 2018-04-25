@@ -393,7 +393,8 @@
     </style>
 </head>
 <body>
-<span class="preheader">Novo Cadastro</span>
+<span class="preheader" style="margin-bottom: 10px;">Novo Cadastro</span>
+
 <table class="email-wrapper" width="100%" cellpadding="0" cellspacing="0">
     <tr>
         <td align="center">
@@ -426,15 +427,13 @@
                                                             <table border="0" cellspacing="0" cellpadding="0">
                                                                 <tr>
                                                                     <td>
-                                                                        <label for="">Sua senha é: {{ $password }}</label>
-                                                                    </td>
+                                                                        <p>Sua senha é: {{ $password }}</p>
 
-                                                                    <td>
+                                                                        <br>
+
                                                                         <a href="{{ $url }}"
                                                                            class="button button--purple" target="_blank">Acessar o Sistema</a>
-                                                                    </td>
 
-                                                                    <td>
                                                                         <p>Se o login for feito com redes sociais, a senha não é necessária</p>
                                                                     </td>
                                                                 </tr>

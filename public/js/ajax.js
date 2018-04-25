@@ -1,3 +1,152 @@
+function Request(url, data, id, method, static_page)
+{
+    var values = [];
+    var request = '';
+
+    if(data && !id)
+    {
+        for(var i = 0; i < data.length; i ++)
+        {
+            data[i].value = data[i].value.replace('?', "--");
+            values.push(data[i].value);
+        }
+
+        values = JSON.stringify(values);
+
+        request = $.ajax({
+            url: url + values,
+            method: method ? method : 'GET',
+            dataType: 'json'
+        });
+
+        request.done(function(e){
+            if(e.status)
+            {
+                SuccessMsg(static_page);
+            }
+            else{
+
+                ErrorMsg();
+
+            }
+        });
+
+        request.fail(function(e){
+            console.log('fail');
+            console.log(e);
+
+            ErrorMsg();
+        });
+    }
+
+    else if(!data && id)
+    {
+        request = $.ajax({
+            url: url + id,
+            method: method ? method : 'GET',
+            dataType: 'json'
+        });
+
+        request.done(function(e){
+            if(e.status){
+                SuccessMsg(static_page);
+            }
+            else{
+                ErrorMsg();
+            }
+        });
+
+        request.fail(function(e){
+            console.log('fail');
+            console.log(e);
+
+            ErrorMsg();
+        });
+    }
+
+    else if(data && id)
+    {
+        for(var x = 0; x < data.length; x++)
+        {
+            data[x].value = data[x].value.replace('?', "--");
+            values.push(data[x].value);
+        }
+
+        values = JSON.stringify(values);
+
+        request = $.ajax({
+            url: url + values + '/' + id,
+            method: method ? method : 'GET',
+            dataType: 'json'
+        });
+
+        request.done(function(e){
+            if(e.status){
+                SuccessMsg(static_page);
+            }
+            else{
+                ErrorMsg();
+            }
+        });
+
+        request.fail(function(e){
+            console.log('fail');
+            console.log(e);
+
+            ErrorMsg();
+        });
+    }
+
+}
+
+function SimpleRequest(url, data, id, method, static_page)
+{
+    var request = '';
+
+    if(data && id)
+    {
+        request = $.ajax({
+            url: url + data + '/' + id,
+            method: method ? method : 'GET',
+            dataType: 'json'
+        });
+
+        request.done(function(e){
+            if(e.status){
+                SuccessMsg(static_page);
+            }
+            else{
+                ErrorMsg();
+            }
+        });
+
+        request.fail(function(e){
+            console.log('fail');
+            console.log(e);
+
+            ErrorMsg();
+        });
+    }
+
+}
+
+function SuccessMsg(static_page)
+{
+    swal('Sucesso', 'Os dados foram salvos', 'success');
+
+    if(!static_page){
+        setTimeout(function(){
+            location.reload();
+        }, 2000);
+    }
+
+}
+
+function ErrorMsg()
+{
+    swal('Erro', 'Verifique sua conexão', 'error');
+}
+
 $("#recoverPassword").submit(function (e) {
     sendPassword();
 
@@ -1776,21 +1925,35 @@ $("#btn-search").keyup(function () {
 
     if (input.length > 2) {
         $("#p-zero").css('display', 'none');
+
         $("#pagination").css('display', 'none');
+
         $('tbody > tr').css('display', 'none');
+
         $("#tbody-search > tr").remove();
+
         $("thead").css('display', 'none');
+
         $("#loading-results").css('display', 'block');
+
         generalSearch(str, input);
+
     }
     else {
         $("thead").css('display', 'table-header-group');
+
         $("#p-zero").css('display', 'none');
+
         $("#loading-results").css('display', 'none');
+
         $("#tbody-search").addClass('hide');
+
         $("#tbody-search > tr").remove();
+
         $("#pagination").css('display', 'block');
+
         $('tbody > tr').css('display', 'table-row');
+
     }
 });
 
@@ -1814,6 +1977,7 @@ function makeMember(id) {
 
 function generalSearch(model, input) {
     var request = '';
+
     var route = location.pathname + '/';
 
     if (model == "/inactive-person") {
@@ -2059,6 +2223,89 @@ function generalSearch(model, input) {
                         '</tr>';
 
                     i = i + 5;
+                }
+
+                $("#loading-results").css('display', 'none');
+
+                $("thead").css('display', 'table-header-group');
+
+                $("#tbody-search").removeClass('hide').append(tr);
+
+                console.log(e.data);
+            }
+            else {
+                $("#loading-results").css('display', 'none');
+                $("#p-zero").css('display', 'block');
+            }
+        })
+    }
+
+
+    else if(model == '/aguardando-aprovacao')
+    {
+
+        request = $.ajax({
+            url: '/search-person/' + input + '/' + 'people' + '/' + 'approval',
+            method: 'GET',
+            dataType: 'json'
+        });
+
+
+        request.done(function (e) {
+            if (e.status) {
+                var i = 0;
+
+                var tr = '';
+
+                while (i < e.data.length) {
+
+                    var label, button, name, email;
+
+                    name = e.data[i + 3];
+                    email = e.data[i + 4];
+
+                    if(e.data[i + 6] == 'waiting')
+                    {
+                        label = '<span class="label label-warning">'+
+                        '<i class="fa fa-clock-o"></i>'+
+                        ' Aguardando Aprovação </span>';
+
+                        button = '<button class="btn btn-danger btn-sm btn-circle" title="Negar Aprovação"'+
+                            'onclick="deny('+ "'"+name+"'" +', '+ "'"+email+"'" +', '+ e.data[i + 2] +')"'+
+                            '> <i class="fa fa-ban"></i> Negar </button>';
+                    }
+                    else{
+
+                        label = '<span class="label label-danger">'+
+                            '<i class="fa fa-ban"></i>'+
+                            'Negado </span>';
+
+                        button = '<button class="btn btn-info btn-sm btn-circle btn-details" title="Detalhes"'+
+                            'onclick="denyDetails('+ e.data[i + 2] +')"'+
+                            '> <i class="fa fa-info-circle"></i> Detalhes da Recusa </button>';
+
+                    }
+
+
+                    tr += '<tr>' +
+                        '<td>' +
+                            '<img src="'+e.data[i]+'" style="width: 50px; height: 50px;">'+
+                        '</td>' +
+                        '<td>' +
+                        '<a href="' + e.data[i + 1] + '/' + e.data[i + 2] + '/edit">' + e.data[i + 3] + '</a>' +
+                        '</td>' +
+                        '<td>' + e.data[i + 4] + '</td>' +
+                        '<td>' + e.data[i + 5] + '</td>' +
+                        '<td>' + label + '</td>' +
+                        '<td>' +
+                        '<button class="btn btn-success btn-circle btn-sm " onclick="approveUser('+ e.data[i + 2] +')">' +
+                            '<i class="fa fa-check"></i> Aprovar'+
+                        '</button>'+
+                        ''+button+''+
+                        '</td>' +
+                        '</tr>';
+
+                    i = i + 7;
                 }
 
                 $("#loading-results").css('display', 'none');
@@ -2700,8 +2947,9 @@ function peopleCheckIn(array, event) {
         });
     }
 
-
 }
+
+
 
 
 

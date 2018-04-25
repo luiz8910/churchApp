@@ -8,14 +8,24 @@
 
 namespace App\Traits;
 
+use App\Mail\DenyUser;
+use App\Mail\ForLeaders;
 use App\Mail\resetPassword;
 use App\Mail\welcome;
 use App\Mail\Contact_Site;
-use App\Models\ContactSite;use App\Models\User;
+use App\Models\ContactSite;
+use App\Models\Person;
+use App\Models\Role;
+use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 
 trait EmailTrait
 {
+
+    private function getUrl()
+    {
+        return env('APP_URL') . 'login';
+    }
 
     public function emailTestEditTrait($email, $id)
     {
@@ -41,12 +51,22 @@ trait EmailTrait
 
     public function welcome($user, $password)
     {
-        $url = env('APP_URL');
+        $url = $this->getUrl();
 
         Mail::to($user)
             ->send(new welcome(
                 $user, $url, $password
             ));
+
+        return true;
+    }
+
+    public function denyUser($user, $msg)
+    {
+        $url = $this->getUrl();
+
+        Mail::to($user)
+            ->send(new DenyUser($user, $msg, $url));
 
         return true;
     }
@@ -60,5 +80,60 @@ trait EmailTrait
 
 
         return true;
+    }
+
+    public function newWaitingApproval($waitingPerson, $church_id, $subject = null)
+    {
+        //Url para botão no email
+        $url = $this->getUrl();
+
+        //ID de cargo do líder
+        $leader = Role::where('name', 'Lider')->first()->id;
+
+        //ID de cargo do admin
+        $admin = Role::where('name', 'Administrador')->first()->id;
+
+        //Enviar email para admins e líderes
+
+        $people = Person::where([
+                'role_id' => $leader,
+                'church_id' => $church_id,
+                'status' => 'active',
+                'deleted_at' => null
+            ])->orWhere([
+                'role_id' => $admin,
+                'church_id' => $church_id,
+                'status' => 'active',
+                'deleted_at' => null
+        ])->get();
+
+        $data = new \StdClass;
+
+        foreach ($people as $person)
+        {
+            //Nome inteiro da pessoa que está aguardando
+            $data->fullName = $waitingPerson->name. ' ' . $waitingPerson->lastName;
+
+            //Email Remetente
+            $data->from = 'membros@beconnect.com.br';
+
+            //Assunto do Email
+            $data->subject = $subject ? $subject . ' ' . $data->fullName  : 'Novo Usuário Aguardando Aprovação - ' .$data->fullName;
+
+            //Layout do Email
+            $data->view = 'new-waiting-approval';
+
+            //Nome do Líder/Admin
+            $data->name = $person->name;
+
+            //Email da pessoa que está aguardando
+            $data->waitingPerson_email = $waitingPerson->email;
+
+            //Link para o perfil do candidato a membro
+            $data->profile = "https://beconnect.com.br/person/$waitingPerson->id/edit";
+
+            //Envio do Email
+            Mail::to($person->user->email)->send(new ForLeaders($person->user, $data, $url));
+        }
     }
 }

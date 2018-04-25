@@ -132,6 +132,14 @@
                     </form>
                 </div>
             </div>
+
+            {{--<br><br>
+
+            <div class="row">
+                <div class="col-md-8 col-xs-12 text-center">
+                    <a href="#">Cadastre-se</a>
+                </div>
+            </div>--}}
         </div>
 
         <div class="hidden-sm-up col-12 transparent-grape">

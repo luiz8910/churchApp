@@ -651,6 +651,11 @@ $(function () {
         dropdownParent: $('#newSub')
     });
 
+    $("#search-form").click(function(){
+
+        $("#results").addClass('open');
+    });
+
     /*$("#container-pagination").cleverInfiniteScroll({
         contentsWrapperSelector: "#container-pagination",
         contentSelector: ".feeds",

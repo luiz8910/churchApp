@@ -53,7 +53,8 @@ class SearchController extends Controller
                         [
                             ['name', 'like', $input.'%'],
                             ['church_id', '=', $church_id],
-                            ['deleted_at', '=', null]
+                            ['deleted_at', '=', null],
+                            'status' => 'active'
                         ]
                     )
                     ->get();
@@ -84,7 +85,7 @@ class SearchController extends Controller
      * @param $status
      * @return string
      */
-    public function searchPerson($input, $status)
+    public function searchPerson($input, $status, $approval = null)
     {
         $church_id = $this->getUserChurch();
 
@@ -110,7 +111,8 @@ class SearchController extends Controller
                         [
                             ['name', 'like', '%'.$fullName[0].'%'],
                             ['lastName', 'like', $fullName[1].'%'],
-                            ['deleted_at', $symbol, null]
+                            ['deleted_at', $symbol, null],
+                            'status' => 'active'
                         ]
                     )
                     ->limit(5)
@@ -125,26 +127,48 @@ class SearchController extends Controller
                                 ['name', 'like', '%'.$fullName[0].'%'],
                                 ['lastName', 'like', $fullName[1].'%'],
                                 ['church_id', '=', $church_id],
-                                ['deleted_at', $symbol, null]
+                                ['deleted_at', $symbol, null],
+                                'status' => 'active'
                             ]
                         )
                         ->limit(5)
                         ->orderBy('name', 'desc')
                         ->get();
                 }else{
-                    $people = DB::table($table)
-                        ->where(
-                            [
-                                ['name', 'like', '%'.$fullName[0].'%'],
-                                ['lastName', 'like', $fullName[1].'%'],
-                                ['church_id', '=', $church_id],
-                                ['tag', $tag, 'adult'],
-                                ['deleted_at', $symbol, null]
-                            ]
-                        )
-                        ->limit(5)
-                        ->orderBy('name', 'desc')
-                        ->get();
+                    if($approval)
+                    {
+                        $people = DB::table($table)
+                            ->where(
+                                [
+                                    ['name', 'like', '%'.$fullName[0].'%'],
+                                    ['lastName', 'like', $fullName[1].'%'],
+                                    ['church_id', '=', $church_id],
+                                    ['deleted_at', $symbol, null],
+                                    ['status', '<>', 'active']
+                                ]
+                            )
+                            ->limit(5)
+                            ->orderBy('name', 'desc')
+                            ->get();
+                    }
+                    else{
+
+                        $people = DB::table($table)
+                            ->where(
+                                [
+                                    ['name', 'like', '%'.$fullName[0].'%'],
+                                    ['lastName', 'like', $fullName[1].'%'],
+                                    ['church_id', '=', $church_id],
+                                    ['tag', $tag, 'adult'],
+                                    ['deleted_at', $symbol, null],
+                                    'status' => 'active'
+                                ]
+                            )
+                            ->limit(5)
+                            ->orderBy('name', 'desc')
+                            ->get();
+                    }
+
                 }
 
             }
@@ -158,7 +182,8 @@ class SearchController extends Controller
                     ->where(
                         [
                             ['name', 'like', '%'.$input.'%'],
-                            ['deleted_at', $symbol, null]
+                            ['deleted_at', $symbol, null],
+                            'status' => 'active'
                         ]
                     )
                     ->limit(5)
@@ -173,7 +198,8 @@ class SearchController extends Controller
                             [
                                 ['name', 'like', '%'.$input.'%'],
                                 ['church_id', '=', $church_id],
-                                ['deleted_at', $symbol, null]
+                                ['deleted_at', $symbol, null],
+                                'status' => 'active'
                             ]
                         )
                         ->limit(5)
@@ -181,18 +207,40 @@ class SearchController extends Controller
                         ->get();
                 }
                 else{
-                    $people = DB::table($table)
-                        ->where(
-                            [
-                                ['name', 'like', '%'.$input.'%'],
-                                ['church_id', '=', $church_id],
-                                ['tag', $tag, 'adult'],
-                                ['deleted_at', $symbol, null]
-                            ]
-                        )
-                        ->limit(5)
-                        ->orderBy('name', 'desc')
-                        ->get();
+                    if($approval)
+                    {
+
+                        $people = DB::table($table)
+                            ->where(
+                                [
+                                    ['name', 'like', '%'.$fullName[0].'%'],
+                                    ['church_id', '=', $church_id],
+                                    ['deleted_at', $symbol, null],
+                                    ['status', '<>', 'active']
+                                ]
+                            )
+                            ->limit(5)
+                            ->orderBy('name', 'desc')
+                            ->get();
+
+                    }
+                    else{
+
+                        $people = DB::table($table)
+                            ->where(
+                                [
+                                    ['name', 'like', '%'.$input.'%'],
+                                    ['church_id', '=', $church_id],
+                                    ['tag', $tag, 'adult'],
+                                    ['deleted_at', $symbol, null],
+                                    'status' => 'active'
+                                ]
+                            )
+                            ->limit(5)
+                            ->orderBy('name', 'desc')
+                            ->get();
+                    }
+
                 }
 
             }
@@ -214,7 +262,7 @@ class SearchController extends Controller
                     $arr[] = $person->id;
                 }
             }
-            elseif($status == "people")
+            elseif($status == "people" && !$approval)
             {
                 foreach ($people as $person)
                 {
@@ -230,6 +278,40 @@ class SearchController extends Controller
                     $arr[] = $person->id;
 
                 }
+            }
+
+            elseif($approval)
+            {
+
+                foreach ($people as $person)
+                {
+
+                    if($person->tag == 'adult')
+                    {
+                        $tag = 'person';
+                    }
+                    else{
+
+                        $tag = 'teen';
+                    }
+
+                    $arr[] = $person->imgProfile;
+
+                    $arr[] = $tag;
+
+                    $arr[] = $person->id;
+
+                    $arr[] = $person->name . " " . $person->lastName;
+
+                    $arr[] = $person->email;
+
+                    $arr[] = date_format(date_create($person->created_at), 'd/m/Y');
+
+                    $arr[] = $person->status;
+
+
+                }
+
             }
             else{
 

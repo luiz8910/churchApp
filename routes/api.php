@@ -58,3 +58,5 @@ Route::get('recent-groups/{church}', 'GroupController@recentGroupsApp');
 //------------------------- Pessoas ------------------------------------------------------------------------------------
 
 Route::get('/recent-people/{church}', 'PersonController@recentPeopleApp');
+
+Route::post('/new-member/', 'PersonController@storeWaitingApprovalApp');

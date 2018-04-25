@@ -46,6 +46,8 @@
 
                     <div class="page-content">
                         <div class="container">
+                            @include('includes.messages')
+
                             <div class="alert alert-danger alert-dismissible" id="delete-group-alert" role="alert" style="display: none;">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
@@ -67,14 +69,14 @@
                                                         @if(Auth::getUser()->person->role_id == $leader
                                                             || Auth::getUser()->person->role_id == $admin)
 
-                                                            <div class="col-lg-6">
+                                                            <div class="col-lg-9">
                                                                 <div class="input-group">
                                                                     <input type="text" class="form-control" id="btn-search" placeholder="Digite 3 letras ou mais...">
-                                                                        <span class="input-group-btn">
-                                                                            <button class="btn btn-default" type="button">
-                                                                                <i class="fa fa-search font-green"></i>
-                                                                            </button>
-                                                                        </span>
+                                                                    <span class="input-group-btn">
+                                                                        <button class="btn btn-default" type="button">
+                                                                            <i class="fa fa-search font-green"></i>
+                                                                        </button>
+                                                                    </span>
                                                                 </div><!-- /input-group -->
                                                             </div><!-- /.col-lg-8 -->
 
@@ -86,6 +88,8 @@
                                                                     </a>
                                                                 </div>
                                                             </div>--}}
+
+                                                            <?php $route = 'person'; ?>
 
                                                             <div class="col-lg-3">
                                                                 <a class="btn red btn-outline btn-circle btn-sm" href="javascript:;" data-toggle="dropdown">
@@ -148,55 +152,114 @@
                                                     <div class="table-scrollable table-scrollable-borderless table-striped">
                                                         <table class="table table-hover table-light table-striped">
                                                             <thead>
-                                                            <tr class="uppercase">
-                                                                <th> Foto </th>
-                                                                <th> Nome </th>
-                                                                <th> Cadastrou-se em</th>
-                                                                <th> Opções </th>
-                                                            </tr>
+                                                            @if(count($people) > 0)
+                                                                <tr class="uppercase">
+                                                                    <th> Foto </th>
+                                                                    <th> Nome </th>
+                                                                    <th> Email </th>
+                                                                    <th> Cadastrou-se em</th>
+                                                                    <th> Status </th>
+                                                                    <th> Opções </th>
+                                                                </tr>
+                                                            @endif
                                                             </thead>
                                                             <tbody class="hide" id="tbody-search"></tbody>
                                                             <tbody>
 
-                                                            @foreach($people as $item)
-                                                                <tr id="tr-{{ $item->id }}">
-                                                                    <td> <img src="{{ $item->imgProfile }}" style="width: 50px; height: 50px;"> </td>
-                                                                    <td>
-                                                                        <a href="{{ route('person.edit', ['person' => $item->id]) }}">
-                                                                            {{ $item->name }} {{ $item->lastName }}</a>
-                                                                    </td>
-                                                                    <td> {{ $item->date_created }} </td>
+                                                            @if(count($people) > 0)
+                                                                @foreach($people as $item)
+                                                                    <input type="hidden" id="personId-{{ $item->id }}" class="personId">
 
-                                                                    @if($role != 'Visitante' && (Auth::getUser()->person->role_id == $leader
-                                                                        || Auth::getUser()->person->role_id == $admin))
+                                                                    <tr id="tr-{{ $item->id }}">
+                                                                        <td> <img src="{{ $item->imgProfile }}" style="width: 50px; height: 50px;"> </td>
+                                                                        <td>
+                                                                            @if($item->tag == 'adult')
+                                                                                <a href="{{ route('person.edit', ['person' => $item->id]) }}" id="name-{{ $item->id }}">
+                                                                                    {{ $item->name }} {{ $item->lastName }}
+                                                                                </a>
 
-                                                                        <?php $deleteForm = "delete-".$item->id; ?>
+                                                                            @else
+
+                                                                                <a href="{{ route('teen.edit', ['person' => $item->id]) }}" id="name-{{ $item->id }}">
+                                                                                    {{ $item->name }} {{ $item->lastName }}
+                                                                                </a>
+
+                                                                            @endif
+
+                                                                        </td>
+
+                                                                        <td id="email-{{ $item->id }}">
+                                                                            {{ $item->email }}
+                                                                        </td>
+                                                                        <td> {{ $item->date_created }} </td>
+
+                                                                        <td>
+                                                                            @if($item->status == 'waiting')
+                                                                                <span class="label label-warning">
+                                                                                    <i class="fa fa-clock-o"></i>
+                                                                                    Aguardando Aprovação
+                                                                                </span>
+                                                                            @else
+                                                                                <span class="label label-danger">
+                                                                                    <i class="fa fa-ban"></i>
+                                                                                    Negado
+                                                                                </span>
+                                                                            @endif
+                                                                        </td>
+
+
                                                                         <td>
 
-                                                                            <button class="btn btn-success btn-sm btn-circle btn-ok" title="Aprovar"
-                                                                                    onclick="event.preventDefault()"
-                                                                                    id="btn-ok-{{ $item->id }}">
-                                                                                <i class="fa fa-check"></i>
-                                                                                Aprovar
-                                                                            </button>
+                                                                            @if($item->status == 'waiting')
+                                                                                <button class="btn btn-success btn-sm btn-circle btn-ok" title="Aprovar"
+                                                                                                 id="btn-ok-{{ $item->id }}">
+                                                                                    <i class="fa fa-check"></i>
+                                                                                    Aprovar
+                                                                                </button>
 
-                                                                            <button class="btn btn-danger btn-sm btn-circle btn-delete" title="Negar Aprovação"
-                                                                                    onclick="event.preventDefault()"
-                                                                                    id="btn-{{ $deleteForm }}">
-                                                                                <i class="fa fa-ban"></i>
-                                                                                Negar
-                                                                            </button>
+                                                                                <button class="btn btn-danger btn-sm btn-circle btn-delete" title="Negar Aprovação"
+                                                                                        id="btn-delete-{{ $item->id }}">
+                                                                                    <i class="fa fa-ban"></i>
+                                                                                    Negar
+                                                                                </button>
+                                                                            @else
+
+                                                                                <button class="btn btn-success btn-sm btn-circle btn-ok" title="Aprovar"
+                                                                                        id="btn-ok-{{ $item->id }}">
+                                                                                    <i class="fa fa-check"></i>
+                                                                                    Aprovar
+                                                                                </button>
+
+                                                                                <button class="btn btn-info btn-sm btn-circle btn-details" title="Detalhes"
+                                                                                        id="btn-details-{{ $item->id }}">
+                                                                                    <i class="fa fa-info-circle"></i>
+                                                                                    Detalhes da Recusa
+                                                                                </button>
+
+                                                                            @endif
+
                                                                         </td>
-                                                                    @endif
-                                                                </tr>
 
-                                                            @endforeach
+                                                                    </tr>
+
+                                                                @endforeach
+
+                                                            @else
+                                                                <p class="text-center">Não há usuários para aprovação</p>
+                                                            @endif
                                                             </tbody>
                                                         </table>
+
                                                         <br>
+
                                                         <div class="pull-right">
                                                             {{ $people->links() }}
                                                         </div>
+
+                                                        @include('includes.modal-denied')
+
+                                                        @include('includes.modal-denied-details')
+
 
                                                         <div class="progress" id="progress-danger" style="display: none;">
                                                             <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" aria-valuenow="100"
@@ -237,6 +300,8 @@
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
 <script src="assets/pages/scripts/table-datatables-buttons.min.js" type="text/javascript"></script>
 <!-- END PAGE LEVEL SCRIPTS -->
+
+<script src="../js/waiting-approval.js"></script>
 </body>
 
 </html>

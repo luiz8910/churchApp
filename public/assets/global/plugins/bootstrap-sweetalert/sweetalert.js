@@ -33,7 +33,7 @@ var defaultParams = {
   inputType: 'text',
   inputPlaceholder: '',
   inputValue: '',
-  showLoaderOnConfirm: false
+  showLoaderOnConfirm: true
 };
 
 exports.default = defaultParams;

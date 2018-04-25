@@ -129,7 +129,21 @@
                                                                             </ul>
                                                                         </div>
 
+                                                                        @else
+
+                                                                            <div class="col-lg-12">
+                                                                                <div class="btn-group-devided">
+                                                                                    <a role="button" class="btn btn-info btn-circle btn-sm" href="{{ route('person.create') }}" style="margin-top: 2px;">
+                                                                                        <i class="fa fa-plus"></i>
+                                                                                        <span class="hidden-xs hidden-sm">Novo Membro</span>
+                                                                                    </a>
+
+                                                                                </div>
+                                                                            </div>
+
 																@endif
+
+
 
 															</div> <!-- FIM DIV .btn-group -->
 														</div> <!-- FIM DIV .actions -->

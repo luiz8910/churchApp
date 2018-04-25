@@ -2,9 +2,9 @@
 <div class="page-header-menu">
     <div class="container">
         <!-- BEGIN HEADER SEARCH BOX -->
-        <form class="search-form" action="" method="GET" autocomplete="off">
+        <form class="search-form" id="search-form" action="" method="GET" autocomplete="off">
             <div class="input-group">
-                <input type="text" class="form-control" id="search-results" placeholder="Pesquisar" name="query">
+                <input type="text" class="form-control" id="search-results" placeholder="Pesquise aqui" name="query">
                 <span class="input-group-btn">
                     <a href="javascript:;" class="btn submit">
                         <i class="icon-magnifier"></i>
@@ -15,15 +15,15 @@
 
             </div>
 
-            <ul class="drop-pesquisar-ul" id="results" style="display: none;">
+            <ul class="drop-pesquisar-ul search-form" id="results" style="display: none;">
 
-                <!--<li class="">
+                <li class="">
                     <a href="#" class="drop-pesquisar-a">
                         <img src="../teste/avatar9.jpg" alt="" class="img-rounded drop-pesquisar-img">
                         Grupo de Jovens
 
                     </a>
-                </li>-->
+                </li>
 
             </ul>
             <!--<div class="top-menu">
@@ -148,6 +148,12 @@
                                 <a href="{{ route('feeds.index') }}">
                                     <i class="fa fa-rss"></i>
                                     Feeds
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('person.waitingApproval') }}">
+                                    <i class="fa fa-clock-o" aria-hidden="true"></i>
+                                    Aguardando Aprovação
                                 </a>
                             </li>
                         </ul>

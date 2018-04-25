@@ -74,6 +74,16 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/make-member/{id}', 'PersonController@makeMember');
 
+    Route::get('aguardando-aprovacao', 'PersonController@waitingApproval')->name('person.waitingApproval');
+
+    Route::get('approve-member/{id}', 'PersonController@approveMember');
+
+    Route::post('/denyMember/{id}', 'PersonController@denyMember');
+
+    Route::get('/deny-details/{id}', 'PersonController@denyDetails');
+
+    Route::post('/waiting-approval', 'PersonController@storeWaitingApproval')->name('person.store.waitingApproval');
+
     // Fim Usuários e pessoas
 
     //Inicio Grupos
@@ -411,7 +421,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     //Route::get('/search-events/{text}', 'SearchController@searchEvents');
 
-    Route::get('/search-person/{input}/{status}', 'SearchController@searchPerson');
+    Route::get('/search-person/{input}/{status}/{approval?}', 'SearchController@searchPerson');
 
     Route::get('/search-group/{input}', 'SearchController@searchGroup');
 
@@ -550,9 +560,4 @@ Route::post('transaction', 'ChurchController@transaction')->name('new.transactio
 Route::get('docs', function(){
     return view('api');
 });
-
-Route::get('teste-api', function(){
-    return view('teste-api');
-});
-
 

@@ -3,7 +3,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Nova Senha</title>
+    <title>Novo Cadastro Aguardando</title>
     <!--
     The style block is collapsed on page load to save you some scrolling.
     Postmark automatically inlines all CSS properties for maximum email client
@@ -393,7 +393,7 @@
     </style>
 </head>
 <body>
-<span class="preheader" style="margin-bottom: 10px;">Novo Cadastro</span>
+<span class="preheader" style="margin-bottom: 10px;">Novo Cadastro Aguardando Aprovação</span>
 
 <table class="email-wrapper" width="100%" cellpadding="0" cellspacing="0">
     <tr>
@@ -413,8 +413,8 @@
                             <!-- Body content -->
                             <tr>
                                 <td class="content-cell">
-                                    <h1>Olá {{ $user->person->name }},</h1>
-                                    <p>Seu cadastro foi realizado no Beconnect</p>
+                                    <h1>Olá {{ $data->name }},</h1>
+                                    <p>Um novo usuário está aguardando aprovação</p>
                                 <!-- Action -->
                                     <table class="body-action" align="center" width="100%" cellpadding="0" cellspacing="0">
                                         <tr>
@@ -427,14 +427,17 @@
                                                             <table border="0" cellspacing="0" cellpadding="0">
                                                                 <tr>
                                                                     <td>
-                                                                        <p>Sua senha é: {{ $password }}</p>
+
+                                                                        <p>Nome: {{ $data->fullName }} </p>
+                                                                        <p>Email: {{ $data->waitingPerson_email }} </p>
+                                                                        <p>Perfil: <a href="{{ $data->profile }}">Clique aqui</a></p>
 
                                                                         <br>
 
                                                                         <a href="{{ $url }}"
                                                                            class="button button--purple" target="_blank">Acessar o Sistema</a>
 
-                                                                        <p>Se o login for feito com redes sociais, a senha não é necessária</p>
+
                                                                     </td>
                                                                 </tr>
                                                             </table>

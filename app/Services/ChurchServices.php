@@ -3,6 +3,7 @@
 namespace App\Services;
 
 
+use App\Models\Church;
 use App\Repositories\RegisterModelsRepository;
 use App\Repositories\RequiredFieldsRepository;
 use App\Traits\ConfigTrait;
@@ -40,6 +41,13 @@ class ChurchServices{
         }
 
         return $alias;
+    }
+
+    public function getChurchAlias()
+    {
+        $church = $this->getUserChurch();
+
+        return Church::where('id', $church)->first();
     }
 
     public function setBasicConfig()

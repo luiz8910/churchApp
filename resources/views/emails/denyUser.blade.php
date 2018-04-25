@@ -3,7 +3,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Nova Senha</title>
+    <title>Cadastro no Beconnect</title>
     <!--
     The style block is collapsed on page load to save you some scrolling.
     Postmark automatically inlines all CSS properties for maximum email client
@@ -393,7 +393,7 @@
     </style>
 </head>
 <body>
-<span class="preheader" style="margin-bottom: 10px;">Novo Cadastro</span>
+<span class="preheader" style="margin-bottom: 10px;">Pré Aprovação</span>
 
 <table class="email-wrapper" width="100%" cellpadding="0" cellspacing="0">
     <tr>
@@ -402,7 +402,7 @@
                 <tr class="beconnect-back">
                     <td class="email-masthead">
                         <a href="{{ $url }}" class="email-masthead_name">
-                            <img src="http://beconnect.com.br/logo/logo-menor-header-branco.png" alt="">
+                            <img src="http://beconnect.com.br/logo/logo-menor-header.png" alt="">
                         </a>
                     </td>
                 </tr>
@@ -414,7 +414,7 @@
                             <tr>
                                 <td class="content-cell">
                                     <h1>Olá {{ $user->person->name }},</h1>
-                                    <p>Seu cadastro foi realizado no Beconnect</p>
+                                    <p>Seu cadastro ainda não foi realizado, verifique os detalhes abaixo</p>
                                 <!-- Action -->
                                     <table class="body-action" align="center" width="100%" cellpadding="0" cellspacing="0">
                                         <tr>
@@ -427,7 +427,11 @@
                                                             <table border="0" cellspacing="0" cellpadding="0">
                                                                 <tr>
                                                                     <td>
-                                                                        <p>Sua senha é: {{ $password }}</p>
+                                                                        <h3>Os detalhes da mensagem são:</h3>
+
+                                                                        <br>
+
+                                                                        <p>{{ $msg }}</p>
 
                                                                         <br>
 

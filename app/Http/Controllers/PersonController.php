@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Events\AgendaEvent;
 use App\Events\PersonEvent;
 use App\Http\Requests\PersonCreateRequest;
+use App\Mail\ForLeaders;
 use App\Models\Event;
 use App\Models\Person;
 use App\Models\RecentUsers;
@@ -20,6 +21,7 @@ use App\Repositories\ImportRepository;
 use App\Repositories\RequiredFieldsRepository;
 use App\Repositories\UploadStatusRepository;
 use App\Repositories\VisitorRepository;
+use App\Services\ChurchServices;
 use App\Services\EventServices;
 use App\Services\FeedServices;
 use App\Traits\ConfigTrait;
@@ -108,12 +110,16 @@ class PersonController extends Controller
      * @var FeedServices
      */
     private $feedServices;
+    /**
+     * @var ChurchServices
+     */
+    private $churchServices;
 
     public function __construct(PersonRepository $repository, StateRepository $stateRepositoryTrait, RoleRepository $roleRepository,
                                 UserRepository $userRepository, RequiredFieldsRepository $fieldsRepository, EventSubscribedListRepository $listRepository,
                                 GroupRepository $groupRepository, ChurchRepository $churchRepository, EventRepository $eventRepository,
                                 EventServices $eventServices, UploadStatusRepository $uploadStatusRepository, ImportRepository $importRepository,
-                                VisitorRepository $visitorRepository, FeedServices $feedServices)
+                                VisitorRepository $visitorRepository, FeedServices $feedServices, ChurchServices $churchServices)
     {
         $this->repository = $repository;
         $this->stateRepository = $stateRepositoryTrait;
@@ -129,6 +135,7 @@ class PersonController extends Controller
         $this->importRepository = $importRepository;
         $this->visitorRepository = $visitorRepository;
         $this->feedServices = $feedServices;
+        $this->churchServices = $churchServices;
     }
 
     /**
@@ -142,7 +149,8 @@ class PersonController extends Controller
             ->where([
                 'tag' => 'adult',
                 'deleted_at' => null,
-                'church_id' => $this->getUserChurch()
+                'church_id' => $this->getUserChurch(),
+                'status' => 'active'
             ])->orderBy('name')->paginate(5);
 
 
@@ -173,7 +181,8 @@ class PersonController extends Controller
             ->where([
                 ['tag', '<>', 'adult'],
                 'deleted_at' => null,
-                'church_id' => $this->getUserChurch()
+                'church_id' => $this->getUserChurch(),
+                'status' => 'active'
             ])->paginate(5);
 
         foreach ($teen as $item) {
@@ -429,7 +438,7 @@ class PersonController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $origin = null)
     {
         $fields = $this->fieldsRepository->findWhere([
             'model' => 'person',
@@ -471,15 +480,23 @@ class PersonController extends Controller
 
         if($request->get('dateBirth') == ""){
 
-            \Session::flash("email.exists", "Insira a data de Nascimento");
-
-            if($teen)
+            if($origin == 'app')
             {
-                return redirect()->route("teen.create")->withInput();
+                return json_encode(['status' => false, 'msg' => 'Insira a data de Nascimento']);
             }
             else{
-                return redirect()->route("person.create")->withInput();
+
+                \Session::flash("email.exists", "Insira a data de Nascimento");
+
+                if($teen)
+                {
+                    return redirect()->route("teen.create")->withInput();
+                }
+                else{
+                    return redirect()->route("person.create")->withInput();
+                }
             }
+
 
         }
 
@@ -488,11 +505,25 @@ class PersonController extends Controller
 
         if($user)
         {
-            \Session::flash("email.exists", "Existe uma conta associada para o email informado (" .$email. ")");
+            if($origin == 'app')
+            {
 
-            $request->flashExcept('password');
+                return json_encode([
+                    'status' => false,
+                    'msg' => 'Existe uma conta associada para o email informado (' . $email . ')'
+                ]);
 
-            return redirect()->route("person.create")->withInput();
+            }
+            else{
+
+
+                \Session::flash("email.exists", "Existe uma conta associada para o email informado (" .$email. ")");
+
+                $request->flashExcept('password');
+
+                return redirect()->route("person.create")->withInput();
+            }
+
         }
 
         $data = $request->except(['img', 'password', 'confirm-password', '_token']);
@@ -505,19 +536,47 @@ class PersonController extends Controller
 
             if($verifyFields)
             {
-                \Session::flash("error.required-fields", "Preencha o campo " . $verifyFields);
-                return redirect()->route("teen.create")->withInput();
+                if($origin == 'app')
+                {
+
+                    return json_encode([
+                        'status' => false,
+                        'msg' => 'Preencha o campo ' . $verifyFields
+                    ]);
+
+                }
+                else{
+
+                    \Session::flash("error.required-fields", "Preencha o campo " . $verifyFields);
+
+                    return redirect()->route("teen.create")->withInput();
+                }
+
             }
 
         }else{
-            unset($data["email"]);
+            //unset($data["email"]);
 
             $verifyFields = $this->verifyRequiredFields($data, 'person');
 
             if($verifyFields)
             {
-                \Session::flash("error.required-fields", "Preencha o campo " . $verifyFields);
-                return redirect()->route("person.create")->withInput();
+                if($origin == 'app')
+                {
+
+                    return json_encode([
+                        'status' => false,
+                        'msg' => 'Preencha o campo ' . $verifyFields
+                    ]);
+
+                }
+                else{
+
+                    \Session::flash("error.required-fields", "Preencha o campo " . $verifyFields);
+                    return redirect()->route("person.create")->withInput();
+
+                }
+
             }
         }
 
@@ -551,6 +610,11 @@ class PersonController extends Controller
 
         $data["city"] = ucwords($data["city"]);
 
+        if($origin)
+        {
+            $data['status'] = 'waiting';
+        }
+
         $id = $this->repository->create($data)->id;
 
         /*
@@ -560,8 +624,10 @@ class PersonController extends Controller
          *
         */
         if ($data['maritalStatus'] != 'Casado') {
+
             $data['partner'] = null;
         } else if ($data['partner'] != "0") {
+
             $this->updateMaritalStatus($data['partner'], $id, 'people');
         }
 
@@ -587,9 +653,35 @@ class PersonController extends Controller
             $this->imgProfile($file, $id, $data['name'], 'people');
         }
 
-        $this->newRecentUser($id, $church_id);
+        if(!$origin)
+        {
+            $this->newRecentUser($id, $church_id);
 
-        $this->feedServices->newFeed(3, 'person', $id, 'Novo Usuário Cadastrado');
+            $this->feedServices->newFeed(5, 'Novo Usuário Cadastrado', $id, null, 'person', $id );
+
+        }
+        else{
+            $this->feedServices->newFeed(5, 'Novo Usuário Aguardando Aprovação', $id, null, 'person', $id);
+
+            //Envio Email aguardando aprovação
+            $person = $this->repository->find($id);
+
+            $this->newWaitingApproval($person, $church_id);
+
+            Session::flash('person.crud', 'Usuário '. $data['name'] . ' criado com sucesso');
+
+            if($teen)
+            {
+                Session::flash('teen.crud', 'Usuário '. $data['name'] . ' criado com sucesso');
+
+                return 'teen';
+            }
+
+            Session::flash('person.crud', 'Usuário '. $data['name'] . ' criado com sucesso');
+
+            return 'person';
+
+        }
 
         if($teen){
             Session::flash('teen.crud', 'Usuário '. $data['name'] . ' criado com sucesso');
@@ -682,6 +774,7 @@ class PersonController extends Controller
                     'tag' => 'adult',
                     'church_id' => $church_id,
                     'gender' => $gender,
+                    'status' => 'active'
                 ])
                 ->whereIn('partner', [null, 0, $id])
                 ->whereNull('deleted_at')
@@ -694,6 +787,7 @@ class PersonController extends Controller
                     'tag' => 'adult',
                     'church_id' => $church_id,
                     'gender' => $gender,
+                    'status' => 'active'
                 ])
                 ->whereIn('partner', [null, 0])
                 ->whereNull('deleted_at')
@@ -728,7 +822,8 @@ class PersonController extends Controller
                     'people.tag' => 'adult',
                     'people.gender' => 'M',
                     'users.church_id' => $church_id,
-                    'people.deleted_at' => null
+                    'people.deleted_at' => null,
+                    'status' => 'active'
                 ]
             )
             ->get();
@@ -742,7 +837,8 @@ class PersonController extends Controller
                     'people.tag' => 'adult',
                     'people.gender' => 'F',
                     'users.church_id' => $church_id,
-                    'people.deleted_at' => null
+                    'people.deleted_at' => null,
+                    'status' => 'active'
                 ]
             )
             ->get();
@@ -818,7 +914,8 @@ class PersonController extends Controller
                 [
                     'people.tag' => 'adult',
                     'people.gender' => 'M',
-                    'users.church_id' => $church_id
+                    'users.church_id' => $church_id,
+                    'status' => 'active'
                 ]
             )
             ->get();
@@ -830,7 +927,8 @@ class PersonController extends Controller
                 [
                     'people.tag' => 'adult',
                     'people.gender' => 'F',
-                    'users.church_id' => $church_id
+                    'users.church_id' => $church_id,
+                    'status' => 'active'
                 ]
             )
             ->get();
@@ -867,11 +965,12 @@ class PersonController extends Controller
             \Session::flash("email.exists", "Insira a data de Nascimento");
 
             if($teen){
+
                 return redirect()->route("teen.edit", ['person' => $id])->withInput();
-            }else
-            {
-                return redirect()->route("person.edit", ['person' => $id])->withInput();
             }
+
+                return redirect()->route("person.edit", ['person' => $id])->withInput();
+
 
         }
 
@@ -954,7 +1053,7 @@ class PersonController extends Controller
 
         $user = $this->userRepository->findByField('person_id', $id)->first();
 
-        if($email)
+        if($email && $user)
         {
             if($this->emailTestEditTrait($email, $user->id)){
                 $this->updateEmail($email, $user->id);
@@ -965,9 +1064,39 @@ class PersonController extends Controller
             }
         }
 
-        $this->updateTag($this->tag($data["dateBirth"]), $id, 'people');
+        $tag = $this->tag($data["dateBirth"]);
+
+        $person = $this->repository->find($id);
+
+        $church_id = $this->getUserChurch();
+
+        if($person->tag != 'adult' && $tag == 'adult')
+        {
+            if($email)
+            {
+                $password = $this->churchServices->getChurchAlias();
+
+                $this->createUserLogin($id, $password, $email, $church_id);
+            }
+            else{
+
+                \Session::flash("error.required-fields", "Preencha o campo Email");
+
+                return redirect()->route("teen.edit", ['person' => $id])->withInput();
+            }
+
+        }
+
+        $this->updateTag($tag, $id, 'people');
 
         $data["city"] = ucwords($data["city"]);
+
+        if($person->status != 'active')
+        {
+            $this->newWaitingApproval($person, $church_id, 'Dados alterados - ');
+
+            $data['status'] = 'waiting';
+        }
 
         $this->repository->update($data, $id);
 
@@ -1760,6 +1889,172 @@ class PersonController extends Controller
 
 
 
+    }
+
+    public function waitingApproval()
+    {
+        $people = Person::
+            where([
+                ['status', '<>', 'active'],
+                'deleted_at' => null,
+                'church_id' => $this->getUserChurch()
+            ])->orderBy('name')->paginate(5);
+
+
+        if(count($people) > 0)
+        {
+            foreach ($people as $item) {
+                $item->dateBirth = $this->formatDateView($item->dateBirth);
+
+                $item->role = $this->roleRepository->find($item->role_id)->name;
+
+                $item->date_created = date_format(date_create($item->created_at), 'd/m/Y');
+            }
+        }
+
+
+        $countPerson[] = $this->countPerson();
+
+        $countGroups[] = $this->countGroups();
+
+        $notify = $this->notify();
+
+        $qtde = count($notify);
+
+        $leader = $this->getLeaderRoleId();
+
+        $admin = $this->getAdminRoleId();
+
+        return view('config.waiting-approval', compact('people', 'countPerson', 'countGroups', 'notify', 'qtde',
+            'leader', 'admin'));
+    }
+
+    public function approveMember($id)
+    {
+        $data['status'] = 'active';
+
+        try{
+
+            $this->repository->update($data, $id);
+
+            $user = $this->repository->find($id)->user;
+
+            $password = $this->churchServices->getChurchAlias();
+
+            $this->welcome($user, $password->alias);
+
+            DB::commit();
+
+            return json_encode(['status' => true]);
+        }
+        catch(\Exception $e)
+        {
+            DB::rollback();
+
+            return json_encode(['status' => false, 'msg' => $e->getMessage()]);
+        }
+
+    }
+
+    public function denyMember(Request $request, $id)
+    {
+        try{
+
+            //Recuperando a mensagem deixada pelo líder/admin
+            $msg = $request->get('msg');
+
+            //Gravação da mensagem no BD
+            DB::table('denies_messages')
+                ->insert([
+                    'denied_person' => $id,
+                    'msg' => $msg,
+                    'denied_by_person' => Auth::user()->person->id,
+                    'deleted_at' => null,
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now()
+                ]);
+
+
+            //Recuperando dados de login
+            $user = $this->repository->find($id)->user;
+
+
+            //Status alterado de "waiting" para "negado"
+            $data['status'] = 'denied';
+
+
+            //Update status
+            $this->repository->update($data, $id);
+
+            //Confirmando alterações
+            DB::commit();
+
+
+            //Email de recusa
+            $this->denyUser($user, $msg);
+
+
+            //Mensagem de sucesso para o usuário
+            $request->session()->flash('success.msg', 'As informações foram enviadas para o usuário no email ' . $user->email);
+
+
+            //Redirecionando para a página anterior (listagem de pré aprovados)
+            return redirect()->route('person.waitingApproval');
+
+        }catch(\Exception $e)
+        {
+            //Revertendo alterações
+            DB::rollback();
+
+
+            //Mensagem de erro para o usuário
+            $request->session()->flash('error.msg', 'Um erro ocorreu, tente novamente mais tarde');
+
+
+            //Redirecionando para a página anterior (listagem de pré aprovados)
+            return redirect()->route('person.waitingApproval');
+        }
+
+
+    }
+
+    //$id = id do usuário negado
+    public function denyDetails($id)
+    {
+        $details = DB::table('denies_messages')
+            ->where('denied_person', $id)
+            ->orderBy('created_at', 'desc')
+            ->first();
+
+        if(count($details) > 0)
+        {
+            $denied_by = $this->repository->find($details->denied_by_person);
+
+            $details->denied_by_person = $denied_by->name . ' ' . $denied_by->lastName;
+
+            return json_encode(['status' => true, 'details' => $details]);
+        }
+
+
+        return json_encode(['status' => false]);
+    }
+
+    public function storeWaitingApproval(Request $request)
+    {
+        $result = $this->store($request, 'member');
+
+        if($result == 'teen')
+        {
+            return redirect()->route('person.teen');
+
+        }
+
+        return redirect()->route('person.index');
+    }
+
+    public function storeWaitingApprovalApp(Request $request)
+    {
+        $this->store($request, 'app');
     }
 
 //--------------------------------------------------------- API --------------------------------------------------------

@@ -119,39 +119,115 @@ License: You must have a valid license purchased only from themeforest(the above
                                     <div class="profile-usertitle">
                                         <div class="profile-usertitle-name"> {{ $model->name }} {{ $model->lastName }}</div>
                                         <div class="profile-usertitle-job"> {{ $model->role->name }} </div>
+
+                                        @if($model->status == 'waiting')
+
+                                            <span class="label label-warning">
+                                                <i class="fa fa-clock-o"></i>
+                                                Aguardando Aprovação
+                                            </span>
+
+                                        @elseif($model->status == 'denied')
+
+                                            <span class="label label-danger">
+                                                <i class="fa fa-ban"></i>
+                                                Aprovação Negada
+                                            </span>
+
+                                        @else
+
+                                            <span class="label label-success" style="padding-left: 20px; padding-right: 20px;">
+                                                <i class="fa fa-check"></i>
+                                                Ativo
+                                            </span>
+                                        @endif
                                     </div>
                                     <!-- END SIDEBAR USER TITLE -->
 
                                     <!-- SIDEBAR MENU -->
                                     <div class="profile-usermenu">
                                         <ul class="nav">
+
                                             <li class="active">
                                                 <a href="javascript:;">
                                                     <i class="icon-home"></i> Visão Geral </a>
+
                                             </li>
-                                            @if($role == "Lider")
 
-                                                <li>
-                                                    <a href="javascript:;" onclick="sendPasswordUser()">
-                                                        <i class="fa fa-unlock-alt"></i>
 
-                                                        Reenviar Senha
-                                                    </a>
+                                            @if(Auth::user()->person->role_id == $leader || Auth::user()->person->role_id == $admin)
 
-                                                    <div class="text-center" id="msg-spin">
-                                                        <i class="fa fa-refresh fa-spin fa-4x fa-fw" id="loading-spin"></i>
-                                                        <span class="sr-only">Loading...</span>
-                                                        <p>Enviando Senha...</p>
-                                                    </div>
+                                                @if($model->status == 'waiting')
 
-                                                </li>
+                                                    <li>
+                                                        <a href="javascript:;" class="approve" id="approve-{{ $model->id }}">
+                                                            <i class="fa fa-check font-green"></i>
 
-                                                <li>
-                                                    <a href="javascript:;" id="btn-delete-{{ $model->id }}" class="deleteUser">
-                                                        <i class="fa fa-ban font-red"></i>
-                                                        Excluir Usuário
-                                                    </a>
-                                                </li>
+                                                            Aprovar
+                                                        </a>
+
+
+                                                    </li>
+
+                                                    <li>
+                                                        <input type="hidden" id="deny-name" value="{{ $model->name }} {{ $model->lastName }}">
+
+                                                        <input type="hidden" id="deny-email" value="{{ $model->email }}">
+
+                                                        <a href="javascript:;" id="deny">
+                                                            <i class="fa fa-ban font-red"></i>
+                                                            Negar
+                                                        </a>
+                                                    </li>
+
+                                                    @include('includes.modal-denied')
+
+
+
+                                                @elseif($model->status == 'denied')
+
+                                                    @include('includes.modal-denied-details')
+
+                                                    <li>
+                                                        <a href="javascript:;" class="approve" id="approve-{{ $model->id }}">
+                                                            <i class="fa fa-check font-green"></i>
+
+                                                            Aprovar
+                                                        </a>
+
+                                                    </li>
+
+                                                    <li>
+                                                        <a href="javascript:;" class="btn-details" id="btn-details-{{ $model->id }}">
+                                                            <i class="fa fa-info-circle font-blue"></i>
+                                                            Detalhes da Recusa
+                                                        </a>
+                                                    </li>
+
+                                                @else
+                                                    <li>
+                                                        <a href="javascript:;" onclick="sendPasswordUser()">
+                                                            <i class="fa fa-unlock-alt"></i>
+
+                                                            Reenviar Senha
+                                                        </a>
+
+                                                        <div class="text-center" id="msg-spin">
+                                                            <i class="fa fa-refresh fa-spin fa-4x fa-fw" id="loading-spin"></i>
+                                                            <span class="sr-only">Loading...</span>
+                                                            <p>Enviando Senha...</p>
+                                                        </div>
+
+                                                    </li>
+
+                                                    <li>
+                                                        <a href="javascript:;" id="btn-delete-{{ $model->id }}" class="deleteUser">
+                                                            <i class="fa fa-ban font-red"></i>
+                                                            Excluir Usuário
+                                                        </a>
+                                                    </li>
+
+                                                @endif
                                             @endif
                                         </ul>
                                     </div>
@@ -1623,6 +1699,8 @@ License: You must have a valid license purchased only from themeforest(the above
 <script src="../../assets/pages/scripts/timeline.min.js" type="text/javascript"></script>
 <!-- END PAGE LEVEL SCRIPTS -->
 
+<script src="../../js/waiting-approval.js"></script>
+<script src="../../js/edit-person.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.repeater/1.2.1/jquery.repeater.min.js"></script>
 <script>
 
