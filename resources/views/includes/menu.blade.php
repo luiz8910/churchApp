@@ -15,15 +15,8 @@
 
             </div>
 
-            <ul class="drop-pesquisar-ul search-form" id="results" style="display: none;">
-
-                <li class="">
-                    <a href="#" class="drop-pesquisar-a">
-                        <img src="../teste/avatar9.jpg" alt="" class="img-rounded drop-pesquisar-img">
-                        Grupo de Jovens
-
-                    </a>
-                </li>
+            <ul class="drop-pesquisar-ul search-form" id="results" style="display: none; position: absolute; z-index: 1000;">
+                
 
             </ul>
             <!--<div class="top-menu">

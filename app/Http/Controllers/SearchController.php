@@ -459,4 +459,163 @@ class SearchController extends Controller
 
         return json_encode(['status' => false]);
     }
+
+    public function search($input, $origin = null)
+    {
+        $name = DB::table('people')
+                    ->where([
+                        ['name', 'like', '%'.$input.'%'],
+                        'church_id' => $this->getUserChurch(),
+                        'deleted_at' => null
+
+                    ])->get();
+
+        $lastName = DB::table('people')
+            ->where([
+                ['lastName', 'like', '%'.$input.'%'],
+                'church_id' => $this->getUserChurch(),
+                'deleted_at' => null
+
+            ])->get();
+
+        $email = DB::table('people')
+            ->where([
+                ['email', 'like', '%'.$input.'%'],
+                'church_id' => $this->getUserChurch(),
+                'deleted_at' => null
+
+            ])->get();
+
+        $cpf = DB::table('people')
+            ->where([
+                ['cpf', 'like', '%'.$input.'%'],
+                'church_id' => $this->getUserChurch(),
+                'deleted_at' => null
+
+            ])->get();
+
+        $groups = DB::table('groups')
+            ->where([
+                ['name', 'like', '%'.$input.'%'],
+                'church_id' => $this->getUserChurch(),
+                'deleted_at' => null
+
+            ])->get();
+
+        $events = DB::table('events')
+            ->where([
+                ['name', 'like', '%'.$input.'%'],
+                'church_id' => $this->getUserChurch(),
+                'deleted_at' => null
+
+            ])->get();
+
+        $visitors = DB::table('visitors')
+            ->where([
+                ['name', 'like', '%'.$input.'%'],
+                'deleted_at' => null
+
+            ])->get();
+
+        $qtde = 0;
+
+        if(count($name) > 0)
+        {
+            $qtde++;
+
+            foreach ($name as $item)
+            {
+                $item->model = 'person';
+            }
+        }
+
+        if(count($lastName) > 0)
+        {
+            $qtde++;
+
+            foreach ($lastName as $item)
+            {
+                $item->model = 'person';
+            }
+        }
+
+
+        if(count($email) > 0)
+        {
+            $qtde++;
+
+            foreach ($email as $item)
+            {
+                $item->model = 'person';
+            }
+        }
+
+
+        if(count($groups) > 0)
+        {
+            $qtde++;
+
+            foreach ($groups as $group)
+            {
+                $group->model = 'group';
+            }
+        }
+
+
+        if(count($events) > 0)
+        {
+            $qtde++;
+
+            foreach($events as $event)
+            {
+                $event->model = 'events';
+            }
+        }
+
+
+        if(count($visitors) > 0)
+        {
+            $qtde++;
+
+            foreach ($visitors as $visitor)
+            {
+                $visitor->model = 'visitor';
+            }
+        }
+
+
+        if(count($cpf) > 0)
+        {
+            $qtde++;
+
+            foreach($cpf as $item)
+            {
+                $item->model = 'person';
+            }
+        }
+
+
+        $merge = $name->merge($lastName)
+                    ->merge($email)
+                    ->merge($groups)
+                    ->merge($events)
+                    ->merge($visitors)
+                    ->merge($cpf);
+
+
+        $status = $qtde == 0 ? false : true;
+
+        return json_encode([
+            'status' => $status,
+            'data' => $merge->unique('id', 'model')
+        ]);
+
+
+
+
+
+        //dd($merge->unique('id', 'model'));
+
+
+    }
 }

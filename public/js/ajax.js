@@ -356,7 +356,7 @@ function validateEmail(email) {
 }
 
 
-$("#search-results").keyup(function () {
+/*$("#search-results").keyup(function () {
 
     if (this.value == "") {
         $("#results").css("display", "none");
@@ -431,19 +431,19 @@ function search(text) {
 
     });
 
-    /*<li class="">
+    /!*<li class="">
      <a href="#" class="drop-pesquisar-a">
      <i class="icon-bar-chart drop-pesquisa-i fa-lg"></i>
      Grupo de Jovens
 
      </a>
-     </li>*/
+     </li>*!/
 
     request.fail(function (e) {
         console.log("fail");
         console.log(e);
     })
-}
+}*/
 
 
 $("#search-input-mobile").keyup(function () {

@@ -75,6 +75,7 @@
 <script src="../../js/ajax.js"></script>
 <script src="../../js/print.js"></script>
 <script src="../../js/agenda.js"></script>
+<script src="../../js/menu.js"></script>
 
 <script src="https://js.pusher.com/4.0/pusher.min.js"></script>
 
