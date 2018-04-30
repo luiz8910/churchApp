@@ -41,21 +41,37 @@ function search(text) {
                 $("#results li").remove();
             }
 
-            var model, icon;
+            var img, lastName = '', type = '';
 
-            if (e.data[i].lastName != undefined) {
-                model = "person";
-                icon = "user";
+            if (e.data[i].lastName != undefined && e.data[i].church_id != undefined) {
+
+                lastName = e.data[i].lastName;
+
+                img = e.data[i].imgProfile;
+
+                if(img.search('uploads') != -1)
+                {
+                    img = '../../' + img;
+                }
+
+            }
+
+            else if(e.data[i].church_id == undefined)
+            {
+                lastName = e.data[i].lastName;
+                type = '(Visitante)';
             }
 
             else if (e.data[i].eventDate != undefined) {
-                model = "events";
-                icon = "calendar";
+
+                img = '../../' + e.data[i].imgEvent;
+                type = '(Evento)'
             }
 
             else if (e.data[i].owner_id != undefined) {
-                model = "group";
-                icon = "users";
+
+                img = '../../' + e.data[i].imgProfile;
+                type = '(Grupo)';
             }
 
 
@@ -69,8 +85,8 @@ function search(text) {
 
             var li = '<li class="">'+
                     '<a href="/'+ e.data[i].model+'/'+ e.data[i].id+'/edit" class="drop-pesquisar-a">'+
-                        '<img src="../teste/avatar9.jpg" alt="" class="img-rounded drop-pesquisar-img">'+
-                        e.data[i].name
+                        '<img src="'+img+'" alt="" class="img-rounded drop-pesquisar-img">'+
+                        e.data[i].name + ' ' +lastName + ' ' +type
                     +'</a></li>';
 
             console.log(li);
