@@ -5,11 +5,15 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserCreateRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Mail\resetPassword;
+use App\Models\Church;
 use App\Models\EventSubscribedList;
+use App\Models\Responsible;
 use App\Models\User;
+use App\Repositories\ChurchRepository;
 use App\Repositories\EventRepository;
 use App\Repositories\EventSubscribedListRepository;
 use App\Repositories\GroupRepository;
+use App\Repositories\ResponsibleRepository;
 use App\Repositories\VisitorRepository;
 use App\Services\EventServices;
 use App\Services\FeedServices;
@@ -74,6 +78,14 @@ class UsersController extends Controller
      * @var EventServices
      */
     private $eventServices;
+    /**
+     * @var ChurchRepository
+     */
+    private $churchRepository;
+    /**
+     * @var ResponsibleRepository
+     */
+    private $responsibleRepository;
 
     /**
      * UsersController constructor.
@@ -88,7 +100,8 @@ class UsersController extends Controller
                                 RoleRepository $roleRepository, PersonRepository $personRepository,
                                 VisitorRepository $visitorRepository, EventSubscribedListRepository $listRepository,
                                 EventRepository $eventRepository, GroupRepository $groupRepository,
-                                FeedServices $feedServices, EventServices $eventServices)
+                                FeedServices $feedServices, EventServices $eventServices, ChurchRepository $churchRepository,
+                                ResponsibleRepository $responsibleRepository)
     {
         $this->repository = $repository;
         $this->stateRepository = $stateRepository;
@@ -100,20 +113,35 @@ class UsersController extends Controller
         $this->groupRepository = $groupRepository;
         $this->feedServices = $feedServices;
         $this->eventServices = $eventServices;
+        $this->churchRepository = $churchRepository;
+        $this->responsibleRepository = $responsibleRepository;
     }
 
     public function myAccount()
     {
         $changePass = true;
 
+        $resp = '';
+
+        $church_id = $this->getUserChurch();
+
         if (Auth::user()->person) {
             $model = Auth::user()->person;
             $role = $model->role->name;
+
+            $church = $this->churchRepository->find($church_id);
+
+            $responsible = $this->responsibleRepository->find($church->responsible_id);
+
+            $resp = $responsible->person_id;
+
         } else {
             $model = Auth::user()->visitors->first();
             $changePass = false;
             $role = "Visitante";
         }
+
+
 
         $state = $this->stateRepository->all();
 
@@ -143,7 +171,8 @@ class UsersController extends Controller
 
         $route = $this->getRoute();
 
-        $adults = $this->personRepository->findWhere(['tag' => 'adult', 'gender' => $gender]);
+        $adults = $this->personRepository->findWhere(
+            ['tag' => 'adult', 'gender' => $gender, 'church_id' => $church_id]);
 
         $person = $role == "Visitante" ? $this->visitorRepository->find($model->id) :
             $this->personRepository->find($model->id);
@@ -191,7 +220,7 @@ class UsersController extends Controller
             }
         }
 
-        $church_id = $this->getUserChurch();
+
         $feeds = null;
 
         if($church_id){
@@ -200,7 +229,8 @@ class UsersController extends Controller
 
 
         return view('users.myAccount', compact('state', 'model', 'changePass', 'countPerson', 'role', 'countGroups',
-            'notify', 'qtde', 'adults', 'groups', 'countMembers', 'leader', 'events', 'route', 'feeds', 'admin'));
+            'notify', 'qtde', 'adults', 'groups', 'countMembers', 'leader', 'events', 'route', 'feeds',
+            'admin', 'resp', 'church_id'));
     }
 
 

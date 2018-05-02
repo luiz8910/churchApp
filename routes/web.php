@@ -273,6 +273,8 @@ Route::group(['middleware' => 'auth'], function () {
 
 
 
+
+
     Route::get('pusher', function () {
         return view('pusher');
 
@@ -372,6 +374,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/delete-plan-type/{id}', 'SiteController@deletePlanType');
 
     Route::get('/igrejas', 'ChurchController@index')->name('admin.churches');
+
+    Route::get("/delete-church/{id}", 'ChurchController@delete');
+
+    Route::get('/edit-church/{id}', 'ChurchController@edit');
+
+    Route::post('/update-church/{id}', 'ChurchController@update');
 
     // Fim Admin site
 

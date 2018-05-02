@@ -1138,6 +1138,14 @@ $(function(){
     });
 
 
+    $(".btn-delete-church").click(function(){
+
+        var id = this.id.replace('btn-delete-church-', '');
+
+        deleteChurch(id);
+    })
+
+
 
 });
 
@@ -1179,3 +1187,4 @@ $(function(){
         }
 
     }
+

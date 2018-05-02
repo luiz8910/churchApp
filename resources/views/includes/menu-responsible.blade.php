@@ -62,7 +62,7 @@
                     </a>
                 </li>
                 <li class="menu-dropdown mega-menu-dropdown  ">
-                    <a href="{{ route('event.index') }}"> Agendas e Eventos
+                    <a href="javascript:;"> Agendas e Eventos
                     </a>
                 </li>
                 <!--<li class="menu-dropdown classic-menu-dropdown ">

@@ -138,10 +138,14 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <a href="javascript:;">
                                                     <i class="icon-home"></i> Visão Geral </a>
                                             </li>
-                                            {{--<li>
-                                                <a href="">
-                                                    <i class="icon-info"></i> Ajuda </a>
-                                            </li>--}}
+                                            @if(Auth::getUser()->person)
+                                                @if(Auth::user()->person->id == $resp)
+                                                    <li>
+                                                        <a href="javascript:;" onclick="deleteChurch('{{ $church_id }}')">
+                                                            <i class="icon-ban"></i> Excluir Minha Igreja </a>
+                                                    </li>
+                                                @endif
+                                            @endif
                                         </ul>
                                     </div>
                                     <!-- END MENU -->
@@ -2116,6 +2120,8 @@ License: You must have a valid license purchased only from themeforest(the above
 
 <script src="../assets/pages/scripts/profile.min.js" type="text/javascript"></script>
 <script src="../assets/pages/scripts/timeline.min.js" type="text/javascript"></script>
+
+<script src="../js/myAccount.js"></script>
 
 <!-- END PAGE LEVEL SCRIPTS -->
 </body>
