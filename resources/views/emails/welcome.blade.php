@@ -413,7 +413,7 @@
                             <!-- Body content -->
                             <tr>
                                 <td class="content-cell">
-                                    <h1>Olá {{ $user->person->name }},</h1>
+                                    <h1>Olá @if(isset($user->person)){{ $user->person->name }} @endif,</h1>
                                     <p>Seu cadastro foi realizado no Beconnect</p>
                                 <!-- Action -->
                                     <table class="body-action" align="center" width="100%" cellpadding="0" cellspacing="0">

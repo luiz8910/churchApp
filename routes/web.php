@@ -407,7 +407,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/automatic-cep/{id}/{user}', 'PersonController@automaticCep');
 
-//Recuperação de Senha
+    //Recuperação de Senha
+
     Route::get("/passResetView/{email}", "UsersController@passResetView");
 
     Route::post("/passReset", "UsersController@passReset")->name('password.reset');
@@ -422,7 +423,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::any("/forgotPassword", "UsersController@forgotPassword")->name("forgot.password");
 
-//Instant Search
+    //Instant Search
+
     Route::get('/search/{text}', "SearchController@search");
 
     Route::get("join-new-people/{input}", "SearchController@findNewPeople");
@@ -437,22 +439,26 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/searchable-models', 'SearchController@searchableModels');
 
-//Login Facebook
+    //Login Facebook
+
     Route::get('/pre/auth/facebook/{church}', 'Auth\RegisterController@preFbLogin');
 
     Route::get('/auth/facebook/', 'Auth\RegisterController@redirectToProvider');
     Route::get('/auth/facebook/callback', 'Auth\RegisterController@handleProviderCallback');
 
-//Login Google +
+    //Login Google +
+
     Route::get('pre/auth/google/{church}', 'Auth\RegisterController@preGoogleLogin');
     Route::get('auth/google', 'Auth\RegisterController@redirectToGoogleProvider');
     Route::get('auth/google/callback', 'Auth\RegisterController@handleGoogleProviderCallback');
 
-//Login Linkedin
+    //Login Linkedin
+
     Route::get('auth/linkedin', 'Auth\RegisterController@redirectToLinkedinProvider');
     Route::get('auth/linkedin/callback', 'Auth\RegisterController@handleLinkedinProviderCallback');
 
-//Login Visitante
+    //Login Visitante
+
     Route::get('login-visitante', 'VisitorController@login');
 
     Route::post('login-visitante', 'Auth\RegisterController@loginVisitor')->name('login.visitor');

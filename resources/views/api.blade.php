@@ -502,6 +502,105 @@
     </div>
 
 
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="text-center">Pessoas e Visitantes</h3>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Cadastro de Pessoas e Visitantes</h3>
+                </div>
+
+                <div class="panel-body">
+
+                    https://beconnect.com.br/api/store-person
+                    <span class="label label-success">POST</span>
+
+                    <br><br>
+
+                    Caso seja cadastro de visitantes, apenas omita o parâmetro church_id
+
+                    <br><br>
+
+                    No final, informe o usuário que um email com instruções de acesso lhe foi enviado
+
+                    <br><br>
+
+                    <p class="text-center">Lista de Parâmetros</p>
+
+                    <pre>
+
+                        Lista de Parâmetros obrigatórios *
+
+                            dateBirth = Data de Nascimento no formato dd/mm/AAAA (Verifica a idade e cria dados de login se idade = 18+) *
+
+                            church_id = 1 (Obrigatório para cadastro de membros, opcional para visitantes) <span class="label label-info">Inteiro</span>
+
+                            name = Nome do cadastrado *
+
+                            cel = Celular do Cadastrado *
+
+                            email = Usado para login *
+
+                            role = Se role <> Lider e Administrador o membro será colocado na área de pré aprovação *
+
+                        ------------------------------------ Opcionais --------------------------------------------------------------
+
+                            lastName = Sobrenome do cadastrado
+
+                            tel = telefone do cadastrado
+
+                            gender = Sexo do cadastrado (M ou F)
+
+                            cpf e rg
+
+                            maritalStatus = estado civil
+
+                            father_id = id do pai do cadastrado (uso permitido em qualquer caso, mas o padrão é só para menores de 18+)
+
+                            mother_id = id da mãe (idem acima)
+
+                            zipCode = CEP
+
+                            street = Nome do Logradouro (rua)
+
+                            number = número
+
+                            neighborhood = Bairro
+
+                            city = cidade
+
+                            state = iniciais do Estado
+
+                    </pre>
+
+                    <br><br>
+
+                    <p class="text-center">Exemplo de Retorno</p>
+
+                    <pre>
+
+                        Se cadastro com sucesso
+
+                        {"status":true}
+
+                        Senão
+
+                        Exemplo de erro caso não passe o email
+
+                        {"status":false,"msg":"Insira um email válido"}
+                    </pre>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 </div>
 
 

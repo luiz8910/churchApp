@@ -1392,10 +1392,7 @@ class PersonController extends Controller
         })->export($format);
     }
 
-    public function storeVisitors(PersonCreateRequest $request)
-    {
-        return redirect()->route('person.visitors');
-    }
+
 
     public function automaticCep($id, $user)
     {
@@ -2052,12 +2049,194 @@ class PersonController extends Controller
         return redirect()->route('person.index');
     }
 
+
+
+//--------------------------------------------------------- API --------------------------------------------------------
+
     public function storeWaitingApprovalApp(Request $request)
     {
         $this->store($request, 'app');
     }
 
-//--------------------------------------------------------- API --------------------------------------------------------
+    public function storeApp(Request $request)
+    {
+        $data = $request->all();
+
+        $church = null; $welcome = null;
+
+        $data['imgProfile'] = isset($data['imgProfile']) ? $data['imgProfile'] :'uploads/profile/noimage.png';
+
+        if(isset($data['church_id']))
+        {
+            //Cadastro de Membro
+
+            if($data['church_id'] != "")
+            {
+                $church = $this->churchRepository->find($data['church_id']);
+            }
+
+            //Cadastro de Visitante
+
+            else{
+
+                return $this->storeVisitors($request);
+            }
+        }
+        else{
+
+            //Cadastro de Visitante
+
+
+            return $this->storeVisitors($request);
+        }
+
+
+        if(!isset($data['name']) || (isset($data['name']) && $data['name'] == ""))
+        {
+            return $this->returnFalse('Insira o nome');
+        }
+
+        if(!isset($data['cel']) || (isset($data['cel']) && $data['cel']) == "")
+        {
+            return $this->returnFalse('Insira um número de celular');
+        }
+
+        if(isset($data['email']) && $data['email'] != "")
+        {
+            if(isset($data['dateBirth']))
+            {
+                if($data['dateBirth'] == '')
+                {
+
+                    return $this->returnFalse('Insira a data de Nascimento');
+
+                }else{
+
+                    $data['dateBirth'] = $this->formatDateBD($data['dateBirth']);
+
+                    $data['tag'] = $this->tag($data['dateBirth']);
+
+                    $data['role_id'] = 2;
+
+                }
+
+                if($data['role'] == 'Lider' || $data['role'] == 'Administrador')
+                {
+                    $id = $this->repository->create($data)->id;
+
+                    $welcome = true;
+
+                    $this->newRecentUser($id, $church->id);
+
+                    $this->feedServices->newFeed(5, 'Novo Usuário Cadastrado', $id, null, 'person', $id );
+                }
+                else{
+
+                    $data['status'] = 'waiting';
+
+                    $id = $this->repository->create($data)->id;
+
+                    $this->feedServices->newFeed(5, 'Novo Usuário Aguardando Aprovação', $id, null, 'person', $id);
+
+                    //Envio Email aguardando aprovação
+                    $person = $this->repository->find($id);
+
+                    $this->newWaitingApproval($person, $church->id);
+                }
+
+                if($data['tag'] == 'adult')
+                {
+
+                    $password = $church->alias;
+
+                    $user = $this->createUserLogin($id, $password, $data['email'], $church->id);
+
+                    if($welcome)
+                    {
+                        $this->welcome($user, $password);
+                    }
+
+                }
+            }
+        }
+
+        else{
+
+            return $this->returnFalse('Insira um email válido');
+
+        }
+
+
+        return json_encode(['status' => true]);
+
+
+
+    }
+
+    public function returnFalse($msg = null)
+    {
+        return json_encode(
+            [
+                'status' => false,
+                'msg' => $msg ? $msg : 'Um erro desconhecido ocorreu, tente novamente mais tarde.'
+            ]
+        );
+    }
+
+    public function storeVisitors(Request $request)
+    {
+        //return redirect()->route('person.visitors');
+
+        $data = $request->all();
+
+        if(!isset($data['name']) || (isset($data['name']) && $data['name'] == ""))
+        {
+            return $this->returnFalse('Insira o nome');
+        }
+
+        if(!isset($data['cel']) || (isset($data['cel']) && $data['cel']) == "")
+        {
+            return $this->returnFalse('Insira um número de celular');
+        }
+
+        if(isset($data['email']) && $data['email'] != "")
+        {
+            if(isset($data['dateBirth']))
+            {
+                if($data['dateBirth'] == '')
+                {
+
+                    return $this->returnFalse('Insira a data de Nascimento');
+
+                }else{
+                    $data['dateBirth'] = $this->formatDateBD($data['dateBirth']);
+
+                    $data['tag'] = $this->tag($data['dateBirth']);
+
+                }
+
+                $id = $this->visitorRepository->create($data)->id;
+
+
+                if($data['tag'] == 'adult')
+                {
+                    $user = $this->createUserLogin(null, $data['cel'], $data['email'], null);
+
+                    $this->welcome($user, $data['cel']);
+                }
+            }
+        }
+
+        else{
+
+            return $this->returnFalse('Insira um email válido');
+
+        }
+
+
+        return json_encode(['status' => true]);
+
+    }
 
     public function recentPeopleApp($church)
     {
