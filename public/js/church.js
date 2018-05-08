@@ -10,7 +10,75 @@ $(function(){
    });
 
 
+    $(".btn-activate").click(function(){
+
+        var id = this.id.replace('btn-activate-', '');
+
+        activateChurch(id)
+    });
+
+    $(".btn-full-activate").click(function(){
+
+        var id = this.id.replace('btn-full-activate-', '');
+
+        fullActivateChurch(id);
+    })
+
+
 });
+
+
+function fullActivateChurch(id)
+{
+
+    var url = '/full-activate-church/';
+
+    swal({
+            title: "Deseja Ativar esta igreja?",
+            text: '',
+            type: "info",
+            showCancelButton: true,
+            confirmButtonClass: "btn-success",
+            confirmButtonText: "Sim, Ativar!",
+            cancelButtonText: "Cancelar",
+            closeOnConfirm: false
+        },
+        function(isConfirm){
+            if(isConfirm)
+            {
+                Request(url, null, id);
+            }
+
+        });
+}
+
+
+function activateChurch(id)
+{
+    var url = '/activate-church/';
+
+    swal({
+            title: "Deseja Ativar esta igreja?",
+            text: '',
+            type: "info",
+            showCancelButton: true,
+            confirmButtonClass: "btn-success",
+            confirmButtonText: "Sim, Ativar!",
+            cancelButtonText: "Cancelar",
+            closeOnConfirm: false
+        },
+        function(isConfirm){
+            if(isConfirm)
+            {
+                Request(url, null, id);
+            }
+
+        });
+
+
+}
+
+
 
 function editChurch(id)
 {
@@ -148,4 +216,5 @@ function editChurch(id)
         console.log('fail');
         console.log(e);
     });
+
 }

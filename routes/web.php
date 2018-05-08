@@ -381,6 +381,14 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('/update-church/{id}', 'ChurchController@update');
 
+    Route::get('/inactive-churches', 'ChurchController@inactive')->name('inactive.churches');
+
+    Route::get('/waiting-churches', 'ChurchController@waiting')->name('waiting.churches');
+
+    Route::get('/activate-church/{id}', 'ChurchController@activate');
+
+    Route::get('/full-activate-church/{id}', 'ChurchController@fullActivate');
+
     // Fim Admin site
 
     Route::get('/events-ajax', 'EventController@getListEvents');

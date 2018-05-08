@@ -131,4 +131,14 @@ trait ConfigTrait
     {
         return Route::currentRouteName();
     }
+
+    public function returnFalse($msg = null)
+    {
+        return json_encode(
+            [
+                'status' => false,
+                'msg' => $msg ? $msg : 'Um erro desconhecido ocorreu, tente novamente mais tarde.'
+            ]
+        );
+    }
 }

@@ -2173,16 +2173,6 @@ class PersonController extends Controller
 
     }
 
-    public function returnFalse($msg = null)
-    {
-        return json_encode(
-            [
-                'status' => false,
-                'msg' => $msg ? $msg : 'Um erro desconhecido ocorreu, tente novamente mais tarde.'
-            ]
-        );
-    }
-
     public function storeVisitors(Request $request)
     {
         //return redirect()->route('person.visitors');

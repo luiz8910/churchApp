@@ -53,7 +53,7 @@
                                                     <div class="actions">
                                                         <div class="btn-group btn-group-sm">
 
-                                                               {{-- <div class="col-lg-9">
+                                                                {{--<div class="col-lg-9">
                                                                     <div class="input-group">
                                                                         <input type="text" class="form-control" id="btn-search" placeholder="Digite 3 letras ou mais...">
                                                                             <span class="input-group-btn">
@@ -64,8 +64,7 @@
                                                                     </div><!-- /input-group -->
                                                                 </div><!-- /.col-lg-8 -->--}}
 
-
-                                                                @include('includes.church-options')
+                                                            @include('includes.church-options')
 
 
 
@@ -120,9 +119,14 @@
 
                                                                             <td>
 
-                                                                                <button class="btn btn-success btn-sm btn-circle btn-edit" id="btn-edit-{{ $item->id }}">
+                                                                                <button class="btn btn-info btn-sm btn-circle btn-edit" id="btn-edit-{{ $item->id }}">
                                                                                     <i class="fa fa-pencil"></i>
                                                                                     Editar
+                                                                                </button>
+
+                                                                                <button class="btn btn-success btn-sm btn-circle btn-full-activate" id="btn-full-activate-{{ $item->id }}">
+                                                                                    <i class="fa fa-check"></i>
+                                                                                    Ativar
                                                                                 </button>
 
                                                                                 <button class="btn btn-danger btn-sm btn-circle btn-delete-church" title="Deseja Excluir a Igreja?"
@@ -172,7 +176,6 @@
                                 <ul class="nav nav-tabs" role="tablist">
                                     <li role="presentation" class="active"><a href="#church" aria-controls="home" role="tab" data-toggle="tab">Igreja</a></li>
                                     <li role="presentation"><a href="#responsible" aria-controls="profile" role="tab" data-toggle="tab">Responsável</a></li>
-                                    <li role="presentation"><a href="#plans" aria-controls="plans" role="tab" data-toggle="tab">Plano</a></li>
                                 </ul>
 
                                 <!-- Tab panes -->
