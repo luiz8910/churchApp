@@ -482,7 +482,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 //Testes
 Route::get('/map', function(){
-    $string = 'https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=AIzaSyCjTs0nbQbEecUygnKpThLfzRKES8nKS0A';
+    $string = 'https://maps.googleapis.com/maps/api/geocode/json?address=375+Avenida+Londres,+Sorocaba+,+SP&key=AIzaSyCjTs0nbQbEecUygnKpThLfzRKES8nKS0A';
 
     $arrContextOptions=array(
         "ssl"=>array(

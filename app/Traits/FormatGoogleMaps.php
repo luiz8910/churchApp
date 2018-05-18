@@ -25,4 +25,24 @@ trait FormatGoogleMaps
             return false;
         }
     }
+
+
+    public function formatAPI($location)
+    {
+
+        if($location->street)
+        {
+            $place = $location->number . '+';
+
+            $place .= str_replace(' ', '+', $location->street);
+
+            $place .= ',+' . $location->city . '+,' . '+' . $location->state;
+
+            return $place;
+        }
+        else{
+
+            return false;
+        }
+    }
 }

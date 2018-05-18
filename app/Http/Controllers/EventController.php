@@ -1954,4 +1954,118 @@ class EventController extends Controller
     }
 
 
+
+    public function eventsToday($id, $visitor = null)
+    {
+        /*
+         * $id
+         * $visitor = true se o usuário for visitante, false para o resto
+         */
+
+
+        $today = date_format(date_create(), 'Y-m-d');
+
+        if($visitor)
+        {
+
+            $events = DB::table('event_person')
+                ->select('events.name', 'events.id', 'events.createdBy_id', 'event_person.event_date', 'events.group_id',
+                    'events.description', 'events.imgEvent', 'events.startTime',
+                    'events.endTime', 'events.street', 'events.number', 'events.city', 'events.state', 'events.frequency', 'event_person.deleted_at')
+                ->join('events', 'event_person.event_id', '=', 'events.id')
+                ->join('event_subscribed_lists', 'event_subscribed_lists.event_id', '=', 'events.id')
+                ->where('event_subscribed_lists.visitor_id', $id)
+                ->whereDate('event_person.eventDate', '=', $today)
+                ->whereNull('events.deleted_at')
+                ->orderBy('event_person.event_date')
+                ->distinct()
+                ->get();
+
+        }
+
+        else
+        {
+            $events = DB::table('event_person')
+                ->select('events.name', 'events.id', 'events.createdBy_id', 'event_person.event_date', 'events.group_id',
+                    'events.description', 'events.imgEvent', 'events.startTime',
+                    'events.endTime', 'events.street', 'events.number', 'events.city', 'events.state', 'events.frequency', 'event_person.deleted_at')
+                ->join('events', 'event_person.event_id', '=', 'events.id')
+                ->join('event_subscribed_lists', 'event_subscribed_lists.event_id', '=', 'events.id')
+                ->where('event_subscribed_lists.person_id', $id)
+                ->whereDate('event_person.eventDate', '=', $today)
+                ->whereNull('events.deleted_at')
+                ->orderBy('event_person.event_date')
+                ->distinct()
+                ->get();
+        }
+
+
+        $i = 0;
+
+        $coords = [];
+
+        if(count($events) > 0)
+        {
+            foreach($events as $event)
+            {
+
+                $local = $this->formatAPI($event);
+
+
+                $location = 'https://maps.googleapis.com/maps/api/geocode/json?address='.$local.'&key=AIzaSyCjTs0nbQbEecUygnKpThLfzRKES8nKS0A';
+
+
+
+                $arrContextOptions=array(
+                    "ssl"=>array(
+                        "verify_peer"=>false,
+                        "verify_peer_name"=>false,
+                    ),
+                );
+
+
+                $json = file_get_contents($location, false, stream_context_create($arrContextOptions));
+
+
+                $obj = json_decode($json);
+
+
+                if($obj->status == 'OK')
+                {
+                    $obj->results[0]->geometry->location->event_id = $event->id;
+
+                    $obj->results[0]->geometry->location->startTime = $event->startTime;
+
+                    $obj->results[0]->geometry->location->endTime = $event->endTime;
+
+                    $lat = $obj->results[0]->geometry->location->lat;
+
+                    $lng = $obj->results[0]->geometry->location->lng;
+
+                    $lat = number_format($lat, 4, '.', ',');
+
+                    $lng = number_format($lng, 4, '.', ',');
+
+                    $obj->results[0]->geometry->location->lat = $lat;
+
+                    $obj->results[0]->geometry->location->lng = $lng;
+
+                    $coords[] = $obj->results[0]->geometry->location;
+
+                }
+
+
+                $i++;
+            }
+
+            return json_encode(['status' => true, 'coords' => $coords]);
+        }
+
+
+       return json_encode(['status' => false]);
+
+
+    }
+
+
 }

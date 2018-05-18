@@ -5,8 +5,40 @@
     <title>Docs</title>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <style>
+        /* Style the header */
+        .header {
+            padding: 10px 16px;
+            background: #555;
+            color: #f1f1f1;
+            z-index:1000 !important;
+        }
+
+        /* Page content */
+        .content {
+            padding: 16px;
+        }
+
+        /* The sticky class is added to the header with JS when it reaches its scroll position */
+        .sticky {
+            position: fixed;
+            top: 0;
+            width: 100%
+        }
+
+        /* Add some top padding to the page content to prevent sudden quick movement (as the header gets a new position at the top of the page (position:fixed and top:0) */
+        .sticky + .content {
+            padding-top: 102px;
+        }
+    </style>
+
+
 </head>
 <body>
+
+
+
 
 
 
@@ -18,46 +50,52 @@
         </div>
     </div>
 
+    {{--<div class="header" id="myHeader">
+        <h2>My Header</h2>
 
-<div class="container">
 
-    <div class="row">
-        <div class="col-md-12">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Lista de Todas as Igrejas</h3>
-                </div>
-                <div class="panel-body">
+    </div>--}}
 
-                    https://beconnect.com.br/api/church-list
-                    <span class="label label-primary">GET</span>
+<div class="content">
+    <div class="container ">
 
-                    <br><br>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Lista de Todas as Igrejas</h3>
+                    </div>
+                    <div class="panel-body">
 
-                    <p class="text-center">Exemplo de Retorno</p>
+                        https://beconnect.com.br/api/church-list
+                        <span class="label label-primary">GET</span>
+
+                        <br><br>
+
+                        <p class="text-center">Exemplo de Retorno</p>
 
                     <pre>
                         [{"id":1,"name":"Imel Sorocaba"},{"id":7,"name":"Igreja X"}]
                     </pre>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="row">
-        <div class="col-md-12">
-            <div class="panel panel-success">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Login</h3>
-                </div>
-                <div class="panel-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Login</h3>
+                    </div>
+                    <div class="panel-body">
 
-                    https://beconnect.com.br/api/login
-                    <span class="label label-success">POST</span>
+                        https://beconnect.com.br/api/login
+                        <span class="label label-success">POST</span>
 
-                    <br><br>
+                        <br><br>
 
-                    <p class="text-center">Exemplo de Lista de Parâmetros</p>
+                        <p class="text-center">Exemplo de Lista de Parâmetros</p>
 
                     <pre>
                         email = admin@admin.com (Obrigatório)
@@ -65,7 +103,7 @@
                         church = 1 (Obrigatório) <span class="label label-info">Inteiro</span>
                     </pre>
 
-                    <p class="text-center">Exemplo de Retorno</p>
+                        <p class="text-center">Exemplo de Retorno</p>
 
                     <pre>
                         Login Válido
@@ -78,37 +116,37 @@
                     </pre>
 
 
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="row">
-        <div class="col-md-12">
-            <h3 class="text-center">Eventos</h3>
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="text-center">Eventos</h3>
+            </div>
         </div>
-    </div>
 
-    <div class="row">
-        <div class="col-md-12">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Lista dos Próximos X eventos</h3>
-                </div>
-                <div class="panel-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Lista dos Próximos X eventos</h3>
+                    </div>
+                    <div class="panel-body">
 
-                    https://beconnect.com.br/api/next-events/{qtde}/{church}
-                    <span class="label label-primary">GET</span>
+                        https://beconnect.com.br/api/next-events/{qtde}/{church}
+                        <span class="label label-primary">GET</span>
 
-                    <br><br>
-                    qtde = Quantidade de Próximos eventos a serem exibidos <span class="label label-info" style="font-size: 12px;">Inteiro</span>
-                    <br>
-                    church = id da igreja <span class="label label-info" style="font-size: 12px;">Inteiro</span>
+                        <br><br>
+                        qtde = Quantidade de Próximos eventos a serem exibidos <span class="label label-info" style="font-size: 12px;">Inteiro</span>
+                        <br>
+                        church = id da igreja <span class="label label-info" style="font-size: 12px;">Inteiro</span>
 
 
-                    <br><br>
+                        <br><br>
 
-                    <p class="text-center">Exemplo de Retorno</p>
+                        <p class="text-center">Exemplo de Retorno</p>
 
                     <pre>
                         0 => {
@@ -143,33 +181,33 @@
                               +"deleted_at": null
                             }
                     </pre>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="row">
-        <div class="col-md-12">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Lista de Eventos da Próxima Semana</h3>
-                </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Lista de Eventos da Próxima Semana</h3>
+                    </div>
 
-                <div class="panel-body">
+                    <div class="panel-body">
 
-                    https://beconnect.com.br/api/events-next-week/{church}
-                    <span class="label label-primary">GET</span>
+                        https://beconnect.com.br/api/events-next-week/{church}
+                        <span class="label label-primary">GET</span>
 
-                    <br><br>
-                    church = id da igreja <span class="label label-info" style="font-size: 12px;">Inteiro</span>
+                        <br><br>
+                        church = id da igreja <span class="label label-info" style="font-size: 12px;">Inteiro</span>
 
-                    <br><br>
+                        <br><br>
 
-                    <p class="text-center">Exemplo de Retorno</p>
+                        <p class="text-center">Exemplo de Retorno</p>
 
-                    <br>
+                        <br>
 
-                    <span class="label label-info text-center" style="font-size: 12px;">Obs: atributo sub = quantidade de membros inscritos no evento</span>
+                        <span class="label label-info text-center" style="font-size: 12px;">Obs: atributo sub = quantidade de membros inscritos no evento</span>
 
                     <pre>
 
@@ -232,34 +270,34 @@
                             "img_user":"https:\/\/graph.facebook.com\/v2.8\/1091593140969198\/picture?type=normal","eventDate":"22-04-2018","sub":1}
                         ]
                     </pre>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="row">
-        <div class="col-md-12">
-            <h3 class="text-center">Grupos</h3>
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="text-center">Grupos</h3>
+            </div>
         </div>
-    </div>
 
-    <div class="row">
-        <div class="col-md-12">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Lista de todos os Grupos da Igreja</h3>
-                </div>
-                <div class="panel-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Lista de todos os Grupos da Igreja</h3>
+                    </div>
+                    <div class="panel-body">
 
-                    https://beconnect.com.br/api/groups/{church}
-                    <span class="label label-primary">GET</span>
+                        https://beconnect.com.br/api/groups/{church}
+                        <span class="label label-primary">GET</span>
 
-                    <br><br>
-                    church = id da igreja <span class="label label-info" style="font-size: 12px;">Inteiro</span>
+                        <br><br>
+                        church = id da igreja <span class="label label-info" style="font-size: 12px;">Inteiro</span>
 
-                    <br><br>
+                        <br><br>
 
-                    <p class="text-center">Exemplo de Retorno</p>
+                        <p class="text-center">Exemplo de Retorno</p>
 
                     <pre>
                         [
@@ -268,28 +306,28 @@
                             {"id":4,"name":"Grupo Teste Exclus\u00e3o","sinceOf":"25\/01\/2018","members":1}
                         ]
                     </pre>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="row">
-        <div class="col-md-12">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Grupos em que o usuário logado pertence</h3>
-                </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Grupos em que o usuário logado pertence</h3>
+                    </div>
 
-                <div class="panel-body">
-                    https://beconnect.com.br/api/my-groups/{person_id}
-                    <span class="label label-primary">GET</span>
+                    <div class="panel-body">
+                        https://beconnect.com.br/api/my-groups/{person_id}
+                        <span class="label label-primary">GET</span>
 
-                    <br><br>
-                    person_id = id do membro logado <span class="label label-info" style="font-size: 12px;">Inteiro</span>
+                        <br><br>
+                        person_id = id do membro logado <span class="label label-info" style="font-size: 12px;">Inteiro</span>
 
-                    <br><br>
+                        <br><br>
 
-                    <p class="text-center">Exemplo de Retorno</p>
+                        <p class="text-center">Exemplo de Retorno</p>
 
                     <pre>
                         Caso o membro esteja inscrito em 1 ou mais grupos
@@ -311,28 +349,28 @@
 
                         {"status":false}
                     </pre>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="row">
-        <div class="col-md-12">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Membros do grupo selecionado</h3>
-                </div>
-                <div class="panel-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Membros do grupo selecionado</h3>
+                    </div>
+                    <div class="panel-body">
 
-                    https://beconnect.com.br/api/group-people/{group_id}
-                    <span class="label label-primary">GET</span>
+                        https://beconnect.com.br/api/group-people/{group_id}
+                        <span class="label label-primary">GET</span>
 
-                    <br><br>
-                    group_id = id do grupo escolhido <span class="label label-info" style="font-size: 12px;">Inteiro</span>
+                        <br><br>
+                        group_id = id do grupo escolhido <span class="label label-info" style="font-size: 12px;">Inteiro</span>
 
-                    <br><br>
+                        <br><br>
 
-                    <p class="text-center">Exemplo de Retorno</p>
+                        <p class="text-center">Exemplo de Retorno</p>
 
                     <pre>
                         Se o grupo selecionado conter 1 ou mais participantes
@@ -350,35 +388,35 @@
 
                         {"status":false}
                     </pre>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="row">
-        <div class="col-md-12">
-            <h3 class="text-center">Atividades Recentes</h3>
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="text-center">Atividades Recentes</h3>
+            </div>
         </div>
-    </div>
 
-    <div class="row">
-        <div class="col-md-12">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Grupos Recentes</h3>
-                </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Grupos Recentes</h3>
+                    </div>
 
-                <div class="panel-body">
+                    <div class="panel-body">
 
-                    https://beconnect.com.br/api/recent-groups/{church}
-                    <span class="label label-primary">GET</span>
+                        https://beconnect.com.br/api/recent-groups/{church}
+                        <span class="label label-primary">GET</span>
 
-                    <br><br>
-                    church = id da igreja <span class="label label-info" style="font-size: 12px;">Inteiro</span>
+                        <br><br>
+                        church = id da igreja <span class="label label-info" style="font-size: 12px;">Inteiro</span>
 
-                    <br><br>
+                        <br><br>
 
-                    <p class="text-center">Exemplo de Retorno</p>
+                        <p class="text-center">Exemplo de Retorno</p>
 
                     <pre>
 
@@ -398,29 +436,29 @@
                         {"status":false}
                     </pre>
 
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="row">
-        <div class="col-md-12">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Eventos Recentes</h3>
-                </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Eventos Recentes</h3>
+                    </div>
 
-                <div class="panel-body">
+                    <div class="panel-body">
 
-                    https://beconnect.com.br/api/recent-events/{church}
-                    <span class="label label-primary">GET</span>
+                        https://beconnect.com.br/api/recent-events/{church}
+                        <span class="label label-primary">GET</span>
 
-                    <br><br>
-                    church = id da igreja <span class="label label-info" style="font-size: 12px;">Inteiro</span>
+                        <br><br>
+                        church = id da igreja <span class="label label-info" style="font-size: 12px;">Inteiro</span>
 
-                    <br><br>
+                        <br><br>
 
-                    <p class="text-center">Exemplo de Retorno</p>
+                        <p class="text-center">Exemplo de Retorno</p>
 
                     <pre>
 
@@ -452,29 +490,29 @@
                         {"status":false}
                     </pre>
 
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="row">
-        <div class="col-md-12">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Membros Recentes</h3>
-                </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Membros Recentes</h3>
+                    </div>
 
-                <div class="panel-body">
+                    <div class="panel-body">
 
-                    https://beconnect.com.br/api/recent-people/{church}
-                    <span class="label label-primary">GET</span>
+                        https://beconnect.com.br/api/recent-people/{church}
+                        <span class="label label-primary">GET</span>
 
-                    <br><br>
-                    church = id da igreja <span class="label label-info" style="font-size: 12px;">Inteiro</span>
+                        <br><br>
+                        church = id da igreja <span class="label label-info" style="font-size: 12px;">Inteiro</span>
 
-                    <br><br>
+                        <br><br>
 
-                    <p class="text-center">Exemplo de Retorno</p>
+                        <p class="text-center">Exemplo de Retorno</p>
 
                     <pre>
 
@@ -496,41 +534,41 @@
                         {"status":false}
                     </pre>
 
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
 
-    <div class="row">
-        <div class="col-md-12">
-            <h3 class="text-center">Pessoas e Visitantes</h3>
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="text-center">Pessoas e Visitantes</h3>
+            </div>
         </div>
-    </div>
 
-    <div class="row">
-        <div class="col-md-12">
-            <div class="panel panel-success">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Cadastro de Pessoas e Visitantes</h3>
-                </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Cadastro de Pessoas e Visitantes</h3>
+                    </div>
 
-                <div class="panel-body">
+                    <div class="panel-body">
 
-                    https://beconnect.com.br/api/store-person
-                    <span class="label label-success">POST</span>
+                        https://beconnect.com.br/api/store-person
+                        <span class="label label-success">POST</span>
 
-                    <br><br>
+                        <br><br>
 
-                    Caso seja cadastro de visitantes, apenas omita o parâmetro church_id
+                        Caso seja cadastro de visitantes, apenas omita o parâmetro church_id
 
-                    <br><br>
+                        <br><br>
 
-                    No final, informe o usuário que um email com instruções de acesso lhe foi enviado
+                        No final, informe o usuário que um email com instruções de acesso lhe foi enviado
 
-                    <br><br>
+                        <br><br>
 
-                    <p class="text-center">Lista de Parâmetros</p>
+                        <p class="text-center">Lista de Parâmetros</p>
 
                     <pre>
 
@@ -578,9 +616,9 @@
 
                     </pre>
 
-                    <br><br>
+                        <br><br>
 
-                    <p class="text-center">Exemplo de Retorno</p>
+                        <p class="text-center">Exemplo de Retorno</p>
 
                     <pre>
 
@@ -595,13 +633,68 @@
                         {"status":false,"msg":"Insira um email válido"}
                     </pre>
 
+                    </div>
                 </div>
             </div>
         </div>
+
+
+
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="text-center">Check-in</h3>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Lista de Eventos do dia atual (dos quais o usuário está inscrito)</h3>
+                    </div>
+
+                    <div class="panel-body">
+
+                        https://beconnect.com.br/api/today-events/{id}/{visitor?}
+                        <span class="label label-primary">GET</span>
+
+                        <br><br>
+                        id = id da pessoa <span class="label label-info" style="font-size: 12px;">Inteiro</span> <br><br>
+                        visitor = true se a pessoa for visitante <span class="label label-info" style="font-size: 12px;">Inteiro ou Boolean</span>
+                        <span class="label label-warning" style="font-size: 12px;">Opcional</span>
+
+                        <br><br>
+
+                        <p class="text-center">Exemplo de Retorno</p>
+
+                    <pre>
+
+                        Se quantidade de eventos > 0
+
+                        {"status":true,
+
+                            {"status":true,
+
+                                "coords":[
+                                    {"lat":"-23.5201","lng":"-47.4870","event_id":37,"startTime":"15:00","endTime":""}
+
+                                ]}
+                        }
+
+                        Se quantidade = 0
+
+                        {"status":false}
+                    </pre>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
-
-
 </div>
+
 
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"
@@ -609,5 +702,25 @@
         crossorigin="anonymous"></script>
 
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <script>
+        // When the user scrolls the page, execute myFunction
+        window.onscroll = function() {myFunction()};
+
+        // Get the header
+        var header = document.getElementById("myHeader");
+
+        // Get the offset position of the navbar
+        var sticky = header.offsetTop;
+
+        // Add the sticky class to the header when you reach its scroll position. Remove "sticky" when you leave the scroll position
+        function myFunction() {
+            if (window.pageYOffset >= sticky) {
+                header.classList.add("sticky");
+            } else {
+                header.classList.remove("sticky");
+            }
+        }
+    </script>
 </body>
 </html>
