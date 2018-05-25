@@ -1111,6 +1111,17 @@ class EventController extends Controller
     }
 
     /*
+     * $id = id do evento
+     * $person_id = id do membro
+     */
+    public function checkInAPP($id, $person_id)
+    {
+        $person = $this->personRepository->find($person_id);
+
+        return $this->eventServices->check($id, $person);
+    }
+
+    /*
      * @param int $id
      * $id = id do evento
      * Usado para realizar check-out do evento selecionado
@@ -1583,6 +1594,9 @@ class EventController extends Controller
         return json_encode(['status' => true]);
     }
 
+    /*
+     * Check-in em lote
+     */
     public function checkInPeople($people, $event)
     {
         $people = $people == 0 ? false : \GuzzleHttp\json_decode($people);
@@ -1965,6 +1979,7 @@ class EventController extends Controller
 
         $today = date_format(date_create(), 'Y-m-d');
 
+
         if($visitor)
         {
 
@@ -2015,7 +2030,6 @@ class EventController extends Controller
                 $location = 'https://maps.googleapis.com/maps/api/geocode/json?address='.$local.'&key=AIzaSyCjTs0nbQbEecUygnKpThLfzRKES8nKS0A';
 
 
-
                 $arrContextOptions=array(
                     "ssl"=>array(
                         "verify_peer"=>false,
@@ -2042,9 +2056,9 @@ class EventController extends Controller
 
                     $lng = $obj->results[0]->geometry->location->lng;
 
-                    $lat = number_format($lat, 4, '.', ',');
+                    $lat = number_format($lat, 3, '.', ',');
 
-                    $lng = number_format($lng, 4, '.', ',');
+                    $lng = number_format($lng, 3, '.', ',');
 
                     $obj->results[0]->geometry->location->lat = $lat;
 

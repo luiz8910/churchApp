@@ -719,19 +719,20 @@ class EventServices
      * $id = id do evento
      * Usado para realizar check-in do evento selecionado
      * */
-    public function check($id)
+    public function check($id, $person = null)
     {
         try{
-            $user = \Auth::user();
 
-            $this->subEvent($id, $user->person->id);
+            $person = $person ? $person : \Auth::user()->person;
+
+            $this->subEvent($id, $person->id);
 
             $date = date_create(date('Y-m-d'));
 
             $event_person = DB::table('event_person')
                 ->where([
                     'event_id' => $id,
-                    'person_id' => $user->person_id,
+                    'person_id' => $person->id,
                     'eventDate' => date_format($date, "Y-m-d"),
                     'check-in' => 0
                 ])->get();
@@ -741,7 +742,7 @@ class EventServices
                 DB::table('event_person')
                     ->where([
                         'event_id' => $id,
-                        'person_id' => $user->person_id,
+                        'person_id' => $person->id,
                         'eventDate' => date_format($date, "Y-m-d"),
                         'check-in' => 0
                     ])->update([
@@ -761,7 +762,7 @@ class EventServices
                     DB::table('event_person')
                         ->insert([
                             'event_id' => $id,
-                            'person_id' => $user->person_id,
+                            'person_id' => $person->id,
                             'eventDate' => $days[$i]->eventDate,
                             'event_date' => date_create($days[$i]->eventDate),
                             'check-in' => $check,

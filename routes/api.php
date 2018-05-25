@@ -45,6 +45,8 @@ Route::get('recent-events/{church}', 'EventController@recentEventsApp');
 
 Route::get('/today-events/{id}/{visitor?}', 'EventController@eventsToday');
 
+Route::get('/check-in/{id}/{person_id}', 'EventController@checkInAPP');
+
 
 //------------------------- Grupos -------------------------------------------------------------------------------------
 
