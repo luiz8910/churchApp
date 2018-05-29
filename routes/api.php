@@ -35,6 +35,10 @@ Route::get('/church-list', 'ChurchController@churchesApi')->middleware('cors');
 
 Route::post('/login', 'Auth\LoginController@loginApp');
 
+Route::any('/facebook/{church}/{app?}', 'Auth\RegisterController@preFbLogin');
+
+Route::any('/google/{church}/{app?}', 'Auth\RegisterController@preGoogleLogin');
+
 //------------------------- Eventos ------------------------------------------------------------------------------------
 
 Route::get('/next-events/{qtde}/{church}', 'EventController@getEventsApi');

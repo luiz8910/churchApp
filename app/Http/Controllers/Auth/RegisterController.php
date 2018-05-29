@@ -95,16 +95,26 @@ class RegisterController extends Controller
         ]);
     }
 
-    public function preFbLogin($church)
+    public function preFbLogin($church, $app = null)
     {
         session(['church' => $church]);
+
+        if($app)
+        {
+            session(['app' => true]);
+        }
 
         return $this->redirectToProvider();
     }
 
-    public function preGoogleLogin($church)
+    public function preGoogleLogin($church, $app = null)
     {
         session(['church' => $church]);
+
+        if($app)
+        {
+            session(['app' => true]);
+        }
 
         return $this->redirectToGoogleProvider();
     }
@@ -128,6 +138,7 @@ class RegisterController extends Controller
     public function handleProviderCallback()
     {
         try{
+            $app = session('app');
 
             $church = session('church');
 
@@ -150,7 +161,8 @@ class RegisterController extends Controller
                 if(count($user) == 0)
                 {
                     \Session::flash('email.error', 'O email informado não existe');
-                    return redirect()->route('login');
+
+                    return $app ? $this->wrongLogin() : redirect()->route('login');
                 }
 
 
@@ -191,15 +203,17 @@ class RegisterController extends Controller
                 }
                 else{
                     \Session::flash('email.error', 'O email informado não existe');
-                    return redirect()->route('login');
+
+                    return $app ? $this->wrongLogin() : redirect()->route('login');
                 }
             }
             else{
 
                 auth()->loginUsingId($user->id);
+
                 DB::commit();
 
-                return redirect()->route('index');
+                return $app ? $this->loginSuccessful($user) : redirect()->route('index');
             }
 
 
@@ -209,6 +223,31 @@ class RegisterController extends Controller
             dd($e);
         }
 
+    }
+
+
+    public function wrongLogin()
+    {
+        return json_encode([
+            'status' => false,
+            'msg' => 'O Email informado não existe'
+        ]);
+    }
+
+    public function loginSuccessful($user)
+    {
+        return json_encode([
+            'status' => true,
+            //'id' => $user->id,
+            'church_id' => $user->church_id,
+            'person_id' => $user->person_id,
+            'facebook_id' => $user->facebook_id,
+            'google_id' => $user->google_id,
+            'email' => $user->email,
+            'name' => $user->person->name,
+            'lastName' => $user->person->lastName,
+            'imgProfile' => $user->person->imgProfile
+        ]);
     }
 
     /**
@@ -277,6 +316,8 @@ class RegisterController extends Controller
     {
         $church = session('church');
 
+        $app = session('app');
+
         $social = Socialite::driver('google')->user();
 
         $userType = "visitor";
@@ -296,7 +337,8 @@ class RegisterController extends Controller
             if(count($user) == 0)
             {
                 \Session::flash('email.error', 'O email informado não existe');
-                return redirect()->route('login');
+
+                return $app ? $this->wrongLogin() : redirect()->route('login');
             }
 
 
@@ -335,14 +377,15 @@ class RegisterController extends Controller
             }
             else{
                 \Session::flash('email.error', 'O email informado não existe');
-                return redirect()->route('login');
+
+                return $app ? $this->wrongLogin() : redirect()->route('login');
             }
         }
         else{
 
             auth()->loginUsingId($user->id);
 
-            return redirect()->route('index');
+            return $app ? $this->loginSuccessful($user) : redirect()->route('index');
         }
     }
 
