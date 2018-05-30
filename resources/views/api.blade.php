@@ -763,11 +763,17 @@
 
                     <pre>
 
-                        Se check-in realizado com sucesso
+                        Se usuário estiver inscrito e presente no dia atual
 
-                        {"status":true}
+                        {"status":true, "check-in": true}
 
-                        Senão
+
+                        Se não estiver presente
+
+                        {"status":true, "check-in": false}
+
+
+                        Se usuário não estiver inscrito ou algum outro erro
 
                         {"status":false}
 
