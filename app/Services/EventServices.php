@@ -719,7 +719,7 @@ class EventServices
      * $id = id do evento
      * Usado para realizar check-in do evento selecionado
      * */
-    public function check($id, $person = null)
+    public function check($id, $person = null, $visitor = null)
     {
         try{
 
@@ -729,49 +729,100 @@ class EventServices
 
             $date = date_create(date('Y-m-d'));
 
-            $event_person = DB::table('event_person')
-                ->where([
-                    'event_id' => $id,
-                    'person_id' => $person->id,
-                    'eventDate' => date_format($date, "Y-m-d"),
-                    'check-in' => 0
-                ])->get();
-
-            if(count($event_person) > 0)
+            if($visitor)
             {
-                DB::table('event_person')
+                $event_person = DB::table('event_person')
+                    ->where([
+                        'event_id' => $id,
+                        'visitor_id' => $person->id,
+                        'eventDate' => date_format($date, "Y-m-d"),
+                        'check-in' => 0
+                    ])->get();
+
+                if(count($event_person) > 0)
+                {
+                    DB::table('event_person')
+                        ->where([
+                            'event_id' => $id,
+                            'visitor_id' => $person->id,
+                            'eventDate' => date_format($date, "Y-m-d"),
+                            'check-in' => 0
+                        ])->update([
+                            'check-in' => 1,
+                            'show' => 1
+                        ]);
+                }
+                else{
+                    $days = $this->eventDays($id);
+
+                    $today = date("Y-m-d");
+
+                    for($i = 0; $i < count($days); $i++)
+                    {
+                        $check = $days[$i]->eventDate == $today ? 1 : 0;
+
+                        DB::table('event_person')
+                            ->insert([
+                                'event_id' => $id,
+                                'visitor_id' => $person->id,
+                                'eventDate' => $days[$i]->eventDate,
+                                'event_date' => date_create($days[$i]->eventDate),
+                                'check-in' => $check,
+                                'show' => 1
+                            ]);
+                    }
+
+
+                }
+            }
+            else{
+
+                $event_person = DB::table('event_person')
                     ->where([
                         'event_id' => $id,
                         'person_id' => $person->id,
                         'eventDate' => date_format($date, "Y-m-d"),
                         'check-in' => 0
-                    ])->update([
-                        'check-in' => 1,
-                        'show' => 1
-                    ]);
-            }
-            else{
-                $days = $this->eventDays($id);
+                    ])->get();
 
-                $today = date("Y-m-d");
-
-                for($i = 0; $i < count($days); $i++)
+                if(count($event_person) > 0)
                 {
-                    $check = $days[$i]->eventDate == $today ? 1 : 0;
-
                     DB::table('event_person')
-                        ->insert([
+                        ->where([
                             'event_id' => $id,
                             'person_id' => $person->id,
-                            'eventDate' => $days[$i]->eventDate,
-                            'event_date' => date_create($days[$i]->eventDate),
-                            'check-in' => $check,
+                            'eventDate' => date_format($date, "Y-m-d"),
+                            'check-in' => 0
+                        ])->update([
+                            'check-in' => 1,
                             'show' => 1
                         ]);
                 }
+                else{
+                    $days = $this->eventDays($id);
+
+                    $today = date("Y-m-d");
+
+                    for($i = 0; $i < count($days); $i++)
+                    {
+                        $check = $days[$i]->eventDate == $today ? 1 : 0;
+
+                        DB::table('event_person')
+                            ->insert([
+                                'event_id' => $id,
+                                'person_id' => $person->id,
+                                'eventDate' => $days[$i]->eventDate,
+                                'event_date' => date_create($days[$i]->eventDate),
+                                'check-in' => $check,
+                                'show' => 1
+                            ]);
+                    }
 
 
+                }
             }
+
+
 
             DB::commit();
 

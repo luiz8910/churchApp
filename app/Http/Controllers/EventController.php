@@ -1114,11 +1114,18 @@ class EventController extends Controller
      * $id = id do evento
      * $person_id = id do membro
      */
-    public function checkInAPP($id, $person_id)
+    public function checkInAPP($id, $person_id, $visitor = null)
     {
-        $person = $this->personRepository->find($person_id);
+        if($visitor)
+        {
+            $model = $this->visitorRepository->find($person_id);
+        }
+        else{
 
-        return $this->eventServices->check($id, $person);
+            $model = $this->personRepository->find($person_id);
+        }
+
+        return $this->eventServices->check($id, $model, $visitor = null);
     }
 
     /*
