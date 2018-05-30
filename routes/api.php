@@ -51,6 +51,8 @@ Route::get('/today-events/{id}/{visitor?}', 'EventController@eventsToday');
 
 Route::get('/check-in/{id}/{person_id}/{visitor?}', 'EventController@checkInAPP');
 
+Route::get('/is-check/{id}/{person_id}/{visitor?}', 'EventController@isCheckedApp');
+
 
 //------------------------- Grupos -------------------------------------------------------------------------------------
 

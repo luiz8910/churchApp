@@ -735,6 +735,50 @@
         </div>
 
 
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Verificar Check-in</h3>
+                    </div>
+
+                    <div class="panel-body">
+
+                        https://beconnect.com.br/api/is-check/{id}/{person_id}/{visitor?}
+                        <span class="label label-primary">GET</span>
+
+                        <br><br>
+                        id = id do evento <span class="label label-info" style="font-size: 12px;">Inteiro</span> <br><br>
+
+                        person_id = id da pessoa <span class="label label-info" style="font-size: 12px;">Inteiro</span> <br><br>
+
+                        visitor = true se a pessoa for visitante <span class="label label-info" style="font-size: 12px;">Inteiro ou Boolean</span>
+
+                        <span class="label label-warning" style="font-size: 12px;">Opcional</span>
+
+                        <br><br>
+
+                        <p class="text-center">Exemplo de Retorno</p>
+
+                    <pre>
+
+                        Se check-in realizado com sucesso
+
+                        {"status":true}
+
+                        Senão
+
+                        {"status":false}
+
+                    </pre>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
     </div>
 </div>
 

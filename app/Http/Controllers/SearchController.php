@@ -579,7 +579,7 @@ class SearchController extends Controller
 
             foreach ($visitors as $visitor)
             {
-                $visitor->model = 'visitor';
+                $visitor->model = 'visitors';
             }
         }
 

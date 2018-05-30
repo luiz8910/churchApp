@@ -1129,6 +1129,43 @@ class EventController extends Controller
     }
 
     /*
+     * $id = id do evento
+     * $person_id = id da pessoa
+     * $visitor = se for visitante = true,
+     * Utilizado para verificar se o membro ou visitante deu check-in no evento selecionado
+     */
+    public function isCheckedApp($id, $person_id, $visitor = null)
+    {
+
+        if($visitor)
+        {
+
+            $visitor_id = $person_id . '/visit';
+
+            if($this->eventServices->isSubVisitor($id, $visitor_id))
+            {
+                return json_encode(['status' => true, 'check-in' => true]);
+            }
+
+            return json_encode(['status' => true, 'check-in' => false]);
+        }
+        else
+        {
+
+            if($this->eventServices->isSubscribed($id, $person_id))
+            {
+
+                return json_encode(['status' => true, 'check-in' => true]);
+
+            }
+
+            return json_encode(['status' => true, 'check-in' => false]);
+        }
+
+
+    }
+
+    /*
      * @param int $id
      * $id = id do evento
      * Usado para realizar check-out do evento selecionado

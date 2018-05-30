@@ -650,9 +650,10 @@ class EventServices
      * no evento selecionado
      * @return bool
      */
-    public function isSubscribed($id)
+    public function isSubscribed($id, $person_id = null)
     {
-        $person = \Auth::user()->person_id;
+        $person = $person_id ? $person_id : \Auth::user()->person_id;
+
         $today = date("Y-m-d");
 
         $sub = DB::table('event_person')
