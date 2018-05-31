@@ -41,17 +41,21 @@ Route::any('/google/{church}/{app?}', 'Auth\RegisterController@preGoogleLogin');
 
 //------------------------- Eventos ------------------------------------------------------------------------------------
 
-Route::get('/next-events/{qtde}/{church}', 'EventController@getEventsApi');
+Route::get('/next-events/{qtde}/{church}', 'Api\EventController@getEventsApi');
 
-Route::get('/events-next-week/{church}', 'EventController@getNextWeekEvents');
+Route::get('/events-next-week/{church}', 'Api\EventController@getNextWeekEvents');
 
-Route::get('recent-events/{church}', 'EventController@recentEventsApp');
+Route::get('recent-events/{church}', 'Api\EventController@recentEventsApp');
 
-Route::get('/today-events/{id}/{visitor?}', 'EventController@eventsToday');
+Route::get('/today-events/{id}/{visitor?}', 'Api\EventController@eventsToday');
 
-Route::get('/check-in/{id}/{person_id}/{visitor?}', 'EventController@checkInAPP');
+Route::get('/check-in/{id}/{person_id}/{visitor?}', 'Api\EventController@checkInAPP');
 
-Route::get('/is-check/{id}/{person_id}/{visitor?}', 'EventController@isCheckedApp');
+Route::get('/is-check/{id}/{person_id}/{visitor?}', 'Api\EventController@isCheckedApp');
+
+Route::post('/checkInPeople/{event}', 'Api\EventController@checkInPeopleAPP');
+
+Route::get('/getEventInfo/{id}', 'Api\EventController@getEventInfo');
 
 
 //------------------------- Grupos -------------------------------------------------------------------------------------

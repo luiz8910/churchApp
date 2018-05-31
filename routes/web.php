@@ -193,7 +193,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/subPeople/{people}/{event}', 'EventController@subPeople');
 
-    Route::get('/checkInPeople/{people}/{event}', 'EventController@checkInPeople');
+    Route::any('/checkInPeople/{people}/{event}', 'EventController@checkInPeople');
 
     Route::get('/delete-sub/{person_id}/{event_id}', 'EventController@UnsubUser');
 
@@ -474,6 +474,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('home-visitante/{church}', 'VisitorController@visitors')->name('home.visitor');
 
 
+    //Documentação da API
+    Route::get('docs', function(){
+        return view('api');
+    });
+
+
 //Login Twitter
 //Route::get('auth/twitter', 'Auth\RegisterController@redirectToTwitterProvider');
 //Route::get('auth/twitter/callback', 'Auth\RegisterController@handleTwitterProviderCallback');
@@ -579,7 +585,10 @@ Route::get('/pagseguro/{plan_id}', 'ChurchController@payment')->name('pagseguro.
 
 Route::post('transaction', 'ChurchController@transaction')->name('new.transaction');
 
-Route::get('docs', function(){
-    return view('api');
+Route::get('hoje', function(){
+
+    dd(date('Y-m-d'));
 });
+
+
 

@@ -1110,60 +1110,9 @@ class EventController extends Controller
         return $this->eventServices->check($id);
     }
 
-    /*
-     * $id = id do evento
-     * $person_id = id do membro
-     */
-    public function checkInAPP($id, $person_id, $visitor = null)
-    {
-        if($visitor)
-        {
-            $model = $this->visitorRepository->find($person_id);
-        }
-        else{
-
-            $model = $this->personRepository->find($person_id);
-        }
-
-        return $this->eventServices->check($id, $model, $visitor = null);
-    }
-
-    /*
-     * $id = id do evento
-     * $person_id = id da pessoa
-     * $visitor = se for visitante = true,
-     * Utilizado para verificar se o membro ou visitante deu check-in no evento selecionado
-     */
-    public function isCheckedApp($id, $person_id, $visitor = null)
-    {
-
-        if($visitor)
-        {
-
-            $visitor_id = $person_id . '/visit';
-
-            if($this->eventServices->isSubVisitor($id, $visitor_id))
-            {
-                return json_encode(['status' => true, 'check-in' => true]);
-            }
-
-            return json_encode(['status' => true, 'check-in' => false]);
-        }
-        else
-        {
-
-            if($this->eventServices->isSubscribed($id, $person_id))
-            {
-
-                return json_encode(['status' => true, 'check-in' => true]);
-
-            }
-
-            return json_encode(['status' => true, 'check-in' => false]);
-        }
 
 
-    }
+
 
     /*
      * @param int $id
@@ -1622,6 +1571,9 @@ class EventController extends Controller
         ]);
     }
 
+    /*
+     * Inscrição em lote
+     */
     public function subPeople($people, $event)
     {
         $people = \GuzzleHttp\json_decode($people);
@@ -1637,6 +1589,8 @@ class EventController extends Controller
 
         return json_encode(['status' => true]);
     }
+
+
 
     /*
      * Check-in em lote
@@ -1693,7 +1647,12 @@ class EventController extends Controller
                     }
 
                 }
+
+
+
             }
+
+
 
             return json_encode(['status' => true]);
         }
@@ -1894,236 +1853,7 @@ class EventController extends Controller
 
     // ----------------------------------------------------- API --------------------------------------------------------------------------------------- //
 
-    public function getEventsApi($qtde, $church)
-    {
-        $today = date_create();
 
-        $events = DB::table('event_person')
-                        ->select('events.name', 'events.id', 'events.createdBy_id', 'event_person.event_date', 'events.group_id',
-                            'events.description', 'events.imgEvent',
-                            'events.endTime', 'events.street', 'events.number', 'events.city', 'events.frequency', 'event_person.deleted_at')
-                        ->join('events', 'event_person.event_id', '=', 'events.id')
-                        ->where('events.church_id', $church)
-                        ->whereDate('event_date', '>', $today)
-                        ->whereNull('events.deleted_at')
-                        ->orderBy('event_person.event_date')
-                        ->distinct()
-                        ->limit($qtde)
-                        ->get();
-
-        /*$events = $events->keyBy('id');
-
-        $events->forget(103);*/
-        //dd($events);
-        $events = $events->unique('id');
-
-        $events = $events->values()->all();
-
-        foreach ($events as $event)
-        {
-            $person = $this->userRepository->find($event->createdBy_id)->person;
-
-            $event->img_user = $person->imgProfile;
-
-            $event->createdBy_id = $person->name . " " . $person->lastName;
-
-            $event->eventDate = date_format(date_create($event->event_date), 'd-m-Y');//$this->formatDateView($event->eventDate);
-
-            $event->sub = count($this->eventServices->getListSubEvent($event->id));
-
-        }
-
-        //dd($events);
-
-        return json_encode($events);
-    }
-
-    public function getNextWeekEvents($church)
-    {
-        $nextMonday = $this->agendaServices->nextWeek();
-
-        $endWeek = date_add($nextMonday, date_interval_create_from_date_string('7 days'));
-
-        $nextMonday = $this->agendaServices->nextWeek();
-
-        $events = DB::table('event_person')
-
-            ->select('events.name', 'events.id', 'events.createdBy_id', 'event_person.event_date', 'events.group_id',
-                'events.description', 'events.imgEvent', 'events.endTime', 'events.street', 'events.number',
-                'events.city', 'events.frequency', 'event_person.deleted_at')
-
-            ->join('events', 'events.id', 'event_person.event_id')
-
-            ->whereBetween('event_person.event_date', [$nextMonday, $endWeek])
-
-            ->where(
-                [
-                    'events.church_id' => $church,
-                    'event_person.deleted_at' => null
-                ])
-
-            ->distinct()
-            ->get();
-        //}
-
-        foreach ($events as $event)
-        {
-
-            $person = $this->userRepository->find($event->createdBy_id)->person;
-
-            $event->img_user = $person->imgProfile;
-
-            $event->createdBy_id = $person->name . " " . $person->lastName;
-
-            $event->eventDate = date_format(date_create($event->event_date), 'd-m-Y');//$this->formatDateView($event->eventDate);
-
-            $event->sub = count($this->eventServices->getListSubEvent($event->id));
-
-        }
-
-        return json_encode($events);
-    }
-
-    public function recentEventsApp($church)
-    {
-        $events = DB::table('recent_events')
-            ->select('event_id')
-            ->where('church_id', $church)
-            ->get();
-
-        if(count($events) > 0)
-        {
-            foreach($events as $event)
-            {
-                $model = $this->repository->find($event->event_id);
-
-                $event->name = $model->name;
-
-                $event->imgEvent = $model->imgEvent;
-            }
-
-            return json_encode([
-                'status' => true,
-                'events' => $events
-            ]);
-        }
-
-        return json_encode(['status' => false]);
-    }
-
-
-
-    public function eventsToday($id, $visitor = null)
-    {
-        /*
-         * $id
-         * $visitor = true se o usuário for visitante, false para o resto
-         */
-
-
-        $today = date_format(date_create(), 'Y-m-d');
-
-
-        if($visitor)
-        {
-
-            $events = DB::table('event_person')
-                ->select('events.name', 'events.id', 'events.createdBy_id', 'event_person.event_date', 'events.group_id',
-                    'events.description', 'events.imgEvent', 'events.startTime',
-                    'events.endTime', 'events.street', 'events.number', 'events.city', 'events.state', 'events.frequency', 'event_person.deleted_at')
-                ->join('events', 'event_person.event_id', '=', 'events.id')
-                ->join('event_subscribed_lists', 'event_subscribed_lists.event_id', '=', 'events.id')
-                ->where('event_subscribed_lists.visitor_id', $id)
-                ->whereDate('event_person.eventDate', '=', $today)
-                ->whereNull('events.deleted_at')
-                ->orderBy('event_person.event_date')
-                ->distinct()
-                ->get();
-
-        }
-
-        else
-        {
-            $events = DB::table('event_person')
-                ->select('events.name', 'events.id', 'events.createdBy_id', 'event_person.event_date', 'events.group_id',
-                    'events.description', 'events.imgEvent', 'events.startTime',
-                    'events.endTime', 'events.street', 'events.number', 'events.city', 'events.state', 'events.frequency', 'event_person.deleted_at')
-                ->join('events', 'event_person.event_id', '=', 'events.id')
-                ->join('event_subscribed_lists', 'event_subscribed_lists.event_id', '=', 'events.id')
-                ->where('event_subscribed_lists.person_id', $id)
-                ->whereDate('event_person.eventDate', '=', $today)
-                ->whereNull('events.deleted_at')
-                ->orderBy('event_person.event_date')
-                ->distinct()
-                ->get();
-        }
-
-
-        $i = 0;
-
-        $coords = [];
-
-        if(count($events) > 0)
-        {
-            foreach($events as $event)
-            {
-
-                $local = $this->formatAPI($event);
-
-
-                $location = 'https://maps.googleapis.com/maps/api/geocode/json?address='.$local.'&key=AIzaSyCjTs0nbQbEecUygnKpThLfzRKES8nKS0A';
-
-
-                $arrContextOptions=array(
-                    "ssl"=>array(
-                        "verify_peer"=>false,
-                        "verify_peer_name"=>false,
-                    ),
-                );
-
-
-                $json = file_get_contents($location, false, stream_context_create($arrContextOptions));
-
-
-                $obj = json_decode($json);
-
-
-                if($obj->status == 'OK')
-                {
-                    $obj->results[0]->geometry->location->event_id = $event->id;
-
-                    $obj->results[0]->geometry->location->startTime = $event->startTime;
-
-                    $obj->results[0]->geometry->location->endTime = $event->endTime;
-
-                    $lat = $obj->results[0]->geometry->location->lat;
-
-                    $lng = $obj->results[0]->geometry->location->lng;
-
-                    $lat = number_format($lat, 3, '.', ',');
-
-                    $lng = number_format($lng, 3, '.', ',');
-
-                    $obj->results[0]->geometry->location->lat = $lat;
-
-                    $obj->results[0]->geometry->location->lng = $lng;
-
-                    $coords[] = $obj->results[0]->geometry->location;
-
-                }
-
-
-                $i++;
-            }
-
-            return json_encode(['status' => true, 'coords' => $coords]);
-        }
-
-
-       return json_encode(['status' => false]);
-
-
-    }
 
 
 }
