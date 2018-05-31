@@ -60,13 +60,15 @@ Route::get('/getEventInfo/{id}', 'Api\EventController@getEventInfo');
 
 //------------------------- Grupos -------------------------------------------------------------------------------------
 
-Route::get('groups/{church}', 'GroupController@groupListApp');
+Route::get('groups/{church}', 'Api\GroupController@groupListApp');
 
-Route::get('my-groups/{person_id}', 'GroupController@myGroupsApp');
+Route::get('my-groups/{person_id}', 'Api\GroupController@myGroupsApp');
 
-Route::get('group-people/{group_id}', 'GroupController@groupPeopleApp');
+Route::get('group-people/{group_id}', 'Api\GroupController@groupPeopleApp');
 
-Route::get('recent-groups/{church}', 'GroupController@recentGroupsApp');
+Route::get('recent-groups/{church}', 'Api\GroupController@recentGroupsApp');
+
+Route::get('getGroupInfo/{id}', 'Api\GroupController@getGroupInfo');
 
 
 //------------------------- Pessoas ------------------------------------------------------------------------------------

@@ -326,6 +326,47 @@
             </div>
         </div>
 
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Informações de um grupo específico</h3>
+                    </div>
+                    <div class="panel-body">
+
+                        https://beconnect.com.br/api/getGroupInfo/{id}
+                        <span class="label label-primary">GET</span>
+
+                        <br><br>
+                        id = id da grupo <span class="label label-info" style="font-size: 12px;">Inteiro</span>
+
+                        <br><br>
+
+                        <p class="text-center">Exemplo de Retorno</p>
+
+                    <pre>
+                        [
+                            {
+                                "id":2,
+                                "name":"Grupo de Jovens",
+                                "sinceOf":"04/12/2017",
+                                "members":10,
+                                "notes": "Notas do grupo",
+                                "street":"Rua Luzerne Proença Arruda",
+                                "neighborhood":"Vila Progresso",
+                                "city":"Sorocaba",
+                                "zipCode":"18075730",
+                                "state":"SP"
+                            }
+
+                        ]
+                    </pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="row">
             <div class="col-md-12">
                 <div class="panel panel-primary">
