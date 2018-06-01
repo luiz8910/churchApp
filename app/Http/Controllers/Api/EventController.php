@@ -380,4 +380,14 @@ class EventController extends Controller
 
 
     }
+
+    /*
+     * Check-out de usuário $person_id no evento $id selecionado (app)
+     */
+    public function checkout($id, $person_id)
+    {
+
+        return $this->eventServices->checkOut($id, $person_id);
+
+    }
 }

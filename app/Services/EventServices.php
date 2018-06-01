@@ -915,26 +915,41 @@ class EventServices
      * Usado para realizar check-out do evento selecionado
      * Somente para membros
      * */
-    public function checkOut($id)
+    public function checkOut($id, $person_id = null)
     {
-        $person = \Auth::user()->person_id;
+        $person = $person_id ? $person_id : \Auth::user()->person_id;
+
         $today = date("Y-m-d");
 
-        DB::table('event_person')
-            ->where(
-                [
-                    'person_id' => $person,
-                    'check-in' => 1,
-                    'event_id' => $id,
-                    'eventDate' => $today,
-                    'deleted_at' => null
-                ]
-            )
-            ->update(
-                ['check-in' => 0]
-            );
+        try{
 
-        return json_encode(['status' => true]);
+            DB::table('event_person')
+                ->where(
+                    [
+                        'person_id' => $person,
+                        'check-in' => 1,
+                        'event_id' => $id,
+                        'eventDate' => $today,
+                        'deleted_at' => null
+                    ]
+                )
+                ->update(
+                    ['check-in' => 0]
+                );
+
+            DB::commit();
+
+            return json_encode(['status' => true]);
+
+        }catch(\Exception $e)
+        {
+            DB::rollback();
+
+            return json_encode(['status' => false, 'msg' => $e->getMessage()]);
+        }
+
+
+
     }
 
     /*
