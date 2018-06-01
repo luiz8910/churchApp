@@ -390,4 +390,14 @@ class EventController extends Controller
         return $this->eventServices->checkOut($id, $person_id);
 
     }
+
+    /*
+     * Lista de checkins num evento $id
+     */
+    public function getCheckinList($id)
+    {
+        $data = $this->eventServices->getListSubEvent($id);
+
+        return json_encode(['status' => true, 'data' => $data]);
+    }
 }

@@ -217,6 +217,44 @@
             <div class="col-md-12">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
+                        <h3 class="panel-title">Lista de Presença de um evento específico</h3>
+                    </div>
+                    <div class="panel-body">
+
+                        https://beconnect.com.br/api/getCheckinList/{id}
+                        <span class="label label-primary">GET</span>
+
+                        <br><br>
+
+                        id = id do evento <span class="label label-info" style="font-size: 12px;">Inteiro</span>
+
+                        <br><br>
+
+                        <p class="text-center">Exemplo de Retorno</p>
+
+                        <pre>
+
+
+                            {"status":true,
+                                "data":[
+                                    {"event_id":39,"person_id":1},
+                                    {"event_id":39,"person_id":2}
+                                ]}
+
+
+                        </pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
                         <h3 class="panel-title">Lista dos Próximos X eventos</h3>
                     </div>
                     <div class="panel-body">
