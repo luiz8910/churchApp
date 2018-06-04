@@ -338,20 +338,51 @@ class EventController extends Controller
     /*
      * Check-in em lote (app)
      */
-    public function checkInPeopleAPP(Request $request, $event)
+    public function checkInPeopleAPP($people, $event)
     {
 
-        $data = $request->all();
+        $people = $people == 0 ? false : \GuzzleHttp\json_decode($people);
 
-        if(count($data) > 0)
+        if(!$people)
         {
-            foreach($data["people_check"] as $item)
+            try{
+                $this->eventServices->checkInAll($event);
+
+                $qtde = count($this->eventServices->getListSubEvent($event));
+
+                DB::commit();
+
+                return json_encode([
+                    'status' => true,
+                    'qtde' => $qtde
+                ]);
+
+            }catch(\Exception $e)
             {
-                echo $item . '<br>';
+                DB::rollback();
+
+                return json_encode([
+                    'status' => false,
+                    'msg' => $e->getMessage()
+                ]);
             }
+
         }
         else{
-            echo 'igual a 0';
+            foreach ($people as $item)
+            {
+                $isSub = $this->eventServices->isSubPeople($event, $item);
+
+                if(!$isSub)
+                {
+                    $this->eventServices->checkInBatch($event, $item);
+                }
+
+            }
+
+
+
+            return json_encode(['status' => true]);
         }
     }
 
@@ -604,5 +635,7 @@ class EventController extends Controller
 
         return json_encode(['status' => false]);
     }
+
+
 
 }

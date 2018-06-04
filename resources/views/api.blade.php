@@ -1120,6 +1120,51 @@
             </div>
         </div>
 
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Check-in Massivo</h3>
+                    </div>
+
+                    <div class="panel-body">
+
+                        https://beconnect.com.br/api/checkin-all/{people}/{id}
+                        <span class="label label-primary">GET</span>
+
+                        <br><br>
+                        id = id do evento <span class="label label-info" style="font-size: 12px;">Inteiro</span> <br><br>
+
+                        people = array com os ids das pessoas, se people = 0 então todos os inscritos farão check-in
+                        <span class="label label-info" style="font-size: 12px;">Inteiro</span> <br><br>
+
+                        <br><br>
+
+                        <p class="text-center">Exemplo de Retorno</p>
+
+                    <pre>
+
+                        Se people = 0
+
+                        {"status":true, "qtde": 5} //qtde = Quantidade de pessoas que fizeram check-in
+
+
+                        Se people for array de ids
+
+                        {"status":true}
+
+
+                        Se acontecer algum erro
+
+                        {"status":false, "msg": 'Mensagem de erro aqui'}
+
+                    </pre>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
     </div>
 </div>
