@@ -362,6 +362,47 @@
             </div>
         </div>
 
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Lista de Inscritos de um evento</h3>
+                    </div>
+                    <div class="panel-body">
+
+                        https://beconnect.com.br/api/event-list-sub/{id}
+                        <span class="label label-primary">GET</span>
+
+                        <br><br>
+
+                        id = id do evento <span class="label label-info" style="font-size: 12px;">Inteiro</span>
+
+
+                        <br><br>
+
+                        <p class="text-center">Exemplo de Retorno</p>
+
+                    <pre>
+
+                        Se quantidade de inscrito > 0
+
+                        {"status":true,
+                            "people":[
+                                {"id":183,"event_id":40,"person_id":2},
+                                {"id":184,"event_id":40,"person_id":3},
+                                {"id":185,"event_id":40,"person_id":1900}
+                            ]
+
+                        Se inscritos = 0
+
+                        {"status":true, "people": 0}
+                    </pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="row">
             <div class="col-md-12">
                 <div class="panel panel-primary">
