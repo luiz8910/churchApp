@@ -575,4 +575,19 @@ class EventController extends Controller
 
     }
 
+    /*
+     * Remove a inscrição do usuário $person_id no evento $id
+     */
+    public function unsubUser($id, $person_id)
+    {
+        $result = $this->eventServices->UnsubUser($person_id, $id);
+
+        if($result)
+        {
+            return json_encode(['status' => true]);
+        }
+
+        return json_encode(['status' => false]);
+    }
+
 }

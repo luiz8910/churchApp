@@ -407,6 +407,45 @@
             <div class="col-md-12">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
+                        <h3 class="panel-title">Remover inscrição de um evento</h3>
+                    </div>
+                    <div class="panel-body">
+
+                        https://beconnect.com.br/api/unsubscribe/{id}/{person_id}
+                        <span class="label label-primary">GET</span>
+
+                        <br><br>
+
+                        id = id do evento <span class="label label-info" style="font-size: 12px;">Inteiro</span>
+
+                        <br><br>
+
+                        person_id = id da pessoa <span class="label label-info" style="font-size: 12px;">Inteiro</span>
+
+
+                        <br><br>
+
+                        <p class="text-center">Exemplo de Retorno</p>
+
+                    <pre>
+
+                        Se removido com sucesso
+
+                        {"status":true}
+
+                        Senão
+
+                        {"status":false}
+                    </pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
                         <h3 class="panel-title">Lista de Eventos da Próxima Semana</h3>
                     </div>
 

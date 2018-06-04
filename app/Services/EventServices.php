@@ -1695,7 +1695,7 @@ class EventServices
     }
 
     /*
-     * Desinscreve o membro do evento selecionado
+     * Remove inscrição do membro no evento selecionado
      */
     public function UnsubUser($person_id, $event_id)
     {
@@ -1704,7 +1704,16 @@ class EventServices
             'event_id' => $event_id
         ])->first();
 
-        $this->listRepository->delete($list->id);
+        if(count($list) > 0)
+        {
+            $this->listRepository->delete($list->id);
+
+            return true;
+        }
+
+
+        return false;
+
     }
 
     /*
