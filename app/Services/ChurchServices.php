@@ -50,6 +50,142 @@ class ChurchServices{
         return Church::where('id', $church)->first();
     }
 
+
+    /*
+     * Verifica se a sigla da Unidade Federativa informada existe
+     */
+    public function getUF($uf)
+    {
+
+        if($uf == 'AC')
+        {
+            return true;
+        }
+
+        if($uf == 'AL')
+        {
+            return true;
+        }
+
+        if($uf == 'AP')
+        {
+            return true;
+        }
+
+        if($uf == 'AM')
+        {
+            return true;
+        }
+
+        if($uf == 'BA')
+        {
+            return true;
+        }
+
+        if($uf == 'CE')
+        {
+            return true;
+        }
+
+        if($uf == 'DF')
+        {
+            return true;
+        }
+
+        if($uf == 'ES')
+        {
+            return true;
+        }
+
+        if($uf == 'GO')
+        {
+            return true;
+        }
+
+        if($uf == 'MA')
+        {
+            return true;
+        }
+
+        if($uf == 'MT')
+        {
+            return true;
+        }
+
+        if($uf == 'MS')
+        {
+            return true;
+        }
+
+        if($uf == 'PB')
+        {
+            return true;
+        }
+
+        if($uf == 'PR')
+        {
+            return true;
+        }
+
+        if($uf == 'PE')
+        {
+            return true;
+        }
+
+        if($uf == 'PI')
+        {
+            return true;
+        }
+
+        if($uf == 'RJ')
+        {
+            return true;
+        }
+
+        if($uf == 'RN')
+        {
+            return true;
+        }
+
+        if($uf == 'RS')
+        {
+            return true;
+        }
+
+        if($uf == 'RO')
+        {
+            return true;
+        }
+
+        if($uf == 'RR')
+        {
+            return true;
+        }
+
+        if($uf == 'SC')
+        {
+            return true;
+        }
+
+        if($uf == 'SP')
+        {
+            return true;
+        }
+
+        if($uf == 'SE')
+        {
+            return true;
+        }
+
+        if($uf == 'TO')
+        {
+            return true;
+        }
+
+        return false;
+
+    }
+
     public function setBasicConfig()
     {
         try{

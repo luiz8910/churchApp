@@ -49,6 +49,21 @@ trait EmailTrait
         }
     }
 
+    public function emailExists($email)
+    {
+
+        $result = count(User::where('email', $email)->get());
+
+        if($result > 0)
+        {
+            return true;
+        }
+
+        return false;
+
+
+    }
+
     public function welcome($user, $password)
     {
         $url = $this->getUrl();

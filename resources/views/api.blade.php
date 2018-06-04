@@ -249,6 +249,58 @@
         </div>
 
 
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Cadastro de Evento</h3>
+                    </div>
+                    <div class="panel-body">
+
+                        https://beconnect.com.br/api/store-event/{person_id}
+                        <span class="label label-success">POST</span>
+
+                        <br><br>
+
+                        person_id = id da pessoa <span class="label label-info" style="font-size: 12px;">Inteiro</span> (Usado para ver quem criou o evento)
+
+                        <br><br>
+
+                        <p class="text-center">Nomes dos campos</p>
+
+                        <pre>
+
+                            'name', 'createdBy_id', 'eventDate', 'group_id', 'description',
+                            'endEventDate', 'startTime', 'endTime', 'frequency','day',
+                            'allDay', 'day_2', 'street', 'neighborhood', 'city', 'zipCode', 'state', 'number'
+
+                        </pre>
+
+                        <p class="text-center">Exemplo de Retorno</p>
+
+                        <pre>
+
+                            Se evento criado com sucesso
+
+                            {
+                                "status" true
+                            }
+
+                            Senão
+
+                            {
+                                "status":false,
+                                "msg": 'Mensagem de erro aqui
+                            }
+
+
+                        </pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
 
 
         <div class="row">

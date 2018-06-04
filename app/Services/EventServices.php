@@ -9,19 +9,24 @@
 namespace App\Services;
 
 
+use App\Events\AgendaEvent;
 use App\Models\Event;
 use App\Models\EventSubscribedList;
 use App\Models\RecentEvents;
+use App\Models\User;
+use App\Notifications\Notifications;
 use App\Repositories\EventRepository;
 use App\Repositories\EventSubscribedListRepository;
 use App\Repositories\FrequencyRepository;
 use App\Repositories\GeofenceRepository;
+use App\Repositories\GroupRepository;
 use App\Repositories\PersonRepository;
 use App\Traits\ConfigTrait;
 use App\Traits\FormatGoogleMaps;
 use Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 
 class EventServices
 {
@@ -47,6 +52,10 @@ class EventServices
      * @var PersonRepository
      */
     private $personRepository;
+    /**
+     * @var GroupRepository
+     */
+    private $groupRepository;
 
     /**
      * EventServices constructor.
@@ -58,13 +67,14 @@ class EventServices
      */
     public function __construct(EventRepository $repository, FrequencyRepository $frequencyRepositoryTrait,
                                 EventSubscribedListRepository $listRepository, GeofenceRepository $geofenceRepository,
-                                PersonRepository $personRepository)
+                                PersonRepository $personRepository, GroupRepository $groupRepository)
     {
         $this->repository = $repository;
         $this->frequencyRepository = $frequencyRepositoryTrait;
         $this->listRepository = $listRepository;
         $this->geofenceRepository = $geofenceRepository;
         $this->personRepository = $personRepository;
+        $this->groupRepository = $groupRepository;
     }
 
     /**
@@ -210,11 +220,11 @@ class EventServices
      * @param $data['eventDate'] (data do primeiro evento)
      * @param $data['frequency'] (frequência do evento)
      */
-    public function newEventDays($id, $data)
+    public function newEventDays($id, $data, $person_id = null)
     {
         $show = $data['eventDate'] == date("Y-m-d") ? 1 : 0;
 
-        $person_id = \Auth::user()->person_id;
+        $person_id = $person_id ? $person_id : \Auth::user()->person_id;
 
         $event_date = date_create($data['eventDate'] . $data['startTime']);
 
@@ -2150,6 +2160,60 @@ class EventServices
             ->select('eventDate')
             ->distinct()
             ->get());
+    }
+
+
+    public function sendNotification($data, $event)
+    {
+        try{
+            $user = [];
+
+            if (isset($data['group_id']))
+            {
+                $group = $this->groupRepository->find($data['group_id']);
+
+                $people = $group->people->all();
+
+                $i = 0;
+
+                while ($i < count($people))
+                {
+                    $user[] = $people[$i]->user;
+                    $i++;
+                }
+            }
+
+            $i = 0;
+
+            $join = DB::table('people')
+                ->crossJoin('users', 'users.person_id', '=', 'people.id')
+                ->where(
+                    [
+                        'role_id' => $this->getLeaderRoleId(),
+                        'users.church_id' => $this->getUserChurch(),
+                        'people.deleted_at' => null
+                    ])
+                ->select('users.id')
+                ->get();
+
+
+
+            while ($i < count($join))
+            {
+                $user[] = User::find($join[$i]->id);
+                $i++;
+            }
+
+            event(new AgendaEvent($event, $user));
+
+            Notification::send($user, new Notifications($data['name'], 'events/'.$event->id.'/edit'));
+
+        }catch (\Exception $exception){
+
+            echo $exception->getMessage();
+
+        }
+
     }
 }
 

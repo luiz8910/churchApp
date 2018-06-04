@@ -585,10 +585,8 @@ Route::get('/pagseguro/{plan_id}', 'ChurchController@payment')->name('pagseguro.
 
 Route::post('transaction', 'ChurchController@transaction')->name('new.transaction');
 
-Route::get('hoje', function(){
 
-    dd(date('Y-m-d'));
-});
+Route::get('delete-visitors', 'PersonController@ExcludeVisitorsModel');
 
 
 

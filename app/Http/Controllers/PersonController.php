@@ -1561,9 +1561,7 @@ class PersonController extends Controller
 
                             $email = isset($item->email) ? "email" : "e_mail";
 
-                            if ($data["tag"] != "adult") {
-                                $data["email"] = isset($item->$email) ? $item->$email : null;
-                            }
+                            $data["email"] = isset($item->$email) ? !$this->emailExists($item->$email) ? $item->$email : null : null;
 
                             $data["zipCode"] = isset($item->cep) ? $item->cep : null;
 
@@ -1571,28 +1569,18 @@ class PersonController extends Controller
 
                             $data["city"] = isset($item->cidade) ? $item->cidade : null;
 
-                            $data["state"] = $item->estado == "EX" ? null : $item->estado;
+                            $data["state"] = $this->churchServices->getUF($item->estado) ? $item->estado : null;
 
                             $data["import_code"] = $import["code"];
 
-                            $visitor = $this->roleRepository->findByField('name', 'Visitante')->first()->id;
+                            $data["church_id"] = $church;
 
-                            if($data["role_id"] == $visitor)
-                            {
-                                $this->visitorRepository->create($data);
+                            $id = $this->repository->create($data)->id;
 
-                                if ($data["tag"] == "adult") {
-                                    $this->createUserLogin(null, $alias, $item->$email, null);
-                                }
+                            if ($data["tag"] == "adult") {
+                                $this->createUserLogin($id, $alias, $item->$email, $church);
                             }
-                            else{
-                                $data["church_id"] = $church;
-                                $id = $this->repository->create($data)->id;
 
-                                if ($data["tag"] == "adult") {
-                                    $this->createUserLogin($id, $alias, $item->$email, $church);
-                                }
-                            }
 
 
                             $i++;
@@ -2254,5 +2242,78 @@ class PersonController extends Controller
         }
 
         return json_encode(['status' => false]);
+    }
+
+
+    public function ExcludeVisitorsModel()
+    {
+
+        $visitors = $this->visitorRepository->all();
+
+        $visitor_id = 3;
+
+        foreach ($visitors as $visitor) {
+
+            $data['name'] = $visitor->name;
+
+            $data['lastName'] = $visitor->lastName;
+
+            $data['role_id'] = $visitor_id;
+
+            $data['imgProfile'] = $visitor->imgProfile;
+
+            $data['tel'] = $visitor->tel;
+
+            $data['cel'] = $visitor->cel;
+
+            $data['gender'] = $visitor->gender;
+
+            $data['father_id'] = $visitor->father_id;
+
+            $data['mother_id'] = $visitor->mother_id;
+
+            $data['cpf'] = $visitor->cpf;
+
+            $data['rg'] = $visitor->rg;
+
+            $data['maritalStatus'] = $visitor->maritalStatus;
+
+            $data['partner'] = $visitor->partner;
+
+            $data['dateBirth'] = $visitor->dateBirth;
+
+            $data['hasKids'] = $visitor->hasKids;
+
+            $data['tag'] = $visitor->tag;
+
+            $data['specialNeeds'] = $visitor->specialNeeds;
+
+            $data['street'] = $visitor->street;
+
+            $data['neighborhood'] = $visitor->neighborhood;
+
+            $data['city'] = $visitor->city;
+
+            $data['zipCode'] = $visitor->zipCode;
+
+            $data['state'] = $visitor->state;
+
+            $data['created_at'] = $visitor->created_at;
+
+            $data['updated_at'] = $visitor->updated_at;
+
+            $data['deleted_at'] = $visitor->deleted_at;
+
+            $data['number'] = $visitor->number;
+
+            $data['dateBaptism'] = $visitor->dateBaptism;
+
+            $data['email'] = $visitor->email;
+
+            $data['import_code'] = $visitor->import_code;
+
+            $data['status'] = 'active';
+
+        }
     }
 }

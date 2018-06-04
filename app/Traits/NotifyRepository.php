@@ -9,10 +9,12 @@
 namespace App\Traits;
 
 
+use App\Repositories\GroupRepository;
 use Illuminate\Support\Facades\Auth;
 
 trait NotifyRepository
 {
+
     public function notify()
     {
         $user = Auth::user();

@@ -13,7 +13,10 @@ use App\Services\AgendaServices;
 use App\Services\ApiServices;
 use App\Services\EventServices;
 use App\Traits\ConfigTrait;
+use App\Traits\DateRepository;
 use App\Traits\FormatGoogleMaps;
+use App\Traits\NotifyRepository;
+use Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -21,7 +24,7 @@ class EventController extends Controller
 {
 
 
-    use ConfigTrait, FormatGoogleMaps;
+    use ConfigTrait, FormatGoogleMaps, DateRepository, NotifyRepository;
 
     /**
      * @var EventRepository
@@ -400,4 +403,159 @@ class EventController extends Controller
 
         return json_encode(['status' => true, 'data' => $data]);
     }
+
+
+    public function store(Request $request, $person_id)
+    {
+        //try{
+
+        $data = $request->all();
+
+        $data['createdBy_id'] = $this->personRepository->find($person_id)->user->id;
+
+        $data['eventDate'] = $this->formatDateBD($data['eventDate']);
+
+        if(!$data['eventDate'])
+        {
+
+            return json_encode(['status' => false, 'msg' => 'Insira a data do primeiro encontro']);
+
+        }
+
+        $verifyFields = $this->verifyRequiredFields($data, 'event');
+
+        if($verifyFields)
+        {
+
+            return json_encode(['status' => false, 'msg' => "Preencha o campo " . $verifyFields]);
+        }
+
+        $endEventDate = $request->get('endEventDate');
+
+        if ($endEventDate == "")
+        {
+            $data['endEventDate'] = $data['eventDate'];
+        }
+        else{
+            $data['endEventDate'] = $this->formatDateBD($data['endEventDate']);
+        }
+
+        if($data["group_id"] == "")
+        {
+            $data["group_id"] = null;
+        }
+
+        if($data["frequency"] == $this->biweekly())
+        {
+            $firstDay = substr($data['eventDate'], 8, 2);
+
+            if($data['day'][0] != $firstDay)
+            {
+                return json_encode(['status' => false, 'msg' => 'Data do Próximo evento está inválida']);
+            }
+            else{
+                $day = $data['day'][0];
+                $data['day_2'] = $data['day'][1];
+
+                unset($data['day']);
+
+                $data['day'] = $day;
+            }
+        }
+
+        $data["city"] = ucwords($data["city"]);
+
+        $event = $this->repository->create($data);
+
+        if($data["group_id"] == null)
+        {
+            unset($data['group_id']);
+        }
+
+        $this->eventServices->sendNotification($data, $event);
+
+        if($data["frequency"] != $this->unique())
+        {
+            $this->eventServices->newEventDays($event->id, $data);
+        }
+        else{
+            $show = $event->eventDate == date("Y-m-d") ? 1 : 0;
+
+            $event_date = date_create($data['eventDate'] . $data['startTime']);
+
+            if($data['endTime'] == "")
+            {
+                if($data['endEventDate'] == $data['eventDate'])
+                {
+                    $endTime = date_create();
+
+                    date_add($endTime, date_interval_create_from_date_string("1 day"));
+
+                    $endTime = date_format($endTime, "Y-m-d");
+
+                    $endTime = date_create($endTime);
+
+                    DB::table('event_person')
+                        ->insert([
+                            'event_id' => $event->id,
+                            'person_id' => $person_id,
+                            'eventDate' => $event->eventDate,
+                            'event_date' => $event_date,
+                            'end_event_date' => $endTime,
+                            'show' => $show
+                        ]);
+                }
+                else{
+                    DB::table('event_person')
+                        ->insert([
+                            'event_id' => $event->id,
+                            'person_id' => $person_id,
+                            'eventDate' => $event->eventDate,
+                            'event_date' => $event_date,
+                            'end_event_date' => date_create($data['endEventDate'] . $data['endTime']),
+                            'show' => $show
+                        ]);
+                }
+
+            }
+            else{
+                DB::table('event_person')
+                    ->insert([
+                        'event_id' => $event->id,
+                        'person_id' => $person_id,
+                        'eventDate' => $event->eventDate,
+                        'event_date' => $event_date,
+                        'end_event_date' => date_create($data['endEventDate'] . $data['endTime']),
+                        'show' => $show
+                    ]);
+            }
+
+
+
+            $this->eventServices->subAllMembers($event->id, $event->eventDate, $person_id);
+        }
+
+        Event::where(['id' => $event->id])
+            ->update(
+                ['church_id' => $this->getUserChurch()]
+            );
+
+        $this->eventServices->newRecentEvents($event->id, $this->getUserChurch());
+
+        //DB::commit();
+
+
+        return json_encode(['status' => true]);
+
+        /*}catch(\Exception $e)
+        {
+            DB::rollback();
+
+            $request->session()->flash('error.db', 'Não foi possível criar o evento, tente novamente mais tarde');
+
+            return redirect()->back();
+        }*/
+
+    }
+
 }

@@ -641,6 +641,7 @@ class EventController extends Controller
             if(!$data['eventDate'])
             {
                 $request->session()->flash('invalidDate', 'Insira a data do primeiro encontro');
+
                 return redirect()->back()->withInput();
             }
 
@@ -649,6 +650,7 @@ class EventController extends Controller
             if($verifyFields)
             {
                 \Session::flash("error.required-fields", "Preencha o campo " . $verifyFields);
+
                 return redirect()->route("event.create")->withInput();
             }
 
@@ -674,6 +676,7 @@ class EventController extends Controller
                 if($data['day'][0] != $firstDay)
                 {
                     $request->session()->flash('invalidDate', 'Data do Próximo evento está inválida');
+
                     return redirect()->back()->withInput();
                 }
                 else{
@@ -695,7 +698,7 @@ class EventController extends Controller
                 unset($data['group_id']);
             }
 
-            $this->sendNotification($data, $event);
+            $this->eventServices->sendNotification($data, $event);
 
             if($data["frequency"] != $this->unique())
             {
@@ -703,6 +706,7 @@ class EventController extends Controller
             }
             else{
                 $show = $event->eventDate == date("Y-m-d") ? 1 : 0;
+
                 $person_id = \Auth::user()->person_id;
 
                 $event_date = date_create($data['eventDate'] . $data['startTime']);
@@ -784,59 +788,6 @@ class EventController extends Controller
             ->update(
                 ['church_id' => $this->getUserChurch()]
             );
-    }
-
-    public function sendNotification($data, $event)
-    {
-        try{
-            $user = [];
-
-            if (isset($data['group_id']))
-            {
-                $group = $this->groupRepository->find($data['group_id']);
-
-                $people = $group->people->all();
-
-                $i = 0;
-
-                while ($i < count($people))
-                {
-                    $user[] = $people[$i]->user;
-                    $i++;
-                }
-            }
-
-            $i = 0;
-
-            $join = DB::table('people')
-                ->crossJoin('users', 'users.person_id', '=', 'people.id')
-                ->where(
-                    [
-                        'role_id' => $this->getLeaderRoleId(),
-                        'users.church_id' => $this->getUserChurch(),
-                        'people.deleted_at' => null
-                    ])
-                ->select('users.id')
-                ->get();
-
-
-
-            while ($i < count($join))
-            {
-                $user[] = User::find($join[$i]->id);
-                $i++;
-            }
-
-            event(new AgendaEvent($event, $user));
-
-            Notification::send($user, new Notifications($data['name'], 'events/'.$event->id.'/edit'));
-
-        }catch (\Exception $exception){
-
-            echo $exception->getMessage();
-
-        }
-
     }
 
 
@@ -1851,7 +1802,7 @@ class EventController extends Controller
     }
 
 
-    // ----------------------------------------------------- API --------------------------------------------------------------------------------------- //
+
 
 
 
