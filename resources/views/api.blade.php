@@ -433,7 +433,46 @@
 
                         {"status":true}
 
-                        Senão
+                        Senão (caso o usuário não estivesse inscrito)
+
+                        {"status":false}
+                    </pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Inscreve um usuário no evento</h3>
+                    </div>
+                    <div class="panel-body">
+
+                        https://beconnect.com.br/api/sub/{id}/{person_id}
+                        <span class="label label-primary">GET</span>
+
+                        <br><br>
+
+                        id = id do evento <span class="label label-info" style="font-size: 12px;">Inteiro</span>
+
+                        <br><br>
+
+                        person_id = id da pessoa <span class="label label-info" style="font-size: 12px;">Inteiro</span>
+
+
+                        <br><br>
+
+                        <p class="text-center">Exemplo de Retorno</p>
+
+                    <pre>
+
+                        Se inscrito com sucesso
+
+                        {"status":true}
+
+                        Senão (caso o usuário já esteja inscrito)
 
                         {"status":false}
                     </pre>

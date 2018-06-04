@@ -590,4 +590,19 @@ class EventController extends Controller
         return json_encode(['status' => false]);
     }
 
+    /*
+     * Inscreve o usuário $person_id no evento $id
+     */
+    public function sub($id, $person_id)
+    {
+        $result = $this->eventServices->subEvent($id, $person_id);
+
+        if($result)
+        {
+            return json_encode(['status' => true]);
+        }
+
+        return json_encode(['status' => false]);
+    }
+
 }

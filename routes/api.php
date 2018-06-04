@@ -67,6 +67,8 @@ Route::get('/event-list-sub/{id}', 'Api\EventController@getListSubEvent');
 
 Route::get('/unsubscribe/{id}/{person_id}', 'Api\EventController@unsubUser');
 
+Route::get('/sub/{id}/{person_id}', 'Api\EventController@sub');
+
 
 
 
