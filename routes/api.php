@@ -63,6 +63,10 @@ Route::get('/getCheckinList/{id}', 'Api\EventController@getCheckinList');
 
 Route::post('/store-event/{person_id}', 'Api\EventController@store');
 
+Route::get('/event-list-sub/{id}', 'Api\EventController@getListSubEvent');
+
+
+
 
 //------------------------- Grupos -------------------------------------------------------------------------------------
 

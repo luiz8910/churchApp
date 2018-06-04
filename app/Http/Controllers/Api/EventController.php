@@ -558,4 +558,21 @@ class EventController extends Controller
 
     }
 
+    /*
+     * Lista de Inscrito no evento $id
+     */
+    public function getListSubEvent($id)
+    {
+        $result = $this->eventServices->getListSubEvent($id);
+
+        if(count($result) > 0)
+        {
+            return json_encode(['status' => true, 'people' => $result]);
+        }
+
+        return json_encode(['status' => true, 'people' => 0]);
+
+
+    }
+
 }
