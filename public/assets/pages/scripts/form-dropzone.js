@@ -85,7 +85,7 @@ var FormDropzone = function () {
                                     if(get)
                                     {
                                         clearInterval(repeat);
-                                        location.reload();
+                                        //location.reload();
                                     }
 
                                 }, 3000);
@@ -93,7 +93,7 @@ var FormDropzone = function () {
 
                                 if(get)
                                 {
-                                    location.reload();
+                                    //location.reload();
                                 }
                             }
 

@@ -1581,16 +1581,13 @@ class PersonController extends Controller
                                 $this->createUserLogin($id, $alias, $item->$email, $church);
                             }
 
-
-
                             $i++;
-
 
                         }
                     }
 
 
-                echo $data["name"] . " " . $data["lastName"] .  "\n";
+                echo $data["name"] . " " . $data["lastName"] . ' i = ' . $i .  "<br>";
             }
 
 

@@ -145,6 +145,7 @@
 
                                                 <div class="portlet-body form">
                                                     <div class="form-body">
+                                                        <!-- Evento submit desencadeado em form-dropzone.js -->
                                                         {!! Form::open(['route' => 'config.person.contacts', 'method' => 'POST', 'enctype' => 'multipart/form-data',
                                                                 'class' => 'dropzone dropzone-file-area', 'id' => 'my-dropzone', 'style' => 'margin-top: 30px; margin-bottom: 30px;']) !!}
                                                         {{--<form action="../assets/global/plugins/dropzone/upload.php" class="dropzone dropzone-file-area" id="my-dropzone" style=" margin-top: 30px; margin-bottom: 30px;">--}}
