@@ -338,7 +338,7 @@ class EventController extends Controller
     /*
      * Check-in em lote (app)
      */
-    public function checkInPeopleAPP($people, $event)
+    public function checkInPeopleAPP($people = null, $event = null)
     {
 
         $people = $people == 0 ? false : \GuzzleHttp\json_decode($people);

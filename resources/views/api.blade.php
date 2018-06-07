@@ -1122,7 +1122,7 @@
 
         <div class="row">
             <div class="col-md-12">
-                <div class="panel panel-primary">
+                <div class="panel panel-success">
                     <div class="panel-heading">
                         <h3 class="panel-title">Check-in Massivo</h3>
                     </div>
@@ -1130,7 +1130,7 @@
                     <div class="panel-body">
 
                         https://beconnect.com.br/api/checkin-all/{people}/{id}
-                        <span class="label label-primary">GET</span>
+                        <span class="label label-success">POST</span>
 
                         <br><br>
                         id = id do evento <span class="label label-info" style="font-size: 12px;">Inteiro</span> <br><br>
