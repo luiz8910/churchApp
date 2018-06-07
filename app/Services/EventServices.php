@@ -1695,6 +1695,17 @@ class EventServices
     }
 
     /*
+     * Recupera a lista de usuários inscritos
+     * no evento com id = $id
+     */
+    public function getListSubEventAPP($id)
+    {
+        return $this->listRepository->findWhere([
+            'event_id' => $id,
+        ]);
+    }
+
+    /*
      * Remove inscrição do membro no evento selecionado
      */
     public function UnsubUser($person_id, $event_id)

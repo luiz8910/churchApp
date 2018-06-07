@@ -389,9 +389,7 @@
 
                         {"status":true,
                             "people":[
-                                {"id":183,"event_id":40,"person_id":2},
-                                {"id":184,"event_id":40,"person_id":3},
-                                {"id":185,"event_id":40,"person_id":1900}
+                                {"id":183,"event_id":40,"person_id":2, name: Dollynho da Silva, check:true},
                             ]
 
                         Se inscritos = 0

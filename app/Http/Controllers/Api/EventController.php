@@ -594,10 +594,23 @@ class EventController extends Controller
      */
     public function getListSubEvent($id)
     {
-        $result = $this->eventServices->getListSubEvent($id);
+        $result = $this->eventServices->getListSubEventAPP($id);
+
 
         if(count($result) > 0)
         {
+            foreach ($result as $item)
+            {
+                $person = $this->personRepository->find($item->person_id);
+
+                $item->name = $person->name . $person->lastName;
+
+                $item->check = $this->eventServices->isSubscribed($id, $item->person_id);
+
+            }
+
+            dd($result);
+
             return json_encode(['status' => true, 'people' => $result]);
         }
 
