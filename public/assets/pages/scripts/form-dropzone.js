@@ -71,6 +71,7 @@ var FormDropzone = function () {
                                 $("#btn-dropzone").css('display', "none");
                                 $(".progress").css("display", "block");
 
+
                                 _this.processQueue();
 
                                 setUploadStatus(file.name);
@@ -85,7 +86,7 @@ var FormDropzone = function () {
                                     if(get)
                                     {
                                         clearInterval(repeat);
-                                        //location.reload();
+                                        location.reload();
                                     }
 
                                 }, 3000);
@@ -93,7 +94,7 @@ var FormDropzone = function () {
 
                                 if(get)
                                 {
-                                    //location.reload();
+                                    location.reload();
                                 }
                             }
 

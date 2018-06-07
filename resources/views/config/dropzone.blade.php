@@ -163,10 +163,13 @@
                                                             <i class="fa fa-info-circle"></i> Instruções para upload
                                                         </button>
 
-                                                        @if(Session::has('rollback.errors'))
-                                                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#error">
-                                                                <i class="fa fa-exclamation-circle"></i> Erros da ult. Importação
-                                                            </button>
+
+                                                        @if(session('errors'))
+
+                                                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#error">
+                                                                    <i class="fa fa-exclamation-circle"></i> Erros da ult. Importação
+                                                                </button>
+
                                                         @endif
 
                                                         <div class="modal fade" id="info" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
@@ -225,7 +228,17 @@
                                                                     <div class="modal-body">
                                                                         <p>Detalhes dos Erros</p>
 
+                                                                        @if(Session::has('errors'))
 
+                                                                            <ul>
+                                                                                @foreach($errors as $error)
+
+                                                                                    <li>{{ $error }}</li>
+
+                                                                                @endforeach
+                                                                            </ul>
+
+                                                                        @endif
 
                                                                     </div>
                                                                     <div class="modal-footer">
@@ -243,7 +256,7 @@
 
                                                         <div class="progress" style="display: none;">
                                                             <div class="progress-bar progress-bar-striped progress-bar-animated active" role="progressbar" aria-valuenow="100"
-                                                                 aria-valuemin="0" aria-valuemax="100" style="width: 100%">Enviando...</div>
+                                                                 aria-valuemin="0" aria-valuemax="100" style="width: 100%">Cadastrando Usuários...</div>
                                                         </div>
 
                                                         <button class="btn btn-danger mt-sweetalert"
@@ -273,6 +286,8 @@
 <!-- FIM SCRIPTS PAGINAS DE DROPZONE -->
 <script src="../../assets/pages/scripts/search.min.js" type="text/javascript"></script>
 <script src="../../uploadify/jquery.uploadify.min.js" type="text/javascript" ></script>
+
+<script src="../../js/import.js"></script>
 
 <script>
 

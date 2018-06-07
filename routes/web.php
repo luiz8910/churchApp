@@ -84,6 +84,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('/waiting-approval', 'PersonController@storeWaitingApproval')->name('person.store.waitingApproval');
 
+    Route::get('/delete-all-inactives', 'PersonController@forceDeleteAll');
+
     // Fim Usuários e pessoas
 
     //Inicio Grupos

@@ -126,6 +126,13 @@
 
                                                             <ul class="dropdown-menu pull-right" id="sample_3_tools">
                                                                 <li>
+                                                                    <a href="javascript:;" id="delete-all"
+                                                                       data-action="0" class="tool-action">
+                                                                        <i class="icon-trash"></i> Excluir Todos os Inativos
+                                                                    </a>
+                                                                </li>
+
+                                                                <li>
                                                                     <a href="javascript:;" id="print" onclick="printDiv('printable-table')"
                                                                        data-action="0" class="tool-action">
                                                                         <i class="icon-printer"></i> Imprimir
@@ -281,6 +288,7 @@
 <!-- END PAGE LEVEL PLUGINS -->
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
 <script src="assets/pages/scripts/table-datatables-buttons.min.js" type="text/javascript"></script>
+<script src="js/person.js"></script>
 <!-- END PAGE LEVEL SCRIPTS -->
 </body>
 

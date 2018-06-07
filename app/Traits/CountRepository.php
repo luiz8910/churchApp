@@ -23,7 +23,9 @@ trait CountRepository
 
         $countAdults = count(DB::table('people')
             ->where(
+
                 [
+                    ['role_id', '<>', 3],
                     'tag' => 'adult',
                     'deleted_at' => null,
                     'church_id' => $church
@@ -32,19 +34,26 @@ trait CountRepository
 
         $countTeens = count(DB::table('people')
             ->where([
+                ['role_id', '<>', 3],
                     ['tag', '<>', 'adult'],
                     'deleted_at' => null,
                     'church_id' => $church
                 ])
             ->get());
 
-        $countVisitors = count(DB::table('visitors')
-            ->where('deleted_at', null)
+        $countVisitors = count(DB::table('people')
+            ->where(
+                [
+                    'deleted_at' => null,
+                    'church_id' => $church,
+                    'role_id' => 3
+                ])
             ->get());
 
         $countInactive = count(DB::table('people')
             ->where([
                 ['deleted_at', '<>', null],
+                ['status', '<>', 'deleted'],
                 'church_id' => $church
             ])
             ->get());

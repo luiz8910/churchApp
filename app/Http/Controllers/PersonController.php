@@ -208,7 +208,7 @@ class PersonController extends Controller
 
     public function inactive()
     {
-        $inactive = Person::onlyTrashed()->orderBy('name')->paginate(5);
+        $inactive = Person::onlyTrashed()->where('status', '<>', 'deleted')->orderBy('name')->paginate(5);
 
         foreach ($inactive as $item) {
             $item->dateBirth = $this->formatDateView($item->dateBirth);
@@ -294,6 +294,29 @@ class PersonController extends Controller
         }
 
         return json_encode(['status' => false]);
+    }
+
+    public function forceDeleteAll()
+    {
+        try{
+
+            Person::onlyTrashed()
+                ->where('church_id', $this->getUserChurch())
+                ->update(['status' => 'deleted']);
+
+            DB::commit();
+
+            return json_encode(['status' => true]);
+
+        }catch(\Exception $e)
+        {
+            DB::rollBack();
+
+            return json_encode(['status' => false]);
+        }
+
+
+
     }
 
     /**
@@ -1428,6 +1451,8 @@ class PersonController extends Controller
     {
         ini_set('max_execution_time', '60');
 
+        $request->session()->forget('errors');
+
         $church = $this->getUserChurch();
 
         $file = $request->file('file');
@@ -1452,15 +1477,31 @@ class PersonController extends Controller
 
         $this->importRepository->create($import);
 
-        DB::transaction(function () use($church, $alias, $i, $path, $fileName, $name, $import){
 
-        Excel::load($path . $fileName, function ($reader) use($church, $alias, $i, $import){
+
+        DB::transaction(function () use($church, $alias, $i, $path, $fileName, $name, $import, $request){
+
+        Excel::load($path . $fileName, function ($reader) use($church, $alias, $i, $import, $request){
+
+            $errors = [];
+
+            $count_reader = count($reader->get());
+
+            $x = 1;
 
             foreach ($reader->get() as $item)
             {
                     //echo $item->nome . "\n\n";
 
                     //dd($reader->get());
+
+                    if($x == $count_reader)
+                    {
+                        break;
+                    }
+                    else{
+                        $x++;
+                    }
 
                     $fullName = $this->surname($item->nome);
 
@@ -1478,9 +1519,12 @@ class PersonController extends Controller
                             if($n->name == $data["name"] && $n->lastName == $data["lastName"])
                             {
                                 $stop = true;
+
+                                $errors[] = 'Já existe um usuário com o nome ' . $data['name'] . ' ' . $data['lastName'] . ' na base de dados';
                             }
                         }
                     }
+
 
                     //Novo Cadastro
                     if(!$stop) {
@@ -1578,29 +1622,41 @@ class PersonController extends Controller
                             $id = $this->repository->create($data)->id;
 
                             if ($data["tag"] == "adult") {
-                                $this->createUserLogin($id, $alias, $item->$email, $church);
+                                if(!$this->createUserLogin($id, $alias, $item->$email, $church))
+                                {
+                                    $errors[] = 'Os dados de acesso para o usuário ' . $data['name'] . " " . $data['lastName'] . " não pode ser realizado porque já existe um usuário com o email " . $item->$email;
+                                }
                             }
 
                             $i++;
 
+                        }// Data Nasc.
+                        else{
+                            $errors[] = 'A coluna email está com o nome incorreto ou o campo data de nascimento do usuário '. $data["name"] . " " . $data["lastName"] .' está vazio.';
+
+
                         }
-                    }
+                    } // $stop
 
 
-                echo $data["name"] . " " . $data["lastName"] . ' i = ' . $i .  "<br>";
+                //echo $data["name"] . " " . $data["lastName"] . ' i = ' . $i .  "<br>";
             }
 
 
 
             session(['qtde' => $i]);
 
+            session(['errors' => $errors]);
+
+            print_r(session('errors'));
+
         })->get();
 
-        $qtde[] = session('qtde');
+        $qtde = session('qtde');
 
         //\Session::flash('upload.success', $qtde[0] . " usuários foram cadastrados");
 
-        $this->uploadComplete($name, $qtde[0]);
+        $this->uploadComplete($name, $qtde);
 
         });
         //return redirect()->route('config.person.contacts.view');
@@ -1931,7 +1987,7 @@ class PersonController extends Controller
         }
         catch(\Exception $e)
         {
-            DB::rollback();
+            DB::rollBack();
 
             return json_encode(['status' => false, 'msg' => $e->getMessage()]);
         }
@@ -1986,7 +2042,7 @@ class PersonController extends Controller
         }catch(\Exception $e)
         {
             //Revertendo alterações
-            DB::rollback();
+            DB::rollBack();
 
 
             //Mensagem de erro para o usuário

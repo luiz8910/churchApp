@@ -222,6 +222,8 @@ class ConfigController extends Controller
 
     public function import()
     {
+
+
         /*
         * Variáveis gerais p/ todas as páginas
         *
@@ -238,6 +240,8 @@ class ConfigController extends Controller
         $notify = $this->notify();
 
         $qtde = count($notify) or 0;
+
+        //Fim variáveis gerais
 
         $church_id = $this->getUserChurch();
 
