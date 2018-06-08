@@ -129,11 +129,13 @@ class EventController extends Controller
 
     public function getNextWeekEvents($church)
     {
-        $nextMonday = $this->agendaServices->nextWeek();
 
-        $endWeek = date_add($nextMonday, date_interval_create_from_date_string('7 days'));
+        $aux = date('Y-m-d 00:00:00');
 
-        $nextMonday = $this->agendaServices->nextWeek();
+        $today = $aux;
+
+        $endWeek = date_add(date_create($aux), date_interval_create_from_date_string('7 days'));
+
 
         $events = DB::table('event_person')
 
@@ -143,7 +145,7 @@ class EventController extends Controller
 
             ->join('events', 'events.id', 'event_person.event_id')
 
-            ->whereBetween('event_person.event_date', [$nextMonday, $endWeek])
+            ->whereBetween('event_person.event_date', [$today, $endWeek])
 
             ->where(
                 [
@@ -152,25 +154,33 @@ class EventController extends Controller
                 ])
 
             ->distinct()
+            ->orderBy('event_person.event_date', 'asc')
             ->get();
-        //}
 
-        foreach ($events as $event)
+
+
+        if(count($events) > 0)
         {
+            foreach ($events as $event)
+            {
 
-            $person = $this->userRepository->find($event->createdBy_id)->person;
+                $person = $this->userRepository->find($event->createdBy_id)->person;
 
-            $event->img_user = $person->imgProfile;
+                $event->img_user = $person->imgProfile;
 
-            $event->createdBy_id = $person->name . " " . $person->lastName;
+                $event->createdBy_id = $person->name . " " . $person->lastName;
 
-            $event->eventDate = date_format(date_create($event->event_date), 'd-m-Y');//$this->formatDateView($event->eventDate);
+                $event->eventDate = date_format(date_create($event->event_date), 'd-m-Y');//$this->formatDateView($event->eventDate);
 
-            $event->sub = count($this->eventServices->getListSubEvent($event->id));
+                $event->sub = count($this->eventServices->getListSubEvent($event->id));
 
+            }
+
+            return json_encode($events);
         }
 
-        return json_encode($events);
+        return json_encode(['status' => false]);
+
     }
 
     public function recentEventsApp($church)
