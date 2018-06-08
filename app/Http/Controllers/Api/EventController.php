@@ -444,7 +444,7 @@ class EventController extends Controller
 
         $data['createdBy_id'] = $this->personRepository->find($person_id)->user->id;
 
-        $data['eventDate'] = $this->formatDateBD($data['eventDate']);
+        //$data['eventDate'] = $this->formatDateBD($data['eventDate']);
 
         if(!$data['eventDate'])
         {
@@ -467,9 +467,9 @@ class EventController extends Controller
         {
             $data['endEventDate'] = $data['eventDate'];
         }
-        else{
+        /*else{
             $data['endEventDate'] = $this->formatDateBD($data['endEventDate']);
-        }
+        }*/
 
         if($data["group_id"] == "")
         {
