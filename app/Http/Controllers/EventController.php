@@ -1750,6 +1750,8 @@ class EventController extends Controller
     {
         $data = $request->all();
 
+
+
         if($data["person_id"] != "")
         {
             $role = $this->getUserRole();

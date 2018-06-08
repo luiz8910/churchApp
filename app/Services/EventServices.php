@@ -1602,27 +1602,34 @@ class EventServices
             }
 
 
+
             if(count($exists) == 0)
             {
                 $nextEvent = $this->getNextEvent($event_id);
 
-                $frequency = $this->repository->find($event_id)->frequency;
+                $event = $this->repository->find($event_id);
+
+                $frequency = $event->frequency;
+
+                $data['eventDate'] = $nextEvent[1];
+
+                $data['startTime'] = $event->startTime;
 
                 if($frequency == $this->weekly())
                 {
-                    $this->setNextEvents($event_id, $nextEvent[1], "7 days", $person_id);
+                    $this->setNextEvents($event_id, $data, "7 days", $person_id);
                 }
                 elseif($frequency == $this->monthly())
                 {
-                    $this->setNextEvents($event_id, $nextEvent[1], "30 days", $person_id);
+                    $this->setNextEvents($event_id, $data, "30 days", $person_id);
                 }
                 elseif ($frequency == $this->daily())
                 {
-                    $this->setNextEvents($event_id, $nextEvent[1], "1 days", $person_id);
+                    $this->setNextEvents($event_id, $data, "1 days", $person_id);
                 }
                 elseif ($frequency == $this->biweekly())
                 {
-                    $this->setNextEvents($event_id, $nextEvent[1], "15 days", $person_id);
+                    $this->setNextEvents($event_id, $data, "15 days", $person_id);
                 }
 
                 if($visitor_id != 0)
