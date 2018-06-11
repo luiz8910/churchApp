@@ -452,6 +452,8 @@ class EventController extends Controller
 
         $data = $request->all();
 
+        $church = $data['church_id'];
+
         $data['createdBy_id'] = $this->personRepository->find($person_id)->user->id;
 
         //$data['eventDate'] = $this->formatDateBD($data['eventDate']);
@@ -576,12 +578,12 @@ class EventController extends Controller
             $this->eventServices->subAllMembers($event->id, $event->eventDate, $person_id);
         }
 
-        Event::where(['id' => $event->id])
+        /*Event::where(['id' => $event->id])
             ->update(
                 ['church_id' => $this->getUserChurch()]
-            );
+            );*/
 
-        $this->eventServices->newRecentEvents($event->id, $this->getUserChurch());
+        $this->eventServices->newRecentEvents($event->id, $church);
 
         //DB::commit();
 

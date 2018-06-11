@@ -271,7 +271,7 @@
                         <pre>
 
                             'name', 'createdBy_id', 'eventDate', 'group_id', 'description',
-                            'endEventDate', 'startTime', 'endTime', 'frequency','day',
+                            'endEventDate', 'startTime', 'endTime', 'frequency','day', 'church_id'
                             'allDay', 'day_2', 'street', 'neighborhood', 'city', 'zipCode', 'state', 'number'
 
                         </pre>
