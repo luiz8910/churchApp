@@ -204,14 +204,14 @@ License: You must have a valid license purchased only from themeforest(the above
                             <div class="portlet-body">
                                 <div class="row">
                                     {!! Form::open(['route' => ['event.addMembers', 'event' => $event], 'method' => 'POST']) !!}
-                                    <div class="col-md-9 col-sm-10 col-xs-10">
+                                    <div class="col-md-9 col-sm-8 col-xs-8">
 
                                         <select class="form-control select2" id="subUser" name="person_id" required>
                                             <option></option>
                                             <optgroup label="Pessoas">
                                                 @foreach($merged as $item)
                                                     <option value="@if(!isset($item->church_id)) {{ $item->id . "/visit"}} @else {{ $item->id }} @endif ">
-                                                        {{ $item->name }} {{ $item->lastName }} @if(!isset($item->church_id)) (Visitante) @endif
+                                                        {{ $item->name }} {{ $item->lastName }} @if($item->role_id == $visitor_id) (Visitante) @endif
                                                     </option>
                                                 @endforeach
                                             </optgroup>
@@ -223,11 +223,18 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                     </div>
 
-                                    <div class="col-md-3 col-sm-2 col-xs-2">
+                                    <div class="col-md-1 col-sm-2 col-xs-2">
                                         <button type="submit" class="btn btn-success btn-sm btn-circle">
                                             <i class="fa fa-sign-in"></i>
-                                            <span class="hidden-xs hidden-sm">Inscrever</span>
+                                            Inscrever
                                         </button>
+                                    </div>
+
+                                    <div class="col-md-1 col-sm-2 col-xs-2">
+                                        <a href="{{ route('event.edit', ['event' => $event]) }}" type="button" class="btn btn-danger btn-sm btn-circle">
+                                            <i class="fa fa-arrow-left"></i>
+                                            Voltar
+                                        </a>
                                     </div>
 
                                     {!! Form::close() !!}

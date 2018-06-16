@@ -157,7 +157,7 @@
 																				<img src="{{ $item->imgProfile }}" style="width: 50px; height: 50px;">
 																			</td>
 																			<td>
-																				<a href="{{ route('visitors.edit', ['visitor' => $item->id]) }}">
+																				<a href="{{ route('person.edit', ['person' => $item->id]) }}">
 																					{{ $item->name }} {{ $item->lastName }}</a>
 																			</td>
 																			<td> {{ $item->cpf }} </td>

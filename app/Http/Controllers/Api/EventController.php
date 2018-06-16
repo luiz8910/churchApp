@@ -329,6 +329,7 @@ class EventController extends Controller
     /*
      * $id = id do evento
      * $person_id = id do membro
+     * Check-in Manual API
      */
     public function checkInAPP($id, $person_id, $visitor = null)
     {
@@ -341,7 +342,7 @@ class EventController extends Controller
             $model = $this->personRepository->find($person_id);
         }
 
-        return $this->eventServices->check($id, $model, $visitor = null);
+        return $this->eventServices->checkApp($id, $person_id);
     }
 
 
@@ -621,7 +622,6 @@ class EventController extends Controller
 
             }
 
-            dd($result);
 
             return json_encode(['status' => true, 'people' => $result]);
         }

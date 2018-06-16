@@ -171,8 +171,10 @@ class PersonController extends Controller
 
         $admin = $this->getAdminRoleId();
 
+        $visitor_id = $this->roleRepository->findByField('name', 'Visitante')->first()->id;
+
         return view('people.index', compact('adults', 'countPerson', 'countGroups', 'notify', 'qtde',
-            'leader', 'admin'));
+            'leader', 'admin', 'visitor_id'));
     }
 
     public function teenagers()
@@ -203,6 +205,41 @@ class PersonController extends Controller
         $admin = $this->getAdminRoleId();
 
         return view('people.teenagers', compact('teen', 'countPerson', 'countGroups', 'notify', 'qtde', 'leader', 'admin'));
+    }
+
+    public function visitors()
+    {
+        $visitor_id = $this->roleRepository->findByField('name', 'Visitante')->first()->id;
+
+        $visitors = DB::table("people")
+            ->where([
+                'role_id' => $visitor_id,
+                'deleted_at' => null,
+                'church_id' => $this->getUserChurch(),
+                'status' => 'active'
+            ])->orderBy('name')->paginate(5);
+
+
+        foreach ($visitors as $item) {
+            $item->dateBirth = $this->formatDateView($item->dateBirth);
+            $item->role = $this->roleRepository->find($item->role_id)->name;
+        }
+
+        $countPerson[] = $this->countPerson();
+
+        $countGroups[] = $this->countGroups();
+
+        $notify = $this->notify();
+
+        $qtde = count($notify);
+
+        $leader = $this->getLeaderRoleId();
+
+        $admin = $this->getAdminRoleId();
+
+        return view('people.visitors', compact('visitors', 'countPerson', 'countGroups', 'notify', 'qtde',
+            'leader', 'admin'));
+
     }
 
 

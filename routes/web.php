@@ -135,7 +135,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('visitors-store', 'VisitorController@store')->name('visitors.store');
 
-    Route::get('visitors', 'VisitorController@index')->name('visitors.index');
+    Route::get('visitors', 'PersonController@visitors')->name('visitors.index');
 
     Route::get("visitors/{visitor}/edit", "VisitorController@edit")->name('visitors.edit');
 
@@ -587,8 +587,12 @@ Route::get('/pagseguro/{plan_id}', 'ChurchController@payment')->name('pagseguro.
 
 Route::post('transaction', 'ChurchController@transaction')->name('new.transaction');
 
-
 Route::get('delete-visitors', 'PersonController@ExcludeVisitorsModel');
+
+Route::get('api-teste', function(){
+
+    return view('teste-api');
+});
 
 
 

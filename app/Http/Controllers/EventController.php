@@ -1062,9 +1062,6 @@ class EventController extends Controller
     }
 
 
-
-
-
     /*
      * @param int $id
      * $id = id do evento
@@ -1736,11 +1733,13 @@ class EventController extends Controller
 
         $person_sub = $person_sub->merge($visit_sub);
 
+        $visitor_id = $this->roleRepository->findByField('name', 'Visitante')->first()->id;
+
 
         return view('events.subscriptions',
             compact('people', 'countPerson', 'countGroups', 'leader',
                 'notify', 'qtde', 'event', 'sub', 'person_sub',
-                'merged', 'merged_list', 'admin'));
+                'merged', 'merged_list', 'admin', 'visitor_id'));
     }
 
     /*

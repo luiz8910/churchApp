@@ -731,6 +731,78 @@ class EventServices
     }
 
     /*
+     * Usado para realizar check-in do evento selecionado
+     */
+    public function checkApp($id, $person)
+    {
+
+
+        $date = date_create();
+
+        /*
+         * $event_person = Exibir se há alguma data para o
+         * evento $id no dia de hoje e
+         * que o usuário $person esteja inscrito
+         */
+
+        $event = $this->repository->find($id);
+
+        if($event->endTime == "")
+        {
+            $event_person = DB::table('event_person')
+                ->where([
+                    'event_id' => $id,
+                    //'person_id' => $person,
+                    'eventDate' => date_format($date, "Y-m-d"),
+                    ['event_date', '<=', $date],
+                ])
+                ->first();
+
+
+        }else{
+
+            $event_person = DB::table('event_person')
+                ->where([
+                    'event_id' => $id,
+                    //'person_id' => $person,
+                    'eventDate' => date_format($date, "Y-m-d"),
+                    ['event_date', '<=', $date],
+                    ['end_event_date', '>', $date]
+                ])
+                ->first();
+        }
+
+        if(count($event_person) > 0)
+        {
+            $this->subEvent($id, $person);
+
+            DB::table('event_person')
+                ->where([
+                    'event_id' => $id,
+                    'person_id' => $person,
+                    'eventDate' => date_format($date, "Y-m-d"),
+                    'check-in' => 0
+                ])->update([
+                    'check-in' => 1,
+                    'show' => 1
+                ]);
+
+            return json_encode(['status' => true, 'check-in' => true]);
+        }
+        else{
+
+            return json_encode(
+                [
+                    'status' => true,
+                    'check-in' => false,
+                    'msg' => 'Data do evento é diferente da data atual']);
+        }
+
+
+    }
+
+
+    /*
      * @param int $id
      * $id = id do evento
      * Usado para realizar check-in do evento selecionado
@@ -793,16 +865,28 @@ class EventServices
             }
             else{
 
+                /*
+                 * $event_person = Exibir se há alguma data para o
+                 * evento $id no dia de hoje e
+                 * que o usuário $person esteja inscrito
+                 */
                 $event_person = DB::table('event_person')
                     ->where([
                         'event_id' => $id,
                         'person_id' => $person->id,
                         'eventDate' => date_format($date, "Y-m-d"),
-                        'check-in' => 0
+                        //'check-in' => 0
                     ])->get();
 
+
+                /*
+                 * Se achar algum evento
+                 */
                 if(count($event_person) > 0)
                 {
+                    /*
+                     * Realiza o check-in
+                     */
                     DB::table('event_person')
                         ->where([
                             'event_id' => $id,
@@ -814,7 +898,16 @@ class EventServices
                             'show' => 1
                         ]);
                 }
+                /*
+                 * Senão achar nenhum evento
+                 * (Ele pode realizar o check-in mesmo se não estiver inscrito)
+                 */
                 else{
+                    /**
+                     * Retorna os dias dos ultimos 5 eventos
+                     * @param $id ($event_id)
+                     * @return \DateTime
+                     */
                     $days = $this->eventDays($id);
 
                     $today = date("Y-m-d");
@@ -833,7 +926,6 @@ class EventServices
                                 'show' => 1
                             ]);
                     }
-
 
                 }
             }
@@ -2195,9 +2287,11 @@ class EventServices
     }
 
 
-    public function sendNotification($data, $event)
+    public function sendNotification($data, $event, $church_id = null)
     {
         try{
+            $church = $church_id ? $church_id : $this->getUserChurch();
+
             $user = [];
 
             if (isset($data['group_id']))
@@ -2222,7 +2316,7 @@ class EventServices
                 ->where(
                     [
                         'role_id' => $this->getLeaderRoleId(),
-                        'users.church_id' => $this->getUserChurch(),
+                        'users.church_id' => $church,
                         'people.deleted_at' => null
                     ])
                 ->select('users.id')
