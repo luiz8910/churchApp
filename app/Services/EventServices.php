@@ -658,6 +658,58 @@ class EventServices
             ->get();
     }
 
+
+    /*
+     * Verifica se o evento $id tem uma data para hoje.
+     * Se houver uma data verifica se o usuário $person_id
+     * realizou o check-in
+     */
+    public function isCheckApp($id, $person_id)
+    {
+        $today = date('Y-m-d');
+
+
+        $event = DB::table('event_person')
+            ->where([
+                'event_id' => $id,
+                'eventDate' => $today,
+                'deleted_at' => null
+            ])->first();
+
+        /*
+         * Se true então existe um evento para a data atual
+         */
+        if(count($event) > 0)
+        {
+            $sub = DB::table('event_person')
+                ->where(
+                    [
+                        'person_id' => $person_id,
+                        'check-in' => 1,
+                        'event_id' => $id,
+                        'eventDate' => $today,
+                        'deleted_at' => null
+                    ])
+                ->first();
+
+            if(count($sub) > 0)
+            {
+                //Check-in foi realizado
+                return json_encode(['status' => true, 'check-in' => true]);
+            }
+            else{
+
+                //Check-in não foi realizado
+                return json_encode(['status' => true, 'check-in' => false]);
+
+            }
+
+        }
+
+        //Não há datas para hoje
+        return json_encode(['status' => false, 'msg' => 'O Evento informado não tem uma data para hoje']);
+    }
+
     /*
      * @param int $id
      * $id = id do evento
@@ -671,19 +723,37 @@ class EventServices
 
         $today = date("Y-m-d");
 
-        $sub = DB::table('event_person')
-            ->where(
-                [
-                    'person_id' => $person,
-                    'check-in' => 1,
-                    'event_id' => $id,
-                    'eventDate' => $today,
-                    'deleted_at' => null
-                ])
-            ->first();
+        $event = DB::table('event_person')
+            ->where([
+                'event_id' => $id,
+                'eventDate' => $today,
+                'deleted_at' => null
+            ])->first();
+
+        /*
+         * Se true então existe um evento para a data atual
+         */
+        if(count($event) > 0)
+        {
+            $sub = DB::table('event_person')
+                ->where(
+                    [
+                        'person_id' => $person,
+                        'check-in' => 1,
+                        'event_id' => $id,
+                        'eventDate' => $today,
+                        'deleted_at' => null
+                    ])
+                ->first();
+
+            if(count($sub) > 0)
+            {
+                return json_encode(['status' => true, 'check-in' => true]);
+            }
+
+        }
 
 
-        return count($sub) > 0 ? true : false;
     }
 
     public function isSubPeople($id, $person_id)

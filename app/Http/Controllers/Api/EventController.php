@@ -297,31 +297,7 @@ class EventController extends Controller
     public function isCheckedApp($id, $person_id, $visitor = null)
     {
 
-        if($visitor)
-        {
-
-            $visitor_id = $person_id . '/visit';
-
-            if($this->eventServices->isSubVisitor($id, $visitor_id))
-            {
-                return json_encode(['status' => true, 'check-in' => true]);
-            }
-
-            return json_encode(['status' => true, 'check-in' => false]);
-        }
-        else
-        {
-
-            if($this->eventServices->isSubscribed($id, $person_id))
-            {
-
-                return json_encode(['status' => true, 'check-in' => true]);
-
-            }
-
-            return json_encode(['status' => true, 'check-in' => false]);
-        }
-
+        return $this->eventServices->isCheckApp($id, $person_id);
 
     }
 
