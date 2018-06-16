@@ -863,7 +863,7 @@ class EventServices
 
             return json_encode(
                 [
-                    'status' => true,
+                    'status' => false,
                     'check-in' => false,
                     'msg' => 'Data do evento é diferente da data atual']);
         }

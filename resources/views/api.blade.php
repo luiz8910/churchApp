@@ -1055,11 +1055,11 @@
 
                         Se check-in realizado com sucesso
 
-                        {"status":true}
+                        {"status":true, 'check-in': true}
 
                         Senão
 
-                        {"status":false}
+                        {"status":false, 'check-in': false, 'msg': 'Data do evento é diferente da data atual'}
 
                     </pre>
 
@@ -1097,19 +1097,19 @@
 
                     <pre>
 
-                        Se usuário estiver inscrito e presente no dia atual
+                        Se houver o evento na data atual e o usuário realizar check-in:
 
                         {"status":true, "check-in": true}
 
 
-                        Se não estiver presente
+                        Se houver o evento na data atual e o usuário não tiver realizado o check-in:
 
                         {"status":true, "check-in": false}
 
 
-                        Se usuário não estiver inscrito ou algum outro erro
+                        Se não houver evento na data atual
 
-                        {"status":false}
+                        {"status":false, 'msg': 'O Evento informado não tem uma data para hoje'}
 
                     </pre>
 
