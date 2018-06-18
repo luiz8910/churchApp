@@ -442,7 +442,7 @@ class EventController extends Controller
 
         }
 
-        $verifyFields = $this->verifyRequiredFields($data, 'event');
+        $verifyFields = $this->verifyRequiredFields($data, 'event', $church);
 
         if($verifyFields)
         {
@@ -492,11 +492,11 @@ class EventController extends Controller
             unset($data['group_id']);
         }
 
-        $this->eventServices->sendNotification($data, $event);
+        $this->eventServices->sendNotification($data, $event, $church);
 
         if($data["frequency"] != $this->unique())
         {
-            $this->eventServices->newEventDays($event->id, $data);
+            $this->eventServices->newEventDays($event->id, $data, $person_id);
         }
         else{
             $show = $event->eventDate == date("Y-m-d") ? 1 : 0;

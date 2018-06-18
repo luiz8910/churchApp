@@ -21,11 +21,11 @@ trait ConfigTrait
 {
 
 
-    public function verifyRequiredFields($data, $model)
+    public function verifyRequiredFields($data, $model, $church_id = null)
     {
         $fields = RequiredFields::where([
             'model' => $model,
-            'church_id' => $this->getUserChurch()
+            'church_id' => $church_id ? $church_id : $this->getUserChurch()
         ])->get();
 
         $array = array_keys($data);
