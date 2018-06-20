@@ -12,6 +12,7 @@ namespace App\Services;
 use App\Events\AgendaEvent;
 use App\Models\Event;
 use App\Models\EventSubscribedList;
+use App\Models\Person;
 use App\Models\RecentEvents;
 use App\Models\User;
 use App\Notifications\Notifications;
@@ -2410,6 +2411,37 @@ class EventServices
 
         }
 
+    }
+
+    public function allMembers($church_id = null)
+    {
+
+        $church = $church_id ? $church_id : $this->getUserChurch();
+
+        $people = Person::select('id', 'name', 'lastName')
+            ->where('church_id', $church)
+            ->whereNull('deleted_at')
+            ->get();
+
+
+        if(count($people) > 0)
+        {
+
+            foreach ($people as $person)
+            {
+
+                $person->name = $person->name . ' ' . $person->lastName;
+
+                unset($person->lastName);
+
+            }
+
+            return $people;
+        }
+        else{
+
+            return false;
+        }
     }
 }
 

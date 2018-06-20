@@ -1485,7 +1485,7 @@ class EventController extends Controller
      */
     public function getCheckInListAjax($event)
     {
-        $sub = $this->eventServices->getListSubEvent($event);
+        /*$sub = $this->eventServices->getListSubEvent($event);
 
         $arr = [];
 
@@ -1511,11 +1511,13 @@ class EventController extends Controller
 
         //dd($person_sub);
 
-        $merged = $person_sub->merge($visit_sub); //dd($merged);
+        $merged = $person_sub->merge($visit_sub); //dd($merged);*/
+
+        $data = $this->eventServices->allMembers();
 
         return json_encode([
             'status' => true,
-            'data' => $merged
+            'data' => $data
         ]);
     }
 

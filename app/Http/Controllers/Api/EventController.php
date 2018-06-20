@@ -417,9 +417,27 @@ class EventController extends Controller
      */
     public function getCheckinList($id)
     {
-        $data = $this->eventServices->getListSubEvent($id);
+        //$data = $this->eventServices->getListSubEvent($id);
 
-        return json_encode(['status' => true, 'data' => $data]);
+        try{
+
+            $church = $this->repository->find($id)->church_id;
+
+            $data = $this->eventServices->allMembers($church);
+
+            if($data)
+            {
+                return json_encode(['status' => true, 'data' => $data]);
+            }
+
+            return json_encode(['status' => false, 'msg' => 'Não há nenhum usuário cadastrado no momento']);
+
+
+        }catch(\Exception $e)
+        {
+            return json_encode(['status' => false, 'msg' => $e->getMessage()]);
+        }
+
     }
 
 
