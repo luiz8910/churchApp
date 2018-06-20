@@ -237,9 +237,13 @@
 
                             {"status":true,
                                 "data":[
-                                    {"event_id":39,"person_id":1},
-                                    {"event_id":39,"person_id":2}
+                                    {"id":1, "name:" Admin Admin},
+                                    {"id":2, "name:" John Doe}
                                 ]}
+
+                            {"status":false,
+                              "msg": "Aqui pode ser uma mensagem que não existem
+                                    usuários cadastrados ou mensagem de erro do sistema"
 
 
                         </pre>
