@@ -1991,6 +1991,8 @@ class EventServices
 
                 $today = date("Y-m-d");
 
+                $event = $this->repository->find($event_id);
+
                 for($i = 0; $i < count($days); $i++)
                 {
                     $check = $days[$i]->eventDate == $today ? 1 : 0;
@@ -2000,7 +2002,7 @@ class EventServices
                             'event_id' => $event_id,
                             'person_id' => $person_id,
                             'eventDate' => $days[$i]->eventDate,
-                            'event_date' => date_create($days[$i]->eventDate),
+                            'event_date' => date_create($days[$i]->eventDate . $event->startTime),
                             'check-in' => $check,
                             'show' => 1
                         ]);
@@ -2012,6 +2014,7 @@ class EventServices
             DB::commit();
 
             return json_encode(['status' => true]);
+
         }catch(\Exception $e){
             DB::rollback();
 
