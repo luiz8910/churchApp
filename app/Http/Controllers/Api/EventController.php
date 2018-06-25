@@ -325,12 +325,15 @@ class EventController extends Controller
     /*
      * Check-in em lote (app)
      */
-    public function checkInPeopleAPP($people = null, $event = null)
+    public function checkInPeopleAPP(Request $request)
     {
 
-        $people = $people == 0 ? false : \GuzzleHttp\json_decode($people);
+        $people = $request->get('people');
 
-        if(!$people)
+        $event = $request->get('id');
+
+
+        if($people == 0)
         {
             try{
                 $this->eventServices->checkInAll($event);
@@ -355,7 +358,9 @@ class EventController extends Controller
             }
 
         }
+
         else{
+
             foreach ($people as $item)
             {
                 $isSub = $this->eventServices->isSubPeople($event, $item);

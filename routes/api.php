@@ -69,7 +69,13 @@ Route::get('/unsubscribe/{id}/{person_id}', 'Api\EventController@unsubUser');
 
 Route::get('/sub/{id}/{person_id}', 'Api\EventController@sub');
 
-Route::post('/checkin-all/{people?}/{id?}', 'Api\EventController@checkInPeopleAPP');
+Route::post('/checkin-all/', 'Api\EventController@checkInPeopleAPP');
+
+Route::get('teste-data', function(){
+    $date = date_create(date('Y-m-d'));
+
+    dd(date_format($date, "Y-m-d"));
+});
 
 
 

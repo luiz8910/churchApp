@@ -225,7 +225,7 @@ class EventServices
     {
         $show = $data['eventDate'] == date("Y-m-d") ? 1 : 0;
 
-        $person_id = $person_id ? $person_id : \Auth::user()->person_id;
+        $person_id = $person_id ? $person_id : \Auth::user()->person->id;
 
         $event_date = date_create($data['eventDate'] . $data['startTime']);
 
@@ -302,7 +302,7 @@ class EventServices
 
         $event = Event::find($id);
 
-        $day = date_create($data['eventDate'] . $data['startTime']);
+        $day = date_create($event->eventDate . $event->startTime);
 
         $diff = $event->eventDate != $event->endEventDate ? true : false;
 
@@ -757,6 +757,9 @@ class EventServices
 
     }
 
+    /*
+     * Verifica se a pessoa ja fez o check-in
+     */
     public function isSubPeople($id, $person_id)
     {
         $today = date("Y-m-d");
@@ -1959,7 +1962,7 @@ class EventServices
 
             $this->subEvent($event_id, $person_id);
 
-            $date = date_create(date('Y-m-d'));
+            $date = date_create();
 
             $event_person = DB::table('event_person')
                 ->where([
@@ -1968,6 +1971,7 @@ class EventServices
                     'eventDate' => date_format($date, "Y-m-d"),
                     'check-in' => 0
                 ])->get();
+
 
             if(count($event_person) > 0)
             {
