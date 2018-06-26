@@ -1987,11 +1987,19 @@ class EventServices
                     ]);
             }
             else{
-                $days = $this->eventDays($event_id);
+
+                $this->checkApp($event_id, $person_id);
+
+                //$event = $this->repository->find($event_id);
+
+                //Descobrir a frequencia do evento
+
+
+                /*$days = $this->eventDays($event_id);
 
                 $today = date("Y-m-d");
 
-                $event = $this->repository->find($event_id);
+
 
                 for($i = 0; $i < count($days); $i++)
                 {
@@ -2006,7 +2014,7 @@ class EventServices
                             'check-in' => $check,
                             'show' => 1
                         ]);
-                }
+                }*/
 
 
             }

@@ -53,8 +53,6 @@ Route::get('/check-in/{id}/{person_id}/{visitor?}', 'Api\EventController@checkIn
 
 Route::get('/is-check/{id}/{person_id}/{visitor?}', 'Api\EventController@isCheckedApp');
 
-Route::post('/checkInPeople/{event}', 'Api\EventController@checkInPeopleAPP');
-
 Route::get('/getEventInfo/{id}', 'Api\EventController@getEventInfo');
 
 Route::get('/checkout/{id}/{person_id}', 'Api\EventController@checkout');
