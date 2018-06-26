@@ -57,6 +57,10 @@ class EventServices
      * @var GroupRepository
      */
     private $groupRepository;
+    /**
+     * @var AgendaServices
+     */
+    private $agendaServices;
 
     /**
      * EventServices constructor.
@@ -68,7 +72,8 @@ class EventServices
      */
     public function __construct(EventRepository $repository, FrequencyRepository $frequencyRepositoryTrait,
                                 EventSubscribedListRepository $listRepository, GeofenceRepository $geofenceRepository,
-                                PersonRepository $personRepository, GroupRepository $groupRepository)
+                                PersonRepository $personRepository, GroupRepository $groupRepository,
+                                AgendaServices $agendaServices)
     {
         $this->repository = $repository;
         $this->frequencyRepository = $frequencyRepositoryTrait;
@@ -76,6 +81,7 @@ class EventServices
         $this->geofenceRepository = $geofenceRepository;
         $this->personRepository = $personRepository;
         $this->groupRepository = $groupRepository;
+        $this->agendaServices = $agendaServices;
     }
 
     /**
@@ -296,7 +302,7 @@ class EventServices
         $this->subAllMembers($id, $data['eventDate'], $person_id);
     }
 
-    public function setNextEvents($id, $data, $days, $person_id)
+    public function setNextEvents($id, $data = null, $days, $person_id)
     {
         $i = 0;
 
@@ -1988,16 +1994,150 @@ class EventServices
             }
             else{
 
-                $this->checkApp($event_id, $person_id);
+                //Descobrir a frequência do evento
 
-                //$event = $this->repository->find($event_id);
+                $event = $this->repository->find($event_id);
 
-                //Descobrir a frequencia do evento
+                $today = date("Y-m-d");
+
+                //Se frequencia for semanal
+                if($event->frequency == $this->weekly())
+                {
+                    $day = $this->agendaServices->thisDay();
+
+                    $week = $this->agendaServices->allDaysName();
+
+                    //O dia está correto, realiza o check-in
+
+                    if($week[$day] == $event->day)
+                    {
+                        DB::table('event_person')
+                            ->insert([
+                                'event_id' => $event_id,
+                                'person_id' => $person_id,
+                                'eventDate' => $today,
+                                'event_date' => date_create($today . $event->startTime),
+                                'check-in' => 1,
+                                'show' => 1
+                            ]);
+
+
+                        $this->setNextEvents($event_id, null, "7 days", $person_id);
+
+                    }
+                    else{
+
+                        return json_encode(
+                            [
+                                'status' => false,
+                                'check-in' => false,
+                                'msg' => 'Data do evento é diferente da data atual']);
+                    }
+                }
+
+                //Se frequencia for mensal
+                elseif($event->frequency == $this->monthly())
+                {
+                    $day = $this->agendaServices->thisDayNumber();
+
+                    if($day == $event->day)
+                    {
+                        DB::table('event_person')
+                            ->insert([
+                                'event_id' => $event_id,
+                                'person_id' => $person_id,
+                                'eventDate' => $today,
+                                'event_date' => date_create($today . $event->startTime),
+                                'check-in' => 1,
+                                'show' => 1
+                            ]);
+
+                        $this->setNextEvents($event_id, null, "30 days", $person_id);
+                    }
+                    else{
+
+                        return json_encode(
+                            [
+                                'status' => false,
+                                'check-in' => false,
+                                'msg' => 'Data do evento é diferente da data atual']);
+                    }
+                }
+
+                //Se frequencia for quinzenal
+                if($event->frequency == $this->biweekly())
+                {
+                    $day = $this->agendaServices->thisDayNumber();
+
+                    if($day == $event->day)
+                    {
+                        DB::table('event_person')
+                            ->insert([
+                                'event_id' => $event_id,
+                                'person_id' => $person_id,
+                                'eventDate' => $today,
+                                'event_date' => date_create($today . $event->startTime),
+                                'check-in' => 1,
+                                'show' => 1
+                            ]);
+
+                        $this->setNextEvents($event_id, null, "15 days", $person_id);
+                    }
+                    elseif($day == $event->day_2)
+                    {
+                        DB::table('event_person')
+                            ->insert([
+                                'event_id' => $event_id,
+                                'person_id' => $person_id,
+                                'eventDate' => $today,
+                                'event_date' => date_create($today . $event->startTime),
+                                'check-in' => 1,
+                                'show' => 1
+                            ]);
+
+                        $this->setNextEvents($event_id, null, "15 days", $person_id);
+                    }
+                    else{
+
+                        return json_encode(
+                            [
+                                'status' => false,
+                                'check-in' => false,
+                                'msg' => 'Data do evento é diferente da data atual']);
+                    }
+                }
+                elseif($event->frequency == $this->daily())
+                {
+                    DB::table('event_person')
+                        ->insert([
+                            'event_id' => $event_id,
+                            'person_id' => $person_id,
+                            'eventDate' => $today,
+                            'event_date' => date_create($today . $event->startTime),
+                            'check-in' => 1,
+                            'show' => 1
+                        ]);
+
+                    $this->setNextEvents($event_id, null, "1 days", $person_id);
+                }
+
+                elseif($event->frequency == $this->unique())
+                {
+                    DB::table('event_person')
+                        ->insert([
+                            'event_id' => $event_id,
+                            'person_id' => $person_id,
+                            'eventDate' => $today,
+                            'event_date' => date_create($today . $event->startTime),
+                            'check-in' => 1,
+                            'show' => 1
+                        ]);
+                }
+
+
 
 
                 /*$days = $this->eventDays($event_id);
-
-                $today = date("Y-m-d");
 
 
 

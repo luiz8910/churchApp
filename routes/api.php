@@ -72,6 +72,8 @@ Route::post('/checkin-all/', 'Api\EventController@checkInPeopleAPP');
 
 
 
+
+
 //------------------------- Grupos -------------------------------------------------------------------------------------
 
 Route::get('groups/{church}', 'Api\GroupController@groupListApp');

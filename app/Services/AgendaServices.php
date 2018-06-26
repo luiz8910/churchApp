@@ -201,9 +201,21 @@ class AgendaServices
 
     }
 
+    // Retorna de 1 a 12
     public function thisMonth()
     {
         return date("n");
+    }
+
+    //Retorna de 1 a 6 (1 = Segunda e 6 = Sábado)
+    public function thisDay()
+    {
+        return date("N");
+    }
+
+    public function thisDayNumber()
+    {
+        return date("d");
     }
 
     public function allMonths()
