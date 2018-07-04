@@ -122,6 +122,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                 <?php $i = 0; ?>
                                 <div class="portlet-body form">
 
+
                                     @if(Auth::user()->person->role_id == $leader || Auth::user()->person->role_id == $admin)
 
                                     {!! Form::open(['route' => 'person.store', 'method' => 'POST', 'class' => 'repeater',
@@ -133,6 +134,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                     'enctype' => 'multipart/form-data', 'role' => 'form', 'id' => 'form']) !!}
 
                                     @endif
+
                                     <div class="form-body">
                                         <div class="row">
                                             <div class="col-md-6">
@@ -149,6 +151,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 @endif
                                                                 <?php $i++; ?>
                                                         >
+
                                                     </div>
                                                 </div>
                                             </div>

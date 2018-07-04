@@ -595,4 +595,3 @@ Route::get('api-teste', function(){
 });
 
 
-

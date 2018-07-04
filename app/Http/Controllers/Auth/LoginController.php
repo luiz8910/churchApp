@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\Role;
 use App\Models\User;
+use App\Repositories\PersonRepository;
 use App\Repositories\RoleRepository;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
@@ -35,16 +36,21 @@ class LoginController extends Controller
      * @var RoleRepository
      */
     private $roleRepository;
+    /**
+     * @var PersonRepository
+     */
+    private $personRepository;
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(RoleRepository $roleRepository)
+    public function __construct(RoleRepository $roleRepository, PersonRepository $personRepository)
     {
         $this->middleware('guest', ['except' => 'logout']);
         $this->roleRepository = $roleRepository;
+        $this->personRepository = $personRepository;
     }
 
     /**
@@ -98,6 +104,7 @@ class LoginController extends Controller
 
             if($user->church_id == $church)
             {
+                $person = $this->personRepository->find($user->person->id);
 
                 $role_id = $user->person->role_id;
 
@@ -107,7 +114,12 @@ class LoginController extends Controller
                     'status' => true,
                     'person_id' => $user->person->id,
                     'role_id' => $role_id,
-                    'role' => $role
+                    'role' => $role,
+                    'name' => $person->name . ' ' . $person->lastName,
+                    'email' => $email,
+                    'tel' => $person->tel,
+                    'cel' => $person->cel,
+                    'imgProfile' => $person->imgProfile
                 ]);
             }
 

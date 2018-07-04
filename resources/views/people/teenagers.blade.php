@@ -36,8 +36,8 @@
 							<div class="page-head">
 								<div class="container">
 									<div class="page-title">
-										<h1>Adultos
-											<small>Membros e Etc...</small>
+										<h1>Crianças e Adolescentes
+											<small>Membros</small>
 										</h1>
 									</div>
 								</div> <!-- FIM DIV .container -->

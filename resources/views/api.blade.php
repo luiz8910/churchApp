@@ -61,6 +61,26 @@
 
         <div class="row">
             <div class="col-md-12">
+                <div class="text-center"><h2>O que há de novo?</h2></div>
+
+
+                <br>
+
+                <ul class="list-group">
+                    <li class="list-group-item text-center" style="background-color: #0a6aa1; color: white;">Adicionado novos atributos em login</li>
+                    <li class="list-group-item">"name": Admin admin,</li>
+                    <li class="list-group-item">"email": email@dominio.com,</li>
+                    <li class="list-group-item">"tel": 15988837883,</li>
+                    <li class="list-group-item">"cel": 15988837883,</li>
+                    <li class="list-group-item">"imgProfile": "uploads/profile/1-Admin.png</li>
+                </ul>
+
+                <br><br><br>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
                         <h3 class="panel-title">Lista de Todas as Igrejas</h3>
@@ -107,7 +127,17 @@
 
                     <pre>
                         Login Válido
-                            {"status":true,"person_id":1,"role_id":1,"role":"Lider"}
+                            {
+                                "status":true,
+                                "person_id":1,
+                                "role_id":1,
+                                "role":"Lider",
+                                "name": Admin admin,
+                                "email": email@dominio.com,
+                                "tel": 15988837883,
+                                "cel": 15988837883,
+                                "imgProfile": "uploads/profile/1-Admin.png
+                        }
 
                         Ou
 
