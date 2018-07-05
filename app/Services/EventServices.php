@@ -235,7 +235,7 @@ class EventServices
 
         $event_date = date_create($data['eventDate'] . $data['startTime']);
 
-        if($data['endTime'] == "" || $data['endTime'] == null)
+        if(isset($data['endTime']) && ($data['endTime'] == "" || $data['endTime'] == null))
         {
             if($data['endEventDate'] == $data['eventDate'])
             {

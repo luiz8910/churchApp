@@ -67,17 +67,48 @@
                 <br>
 
                 <ul class="list-group">
-                    <li class="list-group-item text-center" style="background-color: #0a6aa1; color: white;">Adicionado novos atributos em login</li>
+                    <li class="list-group-item text-center" style="background-color: forestgreen; color: white;">
+                        Check-in na lista de inscritos (05/07/2018) - event-list-sub
+                    </li>
+                    <li class="list-group-item">{"status":true, "people":[</li>
+                    <li class="list-group-item">
+                        {"id":6,"event_id":4,"person_id":1,"name":"Admin admin","check":true},
+                    </li>
+                    <li class="list-group-item">
+                        {"id":7,"event_id":4,"person_id":4,"name":"Eloá Sandra Rita Alves","check":true},
+                    </li>
+                    <li class="list-group-item">
+                        {"id":8,"event_id":4,"person_id":2,"name":"Juan Victor Caio Viana","check":false}]}
+                    </li>
+                </ul>
+
+
+
+
+
+
+                <br>
+
+                <ul class="list-group">
+                    <li class="list-group-item text-center" style="background-color: #0a6aa1; color: white;">Adicionado novos atributos em login (04/07/2018)</li>
                     <li class="list-group-item">"name": Admin admin,</li>
                     <li class="list-group-item">"email": email@dominio.com,</li>
                     <li class="list-group-item">"tel": 15988837883,</li>
                     <li class="list-group-item">"cel": 15988837883,</li>
-                    <li class="list-group-item">"imgProfile": "uploads/profile/1-Admin.png</li>
+                    <li class="list-group-item">"imgProfile": "uploads/profile/1-Admin.png"</li>
                 </ul>
 
                 <br><br><br>
             </div>
         </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="text-center"><h2>Todos os Endpoints</h2></div>
+            </div>
+        </div>
+
+        <br><br>
 
         <div class="row">
             <div class="col-md-12">
@@ -304,7 +335,7 @@
 
                         <pre>
 
-                            'name', 'createdBy_id', 'eventDate', 'group_id', 'description',
+                            'name', 'eventDate', 'group_id', 'description',
                             'endEventDate', 'startTime', 'endTime', 'frequency','day', 'church_id'
                             'allDay', 'day_2', 'street', 'neighborhood', 'city', 'zipCode', 'state', 'number'
 
@@ -942,7 +973,7 @@
 
                         Lista de Parâmetros obrigatórios *
 
-                            dateBirth = Data de Nascimento no formato dd/mm/AAAA (Verifica a idade e cria dados de login se idade = 18+) *
+                            dateBirth = Data de Nascimento no formato dd/mm/AAAA (Verifica a idade e cria dados de login se idade >= 18) *
 
                             church_id = 1 (Obrigatório para cadastro de membros, opcional para visitantes) <span class="label label-info">Inteiro</span>
 
@@ -966,7 +997,7 @@
 
                             maritalStatus = estado civil
 
-                            father_id = id do pai do cadastrado (uso permitido em qualquer caso, mas o padrão é só para menores de 18+)
+                            father_id = id do pai do cadastrado (uso permitido em qualquer caso, mas o padrão é só para menores de 18)
 
                             mother_id = id da mãe (idem acima)
 

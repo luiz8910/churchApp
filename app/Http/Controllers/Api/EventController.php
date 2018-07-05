@@ -602,7 +602,7 @@ class EventController extends Controller
     }
 
     /*
-     * Lista de Inscrito no evento $id
+     * Lista de Inscrito no evento $id e check-ins
      */
     public function getListSubEvent($id)
     {
@@ -615,9 +615,19 @@ class EventController extends Controller
             {
                 $person = $this->personRepository->find($item->person_id);
 
-                $item->name = $person->name . $person->lastName;
+                $item->name = $person->name . ' ' . $person->lastName;
 
-                $item->check = $this->eventServices->isSubscribed($id, $item->person_id);
+                $sub = json_decode($this->eventServices->isSubscribed($id, $item->person_id)) or null;
+
+                $check = 'check-in';
+
+                $item->check = false;
+
+                if($sub && $sub->status && $sub->$check)
+                {
+                    $item->check = true;
+                }
+
 
             }
 

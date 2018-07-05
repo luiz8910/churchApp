@@ -1547,7 +1547,11 @@ class EventController extends Controller
      */
     public function checkInPeople($people, $event)
     {
-        $people = $people == 0 ? false : \GuzzleHttp\json_decode($people);
+        //$people = $people == 0 ? false : \GuzzleHttp\json_decode($people);
+
+        $people = $people == 0 ? false : explode(",", $people);
+
+        //dd($people);
 
         if(!$people)
         {
@@ -1577,9 +1581,9 @@ class EventController extends Controller
         else{
             foreach ($people as $item)
             {
-                $item = str_replace("-", "/", $item, $count);
+                //$item = str_replace("-", "/", $item, $count);
 
-                if($count == 0){
+                //if($count == 0){
                     $isSub = $this->eventServices->isSubPeople($event, $item);
 
                     if(!$isSub)
@@ -1587,8 +1591,8 @@ class EventController extends Controller
                         $this->eventServices->checkInBatch($event, $item);
                     }
 
-                }
-                else{
+                //}
+                /*else{
                     $isSub = $this->eventServices->isSubVisitor($event, $item);
 
                     if(!$isSub)
@@ -1596,7 +1600,7 @@ class EventController extends Controller
                         $this->eventServices->checkInVisitorBatch($event, $item);
                     }
 
-                }
+                }*/
 
 
 
@@ -1674,14 +1678,19 @@ class EventController extends Controller
 
         foreach($person_sub as $p)
         {
-            $user = $this->personRepository->find($p->id)->user;
+            $person = $this->personRepository->find($p->id);
+            $user = isset($person->user) ? $person->user : false;
 
             $p->social_media = false;
 
-            if($user->facebook_id || $user->google_id)
+            if($user)
             {
-                $p->social_media = true;
+                if($user->facebook_id || $user->google_id)
+                {
+                    $p->social_media = true;
+                }
             }
+
 
             $p->presence = 0;
 

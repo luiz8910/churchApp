@@ -24,6 +24,7 @@ $(function () {
 
         var event = $("#select_event_id_check").val();
 
+        //console.log(form.serializeArray());
         peopleCheckIn(form.serializeArray(), event);
     });
 
@@ -166,9 +167,13 @@ function peopleCheckIn(array, event) {
             values.push(array[i].value);
         }
 
-        values = JSON.stringify(values);
 
-        //console.log(array[0].name);
+        console.log(values);
+
+        //values = JSON.stringify(values);
+
+
+
         request = $.ajax({
             url: '/checkInPeople/' + values + "/" + event,
             method: 'GET',

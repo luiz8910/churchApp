@@ -1712,9 +1712,9 @@ class PersonController extends Controller
     {
         $user = $this->repository->find($id)->user;
 
-        $groups = $this->groupRepository->findByField('owner_id', $user->id);
+        $groups = $user ? $this->groupRepository->findByField('owner_id', $user->id) : 0;
 
-        $events = $this->eventRepository->findByField('createdBy_id', $user->id);
+        $events = $user ? $this->eventRepository->findByField('createdBy_id', $user->id) : 0;
 
         if(count($groups) > 0 || count($events) > 0)
         {
@@ -2144,6 +2144,12 @@ class PersonController extends Controller
 
         $data['imgProfile'] = isset($data['imgProfile']) ? $data['imgProfile'] :'uploads/profile/noimage.png';
 
+        if($data['maritalStatus'] == 'Casado')
+        {
+            $data['partner'] = 0;
+        }
+
+
         if(isset($data['church_id']))
         {
             //Cadastro de Membro
@@ -2179,8 +2185,17 @@ class PersonController extends Controller
             return $this->returnFalse('Insira um número de celular');
         }
 
+
+        $exist_email = count($this->userRepository->findByField('email', $data['email'])) > 0 ? true : false;
+
         if(isset($data['email']) && $data['email'] != "")
         {
+
+            if($exist_email)
+            {
+                return $this->returnFalse('Este email já existe na base de dados');
+            }
+
             if(isset($data['dateBirth']))
             {
                 if($data['dateBirth'] == '')
