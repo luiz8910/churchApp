@@ -282,23 +282,30 @@ class PersonController extends Controller
 
         if(isset($data['person_id']) && $data['person_id'] != "")
         {
-            try{
-                $pass = bcrypt($data['password']);
-
-                DB::table('users')->
-                    where('id', $data['person_id'])->
-                    update(['password' => $pass]);
-
-                DB::commit();
-
-                return json_encode(['status' => true]);
-
-            }catch(\Exception $e)
+            if(isset($data['password']) && $data['password'] != "")
             {
-                DB::rollBack();
+                try{
+                    $pass = bcrypt($data['password']);
 
-                return $this->returnFalse($e->getMessage());
+                    DB::table('users')
+                        ->where('id', $data['person_id'])
+                        ->update(['password' => $pass]);
+
+                    DB::commit();
+
+                    return json_encode(['status' => true]);
+
+                }catch(\Exception $e)
+                {
+                    DB::rollBack();
+
+                    return $this->returnFalse($e->getMessage());
+                }
             }
+            else{
+                return $this->returnFalse('Informe a nova senha');
+            }
+
 
         }
         else{
