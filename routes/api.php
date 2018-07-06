@@ -87,10 +87,15 @@ Route::get('recent-groups/{church}', 'Api\GroupController@recentGroupsApp');
 Route::get('getGroupInfo/{id}', 'Api\GroupController@getGroupInfo');
 
 
+
+
+
 //------------------------- Pessoas ------------------------------------------------------------------------------------
 
-Route::get('/recent-people/{church}', 'PersonController@recentPeopleApp');
+Route::get('/recent-people/{church}', 'Api\PersonController@recentPeopleApp');
 
-Route::post('/new-member/', 'PersonController@storeWaitingApprovalApp');
+Route::post('/new-member/', 'Api\PersonController@storeWaitingApprovalApp');
 
-Route::post('/store-person/', 'PersonController@storeApp');
+Route::post('/store-person/', 'Api\PersonController@storeApp');
+
+Route::post('/change-password/', 'Api\PersonController@changePassword');

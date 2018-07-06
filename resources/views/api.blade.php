@@ -67,6 +67,17 @@
                 <br>
 
                 <ul class="list-group">
+                    <li class="list-group-item text-center" style="background-color: lightskyblue; color: white;">
+                        Mudança de Senha (06/07/2018)
+                    </li>
+                    <li class="list-group-item">Request POST </li>
+                    <li class="list-group-item">person_id = 1</li>
+                    <li class="list-group-item">password = "sua nova senha"</li>
+                </ul>
+
+                <br>
+
+                <ul class="list-group">
                     <li class="list-group-item text-center" style="background-color: forestgreen; color: white;">
                         Check-in na lista de inscritos (05/07/2018) - event-list-sub
                     </li>
@@ -949,6 +960,53 @@
             <div class="col-md-12">
                 <div class="panel panel-success">
                     <div class="panel-heading">
+                        <h3 class="panel-title">Mudança de Senha</h3>
+                    </div>
+
+                    <div class="panel-body">
+
+                        https://beconnect.com.br/api/change-password
+                        <span class="label label-success">POST</span>
+
+                        <br><br>
+
+                        <p class="text-center">Lista de Parâmetros</p>
+
+                    <pre>
+
+                        person_id = 1
+
+                        password = 'nova senha aqui'
+
+                    </pre>
+
+                        <br><br>
+
+                        <p class="text-center">Exemplo de Retorno</p>
+
+                    <pre>
+
+                        Se requisição realizada com sucesso
+
+                        {"status":true}
+
+                        Senão
+
+                        Exemplo de erro
+
+                        {"status":false,"msg":"Mensagem de erro"}
+                    </pre>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
                         <h3 class="panel-title">Cadastro de Pessoas e Visitantes</h3>
                     </div>
 
@@ -969,7 +1027,7 @@
 
                         <p class="text-center">Lista de Parâmetros</p>
 
-                    <pre>
+                        <pre>
 
                         Lista de Parâmetros obrigatórios *
 
@@ -1019,7 +1077,7 @@
 
                         <p class="text-center">Exemplo de Retorno</p>
 
-                    <pre>
+                        <pre>
 
                         Se cadastro com sucesso
 
@@ -1036,7 +1094,6 @@
                 </div>
             </div>
         </div>
-
 
 
         <div class="row">

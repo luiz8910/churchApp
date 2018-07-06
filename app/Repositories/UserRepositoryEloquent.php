@@ -51,5 +51,7 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
 
             return true;
         }
+
+        return false;
     }
 }
