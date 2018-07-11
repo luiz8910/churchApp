@@ -63,6 +63,21 @@
             <div class="col-md-12">
                 <div class="text-center"><h2>O que há de novo?</h2></div>
 
+                <br>
+
+                <ul class="list-group">
+                    <li class="list-group-item text-center" style="background-color: #0a6aa1; color: white;">Recuperação de código (11/07/2018)</li>
+                    <li class="list-group-item">"code": 4467,</li>
+                    <li class="list-group-item">Retorna true ou mensagem de erro</li>
+                </ul>
+
+                <br>
+
+                <ul class="list-group">
+                    <li class="list-group-item text-center" style="background-color: #0a6aa1; color: white;">Recuperação de Senha e envio de código (11/07/2018)</li>
+                    <li class="list-group-item">"person_id": 1,</li>
+                    <li class="list-group-item">Envia um código para o email</li>
+                </ul>
 
                 <br>
 
@@ -98,16 +113,7 @@
 
 
 
-                <br>
 
-                <ul class="list-group">
-                    <li class="list-group-item text-center" style="background-color: #0a6aa1; color: white;">Adicionado novos atributos em login (04/07/2018)</li>
-                    <li class="list-group-item">"name": Admin admin,</li>
-                    <li class="list-group-item">"email": email@dominio.com,</li>
-                    <li class="list-group-item">"tel": 15988837883,</li>
-                    <li class="list-group-item">"cel": 15988837883,</li>
-                    <li class="list-group-item">"imgProfile": "uploads/profile/1-Admin.png"</li>
-                </ul>
 
                 <br><br><br>
             </div>
@@ -185,6 +191,87 @@
 
                         Login Inválido
                             {"status":false}
+                    </pre>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Recuperação de Senha e envio de código</h3>
+                    </div>
+                    <div class="panel-body">
+
+                        https://beconnect.com.br/api/recover-password/{person_id}
+                        <span class="label label-primary">GET</span>
+
+                        <br><br>
+
+                        <p class="text-center">Exemplo de Lista de Parâmetros</p>
+
+                        <pre>
+                            person_id = 1 (Obrigatório) <span class="label label-info">Inteiro</span>
+                        </pre>
+
+                        <p class="text-center">Exemplo de Retorno</p>
+
+                        <pre>
+
+                            Envia um email para o usuário com um código para digitar no app
+
+                            <br>
+
+                            {
+                                "status":true,
+                            }
+
+                        Ou
+
+                            {"status":false, msg: 'Usuário não encontrado'}
+                    </pre>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Recuperação de código</h3>
+                    </div>
+                    <div class="panel-body">
+
+                        https://beconnect.com.br/api/get-code/{code}
+                        <span class="label label-primary">GET</span>
+
+                        <br><br>
+
+                        <p class="text-center">Exemplo de Lista de Parâmetros</p>
+
+                        <pre>
+                            code = 1095 (Obrigatório) <span class="label label-info">Inteiro</span>
+                        </pre>
+
+                        <p class="text-center">Exemplo de Retorno</p>
+
+                        <pre>
+                            {
+                                "status":true,
+                            }
+
+                        Ou
+
+                            {"status":false, msg: 'Código expirado ou inexistente'}
                     </pre>
 
 

@@ -229,13 +229,15 @@
 																		</thead>
 
                                                                         <tr>
-                                                                            <td>{{ $main->text_1 }}</td>
-                                                                            <td>{{ $main->text_2 }}</td>
+                                                                            <td>{{ $main->text_1 or null}}</td>
+                                                                            <td>{{ $main->text_2 or null}}</td>
                                                                             <td>
-                                                                                <a href="javascript:;" class="btn blue btn-circle btn-outline" id="btn-main">
-                                                                                    <i class="fa fa-pencil"></i>
-                                                                                    Editar
-                                                                                </a>
+                                                                                @if(count($main) > 0)
+                                                                                    <a href="javascript:;" class="btn blue btn-circle btn-outline" id="btn-main">
+                                                                                        <i class="fa fa-pencil"></i>
+                                                                                        Editar
+                                                                                    </a>
+                                                                                @endif
                                                                             </td>
                                                                         </tr>
 
@@ -253,13 +255,15 @@
                                                                         </thead>
 
                                                                         <tr>
-                                                                            <td>{{ $about->text_1 }}</td>
-                                                                            <td>{{ $about->text_2 }}</td>
+                                                                            <td>{{ $about->text_1 or null }}</td>
+                                                                            <td>{{ $about->text_2 or null }}</td>
                                                                             <td>
-                                                                                <a href="javascript:;" class="btn blue btn-circle btn-outline" id="btn-about">
-                                                                                    <i class="fa fa-pencil"></i>
-                                                                                    Editar
-                                                                                </a>
+                                                                                @if(count($about) > 0)
+                                                                                    <a href="javascript:;" class="btn blue btn-circle btn-outline" id="btn-about">
+                                                                                        <i class="fa fa-pencil"></i>
+                                                                                        Editar
+                                                                                    </a>
+                                                                                @endif
                                                                             </td>
                                                                         </tr>
 
@@ -274,21 +278,24 @@
                                                                             <th> Título </th>
                                                                             <th> Subtítulo </th>
                                                                             <th>
-                                                                                <a href="javascript:;" class="btn blue btn-circle btn-outline" id="btn-about-item">
-                                                                                    <i class="fa fa-pencil"></i>
-                                                                                    Editar
-                                                                                </a>
+                                                                                @if(count($about_item) > 0)
+                                                                                    <a href="javascript:;" class="btn blue btn-circle btn-outline" id="btn-about-item">
+                                                                                        <i class="fa fa-pencil"></i>
+                                                                                        Editar
+                                                                                    </a>
+                                                                                @endif
                                                                             </th>
                                                                         </tr>
                                                                         </thead>
 
-                                                                        @foreach($about_item as $item)
-                                                                            <tr>
-                                                                                <td>{{ $item->title }}</td>
-                                                                                <td>{{ $item->text }}</td>
-                                                                            </tr>
-                                                                        @endforeach
-
+                                                                        @if(count($about_item) > 0)
+                                                                            @foreach($about_item as $item)
+                                                                                <tr>
+                                                                                    <td>{{ $item->title }}</td>
+                                                                                    <td>{{ $item->text }}</td>
+                                                                                </tr>
+                                                                            @endforeach
+                                                                        @endif
                                                                     </table>
 
                                                                 </div>
@@ -303,30 +310,31 @@
                                                                         </tr>
                                                                         </thead>
 
-                                                                        @foreach($faq as $f)
-                                                                            <tr id="tr-faq-{{ $f->id }}">
-                                                                                <td>{{ $f->question }}</td>
-                                                                                <td>
-                                                                                    @if(strlen($f->answer) > 50)
-                                                                                        <?php $str = substr($f->answer, 0, 50) . " ..."; ?>
-                                                                                        {{ $str }}
-                                                                                    @else
-                                                                                        {{ $f->answer }}
-                                                                                    @endif
-                                                                                </td>
-                                                                                <td>
-                                                                                    <a href="javascript:;" class="btn blue btn-circle btn-outline btn-faq" id="btn-faq-{{ $f->id }}">
-                                                                                        <i class="fa fa-pencil"></i>
-                                                                                        Editar
-                                                                                    </a>
-                                                                                    <a href="javascript:;" class="btn red btn-circle btn-outline delete-faq" id="delete-faq-{{ $f->id }}">
-                                                                                        <i class="fa fa-trash"></i>
-                                                                                        Excluir
-                                                                                    </a>
-                                                                                </td>
-                                                                            </tr>
-                                                                        @endforeach
-
+                                                                        @if(count($faq) > 0)
+                                                                            @foreach($faq as $f)
+                                                                                <tr id="tr-faq-{{ $f->id }}">
+                                                                                    <td>{{ $f->question }}</td>
+                                                                                    <td>
+                                                                                        @if(strlen($f->answer) > 50)
+                                                                                            <?php $str = substr($f->answer, 0, 50) . " ..."; ?>
+                                                                                            {{ $str }}
+                                                                                        @else
+                                                                                            {{ $f->answer }}
+                                                                                        @endif
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <a href="javascript:;" class="btn blue btn-circle btn-outline btn-faq" id="btn-faq-{{ $f->id }}">
+                                                                                            <i class="fa fa-pencil"></i>
+                                                                                            Editar
+                                                                                        </a>
+                                                                                        <a href="javascript:;" class="btn red btn-circle btn-outline delete-faq" id="delete-faq-{{ $f->id }}">
+                                                                                            <i class="fa fa-trash"></i>
+                                                                                            Excluir
+                                                                                        </a>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            @endforeach
+                                                                        @endif
                                                                     </table>
                                                                 </div>
 

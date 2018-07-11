@@ -469,7 +469,7 @@
                             <tr>
                                 <td class="content-cell" align="center">
                                     <p class="sub align-center" style="color: white;">
-                                        &copy; 2017 BeConnect. Todos os direitos reservados
+                                        &copy; 2018 BeConnect. Todos os direitos reservados
                                     </p>
                                     <p class="sub align-center" style="color: white;">
                                         Dúvidas? Envie um email para contato@beconnect.com.br

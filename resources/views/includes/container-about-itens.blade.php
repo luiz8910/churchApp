@@ -20,7 +20,8 @@
                                             <span class="input-group-addon">
                                                 <i class="fa fa-font font-purple"></i>
                                             </span>
-                                            <input type="text" class="form-control" name="title-about-item" value="{{ $item->title }}"
+                                            <input type="text" class="form-control" name="title-about-item"
+                                                   value="{{ $item->title or null}}"
                                                    placeholder="Digite o título" required>
                                         </div>
                                     </div>
@@ -28,7 +29,7 @@
                                     <div class="form-group">
                                         <label>Subtítulo</label>
                                         <textarea class="form-control" rows="3" name="subTitle-main"
-                                                  required >{{ $item->text }}</textarea>
+                                                  required >{{ $item->text or null}}</textarea>
                                     </div>
 
                                 @endforeach

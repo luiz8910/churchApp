@@ -39,6 +39,10 @@ Route::any('/facebook/{church}/{app?}', 'Auth\RegisterController@preFbLogin');
 
 Route::any('/google/{church}/{app?}', 'Auth\RegisterController@preGoogleLogin');
 
+Route::get('/recover-password/{person_id}', 'Auth\LoginController@recoverPasswordApp');
+
+Route::get('/get-code/{code}', 'Auth\LoginController@getCode');
+
 //------------------------- Eventos ------------------------------------------------------------------------------------
 
 Route::get('/next-events/{qtde}/{church}', 'Api\EventController@getEventsApi');

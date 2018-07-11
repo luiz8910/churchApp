@@ -16,18 +16,19 @@
                                 <div class="form-group">
                                     <label>Título</label>
                                     <div class="input-group">
-                                                                        <span class="input-group-addon">
-                                                                            <i class="fa fa-font font-purple"></i>
-                                                                        </span>
-                                        <input type="text" class="form-control" id="title-main" name="title-about" value="{{ $about->text_1 }}"
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-font font-purple"></i>
+                                        </span>
+                                        <input type="text" class="form-control" id="title-main" name="title-about"
+                                               value="{{ $about->text_1 or null}}"
                                                placeholder="Digite o título" required>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label>Subtítulo</label>
-                                                                    <textarea class="form-control" rows="3" id="subTitle-about" name="subTitle-main"
-                                                                              required >{{ $about->text_2 }}</textarea>
+                                    <textarea class="form-control" rows="3" id="subTitle-about" name="subTitle-main"
+                                              required >{{ $about->text_2 or null}}</textarea>
                                 </div>
 
                             </div>

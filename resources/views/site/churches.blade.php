@@ -65,7 +65,7 @@
                                                                 </div><!-- /.col-lg-8 -->--}}
 
 
-                                                                @include('includes.church-options')
+                                                                    @include('includes.church-options')
 
 
 

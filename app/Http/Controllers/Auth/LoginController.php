@@ -5,8 +5,11 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\Role;
 use App\Models\User;
+use App\Repositories\CodeRepository;
 use App\Repositories\PersonRepository;
 use App\Repositories\RoleRepository;
+use App\Services\CodeServices;
+use App\Traits\ConfigTrait;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -24,7 +27,7 @@ class LoginController extends Controller
     |
     */
 
-    use AuthenticatesUsers;
+    use AuthenticatesUsers, ConfigTrait;
 
     /**
      * Where to redirect users after login.
@@ -40,17 +43,24 @@ class LoginController extends Controller
      * @var PersonRepository
      */
     private $personRepository;
+    /**
+     * @var CodeServices
+     */
+    private $codeServices;
+
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(RoleRepository $roleRepository, PersonRepository $personRepository)
+    public function __construct(RoleRepository $roleRepository, PersonRepository $personRepository,
+                                CodeServices $codeServices)
     {
         $this->middleware('guest', ['except' => 'logout']);
         $this->roleRepository = $roleRepository;
         $this->personRepository = $personRepository;
+        $this->codeServices = $codeServices;
     }
 
     /**
@@ -128,5 +138,38 @@ class LoginController extends Controller
         }
 
         return json_encode(['status' => false]);
+    }
+
+
+    public function recoverPasswordApp($person_id)
+    {
+         $person = $this->personRepository->findByField('id', $person_id)->first();
+
+         if(count($person) == 1)
+         {
+             if(isset($person->user))
+             {
+                 if($this->codeServices->addCode($person))
+                 {
+                     return json_encode(['status' => true]);
+                 }
+             }
+
+             else{
+                 $this->returnFalse('O usuário não tem email cadastrado');
+             }
+
+
+             return $this->returnFalse();
+         }
+
+         return $this->returnFalse('Usuário não encontrado');
+
+    }
+
+    public function getCode($code)
+    {
+        return $this->codeServices->getCode($code);
+
     }
 }
