@@ -80,7 +80,7 @@
                                                                 <i class="fa fa-refresh fa-spin fa-5x fa-fw"
                                                                    id="icon-loading-cep">
                                                                 </i>
-                                                                <p class="text-center" id="p-loading-cep">
+                                                                <p class="text-center" id="p-loading-results">
                                                                     Carregando ...
                                                                 </p>
                                                             </div>
@@ -147,12 +147,17 @@
                                         </div> <!-- FIM DIV .col-md-12 -->
                                     </div> <!-- FIM DIV .row -->
                                 </div> <!-- FIM DIV .page-content-inner -->
+
+                                @include('includes.church-create')
+
                             </div> <!-- FIM DIV .container -->
                         </div> <!-- FIM DIV .page-content -->
                     </div> <!-- FIM DIV .page-content-wrapper -->
                 </div> <!-- FIM DIV.page-container -->
             </div> <!-- FIM DIV .page-wrapper-middle -->
         </div> <!-- FIM DIV .page-wrapper-row full-height -->
+
+
 
 
         <div class="modal fade" tabindex="-1" role="dialog" id="edit-modal">
@@ -217,14 +222,14 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label for="exampleInputPassword1">Telefone da igreja</label>
+                                                    <label for="exampleInputPassword1">Telefone da Igreja</label>
                                                     <div class="input-group">
                                                     <span class="input-group-addon">
                                                         <i class="fa fa-phone font-green"></i>
                                                     </span>
                                                         <input type="text" class="form-control tel" name="tel"
-                                                               id="tel" value="{{ old('tel') }}"
-                                                               placeholder="(15) 1231413423" required
+                                                               value="{{ old('tel') }}" id="phone"
+                                                               placeholder="Telefone ou Celular" required
 
                                                         >
                                                     </div>
@@ -412,7 +417,7 @@
                                                                 <i class="fa fa-user font-blue"></i>
                                                             </span>
                                                         <input type="text" class="form-control" id="lastname_resp"
-                                                               placeholder="da Silva" value="" required readonly
+                                                                value="" required readonly
 
                                                         >
                                                     </div>
@@ -430,7 +435,7 @@
                                                             <span class="input-group-addon">
                                                                 <i class="fa fa-envelope font-blue" id="icon-email"></i>
                                                             </span>
-                                                        <input type="text" name="email" id="email" class="form-control"
+                                                        <input type="text" name="email" id="email-resp" class="form-control"
                                                                placeholder="email@dominio.com" value="" required
                                                         >
 
@@ -460,7 +465,7 @@
                                                         <i class="fa fa-mobile font-blue"></i>
                                                     </span>
                                                         <input type="text" class="form-control tel" id="cel" readonly
-                                                               value="{{ old('cel') }}" placeholder="(15) 9231413423"
+                                                               value="{{ old('cel') }}" placeholder="Seu celular aqui"
                                                         >
                                                     </div>
                                                 </div>
@@ -545,6 +550,10 @@
 
                                         @include('includes.address-create')
 
+                                    </div>
+
+                                    <div role="tabpanel" class="tab-pane fade" id="plans">
+                                        <h4 class="text-center">Ainda não há planos para essa igreja</h4>
                                     </div>
 
                                 </div>

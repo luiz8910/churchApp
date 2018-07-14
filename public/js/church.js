@@ -25,6 +25,7 @@ $(function(){
     })
 
 
+    setRequiredFields();
 });
 
 
@@ -78,6 +79,36 @@ function activateChurch(id)
 
 }
 
+function clearFields()
+{
+    $(".form-control").val("");
+}
+
+function closeForm()
+{
+    clearFields();
+
+    $("#new-church").css("display", "none");
+}
+
+function openForm()
+{
+    $("#new-church").css("display", "block");
+
+    $("#name").focus();
+
+    $('html, body').animate({
+        scrollTop: $("#new-church").offset().top
+    }, 2000);
+}
+
+function setRequiredFields()
+{
+    $("#street").attr('required', true);
+    $("#number").attr('required', true);
+    $("#city").attr('required', true);
+    $("#state").attr('required', true);
+}
 
 
 function editChurch(id)
@@ -95,6 +126,8 @@ function editChurch(id)
         if(e.status)
         {
             //Igreja
+
+            console.log(e.church);
 
             var name = e.church.name;
 
@@ -120,7 +153,7 @@ function editChurch(id)
 
             $("#church_alias").val(alias);
 
-            $("#tel").val(tel);
+            $("#phone").val(tel);
 
             $("#cnpj").val(cnpj);
 
@@ -180,7 +213,7 @@ function editChurch(id)
 
             $("#lastname_resp").val(lastName).attr('disabled', true);
 
-            $("#email").val(email);
+            $("#email-resp").val(email);
 
             $("#cel").val(cel).attr('disabled', true);
 

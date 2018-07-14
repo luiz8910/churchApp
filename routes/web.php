@@ -391,6 +391,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/full-activate-church/{id}', 'ChurchController@fullActivate');
 
+    Route::post('/new-church', 'ChurchController@store')->name('new.church');
+
     // Fim Admin site
 
     Route::get('/events-ajax', 'EventController@getListEvents');
