@@ -477,6 +477,10 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('home-visitante/{church}', 'VisitorController@visitors')->name('home.visitor');
 
+    Route::post('/new-bug/', 'BugController@store');
+
+    Route::get('bugs', 'BugController@bugs');
+
 
     //Documentação da API
     Route::get('docs', function(){

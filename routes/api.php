@@ -74,10 +74,6 @@ Route::get('/sub/{id}/{person_id}', 'Api\EventController@sub');
 Route::post('/checkin-all/', 'Api\EventController@checkInPeopleAPP');
 
 
-
-
-
-
 //------------------------- Grupos -------------------------------------------------------------------------------------
 
 Route::get('groups/{church}', 'Api\GroupController@groupListApp');
@@ -92,8 +88,6 @@ Route::get('getGroupInfo/{id}', 'Api\GroupController@getGroupInfo');
 
 
 
-
-
 //------------------------- Pessoas ------------------------------------------------------------------------------------
 
 Route::get('/recent-people/{church}', 'Api\PersonController@recentPeopleApp');
@@ -103,3 +97,8 @@ Route::post('/new-member/', 'Api\PersonController@storeWaitingApprovalApp');
 Route::post('/store-person/', 'Api\PersonController@storeApp');
 
 Route::post('/change-password/', 'Api\PersonController@changePassword');
+
+
+//-------------------------- Outros ------------------------------------------------------------------------------------
+
+Route::post('/new-bug/', 'BugController@storeApp');
