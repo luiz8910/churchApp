@@ -619,15 +619,17 @@ class EventController extends Controller
         {
             $result = $this->personRepository->findWhere(['status' => 'active', 'church_id' => $church->church_id]);
 
+
+
             if(count($result) > 0)
             {
                 foreach ($result as $item)
                 {
-                    $person = $this->personRepository->find($item->person_id);
+                    $person = $this->personRepository->find($item->id);
 
                     $item->name = $person->name . ' ' . $person->lastName;
 
-                    $sub = json_decode($this->eventServices->isSubscribed($id, $item->person_id)) or null;
+                    $sub = json_decode($this->eventServices->isSubscribed($id, $item->id)) or null;
 
                     $check = 'check-in';
 
@@ -638,6 +640,7 @@ class EventController extends Controller
                         $item->check = true;
                     }
 
+                    //echo $item->person_id;
 
                 }
 
