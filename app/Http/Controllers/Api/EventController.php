@@ -127,7 +127,7 @@ class EventController extends Controller
 
         }
 
-        dd($events);
+        //dd($events);
 
         return json_encode($events);
     }
@@ -611,37 +611,44 @@ class EventController extends Controller
      */
     public function getListSubEvent($id)
     {
-        $result = $this->eventServices->getListSubEventAPP($id);
+        //$result = $this->eventServices->getListSubEventAPP($id);
 
+        $church = $this->repository->findByField('id', $id)->first()->church_id;
 
-        if(count($result) > 0)
+        if(count($church) == 1)
         {
-            foreach ($result as $item)
+            $result = $this->personRepository->findWhere(['status' => 'active', 'church_id' => $church]);
+
+            if(count($result) > 0)
             {
-                $person = $this->personRepository->find($item->person_id);
-
-                $item->name = $person->name . ' ' . $person->lastName;
-
-                $sub = json_decode($this->eventServices->isSubscribed($id, $item->person_id)) or null;
-
-                $check = 'check-in';
-
-                $item->check = false;
-
-                if($sub && $sub->status && $sub->$check)
+                foreach ($result as $item)
                 {
-                    $item->check = true;
+                    $person = $this->personRepository->find($item->person_id);
+
+                    $item->name = $person->name . ' ' . $person->lastName;
+
+                    $sub = json_decode($this->eventServices->isSubscribed($id, $item->person_id)) or null;
+
+                    $check = 'check-in';
+
+                    $item->check = false;
+
+                    if($sub && $sub->status && $sub->$check)
+                    {
+                        $item->check = true;
+                    }
+
+
                 }
 
 
+                return json_encode(['status' => true, 'people' => $result]);
             }
 
-
-            return json_encode(['status' => true, 'people' => $result]);
+            return json_encode(['status' => true, 'people' => 0]);
         }
 
-        return json_encode(['status' => true, 'people' => 0]);
-
+        return $this->returnFalse('Erro ao buscar igreja');
 
     }
 
