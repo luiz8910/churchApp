@@ -613,11 +613,11 @@ class EventController extends Controller
     {
         //$result = $this->eventServices->getListSubEventAPP($id);
 
-        $church = $this->repository->findByField('id', $id)->first()->church_id;
+        $church = $this->repository->findByField('id', $id)->first();
 
         if(count($church) == 1)
         {
-            $result = $this->personRepository->findWhere(['status' => 'active', 'church_id' => $church]);
+            $result = $this->personRepository->findWhere(['status' => 'active', 'church_id' => $church->church_id]);
 
             if(count($result) > 0)
             {
