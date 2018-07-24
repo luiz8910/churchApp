@@ -70,14 +70,14 @@ class PersonController extends Controller
 
         $data['imgProfile'] = isset($data['imgProfile']) ? $data['imgProfile'] :'uploads/profile/noimage.png';
 
-        if(!isset($data['maritalStatus']) || $data['maritalStatus'] == "")
+        if(isset($data['maritalStatus']))
         {
-            $data['maritalStatus'] = 'Solteiro';
+            if($data['maritalStatus'] == 'Casado')
+            {
+                $data['partner'] = 0;
+            }
         }
-        elseif($data['maritalStatus'] == 'Casado')
-        {
-            $data['partner'] = 0;
-        }
+
 
 
         if(isset($data['church_id']))
