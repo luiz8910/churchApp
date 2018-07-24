@@ -18,6 +18,7 @@ use App\Traits\FormatGoogleMaps;
 use App\Traits\NotifyRepository;
 use Event;
 use Illuminate\Http\Request;
+//use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\DB;
 
 class EventController extends Controller
@@ -618,8 +619,6 @@ class EventController extends Controller
         if(count($church) == 1)
         {
             $result = $this->personRepository->findWhere(['status' => 'active', 'church_id' => $church->church_id]);
-
-
 
             if(count($result) > 0)
             {

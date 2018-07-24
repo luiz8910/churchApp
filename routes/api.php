@@ -31,6 +31,9 @@ Route::get('/church-list', 'ChurchController@churchesApi')->middleware('cors');
 
 //Route::get('/login/{email}/{password}/{church}', 'Auth\LoginController@loginApp');
 
+
+
+
 //------------------------- Login ------------------------------------------------------------------------------------
 
 Route::post('/login', 'Auth\LoginController@loginApp');
@@ -43,6 +46,9 @@ Route::get('/recover-password/{person_id}', 'Auth\LoginController@recoverPasswor
 
 Route::get('/get-code/{code}', 'Auth\LoginController@getCode');
 
+
+
+
 //------------------------- Eventos ------------------------------------------------------------------------------------
 
 Route::get('/next-events/{qtde}/{church}', 'Api\EventController@getEventsApi');
@@ -53,17 +59,22 @@ Route::get('recent-events/{church}', 'Api\EventController@recentEventsApp');
 
 Route::get('/today-events/{id}/{visitor?}', 'Api\EventController@eventsToday');
 
+Route::get('/getEventInfo/{id}', 'Api\EventController@getEventInfo');
+
+Route::post('/store-event/{person_id}', 'Api\EventController@store');
+
+
+
+
+//--------------------------- Check-in ---------------------------------------------------------------------------------
+
 Route::get('/check-in/{id}/{person_id}/{visitor?}', 'Api\EventController@checkInAPP');
 
 Route::get('/is-check/{id}/{person_id}/{visitor?}', 'Api\EventController@isCheckedApp');
 
-Route::get('/getEventInfo/{id}', 'Api\EventController@getEventInfo');
-
 Route::get('/checkout/{id}/{person_id}', 'Api\EventController@checkout');
 
 Route::get('/getCheckinList/{id}', 'Api\EventController@getCheckinList');
-
-Route::post('/store-event/{person_id}', 'Api\EventController@store');
 
 Route::get('/event-list-sub/{id}', 'Api\EventController@getListSubEvent');
 
@@ -71,7 +82,10 @@ Route::get('/unsubscribe/{id}/{person_id}', 'Api\EventController@unsubUser');
 
 Route::get('/sub/{id}/{person_id}', 'Api\EventController@sub');
 
-Route::post('/checkin-all/', 'Api\EventController@checkInPeopleAPP');
+Route::any('/checkin-all/', 'Api\EventController@checkInPeopleAPP');
+
+
+
 
 
 //------------------------- Grupos -------------------------------------------------------------------------------------
@@ -88,6 +102,8 @@ Route::get('getGroupInfo/{id}', 'Api\GroupController@getGroupInfo');
 
 
 
+
+
 //------------------------- Pessoas ------------------------------------------------------------------------------------
 
 Route::get('/recent-people/{church}', 'Api\PersonController@recentPeopleApp');
@@ -97,6 +113,8 @@ Route::post('/new-member/', 'Api\PersonController@storeWaitingApprovalApp');
 Route::post('/store-person/', 'Api\PersonController@storeApp');
 
 Route::post('/change-password/', 'Api\PersonController@changePassword');
+
+
 
 
 //-------------------------- Outros ------------------------------------------------------------------------------------
