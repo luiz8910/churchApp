@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Repositories\ChurchRepository;
 use App\Repositories\PersonRepository;
+use App\Repositories\RoleRepository;
 use App\Repositories\UserRepository;
 use App\Repositories\VisitorRepository;
 use App\Services\FeedServices;
@@ -46,9 +47,13 @@ class PersonController extends Controller
      * @var VisitorRepository
      */
     private $visitorRepository;
+    /**
+     * @var RoleRepository
+     */
+    private $roleRepository;
 
     public function __construct(PersonRepository $repository, ChurchRepository $churchRepository, UserRepository $userRepository,
-                                FeedServices $feedServices, VisitorRepository $visitorRepository)
+                                FeedServices $feedServices, VisitorRepository $visitorRepository, RoleRepository $roleRepository)
 
     {
 
@@ -57,6 +62,7 @@ class PersonController extends Controller
         $this->userRepository = $userRepository;
         $this->feedServices = $feedServices;
         $this->visitorRepository = $visitorRepository;
+        $this->roleRepository = $roleRepository;
     }
 
 
@@ -143,7 +149,11 @@ class PersonController extends Controller
 
                 }
 
-                if($data['role'] == 'Lider' || $data['role'] == 'Administrador')
+                $leader = $this->roleRepository->findByField('name', 'Lider')->first()->id;
+
+                $admin = $this->roleRepository->findByField('name', 'Administrador')->first()->id;
+
+                if(($data['role'] == 'Lider' || $data['role'] == 'Administrador') || ($data['role'] == $leader || $data['role'] == $admin))
                 {
                     $id = $this->repository->create($data)->id;
 
