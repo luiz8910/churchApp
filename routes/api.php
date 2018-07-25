@@ -42,7 +42,7 @@ Route::any('/facebook/{church}/{app?}', 'Auth\RegisterController@preFbLogin');
 
 Route::any('/google/{church}/{app?}', 'Auth\RegisterController@preGoogleLogin');
 
-Route::get('/recover-password/{person_id}', 'Auth\LoginController@recoverPasswordApp');
+Route::get('/recover-password/{email}', 'Auth\LoginController@recoverPasswordApp');
 
 Route::get('/get-code/{code}', 'Auth\LoginController@getCode');
 

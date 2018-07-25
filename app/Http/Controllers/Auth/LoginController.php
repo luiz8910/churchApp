@@ -141,26 +141,16 @@ class LoginController extends Controller
     }
 
 
-    public function recoverPasswordApp($person_id)
+    public function recoverPasswordApp($email)
     {
-         $person = $this->personRepository->findByField('id', $person_id)->first();
+         $person = $this->personRepository->findByField('email', $email)->first();
 
          if(count($person) == 1)
          {
-             if(isset($person->user))
+             if($this->codeServices->addCode($person))
              {
-                 if($this->codeServices->addCode($person))
-                 {
-                     return json_encode(['status' => true]);
-                 }
+                 return json_encode(['status' => true]);
              }
-
-             else{
-                 $this->returnFalse('O usuário não tem email cadastrado');
-             }
-
-
-             return $this->returnFalse();
          }
 
          return $this->returnFalse('Usuário não encontrado');

@@ -208,7 +208,7 @@
                     </div>
                     <div class="panel-body">
 
-                        https://beconnect.com.br/api/recover-password/{person_id}
+                        https://beconnect.com.br/api/recover-password/{email}
                         <span class="label label-primary">GET</span>
 
                         <br><br>
@@ -216,7 +216,7 @@
                         <p class="text-center">Exemplo de Lista de Parâmetros</p>
 
                         <pre>
-                            person_id = 1 (Obrigatório) <span class="label label-info">Inteiro</span>
+                            email = admin@admin.com (Obrigatório) <span class="label label-info">Inteiro</span>
                         </pre>
 
                         <p class="text-center">Exemplo de Retorno</p>
