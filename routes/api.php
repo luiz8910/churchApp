@@ -119,4 +119,4 @@ Route::post('/change-password/', 'Api\PersonController@changePassword');
 
 //-------------------------- Outros ------------------------------------------------------------------------------------
 
-Route::post('/new-bug/', 'BugController@storeApp');
+Route::any('/new-bug/', 'BugController@storeApp');
