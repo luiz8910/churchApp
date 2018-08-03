@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Repositories\CodeRepository;
 use App\Repositories\PersonRepository;
 use App\Repositories\RoleRepository;
+use App\Repositories\UserRepository;
 use App\Services\CodeServices;
 use App\Traits\ConfigTrait;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
@@ -47,6 +48,10 @@ class LoginController extends Controller
      * @var CodeServices
      */
     private $codeServices;
+    /**
+     * @var UserRepository
+     */
+    private $userRepository;
 
 
     /**
@@ -55,12 +60,13 @@ class LoginController extends Controller
      * @return void
      */
     public function __construct(RoleRepository $roleRepository, PersonRepository $personRepository,
-                                CodeServices $codeServices)
+                                CodeServices $codeServices, UserRepository $userRepository)
     {
         $this->middleware('guest', ['except' => 'logout']);
         $this->roleRepository = $roleRepository;
         $this->personRepository = $personRepository;
         $this->codeServices = $codeServices;
+        $this->userRepository = $userRepository;
     }
 
     /**
@@ -151,6 +157,20 @@ class LoginController extends Controller
              {
                  return json_encode(['status' => true]);
              }
+         }
+         else{
+             $user = $this->userRepository->findByField('email', $email)->first();
+
+             if(count($user) == 1)
+             {
+                 $person = $this->personRepository->findByField('id', $user->person->id)->first();
+
+                 if($this->codeServices->addCode($person))
+                 {
+                     return json_encode(['status' => true]);
+                 }
+             }
+
          }
 
          return $this->returnFalse('Usuário não encontrado');
