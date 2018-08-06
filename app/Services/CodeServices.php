@@ -41,6 +41,8 @@ class CodeServices{
 
         $code['expires_in'] = date_format($tomorrow, 'Y-m-d H:i:s');
 
+        $code['email'] = $person->user->email;
+
         if($this->codeRepository->create($code))
         {
             $today = date_format(date_create(), 'd/m/Y');

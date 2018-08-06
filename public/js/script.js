@@ -163,6 +163,7 @@ $(function () {
         }
     });
 
+
     $(".check-model").click(function () {
 
 

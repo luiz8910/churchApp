@@ -167,7 +167,7 @@ class LoginController extends Controller
 
                  if($this->codeServices->addCode($person))
                  {
-                     return json_encode(['status' => true]);
+                     return json_encode(['status' => true, 'person_id' => $person->id]);
                  }
              }
 
