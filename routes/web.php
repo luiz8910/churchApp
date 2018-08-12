@@ -484,8 +484,36 @@ Route::group(['middleware' => 'auth'], function () {
 
     //Documentação da API
     Route::get('docs', function(){
-        return view('api');
-    });
+        return view('docs.api');
+    })->name('docs');
+
+    Route::get('docs/igrejas', function(){
+        return view('docs.churchs');
+    })->name('docs.churchs');
+
+    Route::get('docs/login', function(){
+        return view('docs.login');
+    })->name('docs.login');
+
+    Route::get('docs/eventos', function(){
+        return view('docs.events');
+    })->name('docs.events');
+
+    Route::get('docs/grupos', function(){
+        return view('docs.groups');
+    })->name('docs.groups');
+
+    Route::get('docs/ativ-recentes', function(){
+        return view('docs.activity');
+    })->name('docs.activity');
+
+    Route::get('docs/pessoas', function(){
+        return view('docs.people');
+    })->name('docs.people');
+
+    Route::get('docs/check-in', function(){
+        return view('docs.check-in');
+    })->name('docs.check-in');
 
 
 //Login Twitter
