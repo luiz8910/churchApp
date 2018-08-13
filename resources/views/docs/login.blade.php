@@ -213,6 +213,72 @@
             </div>
         </div>
 
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Login Social</h3>
+                    </div>
+                    <div class="panel-body">
+
+                        <p class="text-center">Baixe o app de exemplo</p>
+
+                        <pre>
+                            https://github.com/luiz8910/live_ionic_login.git
+                        </pre>
+
+                        <p class="text-center">Lista de Comandos no Terminal</p>
+
+                        <pre>
+                            1 - npm install firebase
+                            2 - ionic cordova plugin add cordova-plugin-buildinfo
+                            3 - ionic cordova plugin add cordova-universal-links-plugin
+                            4 - ionic cordova plugin add cordova-plugin-browsertab
+                            5 - ionic cordova plugin add cordova-plugin-inappbrowser
+                            6 - ionic cordova plugin add cordova-plugin-customerurlscheme --variable URL_SCHEME=com.firebase.cordova
+
+                        </pre>
+
+                        <p class="text-center">Alterações no config.xml</p>
+
+                        <pre>
+                            Adicione o código abaixo dentro de &lt;platform name="android"&gt;&lt;/platform&gt;
+
+                            &lt;preference name="AndroidLaunchMode" value="singleTask" /&gt;
+                        </pre>
+
+                        <pre>
+
+                            Adicione o código abaixo depois de &lt;platform&gt;&lt;/platform&gt;
+
+                            &lt;universal-links&gt;
+                                &lt;host name="DYNAMIC_LINK_DOMAIN" scheme="https" /&gt;
+                                &lt;host name="AUTH_DOMAIN" scheme="https"&gt;
+                                    &lt;path url="/__/auth/callback"/&gt;
+                                &lt;/host&gt;
+                            &lt;/universal-links&gt;
+
+                            Onde:
+
+                            "DYNAMIC_LINK_DOMAIN" = Consta no .pdf
+                            "AUTH_DOMAIN" = Consta no .pdf
+
+
+
+                        </pre>
+
+                        <br>
+
+                        <p style="margin-left: 100px;">Observações:</p>
+                        <br>
+                        <p>Conteúdo do arquivo firebase-config.ts consta no .pdf</p>
+                        <p>No caso de dúvidas acesse : <a href="https://firebase.google.com/docs/auth/web/cordova?hl=pt-br" target="_blank">OAuth Sign-in para Cordova</a>  </p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
         
 
 
