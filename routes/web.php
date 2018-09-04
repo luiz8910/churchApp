@@ -628,4 +628,6 @@ Route::get('api-teste', function(){
     return view('teste-api');
 });
 
+Route::get('basic-config', 'ChurchController@setBasicConfig');
+
 

@@ -9,7 +9,6 @@ $(function(){
 
    });
 
-
     $(".btn-activate").click(function(){
 
         var id = this.id.replace('btn-activate-', '');
@@ -22,10 +21,126 @@ $(function(){
         var id = this.id.replace('btn-full-activate-', '');
 
         fullActivateChurch(id);
-    })
+    });
 
 
     setRequiredFields();
+
+
+    $("#password").keyup(function(){
+        checkPass();
+    });
+
+    $("#password_conf").keyup(function () {
+        checkPass();
+    });
+
+    $("#checkbox-pass").click(function () {
+
+        var pass_input = $("#password");
+        var pass_conf = $("#password_conf");
+
+
+        if($(this).is(':checked'))
+        {
+            var pass = checkBoxPass();
+
+            pass_input.val(pass);
+
+            pass_conf.val(pass);
+
+            pass_input.attr('readonly', true);
+            pass_input.attr('type', 'text');
+
+            pass_conf.attr('readonly', true);
+            pass_conf.attr('type', 'text');
+
+            checkPass();
+        }
+        else{
+            pass_input.val('');
+
+            pass_conf.val('');
+
+            pass_input.attr('readonly', false);
+
+            pass_conf.attr('readonly', false);
+
+            pass_input.attr('type', 'password');
+
+            pass_conf.attr('type', 'password');
+
+            checkPass();
+        }
+
+    });
+
+    /*
+     * Checar se as senhas combinam
+     */
+    function checkPass()
+    {
+        var pass = $("#password").val();
+        var conf = $("#password_conf").val();
+
+        var i_green = $(".icon-green");
+        var i_red = $(".icon-red");
+
+        var i_pass = $("#icon-success-pass");
+        var i_pass_conf = $("#icon-success-pass-conf");
+
+
+        if(pass != conf)
+        {
+
+            i_green.css('display', 'none');
+
+            i_red.css('display', 'block');
+
+            $("#form-password").addClass('has-error');
+
+            $("#form-password-conf").addClass('has-error');
+
+            i_pass.css('display', 'none');
+
+            i_pass_conf.css('display', 'none');
+
+        }
+
+        else{
+
+            if(pass.length > 5)
+            {
+                i_green.css('display', 'block');
+
+                i_red.css('display', 'none');
+
+                i_pass.css('display', 'block');
+
+                i_pass_conf.css('display', 'block');
+
+                $("#form-password").removeClass('has-error');
+
+                $("#form-password-conf").removeClass('has-error');
+            }
+
+        }
+    }
+
+    /*
+    * Gera um senha aleatória
+     */
+    function checkBoxPass()
+    {
+        var text = "";
+        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+        for (var i = 0; i < 8; i++)
+            text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+        return text;
+    }
+
 });
 
 

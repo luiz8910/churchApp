@@ -135,7 +135,10 @@ $(function(){
         }
 
     }
-    
+
+
+
+
     function clearTextArea()
     {
         $('textarea').each(function () {

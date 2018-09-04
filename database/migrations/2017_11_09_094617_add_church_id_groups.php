@@ -14,7 +14,7 @@ class AddChurchIdGroups extends Migration
     public function up()
     {
         Schema::table('groups', function(Blueprint $table){
-           //$table->integer('church_id');
+           $table->integer('church_id');
         });
     }
 
