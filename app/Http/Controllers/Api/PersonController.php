@@ -72,6 +72,24 @@ class PersonController extends Controller
     {
         $data = $request->all();
 
+        if(isset($data['phone'])) {
+            $data['tel'] = $data['phone'];
+            unset($data['phone']);
+        }
+
+        if(isset($data['picture_url'])){
+
+            $data['imgProfile'] = $data['picture_url'];
+            unset($data['picture_url']);
+        }
+
+        if(isset($data['role'])){
+            $data['role_id'] = count($this->roleRepository->findByField('name', $data['role'])->first()->id) > 0 ?
+                $this->roleRepository->findByField('name', $data['role'])->first() : $this->roleRepository->findByField('name', 'Membro')->first()->id;
+
+        }
+
+
         $church = null; $welcome = null;
 
         $data['imgProfile'] = isset($data['imgProfile']) ? $data['imgProfile'] :'uploads/profile/noimage.png';

@@ -218,6 +218,40 @@
             <div class="col-md-12">
                 <div class="panel panel-info">
                     <div class="panel-heading">
+                        <h3 class="panel-title">Recuperar Token (Login Social)</h3>
+                    </div>
+                    <div class="panel-body">
+
+                        https://beconnect.com.br/api/get-social-token/{token}
+                        <span class="label label-primary">GET</span>
+
+                        <br><br>
+
+
+                        <pre>
+                            Retorna {status: true} se existir
+
+
+                            Senão
+
+
+
+                            Retorna {status: false}
+
+                        </pre>
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
                         <h3 class="panel-title">Login Social</h3>
                     </div>
                     <div class="panel-body">
@@ -279,7 +313,6 @@
                 </div>
             </div>
         </div>
-        
 
 
     </div>

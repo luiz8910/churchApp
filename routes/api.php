@@ -46,6 +46,8 @@ Route::get('/recover-password/{email}', 'Auth\LoginController@recoverPasswordApp
 
 Route::get('/get-code/{code}', 'Auth\LoginController@getCode');
 
+Route::get('/get-social-token/{token}', 'Auth\LoginController@getSocialToken');
+
 
 
 
