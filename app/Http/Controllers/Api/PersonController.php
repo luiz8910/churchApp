@@ -180,9 +180,9 @@ class PersonController extends Controller
                 if($data['tag'] == 'adult')
                 {
 
-                    $password = $church->alias;
+                    $password = $data['password'] ? $data['password'] : $church->alias;
 
-                    $user = $this->createUserLogin($id, $password, $data['email'], $church->id);
+                    $user = $this->createUserLogin($id, $password, $data['email'], $church->id, $data['token']);
 
                     if($welcome)
                     {
@@ -204,6 +204,26 @@ class PersonController extends Controller
 
 
 
+    }
+
+    public function storeAppSocial(Request $request)
+    {
+        $data = $request->all();
+
+        $data['tel'] = $data['phone'];
+
+        $data['imgProfile'] = $data['picture_url'];
+
+        $data['role_id'] = count($this->roleRepository->findByField('name', $data['role'])->first()->id) > 0 ?
+            $this->roleRepository->findByField('name', $data['role'])->first() : $this->roleRepository->findByField('name', 'Membro')->first()->id;
+
+        unset($data['phone']);
+        unset($data['picture_url']);
+        unset($data['role']);
+
+        $data = new Request($data);
+
+        return $this->storeApp($data);
     }
 
     public function storeVisitors(Request $request)

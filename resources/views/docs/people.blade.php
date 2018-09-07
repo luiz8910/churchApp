@@ -172,6 +172,8 @@
 
                         ------------------------------------ Opcionais --------------------------------------------------------------
 
+                            social_token = (seu token aqui)
+
                             lastName = Sobrenome do cadastrado
 
                             tel = telefone do cadastrado

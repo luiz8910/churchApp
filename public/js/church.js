@@ -43,7 +43,7 @@ $(function(){
 
         if($(this).is(':checked'))
         {
-            var pass = checkBoxPass();
+            var pass = randomPassword();
 
             pass_input.val(pass);
 
@@ -105,6 +105,8 @@ $(function(){
 
             i_pass_conf.css('display', 'none');
 
+            $("#btn-submit-church").attr('disabled', true);
+
         }
 
         else{
@@ -122,6 +124,8 @@ $(function(){
                 $("#form-password").removeClass('has-error');
 
                 $("#form-password-conf").removeClass('has-error');
+
+                $("#btn-submit-church").attr('disabled', null);
             }
 
         }
@@ -130,7 +134,7 @@ $(function(){
     /*
     * Gera um senha aleatória
      */
-    function checkBoxPass()
+    function randomPassword()
     {
         var text = "";
         var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";

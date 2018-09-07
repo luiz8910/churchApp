@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\DB;
 
 trait UserLoginRepository
 {
-    public function createUserLogin($id = null, $password, $email = null, $church = null)
+    public function createUserLogin($id = null, $password, $email = null, $church = null, $token = null)
     {
         $qtde = count(User::where('email', $email)->get());
 
@@ -26,6 +26,7 @@ trait UserLoginRepository
                     'person_id' => $id,
                     'email' => $email,
                     'password' => bcrypt($password),
+                    'social_token' => $token ? $token : null,
                     'created_at' => date('Y-m-d H:i:s'),
                     'updated_at' => date('Y-m-d H:i:s'),
                 ]

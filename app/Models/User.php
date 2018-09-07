@@ -19,7 +19,7 @@ class User extends Authenticatable implements Transformable
      */
     protected $fillable = [
         'email', 'password', 'church_id', 'facebook_id',
-        'linkedin_id', 'google_id', 'twitter_id', 'person_id'
+        'linkedin_id', 'google_id', 'twitter_id', 'person_id', 'social_token'
     ];
 
     protected $dates = ['deleted_at'];

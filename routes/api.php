@@ -112,6 +112,8 @@ Route::post('/new-member/', 'Api\PersonController@storeWaitingApprovalApp');
 
 Route::post('/store-person/', 'Api\PersonController@storeApp');
 
+Route::post('/store-person-social/', 'Api\PersonController@storeAppSocial');
+
 Route::post('/change-password/', 'Api\PersonController@changePassword');
 
 

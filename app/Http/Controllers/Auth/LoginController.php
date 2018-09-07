@@ -182,4 +182,16 @@ class LoginController extends Controller
         return $this->codeServices->getCode($code);
 
     }
+
+    public function getSocialToken($token)
+    {
+        $user = $this->userRepository->findByField('social_token', $token)->first;
+
+        if(count($user) == 0)
+        {
+            return json_encode(['status' => false]);
+        }
+
+        return json_encode(['status' => true]);
+    }
 }

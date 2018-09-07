@@ -201,7 +201,7 @@
 
 
                             <div class="form-actions">
-                                <button type="submit" class="btn blue">
+                                <button type="submit" class="btn blue" id="btn-submit-church">
                                     <i class="fa fa-check"></i>
                                     Enviar
                                 </button>
