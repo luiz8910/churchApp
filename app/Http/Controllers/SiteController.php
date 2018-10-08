@@ -172,6 +172,7 @@ class SiteController extends Controller
 
         $url2 = '/newPlanType';
 
+
         return view('site.plans', compact('plans', 'plans_item', 'url', 'url2', 'plans_types', 'plan_features'));
     }
 

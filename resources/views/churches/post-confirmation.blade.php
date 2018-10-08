@@ -293,6 +293,61 @@ License: You must have a valid license purchased only from themeforest(the above
                                             </div>
                                         </div>
 
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group" id="form-password">
+
+                                                    <label for="password">Senha:</label>
+
+                                                    <div class="input-group input-icon right">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-lock font-blue icon-green" aria-hidden="true"></i>
+                                                <i class="fa fa-lock font-red icon-red" style="display: none;" aria-hidden="true"></i>
+                                            </span>
+                                                        <input type="password" class="form-control" placeholder="Digite sua senha" minlength="6" maxlength="15"
+                                                               id="password" name="password">
+                                                        <i class="fa fa-check font-green" id="icon-success-pass" style="display: none;"></i>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+
+                                                <div class="form-group" id="form-password-conf">
+
+                                                    <label for="password_conf">Confirmar Senha:</label>
+
+                                                    <div class="input-group input-icon right">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-lock font-blue icon-green" aria-hidden="true"></i>
+                                                <i class="fa fa-lock font-red icon-red" style="display: none;" aria-hidden="true"></i>
+                                            </span>
+
+                                                        <input type="password" class="form-control" placeholder="Confirme sua senha" id="password_conf">
+                                                        <i class="fa fa-check font-green" id="icon-success-pass-conf" style="display: none;"></i>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-xs-12 col-md-6">
+                                                <div class="form-group">
+
+                                                    <fieldset>
+                                                        <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                                            <input type="checkbox" name="parents" class="checkboxes check-model"
+                                                                   id="checkbox-pass" value="1" />
+                                                            <span></span>Gerar Senha
+                                                        </label>
+                                                    </fieldset>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         <br><br>
 
                                         @include('includes.address-create')
@@ -509,7 +564,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                     </div>
                                     <div class="form-actions">
-                                        {!! Form::submit('Enviar', ['class' => 'btn blue', 'id' => 'btn-submit']) !!}
+                                        {!! Form::submit('Enviar', ['class' => 'btn blue submit', 'id' => 'btn-submit']) !!}
                                         <div class="progress" style="display: none;">
                                             <div class="progress-bar progress-bar-striped active" role="progressbar"
                                                  aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
@@ -1123,6 +1178,8 @@ License: You must have a valid license purchased only from themeforest(the above
 @include('includes.core-scripts')
 <script src="../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js" type="text/javascript"></script>
 <script src="../assets/global/plugins/bootstrap-select/js/bootstrap-select.min.js" type="text/javascript"></script>
+<script src="../js/password.js"></script>
+<script src="../js/church.js"></script>
 </body>
 
 </html>

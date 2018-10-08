@@ -290,6 +290,43 @@ Route::group(['middleware' => 'auth'], function () {
 
 });
 
+    //Pagamentos PayU
+
+        //Planos
+
+            Route::get('/payu-store-plan', 'PaymentController@planStore');
+
+            Route::get('payu-get-plan/{code}', 'PaymentController@planGet');
+
+            Route::get('payu-update-plan/{code}', 'PaymentController@planUpdate');
+
+            Route::get('payu-delete-plan/{code}', 'PaymentController@planDelete');
+
+        //Clientes
+
+            Route::get('/payu-get-customer/{id}', 'PaymentController@customerGet');
+
+            Route::get('/payu-update-customer/{id}', 'PaymentController@customerUpdate');
+
+            Route::get('/payu-delete-customer/{id}', 'PaymentController@customerDelete');
+
+            Route::get('payu-store-customer', 'PaymentController@customerStore');
+
+        //Cartões
+
+            Route::get('/payu-store-card/{customer_id}', 'PaymentController@cardStore');
+
+            Route::get('payu-get-card/{token}', 'PaymentController@cardGet');
+
+            Route::get('payu-update-card/{token}', 'PaymentController@cardUpdate');
+
+            Route::get('payu-delete-card/{customer_id}/{token}', 'PaymentController@cardDelete');
+
+        //Teste
+
+            Route::any('/teste-payu', 'PaymentController@teste');
+
+    // Fim Pagamentos
 
 
     Auth::routes();

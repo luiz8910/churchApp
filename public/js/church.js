@@ -125,7 +125,7 @@ $(function(){
 
                 $("#form-password-conf").removeClass('has-error');
 
-                $("#btn-submit-church").attr('disabled', null);
+                $("#btn-submit-church .submit").attr('disabled', null);
             }
 
         }
