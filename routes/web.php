@@ -360,75 +360,85 @@ Route::group(['middleware' => 'auth'], function () {
      * Admin do Site
      */
 
-    Route::get('/admin', 'SiteController@adminHome')->name('admin.home');
+    Route::group(['middleware' => 'check.admin:6'], function (){
 
-    Route::get('/admin-features', 'SiteController@adminFeatures')->name('admin.features');
+        Route::get('/admin', 'SiteController@adminHome')->name('admin.home');
 
-    Route::get('/admin-plans', 'SiteController@adminPlans')->name('admin.plans');
+        Route::get('/admin-features', 'SiteController@adminFeatures')->name('admin.features');
 
-    Route::post('/newFeature/{data}', 'SiteController@newFeature');
+        Route::get('/admin-plans', 'SiteController@adminPlans')->name('admin.plans');
 
-    Route::get('/delete-feature/{id}', 'SiteController@deleteFeature');
+        Route::post('/newFeature/{data}', 'SiteController@newFeature');
 
-    Route::post('/new-feature-item/{data}/{id}', 'SiteController@newFeatureItem');
+        Route::get('/delete-feature/{id}', 'SiteController@deleteFeature');
 
-    Route::get('/deleteItemFeature/{id}', 'SiteController@deleteItemFeature');
+        Route::post('/new-feature-item/{data}/{id}', 'SiteController@newFeatureItem');
 
-    Route::post('/editFeatures/{data}/{id}', 'SiteController@editFeatures');
+        Route::get('/deleteItemFeature/{id}', 'SiteController@deleteItemFeature');
 
-    Route::post('/edit-main-site/{data}', 'SiteController@editMain');
+        Route::post('/editFeatures/{data}/{id}', 'SiteController@editFeatures');
 
-    Route::post('/edit-about-site/{data}', 'SiteController@editAbout');
+        Route::post('/edit-main-site/{data}', 'SiteController@editMain');
 
-    Route::post('/edit-about-item-site/{data}', 'SiteController@editAboutItem');
+        Route::post('/edit-about-site/{data}', 'SiteController@editAbout');
 
-    Route::post('/edit-features-site/{data}', 'SiteController@editFeatures');
+        Route::post('/edit-about-item-site/{data}', 'SiteController@editAboutItem');
 
-    Route::post('/new-icon', 'SiteController@uploadIcons');
+        Route::post('/edit-features-site/{data}', 'SiteController@editFeatures');
 
-    Route::post('/new-icons', 'SiteController@uploadIconsBatch');
+        Route::post('/new-icon', 'SiteController@uploadIcons');
 
-    Route::get('/change-icon/{feature_item_id}/{icon_id}', 'SiteController@changeIcons');
+        Route::post('/new-icons', 'SiteController@uploadIconsBatch');
 
-    Route::post('/new-faq/{data}', 'SiteController@newFaq');
+        Route::get('/change-icon/{feature_item_id}/{icon_id}', 'SiteController@changeIcons');
 
-    Route::post('/edit-faq/{data}/{id}', 'SiteController@editFaq');
+        Route::post('/new-faq/{data}', 'SiteController@newFaq');
 
-    Route::get('/delete-faq/{id}', 'SiteController@deleteFaq');
+        Route::post('/edit-faq/{data}/{id}', 'SiteController@editFaq');
 
-    Route::post('/newPlan', 'SiteController@newPlan')->name('admin.new-plan');
+        Route::get('/delete-faq/{id}', 'SiteController@deleteFaq');
 
-    Route::post('/newPlanType', 'SiteController@newPlanType')->name('admin.new-plan-type');
+        Route::post('/newPlan', 'SiteController@newPlan')->name('admin.new-plan');
 
-    Route::post('/editPlan', 'SiteController@editPlan')->name('admin.edit-plan');
+        Route::post('/newPlanType', 'SiteController@newPlanType')->name('admin.new-plan-type');
 
-    Route::post('/editPlanType', 'SiteController@editPlanType')->name('admin.edit-plan-type');
+        Route::post('/editPlan', 'SiteController@editPlan')->name('admin.edit-plan');
 
-    Route::get('/deletePlan/{id}', 'SiteController@deletePlan');
+        Route::post('/editPlanType', 'SiteController@editPlanType')->name('admin.edit-plan-type');
 
-    Route::post('/new-plan-item', 'SiteController@newPlanItem');
+        Route::get('/deletePlan/{id}', 'SiteController@deletePlan');
 
-    Route::get('/delete-plan-item/{id}', 'SiteController@deletePlanItem');
+        Route::post('/new-plan-item', 'SiteController@newPlanItem');
 
-    Route::get('/delete-plan-type/{id}', 'SiteController@deletePlanType');
+        Route::get('/delete-plan-item/{id}', 'SiteController@deletePlanItem');
 
-    Route::get('/igrejas', 'ChurchController@index')->name('admin.churches');
+        Route::get('/delete-plan-type/{id}', 'SiteController@deletePlanType');
 
-    Route::get("/delete-church/{id}", 'ChurchController@delete');
+        Route::get('/igrejas', 'ChurchController@index')->name('admin.churches');
 
-    Route::get('/edit-church/{id}', 'ChurchController@edit');
+        Route::get("/delete-church/{id}", 'ChurchController@delete');
 
-    Route::post('/update-church/{id}', 'ChurchController@update');
+        Route::get('/edit-church/{id}', 'ChurchController@edit');
 
-    Route::get('/inactive-churches', 'ChurchController@inactive')->name('inactive.churches');
+        Route::post('/update-church/{id}', 'ChurchController@update');
 
-    Route::get('/waiting-churches', 'ChurchController@waiting')->name('waiting.churches');
+        Route::get('/inactive-churches', 'ChurchController@inactive')->name('inactive.churches');
 
-    Route::get('/activate-church/{id}', 'ChurchController@activate');
+        Route::get('/waiting-churches', 'ChurchController@waiting')->name('waiting.churches');
 
-    Route::get('/full-activate-church/{id}', 'ChurchController@fullActivate');
+        Route::get('/activate-church/{id}', 'ChurchController@activate');
 
-    Route::post('/new-church', 'ChurchController@store')->name('new.church');
+        Route::get('/full-activate-church/{id}', 'ChurchController@fullActivate');
+
+        Route::post('/new-church', 'ChurchController@store')->name('new.church');
+
+    });
+
+    Route::get('/login-admin', 'Auth\LoginController@loginAdmin')->name('login.admin');
+
+    Route::post('/login-admin', 'Auth\LoginController@authenticateAdmin')->name('login.admin.authenticate');
+
+    Route::get('/check-email/{email}', 'ChurchController@checkEmail');
 
     // Fim Admin site
 

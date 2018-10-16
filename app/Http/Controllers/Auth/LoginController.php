@@ -194,4 +194,36 @@ class LoginController extends Controller
 
         return json_encode(['status' => true]);
     }
+
+    public function loginAdmin()
+    {
+        return view('auth.login-admin');
+    }
+
+    public function authenticateAdmin(Request $request)
+    {
+        if (Auth::attempt(['email' => $request->get('email'), 'password' => $request->get('password')]))
+        {
+            $user = $this->userRepository->findByField('email', $request->get('email'))->first();
+
+            $admin = $this->roleRepository->findByField('name', 'Administrador de Sistema')->first()->id;
+
+            if($user->admin_id == $admin)
+            {
+                if($request->has('remember-me'))
+                {
+                    Auth::loginUsingId($user, true);
+                }
+                else{
+                    Auth::loginUsingId($user);
+                }
+
+                return redirect()->route('admin.home');
+            }
+        }
+
+        $request->session()->flash('error.msg', 'Usuário ou senha inválidos');
+
+        return redirect()->route('login.admin');
+    }
 }

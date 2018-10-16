@@ -122,17 +122,25 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                    <div class="form-group">
+                                    <div class="form-group" id="form-email">
 
-                                        <label for="email">Email do Responsável</label>
+                                        <label for="email">Email do Responsável
+                                            <span id="span-error-email" style="color: red; display: none;">Este email já existe!</span>
+                                        </label>
 
-                                        <div class="input-group">
+                                        <div class="input-group input-icon right">
+
                                             <span class="input-group-addon">
-                                                <i class="fa fa-envelope font-blue"></i>
+                                                <i class="fa fa-envelope font-blue" id="envelope-success"></i>
+                                                <i class="fa fa-envelope font-red" id="envelope-error" style="display: none;"></i>
                                             </span>
 
                                             <input type="email" name="email" class="form-control" id="email"
                                                    placeholder="Email do Responsável" value="{{ old('email') }}" required>
+
+
+                                            <i class="fa fa-check font-green" id="icon-success-email" style="display: none;"></i>
+                                            <i class="fa fa-close font-red" id="icon-error-email" style="display: none;"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -210,6 +218,8 @@
                                     <i class="fa fa-paint-brush"></i>
                                     Limpar
                                 </a>
+
+                                <span id="span-error-submit" style="color: red; display: none;">Verifique os erros acima!</span>
                                 <div class="progress" style="display: none;">
                                     <div class="progress-bar progress-bar-striped active" role="progressbar"
                                          aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">

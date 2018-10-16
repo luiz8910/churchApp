@@ -52,7 +52,7 @@ trait EmailTrait
     public function emailExists($email)
     {
 
-        $result = count(User::where('email', $email)->get());
+        $result = count(User::withTrashed()->where('email', $email)->get());
 
         if($result > 0)
         {

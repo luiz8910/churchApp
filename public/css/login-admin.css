@@ -1,0 +1,63 @@
+.back{
+    background-color: #F1F1F1;
+}
+
+.img{
+    display: block;
+    width: 200px;
+    margin: 0 auto;
+    margin-top: 5%;
+}
+
+.square{
+    background-color: white;
+    width: 400px;
+    height: 300px;
+    margin: 0 auto;
+    margin-top: 20px;
+}
+
+.label-class{
+    margin-left: 30px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    font-family: Arial Sans-Serif;
+}
+
+.label-check{
+    position: absolute;
+    margin-left: 50px;
+    font-family: Arial Sans-Serif;
+}
+
+.input{
+    margin-left: 30px;
+    width: 80%
+}
+
+.btn span.glyphicon {
+    opacity: 0;
+}
+.btn.active span.glyphicon {
+    opacity: 1;
+}
+
+.checkbox-button{
+
+    display: block !important;
+    margin-left: 30px;
+    width: 80%;
+}
+
+.btn-style{
+
+    width: 80%;
+    margin-top: 20px;
+    margin-left: 30px;
+    font-size: large;
+}
+
+.forgot-pass{
+    margin-top: 30px;
+
+}

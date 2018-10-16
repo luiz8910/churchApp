@@ -48,6 +48,10 @@ class User extends Authenticatable implements Transformable
         return $this->belongsToMany(Visitor::class);
     }
 
+    public function admin()
+    {
+        return $this->hasOne(Admin::class);
+    }
     /*public function routeNotificationForSlack()
     {
         //return $this->slack_webhook;

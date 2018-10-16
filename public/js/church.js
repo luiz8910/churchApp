@@ -1,22 +1,28 @@
-$(function(){
+$(function () {
 
-   $(".btn-edit").click(function(){
+    $(".btn-edit").click(function () {
 
-       var id = this.id.replace('btn-edit-', '');
+        var id = this.id.replace('btn-edit-', '');
 
-       editChurch(id);
+        editChurch(id);
 
 
-   });
+    });
 
-    $(".btn-activate").click(function(){
+    $("#email").blur(function () {
+
+
+        checkEmail(this.value);
+    });
+
+    $(".btn-activate").click(function () {
 
         var id = this.id.replace('btn-activate-', '');
 
         activateChurch(id)
     });
 
-    $(".btn-full-activate").click(function(){
+    $(".btn-full-activate").click(function () {
 
         var id = this.id.replace('btn-full-activate-', '');
 
@@ -27,12 +33,26 @@ $(function(){
     setRequiredFields();
 
 
-    $("#password").keyup(function(){
+    $("#password").keyup(function () {
         checkPass();
     });
 
     $("#password_conf").keyup(function () {
         checkPass();
+    });
+
+    $("#btn-submit-church").click(function () {
+
+        if (errors.length > 0)
+        {
+            event.preventDefault();
+
+            $("#span-error-submit").css('display', 'block');
+
+            setTimeout(function () {
+                $("#span-error-submit").css('display', 'none');
+            }, 10000);
+        }
     });
 
     $("#checkbox-pass").click(function () {
@@ -41,8 +61,7 @@ $(function(){
         var pass_conf = $("#password_conf");
 
 
-        if($(this).is(':checked'))
-        {
+        if ($(this).is(':checked')) {
             var pass = randomPassword();
 
             pass_input.val(pass);
@@ -57,7 +76,7 @@ $(function(){
 
             checkPass();
         }
-        else{
+        else {
             pass_input.val('');
 
             pass_conf.val('');
@@ -78,8 +97,7 @@ $(function(){
     /*
      * Checar se as senhas combinam
      */
-    function checkPass()
-    {
+    function checkPass() {
         var pass = $("#password").val();
         var conf = $("#password_conf").val();
 
@@ -90,8 +108,7 @@ $(function(){
         var i_pass_conf = $("#icon-success-pass-conf");
 
 
-        if(pass != conf)
-        {
+        if (pass != conf) {
 
             i_green.css('display', 'none');
 
@@ -109,10 +126,9 @@ $(function(){
 
         }
 
-        else{
+        else {
 
-            if(pass.length > 5)
-            {
+            if (pass.length > 5) {
                 i_green.css('display', 'block');
 
                 i_red.css('display', 'none');
@@ -131,11 +147,74 @@ $(function(){
         }
     }
 
+    function checkEmail(email)
+    {
+
+        var request = $.ajax({
+            url : '/check-email/' + email,
+            method: 'GET',
+            dataType: 'json'
+        });
+
+        request.done(function (e) {
+            if(e.status)
+            {
+
+                var success = $("#icon-success-email");
+                var error = $("#icon-error-email");
+                var form = $("#form-email");
+                var span = $("#span-error-email");
+                var envelope = $("#envelope-success");
+                var envelope_error = $("#envelope-error");
+                var index = 0;
+
+                if(e.email)
+                {
+
+                    error.css('display', 'block');
+                    form.addClass('has-error');
+                    success.css('display', 'none');
+                    span.css('display', 'block');
+                    envelope.css('display', 'none');
+                    envelope_error.css('display', 'block');
+
+                    if(errors.indexOf('email') != -1)
+                    {
+                        index = errors.indexOf('email');
+
+                        errors.splice(index, 1);
+                    }
+
+                    errors.push('email');
+
+                }
+                else{
+                    error.css('display', 'none');
+                    form.removeClass('has-error');
+                    success.css('display', 'block');
+                    span.css('display', 'none');
+                    envelope.css('display', 'block');
+                    envelope_error.css('display', 'none');
+
+                    index = errors.indexOf('email');
+
+                    errors.splice(index, 1);
+                }
+            }
+        });
+
+        request.fail(function (e) {
+            console.log('fail');
+            console.log(e);
+        })
+    }
+    
+
+
     /*
     * Gera um senha aleatória
      */
-    function randomPassword()
-    {
+    function randomPassword() {
         var text = "";
         var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
@@ -147,9 +226,10 @@ $(function(){
 
 });
 
+var errors = [];
 
-function fullActivateChurch(id)
-{
+
+function fullActivateChurch(id) {
 
     var url = '/full-activate-church/';
 
@@ -163,9 +243,8 @@ function fullActivateChurch(id)
             cancelButtonText: "Cancelar",
             closeOnConfirm: false
         },
-        function(isConfirm){
-            if(isConfirm)
-            {
+        function (isConfirm) {
+            if (isConfirm) {
                 Request(url, null, id);
             }
 
@@ -173,8 +252,7 @@ function fullActivateChurch(id)
 }
 
 
-function activateChurch(id)
-{
+function activateChurch(id) {
     var url = '/activate-church/';
 
     swal({
@@ -187,9 +265,8 @@ function activateChurch(id)
             cancelButtonText: "Cancelar",
             closeOnConfirm: false
         },
-        function(isConfirm){
-            if(isConfirm)
-            {
+        function (isConfirm) {
+            if (isConfirm) {
                 Request(url, null, id);
             }
 
@@ -198,20 +275,17 @@ function activateChurch(id)
 
 }
 
-function clearFields()
-{
+function clearFields() {
     $(".form-control").val("");
 }
 
-function closeForm()
-{
+function closeForm() {
     clearFields();
 
     $("#new-church").css("display", "none");
 }
 
-function openForm()
-{
+function openForm() {
     $("#new-church").css("display", "block");
 
     $("#name").focus();
@@ -221,8 +295,7 @@ function openForm()
     }, 2000);
 }
 
-function setRequiredFields()
-{
+function setRequiredFields() {
     $("#street").attr('required', true);
     $("#number").attr('required', true);
     $("#city").attr('required', true);
@@ -230,8 +303,7 @@ function setRequiredFields()
 }
 
 
-function editChurch(id)
-{
+function editChurch(id) {
     var url = '/edit-church/';
 
     var request = $.ajax({
@@ -240,10 +312,9 @@ function editChurch(id)
         dataType: 'json'
     });
 
-    request.done(function(e){
+    request.done(function (e) {
 
-        if(e.status)
-        {
+        if (e.status) {
             //Igreja
 
             console.log(e.church);
@@ -308,11 +379,10 @@ function editChurch(id)
 
             var imgProfile = '';
 
-            if(e.person.imgProfile.search('uploads') != -1)
-            {
+            if (e.person.imgProfile.search('uploads') != -1) {
                 imgProfile = '../../' + e.person.imgProfile;
             }
-            else{
+            else {
                 imgProfile = e.person.imgProfile;
             }
 
@@ -364,7 +434,7 @@ function editChurch(id)
         }
     });
 
-    request.fail(function(e){
+    request.fail(function (e) {
         console.log('fail');
         console.log(e);
     });

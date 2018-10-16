@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\CheckAdmin;
 use App\Http\Middleware\CheckRole;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use Tymon\JWTAuth\Middleware\GetUserFromToken;
@@ -58,6 +59,7 @@ class Kernel extends HttpKernel
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'check.role' => CheckRole::class,
+        'check.admin' => CheckAdmin::class,
         'jwt.auth' => GetUserFromToken::class,
         'cors' => \Barryvdh\Cors\HandleCors::class,
     ];
