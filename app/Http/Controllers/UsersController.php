@@ -17,6 +17,7 @@ use App\Repositories\ResponsibleRepository;
 use App\Repositories\VisitorRepository;
 use App\Services\EventServices;
 use App\Services\FeedServices;
+use App\Services\PeopleServices;
 use App\Traits\ConfigTrait;
 use App\Traits\CountRepository;
 use App\Traits\DateRepository;
@@ -86,6 +87,10 @@ class UsersController extends Controller
      * @var ResponsibleRepository
      */
     private $responsibleRepository;
+    /**
+     * @var PeopleServices
+     */
+    private $peopleServices;
 
     /**
      * UsersController constructor.
@@ -101,7 +106,7 @@ class UsersController extends Controller
                                 VisitorRepository $visitorRepository, EventSubscribedListRepository $listRepository,
                                 EventRepository $eventRepository, GroupRepository $groupRepository,
                                 FeedServices $feedServices, EventServices $eventServices, ChurchRepository $churchRepository,
-                                ResponsibleRepository $responsibleRepository)
+                                ResponsibleRepository $responsibleRepository, PeopleServices $peopleServices)
     {
         $this->repository = $repository;
         $this->stateRepository = $stateRepository;
@@ -115,6 +120,7 @@ class UsersController extends Controller
         $this->eventServices = $eventServices;
         $this->churchRepository = $churchRepository;
         $this->responsibleRepository = $responsibleRepository;
+        $this->peopleServices = $peopleServices;
     }
 
     public function myAccount()
@@ -398,27 +404,15 @@ class UsersController extends Controller
     /*
      * Senha reenviada no form de esqueci minha senha
      */
-    public function sendPassword($email)
+    public function sendPassword($email, $password = null)
     {
-        $user = User::where("email", $email)->first();
-
-        $url = env('APP_URL');
-
-        $today = date("d/m/Y");
-
-        $time = date("H:i");
-
-        if (count($user) > 0) {
-
-            Mail::to($user)
-                ->send(new resetPassword(
-                    $user, $url, $today, $time
-                ));
-
+        if($this->peopleServices->sendPassword($email, $password))
+        {
             return json_encode(['status' => true]);
         }
 
         return json_encode(['status' => false]);
+
     }
 
     /*
@@ -431,19 +425,8 @@ class UsersController extends Controller
 
         $user = $person->user;
 
-        $url = env('APP_URL');
-
-        $today = date("d/m/Y");
-
-        $time = date("H:i");
-
-        if (count($user) > 0) {
-
-            Mail::to($user)
-                ->send(new resetPassword(
-                    $user, $url, $today, $time
-                ));
-
+        if($this->peopleServices->sendPassword($user->email))
+        {
             return json_encode([
                 'status' => true,
                 'email' => $user->email
@@ -451,6 +434,7 @@ class UsersController extends Controller
         }
 
         return json_encode(['status' => false]);
+
     }
 
     public function hasEmail($email, $church_id = null)

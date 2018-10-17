@@ -438,6 +438,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('/login-admin', 'Auth\LoginController@authenticateAdmin')->name('login.admin.authenticate');
 
+    Route::post('/recover-pass-admin', 'Auth\LoginController@recoverPass')->name('admin.recover-pass');
+
     Route::get('/check-email/{email}', 'ChurchController@checkEmail');
 
     // Fim Admin site

@@ -10,7 +10,9 @@ use App\Repositories\PersonRepository;
 use App\Repositories\RoleRepository;
 use App\Repositories\UserRepository;
 use App\Services\CodeServices;
+use App\Services\PeopleServices;
 use App\Traits\ConfigTrait;
+use App\Traits\PeopleTrait;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -28,7 +30,7 @@ class LoginController extends Controller
     |
     */
 
-    use AuthenticatesUsers, ConfigTrait;
+    use AuthenticatesUsers, ConfigTrait, PeopleTrait;
 
     /**
      * Where to redirect users after login.
@@ -52,21 +54,30 @@ class LoginController extends Controller
      * @var UserRepository
      */
     private $userRepository;
+    /**
+     * @var PeopleServices
+     */
+    private $peopleServices;
 
 
     /**
      * Create a new controller instance.
      *
-     * @return void
+     * @param RoleRepository $roleRepository
+     * @param PersonRepository $personRepository
+     * @param CodeServices $codeServices
+     * @param UserRepository $userRepository
+     * @param PeopleServices $peopleServices
      */
     public function __construct(RoleRepository $roleRepository, PersonRepository $personRepository,
-                                CodeServices $codeServices, UserRepository $userRepository)
+                                CodeServices $codeServices, UserRepository $userRepository, PeopleServices $peopleServices)
     {
         $this->middleware('guest', ['except' => 'logout']);
         $this->roleRepository = $roleRepository;
         $this->personRepository = $personRepository;
         $this->codeServices = $codeServices;
         $this->userRepository = $userRepository;
+        $this->peopleServices = $peopleServices;
     }
 
     /**
@@ -225,5 +236,36 @@ class LoginController extends Controller
         $request->session()->flash('error.msg', 'Usuário ou senha inválidos');
 
         return redirect()->route('login.admin');
+    }
+
+    public function recoverPass(Request $request)
+    {
+        $email = $request->get('email');
+
+        $user = $this->userRepository->findByField('email', $email)->first();
+
+        if(count($user) > 0)
+        {
+            $password = $this->randomPassword();
+
+            if ($this->peopleServices->sendPassword($email, $password))
+            {
+                $this->peopleServices->changePassword($email, $password);
+                
+                $request->session()->flash('success.msg', 'Email enviado para ' . $email . ' com sucesso');
+
+                return redirect()->route('login.admin');
+            }
+            else{
+                $request->session()->flash('error.msg', 'Um erro ocorreu, verifique sua conexão');
+
+                return redirect()->route('login.admin');
+            }
+        }
+
+        $request->session()->flash('error.msg', 'Este email não existe na base de dados');
+
+        return redirect()->route('login.admin');
+
     }
 }

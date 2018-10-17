@@ -139,7 +139,7 @@
 
     <div class="square" id="square-recover-pass" style="display: none;">
 
-        <form action="" method="POST" role="form">
+        <form action="{{ route('admin.recover-pass') }}" method="POST" role="form">
 
             <div class="row">
 
