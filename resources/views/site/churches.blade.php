@@ -30,7 +30,7 @@
                         <div class="page-head">
                             <div class="container">
                                 <div class="page-title">
-                                    <h1>Igrejas</h1>
+                                    <h1>Organizações</h1>
                                 </div>
                             </div> <!-- FIM DIV .container -->
                         </div> <!-- FIM DIV .page-head -->
@@ -48,7 +48,7 @@
                                                 <div class="portlet-title">
                                                     <div class="caption font-green-haze">
                                                         <i class="fa fa-user font-green-haze"></i>
-                                                        <span class="caption-subject font-green-haze bold ">Igrejas</span>
+                                                        <span class="caption-subject font-green-haze bold ">Organizações</span>
                                                     </div>
                                                     <div class="actions">
                                                         <div class="btn-group btn-group-sm">
@@ -125,7 +125,7 @@
                                                                                     Editar
                                                                                 </button>
 
-                                                                                <button class="btn btn-danger btn-sm btn-circle btn-delete-church" title="Deseja Excluir a Igreja?"
+                                                                                <button class="btn btn-danger btn-sm btn-circle btn-delete-church" title="Deseja Excluir a Organização?"
                                                                                         id="btn-delete-church-{{ $item->id }}">
                                                                                     <i class="fa fa-ban"></i>
                                                                                     Bloquear
@@ -165,7 +165,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title text-center">Editar Igreja</h4>
+                        <h4 class="modal-title text-center">Editar Organização</h4>
                     </div>
                     <form action="" method="POST" id="form-edit">
 
@@ -175,7 +175,7 @@
 
                                 <!-- Nav tabs -->
                                 <ul class="nav nav-tabs" role="tablist">
-                                    <li role="presentation" class="active"><a href="#church" aria-controls="home" role="tab" data-toggle="tab">Igreja</a></li>
+                                    <li role="presentation" class="active"><a href="#church" aria-controls="home" role="tab" data-toggle="tab">Organização</a></li>
                                     <li role="presentation"><a href="#responsible" aria-controls="profile" role="tab" data-toggle="tab">Responsável</a></li>
                                     <li role="presentation"><a href="#plans" aria-controls="plans" role="tab" data-toggle="tab">Plano</a></li>
                                 </ul>
@@ -189,13 +189,13 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label>Nome da Igreja</label>
+                                                    <label>Nome da Organização</label>
                                                     <div class="input-group">
                                                             <span class="input-group-addon">
                                                                 <i class="fa fa-user font-blue"></i>
                                                             </span>
                                                         <input type="text" name="church_name" class="form-control" id="church_name"
-                                                               placeholder="Digite aqui o nome da Igreja" value="{{ old('church_name') }}" required
+                                                               placeholder="Digite aqui o nome da Organização" value="{{ old('church_name') }}" required
 
                                                         >
                                                     </div>
@@ -204,13 +204,13 @@
 
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label>Sigla da Igreja (Opcional)</label>
+                                                    <label>Sigla da Organização (Opcional)</label>
                                                     <div class="input-group">
                                                             <span class="input-group-addon">
                                                                 <i class="fa fa-user font-blue"></i>
                                                             </span>
                                                         <input type="text" name="church_alias" class="form-control" id="church_alias"
-                                                               placeholder="Digite aqui a sigla da Igreja" value="{{ old('church_alias') }}"
+                                                               placeholder="Digite aqui a sigla da Organização" value="{{ old('church_alias') }}"
 
                                                         >
                                                     </div>
@@ -222,7 +222,7 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label for="exampleInputPassword1">Telefone da Igreja</label>
+                                                    <label for="exampleInputPassword1">Telefone da Oraganização</label>
                                                     <div class="input-group">
                                                     <span class="input-group-addon">
                                                         <i class="fa fa-phone font-green"></i>
@@ -264,7 +264,7 @@
 
                                         <div class="caption caption-md">
                                             <i class="icon-globe theme-font hide"></i>
-                                            <span class="caption-subject font-blue-madison bold uppercase">Endereço da Igreja</span>
+                                            <span class="caption-subject font-blue-madison bold uppercase">Endereço da Organização</span>
                                         </div>
                                         <hr><br>
 
@@ -553,7 +553,7 @@
                                     </div>
 
                                     <div role="tabpanel" class="tab-pane fade" id="plans">
-                                        <h4 class="text-center">Ainda não há planos para essa igreja</h4>
+                                        <h4 class="text-center">Ainda não há planos para essa Organização</h4>
                                     </div>
 
                                 </div>

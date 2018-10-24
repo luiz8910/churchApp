@@ -39,16 +39,16 @@ License: You must have a valid license purchased only from themeforest(the above
     {!! Form::open(['route' => 'login.visitor', 'method' => 'POST', 'class' => 'forget-form', 'style' => "display: block !important;"]) !!}
 
         <h3 class="font-green">Acesso de Visitantes</h3>
-        <p class="text-center"> Selecione a igreja para ter acesso </p>
+        <p class="text-center"> Selecione a Organização para ter acesso </p>
 
         <div class="alert alert-warning alert-dismissible" role="alert" id="selectChurch" style="display: none;">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <strong>Erro!</strong> Selecione uma igreja abaixo
+            <strong>Erro!</strong> Selecione uma Organização abaixo
         </div>
 
         <div class="form-group">
             <select name="church" id="church" class="form-control" required>
-                <option value="">Selecione a Igreja</option>
+                <option value="">Selecione a Organização</option>
                 @foreach($churches as $church)
                     <option value="{{ $church->id }}">{{ $church->name }}</option>
                 @endforeach

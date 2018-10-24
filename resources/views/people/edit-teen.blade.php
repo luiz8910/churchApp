@@ -442,7 +442,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
                                                         <input type="checkbox" name="parents" class="checkboxes check-model"
                                                                id="check-parents" value="1" />
-                                                        <span></span>Selecione se os pais não pertencem a igreja
+                                                        <span></span>Selecione se os pais não pertencem a Organização
                                                     </label>
                                                 </fieldset>
                                             </div>

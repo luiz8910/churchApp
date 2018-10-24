@@ -54,7 +54,7 @@
                                     <th>Descrição</th>
                                     <th>Local</th>
                                     <th>Model</th>
-                                    <th>Igreja</th>
+                                    <th>Organização</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -97,7 +97,7 @@
                                     <th>Descrição</th>
                                     <th>Local</th>
                                     <th>Model</th>
-                                    <th>Igreja</th>
+                                    <th>Organização</th>
                                 </tr>
                                 </thead>
                                 <tbody>

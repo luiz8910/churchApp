@@ -76,14 +76,14 @@
 
                         <div class="alert alert-warning alert-dismissible" role="alert" id="selectChurch" style="display: none;">
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <strong>Erro!</strong> Selecione uma igreja abaixo
+                            <strong>Erro!</strong> Selecione uma organização abaixo
                         </div>
 
                         <?php $churches = \App\Models\Church::all(); ?>
 
                         <div class="form-group">
                             <select name="church" id="church" class="select2 form-control" required>
-                                <option value="">Selecione a Igreja</option>
+                                <option value="">Selecione a Organização</option>
                                 @foreach($churches as $church)
                                     <option value="{{ $church->id }}">{{ $church->name }}</option>
                                 @endforeach

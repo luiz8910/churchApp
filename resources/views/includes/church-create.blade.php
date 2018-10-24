@@ -5,7 +5,7 @@
                 <div class="portlet-title">
                     <div class="caption font-green-haze">
                         <i class="fa fa-home font-blue"></i>
-                        <span class="caption-subject font-blue bold ">Nova Igreja</span>
+                        <span class="caption-subject font-blue bold ">Nova Organização</span>
                     </div>
                     <div class="actions">
                         <div class="btn-group btn-group-sm">
@@ -42,26 +42,26 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="name">Nome da Igreja</label>
+                                        <label for="name">Nome da Organização</label>
                                         <div class="input-group">
                                             <span class="input-group-addon">
                                                 <i class="fa fa-home font-blue"></i>
                                             </span>
                                             <input type="text" name="name" class="form-control" id="name"
-                                                   placeholder="Nome da Igreja" value="{{ old('name') }}" required>
+                                                   placeholder="Nome da Organização" value="{{ old('name') }}" required>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="name">Sigla da Igreja</label>
+                                        <label for="name">Sigla da Organização</label>
                                         <div class="input-group">
                                             <span class="input-group-addon">
                                                 <i class="fa fa-home font-blue"></i>
                                             </span>
                                             <input type="text" name="alias" class="form-control" id="alias"
-                                                   placeholder="Sigla da Igreja" value="{{ old('alias') }}">
+                                                   placeholder="Sigla da Organização" value="{{ old('alias') }}">
                                         </div>
                                     </div>
                                 </div>
@@ -76,7 +76,7 @@
                                                 <i class="fa fa-phone font-blue"></i>
                                             </span>
                                             <input type="text" name="tel" class="form-control tel" id="tel"
-                                                   placeholder="Telefone da Igreja" value="{{ old('tel') }}" required>
+                                                   placeholder="Telefone da Organização" value="{{ old('tel') }}" required>
                                         </div>
                                     </div>
                                 </div>
@@ -89,7 +89,7 @@
                                                 <i class="fa fa-home font-blue"></i>
                                             </span>
                                             <input type="text" name="cnpj" class="form-control" id="cnpj"
-                                                   placeholder="CNPJ da Igreja" value="{{ old('cnpj') }}">
+                                                   placeholder="CNPJ da Organização" value="{{ old('cnpj') }}">
                                         </div>
                                     </div>
                                 </div>

@@ -251,7 +251,7 @@ class LoginController extends Controller
             if ($this->peopleServices->sendPassword($email, $password))
             {
                 $this->peopleServices->changePassword($email, $password);
-                
+
                 $request->session()->flash('success.msg', 'Email enviado para ' . $email . ' com sucesso');
 
                 return redirect()->route('login.admin');

@@ -374,7 +374,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         <select name="partner" id="partner" class="selectpicker
                                                           form-control"
                                                                 data-live-search="true" data-size="8">
-                                                            <option value="0">Parceiro(a) fora da igreja</option>
+                                                            <option value="0">Parceiro(a) fora da Organização</option>
                                                             @foreach($adults as $adult)
                                                                 <option value="{{ $adult->id }}"
                                                                         @if($adult->id == $model->partner) selected @endif

@@ -1,7 +1,7 @@
 
     <a class="btn blue btn-outline btn-circle btn-sm" href="javascript:;" onclick="openForm();" style="margin-top: 3px; margin-left: -10px;">
         <i class="fa fa-home"></i>
-        <span class="hidden-xs"> Nova Igreja </span>
+        <span class="hidden-xs"> Nova Organização </span>
     </a>
 
 <div class="col-lg-3">

@@ -4,7 +4,7 @@
             <a href="javascript:;" class="btn btn-info btn-sm btn-circle" id="btn-zipCode"
                onclick="getChurchZipCode()">
                 <i class="fa fa-location-arrow"></i>
-                Inserir Cep da Igreja
+                Inserir Cep da Organização
 
             </a>
 

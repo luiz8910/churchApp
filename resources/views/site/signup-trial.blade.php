@@ -55,16 +55,16 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="has-float-label" aria-label="Nome de sua igreja">
-                                <input class="form-control" type="text" placeholder="Nome de sua igreja" name="church_name"/>
-                                <span>Nome de sua igreja</span>
+                            <label class="has-float-label" aria-label="Nome de sua Organização">
+                                <input class="form-control" type="text" placeholder="Nome de sua Organização" name="church_name"/>
+                                <span>Nome de sua Organização</span>
                             </label>
                         </div>
 
                         <div class="form-group">
-                            <label class="has-float-label" aria-label="CNPJ da Igreja">
-                                <input class="form-control" type="text" placeholder="CNPJ da Igreja" name="cnpj"/>
-                                <span>CNPJ da Igreja</span>
+                            <label class="has-float-label" aria-label="CNPJ da Organização">
+                                <input class="form-control" type="text" placeholder="CNPJ da Organização" name="cnpj"/>
+                                <span>CNPJ da Organização</span>
                             </label>
                         </div>
 

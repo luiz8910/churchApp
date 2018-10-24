@@ -367,7 +367,9 @@ class PersonController extends Controller
 
         $visitor_id = $this->roleRepository->findByField('name', 'Visitante')->first()->id;
 
-        $roles = $this->roleRepository->findWhereNotIn('id', [$visitor_id]);
+        $admin_sys = $this->roleRepository->findByField('name', 'Administrador de Sistema')->first()->id;
+
+        $roles = $this->roleRepository->findWhereNotIn('id', [$visitor_id, $admin_sys]);
 
         $countPerson[] = $this->countPerson();
 
@@ -695,7 +697,7 @@ class PersonController extends Controller
 
         if ($this->repository->isAdult($data['dateBirth'])) {
 
-            $password = $this->churchRepository->find($church_id)->alias;
+            $password = $this->randomPassword();
 
             $user = $this->createUserLogin($id, $password, $email, $church_id);
 
@@ -1134,7 +1136,7 @@ class PersonController extends Controller
         {
             if($email)
             {
-                $password = $this->churchServices->getChurchAlias();
+                $password = $this->randomPassword();
 
                 $this->createUserLogin($id, $password, $email, $church_id);
             }
@@ -1928,7 +1930,7 @@ class PersonController extends Controller
                 if($tag == "adult")
                 {
                     $email = isset($visitor->email) ? $visitor->email : null;
-                    $password = $this->churchRepository->find($church)->alias;
+                    $password = $this->randomPassword();
 
                     $this->createUserLogin($person_id, $password, $email, $church);
                 }
@@ -2014,7 +2016,7 @@ class PersonController extends Controller
 
             $user = $this->repository->find($id)->user;
 
-            $password = $this->churchServices->getChurchAlias();
+            $password = $this->randomPassword();
 
             $this->welcome($user, $password->alias);
 

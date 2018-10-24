@@ -373,20 +373,20 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                         <div class="caption caption-md">
                                             <i class="icon-globe theme-font hide"></i>
-                                            <span class="caption-subject font-blue-madison bold uppercase">Dados da Igreja</span>
+                                            <span class="caption-subject font-blue-madison bold uppercase">Dados da Organização</span>
                                         </div>
                                         <hr><br>
 
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label>Nome da Igreja</label>
+                                                    <label>Nome da Organização</label>
                                                     <div class="input-group">
                                                             <span class="input-group-addon">
                                                                 <i class="fa fa-user font-blue"></i>
                                                             </span>
                                                         <input type="text" name="church_name" class="form-control"
-                                                               placeholder="Digite aqui o nome da Igreja" value="{{ old('church_name') }}" required
+                                                               placeholder="Digite aqui o nome da Organização" value="{{ old('church_name') }}" required
 
                                                         >
                                                     </div>
@@ -395,13 +395,13 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label>Sigla da Igreja (Opcional)</label>
+                                                    <label>Sigla da Organização (Opcional)</label>
                                                     <div class="input-group">
                                                             <span class="input-group-addon">
                                                                 <i class="fa fa-user font-blue"></i>
                                                             </span>
                                                         <input type="text" name="church_alias" class="form-control"
-                                                               placeholder="Digite aqui a sigla da Igreja" value="{{ old('church_alias') }}"
+                                                               placeholder="Digite aqui a sigla da Organização" value="{{ old('church_alias') }}"
 
                                                         >
                                                     </div>
@@ -413,7 +413,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label for="exampleInputPassword1">Telefone da igreja</label>
+                                                    <label for="exampleInputPassword1">Telefone da Organização</label>
                                                     <div class="input-group">
                                                     <span class="input-group-addon">
                                                         <i class="fa fa-phone font-green"></i>
@@ -454,7 +454,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                         <div class="caption caption-md">
                                             <i class="icon-globe theme-font hide"></i>
-                                            <span class="caption-subject font-blue-madison bold uppercase">Endereço da Igreja</span>
+                                            <span class="caption-subject font-blue-madison bold uppercase">Endereço da Organização</span>
                                         </div>
                                         <hr><br>
 

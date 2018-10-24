@@ -142,7 +142,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 @if(Auth::user()->person->id == $resp)
                                                     <li>
                                                         <a href="javascript:;" onclick="deleteChurch('{{ $church_id }}')">
-                                                            <i class="icon-ban"></i> Excluir Minha Igreja </a>
+                                                            <i class="icon-ban"></i> Excluir Minha Organização </a>
                                                     </li>
                                                 @endif
                                             @endif
@@ -1340,7 +1340,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         <select name="partner" id="partner" class="selectpicker
                                                   form-control"
                                                                 data-live-search="true" data-size="8">
-                                                            <option value="0">Parceiro(a) fora da igreja</option>
+                                                            <option value="0">Parceiro(a) fora da Organização</option>
                                                             @foreach($adults as $adult)
                                                                 <option value="{{ $adult->id }}"
                                                                         @if($adult->id == $model->partner) selected @endif
