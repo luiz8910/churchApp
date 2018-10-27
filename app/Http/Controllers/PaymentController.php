@@ -17,6 +17,7 @@ class PaymentController extends Controller
     private $pay;
 
 
+    //Controller Apenas de Teste
     public function __construct(PaymentRepository $repository)
     {
 
@@ -336,7 +337,12 @@ class PaymentController extends Controller
 
             $response = $client->request('GET', $env . $plan . $code);
 
-            echo $response->getBody();
+            $result = json_decode($response->getBody());
+
+            dd ($result->additionalValues[0]->value);
+
+            echo '<br><br>';
+
 
         } catch (GuzzleException $e) {
             dd($e);
@@ -376,8 +382,8 @@ class PaymentController extends Controller
                     'json' => [
 
                         "accountId" => $this->pay->merchantExample(),
-                        "planCode" => "teste-plan",
-                        "description" => "Sample Plan 002",
+                        "planCode" => "teste-plan-004",
+                        "description" => "Sample Plan 004",
                         "interval" => "MONTH",
                         "intervalCount" => "1",
                         "maxPaymentsAllowed" => "12",
@@ -385,7 +391,7 @@ class PaymentController extends Controller
                         "additionalValues" => [
                             [
                                 "name" => "PLAN_VALUE",
-                                "value" => "200",
+                                "value" => "500",
                                 "currency" => "BRL"
                             ],
                             [
@@ -402,6 +408,10 @@ class PaymentController extends Controller
 
                     ]
                 ]);
+
+            echo $response->getStatusCode();
+
+            echo '<br><br>';
 
             echo $response->getBody();
 

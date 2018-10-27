@@ -141,4 +141,9 @@ trait ConfigTrait
             ]
         );
     }
+
+    public function trialDays()
+    {
+        return 30;
+    }
 }
