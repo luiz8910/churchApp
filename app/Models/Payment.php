@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
-use App\Repositories\PlansRepository;
 use App\Traits\ConfigTrait;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
@@ -29,15 +29,11 @@ class Payment extends Model implements Transformable
     protected $fillable = [];
 
     protected $dates = ['deleted_at'];
-    /**
-     * @var PlansRepository
-     */
-    private $plansRepository;
 
 
     public function __construct()
     {
-        $this->plansRepository = PlansRepository::class;
+
     }
 
     public function plan()
@@ -96,18 +92,18 @@ class Payment extends Model implements Transformable
         return '512327';
     }
 
-    public function planStore($data)
+    public function planStore($arr)
     {
-        $login = $this->pay->login();
+        $login = $this->login();
 
-        $api = $this->pay->api();
+        $api = $this->api();
 
         $credentials = base64_encode($login . ":" . $api);
 
-        $env = $this->pay->prod();
+        $env = $this->prod();
 
         if(env('APP_ENV') == 'local'){
-            $env = $this->pay->sandbox();
+            $env = $this->sandbox();
         }
 
         $client = new Client(['headers' => [
@@ -120,7 +116,7 @@ class Payment extends Model implements Transformable
 
         ]]);
 
-        $plan_url = $this->pay->plan();
+        $plan_url = $this->plan();
 
         $stop = false;
 
@@ -128,7 +124,7 @@ class Payment extends Model implements Transformable
         {
             $planCode = $this->genPayuCode();
 
-            $result = $this->plansRepository->findByField('payu_code', $planCode)->first();
+            $result = DB::table('plans')->where('payu_code', $planCode)->first();
 
             if(count($result) == 0)
             {
@@ -138,25 +134,26 @@ class Payment extends Model implements Transformable
 
         $trial = $this->trialDays();
 
-        try {
+        $data = (object) $arr;
 
+        try {
             $response = $client->request('POST', $env . $plan_url,
                 [
                     'json' => [
 
-                        "accountId" => $this->pay->merchantExample(),
+                        "accountId" => $this->merchantExample(),
                         "planCode" => $planCode,
                         "description" => $data->description,
-                        "interval" => $data->frequency == 1 ? "MONTH" : "YEAR",
+                        "interval" => $data->type_id == 1 ? "MONTH" : "YEAR",
                         "intervalCount" => "1",
-                        "maxPaymentsAllowed" => $data->frequency == 1 ? "12" : "1",
+                        "maxPaymentsAllowed" => $data->type_id == 1 ? "12" : "1",
                         "paymentAttemptsDelay" => "1",
                         "maxPaymentAttempts" => "3",
                         "maxPendingPayments" => 1,
                         "trialDays" => $trial,
                         "additionalValues" => [
                             [
-                                "name" => $data->name,
+                                "name" => "PLAN_VALUE",
                                 "value" => $data->price,
                                 "currency" => "BRL"
                             ]
@@ -171,25 +168,29 @@ class Payment extends Model implements Transformable
 
                 return $result->planCode;
             }
-            
 
         } catch (GuzzleException $e) {
             dd($e);
         }
+
+
+
+
+
     }
 
     public function planGet($code)
     {
-        $login = $this->pay->login();
+        $login = $this->login();
 
-        $api = $this->pay->api();
+        $api = $this->api();
 
         $credentials = base64_encode($login . ":" . $api);
 
-        $env = $this->pay->prod();
+        $env = $this->prod();
 
         if(env('APP_ENV') == 'local'){
-            $env = $this->pay->sandbox();
+            $env = $this->sandbox();
         }
 
         $client = new Client(['headers' => [
@@ -202,13 +203,15 @@ class Payment extends Model implements Transformable
 
         ]]);
 
-        $plan = $this->pay->plan();
+        $plan = $this->plan();
 
         try {
 
             $response = $client->request('GET', $env . $plan . $code);
 
-            echo $response->getBody();
+            $result = json_decode($response->getBody());
+
+            return $result;
 
         } catch (GuzzleException $e) {
             dd($e);

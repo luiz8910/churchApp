@@ -39,7 +39,7 @@
 
                                 <br>
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <label for="">Tipo</label>
                                         <select name="type_id" id="" class="form-control">
                                             @foreach($plans_types as $type)
@@ -50,9 +50,14 @@
                                         </select>
                                     </div>
 
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <label for="">Preço</label>
-                                        <input type="number" class="form-control" name="price" value="{{ $plan->price }}">
+                                        <input type="text" class="form-control money" id="price-{{ $plan->id }}" name="price" value="{{ $plan->price }}">
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <label for="">Payu Code</label>
+                                        <input type="text" class="form-control" readonly value="{{ $plan->payu_code }}">
                                     </div>
                                 </div>
 

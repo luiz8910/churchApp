@@ -163,6 +163,24 @@ $(function () {
         }
     });
 
+    $(".money").keypress(function (e) {
+
+        if (e.which != 8 && e.which != 0 && e.which != 44 && (e.which < 48 || e.which > 58)) {
+
+            return false;
+        }
+
+        if(e.which == 44)
+        {
+
+            var value = this.value;
+
+            if(value.indexOf(',') != -1){
+                return false;
+            }
+        }
+    });
+
 
     $(".check-model").click(function () {
 

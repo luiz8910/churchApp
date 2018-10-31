@@ -584,60 +584,6 @@ class SiteController extends Controller
         return json_encode(['status' => false]);
     }
 
-    public function newPlan(Request $request)
-    {
-        $data = $request->all();
-
-        if($request->exists('check-insert'))
-        {
-            $data['most_popular'] = 1;
-
-            DB::table('plans')
-                ->where([
-                    'type_id' => $data['type_id'],
-                    'most_popular' => 1
-                    ])->update(['most_popular' => 0]);
-
-        }
-        else{
-            $data['most_popular'] = 0;
-        }
-
-        $data['description'] = trim($data['description']);
-
-        if($this->plansRepository->create($data))
-        {
-            $request->session()->flash('success.msg', 'Plano inserido com sucesso');
-
-        }else{
-
-            $request->session()->flash('error.msg', 'Um erro ocorreu');
-        }
-
-        return redirect()->back();
-
-    }
-
-    public function newPlanType(Request $request)
-    {
-        $data = $request->all();
-
-        if(!$data['save_money'])
-        {
-            $data['save_money'] = 0;
-        }
-
-        if($this->typePlansRepository->create($data))
-        {
-            $request->session()->flash('success.msg', 'Tipo inserido com sucesso');
-
-        }else{
-
-            $request->session()->flash('error.msg', 'Um erro ocorreu');
-        }
-
-        return redirect()->back();
-    }
 
     public function editPlan(Request $request)
     {

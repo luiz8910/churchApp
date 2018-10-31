@@ -307,6 +307,39 @@ class PaymentController extends Controller
 
     }
 
+    /*
+     * Exemplo de retorno
+     *
+     * +"id": "57a19317-65c2-4f9f-ab2d-862868797583"
+      +"planCode": "teste-plan-004"
+      +"description": "Sample Plan 004"
+      +"accountId": "512327"
+      +"intervalCount": 1
+      +"interval": "MONTH"
+      +"maxPaymentsAllowed": 12
+      +"maxPaymentAttempts": 0
+      +"paymentAttemptsDelay": 1
+      +"maxPendingPayments": 0
+      +"trialDays": 0
+      +"additionalValues": array:3 [▼
+         0 => {#775 ▼
+          +"name": "PLAN_TAX_RETURN_BASE"
+          +"value": 0
+          +"currency": "BRL"
+        }
+         1 => {#762 ▼
+          +"name": "PLAN_VALUE"
+          +"value": 500
+          +"currency": "BRL"
+        }
+         2 => {#771 ▼
+          +"name": "PLAN_TAX"
+          +"value": 0
+          +"currency": "BRL"
+        }
+      ]
+}
+     */
     public function planGet($code)
     {
         $login = $this->pay->login();
@@ -339,7 +372,7 @@ class PaymentController extends Controller
 
             $result = json_decode($response->getBody());
 
-            dd ($result->additionalValues[0]->value);
+            dd ($result);
 
             echo '<br><br>';
 

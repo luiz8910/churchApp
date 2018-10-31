@@ -78,55 +78,8 @@
 
         <div class="row">
             <div class="col-md-12">
-                <div class="text-center"><h2>O que há de novo?</h2></div>
+                <div class="text-center"><h2>Navegue no menu acima</h2></div>
 
-                <br>
-
-                <ul class="list-group">
-                    <li class="list-group-item text-center" style="background-color: #0a6aa1; color: white;">Recuperação de código (11/07/2018)</li>
-                    <li class="list-group-item">"code": 4467,</li>
-                    <li class="list-group-item">Retorna true ou mensagem de erro</li>
-                </ul>
-
-                <br>
-
-                <ul class="list-group">
-                    <li class="list-group-item text-center" style="background-color: #0a6aa1; color: white;">Recuperação de Senha e envio de código (11/07/2018)</li>
-                    <li class="list-group-item">"person_id": 1,</li>
-                    <li class="list-group-item">Envia um código para o email</li>
-                </ul>
-
-                <br>
-
-                <ul class="list-group">
-                    <li class="list-group-item text-center" style="background-color: lightskyblue; color: white;">
-                        Mudança de Senha (06/07/2018)
-                    </li>
-                    <li class="list-group-item">Request POST </li>
-                    <li class="list-group-item">person_id = 1</li>
-                    <li class="list-group-item">password = "sua nova senha"</li>
-                </ul>
-
-                <br>
-
-                <ul class="list-group">
-                    <li class="list-group-item text-center" style="background-color: forestgreen; color: white;">
-                        Check-in na lista de inscritos (05/07/2018) - event-list-sub
-                    </li>
-                    <li class="list-group-item">{"status":true, "people":[</li>
-                    <li class="list-group-item">
-                        {"id":6,"event_id":4,"person_id":1,"name":"Admin admin","check":true},
-                    </li>
-                    <li class="list-group-item">
-                        {"id":7,"event_id":4,"person_id":4,"name":"Eloá Sandra Rita Alves","check":true},
-                    </li>
-                    <li class="list-group-item">
-                        {"id":8,"event_id":4,"person_id":2,"name":"Juan Victor Caio Viana","check":false}]}
-                    </li>
-                </ul>
-
-
-                <br><br><br>
             </div>
         </div>
 

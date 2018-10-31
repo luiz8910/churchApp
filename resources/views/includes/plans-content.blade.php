@@ -1,4 +1,4 @@
-@include('includes.insert')
+]@include('includes.insert')
 <div class="page-content">
     @include('includes.plans-content-table')
 

@@ -14,7 +14,7 @@ class AddPayucodePlans extends Migration
     public function up()
     {
         Schema::table('plans', function (Blueprint $table){
-           $table->string('payu_code');
+           $table->string('payu_code')->nullable();
         });
     }
 

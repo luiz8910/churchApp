@@ -398,9 +398,9 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('/delete-faq/{id}', 'SiteController@deleteFaq');
 
-        Route::post('/newPlan', 'SiteController@newPlan')->name('admin.new-plan');
+        Route::post('/newPlan', 'AdminController@storePlan')->name('admin.new-plan');
 
-        Route::post('/newPlanType', 'SiteController@newPlanType')->name('admin.new-plan-type');
+        Route::post('/newPlanType', 'AdminController@newPlanType')->name('admin.new-plan-type');
 
         Route::post('/editPlan', 'SiteController@editPlan')->name('admin.edit-plan');
 
