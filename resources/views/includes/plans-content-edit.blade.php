@@ -3,7 +3,7 @@
         <div class="page-content-inner hide-container-item container-plan-edit-{{ $plan->id }}" style="display: none;">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="portlet light ">
+                    <div class="portlet light " id="portlet-{{$plan->id}}">
                         <div class="portlet-title">
                             <div class="caption font-green-haze">
                                 <i class="icon-bar-chart font-green-haze"></i>
@@ -12,7 +12,7 @@
                         </div> <!-- FIM DIV .portlet-title -->
 
                         <div class="portlet-body form">
-                            <form action="{{ route('admin.edit-plan') }}" method="post" class="form-plan-item">
+                            <form action="{{ route('admin.update-plan') }}" method="post" class="form-plan-item">
 
                                 <br>
 

@@ -402,11 +402,11 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::post('/newPlanType', 'AdminController@newPlanType')->name('admin.new-plan-type');
 
-        Route::post('/editPlan', 'SiteController@editPlan')->name('admin.edit-plan');
+        Route::post('/editPlan', 'AdminController@updatePlan')->name('admin.update-plan');
 
         Route::post('/editPlanType', 'SiteController@editPlanType')->name('admin.edit-plan-type');
 
-        Route::get('/deletePlan/{id}', 'SiteController@deletePlan');
+        Route::get('/deletePlan/{id}', 'AdminController@deletePlan');
 
         Route::post('/new-plan-item', 'SiteController@newPlanItem');
 

@@ -218,6 +218,107 @@ class Payment extends Model implements Transformable
         }
     }
 
+    public function planUpdate($arr, $planCode)
+    {
+        $login = $this->login();
+
+        $api = $this->api();
+
+        $credentials = base64_encode($login . ":" . $api);
+
+        $env = $this->prod();
+
+        if(env('APP_ENV') == 'local'){
+            $env = $this->sandbox();
+        }
+
+        $client = new Client(['headers' => [
+            'Content-Type' => 'application/json; charset=utf-8',
+            'Accept' => 'application/json',
+            'Accept-language' => 'pt',
+            //'Content-Length' => 'length',
+            'Authorization' => "Basic " . $credentials,
+            'HOST' => $env,
+
+        ]]);
+
+        $plan_url = $this->plan();
+
+        $data = (object) $arr;
+
+        try {
+            $response = $client->request('PUT', $env . $plan_url . $planCode,
+                [
+                    'json' => [
+
+                        "description" => $data->description,
+                        "maxPaymentAttempts" => "3",
+                        "maxPendingPayments" => 1,
+                        "paymentAttemptsDelay" => "1",
+                        "additionalValues" => [
+                            [
+                                "name" => "PLAN_VALUE",
+                                "value" => $data->price,
+                                "currency" => "BRL"
+                            ]
+                        ]
+
+                    ]
+                ]);
+
+            if($response->getStatusCode() == 200)
+            {
+                return true;
+            }
+
+
+
+        } catch (GuzzleException $e) {
+            dd($e);
+        }
+    }
+
+    public function planDelete($code)
+    {
+        $login = $this->login();
+
+        $api = $this->api();
+
+        $credentials = base64_encode($login . ":" . $api);
+
+        $env = $this->prod();
+
+        if(env('APP_ENV') == 'local'){
+            $env = $this->sandbox();
+        }
+
+        $client = new Client(['headers' => [
+            'Content-Type' => 'application/json; charset=utf-8',
+            'Accept' => 'application/json',
+            'Accept-language' => 'pt',
+            //'Content-Length' => 'length',
+            'Authorization' => "Basic " . $credentials,
+            'HOST' => $env,
+
+        ]]);
+
+        $plan = $this->plan();
+
+        try {
+
+            $response = $client->request('DELETE', $env . $plan . $code);
+
+            return true;
+
+            /*$result = json_decode($response->getBody());
+
+            return $result;*/
+
+        } catch (GuzzleException $e) {
+            dd($e);
+        }
+    }
+
 
     /*
      * Geração do Código do Plano na Payu

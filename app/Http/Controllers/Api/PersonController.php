@@ -134,10 +134,10 @@ class PersonController extends Controller
             return $this->returnFalse('Insira o nome');
         }
 
-        if(!isset($data['cel']) || (isset($data['cel']) && $data['cel']) == "")
+        /*if(!isset($data['cel']) || (isset($data['cel']) && $data['cel']) == "")
         {
             return $this->returnFalse('Insira um número de celular');
-        }
+        }*/
 
 
         $exist_email = count($this->userRepository->findByField('email', $data['email'])) > 0 ? true : false;

@@ -555,7 +555,8 @@ $(function(){
 
         var url = '/delete-feature/';
 
-        sweetAlertDel(id, url);
+        sweetAlertDel(id, url)
+
     });
 
     function sweetAlertDel(id, url, static_page)
@@ -578,6 +579,8 @@ $(function(){
 
                     $('#tr-faq-'+id).remove();
                     $('#tr-'+id).remove();
+                    $("#portlet-"+id).remove();
+
 
                 }
             });
@@ -839,7 +842,15 @@ $(function(){
 
         var id = str.replace('btn-edit-plan-', '');
 
+        $(".hide-container-item").css('display', 'none');
+
         $('.container-plan-edit-'+id).css('display', 'block');
+
+        $('html, body').animate({
+            scrollTop: $("#portlet-"+id).offset().top
+        }, 2000);
+
+
     });
 
 

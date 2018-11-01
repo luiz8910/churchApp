@@ -453,6 +453,108 @@ class PaymentController extends Controller
         }
     }
 
+    public function planUpdate()
+    {
+        $login = $this->pay->login();
+
+        $api = $this->pay->api();
+
+        $credentials = base64_encode($login . ":" . $api);
+
+        $env = $this->pay->prod();
+
+        if(env('APP_ENV') == 'local'){
+            $env = $this->pay->sandbox();
+        }
+
+        $client = new Client(['headers' => [
+            'Content-Type' => 'application/json; charset=utf-8',
+            'Accept' => 'application/json',
+            'Accept-language' => 'pt',
+            //'Content-Length' => 'length',
+            'Authorization' => "Basic " . $credentials,
+            'HOST' => $env,
+
+        ]]);
+
+        $plan_url = $this->pay->plan();
+
+
+        try {
+            $response = $client->request('PUT', $env . $plan_url . '511647',
+                [
+                    'json' => [
+
+                        //"accountId" => $this->pay->merchantExample(),
+
+                        "description" => "Sample Plan 004",
+                        //"interval" => "MONTH",
+                        //"intervalCount" => "1",
+                        //"maxPaymentsAllowed" => "12",
+                        "paymentAttemptsDelay" => "1",
+                        "maxPaymentAttempts" => "3",
+                        "maxPendingPayments" => 1,
+                        "additionalValues" => [
+                            [
+                                "name" => "PLAN_VALUE",
+                                "value" => "500",
+                                "currency" => "BRL"
+                            ]
+                        ]
+
+                    ]
+                ]);
+
+            echo $response->getStatusCode();
+
+
+
+        } catch (GuzzleException $e) {
+            echo $e->getMessage();
+        }
+    }
+
+    public function planDelete($code)
+    {
+        $login = $this->pay->login();
+
+        $api = $this->pay->api();
+
+        $credentials = base64_encode($login . ":" . $api);
+
+        $env = $this->pay->prod();
+
+        if(env('APP_ENV') == 'local'){
+            $env = $this->pay->sandbox();
+        }
+
+        $client = new Client(['headers' => [
+            'Content-Type' => 'application/json; charset=utf-8',
+            'Accept' => 'application/json',
+            'Accept-language' => 'pt',
+            //'Content-Length' => 'length',
+            'Authorization' => "Basic " . $credentials,
+            'HOST' => $env,
+
+        ]]);
+
+        $plan = $this->pay->plan();
+
+        try {
+
+            $response = $client->request('DELETE', $env . $plan . $code);
+
+            echo $response->getStatusCode();
+
+            /*$result = json_decode($response->getBody());
+
+            return $result;*/
+
+        } catch (GuzzleException $e) {
+            dd($e);
+        }
+    }
+
 
     public function customerUpdate($id)
     {
