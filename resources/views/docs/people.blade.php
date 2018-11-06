@@ -163,7 +163,7 @@
                             church_id = 1 (Obrigatório para cadastro de membros, opcional para visitantes) <span class="label label-info">Inteiro</span>
 
                             name = Nome do cadastrado *
-                            
+
                             email = Usado para login *
 
                             role = Se role <> Lider e Administrador o membro será colocado na área de pré aprovação *

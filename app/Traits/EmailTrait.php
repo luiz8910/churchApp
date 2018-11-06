@@ -110,17 +110,21 @@ trait EmailTrait
 
         //Enviar email para admins e líderes
 
-        $people = Person::where([
-                'role_id' => $leader,
-                'church_id' => $church_id,
-                'status' => 'active',
-                'deleted_at' => null
-            ])->orWhere([
-                'role_id' => $admin,
-                'church_id' => $church_id,
-                'status' => 'active',
-                'deleted_at' => null
+        $admins = Person::where([
+            'role_id' => $admin,
+            'church_id' => $church_id,
+            'status' => 'active',
+            'deleted_at' => null
         ])->get();
+
+        $leaders = Person::where([
+            'role_id' => $leader,
+            'church_id' => $church_id,
+            'status' => 'active',
+            'deleted_at' => null
+        ])->get();
+
+        $people = $admins->merge($leaders);
 
         $data = new \StdClass;
 

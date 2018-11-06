@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 
 
 use App\Http\Controllers\Controller;
+use App\Models\Person;
+use App\Models\Role;
 use App\Repositories\ChurchRepository;
 use App\Repositories\PersonRepository;
 use App\Repositories\RoleRepository;
@@ -84,13 +86,14 @@ class PersonController extends Controller
         }
 
         if(isset($data['role'])){
-            $data['role_id'] = count($this->roleRepository->findByField('name', $data['role'])->first()->id) > 0 ?
-                $this->roleRepository->findByField('name', $data['role'])->first() : $this->roleRepository->findByField('name', 'Membro')->first()->id;
+            $data['role_id'] = count($this->roleRepository->findByField('name', $data['role'])->first()->id) > 0
+                ? $this->roleRepository->findByField('name', $data['role'])->first()
+                : $this->roleRepository->findByField('name', 'Membro')->first()->id;
 
         }
 
 
-        $church = null; $welcome = null;
+        $church = null;
 
         $data['imgProfile'] = isset($data['imgProfile']) ? $data['imgProfile'] :'uploads/profile/noimage.png';
 
@@ -171,11 +174,16 @@ class PersonController extends Controller
 
                 $admin = $this->roleRepository->findByField('name', 'Administrador')->first()->id;
 
+                $id = $this->repository->create($data)->id;
+
+                $password = isset($data['password']) ? $data['password'] : $this->randomPassword();
+
+                $user = $this->createUserLogin($id, $password, $data['email'], $church->id, null);
+
+
                 if(($data['role'] == 'Lider' || $data['role'] == 'Administrador') || ($data['role'] == $leader || $data['role'] == $admin))
                 {
-                    $id = $this->repository->create($data)->id;
-
-                    $welcome = true;
+                    $this->welcome($user, $password);
 
                     $this->newRecentUser($id, $church->id);
 
@@ -185,7 +193,7 @@ class PersonController extends Controller
 
                     $data['status'] = 'waiting';
 
-                    $id = $this->repository->create($data)->id;
+                    $this->repository->update($data, $id);
 
                     $this->feedServices->newFeed(5, 'Novo Usuário Aguardando Aprovação', $id, null, 'person', $id);
 
@@ -195,19 +203,6 @@ class PersonController extends Controller
                     $this->newWaitingApproval($person, $church->id);
                 }
 
-                if($data['tag'] == 'adult')
-                {
-
-                    $password = $data['password'] ? $data['password'] : $church->alias;
-
-                    $user = $this->createUserLogin($id, $password, $data['email'], $church->id, $data['token']);
-
-                    if($welcome)
-                    {
-                        $this->welcome($user, $password);
-                    }
-
-                }
             }
         }
 
@@ -223,6 +218,7 @@ class PersonController extends Controller
 
 
     }
+
 
     public function storeAppSocial(Request $request)
     {
