@@ -92,6 +92,10 @@ class PersonController extends Controller
 
         }
 
+        if($data['terms'])
+        {
+            $data['terms'] = 1;
+        }
 
         $church = null;
 
@@ -155,20 +159,17 @@ class PersonController extends Controller
 
             if(isset($data['dateBirth']))
             {
-                if($data['dateBirth'] == '')
-                {
-
-                    return $this->returnFalse('Insira a data de Nascimento');
-
-                }else{
+                if ($data['dateBirth'] != '' && $data['dateBirth'] != null) {
 
                     $data['dateBirth'] = $this->formatDateBD($data['dateBirth']);
 
                     $data['tag'] = $this->tag($data['dateBirth']);
 
-                    $data['role_id'] = 2;
 
                 }
+            }
+
+                $data['role_id'] = 2;
 
                 $leader = $this->roleRepository->findByField('name', 'Lider')->first()->id;
 
@@ -204,7 +205,7 @@ class PersonController extends Controller
                 }
 
             }
-        }
+
 
         else{
 
