@@ -147,13 +147,20 @@ class PersonController extends Controller
         }*/
 
 
-        $exist_email = count($this->userRepository->findByField('email', $data['email'])) > 0 ? true : false;
+
 
         if(isset($data['email']) && $data['email'] != "")
         {
+            $user = $this->userRepository->findByField('email', $data['email'])->first();
 
-            if($exist_email)
+
+            if(count($user) > 0)
             {
+                if($this->updateSocial($data, $user))
+                {
+                    return json_encode(['status' => true]);
+                }
+
                 return $this->returnFalse('Este email já existe na base de dados');
             }
 
@@ -164,7 +171,6 @@ class PersonController extends Controller
                     $data['dateBirth'] = $this->formatDateBD($data['dateBirth']);
 
                     $data['tag'] = $this->tag($data['dateBirth']);
-
 
                 }
             }
@@ -179,7 +185,14 @@ class PersonController extends Controller
 
                 $password = isset($data['password']) ? $data['password'] : $this->randomPassword();
 
-                $user = $this->createUserLogin($id, $password, $data['email'], $church->id, null);
+                $token = null;
+
+                if($request->has('token'))
+                {
+                    $token = $data['token'];
+                }
+
+                $user = $this->createUserLogin($id, $password, $data['email'], $church->id, $token);
 
 
                 if(($data['role'] == 'Lider' || $data['role'] == 'Administrador') || ($data['role'] == $leader || $data['role'] == $admin))
@@ -218,6 +231,47 @@ class PersonController extends Controller
 
 
 
+    }
+
+    public function updateSocial($data, $user)
+    {
+        if(isset($data['token']) && $data['token'] != '')
+        {
+            if($user->email == $data['email'])
+            {
+                $data['role_id'] = 2;
+
+                $password = isset($data['password']) ? $data['password'] : $this->randomPassword();
+
+                $d['password'] = $password;
+
+                $d['social_token'] = $data['token'];
+
+                unset($data['token']);
+
+                unset($data['password']);
+
+                if(isset($data['dateBirth']))
+                {
+                    if ($data['dateBirth'] != '' && $data['dateBirth'] != null) {
+
+                        $data['dateBirth'] = $this->formatDateBD($data['dateBirth']);
+
+                        $data['tag'] = $this->tag($data['dateBirth']);
+                    }
+                }
+
+                $this->repository->update($data, $user->person->id);
+
+                $this->userRepository->update($d, $user->id);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        return false;
     }
 
 

@@ -196,7 +196,7 @@ class LoginController extends Controller
 
     public function getSocialToken($token)
     {
-        $user = $this->userRepository->findByField('social_token', $token)->first;
+        $user = $this->userRepository->findByField('social_token', $token)->first();
 
         if(count($user) == 0)
         {
