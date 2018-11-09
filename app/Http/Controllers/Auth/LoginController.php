@@ -121,11 +121,49 @@ class LoginController extends Controller
     {
         $email = $request->get('email');
 
-        $password = $request->get('password');
-
         $church = $request->get('church');
 
-        if(Auth::attempt(['email' => $email, 'password' => $password])){
+        $data['email'] = $email;
+
+        $data['password'] = $request->get('password');
+
+        if($request->has('token'))
+        {
+            $data['social_token'] = $request->get('token');
+
+            $user = $this->userRepository->findByField('email', $email)->first();
+
+            if(count($user) > 0)
+            {
+                $token = $request->get('token');
+
+                if($user->social_token == $token && $user->church_id == $church)
+                {
+                    $person = $this->personRepository->find($user->person->id);
+
+                    $role_id = $user->person->role_id;
+
+                    $role = $this->roleRepository->find($role_id)->name;
+
+                    return json_encode([
+                        'status' => true,
+                        'person_id' => $user->person->id,
+                        'role_id' => $role_id,
+                        'role' => $role,
+                        'name' => $person->name . ' ' . $person->lastName,
+                        'email' => $email,
+                        'tel' => $person->tel,
+                        'cel' => $person->cel,
+                        'imgProfile' => $person->imgProfile
+                    ]);
+                }
+            }
+
+            return json_encode(['status' => false, 'msg' => 'Não existe este email na base de dados']);
+        }
+
+
+        if(Auth::attempt(['email' => $email, 'password' => $data['password']])){
 
             $user = User::where('email', $email)->first();
 
