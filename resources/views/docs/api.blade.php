@@ -65,6 +65,10 @@
                         <a href="{{ route('docs.check-in') }}">Check-in</a>
                     </li>
 
+                    <li>
+                        <a href="{{ route('docs.exhibitors') }}">Expositores</a>
+                    </li>
+
 
                 </ul>
 

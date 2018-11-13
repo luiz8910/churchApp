@@ -119,6 +119,36 @@ Route::post('/store-person-social/', 'Api\PersonController@storeAppSocial');
 Route::post('/change-password/', 'Api\PersonController@changePassword');
 
 
+//------------------------- Expositores ------------------------------------------------------------------------------------
+
+//Lista de Todos os expositores
+Route::get('/exhibitors', 'Api\ExhibitorsController@index');
+
+//Lista de todos os expositores por categoria (pela id da categoria)
+Route::get('/exhibitors/{category}', 'Api\ExhibitorsController@listByCategory');
+
+//Cadastro de Expositores
+Route::post('/exhibitors', 'Api\ExhibitorsController@store');
+
+//Alteração de Expositores
+Route::put('/exhibitors/{id}', 'Api\ExhibitorsController@update');
+
+//Exclusão de Expositores
+Route::delete('/exhibitors/{id}', 'Api\ExhibitorsController@delete');
+
+//Lista de todas as Categorias
+Route::get('/exhibitors_cat', 'Api\ExhibitorsController@index_cat');
+
+//Cadastro de Categoria
+Route::post('/exhibitors_cat', 'Api\ExhibitorsController@store_cat');
+
+//Alteração de Categoria
+Route::put('/exhibitors_cat/{category}', 'Api\ExhibitorsController@update_cat');
+
+//Exclusão de Categoria
+Route::delete('/exhibitors_cat/{category}', 'Api\ExhibitorsController@delete_cat');
+
+
 
 
 //-------------------------- Outros ------------------------------------------------------------------------------------
