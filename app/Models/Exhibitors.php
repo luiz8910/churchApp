@@ -8,7 +8,7 @@ use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
 /**
- * Class Exhibitors.
+ * Class ExhibitorsController.
  *
  * @package namespace App\Models;
  */

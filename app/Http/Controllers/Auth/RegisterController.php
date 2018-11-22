@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
+use App\Repositories\PersonRepository;
 use App\Repositories\RoleRepository;
 use App\Repositories\UserRepository;
 use App\Repositories\VisitorRepository;
@@ -49,19 +50,27 @@ class RegisterController extends Controller
      * @var RoleRepository
      */
     private $roleRepository;
+    /**
+     * @var PersonRepository
+     */
+    private $personRepository;
 
     /**
      * Create a new controller instance.
      *
-     * @return void
+     * @param VisitorRepository $visitorRepository
+     * @param UserRepository $userRepository
+     * @param RoleRepository $roleRepository
+     * @param PersonRepository $personRepository
      */
     public function __construct(VisitorRepository $visitorRepository, UserRepository $userRepository,
-                                RoleRepository $roleRepository)
+                                RoleRepository $roleRepository, PersonRepository $personRepository)
     {
         $this->middleware('guest');
         $this->visitorRepository = $visitorRepository;
         $this->userRepository = $userRepository;
         $this->roleRepository = $roleRepository;
+        $this->personRepository = $personRepository;
     }
 
     /**
@@ -160,19 +169,33 @@ class RegisterController extends Controller
 
                 if(count($user) == 0)
                 {
-                    \Session::flash('email.error', 'O email informado não existe');
+                    $people['name'] = $social->getName();
+                    $people['email'] = $social->getEmail();
+                    $people['imgProfile'] = $social->getAvatar();
 
-                    return $app ? $this->wrongLogin() : redirect()->route('login');
+                    $person = $this->personRepository->create($people)->id;
+
+                    $users['email'] = $social->getEmail();
+                    $users['facebook_id'] = $social->getId();
+                    $users['church_id'] = $church;
+                    $users['person_id'] = $person;
+
+                    $this->userRepository->create($users);
+                }
+                else{
+                    if($user->person)
+                    {
+                        $people['imgProfile'] = $social->getAvatar();
+
+                        $users['facebook_id'] = $social->getId();
+
+                        $this->userRepository->update($users, $user->id);
+
+                        $this->personRepository->update($people, $user->person->id);
+                    }
+
                 }
 
-
-                DB::table('users')
-                    ->where('id', $user->id)
-                    ->update(['facebook_id' => $social->getId()]);
-
-                DB::table('people')
-                    ->where("id", $user->person->id)
-                    ->update(['imgProfile' => $social->getAvatar()]);
 
                 $userType = $this->roleRepository->find($user->person->role_id)->name;
             }

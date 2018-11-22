@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use App\Models\Exhibitors;
 use App\Repositories\ExhibitorsCategoriesRepository;
+use App\Repositories\ExhibitorsRepository;
 use Illuminate\Http\Request;
 
-class Exhibitors extends Controller
+class ExhibitorsController extends Controller
 {
     /**
      * @var ExhibitorsCategoriesRepository
@@ -17,7 +18,7 @@ class Exhibitors extends Controller
      */
     private $repository;
 
-    public function __construct(ExhibitorsCategoriesRepository $categoriesRepository, ExhibitorsCategoriesRepository $repository)
+    public function __construct(ExhibitorsCategoriesRepository $categoriesRepository, ExhibitorsRepository $repository)
     {
 
         $this->categoriesRepository = $categoriesRepository;
@@ -34,10 +35,7 @@ class Exhibitors extends Controller
             $item->category_name = $this->categoriesRepository->find($item->category)->name;
         }
 
-        return json_encode([
-            'status' => true,
-            'exhibitors' => $exhbit
-        ]);
+        return view('exhibitors.index', compact('exhbit'));
     }
 
     //Lista de todos os expositores de determinada categoria
@@ -47,11 +45,7 @@ class Exhibitors extends Controller
 
         $exhbit = $this->repository->findByField('category', $cat_id)->get();
 
-        return json_encode([
-            'status' => true,
-            'count' => count($exhbit),
-            'exhibitors' => $exhbit
-        ]);
+        return view('exhibitors.index', compact('exhbit', 'cat_id'));
     }
 
     //Cadastro de Expositores
@@ -61,10 +55,14 @@ class Exhibitors extends Controller
 
         if($this->repository->create($data))
         {
-            return json_encode(['status' => true]);
+            $request->session()->flash('success.msg', 'O Expositor foi cadastrado com sucesso');
+
+            return redirect()->back();
         }
 
-        return json_encode(['status' => false]);
+        $request->session()->flash('error.msg', 'Um erro ocorreu, tente novamente mais tarde');
+
+        return redirect()->back();
     }
 
     //Alteração de Expositores
@@ -74,10 +72,14 @@ class Exhibitors extends Controller
 
         if($this->repository->update($data, $id))
         {
-            return json_encode(['status' => true]);
+            $request->session()->flash('success.msg', 'O Expositor foi atualizado com sucesso');
+
+            return redirect()->back();
         }
 
-        return json_encode(['status' => false]);
+        $request->session()->flash('error.msg', 'Um erro ocorreu, tente novamente mais tarde');
+
+        return redirect()->back();
     }
 
     //Exclusão de Expositores
@@ -85,10 +87,14 @@ class Exhibitors extends Controller
     {
         if($this->repository->delete($id))
         {
-            return json_encode(['status' => true]);
+            \Session::flash('success.msg', 'O Expositor foi excluído com sucesso');
+
+            return redirect()->back();
         }
 
-        return json_encode(['status' => false]);
+        \Session::flash('error.msg', 'Um erro ocorreu, tente novamente mais tarde');
+
+        return redirect()->back();
     }
 
     //Lista de Categorias
@@ -113,11 +119,15 @@ class Exhibitors extends Controller
         {
             if($this->categoriesRepository->create($data))
             {
-                return json_encode(['status' => true]);
+                $request->session()->flash('success.msg', 'O Expositor foi cadastrado com sucesso');
+
+                return redirect()->back();
             }
         }
 
-        return json_encode(['status' => false]);
+        $request->session()->flash('error.msg', 'Um erro ocorreu, tente novamente mais tarde');
+
+        return redirect()->back();
     }
 
     //Alteração de Categorias
@@ -133,7 +143,9 @@ class Exhibitors extends Controller
             }
         }
 
-        return json_encode(['status' => false]);
+        $request->session()->flash('error.msg', 'Um erro ocorreu, tente novamente mais tarde');
+
+        return redirect()->back();
     }
 
     //Exclusão de Categoria
@@ -141,9 +153,20 @@ class Exhibitors extends Controller
     {
         if($this->categoriesRepository->delete($id))
         {
-            return json_encode(['status' => true]);
+            //$ex = new Exhibitors();
+
+            //$ex->where(['category' => $id])->update(['category' => null]);
+
+            $this->repository->findWhere(['category' => $id])->update([['category' => null]]);
+
+            \Session::flash('success.msg', 'A categoria foi excluida com sucesso');
+
+            return redirect()->back();
         }
 
-        return json_encode(['status' => false]);
+        \Session::flash('error.msg', 'Um erro ocorreu, tente novamente mais tarde');
+
+        return redirect()->back();
     }
 }
+

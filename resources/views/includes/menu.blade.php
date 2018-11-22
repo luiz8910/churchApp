@@ -173,6 +173,35 @@
                         </ul>
                     </li>
                 @endif
+
+
+                @if(Auth::user()->person_id != null && Auth::user()->person->role_id == $admin)
+
+                    <li class="menu-dropdown mega-menu-dropdown">
+                        <a href="javascript:;">
+                            Recursos
+                        </a>
+
+                        <ul class="dropdown-menu pull-left">
+                            <li>
+                                <a href="">
+                                    <i class="fa fa-eye"></i>
+                                    Expositores
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="">
+                                    <i class="fa fa-money"></i>
+                                    Patrocinadores
+                                </a>
+                            </li>
+
+                        </ul>
+                    </li>
+
+                @endif
+
             </ul>
         </div>
         <!-- END MEGA MENU -->
