@@ -30,7 +30,7 @@ class CheckRole
      * @param  int $role
      * @return mixed
      */
-    public function handle($request, Closure $next, $role, $role2)
+    public function handle($request, Closure $next, $role, $role2 = null)
     {
         if(!Auth::check())
         {

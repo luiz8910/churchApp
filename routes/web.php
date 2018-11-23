@@ -264,6 +264,36 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/exportExcelReport', 'ReportController@exportExcel');
     });
 
+    Route::group(['middleware' => 'check.role:5'], function (){
+
+        //-------------------------------- Expositores -----------------------------------------------------------------
+
+        Route::get('/expositores', "ExhibitorsController@index")->name('exhibitors.index');
+
+        Route::get('/expositores_cat/{id}', "ExhibitorsController@listByCategory")->name('exhibitors.index.listByCat');
+
+        Route::get('/expositores_novo', 'ExhibitorsController@create')->name('exhibitors.create');
+
+        Route::get('/expositores_editar', 'ExhibitorsController@edit')->name('exhibitors.edit');
+
+        Route::post('/expositores', 'ExhibitorsController@store')->name('exhibitors.store');
+
+        Route::put('/expositores/{id}', 'ExhibitorsController@update')->name('exhibitors.update');
+
+        Route::delete('/expositores/{id}', 'ExhibitorsController@delete')->name('exhibitors.delete');
+
+        //--------------------------------- Categorias de Expositores --------------------------------------------------
+
+        Route::get('/categorias-expositores', 'ExhibitorsController@index_cat')->name('exhibitors.index.cat');
+
+        Route::post('/categorias-expositores', 'ExhibitorsController@store_cat')->name('exhibitors.store.cat');
+
+        Route::put('/categorias-expositores/{id}', 'ExhibitorsController@update_cat')->name('exhibitors.update.cat');
+
+        Route::delete('/categorias-expositores/{id}', 'ExhibitorsController@delete_cat')->name('exhibitors.delete.cat');
+
+    });
+
 
     Route::get('nextEvent', 'DashboardController@nextEvent');
 

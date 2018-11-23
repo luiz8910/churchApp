@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Exhibitors;
 use App\Repositories\ExhibitorsCategoriesRepository;
 use App\Repositories\ExhibitorsRepository;
+use App\Repositories\StateRepository;
 use Illuminate\Http\Request;
 
 class ExhibitorsController extends Controller
@@ -17,26 +18,49 @@ class ExhibitorsController extends Controller
      * @var ExhibitorsCategoriesRepository
      */
     private $repository;
+    /**
+     * @var StateRepository
+     */
+    private $stateRepository;
 
-    public function __construct(ExhibitorsCategoriesRepository $categoriesRepository, ExhibitorsRepository $repository)
+    public function __construct(ExhibitorsCategoriesRepository $categoriesRepository, ExhibitorsRepository $repository,
+                                StateRepository $stateRepository)
     {
 
         $this->categoriesRepository = $categoriesRepository;
         $this->repository = $repository;
+        $this->stateRepository = $stateRepository;
     }
 
     //Lista de todos os expositores
     public function index()
     {
-        $exhbit = $this->repository->all();
+        $exhibitors = $this->repository->all();
 
-        foreach ($exhbit as $item)
+        $categories = $this->categoriesRepository->all();
+
+        foreach ($exhibitors as $item)
         {
-            $item->category_name = $this->categoriesRepository->find($item->category)->name;
+            $item->category_name = $this->categoriesRepository->findByField('id', $item->category)->first()
+                ? $this->categoriesRepository->findByField('id', $item->category)->first()->name : "Sem Categoria";
         }
 
-        return view('exhibitors.index', compact('exhbit'));
+        return view('exhibitors.index', compact('exhibitors', 'categories'));
     }
+
+    //Tela de Criação de Expositores
+    public function create()
+    {
+        $categories = $this->categoriesRepository->all();
+
+        $state = $this->stateRepository->all();
+
+        //Variável para retirar o botão de "Inserir CEP da organização"
+        $no_zip_button = true;
+
+        return view('exhibitors.create', compact('categories', 'state', 'no_zip_button'));
+    }
+
 
     //Lista de todos os expositores de determinada categoria
     public function listByCategory($category)
@@ -53,16 +77,29 @@ class ExhibitorsController extends Controller
     {
         $data = $request->all();
 
+        if(isset($data['logo']))
+        {
+            $file = $request->file('logo');
+
+            $name = $data['name'];
+
+            $imgName = 'uploads/exhibitors/' . $name .'.' . $file->getClientOriginalExtension();
+
+            $file->move('uploads/exhibitors/', $imgName);
+
+            $data['logo'] = $imgName;
+        }
+
         if($this->repository->create($data))
         {
             $request->session()->flash('success.msg', 'O Expositor foi cadastrado com sucesso');
 
-            return redirect()->back();
+            return redirect()->route('exhibitors.index');
         }
 
         $request->session()->flash('error.msg', 'Um erro ocorreu, tente novamente mais tarde');
 
-        return redirect()->back();
+        return redirect()->route('exhibitors.index');
     }
 
     //Alteração de Expositores
@@ -74,12 +111,12 @@ class ExhibitorsController extends Controller
         {
             $request->session()->flash('success.msg', 'O Expositor foi atualizado com sucesso');
 
-            return redirect()->back();
+            return redirect()->route('exhibitors.index');
         }
 
         $request->session()->flash('error.msg', 'Um erro ocorreu, tente novamente mais tarde');
 
-        return redirect()->back();
+        return redirect()->route('exhibitors.index');
     }
 
     //Exclusão de Expositores
@@ -119,7 +156,7 @@ class ExhibitorsController extends Controller
         {
             if($this->categoriesRepository->create($data))
             {
-                $request->session()->flash('success.msg', 'O Expositor foi cadastrado com sucesso');
+                $request->session()->flash('success.msg', 'A categoria foi cadastrada com sucesso');
 
                 return redirect()->back();
             }

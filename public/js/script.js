@@ -675,6 +675,14 @@ $(function () {
         $("#results").addClass('open');
     });
 
+    
+    $(".url").blur(function () {
+        if(this.value.indexOf("http://") == -1)
+        {
+            this.value = "http://" + this.value;
+        }
+
+    });
     /*$("#container-pagination").cleverInfiniteScroll({
         contentsWrapperSelector: "#container-pagination",
         contentSelector: ".feeds",

@@ -184,16 +184,16 @@
 
                         <ul class="dropdown-menu pull-left">
                             <li>
-                                <a href="">
+                                <a href="{{ route('exhibitors.index') }}">
                                     <i class="fa fa-eye"></i>
                                     Expositores
                                 </a>
                             </li>
 
                             <li>
-                                <a href="">
-                                    <i class="fa fa-money"></i>
-                                    Patrocinadores
+                                <a href="javascript:;">
+                                    <i class="fa fa-money font-red"></i>
+                                    <span style="color: red;">Patrocinadores (EM Desenvolvimento)</span>
                                 </a>
                             </li>
 
