@@ -460,6 +460,54 @@ class SearchController extends Controller
         return json_encode(['status' => false]);
     }
 
+    public function generalSearch($input, $table, $column = null)
+    {
+        $fields = DB::table('fields_search')
+                    ->where([
+                        'table' => $table
+                    ])->select('field')->orderBy('order')->get();
+
+        $select = [];
+
+        foreach ($fields as $field)
+        {
+            $select[] = $field->field;
+        }
+
+        if($column)
+        {
+            $data = DB::table($table)
+                ->where([
+                    [$column, 'like', '%'.$input.'%'],
+                ])->select($select)->get();
+        }
+        else{
+            $data = DB::table($table)
+                ->where([
+                    ['name', 'like', '%'.$input.'%'],
+                ])->select($select)->get();
+        }
+
+
+        $i = 0;
+
+        foreach ($data as $item)
+        {
+            while ($i < count($select))
+            {
+                $arr[] = $item->$select[$i];
+
+                $i++;
+            }
+
+            $i = 0;
+        }
+
+
+        return json_encode(['status' => true, 'data' => $arr, 'select' => $select]);
+    }
+
+
     public function search($input, $origin = null)
     {
         $name = DB::table('people')

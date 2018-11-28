@@ -42,9 +42,7 @@
                     <div class="page-head">
                         <div class="container">
                             <div class="page-title">
-                                <h1>Expositores
-
-                                </h1>
+                                <h1>{{ $title }}</h1>
                             </div>
                         </div> <!-- FIM DIV .container -->
                     </div> <!-- FIM DIV .page-head -->
@@ -59,7 +57,7 @@
                                             <div class="portlet-title">
                                                 <div class="caption font-green-haze">
                                                     <i class="fa fa-user font-green-haze"></i>
-                                                    <span class="caption-subject font-green-haze bold ">Expositores</span>
+                                                    <span class="caption-subject font-green-haze bold ">{{ $title }}</span>
                                                 </div>
                                                 <div class="actions">
                                                     <div class="btn-group btn-group-sm">
@@ -78,6 +76,7 @@
                                                                 </div><!-- /input-group -->
                                                             </div><!-- /.col-lg-8 -->
 
+                                                        <input type="hidden" value="{{ $table }}" id="table">
 
                                                         <div class="col-lg-3">
                                                             <a class="btn red btn-outline btn-circle btn-sm"
@@ -89,39 +88,27 @@
                                                             <ul class="dropdown-menu pull-right"
                                                                 id="sample_3_tools">
 
-                                                                <li>
-                                                                    <a
-                                                                       class="tool-action"
-                                                                       href="{{ route('exhibitors.create') }}">
-                                                                        <i class="fa fa-plus"></i>
-                                                                        <span class="hidden-xs hidden-sm">Novo Expositor</span>
-                                                                        <span class="hidden-lg hidden-md">Expositor</span>
-                                                                    </a>
-                                                                </li>
+                                                                @foreach($buttons as $btn)
 
-                                                                <li>
-                                                                    <a
-                                                                       class="tool-action"
-                                                                       href="javascript:;" id="modal_NewCat">
-                                                                        <i class="fa fa-plus font-blue"></i>
-                                                                        <span class="hidden-xs hidden-sm">Nova Categoria</span>
-                                                                        <span class="hidden-lg hidden-md">Categoria</span>
-                                                                    </a>
+                                                                    @if($btn["route"])
+                                                                    <li>
+                                                                        <a class="tool-action"
+                                                                                href="{{ route($btn["route"]) }}">
+                                                                            <i class="fa fa-plus"></i>
+                                                                            <span>{{ $btn["name"] }}</span>
+                                                                        </a>
+                                                                    </li>
+                                                                    @else
+                                                                        <li>
+                                                                            <a class="tool-action"
+                                                                                    href="javascript:;" id="{{ $btn['modal'] }}">
+                                                                                <i class="fa fa-plus font-blue"></i>
+                                                                                <span>{{ $btn["name"] }}</span>
+                                                                            </a>
 
-
-
-                                                                </li>
-
-                                                                <li>
-                                                                    <a
-                                                                       class="tool-action"
-                                                                       href="javascript:;" id="modal_list_cat">
-                                                                        <i class="fa fa-list-ol"></i>
-                                                                        <span class="hidden-xs hidden-sm">Lista de Categorias</span>
-                                                                        <span class="hidden-lg hidden-md">Lista</span>
-                                                                    </a>
-
-                                                                </li>
+                                                                        </li>
+                                                                    @endif
+                                                                @endforeach
                                                             </ul>
                                                         </div>
 
@@ -195,30 +182,28 @@
                                                         <table class="table table-hover table-light table-striped">
                                                             <thead>
                                                             <tr class="uppercase">
-                                                                <th> Logo</th>
-                                                                <th> Nome</th>
-                                                                <th> Telefone</th>
-                                                                <th> Email</th>
-                                                                <th> Categoria </th>
-                                                                <th></th>
+                                                                @foreach($th as $t)
+                                                                    <th>{{ $t }}</th>
+                                                                @endforeach
+
                                                             </tr>
                                                             </thead>
                                                             <tbody class="hide" id="tbody-search"></tbody>
                                                             <tbody>
-                                                            @foreach($exhibitors as $item)
-                                                                <tr id="tr-{{ $item->id }}">
-                                                                    <td><img src="{{ $item->logo }}"
+                                                            @foreach($model as $item)
+                                                                <tr id="tr-{{ $item->$columns[0] }}">
+                                                                    <td><img src="{{ $item->$columns[1] }}"
                                                                              style="width: 50px; height: 50px;">
                                                                     </td>
 
                                                                     <td>
                                                                         <a href="javascript:;">
-                                                                            {{ $item->name }}</a>
+                                                                            {{ $item->$columns[2] }}</a>
 
                                                                     </td>
-                                                                    <td> {{ $item->tel }} </td>
-                                                                    <td> {{ $item->email }} </td>
-                                                                    <td> {{ $item->category_name }}</td>
+                                                                    <td> {{ $item->$columns[3] }} </td>
+                                                                    <td> {{ $item->$columns[4] }} </td>
+                                                                    <td> {{ $item->$columns[5] }}</td>
 
 
 
@@ -278,6 +263,7 @@
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
 <script src="assets/pages/scripts/table-datatables-buttons.min.js" type="text/javascript"></script>
 <script src="js/exhibitors.js" type="text/javascript"></script>
+<script src="js/custom.js" type="text/javascript"></script>
 <!-- END PAGE LEVEL SCRIPTS -->
 
 <!-- Modal -->
@@ -329,7 +315,7 @@
 
                     <tbody>
                     <tr>
-                    @foreach($categories as $category)
+                    @foreach($model_cat as $category)
                         <td>{{ $category->name }}</td>
                     @endforeach
                     </tr>

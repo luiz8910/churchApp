@@ -35,17 +35,46 @@ class ExhibitorsController extends Controller
     //Lista de todos os expositores
     public function index()
     {
-        $exhibitors = $this->repository->all();
+        $model = $this->repository->all();
 
-        $categories = $this->categoriesRepository->all();
+        $model_cat = $this->categoriesRepository->all();
 
-        foreach ($exhibitors as $item)
+        $th = ['Logo', 'Nome', 'Telefone', 'Email', 'Categoria', ''];
+
+        $columns = ['id', 'logo', 'name', 'tel', 'email', 'category_name'];
+
+        $title = "Expositores";
+
+        $table = 'exhibitors';
+
+        $buttons = (object) [
+            [
+                'name' => 'Expositor',
+                'route' => 'exhibitors.create',
+                'modal' => null
+            ],
+            [
+                'name' => 'Categoria',
+                'route' => null,
+                'modal' => 'modal_NewCat'
+            ],
+            [
+                'name' => 'Lista',
+                'route' => null,
+                'modal' => 'modal_list_cat'
+            ]
+        ];
+
+        foreach ($model as $item)
         {
             $item->category_name = $this->categoriesRepository->findByField('id', $item->category)->first()
                 ? $this->categoriesRepository->findByField('id', $item->category)->first()->name : "Sem Categoria";
         }
 
-        return view('exhibitors.index', compact('exhibitors', 'categories'));
+
+
+        return view('exhibitors.index', compact('model', 'model_cat', 'th',
+            'buttons', 'title', 'table', 'columns'));
     }
 
     //Tela de Criação de Expositores
