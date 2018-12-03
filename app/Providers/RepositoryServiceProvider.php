@@ -63,6 +63,8 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(\App\Repositories\AdminRepository::class, \App\Repositories\AdminRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\ExhibitorsCategoriesRepository::class, \App\Repositories\ExhibitorsCategoriesRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\ExhibitorsRepository::class, \App\Repositories\ExhibitorsRepositoryEloquent::class);
+        $this->app->bind(\App\Repositories\SponsorRepository::class, \App\Repositories\SponsorRepositoryEloquent::class);
+        $this->app->bind(\App\Repositories\SponsorCategoryRepository::class, \App\Repositories\SponsorCategoryRepositoryEloquent::class);
         //:end-bindings:
     }
 }

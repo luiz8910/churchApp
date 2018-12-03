@@ -2,49 +2,46 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
-use App\Models\Exhibitors;
-use App\Repositories\ExhibitorsCategoriesRepository;
-use App\Repositories\ExhibitorsRepository;
+use App\Models\Sponsor;
+use App\Repositories\SponsorCategoryRepository;
+use App\Repositories\SponsorRepository;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
-class ExhibitorsController extends Controller
+class SponsorController extends Controller
 {
-    /**
-     * @var ExhibitorsCategoriesRepository
-     */
+
     private $categoriesRepository;
-    /**
-     * @var ExhibitorsCategoriesRepository
-     */
+
     private $repository;
 
-    public function __construct(ExhibitorsCategoriesRepository $categoriesRepository, ExhibitorsRepository $repository)
+    public function __construct(SponsorRepository $repository, SponsorCategoryRepository $categoriesRepository)
     {
 
-        $this->categoriesRepository = $categoriesRepository;
         $this->repository = $repository;
+        $this->categoriesRepository = $categoriesRepository;
     }
 
-    //Lista de todos os expositores
+
+    //Lista de todos os patrocinadores
     public function index()
     {
-        $exhbit = $this->repository->all();
+        $sponsor = $this->repository->all();
 
-        foreach ($exhbit as $item)
+        foreach ($sponsor as $item)
         {
-            $item->category_name = $this->categoriesRepository->findByField('id', $item->category)->first()
-                 ? $this->categoriesRepository->findByField('id', $item->category)->first()->name : null;
+            $item->category_name = $this->categoriesRepository->findByField('id', $item->category_id)->first()
+                ? $this->categoriesRepository->findByField('id', $item->category_id)->first()->name : null;
         }
 
         return json_encode([
             'status' => true,
-            'count' => count($exhbit),
-            'exhibitors' => $exhbit
+            'count' => count($sponsor),
+            'sponsors' => $sponsor
         ]);
     }
 
-    //Lista de todos os expositores de determinada categoria
+    //Lista de todos os patrocinadores de determinada categoria
     public function listByCategory($category)
     {
         $cat_id = $this->categoriesRepository->findByField('id', $category)->first();
@@ -52,13 +49,13 @@ class ExhibitorsController extends Controller
 
         if($cat_id)
         {
-            $exhbit = $this->repository->findByField('category', $category);
+            $sponsors = $this->repository->findByField('category_id', $category);
 
 
             return json_encode([
                 'status' => true,
-                'count' => count($exhbit),
-                'exhibitors' => $exhbit
+                'count' => count($sponsors),
+                'sponsors' => $sponsors
             ]);
         }
 
@@ -67,19 +64,15 @@ class ExhibitorsController extends Controller
 
     }
 
-    //Cadastro de Expositores
+    //Cadastro de patrocinadores
     public function store(Request $request)
     {
         $data = $request->all();
 
         if(!isset($data['name']))
         {
-            return json_encode(['status' => false, 'msg' => "Insira o nome do expositor"]);
+            return json_encode(['status' => false, 'msg' => "Insira o nome do patrocinador"]);
 
-        }
-        elseif (!isset($data['description']))
-        {
-            return json_encode(['status' => false, 'msg' => "Insira uma descrição para o expositor"]);
         }
 
         else{
@@ -89,9 +82,9 @@ class ExhibitorsController extends Controller
 
                 $name = $data['name'];
 
-                $imgName = 'uploads/exhibitors/' . $name .'.' . $file->getClientOriginalExtension();
+                $imgName = 'uploads/sponsors/' . $name .'.' . $file->getClientOriginalExtension();
 
-                $file->move('uploads/exhibitors/', $imgName);
+                $file->move('uploads/sponsors/', $imgName);
 
                 $data['logo'] = $imgName;
             }
@@ -107,20 +100,17 @@ class ExhibitorsController extends Controller
         return json_encode(['status' => false]);
     }
 
-    //Alteração de Expositores
+    //Alteração de patrocinadores
     public function update(Request $request, $id)
     {
         $data = $request->all();
 
         if(!isset($data['name']))
         {
-            return json_encode(['status' => false, 'msg' => "Insira o nome do expositor"]);
+            return json_encode(['status' => false, 'msg' => "Insira o nome do patrocinador"]);
 
         }
-        elseif (!isset($data['description']))
-        {
-            return json_encode(['status' => false, 'msg' => "Insira uma descrição para o expositor"]);
-        }
+
 
         else{
             if(isset($data['logo']))
@@ -129,9 +119,9 @@ class ExhibitorsController extends Controller
 
                 $name = $data['name'];
 
-                $imgName = 'uploads/exhibitors/' . $name .'.' . $file->getClientOriginalExtension();
+                $imgName = 'uploads/sponsor/' . $name .'.' . $file->getClientOriginalExtension();
 
-                $file->move('uploads/exhibitors/', $imgName);
+                $file->move('uploads/sponsor/', $imgName);
 
                 $data['logo'] = $imgName;
             }
@@ -143,10 +133,10 @@ class ExhibitorsController extends Controller
             }
         }
 
-        return json_encode(['status' => false, "msg" => "Este Expositor não existe"]);
+        return json_encode(['status' => false, "msg" => "Este Patrocinador não existe"]);
     }
 
-    //Exclusão de Expositores
+    //Exclusão de patrocinadores
     public function delete($id)
     {
         if($this->repository->delete($id))
@@ -211,9 +201,9 @@ class ExhibitorsController extends Controller
     {
         if($this->categoriesRepository->delete($id))
         {
-            $exhibitors = new Exhibitors();
+            $sponsors = new Sponsor();
 
-            $exhibitors->where('category', $id)->update(['category' => null]);
+            $sponsors->where('category_id', $id)->update(['category_id' => null]);
 
             return json_encode(['status' => true]);
         }

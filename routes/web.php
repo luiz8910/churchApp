@@ -276,11 +276,11 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('/expositores_editar', 'ExhibitorsController@edit')->name('exhibitors.edit');
 
-        Route::post('/expositores', 'ExhibitorsController@store')->name('exhibitors.store');
+        Route::post('/exhibitors', 'ExhibitorsController@store')->name('exhibitors.store');
 
-        Route::put('/expositores/{id}', 'ExhibitorsController@update')->name('exhibitors.update');
+        Route::put('/exhibitors/{id}', 'ExhibitorsController@update')->name('exhibitors.update');
 
-        Route::delete('/expositores/{id}', 'ExhibitorsController@delete')->name('exhibitors.delete');
+        Route::delete('/exhibitors/{id}', 'ExhibitorsController@delete')->name('exhibitors.delete');
 
         //--------------------------------- Categorias de Expositores --------------------------------------------------
 
@@ -599,6 +599,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('docs/expositores', function(){
         return view('docs.exhibitors');
     })->name('docs.exhibitors');
+
+    Route::get('docs/patrocinadores', function(){
+        return view('docs.sponsors');
+    })->name('docs.sponsors');
 
 
 //Login Twitter

@@ -35,3 +35,10 @@ body{
 .bg-header{
     background-color: aliceblue;
 }
+
+.custom-dropdown{
+    margin-top: 8px;
+    background-color: #F8F8F8 !important;
+    border-color: #F8F8F8 !important;
+    color: #777;
+}

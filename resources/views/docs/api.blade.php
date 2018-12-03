@@ -35,44 +35,7 @@
                 </a>
             </div>
 
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" >
-                <ul class="nav navbar-nav">
-                    <li><a href="javascript:;"></a></li>
-
-                    <li class=""><a href="{{ route('docs.churchs') }}">Igrejas</a></li>
-
-                    <li>
-                        <a href="{{ route('docs.login') }}">Login </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('docs.events') }}">Eventos</a>
-                    </li>
-
-                    <li>
-                        <a href={{ route('docs.groups') }}>Grupos</a>
-                    </li>
-
-                    <li>
-                        <a href="{{ route('docs.activity') }}">Atividades Recentes</a>
-                    </li>
-
-                    <li>
-                        <a href="{{ route('docs.people') }}">Pessoas e Visitantes</a>
-                    </li>
-
-                    <li>
-                        <a href="{{ route('docs.check-in') }}">Check-in</a>
-                    </li>
-
-                    <li>
-                        <a href="{{ route('docs.exhibitors') }}">Expositores</a>
-                    </li>
-
-
-                </ul>
-
-            </div><!-- /.navbar-collapse -->
+            @include('docs.topo')
 
         </div>
     </nav>

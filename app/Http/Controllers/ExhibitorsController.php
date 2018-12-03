@@ -47,6 +47,8 @@ class ExhibitorsController extends Controller
 
         $table = 'exhibitors';
 
+        $text_delete = "Deseja excluir o expositor selecionado?";
+
         $buttons = (object) [
             [
                 'name' => 'Expositor',
@@ -74,7 +76,7 @@ class ExhibitorsController extends Controller
 
 
         return view('exhibitors.index', compact('model', 'model_cat', 'th',
-            'buttons', 'title', 'table', 'columns'));
+            'buttons', 'title', 'table', 'columns', 'text_delete'));
     }
 
     //Tela de Criação de Expositores
@@ -153,14 +155,10 @@ class ExhibitorsController extends Controller
     {
         if($this->repository->delete($id))
         {
-            \Session::flash('success.msg', 'O Expositor foi excluído com sucesso');
-
-            return redirect()->back();
+            return json_encode(['status' => true]);
         }
 
-        \Session::flash('error.msg', 'Um erro ocorreu, tente novamente mais tarde');
-
-        return redirect()->back();
+        return json_encode(['status' => false]);
     }
 
     //Lista de Categorias

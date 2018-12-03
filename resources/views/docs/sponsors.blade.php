@@ -16,7 +16,7 @@
     <div class="jumbotron">
         <div class="container">
             <h1 class="text-center">Documentação (API)</h1>
-            <p class="text-center">Expositores</p>
+            <p class="text-center">Patrocinadores</p>
 
         </div>
     </div>
@@ -50,12 +50,12 @@
             <div class="col-md-12">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Lista de Expositores</h3>
+                        <h3 class="panel-title">Lista de Patrocinadores</h3>
                     </div>
 
                     <div class="panel-body">
 
-                        https://beconnect.com.br/api/exhibitors
+                        https://beconnect.com.br/api/sponsors
                         <span class="label label-primary">GET</span>
 
                         <br><br>
@@ -65,7 +65,7 @@
                         <pre>
 
 
-                        {"status":true, "count": 10, "exhibitors": [lista de expositores aqui]}
+                        {"status":true, "count": 10, "sponsors": [lista de Patrocinadores aqui]}
                     </pre>
 
                     </div>
@@ -77,12 +77,12 @@
             <div class="col-md-12">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Lista de Expositores por categoria</h3>
+                        <h3 class="panel-title">Lista de Patrocinadores por categoria</h3>
                     </div>
 
                     <div class="panel-body">
 
-                        https://beconnect.com.br/api/exhibitors-cat/{category}
+                        https://beconnect.com.br/api/sponsors-cat/{category}
                         <span class="label label-primary">GET</span>
 
                         <br><br>
@@ -94,7 +94,7 @@
 
                         <pre>
 
-                        {"status":true, 'count': 5, 'exhibitors': [lista de expositores aqui]}
+                        {"status":true, 'count': 5, 'sponsors': [lista de patrocinadores aqui]}
 
                         ou
 
@@ -111,12 +111,12 @@
             <div class="col-md-12">
                 <div class="panel panel-success">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Cadastro de Expositores</h3>
+                        <h3 class="panel-title">Cadastro de Patrocinadores</h3>
                     </div>
 
                     <div class="panel-body">
 
-                        https://beconnect.com.br/api/exhibitors/
+                        https://beconnect.com.br/api/sponsors/
                         <span class="label label-success">POST</span>
 
                         <br>
@@ -126,21 +126,21 @@
                         <pre>
                             Obrigatório
                             <br><br>
-                            name = Nome do Expositor <span class="label label-success" style="font-size: 12px;">String</span> <br><br>
-                            description = Descrição do Expositor <span class="label label-success" style="font-size: 12px;">String</span> <br><br>
+                            name = Nome do Patrocinador <span class="label label-success" style="font-size: 12px;">String</span> <br><br>
 
                             ------------------------------------ Opcionais ------------------------------------------------------------
                             <br>
-                            site = url do site do expositor <br>
-                            tel = telefone do expositor<br>
-                            email = email do expositor<br>
-                            zipCode = CEP do expositor<br>
+                            description = Descrição do Patrocinador <span class="label label-success" style="font-size: 12px;">String</span> <br>
+                            site = url do site do Patrocinador <br>
+                            tel = telefone do Patrocinador<br>
+                            email = email do Patrocinador<br>
+                            zipCode = CEP do Patrocinador<br>
                             street = Logradouro (rua)<br>
                             number = Número do imóvel<br>
                             neighborhood = Bairro<br>
                             city = Cidade<br>
                             state = UF<br>
-                            logo = logo<br>
+                            logo = Logotipo<br>
                             category = id da categoria <span class="label label-info" style="font-size: 12px;">Inteiro</span> <br><br>
                         </pre>
 
@@ -168,35 +168,37 @@
             <div class="col-md-12">
                 <div class="panel panel-warning">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Alteração de Expositores</h3>
+                        <h3 class="panel-title">Alteração de Patrocinadores</h3>
                     </div>
 
                     <div class="panel-body">
 
-                        https://beconnect.com.br/api/exhibitors/{id}
+                        https://beconnect.com.br/api/sponsors/{id}
                         <span class="label label-warning">PUT</span>
 
                         <br><br>
 
-                        id = id do expositor <span class="label label-info" style="font-size: 12px;">Inteiro</span> <br><br>
+                        id = id do Patrocinador <span class="label label-info" style="font-size: 12px;">Inteiro</span> <br><br>
 
                         <pre>
                             Obrigatório
                         <br><br>
-                        name = Nome do Expositor <span class="label label-success" style="font-size: 12px;">String</span> <br><br>
-                        description = Descrição do Expositor <span class="label label-success" style="font-size: 12px;">String</span> <br><br>
+                        name = Nome do Patrocinador <span class="label label-success" style="font-size: 12px;">String</span> <br><br>
+
 
                         ------------------------------------ Opcionais ------------------------------------------------------------
                         <br>
-                        site = url do site do expositor <br>
-                        tel = telefone do expositor<br>
-                        email = email do expositor<br>
-                        zipCode = CEP do expositor<br>
+                        description = Descrição do Patrocinador <span class="label label-success" style="font-size: 12px;">String</span> <br>
+                        site = url do site do Patrocinador <br>
+                        tel = telefone do Patrocinador<br>
+                        email = email do Patrocinador<br>
+                        zipCode = CEP do Patrocinador<br>
                         street = Logradouro (rua)<br>
                         number = Número do imóvel<br>
                         neighborhood = Bairro<br>
                         city = Cidade<br>
                         state = UF<br>
+                        logo = Logotipo<br>
                         category = id da categoria <span class="label label-info" style="font-size: 12px;">Inteiro</span> <br><br>
                         </pre>
 
@@ -210,7 +212,7 @@
 
                         ou
 
-                        {"status":false, "msg": "Este Expositor não existe"}
+                        {"status":false, "msg": "Este Patrocinador não existe"}
 
                     </pre>
 
@@ -224,16 +226,16 @@
             <div class="col-md-12">
                 <div class="panel panel-danger">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Exclusão de Expositores</h3>
+                        <h3 class="panel-title">Exclusão de Patrocinadores</h3>
                     </div>
 
                     <div class="panel-body">
 
-                        https://beconnect.com.br/api/exhibitors/{category}
+                        https://beconnect.com.br/api/sponsors/{category}
                         <span class="label label-danger">DELETE</span>
 
                         <br><br>
-                        id = id do expositor <span class="label label-info" style="font-size: 12px;">Inteiro</span> <br><br>
+                        id = id do Patrocinador <span class="label label-info" style="font-size: 12px;">Inteiro</span> <br><br>
 
                         <br><br>
 
@@ -272,7 +274,7 @@
 
                     <div class="panel-body">
 
-                        https://beconnect.com.br/api/exhibitors-categories
+                        https://beconnect.com.br/api/sponsors-categories
                         <span class="label label-primary">GET</span>
 
                         <br><br>
@@ -299,7 +301,7 @@
 
                     <div class="panel-body">
 
-                        https://beconnect.com.br/api/exhibitors-categories
+                        https://beconnect.com.br/api/sponsors-categories
                         <span class="label label-success">POST</span>
 
                         <br>
@@ -309,7 +311,7 @@
                         <pre>
                             Obrigatório
                         <br><br>
-                            name = Nome do Expositor <span class="label label-success" style="font-size: 12px;">String</span> <br><br>
+                            name = Nome da Categoria <span class="label label-success" style="font-size: 12px;">String</span> <br><br>
 
                         </pre>
 
@@ -345,7 +347,7 @@
 
                     <div class="panel-body">
 
-                        https://beconnect.com.br/api/exhibitors-categories/{category}
+                        https://beconnect.com.br/api/sponsors-categories/{category}
                         <span class="label label-warning">PUT</span>
 
                         <br><br>
@@ -355,7 +357,7 @@
                         <pre>
                             Obrigatório
                         <br><br>
-                            name = Nome do Expositor <span class="label label-success" style="font-size: 12px;">String</span> <br><br>
+                            name = Nome da Categoria <span class="label label-success" style="font-size: 12px;">String</span> <br><br>
 
                         </pre>
 
@@ -391,7 +393,7 @@
 
                     <div class="panel-body">
 
-                        https://beconnect.com.br/api/exhibitors-categories/{category}
+                        https://beconnect.com.br/api/sponsors-categories/{category}
                         <span class="label label-danger">DELETE</span>
 
                         <br><br>

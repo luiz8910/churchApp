@@ -77,6 +77,7 @@
                                                             </div><!-- /.col-lg-8 -->
 
                                                         <input type="hidden" value="{{ $table }}" id="table">
+                                                        <input type="hidden" value="{{ $text_delete }}" id="text-delete">
 
                                                         <div class="col-lg-3">
                                                             <a class="btn red btn-outline btn-circle btn-sm"
@@ -91,13 +92,13 @@
                                                                 @foreach($buttons as $btn)
 
                                                                     @if($btn["route"])
-                                                                    <li>
-                                                                        <a class="tool-action"
-                                                                                href="{{ route($btn["route"]) }}">
-                                                                            <i class="fa fa-plus"></i>
-                                                                            <span>{{ $btn["name"] }}</span>
-                                                                        </a>
-                                                                    </li>
+                                                                        <li>
+                                                                            <a class="tool-action"
+                                                                                    href="{{ route($btn["route"]) }}">
+                                                                                <i class="fa fa-plus"></i>
+                                                                                <span>{{ $btn["name"] }}</span>
+                                                                            </a>
+                                                                        </li>
                                                                     @else
                                                                         <li>
                                                                             <a class="tool-action"
@@ -205,6 +206,12 @@
                                                                     <td> {{ $item->$columns[4] }} </td>
                                                                     <td> {{ $item->$columns[5] }}</td>
 
+                                                                    <td>
+                                                                        <a href="javascript:;" class="btn btn-danger btn-circle btn-del-custom"
+                                                                           id="btn-del-custom-{{ $item->$columns[0] }}">
+                                                                            <i class="fa fa-trash"></i>
+                                                                        </a>
+                                                                    </td>
 
 
                                                                 </tr>
