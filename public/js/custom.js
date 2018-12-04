@@ -21,7 +21,7 @@ function generalSearchInput(input)
 
     var table = $("#table").val();
 
-    var route = location.pathname + '/';
+    var route = location.pathname;
 
     var request = $.ajax({
         url: '/general-search/' + input + '/' + table,
@@ -46,7 +46,7 @@ function generalSearchInput(input)
                     '<td>' +
                     '<img src="' + e.data[i + 1] + '" class="imgProfile img-circle">' +
                     '</td>' +
-                    '<td><a href="' + route + e.data[i] + '/edit">' + e.data[i + 2] + '</a></td>' +
+                    '<td><a href="' + route + '_editar/' + e.data[i] + '">' + e.data[i + 2] + '</a></td>' +
                     '<td>' + e.data[i + 3] + '</td>' +
                     '<td>' + e.data[i + 4] + '</td>' +
                     '<td>' + e.data[i + 5] + '</td>' +

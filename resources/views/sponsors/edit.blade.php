@@ -274,7 +274,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 <option value="">Selecione</option>
                                                                 @foreach($categories as $category)
                                                                     <option value="{{ $category->id }}"
-                                                                            @if($category->id == $model->category) selected @endif>
+                                                                            @if($category->id == $model->category_id) selected @endif>
                                                                         {{ $category->name }}
                                                                     </option>
                                                                 @endforeach
