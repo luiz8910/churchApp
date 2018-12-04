@@ -521,7 +521,8 @@ class SearchController extends Controller
                     if(count($parent) > 0)
                     {
                         //Troca de id para o nome da categoria
-                        $item->category_id = DB::table($parent)->where(['id' => $item->category_id])->first()->name;
+                        $item->category_id = DB::table($parent)->where(['id' => $item->category_id])->first() ?
+                            DB::table($parent)->where(['id' => $item->category_id])->first()->name : 'Sem Categoria';
 
                         //armazena o valor
                         $arr[] = $item->category_id;
