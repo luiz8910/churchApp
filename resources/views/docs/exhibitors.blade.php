@@ -141,7 +141,7 @@
                             city = Cidade<br>
                             state = UF<br>
                             logo = logo<br>
-                            category = id da categoria <span class="label label-info" style="font-size: 12px;">Inteiro</span> <br><br>
+                            category_id = id da categoria <span class="label label-info" style="font-size: 12px;">Inteiro</span> <br><br>
                         </pre>
 
 
@@ -197,7 +197,7 @@
                         neighborhood = Bairro<br>
                         city = Cidade<br>
                         state = UF<br>
-                        category = id da categoria <span class="label label-info" style="font-size: 12px;">Inteiro</span> <br><br>
+                        category_id = id da categoria <span class="label label-info" style="font-size: 12px;">Inteiro</span> <br><br>
                         </pre>
 
                         <br><br>
@@ -229,7 +229,7 @@
 
                     <div class="panel-body">
 
-                        https://beconnect.com.br/api/exhibitors/{category}
+                        https://beconnect.com.br/api/exhibitors/{id}
                         <span class="label label-danger">DELETE</span>
 
                         <br><br>

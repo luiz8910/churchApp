@@ -126,17 +126,17 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                 <div class="portlet-body form">
 
-                                    <form action="{{ route('exhibitors.store') }}" method="post" enctype="multipart/form-data">
-
+                                    <form action="{{ route('exhibitors.update', ['exhibitors' => $id]) }}" method="post" enctype="multipart/form-data">
+                                        {{ method_field('PUT') }}
+                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
                                         <div class="form-body">
-
                                             <div class="row">
                                                 <div class="col-md-3">
                                                     <div class="form-group">
                                                         <div class="fileinput fileinput-new" data-provides="fileinput">
                                                             <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
-                                                                <img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=logo+do+expositor" alt="" /> </div>
+                                                                <img src="../{{ $model->logo }}" alt="" /> </div>
                                                             <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"> </div>
                                                             <div>
                                                                 <span class="btn default btn-file">
@@ -159,7 +159,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                                             <textarea name="description" class="form-control"
                                                                    placeholder="Descrição do Expositor" rows="6" required>
-                                                                {{ old('description') }}
+                                                                {{ $model->description }}
                                                             </textarea>
                                                         </div>
                                                     </div>
@@ -177,7 +177,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             </span>
                                                             <input type="text" name="name" class="form-control"
                                                                    placeholder="Nome do Expositor" required
-                                                                   value="{{ old('name') }}">
+                                                                   value="{{ $model->name }}">
 
                                                         </div>
                                                     </div>
@@ -201,7 +201,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                                             <input type="url" name="site" class="form-control url"
                                                                    placeholder="Site do Expositor"
-                                                                   value="{{ old('site') }}">
+                                                                   value="{{ $model->site }}">
 
                                                         </div>
                                                     </div>
@@ -218,7 +218,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                                             <input type="text" name="tel" class="form-control tel"
                                                                    placeholder="Telefone do Expositor"
-                                                                   value="{{ old('tel') }}">
+                                                                   value="{{ $model->tel }}">
 
                                                         </div>
                                                     </div>
@@ -239,7 +239,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                                             <input type="email" name="email" class="form-control" id="email"
                                                                    placeholder="Email do Expositor"
-                                                                   value="{{ old('email') }}">
+                                                                   value="{{ $model->email }}">
 
                                                             <i class="fa fa-check font-green" id="icon-success-email" style="display: none;"></i>
                                                             <i class="fa fa-exclamation font-red" id="icon-error-email" style="display: none;"></i>
@@ -273,10 +273,13 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             <select name="category_id" id="" class="form-control">
                                                                 <option value="">Selecione</option>
                                                                 @foreach($categories as $category)
-                                                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                                                    <option value="{{ $category->id }}"
+                                                                            @if($category->id == $model->category) selected @endif>
+                                                                        {{ $category->name }}
+                                                                    </option>
                                                                 @endforeach
                                                             </select>
-
+                                                            
                                                         </div>
                                                     </div>
                                                 </div>
@@ -285,7 +288,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                             <br>
 
-                                            @include('includes.address-create')
+                                            @include('includes.address-edit')
 
                                         </div>
 

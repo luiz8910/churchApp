@@ -198,7 +198,7 @@
                                                                     </td>
 
                                                                     <td>
-                                                                        <a href="javascript:;">
+                                                                        <a href="{{ route($table . '.edit', ['id' => $item->id]) }}">
                                                                             {{ $item->$columns[2] }}</a>
 
                                                                     </td>
@@ -277,7 +277,7 @@
 <div class="modal fade" id="new_cat" tabindex="-1" role="dialog" aria-labelledby="new_cat">
     <div class="modal-dialog" role="document">
 
-        <form class="modal-content" action="{{ route('exhibitors.store.cat') }}" method="post">
+        <form class="modal-content" action="{{ route($table . '.store.cat') }}" method="post">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title text-center" id="myModalLabel">Nova Categoria</h4>

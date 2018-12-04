@@ -191,9 +191,9 @@
                             </li>
 
                             <li>
-                                <a href="javascript:;">
-                                    <i class="fa fa-money font-red"></i>
-                                    <span style="color: red;">Patrocinadores (EM Desenvolvimento)</span>
+                                <a href="{{ route('sponsors.index') }}">
+                                    <i class="fa fa-money"></i>
+                                    Patrocinadores
                                 </a>
                             </li>
 

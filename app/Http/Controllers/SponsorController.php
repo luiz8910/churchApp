@@ -2,28 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Exhibitors;
-use App\Repositories\ExhibitorsCategoriesRepository;
-use App\Repositories\ExhibitorsRepository;
+use App\Repositories\SponsorCategoryRepository;
+use App\Repositories\SponsorRepository;
 use App\Repositories\StateRepository;
 use Illuminate\Http\Request;
 
-class ExhibitorsController extends Controller
+class SponsorController extends Controller
 {
-    /**
-     * @var ExhibitorsCategoriesRepository
-     */
+    
     private $categoriesRepository;
-    /**
-     * @var ExhibitorsCategoriesRepository
-     */
+    
     private $repository;
-    /**
-     * @var StateRepository
-     */
+   
     private $stateRepository;
 
-    public function __construct(ExhibitorsCategoriesRepository $categoriesRepository, ExhibitorsRepository $repository,
+    public function __construct(SponsorCategoryRepository $categoriesRepository, SponsorRepository $repository,
                                 StateRepository $stateRepository)
     {
 
@@ -32,7 +25,7 @@ class ExhibitorsController extends Controller
         $this->stateRepository = $stateRepository;
     }
 
-    //Lista de todos os expositores
+    //Lista de todos os patrocinadores
     public function index()
     {
         $model = $this->repository->all();
@@ -43,16 +36,16 @@ class ExhibitorsController extends Controller
 
         $columns = ['id', 'logo', 'name', 'tel', 'email', 'category_name'];
 
-        $title = "Expositores";
+        $title = "Patrocinadores";
 
-        $table = 'exhibitors';
+        $table = 'sponsors';
 
-        $text_delete = "Deseja excluir o expositor selecionado?";
+        $text_delete = "Deseja excluir o patrocinador selecionado?";
 
         $buttons = (object) [
             [
-                'name' => 'Expositor',
-                'route' => 'exhibitors.create',
+                'name' => 'Patrocinador',
+                'route' => 'sponsors.create',
                 'modal' => null
             ],
             [
@@ -79,7 +72,7 @@ class ExhibitorsController extends Controller
             'buttons', 'title', 'table', 'columns', 'text_delete'));
     }
 
-    //Tela de Criação de Expositores
+    //Tela de Criação de Patrocinadores
     public function create()
     {
         $categories = $this->categoriesRepository->all();
@@ -89,7 +82,7 @@ class ExhibitorsController extends Controller
         //Variável para retirar o botão de "Inserir CEP da organização"
         $no_zip_button = true;
 
-        return view('exhibitors.create', compact('categories', 'state', 'no_zip_button'));
+        return view('sponsors.create', compact('categories', 'state', 'no_zip_button'));
     }
 
     public function edit($id)
@@ -103,21 +96,21 @@ class ExhibitorsController extends Controller
 
         $model = $this->repository->findByField('id', $id)->first();
 
-        return view('exhibitors.edit', compact('categories', 'state', 'no_zip_button', 'model', 'id'));
+        return view('sponsors.edit', compact('categories', 'state', 'no_zip_button', 'model', 'id'));
     }
 
 
-    //Lista de todos os expositores de determinada categoria
+    //Lista de todos os Patrocinadores de determinada categoria
     public function listByCategory($category)
     {
         $cat_id = $this->categoriesRepository->findByField('name', $category)->id;
 
-        $exhbit = $this->repository->findByField('category_id', $cat_id)->get();
+        $sponsors = $this->repository->findByField('category_id', $cat_id)->get();
 
-        return view('exhibitors.index', compact('exhbit', 'cat_id'));
+        return view('sponsors.index', compact('sponsors', 'cat_id'));
     }
 
-    //Cadastro de Expositores
+    //Cadastro de Patrocinadores
     public function store(Request $request)
     {
         $data = $request->all();
@@ -128,26 +121,26 @@ class ExhibitorsController extends Controller
 
             $name = $data['name'];
 
-            $imgName = 'uploads/exhibitors/' . $name .'.' . $file->getClientOriginalExtension();
+            $imgName = 'uploads/sponsors/' . $name .'.' . $file->getClientOriginalExtension();
 
-            $file->move('uploads/exhibitors/', $imgName);
+            $file->move('uploads/sponsors/', $imgName);
 
             $data['logo'] = $imgName;
         }
 
         if($this->repository->create($data))
         {
-            $request->session()->flash('success.msg', 'O Expositor foi cadastrado com sucesso');
+            $request->session()->flash('success.msg', 'O Patrocinador foi cadastrado com sucesso');
 
-            return redirect()->route('exhibitors.index');
+            return redirect()->route('sponsors.index');
         }
 
         $request->session()->flash('error.msg', 'Um erro ocorreu, tente novamente mais tarde');
 
-        return redirect()->route('exhibitors.index');
+        return redirect()->route('sponsors.index');
     }
 
-    //Alteração de Expositores
+    //Alteração de Patrocinadores
     public function update(Request $request, $id)
     {
         $data = $request->all();
@@ -158,26 +151,26 @@ class ExhibitorsController extends Controller
 
             $name = $data['name'];
 
-            $imgName = 'uploads/exhibitors/' . $name .'.' . $file->getClientOriginalExtension();
+            $imgName = 'uploads/sponsors/' . $name .'.' . $file->getClientOriginalExtension();
 
-            $file->move('uploads/exhibitors/', $imgName);
+            $file->move('uploads/sponsors/', $imgName);
 
             $data['logo'] = $imgName;
         }
 
         if($this->repository->update($data, $id))
         {
-            $request->session()->flash('success.msg', 'O Expositor foi atualizado com sucesso');
+            $request->session()->flash('success.msg', 'O Patrocinador foi atualizado com sucesso');
 
-            return redirect()->route('exhibitors.index');
+            return redirect()->route('sponsors.index');
         }
 
         $request->session()->flash('error.msg', 'Um erro ocorreu, tente novamente mais tarde');
 
-        return redirect()->route('exhibitors.index');
+        return redirect()->route('sponsors.index');
     }
 
-    //Exclusão de Expositores
+    //Exclusão de Patrocinadores
     public function delete($id)
     {
         if($this->repository->delete($id))
@@ -244,11 +237,11 @@ class ExhibitorsController extends Controller
     {
         if($this->categoriesRepository->delete($id))
         {
-            //$ex = new Exhibitors();
+            //$ex = new sponsors();
 
             //$ex->where(['category' => $id])->update(['category' => null]);
 
-            $this->repository->findWhere(['category_id' => $id])->update([['category_id' => null]]);
+            $this->repository->findWhere(['category' => $id])->update([['category' => null]]);
 
             \Session::flash('success.msg', 'A categoria foi excluida com sucesso');
 
@@ -260,4 +253,3 @@ class ExhibitorsController extends Controller
         return redirect()->back();
     }
 }
-

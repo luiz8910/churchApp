@@ -94,7 +94,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                 <div class="portlet-title">
                                     <div class="caption font-red-sunglo">
                                         <i class="fa fa-user font-red-sunglo"></i>
-                                        <span class="caption-subject bold uppercase"> Novo Expositor</span>
+                                        <span class="caption-subject bold uppercase"> Novo Patrocinador</span>
                                     </div>
                                     <!--<div class="actions">
                                         <div class="btn-group">
@@ -126,7 +126,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                 <div class="portlet-body form">
 
-                                    <form action="{{ route('exhibitors.store') }}" method="post" enctype="multipart/form-data">
+                                    <form action="{{ route('sponsors.store') }}" method="post" enctype="multipart/form-data">
 
 
                                         <div class="form-body">
@@ -136,7 +136,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <div class="form-group">
                                                         <div class="fileinput fileinput-new" data-provides="fileinput">
                                                             <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
-                                                                <img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=logo+do+expositor" alt="" /> </div>
+                                                                <img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=logo+do+Patrocinador" alt="" /> </div>
                                                             <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"> </div>
                                                             <div>
                                                                 <span class="btn default btn-file">
@@ -157,10 +157,14 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             <i class="fa fa-file-text-o font-blue"></i>
                                                         </span>
 
-                                                            <textarea name="description" class="form-control"
-                                                                   placeholder="Descrição do Expositor" rows="6" required>
+                                                            <textarea name="description" class="form-control" id="description"
+                                                                   placeholder="Descrição do Patrocinador" required style="height: 125px;">
                                                                 {{ old('description') }}
                                                             </textarea>
+
+                                                            <script>
+                                                                document.getElementById('description').innerText = '';
+                                                            </script>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -176,7 +180,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 <i class="fa fa-user font-blue"></i>
                                                             </span>
                                                             <input type="text" name="name" class="form-control"
-                                                                   placeholder="Nome do Expositor" required
+                                                                   placeholder="Nome do Patrocinador" required
                                                                    value="{{ old('name') }}">
 
                                                         </div>
@@ -200,7 +204,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
 
                                                             <input type="url" name="site" class="form-control url"
-                                                                   placeholder="Site do Expositor"
+                                                                   placeholder="Site do Patrocinador"
                                                                    value="{{ old('site') }}">
 
                                                         </div>
@@ -217,7 +221,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             </span>
 
                                                             <input type="text" name="tel" class="form-control tel"
-                                                                   placeholder="Telefone do Expositor"
+                                                                   placeholder="Telefone do Patrocinador"
                                                                    value="{{ old('tel') }}">
 
                                                         </div>
@@ -238,7 +242,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
 
                                                             <input type="email" name="email" class="form-control" id="email"
-                                                                   placeholder="Email do Expositor"
+                                                                   placeholder="Email do Patrocinador"
                                                                    value="{{ old('email') }}">
 
                                                             <i class="fa fa-check font-green" id="icon-success-email" style="display: none;"></i>
@@ -263,7 +267,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label for="category_id">Categoria</label>
+                                                        <label for="category">Categoria</label>
                                                         <div class="input-group">
                                                             <span class="input-group-addon">
                                                                 <i class="fa fa-list-ol font-blue"></i>

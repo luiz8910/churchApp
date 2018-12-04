@@ -274,7 +274,7 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('/expositores_novo', 'ExhibitorsController@create')->name('exhibitors.create');
 
-        Route::get('/expositores_editar', 'ExhibitorsController@edit')->name('exhibitors.edit');
+        Route::get('/expositores_editar/{id}', 'ExhibitorsController@edit')->name('exhibitors.edit');
 
         Route::post('/exhibitors', 'ExhibitorsController@store')->name('exhibitors.store');
 
@@ -291,6 +291,33 @@ Route::group(['middleware' => 'auth'], function () {
         Route::put('/categorias-expositores/{id}', 'ExhibitorsController@update_cat')->name('exhibitors.update.cat');
 
         Route::delete('/categorias-expositores/{id}', 'ExhibitorsController@delete_cat')->name('exhibitors.delete.cat');
+
+
+        //---------------------------------- Patrocinadores ------------------------------------------------------------
+
+        Route::get('/patrocinadores', "SponsorController@index")->name('sponsors.index');
+
+        Route::get('/patrocinadores_cat/{id}', "SponsorController@listByCategory")->name('sponsors.index.listByCat');
+
+        Route::get('/patrocinadores_novo', 'SponsorController@create')->name('sponsors.create');
+
+        Route::get('/patrocinadores_editar/{id}', 'SponsorController@edit')->name('sponsors.edit');
+
+        Route::post('/sponsors', 'SponsorController@store')->name('sponsors.store');
+
+        Route::put('/sponsors/{id}', 'SponsorController@update')->name('sponsors.update');
+
+        Route::delete('/sponsors/{id}', 'SponsorController@delete')->name('sponsors.delete');
+
+        //--------------------------------- Categorias de Expositores --------------------------------------------------
+
+        Route::get('/categorias-patrocinadores', 'SponsorController@index_cat')->name('sponsors.index.cat');
+
+        Route::post('/categorias-patrocinadores', 'SponsorController@store_cat')->name('sponsors.store.cat');
+
+        Route::put('/categorias-patrocinadores/{id}', 'SponsorController@update_cat')->name('sponsors.update.cat');
+
+        Route::delete('/categorias-patrocinadores/{id}', 'SponsorController@delete_cat')->name('sponsors.delete.cat');
 
     });
 

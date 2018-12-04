@@ -462,6 +462,10 @@ class SearchController extends Controller
 
     public function generalSearch($input, $table, $column = null)
     {
+        /*
+         * Exibe todos os campos da tabela $table
+         * na ordem correta para uso em custom.js
+         */
         $fields = DB::table('fields_search')
                     ->where([
                         'table' => $table
@@ -471,9 +475,11 @@ class SearchController extends Controller
 
         foreach ($fields as $field)
         {
+            //Armazenando os nomes de colunas da table $table
             $select[] = $field->field;
         }
 
+        //Se alguma coluna for especificado na hora da request
         if($column)
         {
             $data = DB::table($table)
@@ -481,6 +487,7 @@ class SearchController extends Controller
                     [$column, 'like', '%'.$input.'%'],
                 ])->select($select)->get();
         }
+        //Coluna padrão name
         else{
             $data = DB::table($table)
                 ->where([
@@ -491,19 +498,55 @@ class SearchController extends Controller
 
         $i = 0;
 
+        //Trabalha com cada resultado separadamente
         foreach ($data as $item)
         {
+            /*
+             * iteração com valor de $i menor que
+             * a qtde de colunas da tabela
+             */
             while ($i < count($select))
             {
-                $arr[] = $item->$select[$i];
+                /*
+                 * É necessário verificar se a coluna em questão é
+                 * category_id, pois vamos tirar a id e colocar o nome
+                 * da categoria para ser exibido no Html
+                 */
+                if($select[$i] == 'category_id')
+                {
+                    //Procura o nome da tabela pai
+                    $parent = DB::table('parent_table')->where(['child' => $table])->first()->parent;
+
+                    //Se houver uma tabela pai
+                    if(count($parent) > 0)
+                    {
+                        //Troca de id para o nome da categoria
+                        $item->category_id = DB::table($parent)->where(['id' => $item->category_id])->first()->name;
+
+                        //armazena o valor
+                        $arr[] = $item->category_id;
+                    }
+                }
+                else{
+                    /*
+                     * Informa ao js a coluna para exibir,
+                     * na ordem correta feita no select de fields_search
+                     */
+                    $arr[] = $item->$select[$i];
+                }
 
                 $i++;
             }
 
             $i = 0;
+
+
         }
 
-
+        /*
+         * data = Dados coletados
+         * select = Nomes das colunas da tabela
+         */
         return json_encode(['status' => true, 'data' => $arr, 'select' => $select]);
     }
 

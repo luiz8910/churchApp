@@ -33,7 +33,7 @@
         </div>
     </div>
 
-    @if(!isset($route))
+    @if(!isset($route) && Auth::check() && !isset($no_zip_button))
         @include('includes.address')
     @endif
 </div>

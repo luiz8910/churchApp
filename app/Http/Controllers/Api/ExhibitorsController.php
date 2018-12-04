@@ -33,8 +33,8 @@ class ExhibitorsController extends Controller
 
         foreach ($exhbit as $item)
         {
-            $item->category_name = $this->categoriesRepository->findByField('id', $item->category)->first()
-                 ? $this->categoriesRepository->findByField('id', $item->category)->first()->name : null;
+            $item->category_name = $this->categoriesRepository->findByField('id', $item->category_id)->first()
+                 ? $this->categoriesRepository->findByField('id', $item->category_id)->first()->name : null;
         }
 
         return json_encode([
@@ -52,7 +52,7 @@ class ExhibitorsController extends Controller
 
         if($cat_id)
         {
-            $exhbit = $this->repository->findByField('category', $category);
+            $exhbit = $this->repository->findByField('category_id', $category);
 
 
             return json_encode([
@@ -213,7 +213,7 @@ class ExhibitorsController extends Controller
         {
             $exhibitors = new Exhibitors();
 
-            $exhibitors->where('category', $id)->update(['category' => null]);
+            $exhibitors->where('category_id', $id)->update(['category_id' => null]);
 
             return json_encode(['status' => true]);
         }

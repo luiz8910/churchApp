@@ -47,7 +47,6 @@ function generalSearchInput(input)
                     '<img src="' + e.data[i + 1] + '" class="imgProfile img-circle">' +
                     '</td>' +
                     '<td><a href="' + route + e.data[i] + '/edit">' + e.data[i + 2] + '</a></td>' +
-                    '<td>' + e.data[i + 2] + '</td>' +
                     '<td>' + e.data[i + 3] + '</td>' +
                     '<td>' + e.data[i + 4] + '</td>' +
                     '<td>' + e.data[i + 5] + '</td>' +
@@ -56,7 +55,7 @@ function generalSearchInput(input)
                     'onclick="sweetDeleteUser(' + e.data[i] + ')"' +
                     'id="btn-delete-' + e.data[i] + '">' +
                     '<i class="fa fa-trash"></i>' +
-                    '<span class="hidden-xs hidden-sm"> Inativar</span>' +
+                    '<span class="hidden-xs hidden-sm"></span>' +
                     '</button>' +
                     '</td>' +
                     '</tr>';
