@@ -188,6 +188,31 @@ Route::put('/sponsors-categories/{category}', 'Api\SponsorController@update_cat'
 //Exclusão de Categoria
 Route::delete('/sponsors-categories/{category}', 'Api\SponsorController@delete_cat');
 
+
+//---------------------------------- Documentos ----------------------------------------------------------------
+
+/*
+ * Lista de todos os Documentos, se passado o parâmetro event_id,
+ * então lista só do evento selecionado
+ */
+Route::get('/doc/{event_id?}', 'Api\DocumentsController@index');
+
+// Realiza upload de um arquivo
+Route::post('/doc-upload', 'Api\DocumentsController@upload');
+
+//Realiza o download de um arquivo
+Route::get('/doc-download/{id}', 'Api\DocumentsController@download');
+
+//Realiza a exclusão de um arquivo
+Route::delete('/doc/{file_id}/{person_id}', 'Api\DocumentsController@delete');
+
+//Busca o arquivo pelo nome completo
+Route::get('/doc-find/{name}', 'Api\DocumentsController@find');
+
+//Busca o arquivo pelo nome no modo instant search
+Route::get('/doc-search/{input}', 'Api\DocumentsController@search');
+
+
 //-------------------------- Outros ------------------------------------------------------------------------------------
 
 Route::any('/new-bug/', 'BugController@storeApp');

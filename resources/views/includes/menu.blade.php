@@ -197,6 +197,13 @@
                                 </a>
                             </li>
 
+
+                            <li>
+                                <a href="javascript:">
+                                    <i class="fa fa-files-o"></i>
+                                    Documentos
+                                </a>
+                            </li>
                         </ul>
                     </li>
 

@@ -319,6 +319,30 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::delete('/categorias-patrocinadores/{id}', 'SponsorController@delete_cat')->name('sponsors.delete.cat');
 
+        //---------------------------------- Documentos ----------------------------------------------------------------
+
+
+        /*
+         * Lista de todos os Documentos, se passado o parâmetro event_id,
+         * então lista só do evento selecionado
+         */
+        Route::get('/doc/{event_id?}', 'DocumentsController@index')->name('documents.index');
+
+        // Realiza upload de um arquivo
+        Route::post('/doc-upload', 'DocumentsController@upload')->name('documents.upload');
+
+        //Realiza o download de um arquivo
+        Route::get('/doc-download/{id}', 'DocumentsController@download')->name('documents.download');
+
+        //Realiza a exclusão de um arquivo
+        Route::delete('/doc/{file_id}/{person_id}', 'DocumentsController@delete')->name('documents.delete');
+
+        //Busca o arquivo pelo nome completo
+        Route::get('/doc-find/{name}', 'DocumentsController@find');
+
+        //Busca o arquivo pelo nome no modo instant search
+        Route::get('/doc-search/{input}', 'DocumentsController@search');
+
     });
 
 
@@ -630,6 +654,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('docs/patrocinadores', function(){
         return view('docs.sponsors');
     })->name('docs.sponsors');
+
+    Route::get('docs/documentos', function(){
+        return view('docs.documents');
+    })->name('docs.documents');
 
 
 //Login Twitter

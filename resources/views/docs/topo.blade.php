@@ -44,6 +44,9 @@
             <li>
                 <a href="{{ route('docs.sponsors') }}">Patrocinadores</a>
             </li>
+            <li>
+                <a href="{{ route('docs.documents') }}">Documentos</a>
+            </li>
         </ul>
     </div>
 
