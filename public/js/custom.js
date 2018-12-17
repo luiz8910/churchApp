@@ -12,6 +12,19 @@ $(function(){
         var id = this.id.replace('btn-del-custom-', "");
 
         sweetDelete(id);
+    });
+
+
+    $("#list").click(function(){
+       $("#modal_list").modal('show');
+    });
+
+    $("#upload-doc").click(function(){
+       $("#upload").modal('show');
+    });
+
+    $("#btn-file").click(function(){
+        $("#file").trigger('click');
     })
 });
 

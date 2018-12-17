@@ -199,7 +199,7 @@
 
 
                             <li>
-                                <a href="javascript:">
+                                <a href="{{ route('documents.index') }}">
                                     <i class="fa fa-files-o"></i>
                                     Documentos
                                 </a>

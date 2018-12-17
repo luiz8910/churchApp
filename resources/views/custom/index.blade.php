@@ -62,6 +62,7 @@
                                                 <div class="actions">
                                                     <div class="btn-group btn-group-sm">
 
+                                                        @if(!isset($search_not_ready))
                                                             <div class="col-lg-8">
                                                                 <div class="input-group">
                                                                     <input type="text" class="form-control"
@@ -75,6 +76,7 @@
 																				</span>
                                                                 </div><!-- /input-group -->
                                                             </div><!-- /.col-lg-8 -->
+                                                        @endif
 
                                                         <input type="hidden" value="{{ $table }}" id="table">
                                                         <input type="hidden" value="{{ $text_delete }}" id="text-delete">
@@ -89,13 +91,25 @@
                                                             <ul class="dropdown-menu pull-right"
                                                                 id="sample_3_tools">
 
+                                                                @if(isset($doc))
+                                                                    <li>
+                                                                        <a href="javascript:" class="tool-action" id="upload-doc">
+                                                                            <i class="fa fa-plus font-blue"></i>
+                                                                            <span>Documento</span>
+                                                                        </a>
+                                                                    </li>
+
+
+
+                                                                @endif
+
                                                                 @foreach($buttons as $btn)
 
                                                                     @if($btn["route"])
                                                                         <li>
                                                                             <a class="tool-action"
                                                                                     href="{{ route($btn["route"]) }}">
-                                                                                <i class="fa fa-plus"></i>
+                                                                                <i class="fa {{ $btn['icon'] }}"></i>
                                                                                 <span>{{ $btn["name"] }}</span>
                                                                             </a>
                                                                         </li>
@@ -103,7 +117,7 @@
                                                                         <li>
                                                                             <a class="tool-action"
                                                                                     href="javascript:;" id="{{ $btn['modal'] }}">
-                                                                                <i class="fa fa-plus font-blue"></i>
+                                                                                <i class="fa {{ $btn['icon'] }} font-blue"></i>
                                                                                 <span>{{ $btn["name"] }}</span>
                                                                             </a>
 
@@ -192,23 +206,38 @@
                                                             <tbody class="hide" id="tbody-search"></tbody>
                                                             <tbody>
                                                             @foreach($model as $item)
-                                                                <tr id="tr-{{ $item->$columns[0] }}">
-                                                                    <td><img src="{{ $item->$columns[1] }}"
-                                                                             style="width: 50px; height: 50px;">
-                                                                    </td>
 
-                                                                    <td>
-                                                                        <a href="{{ route($table . '.edit', ['id' => $item->id]) }}">
-                                                                            {{ $item->$columns[2] }}</a>
+                                                                <tr id="tr-{{ $item[$columns[0]] }}">
+                                                                    @if(!isset($doc))
+                                                                        <td><img src="{{ $item[$columns[1]] }}"
+                                                                                 style="width: 50px; height: 50px;">
+                                                                        </td>
 
-                                                                    </td>
-                                                                    <td> {{ $item->$columns[3] }} </td>
-                                                                    <td> {{ $item->$columns[4] }} </td>
-                                                                    <td> {{ $item->$columns[5] }}</td>
+                                                                        <td>
+
+                                                                            <a href="{{ route($table . '.edit', ['id' => $item->id]) }}">
+                                                                                {{ $item[$columns[2]] }}</a>
+
+                                                                        </td>
+
+                                                                        <td> {{ $item[$columns[3]] }} </td>
+                                                                        <td> {{ $item[$columns[4]] }} </td>
+                                                                        <td> {{ $item[$columns[5]] }}</td>
+
+                                                                        @else
+                                                                            <td>{{ $item[$columns[1]] }}</td>
+
+                                                                            <td> {{ $item[$columns[2]] }} </td>
+                                                                            <td> {{ $item[$columns[3]] }} </td>
+                                                                            <td> {{ $item[$columns[4]] }}</td>
+                                                                    @endif
+
+
+
 
                                                                     <td>
                                                                         <a href="javascript:;" class="btn btn-danger btn-circle btn-del-custom"
-                                                                           id="btn-del-custom-{{ $item->$columns[0] }}">
+                                                                           id="btn-del-custom-{{ $item[$columns[0]] }}">
                                                                             <i class="fa fa-trash"></i>
                                                                         </a>
                                                                     </td>
@@ -273,6 +302,7 @@
 <script src="js/custom.js" type="text/javascript"></script>
 <!-- END PAGE LEVEL SCRIPTS -->
 
+@if(isset($model_cat))
 <!-- Modal -->
 <div class="modal fade" id="new_cat" tabindex="-1" role="dialog" aria-labelledby="new_cat">
     <div class="modal-dialog" role="document">
@@ -303,6 +333,7 @@
     </div>
 </div>
 
+
 <div class="modal fade" id="list_cat" tabindex="-1" role="dialog" aria-labelledby="new_cat">
     <div class="modal-dialog" role="document">
 
@@ -322,9 +353,11 @@
 
                     <tbody>
                     <tr>
-                    @foreach($model_cat as $category)
-                        <td>{{ $category->name }}</td>
-                    @endforeach
+
+                        @foreach($model_cat as $category)
+                            <td>{{ $category->name }}</td>
+                        @endforeach
+
                     </tr>
 
                     </tbody>
@@ -341,6 +374,110 @@
         </form>
     </div>
 </div>
+@endif
+
+@if(isset($model_list))
+    <div class="modal fade" id="modal_list" tabindex="-1" role="dialog" aria-labelledby="list">
+        <div class="modal-dialog" role="document">
+
+            <form class="modal-content" action="{{ route($table.'.index') }}">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title text-center" id="myModalLabel">@if(isset($title_modal)){{ $title_modal }}@else Lista @endif</h4>
+                </div>
+
+                <div class="modal-body">
+
+                    <label for="list">{{ $title_modal }}</label>
+
+                    <select name="list" class="form-control" id="model_list" required>
+
+                        <option value="">Selecione</option>
+
+                        @foreach($model_list as $item)
+
+                            <option value="{{ $item->id }}">{{ $item->name }}</option>
+
+                        @endforeach
+
+                    </select>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">
+                        <i class="fa fa-check"></i>
+                        Filtrar
+                    </button>
+
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        <i class="fa fa-close"></i>
+                        Fechar
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <div class="modal fade" id="upload" tabindex="-1" role="dialog" aria-labelledby="upload">
+        <div class="modal-dialog" role="document">
+
+            <form class="modal-content" action="{{ route($table.'.upload') }}" enctype="multipart/form-data" method="post">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title text-center" id="myModalLabel">Upload</h4>
+                </div>
+
+                <div class="modal-body">
+
+                    <label for="event">Eventos</label>
+
+                    <select name="event_id" class="form-control" id="model_list">
+
+                        <option value="">Selecione</option>
+
+                        @foreach($model_list as $item)
+
+                            <option value="{{ $item->id }}">{{ $item->name }}</option>
+
+                        @endforeach
+
+                    </select>
+
+                    <br>
+
+
+
+                    <div style="margin: 0 auto">
+                        <button class="btn btn-success" id="btn-file">
+                            <i class="fa fa-file"></i>
+                            Escolher Arquivo
+                        </button>
+                    </div>
+
+                    <input type="file" name="file" id="file" style="display: none;" required>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">
+                        <i class="fa fa-check"></i>
+                        Upload
+                    </button>
+
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        <i class="fa fa-close"></i>
+                        Fechar
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+@endif
+
+
 
 </body>
 
