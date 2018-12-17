@@ -53,17 +53,20 @@ class ExhibitorsController extends Controller
             [
                 'name' => 'Expositor',
                 'route' => 'exhibitors.create',
-                'modal' => null
+                'modal' => null,
+                'icon' => 'fa fa-plus'
             ],
             [
                 'name' => 'Categoria',
                 'route' => null,
-                'modal' => 'modal_NewCat'
+                'modal' => 'modal_NewCat',
+                'icon' => 'fa fa-plus'
             ],
             [
                 'name' => 'Lista',
                 'route' => null,
-                'modal' => 'modal_list_cat'
+                'modal' => 'modal_list_cat',
+                'icon' => 'fa fa-list'
             ]
         ];
 

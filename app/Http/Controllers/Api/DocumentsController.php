@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Repositories\DocumentRepository;
 use App\Repositories\EventRepository;
+use App\Repositories\PersonRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -18,11 +19,16 @@ class DocumentsController extends Controller
      * @var EventRepository
      */
     private $eventRepository;
+    /**
+     * @var PersonRepository
+     */
+    private $personRepository;
 
-    public function __construct(DocumentRepository $repository, EventRepository $eventRepository)
+    public function __construct(DocumentRepository $repository, EventRepository $eventRepository, PersonRepository $personRepository)
     {
         $this->repository = $repository;
         $this->eventRepository = $eventRepository;
+        $this->personRepository = $personRepository;
     }
 
     public function index($id = null)
@@ -127,6 +133,13 @@ class DocumentsController extends Controller
         if (isset($data['file'])) {
 
             $data['event_id'] = isset($data['event_id']) || $data['event_id'] == "" ? $data['event_id'] : null;
+
+            if(isset($data['person_id']))
+            {
+                $org = $this->personRepository->findByField('id', $data['person_id'])->first()->church_id;
+
+                $data['church_id'] = $org;
+            }
 
             $file = $request->file('file');
 

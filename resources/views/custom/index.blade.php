@@ -81,6 +81,11 @@
                                                         <input type="hidden" value="{{ $table }}" id="table">
                                                         <input type="hidden" value="{{ $text_delete }}" id="text-delete">
 
+                                                        @if(isset($person_id))
+                                                            <input type="hidden" value="{{ $person_id }}" id="person_id">
+                                                        @endif
+
+
                                                         <div class="col-lg-3">
                                                             <a class="btn red btn-outline btn-circle btn-sm"
                                                                href="javascript:;" data-toggle="dropdown">
@@ -109,7 +114,7 @@
                                                                         <li>
                                                                             <a class="tool-action"
                                                                                     href="{{ route($btn["route"]) }}">
-                                                                                <i class="fa {{ $btn['icon'] }}"></i>
+                                                                                <i class="fa {{ $btn['icon'] }} font-blue"></i>
                                                                                 <span>{{ $btn["name"] }}</span>
                                                                             </a>
                                                                         </li>
@@ -232,16 +237,31 @@
                                                                             <td> {{ $item[$columns[4]] }}</td>
                                                                     @endif
 
+                                                                    @if(isset($deleted))
+                                                                            <td>
+                                                                                <a href="javascript:;" class="btn btn-success btn-circle btn-active-custom"
+                                                                                   id="btn-active-custom-{{ $item[$columns[0]] }}">
+                                                                                    <i class="fa fa-check"></i>
+                                                                                    Recuperar
+                                                                                </a>
 
+                                                                            </td>
 
+                                                                    @else
+                                                                        <td>
+                                                                            @if(isset($doc))
+                                                                                <a href="javascript:;" class="btn btn-success btn-circle btn-download-custom"
+                                                                                   id="btn-download-custom-{{ $item[$columns[0]] }}">
+                                                                                    <i class="fa fa-download"></i>
+                                                                                </a>
 
-                                                                    <td>
-                                                                        <a href="javascript:;" class="btn btn-danger btn-circle btn-del-custom"
-                                                                           id="btn-del-custom-{{ $item[$columns[0]] }}">
-                                                                            <i class="fa fa-trash"></i>
-                                                                        </a>
-                                                                    </td>
-
+                                                                            <a href="javascript:;" class="btn btn-danger btn-circle btn-del-custom"
+                                                                               id="btn-del-custom-{{ $item[$columns[0]] }}">
+                                                                                <i class="fa fa-trash"></i>
+                                                                            </a>
+                                                                            @endif
+                                                                        </td>
+                                                                    @endif
 
                                                                 </tr>
                                                             @endforeach
@@ -284,6 +304,7 @@
         </div> <!-- FIM DIV .page-wrapper-middle -->
     </div> <!-- FIM DIV .page-wrapper-row full-height -->
 </div> <!-- FIM DIV .page-wrapper -->
+
 
 
 <!-- END CONTAINER -->
@@ -394,6 +415,8 @@
 
                         <option value="">Selecione</option>
 
+                        <option value="0">Todos</option>
+
                         @foreach($model_list as $item)
 
                             <option value="{{ $item->id }}">{{ $item->name }}</option>
@@ -423,7 +446,7 @@
     <div class="modal fade" id="upload" tabindex="-1" role="dialog" aria-labelledby="upload">
         <div class="modal-dialog" role="document">
 
-            <form class="modal-content" action="{{ route($table.'.upload') }}" enctype="multipart/form-data" method="post">
+            <form class="modal-content" id="form-file" action="{{ route($table.'.upload') }}" enctype="multipart/form-data" method="post">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title text-center" id="myModalLabel">Upload</h4>
@@ -450,10 +473,12 @@
 
 
                     <div style="margin: 0 auto">
-                        <button class="btn btn-success" id="btn-file">
+                        <a href="javascript:" class="btn btn-success" id="btn-file">
                             <i class="fa fa-file"></i>
                             Escolher Arquivo
-                        </button>
+                        </a>
+
+                        <span id="file-name"></span>
                     </div>
 
                     <input type="file" name="file" id="file" style="display: none;" required>
@@ -461,7 +486,7 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-success">
+                    <button type="submit" id="btn-sub-file" class="btn btn-success">
                         <i class="fa fa-check"></i>
                         Upload
                     </button>

@@ -22,7 +22,7 @@ class Document extends Model implements Transformable
      * @var array
      */
     protected $fillable = [
-        'name', 'type', 'created_by', 'deleted_by', 'event_id', 'path'
+        'name', 'type', 'created_by', 'deleted_by', 'event_id', 'path', 'church_id'
     ];
 
     protected $dates = ['deleted_at'];

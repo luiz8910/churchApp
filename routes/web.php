@@ -334,14 +334,23 @@ Route::group(['middleware' => 'auth'], function () {
         //Realiza o download de um arquivo
         Route::get('/doc-download/{id}', 'DocumentsController@download')->name('documents.download');
 
+        //Redireciona para o download
+        Route::get('/redirect-download/{id}', 'DocumentsController@redirectDownload')->name('documents.download.redirect');
+
         //Realiza a exclusão de um arquivo
-        Route::delete('/doc/{file_id}/{person_id}', 'DocumentsController@delete')->name('documents.delete');
+        Route::delete('/documents/{file_id}/{person_id}', 'Api\DocumentsController@delete')->name('documents.delete');
 
         //Busca o arquivo pelo nome completo
-        Route::get('/doc-find/{name}', 'DocumentsController@find');
+        Route::get('/doc-find/{name}', 'Api\DocumentsController@find');
 
         //Busca o arquivo pelo nome no modo instant search
-        Route::get('/doc-search/{input}', 'DocumentsController@search');
+        Route::get('/doc-search/{input}', 'Api\DocumentsController@search');
+
+        //Exibe os documentos excluidos
+        Route::get('/docs-deleted', 'DocumentsController@deleted')->name('documents.deleted');
+
+        //Recupera o documento
+        Route::put('/documents-activate/{id}', 'DocumentsController@activate');
 
     });
 
