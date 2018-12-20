@@ -13,6 +13,7 @@ use App\Repositories\UserRepository;
 use App\Traits\ConfigTrait;
 use App\Traits\DateRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Laravel\Scout\Engines\AlgoliaEngine;
@@ -462,93 +463,108 @@ class SearchController extends Controller
 
     public function generalSearch($input, $table, $column = null)
     {
-        /*
+        try{
+            /*
          * Exibe todos os campos da tabela $table
          * na ordem correta para uso em custom.js
          */
-        $fields = DB::table('fields_search')
-                    ->where([
-                        'table' => $table
-                    ])->select('field')->orderBy('order')->get();
-
-        $select = [];
-
-        foreach ($fields as $field)
-        {
-            //Armazenando os nomes de colunas da table $table
-            $select[] = $field->field;
-        }
-
-        //Se alguma coluna for especificado na hora da request
-        if($column)
-        {
-            $data = DB::table($table)
+            $fields = DB::table('fields_search')
                 ->where([
-                    [$column, 'like', '%'.$input.'%'],
-                ])->select($select)->get();
-        }
-        //Coluna padrão name
-        else{
-            $data = DB::table($table)
-                ->where([
-                    ['name', 'like', '%'.$input.'%'],
-                ])->select($select)->get();
-        }
+                    'table' => $table
+                ])->select('field')->orderBy('order')->get();
 
+            $select = [];
 
-        $i = 0;
-
-        //Trabalha com cada resultado separadamente
-        foreach ($data as $item)
-        {
-            /*
-             * iteração com valor de $i menor que
-             * a qtde de colunas da tabela
-             */
-            while ($i < count($select))
+            foreach ($fields as $field)
             {
-                /*
-                 * É necessário verificar se a coluna em questão é
-                 * category_id, pois vamos tirar a id e colocar o nome
-                 * da categoria para ser exibido no Html
-                 */
-                if($select[$i] == 'category_id')
-                {
-                    //Procura o nome da tabela pai
-                    $parent = DB::table('parent_table')->where(['child' => $table])->first()->parent;
-
-                    //Se houver uma tabela pai
-                    if(count($parent) > 0)
-                    {
-                        //Troca de id para o nome da categoria
-                        $item->category_id = DB::table($parent)->where(['id' => $item->category_id])->first() ?
-                            DB::table($parent)->where(['id' => $item->category_id])->first()->name : 'Sem Categoria';
-
-                        //armazena o valor
-                        $arr[] = $item->category_id;
-                    }
-                }
-                else{
-                    /*
-                     * Informa ao js a coluna para exibir,
-                     * na ordem correta feita no select de fields_search
-                     */
-                    $arr[] = $item->$select[$i];
-                }
-
-                $i++;
+                //Armazenando os nomes de colunas da table $table
+                $select[] = $field->field;
             }
+
+            //Se alguma coluna for especificado na hora da request
+            if($column)
+            {
+                $data = DB::table($table)
+                    ->where([
+                        [$column, 'like', '%'.$input.'%'],
+                        ['deleted_at' => null]
+                    ])->select($select)->get();
+            }
+            //Coluna padrão name
+            else{
+                $data = DB::table($table)
+                    ->where([
+                        'deleted_at' => null,
+                        ['name', 'like', '%'.$input.'%'],
+                    ])->select($select)->get();
+            }
+
 
             $i = 0;
 
+            //Trabalha com cada resultado separadamente
+            foreach ($data as $item)
+            {
+                /*
+                 * iteração com valor de $i menor que
+                 * a qtde de colunas da tabela
+                 */
+                while ($i < count($select))
+                {
+                    /*
+                     * É necessário verificar se a coluna em questão é
+                     * category_id, pois vamos tirar a id e colocar o nome
+                     * da categoria para ser exibido no Html
+                     */
+                    if($select[$i] == 'category_id')
+                    {
+                        //Procura o nome da tabela pai
+                        $parent = DB::table('parent_table')->where(['child' => $table])->first()->parent;
 
+                        //Se houver uma tabela pai
+                        if(count($parent) > 0)
+                        {
+                            //Troca de id para o nome da categoria
+                            $item->category_id = DB::table($parent)->where(['id' => $item->category_id])->first() ?
+                                DB::table($parent)->where(['id' => $item->category_id])->first()->name : 'Sem Categoria';
+
+                            //armazena o valor
+                            $arr[] = $item->category_id;
+                        }
+                    }
+                    else{
+                        /*
+                         * Informa ao js a coluna para exibir,
+                         * na ordem correta feita no select de fields_search
+                         */
+                        $arr[] = $item->$select[$i];
+                    }
+
+                    $i++;
+                }
+
+                $i = 0;
+
+
+            }
+
+            if($table == 'documents')
+            {
+                $person_id = Auth::user()->person->id;
+
+                $person = Auth::user()->person->name;
+
+                return json_encode(['status' => true, 'data' => $arr, 'select' => $select, 'person_id' => $person_id, 'person' => $person]);
+            }
+            /*
+             * data = Dados coletados
+             * select = Nomes das colunas da tabela
+             */
+            return json_encode(['status' => true, 'data' => $arr, 'select' => $select]);
+
+        }catch (\Exception $e){
+            dd($e);
         }
-
-        /*
-         * data = Dados coletados
-         * select = Nomes das colunas da tabela
-         */
-        return json_encode(['status' => true, 'data' => $arr, 'select' => $select]);
     }
 
 

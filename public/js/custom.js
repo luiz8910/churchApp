@@ -1,10 +1,18 @@
 $(function(){
 
-    $("#btn-search").change(function () {
+    $("#btn-search").keyup(function () {
 
         if(this.value.length > 2)
         {
-            generalSearchInput(this.value);
+
+            if(location.pathname == '/doc')
+            {
+                searchDoc(this.value);
+            }
+            else{
+
+                generalSearchInput(this.value);
+            }
         }
     });
 
@@ -90,8 +98,8 @@ function generalSearchInput(input)
                     '<td>' + e.data[i + 4] + '</td>' +
                     '<td>' + e.data[i + 5] + '</td>' +
                     '<td>' +
-                    '<button class="btn btn-danger btn-sm btn-circle" title="Deseja Excluir o Membro"' +
-                    'onclick="sweetDeleteUser(' + e.data[i] + ')"' +
+                    '<button class="btn btn-danger btn-sm btn-circle" title="Deseja Excluir?"' +
+                    'onclick="deleteModel(' + e.data[i] + ')"' +
                     'id="btn-delete-' + e.data[i] + '">' +
                     '<i class="fa fa-trash"></i>' +
                     '<span class="hidden-xs hidden-sm"></span>' +
@@ -229,4 +237,73 @@ function activateModel(id)
 
         swal('Atenção', "Um erro ocorreu, tente novamente mais tarde", 'error');
     });
+}
+
+
+function searchDoc(input)
+{
+
+    var table = $("#table").val();
+
+    var request = $.ajax({
+        url: '/general-search/' + input + '/' + table,
+        method: 'GET',
+        dataType: 'json'
+    });
+
+    request.done(function (e) {
+        if (e.status) {
+
+            console.log(e.data);
+
+            var i = 0;
+
+            var tr = '';
+
+            //arr = [e.select[1]];
+
+            while (i < e.data.length) {
+
+                tr += '<tr id="tr-'+e.data[i]+'">' +
+                    '<td>' + e.data[i + 1] + '</td>' +
+                    '<td>' + e.data[i + 2] + '</td>' +
+                    '<td><a href="' + '/person/edit/' + e.person_id + '">' + e.person + '</a></td>' +
+                    '<td>' +
+                    '<button class="btn btn-success btn-sm btn-circle" title="Download" onclick="downloadDoc('+e.data[i]+')">'+
+                    '<i class="fa fa-download"></i>'+
+                    '</button>'+
+                    '<button class="btn btn-danger btn-sm btn-circle btn-del-custom" id="btn-del-custom-'+e.data[i]+'" title="Deseja Excluir o Documento?"' +
+                    ' onclick="sweetDelete('+e.data[i]+', '+e.person_id+')">'+
+                    '<i class="fa fa-trash"></i>' +
+                    '<span class="hidden-xs hidden-sm"></span>' +
+                    '</button>' +
+                    '</td>' +
+                    '</tr>';
+
+                i = i + e.select.length;
+            }
+
+            $("#loading-results").css('display', 'none');
+
+            $("thead").css('display', 'table-header-group');
+
+            $("#tbody-search").removeClass('hide').append(tr);
+        }
+        else {
+            $("#loading-results").css('display', 'none');
+            $("#p-zero").css('display', 'block');
+        }
+    });
+
+
+}
+
+function downloadDoc(id)
+{
+    window.open('/redirect-download/' + id, '_blank');
+
+    setTimeout(function () {
+        window.close();
+    }, 5000);
+
 }

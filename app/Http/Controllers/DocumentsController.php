@@ -96,7 +96,7 @@ class DocumentsController extends Controller
 
         return view('custom.index', compact('model', 'th',
             'buttons', 'title', 'table', 'columns', 'text_delete',
-            'title_modal', 'model_list', 'search_not_ready', 'doc', 'person_id'));
+            'title_modal', 'model_list', 'doc', 'person_id'));
 
     }
 
