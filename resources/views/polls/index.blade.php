@@ -10,8 +10,8 @@
 <!-- BEGIN HEAD -->
 
 <head>
-    @include('includes.head')
-            <!-- BEGIN PAGE LEVEL PLUGINS -->
+@include('includes.head')
+<!-- BEGIN PAGE LEVEL PLUGINS -->
     <link href="assets/global/plugins/datatables/datatables.min.css" rel="stylesheet" type="text/css"/>
     <link href="assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css" rel="stylesheet"
           type="text/css"/>
@@ -26,12 +26,12 @@
     <div class="page-wrapper-row">
         <div class="page-wrapper-top">
             <!-- BEGIN HEADER -->
-            @if(!isset($church_id) || $church_id == null)
+        @if(!isset($church_id) || $church_id == null)
             @include('includes.header')
-            @else
+        @else
             @include('includes.header-edit')
-            @endif
-                    <!-- END HEADER -->
+        @endif
+        <!-- END HEADER -->
         </div> <!-- FIM DIV.page-wrapper-top -->
     </div> <!-- FIM DIV.page-wrapper-row -->
 
@@ -68,7 +68,7 @@
                                                                     <input type="text" class="form-control"
                                                                            id="btn-search"
                                                                            placeholder="Digite 3 letras ou mais...">
-																				<span class="input-group-btn">
+                                                                    <span class="input-group-btn">
 																					<button class="btn btn-default"
                                                                                             type="button">
                                                                                         <i class="fa fa-search font-green"></i>
@@ -116,7 +116,7 @@
                                                                     @if($btn["route"])
                                                                         <li>
                                                                             <a class="tool-action"
-                                                                                    href="{{ route($btn["route"]) }}">
+                                                                               href="{{ route($btn["route"]) }}">
                                                                                 <i class="fa {{ $btn['icon'] }} font-blue"></i>
                                                                                 <span>{{ $btn["name"] }}</span>
                                                                             </a>
@@ -124,7 +124,7 @@
                                                                     @else
                                                                         <li>
                                                                             <a class="tool-action"
-                                                                                    href="javascript:;" id="{{ $btn['modal'] }}">
+                                                                               href="javascript:;" id="{{ $btn['modal'] }}">
                                                                                 <i class="fa {{ $btn['icon'] }} font-blue"></i>
                                                                                 <span>{{ $btn["name"] }}</span>
                                                                             </a>
@@ -136,46 +136,46 @@
                                                         </div>
 
 
-                                                            <!--<div class="col-lg-3">
-                                                                <a class="btn red btn-outline btn-circle btn-sm"
-                                                                   href="javascript:;" data-toggle="dropdown">
-                                                                    <i class="fa fa-share"></i>
-                                                                    <span class="hidden-xs"> Opções </span>
-                                                                    <i class="fa fa-angle-down"></i>
-                                                                </a>
-                                                                <ul class="dropdown-menu pull-right"
-                                                                    id="sample_3_tools">
-                                                                    <li>
-                                                                        <a href="javascript:;" id="print"
-                                                                           onclick="printDiv('printable-table')"
-                                                                           data-action="0" class="tool-action">
-                                                                            <i class="icon-printer"></i> Imprimir
-                                                                        </a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="javascript:;" data-action="1" class="tool-action">
-                                                                            <i class="icon-check"></i> Copiar</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="javascript:;" data-action="2"
-                                                                           onclick="printDiv('printable-table', 'pdf')"
-                                                                           class="tool-action">
-                                                                            <i class="icon-doc"></i> PDF</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="route($route.'.excel', ['format' => 'xls']) }}"
-                                                                           data-action="3" target="_blank"
-                                                                           class="tool-action">
-                                                                            <i class="icon-paper-clip"></i> Excel</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href=" route($route.'.excel', ['format' => 'csv']) }}"
-                                                                           data-action="4" target="_blank"
-                                                                           class="tool-action">
-                                                                            <i class="icon-cloud-upload"></i> CSV</a>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>-->
+                                                        <!--<div class="col-lg-3">
+                                                            <a class="btn red btn-outline btn-circle btn-sm"
+                                                               href="javascript:;" data-toggle="dropdown">
+                                                                <i class="fa fa-share"></i>
+                                                                <span class="hidden-xs"> Opções </span>
+                                                                <i class="fa fa-angle-down"></i>
+                                                            </a>
+                                                            <ul class="dropdown-menu pull-right"
+                                                                id="sample_3_tools">
+                                                                <li>
+                                                                    <a href="javascript:;" id="print"
+                                                                       onclick="printDiv('printable-table')"
+                                                                       data-action="0" class="tool-action">
+                                                                        <i class="icon-printer"></i> Imprimir
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <a href="javascript:;" data-action="1" class="tool-action">
+                                                                        <i class="icon-check"></i> Copiar</a>
+                                                                </li>
+                                                                <li>
+                                                                    <a href="javascript:;" data-action="2"
+                                                                       onclick="printDiv('printable-table', 'pdf')"
+                                                                       class="tool-action">
+                                                                        <i class="icon-doc"></i> PDF</a>
+                                                                </li>
+                                                                <li>
+                                                                    <a href="route($route.'.excel', ['format' => 'xls']) }}"
+                                                                       data-action="3" target="_blank"
+                                                                       class="tool-action">
+                                                                        <i class="icon-paper-clip"></i> Excel</a>
+                                                                </li>
+                                                                <li>
+                                                                    <a href=" route($route.'.excel', ['format' => 'csv']) }}"
+                                                                       data-action="4" target="_blank"
+                                                                       class="tool-action">
+                                                                        <i class="icon-cloud-upload"></i> CSV</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>-->
 
 
 
@@ -217,14 +217,16 @@
 
                                                                 <tr id="tr-{{ $item[$columns[0]] }}">
                                                                     @if(!isset($doc))
-                                                                        <td><img src="{{ $item[$columns[1]] }}"
-                                                                                 style="width: 50px; height: 50px;">
+                                                                        <td>
+                                                                            <a href="{{ route($table .'.edit', ['id' => $item[$columns[0]]]) }}">
+                                                                                {{ $item[$columns[1]] }}
+                                                                            </a>
                                                                         </td>
 
                                                                         <td>
 
-                                                                            <a href="{{ route($table . '.edit', ['id' => $item->id]) }}">
-                                                                                {{ $item[$columns[2]] }}</a>
+                                                                            <a href="{{ route('event.edit', ['id' => $item[$columns[2]]]) }}">
+                                                                                {{ $item->event_name }}</a>
 
                                                                         </td>
 
@@ -232,37 +234,37 @@
                                                                         <td> {{ $item[$columns[4]] }} </td>
                                                                         <td> {{ $item[$columns[5]] }}</td>
 
-                                                                        @else
-                                                                            <td>{{ $item[$columns[1]] }}</td>
+                                                                    @else
+                                                                        <td>{{ $item[$columns[1]] }}</td>
 
-                                                                            <td> {{ $item[$columns[2]] }} </td>
-                                                                            <td> {{ $item[$columns[3]] }} </td>
-                                                                            <td> {{ $item[$columns[4]] }}</td>
+                                                                        <td> {{ $item[$columns[2]] }} </td>
+                                                                        <td> {{ $item[$columns[3]] }} </td>
+                                                                        <td> {{ $item[$columns[4]] }}</td>
                                                                     @endif
 
                                                                     @if(isset($deleted))
-                                                                            <td>
-                                                                                <a href="javascript:;" class="btn btn-success btn-sm btn-circle btn-active-custom"
-                                                                                   id="btn-active-custom-{{ $item[$columns[0]] }}">
-                                                                                    <i class="fa fa-check"></i>
-                                                                                    Recuperar
-                                                                                </a>
+                                                                        <td>
+                                                                            <a href="javascript:;" class="btn btn-success btn-sm btn-circle btn-active-custom"
+                                                                               id="btn-active-custom-{{ $item[$columns[0]] }}">
+                                                                                <i class="fa fa-check"></i>
+                                                                                Recuperar
+                                                                            </a>
 
-                                                                            </td>
+                                                                        </td>
 
                                                                     @else
                                                                         <td>
-                                                                            @if(isset($doc))
-                                                                                <a href="javascript:;" class="btn btn-success btn-circle btn-download-custom"
-                                                                                   id="btn-download-custom-{{ $item[$columns[0]] }}">
-                                                                                    <i class="fa fa-download"></i>
+                                                                                <a href="javascript:;" class="btn btn-success btn-circle btn-clock"
+                                                                                   id="btn-clock-{{ $item[$columns[0]] }}">
+                                                                                    <i class="fa fa-clock-o"></i>
+                                                                                    Encerrar
                                                                                 </a>
 
-                                                                            <a href="javascript:;" class="btn btn-danger btn-circle btn-del-custom"
-                                                                               id="btn-del-custom-{{ $item[$columns[0]] }}">
-                                                                                <i class="fa fa-trash"></i>
-                                                                            </a>
-                                                                            @endif
+                                                                                <a href="javascript:;" class="btn btn-danger btn-circle btn-del"
+                                                                                   id="btn-del-{{ $item[$columns[0]] }}">
+                                                                                    <i class="fa fa-trash"></i>
+                                                                                    Excluir
+                                                                                </a>
                                                                         </td>
                                                                     @endif
 
@@ -313,7 +315,7 @@
 <!-- END CONTAINER -->
 @include('includes.footer')
 @include('includes.core-scripts')
-        <!-- BEGIN PAGE LEVEL PLUGINS -->
+<!-- BEGIN PAGE LEVEL PLUGINS -->
 <script src="assets/global/scripts/datatable.js" type="text/javascript"></script>
 <script src="assets/global/plugins/datatables/datatables.min.js" type="text/javascript"></script>
 <script src="assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js"
@@ -324,80 +326,81 @@
 <script src="assets/pages/scripts/table-datatables-buttons.min.js" type="text/javascript"></script>
 <script src="js/exhibitors.js" type="text/javascript"></script>
 <script src="js/custom.js" type="text/javascript"></script>
+<script src="js/polls.js" type="text/javascript"></script>
 <!-- END PAGE LEVEL SCRIPTS -->
 
 @if(isset($model_cat))
-<!-- Modal -->
-<div class="modal fade" id="new_cat" tabindex="-1" role="dialog" aria-labelledby="new_cat">
-    <div class="modal-dialog" role="document">
+    <!-- Modal -->
+    <div class="modal fade" id="new_cat" tabindex="-1" role="dialog" aria-labelledby="new_cat">
+        <div class="modal-dialog" role="document">
 
-        <form class="modal-content" action="{{ route($table . '.store.cat') }}" method="post">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title text-center" id="myModalLabel">Nova Categoria</h4>
-            </div>
+            <form class="modal-content" action="{{ route($table . '.store.cat') }}" method="post">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title text-center" id="myModalLabel">Nova Categoria</h4>
+                </div>
 
 
-            <div class="modal-body">
-                <input type="text" required class="form-control" name="name" placeholder="Nome da Categoria">
-            </div>
+                <div class="modal-body">
+                    <input type="text" required class="form-control" name="name" placeholder="Nome da Categoria">
+                </div>
 
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">
-                    <i class="fa fa-close"></i>
-                    Fechar
-                </button>
-                <button type="submit" class="btn btn-success">
-                    <i class="fa fa-check"></i>
-                    Salvar
-                </button>
-            </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        <i class="fa fa-close"></i>
+                        Fechar
+                    </button>
+                    <button type="submit" class="btn btn-success">
+                        <i class="fa fa-check"></i>
+                        Salvar
+                    </button>
+                </div>
 
-        </form>
+            </form>
+        </div>
     </div>
-</div>
 
 
-<div class="modal fade" id="list_cat" tabindex="-1" role="dialog" aria-labelledby="new_cat">
-    <div class="modal-dialog" role="document">
+    <div class="modal fade" id="list_cat" tabindex="-1" role="dialog" aria-labelledby="new_cat">
+        <div class="modal-dialog" role="document">
 
-        <form class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title text-center" id="myModalLabel">Lista de Categorias</h4>
-            </div>
+            <form class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title text-center" id="myModalLabel">Lista de Categorias</h4>
+                </div>
 
-            <div class="modal-body">
-                <table class="table table-hover table-light table-striped">
-                    <thead>
-                    <tr class="uppercase">
-                        <th> Nome</th>
-                    </tr>
-                    </thead>
+                <div class="modal-body">
+                    <table class="table table-hover table-light table-striped">
+                        <thead>
+                        <tr class="uppercase">
+                            <th> Nome</th>
+                        </tr>
+                        </thead>
 
-                    <tbody>
-                    <tr>
+                        <tbody>
+                        <tr>
 
-                        @foreach($model_cat as $category)
-                            <td>{{ $category->name }}</td>
-                        @endforeach
+                            @foreach($model_cat as $category)
+                                <td>{{ $category->name }}</td>
+                            @endforeach
 
-                    </tr>
+                        </tr>
 
-                    </tbody>
-                </table>
-            </div>
+                        </tbody>
+                    </table>
+                </div>
 
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">
-                    <i class="fa fa-close"></i>
-                    Fechar
-                </button>
-            </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        <i class="fa fa-close"></i>
+                        Fechar
+                    </button>
+                </div>
 
-        </form>
+            </form>
+        </div>
     </div>
-</div>
 @endif
 
 @if(isset($model_list))

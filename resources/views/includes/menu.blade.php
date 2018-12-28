@@ -168,6 +168,12 @@
                                 </a>
                             </li>
 
+                            <li>
+                                <a href="javascript:">
+                                    <i class="fa fa-info-circle"></i>
+                                    Enquetes
+                                </a>
+                            </li>
 
 
                         </ul>
@@ -202,6 +208,13 @@
                                 <a href="{{ route('documents.index') }}">
                                     <i class="fa fa-files-o"></i>
                                     Documentos
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="{{ route('polls.index') }}">
+                                    <i class="fa fa-info-circle"></i>
+                                    Enquetes
                                 </a>
                             </li>
                         </ul>

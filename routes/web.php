@@ -352,6 +352,27 @@ Route::group(['middleware' => 'auth'], function () {
         //Recupera o documento
         Route::put('/documents-activate/{id}', 'DocumentsController@activate');
 
+
+
+        //---------------------------------- Enquetes ------------------------------------------------------------------
+
+        Route::get('/enquetes/{event_id?}', 'PollController@index')->name('polls.index');
+
+        Route::get('/enquetes-criar/', 'PollController@create')->name('polls.create');
+
+        Route::post('/polls/', 'PollController@store')->name('polls.store');
+
+        Route::get('/enquetes-editar/{id}', 'PollController@edit')->name('polls.edit');
+
+        Route::put('/polls/{id}', 'PollController@update')->name('polls.update');
+
+        Route::get('/enquetes-expiradas/{id?}', 'PollController@expired')->name('polls.expired');
+
+        Route::get('/enquetes-excluidas/{id?}', 'PollController@deleted')->name('polls.deleted');
+
+        Route::delete('/delete-poll/{id}/{person_id}', 'PollController@delete');
+
+        Route::put('/expire-poll/{id}/{person_id}', 'PollController@expire');
     });
 
 
@@ -590,7 +611,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/searchable-models', 'SearchController@searchableModels');
 
-    Route::get('/general-search/{input}/{model}', 'SearchController@generalSearch');
+    Route::get('/general-search/{input}/{model}/{deleted?}/{column?}', 'SearchController@generalSearch');
 
     //Login Facebook
 

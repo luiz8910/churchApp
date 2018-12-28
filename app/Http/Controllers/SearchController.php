@@ -461,7 +461,7 @@ class SearchController extends Controller
         return json_encode(['status' => false]);
     }
 
-    public function generalSearch($input, $table, $column = null)
+    public function generalSearch($input, $table, $deleted = null, $column = null)
     {
         try{
             /*
@@ -484,19 +484,41 @@ class SearchController extends Controller
             //Se alguma coluna for especificado na hora da request
             if($column)
             {
-                $data = DB::table($table)
-                    ->where([
-                        [$column, 'like', '%'.$input.'%'],
-                        ['deleted_at' => null]
-                    ])->select($select)->get();
+                if($deleted)
+                {
+                    $data = DB::table($table)
+                        ->where([
+                            [$column, 'like', '%'.$input.'%'],
+                            ['deleted_at', '<>', null]
+                        ])->select($select)->get();
+                }
+                else{
+                    $data = DB::table($table)
+                        ->where([
+                            [$column, 'like', '%'.$input.'%'],
+                            ['deleted_at' => null]
+                        ])->select($select)->get();
+                }
+
             }
             //Coluna padrão name
             else{
-                $data = DB::table($table)
-                    ->where([
-                        'deleted_at' => null,
-                        ['name', 'like', '%'.$input.'%'],
-                    ])->select($select)->get();
+                if($deleted)
+                {
+                    $data = DB::table($table)
+                        ->where([
+                            ['deleted_at', '<>', null],
+                            ['name', 'like', '%'.$input.'%'],
+                        ])->select($select)->get();
+                }
+                else{
+                    $data = DB::table($table)
+                        ->where([
+                            'deleted_at' => null,
+                            ['name', 'like', '%'.$input.'%'],
+                        ])->select($select)->get();
+                }
+
             }
 
 

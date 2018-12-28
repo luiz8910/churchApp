@@ -92,11 +92,13 @@ class DocumentsController extends Controller
 
         $person_id = \Auth::getUser()->person->id;
 
+        $create = 'upload';
+
         $search_not_ready = $doc = true;
 
         return view('custom.index', compact('model', 'th',
             'buttons', 'title', 'table', 'columns', 'text_delete',
-            'title_modal', 'model_list', 'doc', 'person_id'));
+            'title_modal', 'model_list', 'doc', 'person_id', 'create'));
 
     }
 
@@ -194,7 +196,7 @@ class DocumentsController extends Controller
 
         return view('custom.index', compact('model', 'th',
             'buttons', 'title', 'table', 'columns', 'text_delete',
-            'title_modal', 'model_list', 'search_not_ready', 'doc', 'person_id', 'deleted'));
+            'title_modal', 'model_list', 'doc', 'person_id', 'deleted'));
     }
 
 

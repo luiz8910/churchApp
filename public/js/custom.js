@@ -5,7 +5,7 @@ $(function(){
         if(this.value.length > 2)
         {
 
-            if(location.pathname == '/doc')
+            if(location.pathname.search('doc') != -1)
             {
                 searchDoc(this.value);
             }
@@ -89,7 +89,7 @@ function generalSearchInput(input)
 
             while (i < e.data.length) {
 
-                tr += '<tr>' +
+                tr += '<tr id="tr-'+e.data[i]+'">' +
                     '<td>' +
                     '<img src="' + e.data[i + 1] + '" class="imgProfile img-circle">' +
                     '</td>' +
@@ -245,8 +245,17 @@ function searchDoc(input)
 
     var table = $("#table").val();
 
+    var deleted = $("#deleted").val();
+
+    var url = '/general-search/' + input + '/' + table;
+
+    if(deleted == 1)
+    {
+        url = '/general-search/' + input + '/' + table + '/' + true;
+    }
+
     var request = $.ajax({
-        url: '/general-search/' + input + '/' + table,
+        url: url,
         method: 'GET',
         dataType: 'json'
     });
@@ -254,13 +263,29 @@ function searchDoc(input)
     request.done(function (e) {
         if (e.status) {
 
-            console.log(e.data);
-
             var i = 0;
 
             var tr = '';
 
+            var button = '<button class="btn btn-success btn-sm btn-circle" title="Download" onclick="downloadDoc('+e.data[i]+')">'+
+                '<i class="fa fa-download"></i>'+
+                '</button>'+
+                '<button class="btn btn-danger btn-sm btn-circle btn-del-custom" id="btn-del-custom-'+e.data[i]+'" title="Deseja Excluir o Documento?"' +
+                ' onclick="sweetDelete('+e.data[i]+', '+e.person_id+')">'+
+                '<i class="fa fa-trash"></i>' +
+                '<span class="hidden-xs hidden-sm"></span>' +
+                '</button>';
+
+            var btn_recover = '<button class="btn btn-success btn-sm btn-circle" title="Recuperar" '+
+                            'onclick="sweetActivate('+e.data[i]+')" ><i class="fa fa-check"></i> Recuperar </button>';
+
+
             //arr = [e.select[1]];
+
+            if(deleted == 1)
+            {
+                button = btn_recover;
+            }
 
             while (i < e.data.length) {
 
@@ -269,14 +294,7 @@ function searchDoc(input)
                     '<td>' + e.data[i + 2] + '</td>' +
                     '<td><a href="' + '/person/edit/' + e.person_id + '">' + e.person + '</a></td>' +
                     '<td>' +
-                    '<button class="btn btn-success btn-sm btn-circle" title="Download" onclick="downloadDoc('+e.data[i]+')">'+
-                    '<i class="fa fa-download"></i>'+
-                    '</button>'+
-                    '<button class="btn btn-danger btn-sm btn-circle btn-del-custom" id="btn-del-custom-'+e.data[i]+'" title="Deseja Excluir o Documento?"' +
-                    ' onclick="sweetDelete('+e.data[i]+', '+e.person_id+')">'+
-                    '<i class="fa fa-trash"></i>' +
-                    '<span class="hidden-xs hidden-sm"></span>' +
-                    '</button>' +
+                        button +
                     '</td>' +
                     '</tr>';
 
