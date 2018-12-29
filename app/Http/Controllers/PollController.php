@@ -155,10 +155,10 @@ class PollController extends Controller
                 'icon' => 'fa fa-list'
             ],
             [
-                'name' => 'Enquetes Excluídas',
-                'route' => null,//'documents.deleted',
+                'name' => 'Enquetes',
+                'route' => 'polls.index',
                 'modal' => null,
-                'icon' => 'fa fa-trash-o'
+                'icon' => 'fa fa-info-circle'
             ]
 
 
@@ -313,5 +313,174 @@ class PollController extends Controller
         return json_encode([
             'status' => false
         ]);
+    }
+
+    public function edit($id)
+    {
+        $events = $this->eventRepository->findByField('church_id', $this->getUserChurch());
+
+        $model = $this->repository->findByField('id', $id)->first();
+
+        $itens = $this->itensRepository->findByField('polls_id', $id);
+
+        $itens = $itens->sortByDesc('id');
+
+        if(count($model) == 1)
+        {
+            $model->expires_in_time = date_format(date_create($model->expires_in), 'H:i');
+
+            $model->expires_in = date_format(date_create($model->expires_in), 'd/m/Y');
+
+            return view('polls.edit', compact('model', 'events', 'itens'));
+        }
+
+        return redirect()->back();
+    }
+
+    public function update(Request $request, $id)
+    {
+        $data = $request->only(['name', 'event_id', 'expires_in', 'expires_in_time']);
+
+        $opt = $request->has(['opt']) ? $request->only(['opt']) : null;
+
+        $date = $this->formatDateBD($data['expires_in']) . $data['expires_in_time'];
+
+        $data['expires_in'] = date_create($date);
+
+        if($data['expires_in'] < Carbon::now())
+        {
+            $request->session()->flash('error.msg', 'Data Inválida');
+
+            return redirect()->back();
+        }
+
+        $data['church_id'] = $this->getUserChurch();
+
+        unset($data['expires_in_time']);
+
+        $this->repository->update($data, $id);
+
+        $poll = [];
+
+        $poll['polls_id'] = $id;
+
+        if($opt)
+        {
+            foreach ($opt["opt"] as $item)
+            {
+                if(is_array($item))
+                {
+                    $poll['description'] = $item[key($item)];
+
+                    $this->itensRepository->update($poll, key($item));
+                }
+                else{
+                    $poll['description'] = $item;
+
+                    $this->itensRepository->create($poll);
+                }
+
+            }
+        }
+
+        $request->session()->flash('success.msg', 'Enquete alterado com sucesso');
+
+        return redirect()->route('polls.index');
+    }
+
+    public function deleteItem($id)
+    {
+        if($this->itensRepository->delete($id))
+        {
+            return json_encode(['status' => true]);
+        }
+
+        return json_encode(['status' => false]);
+    }
+
+    public function expired($event_id = null)
+    {
+        if($event_id)
+        {
+            $model = $this->repository->findWhere([
+                ['expires_in', '<', Carbon::now()],
+                'deleted_at' => null,
+                'status' => 'deactivated',
+                'event_id' => $event_id
+            ]);
+
+        }
+        else{
+
+            $model = $this->repository->findWhere([
+                ['expires_in', '<', Carbon::now()],
+                'deleted_at' => null,
+                'status' => 'deactivated'
+            ]);
+
+        }
+
+        $th = ['Nome', 'Evento', 'Criado Por', 'Status'];
+
+        $columns = ['id', 'name', 'event_id', 'created_by', 'status', ''];
+
+        $title = "Enquetes";
+
+        $title_modal = 'Lista de Eventos';
+
+        $table = 'polls';
+
+        $text_delete = "Deseja excluir a enquete selecionada?";
+
+        $model_list = $this->eventRepository->findByField('church_id', $this->getUserChurch());
+
+        $buttons = (object) [
+            [
+                'name' => 'Nova Enquete',
+                'route' => 'polls.create',
+                'modal' => null,
+                'icon' => 'fa fa-plus'
+            ],
+            [
+                'name' => 'Filtrar por evento',
+                'route' => null,
+                'modal' => 'list',
+                'icon' => 'fa fa-list'
+            ],
+            [
+                'name' => 'Enquetes',
+                'route' => 'polls.index',
+                'modal' => null,
+                'icon' => 'fa fa-info-circle'
+            ],
+            [
+                'name' => 'Enquetes Excluídas',
+                'route' => 'polls.deleted',
+                'modal' => null,
+                'icon' => 'fa fa-trash-o'
+            ]
+
+
+        ];
+
+        foreach ($model as $item)
+        {
+            $item->created_by = $this->personRepository->findByField('id', $item->created_by)->first()->name;
+
+            $item->event_name = null !== $item->event_id ?
+                $this->eventRepository->findByField('id', $item->event_id)->first()->name : 'Sem evento';
+
+            $item->status = $item->status == 'active' ? 'Coletando Respostas' : 'Desativada';
+        }
+
+        $person_id = \Auth::getUser()->person->id;
+
+        $search_not_ready = true;
+
+        $create = 'store';
+
+        return view('polls.index', compact('model', 'th',
+            'buttons', 'title', 'table', 'columns', 'text_delete', 'expired',
+            'title_modal', 'model_list', 'search_not_ready', 'person_id', 'create'));
     }
 }

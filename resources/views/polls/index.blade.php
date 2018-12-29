@@ -254,11 +254,13 @@
 
                                                                     @else
                                                                         <td>
-                                                                                <a href="javascript:;" class="btn btn-success btn-circle btn-clock"
-                                                                                   id="btn-clock-{{ $item[$columns[0]] }}">
-                                                                                    <i class="fa fa-clock-o"></i>
-                                                                                    Encerrar
-                                                                                </a>
+                                                                                @if(isset($expired))
+                                                                                    <a href="javascript:;" class="btn btn-success btn-circle btn-clock"
+                                                                                       id="btn-clock-{{ $item[$columns[0]] }}">
+                                                                                        <i class="fa fa-clock-o"></i>
+                                                                                        Encerrar
+                                                                                    </a>
+                                                                                @endif
 
                                                                                 <a href="javascript:;" class="btn btn-danger btn-circle btn-del"
                                                                                    id="btn-del-{{ $item[$columns[0]] }}">

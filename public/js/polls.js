@@ -14,6 +14,12 @@ $(function(){
         sweetDeletePoll(id);
     });
 
+    $(".btn-del-item").click(function () {
+        var id = this.id.replace('btn-del-item-', "");
+
+        sweetDeleteItem(id);
+    });
+
     $(".btn-clock").click(function () {
         console.log('clock');
         var id = this.id.replace('btn-clock-', "");
@@ -146,5 +152,44 @@ function expirePoll(id)
         console.log(e);
 
         swal('Erro', 'Verifique o console', 'error');
+    })
+}
+
+function deleteItem(id)
+{
+    var request = $.ajax({
+        url: '/delete-item-poll/' + id,
+        method: 'DELETE',
+        dataType: 'json'
+    });
+
+    request.done(function(e){
+        if(e.status){
+
+            swal('Sucesso', 'Você excluiu o item', 'success');
+
+            deleteOption(id);
+        }
+    })
+}
+
+function sweetDeleteItem(id)
+{
+    swal({
+        title: 'Atenção',
+        text: 'Deseja excluir o item selecionado',
+        type: 'error',
+        showCancelButton: true,
+        cancelButtonText: 'Cancelar',
+        confirmButtonText: 'Sim, Excluir',
+        confirmButtonClass: 'btn-danger',
+        closeOnConfirm: true,
+        closeOnCancel: true
+
+    }, function (isConfirm) {
+
+        if(isConfirm){
+            deleteItem(id);
+        }
     })
 }

@@ -356,23 +356,35 @@ Route::group(['middleware' => 'auth'], function () {
 
         //---------------------------------- Enquetes ------------------------------------------------------------------
 
+        //Lista de Enquetes, separação por eventos é opcional
         Route::get('/enquetes/{event_id?}', 'PollController@index')->name('polls.index');
 
+        //Criação de Enquete
         Route::get('/enquetes-criar/', 'PollController@create')->name('polls.create');
 
+        //Persistência de criação de enquete
         Route::post('/polls/', 'PollController@store')->name('polls.store');
 
+        //Alteração de Enquete
         Route::get('/enquetes-editar/{id}', 'PollController@edit')->name('polls.edit');
 
+        //Persistência de alteração de enquete
         Route::put('/polls/{id}', 'PollController@update')->name('polls.update');
 
+        //Lista de enquetes expiradas
         Route::get('/enquetes-expiradas/{id?}', 'PollController@expired')->name('polls.expired');
 
+        //Lista de enquetes excluidas
         Route::get('/enquetes-excluidas/{id?}', 'PollController@deleted')->name('polls.deleted');
 
+        //Persistência de exclusão de enquete
         Route::delete('/delete-poll/{id}/{person_id}', 'PollController@delete');
 
+        //Persistência de expiração de enquete
         Route::put('/expire-poll/{id}/{person_id}', 'PollController@expire');
+
+        //Persistência de exclusão de alternativa de enquete
+        Route::delete('/delete-item-poll/{id}', 'PollController@deleteItem');
     });
 
 
