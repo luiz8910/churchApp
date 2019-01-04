@@ -483,4 +483,25 @@ class PollController extends Controller
             'buttons', 'title', 'table', 'columns', 'text_delete', 'expired',
             'title_modal', 'model_list', 'search_not_ready', 'person_id', 'create'));
     }
+
+
+    public function report($id)
+    {
+
+        $poll = $this->repository->findByField('id', $id)->first();
+
+
+        if(count($poll) > 0)
+        {
+
+            return view('polls.report', compact('poll'));
+        }
+        else{
+
+            return view('polls.report');
+        }
+    }
+
+
+
 }

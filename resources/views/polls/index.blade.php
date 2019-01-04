@@ -262,10 +262,15 @@
                                                                                     </a>
                                                                                 @endif
 
+                                                                                <a href="{{ route('poll.report', ['id' => $item[$columns[0]]]) }}"
+                                                                                    class="btn btn-success btn-circle">
+                                                                                        <i class="fa fa-pie-chart"></i>
+                                                                                    </a>
+
                                                                                 <a href="javascript:;" class="btn btn-danger btn-circle btn-del"
                                                                                    id="btn-del-{{ $item[$columns[0]] }}">
                                                                                     <i class="fa fa-trash"></i>
-                                                                                    Excluir
+                                                                                    
                                                                                 </a>
                                                                         </td>
                                                                     @endif

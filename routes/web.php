@@ -385,6 +385,10 @@ Route::group(['middleware' => 'auth'], function () {
 
         //Persistência de exclusão de alternativa de enquete
         Route::delete('/delete-item-poll/{id}', 'PollController@deleteItem');
+
+        //Resultados da enquete
+        Route::get('/poll-report/{id}', 'PollController@report')->name('poll.report');
+        
     });
 
 
