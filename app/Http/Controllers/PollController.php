@@ -6,7 +6,7 @@ use App\Repositories\EventRepository;
 use App\Repositories\PersonRepository;
 use App\Repositories\PollItensRepository;
 use App\Repositories\PollRepository;
-use App\Repositories\AnswerRepository;
+use App\Repositories\PollAnswerRepository;
 use App\Traits\ConfigTrait;
 use App\Traits\DateRepository;
 use Carbon\Carbon;
@@ -36,7 +36,7 @@ class PollController extends Controller
     private $answerRepository;
 
     public function __construct(PollRepository $repository, PollItensRepository $itensRepository,
-                                EventRepository $eventRepository, PersonRepository $personRepository, AnswerRepository $answerRepository)
+                                EventRepository $eventRepository, PersonRepository $personRepository, PollAnswerRepository $answerRepository)
     {
         $this->repository = $repository;
         $this->itensRepository = $itensRepository;

@@ -69,6 +69,8 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(\App\Repositories\PollRepository::class, \App\Repositories\PollRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\PollItensRepository::class, \App\Repositories\PollItensRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\PollAnswerRepository::class, \App\Repositories\PollAnswerRepositoryEloquent::class);
+        $this->app->bind(\App\Repositories\AnswerRepositoryRepository::class, \App\Repositories\AnswerRepositoryRepositoryEloquent::class);
+        $this->app->bind(\App\Repositories\AnswerRepository::class, \App\Repositories\AnswerRepositoryEloquent::class);
         //:end-bindings:
     }
 }

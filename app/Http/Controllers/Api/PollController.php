@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Repositories\ItensRepository;
-use App\Repositories\AnswerRepository;
+use App\Repositories\PollAnswerRepository;
 
 /**
  * 
@@ -13,7 +13,7 @@ class PollController extends Controller
 	private $answerRepository;
 	private $itensRepository;
 
-	function __construct(ItensRepository $itensRepository, AnswerRepository $answerRepository)
+	function __construct(ItensRepository $itensRepository, PollAnswerRepository $answerRepository)
 	{
 		$this->answerRepository = $answerRepository;
 		$this->itensRepository = $itensRepository;
