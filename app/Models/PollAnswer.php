@@ -20,7 +20,7 @@ class PollAnswer extends Model implements Transformable
      *
      * @var array
      */
-    protected $fillable = ['item_id', 'person_id'];
+    protected $fillable = ['item_id', 'person_id', 'polls_id'];
 
     protected $dates = ['deleted_at'];
 

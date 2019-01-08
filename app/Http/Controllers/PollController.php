@@ -6,6 +6,7 @@ use App\Repositories\EventRepository;
 use App\Repositories\PersonRepository;
 use App\Repositories\PollItensRepository;
 use App\Repositories\PollRepository;
+use App\Repositories\AnswerRepository;
 use App\Traits\ConfigTrait;
 use App\Traits\DateRepository;
 use Carbon\Carbon;
@@ -32,14 +33,19 @@ class PollController extends Controller
      */
     private $personRepository;
 
+    private $answerRepository;
+
     public function __construct(PollRepository $repository, PollItensRepository $itensRepository,
-                                EventRepository $eventRepository, PersonRepository $personRepository)
+                                EventRepository $eventRepository, PersonRepository $personRepository, AnswerRepository $answerRepository)
     {
         $this->repository = $repository;
         $this->itensRepository = $itensRepository;
         $this->eventRepository = $eventRepository;
         $this->personRepository = $personRepository;
+        $this->answerRepository = $answerRepository;
     }
+
+
 
     /**
      * @param null $event_id
@@ -123,6 +129,10 @@ class PollController extends Controller
 
     }
 
+
+
+
+
     public function deleted($event_id = null)
     {
         $org = $this->getUserChurch();
@@ -195,12 +205,20 @@ class PollController extends Controller
             'title_modal', 'model_list', 'search_not_ready', 'person_id', 'create'));
     }
 
+
+
+
+
     public function create()
     {
         $events = $this->eventRepository->findByField('church_id', $this->getUserChurch());
 
         return view('polls.create', compact('events'));
     }
+
+
+
+
 
     public function store(Request $request)
     {
@@ -262,6 +280,10 @@ class PollController extends Controller
         return redirect()->route('polls.index');
     }
 
+
+
+
+
     public function delete($id, $person_id)
     {
         $d['deleted_at'] = Carbon::now();
@@ -295,6 +317,11 @@ class PollController extends Controller
         ]);
     }
 
+
+
+
+
+
     public function expire($id, $person_id)
     {
         $x['status'] = 'deactivated';
@@ -314,6 +341,11 @@ class PollController extends Controller
             'status' => false
         ]);
     }
+
+
+
+
+
 
     public function edit($id)
     {
@@ -336,6 +368,12 @@ class PollController extends Controller
 
         return redirect()->back();
     }
+
+
+
+
+
+
 
     public function update(Request $request, $id)
     {
@@ -388,6 +426,13 @@ class PollController extends Controller
         return redirect()->route('polls.index');
     }
 
+
+
+
+
+
+
+
     public function deleteItem($id)
     {
         if($this->itensRepository->delete($id))
@@ -397,6 +442,12 @@ class PollController extends Controller
 
         return json_encode(['status' => false]);
     }
+
+
+
+
+
+
 
     public function expired($event_id = null)
     {
@@ -485,6 +536,11 @@ class PollController extends Controller
     }
 
 
+
+
+
+
+
     public function report($id)
     {
 
@@ -501,6 +557,10 @@ class PollController extends Controller
             return view('polls.report');
         }
     }
+
+
+
+
 
 
 

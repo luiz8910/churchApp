@@ -168,13 +168,6 @@
                                 </a>
                             </li>
 
-                            <li>
-                                <a href="javascript:">
-                                    <i class="fa fa-info-circle"></i>
-                                    Enquetes
-                                </a>
-                            </li>
-
 
                         </ul>
                     </li>

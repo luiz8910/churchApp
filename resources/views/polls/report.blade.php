@@ -68,7 +68,7 @@
                                 <div class="container">
                                     <!-- BEGIN PAGE TITLE -->
                                     <div class="page-title">
-                                        <h1> Resultados: {{ $poll->name }} </h1>
+                                        <h1> Resultados </h1>
                                     </div>
                                     <!-- END PAGE TITLE -->
 
@@ -100,7 +100,7 @@
                                                     <div class="portlet-title">
                                                         <div class="caption">
                                                             <i class=" icon-layers font-green"></i>
-                                                            <span class="caption-subject font-green bold uppercase">Donut Chart</span>
+                                                            <span class="caption-subject font-green bold uppercase">{{ $poll->name }}</span>
                                                         </div>
                                                         <div class="actions">
                                                             <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
