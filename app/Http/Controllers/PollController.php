@@ -536,21 +536,41 @@ class PollController extends Controller
     }
 
 
-
-
-
-
-
     public function report($id)
     {
 
         $poll = $this->repository->findByField('id', $id)->first();
 
+        $answer = $this->answerRepository->findByField('polls_id', $id); 
+
+        //dd($answer);
+        
+        $description = []; $result = []; $count = []; $ids = [];
+
+
+        foreach ($answer as $key) {
+            
+            $ids[] = $key->item_id;
+        }
+        
+        $itens = $this->itensRepository->findWhereIn('id', $ids);
+
+
+        foreach ($itens as $key)
+        {
+            $description[] = $key->description;
+
+            $result[] = count($this->answerRepository->findByField('item_id', $key->id));
+
+        }
+
+        //dd($result);
+
 
         if(count($poll) > 0)
         {
 
-            return view('polls.report', compact('poll'));
+            return view('polls.report', compact('poll', 'description', 'result'));
         }
         else{
 

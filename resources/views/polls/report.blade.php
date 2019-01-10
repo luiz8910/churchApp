@@ -72,6 +72,25 @@
                                     </div>
                                     <!-- END PAGE TITLE -->
 
+                                    <input type="hidden" id="poll-name" value="{{ $poll->name }}">
+
+                                    <?php $i = 0; ?>
+
+                                    @foreach($description as $desc)
+                                        <input type="hidden" class="itens" id="itens-{{ $i }}" value="{{ $desc }}">
+
+                                        <?php $i++; ?>
+
+                                    @endforeach
+
+                                    <?php $i = 0; ?>
+
+                                    @foreach($result as $r)
+                                        <input type="hidden" class="result" id="result-{{ $i }}" value="{{ $r }}">
+
+                                        <?php $i++; ?>
+
+                                    @endforeach
 
                                 </div>
                             </div>
@@ -722,7 +741,7 @@
         <script src="../assets/global/plugins/highcharts/js/highcharts.js" type="text/javascript"></script>
         <script src="../assets/global/plugins/highcharts/js/highcharts-3d.js" type="text/javascript"></script>
         <script src="../assets/global/plugins/highcharts/js/highcharts-more.js" type="text/javascript"></script>
-        <script src="../assets/pages/scripts/charts-highcharts.min.js" type="text/javascript"></script>
+        <script src="../js/polls-report.js" type="text/javascript"></script>
         <!--<script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>-->
     @else
         @include('includes.core-scripts-edit')
