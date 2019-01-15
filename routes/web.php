@@ -385,6 +385,10 @@ Route::group(['middleware' => 'auth'], function () {
 
         //Persistência de exclusão de alternativa de enquete
         Route::delete('/delete-item-poll/{id}', 'PollController@deleteItem');
+
+        //Resultados da enquete
+        Route::get('/poll-report/{id}', 'PollController@report')->name('poll.report');
+        
     });
 
 
@@ -700,6 +704,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('docs/documentos', function(){
         return view('docs.documents');
     })->name('docs.documents');
+
+    Route::get('docs/enquetes', function(){
+        return view('docs.polls');
+    })->name('docs.polls');
 
 
 //Login Twitter

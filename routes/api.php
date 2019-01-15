@@ -189,7 +189,7 @@ Route::put('/sponsors-categories/{category}', 'Api\SponsorController@update_cat'
 Route::delete('/sponsors-categories/{category}', 'Api\SponsorController@delete_cat');
 
 
-//---------------------------------- Documentos ----------------------------------------------------------------
+//---------------------------------- Documentos ---------------------------------------------------------------------------
 
 /*
  * Lista de todos os Documentos, se passado o parâmetro event_id,
@@ -212,6 +212,16 @@ Route::get('/doc-find/{name}', 'Api\DocumentsController@find');
 //Busca o arquivo pelo nome no modo instant search
 Route::get('/doc-search/{input}', 'Api\DocumentsController@search');
 
+
+
+//---------------------------------- Enquetes ------------------------------------------------------------------------------
+
+/*
+ * Escolhe uma alternativa da enquete.
+ * $id = id da alternativa escolhida, $person_id = id da pessoa que respondeu
+ */
+
+Route::post('/choose/{id}/{person_id}', 'Api\PollController@choose');
 
 //-------------------------- Outros ------------------------------------------------------------------------------------
 

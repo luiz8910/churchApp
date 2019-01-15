@@ -74,10 +74,10 @@
                     name: 'Homens casados sem filhos',
                     y: data[5]
                 }, {
-                    name: 'Mulher casada fora da igreja',
+                    name: 'Mulher casada fora da organização',
                     y: data[6]
                 }, {
-                    name: 'Homem casado fora da igreja',
+                    name: 'Homem casado fora da organização',
                     y: data[7]
                 },]
             }],

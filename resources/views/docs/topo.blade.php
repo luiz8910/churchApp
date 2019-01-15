@@ -47,6 +47,9 @@
             <li>
                 <a href="{{ route('docs.documents') }}">Documentos</a>
             </li>
+            <li>
+                <a href="{{ route('docs.polls') }}">Enquetes</a>
+            </li>
         </ul>
     </div>
 
