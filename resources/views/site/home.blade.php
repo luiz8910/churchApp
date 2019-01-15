@@ -102,7 +102,7 @@
     </div>
 </div>
 
-<div class="container-fluid px-xs-0 overflow-hidden">
+<!--<div class="container-fluid px-xs-0 overflow-hidden">
     <div class="container py-10">
         <div class="row">
             <div class="col-12">
@@ -160,7 +160,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>-->
 
     <div class="container-fluid py-10" id="container-carousel-app">
         <div class="container">
@@ -371,7 +371,7 @@
     </div>
 </div>
 
-<div class="container-fluid pt-sm-5 pt-5" id="pricings">
+<!--<div class="container-fluid pt-sm-5 pt-5" id="pricings">
     <div class="container pt-sm-5">
         <div class="row pt-sm-5">
             <div class="col-sm-8 pt-sm-5">
@@ -381,11 +381,11 @@
             </div>
         </div>
     </div>
-</div>
+</div>-->
 
 <div class="container" id="pricing-second">
     <div class="row">
-        <div class="col-sm-5 mx-auto mb-5" style="margin-top: 50px;">
+        <!--<div class="col-sm-5 mx-auto mb-5" style="margin-top: 50px;">
             <div class="btn-group pricing-options" data-toggle="buttons">
                 <?php $i = 0; ?>
                 @foreach($plans_types as $plan_type)
@@ -404,11 +404,11 @@
                     <input type="radio" name="options" id="option2" autocomplete="off"> Pago anualmente
                 </label>--}}
             </div>
-        </div>
+        </div>-->
     </div>
 
     <div class="row ">
-        @foreach($plans as $plan)
+        <!--@foreach($plans as $plan)
 
                 <div class="col-xs-12 col-lg-3 match-height mb-5 mb-sm-0 type-card type-id-{{ $plan->type_id }} mx-auto">
                     <div class="card-price text-xs-center">
@@ -451,7 +451,7 @@
                         </div>
                     </div>
                 </div>
-        @endforeach
+        @endforeach-->
 
 
         {{--<<div class="col-xs-12 col-lg-3 match-height mb-5 mb-sm-0">
