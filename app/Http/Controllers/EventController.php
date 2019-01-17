@@ -672,6 +672,13 @@ class EventController extends Controller
             if($data["frequency"] == $this->biweekly())
             {
                 $firstDay = substr($data['eventDate'], 8, 2);
+                
+                if(!isset($data['day']))
+                {
+	                $request->session()->flash('invalidDate', 'Data do Próximo evento está inválida');
+
+                    return redirect()->back()->withInput();
+                }
 
                 if($data['day'][0] != $firstDay)
                 {
