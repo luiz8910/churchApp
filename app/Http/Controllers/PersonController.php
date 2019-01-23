@@ -747,6 +747,24 @@ class PersonController extends Controller
 
         }
 
+        if($request->session()->has('new-responsible-exhibitors'))
+        {
+            DB::table('exhibitor_person')
+                ->where(['exhibitor_id' => $request->session()->get('new-responsible-exhibitors')])
+                ->delete();
+
+            DB::table('exhibitor_person')
+                ->insert([
+                    'exhibitor_id' => $request->session()->get('new-responsible-exhibitors'),
+                    'person_id' => $id,
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now(),
+                    'deleted_at' => null
+                ]);
+
+            $request->session()->forget('new-responsible-exhibitors');
+        }
+
         if($teen){
             Session::flash('teen.crud', 'Usuário '. $data['name'] . ' criado com sucesso');
             return redirect()->route('person.teen');

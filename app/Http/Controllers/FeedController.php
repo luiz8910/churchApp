@@ -269,4 +269,16 @@ class FeedController extends Controller
 
 
     }
+
+    public function exhibitorsFeed(Request $request)
+    {
+        $data = $request->all();
+
+        if($this->feedServices->newFeed(6, $data['text'], null, null, null, null, null, null, $data['event']))
+        {
+            return json_encode(['status' => true]);
+        }
+
+        return json_encode(['status' => false]);
+    }
 }

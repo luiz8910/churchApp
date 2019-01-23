@@ -136,6 +136,9 @@ Route::put('/exhibitors/{id}', 'Api\ExhibitorsController@update');
 //Exclusão de Expositores
 Route::delete('/exhibitors/{id}', 'Api\ExhibitorsController@delete');
 
+//Feed Para Expositores
+Route::post('/exhibitors-feed/', 'FeedController@exhibitorsFeed');
+
 
 
 //------------------------ Categorias de Expositores -------------------------------------------------------------------
