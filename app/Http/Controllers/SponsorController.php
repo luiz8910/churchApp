@@ -2,27 +2,36 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\PersonRepository;
 use App\Repositories\SponsorCategoryRepository;
 use App\Repositories\SponsorRepository;
 use App\Repositories\StateRepository;
+use App\Traits\ConfigTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class SponsorController extends Controller
 {
+    use ConfigTrait;
     
     private $categoriesRepository;
     
     private $repository;
    
     private $stateRepository;
+    /**
+     * @var PersonRepository
+     */
+    private $personRepository;
 
     public function __construct(SponsorCategoryRepository $categoriesRepository, SponsorRepository $repository,
-                                StateRepository $stateRepository)
+                                StateRepository $stateRepository, PersonRepository $personRepository)
     {
 
         $this->categoriesRepository = $categoriesRepository;
         $this->repository = $repository;
         $this->stateRepository = $stateRepository;
+        $this->personRepository = $personRepository;
     }
 
     //Lista de todos os patrocinadores
@@ -85,7 +94,9 @@ class SponsorController extends Controller
         //Variável para retirar o botão de "Inserir CEP da organização"
         $no_zip_button = true;
 
-        return view('sponsors.create', compact('categories', 'state', 'no_zip_button'));
+        $people = $this->personRepository->findByField('church_id', $this->getUserChurch());
+
+        return view('sponsors.create', compact('categories', 'state', 'no_zip_button', 'people'));
     }
 
     public function edit($id)
@@ -116,37 +127,87 @@ class SponsorController extends Controller
     //Cadastro de Patrocinadores
     public function store(Request $request)
     {
-        $data = $request->all();
+        try{
+            $data = $request->all();
 
-        if(isset($data['logo']))
+            $verifyFields = $this->verifyRequiredFields($data, 'sponsor');
+
+            if($verifyFields)
+            {
+
+                \Session::flash("error.required-fields", "Preencha o campo " . $verifyFields);
+
+                return redirect()->back()->withInput();
+
+            }
+
+            $redirect = false;
+
+            if(isset($data['new-responsible-sponsor']))
+            {
+                $redirect = true;
+
+                unset($data['new-responsible-sponsor']);
+            }
+
+            if(isset($data['logo']))
+            {
+                $file = $request->file('logo');
+
+                $name = $data['name'];
+
+                $imgName = 'uploads/sponsors/' . $name .'.' . $file->getClientOriginalExtension();
+
+                $file->move('uploads/sponsors/', $imgName);
+
+                $data['logo'] = $imgName;
+            }
+
+            $id = $this->repository->create($data)->id;
+
+            DB::commit();
+
+            if($redirect)
+            {
+                $request->session()->put('new-responsible-sponsor', $id);
+
+                return redirect()->route('person.create');
+            }
+            else
+            {
+                $request->session()->flash('success.msg', 'O Patrocinador foi cadastrado com sucesso');
+
+                return redirect()->route('sponsors.index');
+            }
+
+        }catch(\Exception $e)
         {
-            $file = $request->file('logo');
+            DB::rollback();
 
-            $name = $data['name'];
+            $request->session()->flash('error.msg', 'Um erro ocorreu, tente novamente mais tarde');
 
-            $imgName = 'uploads/sponsors/' . $name .'.' . $file->getClientOriginalExtension();
-
-            $file->move('uploads/sponsors/', $imgName);
-
-            $data['logo'] = $imgName;
+            return redirect()->route('sponsors.create');
         }
 
-        if($this->repository->create($data))
-        {
-            $request->session()->flash('success.msg', 'O Patrocinador foi cadastrado com sucesso');
 
-            return redirect()->route('sponsors.index');
-        }
 
-        $request->session()->flash('error.msg', 'Um erro ocorreu, tente novamente mais tarde');
-
-        return redirect()->route('sponsors.index');
     }
 
     //Alteração de Patrocinadores
     public function update(Request $request, $id)
     {
         $data = $request->all();
+
+        $verifyFields = $this->verifyRequiredFields($data, 'sponsor');
+
+        if($verifyFields)
+        {
+
+            \Session::flash("error.required-fields", "Preencha o campo " . $verifyFields);
+
+            return redirect()->back()->withInput();
+
+        }
 
         if(isset($data['logo']))
         {

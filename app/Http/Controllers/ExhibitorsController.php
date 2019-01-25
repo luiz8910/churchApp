@@ -150,6 +150,17 @@ class ExhibitorsController extends Controller
 
             $data['church_id'] = $this->getUserChurch();
 
+            $verifyFields = $this->verifyRequiredFields($data, 'exhibitor');
+
+            if($verifyFields)
+            {
+
+                \Session::flash("error.required-fields", "Preencha o campo " . $verifyFields);
+
+                return redirect()->back()->withInput();
+
+            }
+
             $redirect = false;
 
             if(isset($data['new-responsible']))
@@ -196,10 +207,6 @@ class ExhibitorsController extends Controller
             return redirect()->route('exhibitors.index');
         }
 
-
-
-
-
     }
 
     //Alteração de Expositores
@@ -207,6 +214,17 @@ class ExhibitorsController extends Controller
     {
         try{
             $data = $request->all();
+
+            $verifyFields = $this->verifyRequiredFields($data, 'sponsor');
+
+            if($verifyFields)
+            {
+
+                \Session::flash("error.required-fields", "Preencha o campo " . $verifyFields);
+
+                return redirect()->back()->withInput();
+
+            }
 
             $redirect = false;
 

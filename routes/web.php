@@ -824,4 +824,6 @@ Route::get('api-teste', function(){
 
 Route::get('basic-config', 'ChurchController@setBasicConfig');
 
+Route::get('prod-changes', 'ChurchController@sendChangesProd');
+
 
