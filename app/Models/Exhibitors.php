@@ -22,7 +22,8 @@ class Exhibitors extends Model implements Transformable
      * @var array
      */
     protected $fillable = ['name', 'description', 'site', 'tel', 'email', 'zipCode',
-        'street', 'number', 'neighborhood', 'city', 'state', 'logo', 'category_id'];
+        'street', 'number', 'neighborhood', 'city', 'state', 'logo', 'category_id', 'new-responsible', 'church_id'
+    ];
 
     protected $dates = ['deleted_at'];
 

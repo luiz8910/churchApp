@@ -83,6 +83,10 @@ class FeedServices
                 case 5:
                     $this->leaderFeed($id);
                     break;
+
+                case 6:
+                    $this->exhibitorFeed($id, $event);
+                    break;
             }
 
             DB::commit();
@@ -260,5 +264,41 @@ class FeedServices
         }
 
         return $feeds;
+    }
+
+
+    /*
+     * $id = id do feed
+     */
+    public function exhibitorFeed($id, $event)
+    {
+        $event = $this->eventRepository->findByField('id', $event)->first();
+
+        $church_id = $event->church_id;
+
+        $exs = DB::table('exhibitors')
+            ->where([
+                'church_id' => $church_id
+            ])->get();
+
+
+        foreach ($exs as $item)
+        {
+            $ep = DB::table('exhibitor_person')->where(['exhibitor_id' => $item->id])->first();
+
+            if(count($ep) == 1)
+            {
+                DB::table('feeds_user')
+                    ->insert([
+                        'person_id' => $ep->person_id,
+                        'feed_id' => $id,
+                        'created_at' => Carbon::now(),
+                        'updated_at' => Carbon::now()
+                    ]);
+            }
+
+        }
+
+
     }
 }

@@ -126,7 +126,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                 <div class="portlet-body form">
 
-                                    <form action="{{ route('sponsors.store') }}" method="post" enctype="multipart/form-data">
+                                    <form action="{{ route('sponsors.store') }}" id="form" method="post" enctype="multipart/form-data">
 
 
                                         <div class="form-body">
@@ -291,6 +291,46 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                             @include('includes.address-create')
 
+                                            <br>
+                                            <div class="caption caption-md">
+                                                <i class="icon-globe theme-font hide"></i>
+                                                <span class="caption-subject font-blue-madison bold uppercase">Adicionar Responsável</span>
+                                            </div>
+                                            <hr><br>
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="responsible">Responsável</label>
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon">
+                                                                <i class="fa fa-user font-blue"></i>
+                                                            </span>
+
+                                                            <select type="text" name="responsible" class="form-control selectpicker"
+                                                                    id="responsible" data-live-search="true">
+                                                                <option value="">Selecione</option>
+                                                                @foreach($people as $person)
+                                                                    <option value="{{ $person->id }}">{{ $person->name }}</option>
+                                                                @endforeach
+                                                            </select>
+
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-3">
+                                                    <button class="btn btn-info" style="margin-top: 24px" onclick="addResponsible('new-responsible-sponsor');">
+                                                        <i class="fa fa-plus"></i>
+                                                        Adicionar Responsável
+                                                    </button>
+                                                </div>
+
+                                                <div id="div-responsible">
+
+                                                </div>
+                                            </div>
                                         </div>
 
 
@@ -914,6 +954,7 @@ License: You must have a valid license purchased only from themeforest(the above
 @include('includes.core-scripts')
 <script src="../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js" type="text/javascript"></script>
 <script src="../assets/global/plugins/bootstrap-select/js/bootstrap-select.min.js" type="text/javascript"></script>
+<script src="../js/sponsor.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.repeater/1.2.1/jquery.repeater.min.js"></script>
 <script>
     $(document).ready(function () {

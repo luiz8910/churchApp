@@ -258,10 +258,15 @@
                                                                                     <i class="fa fa-download"></i>
                                                                                 </a>
 
-                                                                            <a href="javascript:;" class="btn btn-danger btn-circle btn-del-custom"
-                                                                               id="btn-del-custom-{{ $item[$columns[0]] }}">
-                                                                                <i class="fa fa-trash"></i>
-                                                                            </a>
+                                                                                <a href="javascript:;" class="btn btn-danger btn-circle btn-del-custom"
+                                                                                   id="btn-del-custom-{{ $item[$columns[0]] }}">
+                                                                                    <i class="fa fa-trash"></i>
+                                                                                </a>
+                                                                            @else
+                                                                                <a href="javascript:;" class="btn btn-danger btn-circle btn-del-custom"
+                                                                                   id="btn-del-custom-{{ $item[$columns[0]] }}">
+                                                                                    <i class="fa fa-trash"></i>
+                                                                                </a>
                                                                             @endif
                                                                         </td>
                                                                     @endif

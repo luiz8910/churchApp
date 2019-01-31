@@ -418,6 +418,50 @@
             </div>
         </div>
 
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Feed de Patrocinadores</h3>
+                    </div>
+
+                    <div class="panel-body">
+
+                        https://beconnect.com.br/api/sponsors-feed/
+                        <span class="label label-success">POST</span>
+
+                        <br>
+
+                        <p class="text-center">Lista de Parâmetros</p>
+
+                        <pre>
+                            Obrigatório
+                            <br><br>
+                            text = Texto a ser descrito <span class="label label-success" style="font-size: 12px;">String</span> <br><br>
+                            event = id do evento <span class="label label-info" style="font-size: 12px;">Inteiro</span> <br><br>
+
+                        </pre>
+
+
+                        <br><br>
+
+                        <p class="text-center">Exemplo de Retorno</p>
+
+                        <pre>
+
+                        {"status":true}
+
+                        ou
+
+                        {"status":false}
+
+                    </pre>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
 
 

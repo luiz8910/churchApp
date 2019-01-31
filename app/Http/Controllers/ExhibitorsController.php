@@ -5,11 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\Exhibitors;
 use App\Repositories\ExhibitorsCategoriesRepository;
 use App\Repositories\ExhibitorsRepository;
+use App\Repositories\PersonRepository;
 use App\Repositories\StateRepository;
+use App\Traits\ConfigTrait;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ExhibitorsController extends Controller
 {
+    use ConfigTrait;
     /**
      * @var ExhibitorsCategoriesRepository
      */
@@ -22,14 +27,19 @@ class ExhibitorsController extends Controller
      * @var StateRepository
      */
     private $stateRepository;
+    /**
+     * @var PersonRepository
+     */
+    private $personRepository;
 
     public function __construct(ExhibitorsCategoriesRepository $categoriesRepository, ExhibitorsRepository $repository,
-                                StateRepository $stateRepository)
+                                StateRepository $stateRepository, PersonRepository $personRepository)
     {
 
         $this->categoriesRepository = $categoriesRepository;
         $this->repository = $repository;
         $this->stateRepository = $stateRepository;
+        $this->personRepository = $personRepository;
     }
 
     //Lista de todos os expositores
@@ -92,7 +102,9 @@ class ExhibitorsController extends Controller
         //Variável para retirar o botão de "Inserir CEP da organização"
         $no_zip_button = true;
 
-        return view('exhibitors.create', compact('categories', 'state', 'no_zip_button'));
+        $people = $this->personRepository->findByField('church_id', $this->getUserChurch());
+
+        return view('exhibitors.create', compact('categories', 'state', 'no_zip_button', 'people'));
     }
 
     public function edit($id)
@@ -106,7 +118,16 @@ class ExhibitorsController extends Controller
 
         $model = $this->repository->findByField('id', $id)->first();
 
-        return view('exhibitors.edit', compact('categories', 'state', 'no_zip_button', 'model', 'id'));
+        $people = $this->personRepository->findByField('church_id', $this->getUserChurch());
+
+        $resp = DB::table('exhibitor_person')
+            ->where(['exhibitor_id' => $id])
+            ->first()
+            ->person_id;
+
+
+        return view('exhibitors.edit', compact('categories', 'state', 'no_zip_button',
+            'model', 'id', 'resp', 'people'));
     }
 
 
@@ -123,61 +144,162 @@ class ExhibitorsController extends Controller
     //Cadastro de Expositores
     public function store(Request $request)
     {
-        $data = $request->all();
+        try{
 
-        if(isset($data['logo']))
+            $data = $request->all();
+
+            $data['church_id'] = $this->getUserChurch();
+
+            $verifyFields = $this->verifyRequiredFields($data, 'exhibitor');
+
+            if($verifyFields)
+            {
+
+                \Session::flash("error.required-fields", "Preencha o campo " . $verifyFields);
+
+                return redirect()->back()->withInput();
+
+            }
+
+            $redirect = false;
+
+            if(isset($data['new-responsible']))
+            {
+                $redirect = true;
+
+                unset($data['new-responsible']);
+            }
+
+            if(isset($data['logo']))
+            {
+                $file = $request->file('logo');
+
+                $name = $data['name'];
+
+                $imgName = 'uploads/exhibitors/' . $name .'.' . $file->getClientOriginalExtension();
+
+                $file->move('uploads/exhibitors/', $imgName);
+
+                $data['logo'] = $imgName;
+            }
+
+            $id = $this->repository->create($data)->id;
+
+            if($redirect)
+            {
+                $request->session()->put('new-responsible-exhibitors', $id);
+
+                return redirect()->route('person.create');
+            }
+            else{
+
+                $request->session()->flash('success.msg', 'O Expositor foi cadastrado com sucesso');
+
+                return redirect()->route('exhibitors.index');
+            }
+
+        }catch (\Exception $e)
         {
-            $file = $request->file('logo');
+            DB::rollback();
 
-            $name = $data['name'];
-
-            $imgName = 'uploads/exhibitors/' . $name .'.' . $file->getClientOriginalExtension();
-
-            $file->move('uploads/exhibitors/', $imgName);
-
-            $data['logo'] = $imgName;
-        }
-
-        if($this->repository->create($data))
-        {
-            $request->session()->flash('success.msg', 'O Expositor foi cadastrado com sucesso');
+            $request->session()->flash('error.msg', $e->getMessage());
 
             return redirect()->route('exhibitors.index');
         }
 
-        $request->session()->flash('error.msg', 'Um erro ocorreu, tente novamente mais tarde');
-
-        return redirect()->route('exhibitors.index');
     }
 
     //Alteração de Expositores
     public function update(Request $request, $id)
     {
-        $data = $request->all();
+        try{
+            $data = $request->all();
 
-        if(isset($data['logo']))
-        {
-            $file = $request->file('logo');
+            $verifyFields = $this->verifyRequiredFields($data, 'sponsor');
 
-            $name = $data['name'];
+            if($verifyFields)
+            {
 
-            $imgName = 'uploads/exhibitors/' . $name .'.' . $file->getClientOriginalExtension();
+                \Session::flash("error.required-fields", "Preencha o campo " . $verifyFields);
 
-            $file->move('uploads/exhibitors/', $imgName);
+                return redirect()->back()->withInput();
 
-            $data['logo'] = $imgName;
-        }
+            }
 
-        if($this->repository->update($data, $id))
-        {
+            $redirect = false;
+
+            if(isset($data['new-responsible']))
+            {
+                $redirect = true;
+
+                unset($data['new-responsible']);
+            }
+
+            if(isset($data['logo']))
+            {
+                $file = $request->file('logo');
+
+                $name = $data['name'];
+
+                $imgName = 'uploads/exhibitors/' . $name .'.' . $file->getClientOriginalExtension();
+
+                $file->move('uploads/exhibitors/', $imgName);
+
+                $data['logo'] = $imgName;
+            }
+
+            $resp = DB::table('exhibitor_person')
+                ->where(['exhibitor_id' => $id])
+                ->first()
+                ->person_id;
+
+            if(isset($data['responsible']) && !$redirect)
+            {
+                if($data['responsible'] != $resp)
+                {
+                    DB::table('exhibitor_person')
+                        ->where(['exhibitor_id' => $id])
+                        ->delete();
+
+                    DB::table('exhibitor_person')
+                        ->insert([
+                            'exhibitor_id' => $id,
+                            'person_id' => $data['responsible'],
+                            'created_at' => Carbon::now(),
+                            'updated_at' => Carbon::now(),
+                            'deleted_at' => null
+                        ]);
+                }
+
+            }
+
+            unset($data['responsible']);
+
+            $this->repository->update($data, $id);
+
+            DB::commit();
+
+            if($redirect)
+            {
+                $request->session()->put('new-responsible-exhibitors', $id);
+
+                return redirect()->route('person.create');
+            }
+
             $request->session()->flash('success.msg', 'O Expositor foi atualizado com sucesso');
+
+            return redirect()->route('exhibitors.index');
+
+        }catch (\Exception $e){
+            DB::rollback();
+
+            $request->session()->flash('error.msg', $e->getMessage());
 
             return redirect()->route('exhibitors.index');
         }
 
-        $request->session()->flash('error.msg', 'Um erro ocorreu, tente novamente mais tarde');
 
-        return redirect()->route('exhibitors.index');
+
     }
 
     //Exclusão de Expositores
