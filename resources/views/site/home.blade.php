@@ -595,7 +595,7 @@
             <span class="footer-title">Contato</span>
             <ul class="footer-list list-unstyled">
                 <li>contato@beconnect.com.br</li>
-                <li>11.98765.8765</li>
+                <li>(11)99310 5830</li>
             </ul>
         </div>
         <div class="col-sm-3 pl-sm-5 mb-5">
