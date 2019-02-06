@@ -498,6 +498,44 @@
 
 
 
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Instant Search de Eventos</h3>
+                    </div>
+
+                    <div class="panel-body">
+
+                        https://beconnect.com.br/api/search-events/{input}
+                        <span class="label label-primary">GET</span>
+
+                        <br><br>
+                        input = texto digitado pelo usuário <span class="label label-success" style="font-size: 12px;">String</span>
+
+                        <br><br>
+
+                        <p class="text-center">Exemplo de Retorno</p>
+
+                        <br>
+
+                        <span class="label label-info text-center" style="font-size: 12px;">Exemplo de retorno se o usuário digitar a string "doc"</span>
+
+                        <pre>
+
+                        [
+                            {"id":2,"group_id":null,"name":"Evento Doc","createdBy_id":2,"eventDate":"15\/01\/2019","endEventDate":"15\/01\/2019",
+                            "startTime":"10:00","endTime":"15:00","frequency":"Quinzenal","day":"15","allDay":0,"description":"",
+                            "street":"Rua Jo\u00e3o Yukio Sugui","neighborhood":"Jardim Santa Madre Paulina","city":"Sorocaba",
+                            "zipCode":"18079-681","state":"SP","deleted_at":null,"created_at":"2018-12-17 10:05:16",
+                            "updated_at":"2018-12-17 10:05:18","church_id":3,"imgEvent":null,"day_2":"30","number":"123","check_auto":0}
+                        ]
+                    </pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
     </div>
 </div>

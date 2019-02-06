@@ -685,5 +685,29 @@ class EventController extends Controller
     }
 
 
+    public function searchEvents($input)
+    {
+        $events = DB::table('events')
+            ->where(
+                [
+                    ['name', 'like', '%'.$input.'%'],
+                    ['deleted_at', '=', null]
+                ]
+            )
+            ->limit(5)
+            ->orderBy('name', 'desc')
+            ->get();
+
+        foreach ($events as $event)
+        {
+            $event->eventDate = date_format(date_create($event->eventDate), "d/m/Y");
+
+            $event->endEventDate = date_format(date_create($event->endEventDate), "d/m/Y");
+        }
+
+        return $events;
+    }
+
+
 
 }
