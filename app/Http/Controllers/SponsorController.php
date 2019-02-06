@@ -7,6 +7,7 @@ use App\Repositories\SponsorCategoryRepository;
 use App\Repositories\SponsorRepository;
 use App\Repositories\StateRepository;
 use App\Traits\ConfigTrait;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -110,7 +111,23 @@ class SponsorController extends Controller
 
         $model = $this->repository->findByField('id', $id)->first();
 
-        return view('sponsors.edit', compact('categories', 'state', 'no_zip_button', 'model', 'id'));
+        $people = $this->personRepository->findByField('church_id', $this->getUserChurch());
+
+        $sp = DB::table('sponsor_person')
+            ->where([
+                'sponsor_id' => $id
+            ])->first();
+
+        if(count($sp) == 1)
+        {
+            $sp = $sp->person_id;
+        }
+        else{
+            $sp = false;
+        }
+
+        return view('sponsors.edit', compact('categories', 'state', 'no_zip_button',
+            'model', 'id', 'people', 'sp'));
     }
 
 
@@ -196,42 +213,120 @@ class SponsorController extends Controller
     //Alteração de Patrocinadores
     public function update(Request $request, $id)
     {
-        $data = $request->all();
+        try{
+            $data = $request->all();
 
-        $verifyFields = $this->verifyRequiredFields($data, 'sponsor');
+            $verifyFields = $this->verifyRequiredFields($data, 'sponsor');
 
-        if($verifyFields)
+            if($verifyFields)
+            {
+
+                \Session::flash("error.required-fields", "Preencha o campo " . $verifyFields);
+
+                return redirect()->back()->withInput();
+
+            }
+
+            if(isset($data['logo']))
+            {
+                $file = $request->file('logo');
+
+                $name = $data['name'];
+
+                $imgName = 'uploads/sponsors/' . $name .'.' . $file->getClientOriginalExtension();
+
+                $file->move('uploads/sponsors/', $imgName);
+
+                $data['logo'] = $imgName;
+            }
+
+            $redirect = false;
+
+            if(isset($data['new-responsible-sponsor']))
+            {
+                $redirect = true;
+
+                unset($data['new-responsible-sponsor']);
+            }
+
+            $this->repository->update($data, $id);
+
+            DB::commit();
+
+            if($data['responsible'] != "")
+            {
+                $sp = DB::table('sponsor_person')
+                    ->where('sponsor_id', $id)
+                    ->first();
+
+                //dd($data['responsible']);
+
+                if(count($sp) == 1)
+                {
+                    if($sp->person_id != $data['responsible'])
+                    {
+                        DB::table('sponsor_person')
+                            ->where('sponsor_id', $id)
+                            ->delete();
+
+                        DB::table('sponsor_person')
+                            ->insert([
+                                'sponsor_id' => $id,
+                                'person_id' => $data['responsible'],
+                                'created_at' => Carbon::now(),
+                                'updated_at' => Carbon::now(),
+                                'deleted_at' => null
+                            ]);
+
+                    }
+                }else{
+                    DB::table('sponsor_person')
+                        ->insert([
+                            'sponsor_id' => $id,
+                            'person_id' => $data['responsible'],
+                            'created_at' => Carbon::now(),
+                            'updated_at' => Carbon::now(),
+                            'deleted_at' => null
+                        ]);
+                }
+
+
+
+            }
+            else{
+
+                DB::table('sponsor_person')
+                    ->where('sponsor_id', $id)
+                    ->delete();
+
+            }
+
+
+
+            if($redirect)
+            {
+                $request->session()->put('new-responsible-sponsor', $id);
+
+                return redirect()->route('person.create');
+            }
+            else
+            {
+                $request->session()->flash('success.msg', 'O Patrocinador foi atualizado com sucesso');
+
+                return redirect()->route('sponsors.index');
+            }
+
+        }catch (\Exception $e)
         {
+            DB::rollback();
 
-            \Session::flash("error.required-fields", "Preencha o campo " . $verifyFields);
-
-            return redirect()->back()->withInput();
-
-        }
-
-        if(isset($data['logo']))
-        {
-            $file = $request->file('logo');
-
-            $name = $data['name'];
-
-            $imgName = 'uploads/sponsors/' . $name .'.' . $file->getClientOriginalExtension();
-
-            $file->move('uploads/sponsors/', $imgName);
-
-            $data['logo'] = $imgName;
-        }
-
-        if($this->repository->update($data, $id))
-        {
-            $request->session()->flash('success.msg', 'O Patrocinador foi atualizado com sucesso');
+            $request->session()->flash('error.msg', 'Um erro ocorreu, tente novamente mais tarde');
 
             return redirect()->route('sponsors.index');
         }
 
-        $request->session()->flash('error.msg', 'Um erro ocorreu, tente novamente mais tarde');
 
-        return redirect()->route('sponsors.index');
+
     }
 
     //Exclusão de Patrocinadores
