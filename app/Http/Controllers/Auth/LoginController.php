@@ -306,4 +306,43 @@ class LoginController extends Controller
         return redirect()->route('login.admin');
 
     }
+
+
+    public function newPassword(Request $request)
+    {
+        try{
+
+            $data = $request->all();
+
+            if(isset($data['password']) && $data['password'] == "")
+            {
+                return json_encode(['status' => false, 'msg' => 'Senha não enviada']);
+            }
+
+            if(isset($data['email']) && $data['email'] == "")
+            {
+                return json_encode(['status' => false, 'msg' => 'Email não enviado']);
+            }
+
+            $user = $this->userRepository->findByField('email', $data['email'])->first();
+
+            if(count($user) == 0)
+            {
+                return json_encode(['status' => false, 'msg' => 'Usuário não encontrado']);
+            }
+
+            $u['password'] = bcrypt($data['password']);
+
+            $this->userRepository->update($u, $user->id);
+
+            \DB::commit();
+
+            return json_encode(['status' => true]);
+
+        }catch (\Exception $e){
+            \DB::rollBack();
+
+            return json_encode(['status' => false, 'msg' => $e->getMessage()]);
+        }
+    }
 }

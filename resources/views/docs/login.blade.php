@@ -183,6 +183,44 @@
 
         <div class="row">
             <div class="col-md-12">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Nova Senha</h3>
+                    </div>
+                    <div class="panel-body">
+
+                        https://beconnect.com.br/api/new-password/
+                        <span class="label label-success">POST</span>
+
+                        <br><br>
+
+                        <p class="text-center">Exemplo de Lista de Parâmetros</p>
+
+                        <pre>
+                            password = [senha_aqui] (Obrigatório) <span class="label label-success">String</span>
+                            email = Email da pessoa (Obrigatório) <span class="label label-success">String</span>
+                        </pre>
+
+                        <p class="text-center">Exemplo de Retorno</p>
+
+                        <pre>
+                            {
+                                "status":true
+                            }
+
+                        Ou
+
+                            {"status":false, msg: '[mensagem de erro aqui]'}
+                    </pre>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
                 <div class="panel panel-info">
                     <div class="panel-heading">
                         <h3 class="panel-title">Recuperar Token (Login Social)</h3>
