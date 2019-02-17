@@ -709,5 +709,18 @@ class EventController extends Controller
     }
 
 
+    public function oldEvents($church_id = null)
+    {
+        $today = date_create();
+
+        $events = DB::table('events')
+            ->where([
+                ['endEventDate', '<', $today]
+            ]);
+
+        dd($events);
+    }
+
+
 
 }
