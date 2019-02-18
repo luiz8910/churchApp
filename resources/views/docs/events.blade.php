@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="../css/docs.css">
 
 
+
 </head>
 <body>
 
@@ -48,16 +49,107 @@
 <div class="content">
     <div class="container ">
 
-        <br><br>
+        @include('docs.label')
 
+
+        <br><br>
 
         <div class="row">
             <div class="col-md-12">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Informações de um evento específico</h3>
+                        <h3 class="panel-title">
+                            Eventos que o Usuário está inscrito
+                            <span class="span-btn-minimize" id="btn-minimize-person-subs">_</span>
+                        </h3>
+
                     </div>
-                    <div class="panel-body">
+                    <div class="panel-body hide-panel" id="person-subs">
+
+                        https://beconnect.com.br/api/person-subs/{person_id)}
+                        <span class="label label-primary">GET</span>
+
+                        <br><br>
+
+                        person_id = id da pessoa <span class="label label-info" style="font-size: 12px;">Inteiro</span>
+
+
+                        <br><br>
+
+                        <p class="text-center">Exemplo de Retorno</p>
+
+                        <pre>
+                            {"status":true,"events":[1,2]}
+
+                            senão houver eventos que o usuário participe
+
+                            {"status":false,"events": 0}
+                        </pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Eventos Antigos
+                            <span class="span-btn-minimize" id="btn-minimize-old-events">_</span>
+                        </h3>
+
+                    </div>
+                    <div class="panel-body hide-panel" id="old-events">
+
+                        https://beconnect.com.br/api/old-events/{church_id?}
+                        <span class="label label-primary">GET</span>
+
+                        <br><br>
+
+                        church_id = id da Organização (Opcional) <span class="label label-info" style="font-size: 12px;">Inteiro</span>
+
+
+                        <br><br>
+
+                        <p class="text-center">Exemplo de Retorno</p>
+
+                        <pre>
+                            {
+                              +"name": "Evento da API"
+                              +"id": 31
+                              +"event_date": "2018-04-04 10:00:00"
+                              +"group_id": "3"
+                              +"description":"Descrição"
+                              +"imgEvent":"uploads\/event\/33-Evento de Teste.jpg"
+                              +"endTime": ""
+                              +"street": "Rua Luzerne Proença Arruda"
+                              +"number": "137"
+                              +"city": "Sorocaba"
+                              +"frequency": "Semanal"
+                              +"deleted_at": null,
+                              +"lat": "-23.479", <---- latitude
+                              +"lng": "-47.455", <---- longitude
+                            }
+
+
+                    </pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Informações de um evento específico
+                            <span class="span-btn-minimize" id="btn-minimize-info-event">_</span>
+                        </h3>
+
+                    </div>
+                <div class="panel-body hide-panel" id="info-event">
 
                         https://beconnect.com.br/api/getEventInfo/{id}
                         <span class="label label-primary">GET</span>
@@ -96,14 +188,16 @@
             </div>
         </div>
 
-
         <div class="row">
             <div class="col-md-12">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Checkout</h3>
+                        <h3 class="panel-title">
+                            Checkout
+                            <span class="span-btn-minimize" id="btn-minimize-checkout">_</span>
+                        </h3>
                     </div>
-                    <div class="panel-body">
+                    <div class="panel-body hide-panel" id="checkout">
 
                         https://beconnect.com.br/api/checkout/{id}/{person_id}
                         <span class="label label-primary">GET</span>
@@ -141,9 +235,12 @@
             <div class="col-md-12">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Lista de Presença de um evento específico</h3>
+                        <h3 class="panel-title">
+                            Lista de Presença de um evento específico
+                            <span class="span-btn-minimize" id="btn-minimize-check-in-list">_</span>
+                        </h3>
                     </div>
-                    <div class="panel-body">
+                    <div class="panel-body hide-panel" id="check-in-list">
 
                         https://beconnect.com.br/api/getCheckinList/{id}
                         <span class="label label-primary">GET</span>
@@ -176,14 +273,16 @@
             </div>
         </div>
 
-
         <div class="row">
             <div class="col-md-12">
                 <div class="panel panel-success">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Cadastro de Evento</h3>
+                        <h3 class="panel-title">
+                            Cadastro de Evento
+                            <span class="span-btn-minimize" id="btn-minimize-store-event">_</span>
+                        </h3>
                     </div>
-                    <div class="panel-body">
+                    <div class="panel-body hide-panel" id="store-event">
 
                         https://beconnect.com.br/api/store-event/{person_id}
                         <span class="label label-success">POST</span>
@@ -228,16 +327,16 @@
             </div>
         </div>
 
-
-
-
         <div class="row">
             <div class="col-md-12">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Lista dos Próximos X eventos</h3>
+                        <h3 class="panel-title">
+                            Lista dos Próximos X eventos
+                            <span class="span-btn-minimize" id="btn-minimize-next-events">_</span>
+                        </h3>
                     </div>
-                    <div class="panel-body">
+                    <div class="panel-body hide-panel" id="next-events">
 
                         https://beconnect.com.br/api/next-events/{qtde}/{church}
                         <span class="label label-primary">GET</span>
@@ -290,14 +389,16 @@
             </div>
         </div>
 
-
         <div class="row">
             <div class="col-md-12">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Lista de Inscritos de um evento</h3>
+                        <h3 class="panel-title">
+                            Lista de Inscritos de um evento
+                            <span class="span-btn-minimize" id="btn-minimize-event-list-sub">_</span>
+                        </h3>
                     </div>
-                    <div class="panel-body">
+                    <div class="panel-body hide-panel" id="event-list-sub">
 
                         https://beconnect.com.br/api/event-list-sub/{id}
                         <span class="label label-primary">GET</span>
@@ -333,9 +434,12 @@
             <div class="col-md-12">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Remover inscrição de um evento</h3>
+                        <h3 class="panel-title">
+                            Remover inscrição de um evento
+                            <span class="span-btn-minimize" id="btn-minimize-unsubscribe">_</span>
+                        </h3>
                     </div>
-                    <div class="panel-body">
+                    <div class="panel-body hide-panel" id="unsubscribe">
 
                         https://beconnect.com.br/api/unsubscribe/{id}/{person_id}
                         <span class="label label-primary">GET</span>
@@ -372,9 +476,12 @@
             <div class="col-md-12">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Inscreve um usuário no evento</h3>
+                        <h3 class="panel-title">
+                            Inscreve um usuário no evento
+                            <span class="span-btn-minimize" id="btn-minimize-sub">_</span>
+                        </h3>
                     </div>
-                    <div class="panel-body">
+                    <div class="panel-body hide-panel" id="sub">
 
                         https://beconnect.com.br/api/sub/{id}/{person_id}
                         <span class="label label-primary">GET</span>
@@ -411,10 +518,13 @@
             <div class="col-md-12">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Lista de Eventos da Próxima Semana</h3>
+                        <h3 class="panel-title">
+                            Lista de Eventos da Próxima Semana
+                            <span class="span-btn-minimize" id="btn-minimize-events-next-week">_</span>
+                        </h3>
                     </div>
 
-                    <div class="panel-body">
+                    <div class="panel-body hide-panel" id="events-next-week">
 
                         https://beconnect.com.br/api/events-next-week/{church}
                         <span class="label label-primary">GET</span>
@@ -496,16 +606,17 @@
             </div>
         </div>
 
-
-
         <div class="row">
             <div class="col-md-12">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Instant Search de Eventos</h3>
+                        <h3 class="panel-title">
+                            Instant Search de Eventos
+                            <span class="span-btn-minimize" id="btn-minimize-search-events">_</span>
+                        </h3>
                     </div>
 
-                    <div class="panel-body">
+                    <div class="panel-body hide-panel" id="search-events">
 
                         https://beconnect.com.br/api/search-events/{input}
                         <span class="label label-primary">GET</span>
@@ -542,30 +653,7 @@
 
 
 
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"
-        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-        crossorigin="anonymous"></script>
+@include('docs.scripts')
 
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-    <script>
-        // When the user scrolls the page, execute myFunction
-        window.onscroll = function() {myFunction()};
-
-        // Get the header
-        var header = document.getElementById("myHeader");
-
-        // Get the offset position of the navbar
-        var sticky = header.offsetTop;
-
-        // Add the sticky class to the header when you reach its scroll position. Remove "sticky" when you leave the scroll position
-        function myFunction() {
-            if (window.pageYOffset >= sticky) {
-                header.classList.add("sticky");
-            } else {
-                header.classList.remove("sticky");
-            }
-        }
-    </script>
 </body>
 </html>

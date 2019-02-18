@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\EventRepository;
+use App\Repositories\EventSubscribedListRepository;
 use App\Repositories\FrequencyRepository;
 use App\Repositories\GroupRepository;
 use App\Repositories\PersonRepository;
@@ -63,12 +64,16 @@ class EventController extends Controller
      * @var ApiServices
      */
     private $apiServices;
+    /**
+     * @var EventSubscribedListRepository
+     */
+    private $listRepository;
 
     public function __construct(EventRepository $repository, EventServices $eventServices,
                                 PersonRepository $personRepository, UserRepository $userRepository,
                                 VisitorRepository $visitorRepository, GroupRepository $groupRepository,
                                 FrequencyRepository $frequencyRepository, AgendaServices $agendaServices,
-                                ApiServices $apiServices)
+                                ApiServices $apiServices, EventSubscribedListRepository $listRepository)
     {
 
         $this->repository = $repository;
@@ -80,6 +85,7 @@ class EventController extends Controller
         $this->frequencyRepository = $frequencyRepository;
         $this->agendaServices = $agendaServices;
         $this->apiServices = $apiServices;
+        $this->listRepository = $listRepository;
     }
 
 
@@ -713,12 +719,44 @@ class EventController extends Controller
     {
         $today = date_create();
 
-        $events = DB::table('events')
-            ->where([
-                ['endEventDate', '<', $today]
-            ]);
+        if($church_id)
+        {
+            $events = DB::table('events')
+                ->where([
+                    'church_id' => $church_id,
+                    ['endEventDate', '<', $today]
+                ])->get();
+        }
+        else{
 
-        dd($events);
+            $events = DB::table('events')
+                ->where([
+                    ['endEventDate', '<', $today]
+                ])->get();
+        }
+
+
+        return $events;
+    }
+
+    public function personSubs($person_id)
+    {
+        $list = $this->listRepository->findByField('person_id', $person_id);
+
+        $events = [];
+
+        if(count($list) > 0)
+        {
+            foreach ($list as $item)
+            {
+                $events[] = $item->event_id;
+            }
+
+            return json_encode(['status' => true, 'events' => $events]);
+        }
+
+        return json_encode(['status' => false, 'events' => 0]);
+
     }
 
 

@@ -71,6 +71,8 @@ Route::get('/search-events/{input}', 'Api\EventController@searchEvents');
 
 Route::get('/old-events/{church_id?}', 'Api\EventController@oldEvents');
 
+Route::get('/person-subs/{person_id}', 'Api\EventController@personSubs');
+
 
 
 

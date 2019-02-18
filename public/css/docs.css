@@ -42,3 +42,24 @@ body{
     border-color: #F8F8F8 !important;
     color: #777;
 }
+
+.span-btn-minimize{
+    float: right;
+    font-size: 30px;
+    margin-top: -25px;
+    cursor: pointer;
+}
+
+
+.hide-panel{
+    display: none;
+}
+
+.show-panel{
+    display: block;
+}
+
+.label-size{
+    font-size: 15px;
+}
+
