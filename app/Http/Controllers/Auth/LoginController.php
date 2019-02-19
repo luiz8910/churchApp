@@ -154,7 +154,13 @@ class LoginController extends Controller
                         'email' => $email,
                         'tel' => $person->tel,
                         'cel' => $person->cel,
-                        'imgProfile' => $person->imgProfile
+                        'imgProfile' => $person->imgProfile,
+                        'zipCode' => $person->zipCode,
+                        'street' => $person->street,
+                        'number' => $person->number,
+                        'neighborhood' => $person->neighborhood,
+                        'city' => $person->city,
+                        'state' => $person->state
                     ]);
                 }
             }
@@ -184,7 +190,13 @@ class LoginController extends Controller
                     'email' => $email,
                     'tel' => $person->tel,
                     'cel' => $person->cel,
-                    'imgProfile' => $person->imgProfile
+                    'imgProfile' => $person->imgProfile,
+                    'zipCode' => $person->zipCode,
+                    'street' => $person->street,
+                    'number' => $person->number,
+                    'neighborhood' => $person->neighborhood,
+                    'city' => $person->city,
+                    'state' => $person->state
                 ]);
             }
 

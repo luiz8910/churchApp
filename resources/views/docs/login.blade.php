@@ -55,9 +55,12 @@
             <div class="col-md-12">
                 <div class="panel panel-success">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Login</h3>
+                        <h3 class="panel-title">
+                            Login
+                            <span class="span-btn-minimize" id="btn-minimize-login">_</span>
+                        </h3>
                     </div>
-                    <div class="panel-body">
+                    <div class="panel-body hide-panel" id="login">
 
                         https://beconnect.com.br/api/login
                         <span class="label label-success">POST</span>
@@ -85,7 +88,13 @@
                                 "email": email@dominio.com,
                                 "tel": 15988837883,
                                 "cel": 15988837883,
-                                "imgProfile": "uploads/profile/1-Admin.png
+                                "imgProfile": "uploads/profile/1-Admin.png,
+                                "zipCode": "99999999",
+                                "street": "Rua do Admin",
+                                "number": "100",
+                                "neighborhood": "Bairro do Admin",
+                                "city": "Cidade Admin",
+                                "state": "SP"
                         }
 
                         Ou
@@ -105,9 +114,12 @@
             <div class="col-md-12">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Recuperação de Senha e envio de código</h3>
+                        <h3 class="panel-title">
+                            Recuperação de Senha e envio de código
+                            <span class="span-btn-minimize" id="btn-minimize-recover-password">_</span>
+                        </h3>
                     </div>
-                    <div class="panel-body">
+                    <div class="panel-body hide-panel" id="recover-password">
 
                         https://beconnect.com.br/api/recover-password/{email}
                         <span class="label label-primary">GET</span>
@@ -148,9 +160,12 @@
             <div class="col-md-12">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Recuperação de código</h3>
+                        <h3 class="panel-title">
+                            Recuperação de código
+                            <span class="span-btn-minimize" id="btn-minimize-get-code">_</span>
+                        </h3>
                     </div>
-                    <div class="panel-body">
+                    <div class="panel-body hide-panel" id="get-code">
 
                         https://beconnect.com.br/api/get-code/{code}
                         <span class="label label-primary">GET</span>
@@ -186,9 +201,12 @@
             <div class="col-md-12">
                 <div class="panel panel-success">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Nova Senha</h3>
+                        <h3 class="panel-title">
+                            Nova Senha
+                            <span class="span-btn-minimize" id="btn-minimize-new-password">_</span>
+                        </h3>
                     </div>
-                    <div class="panel-body">
+                    <div class="panel-body hide-panel" id="new-password">
 
                         https://beconnect.com.br/api/new-password/
                         <span class="label label-success">POST</span>
@@ -224,9 +242,12 @@
             <div class="col-md-12">
                 <div class="panel panel-info">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Recuperar Token (Login Social)</h3>
+                        <h3 class="panel-title">
+                            Recuperar Token (Login Social)
+                            <span class="span-btn-minimize" id="btn-minimize-get-social-token">_</span>
+                        </h3>
                     </div>
-                    <div class="panel-body">
+                    <div class="panel-body hide-panel" id="get-social-token">
 
                         https://beconnect.com.br/api/get-social-token/{token}
                         <span class="label label-primary">GET</span>
@@ -258,9 +279,12 @@
             <div class="col-md-12">
                 <div class="panel panel-info">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Login Social</h3>
+                        <h3 class="panel-title">
+                            Login Social
+                            <span class="span-btn-minimize" id="btn-minimize-login-social">_</span>
+                        </h3>
                     </div>
-                    <div class="panel-body">
+                    <div class="panel-body hide-panel" id="login-social">
 
                         <p class="text-center">Baixe o app de exemplo</p>
 
