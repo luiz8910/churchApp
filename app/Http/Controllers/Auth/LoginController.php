@@ -212,7 +212,7 @@ class LoginController extends Controller
     {
          $person = $this->personRepository->findByField('email', $email)->first();
 
-         if(count($person) == 1)
+         if($person)
          {
              if($this->codeServices->addCode($person))
              {
@@ -222,7 +222,7 @@ class LoginController extends Controller
          else{
              $user = $this->userRepository->findByField('email', $email)->first();
 
-             if(count($user) == 1)
+             if($user)
              {
                  $person = $this->personRepository->findByField('id', $user->person->id)->first();
 
@@ -338,7 +338,7 @@ class LoginController extends Controller
 
             $user = $this->userRepository->findByField('email', $data['email'])->first();
 
-            if(count($user) == 0)
+            if(!$user)
             {
                 return json_encode(['status' => false, 'msg' => 'Usuário não encontrado']);
             }

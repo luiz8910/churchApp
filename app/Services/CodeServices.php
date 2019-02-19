@@ -28,7 +28,7 @@ class CodeServices{
 
         $old = $this->codeRepository->findByField('code', $number)->first();
 
-        if(count($old) == 1)
+        if($old)
         {
             $this->codeRepository->delete($old->id);
         }
@@ -41,7 +41,7 @@ class CodeServices{
 
         $code['expires_in'] = date_format($tomorrow, 'Y-m-d H:i:s');
 
-        $code['email'] = $person->user->email;
+        $code['person_id'] = $person->id;
 
         if($this->codeRepository->create($code))
         {
@@ -65,7 +65,7 @@ class CodeServices{
     {
         $result = $this->codeRepository->findByField('code', $code)->first();
 
-        if(count($result) == 1)
+        if($result)
         {
             $now = date_create();
 
@@ -73,11 +73,11 @@ class CodeServices{
 
             if($exp > $now)
             {
-                $data['expires_in'] = date_create();
+                $data['expires_in'] = $now;
 
                 $this->codeRepository->update($data, $result->id);
 
-                return json_encode(['status' => true]);
+                return json_encode(['status' => true, 'person_id' => $result->person_id]);
             }
             else{
                 return $this->returnFalse('Código Expirado');

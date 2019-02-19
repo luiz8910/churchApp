@@ -20,6 +20,6 @@ class Code extends Model implements Transformable
      *
      * @var array
      */
-    protected $fillable = ['code', 'expires_in'];
+    protected $fillable = ['code', 'expires_in', 'person_id'];
 
 }
