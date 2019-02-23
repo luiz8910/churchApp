@@ -66,12 +66,13 @@
                     </div>
                     <div class="panel-body hide-panel" id="person-subs">
 
-                        https://beconnect.com.br/api/person-subs/{person_id)}
+                        https://beconnect.com.br/api/person-subs/{person_id)}/{church_id?}
                         <span class="label label-primary">GET</span>
 
                         <br><br>
 
-                        person_id = id da pessoa <span class="label label-info" style="font-size: 12px;">Inteiro</span>
+                        person_id = id da pessoa <span class="label label-info" style="font-size: 12px;">Inteiro</span><br>
+                        church_id = id da organização (Opcional) <span class="label label-info" style="font-size: 12px;">Inteiro</span>
 
 
                         <br><br>
@@ -79,7 +80,7 @@
                         <p class="text-center">Exemplo de Retorno</p>
 
                         <pre>
-                            {"status":true,"events":[1,2]}
+                            {"status":true,"events":[{"event_id":1,"church_id":1},{"event_id":2,"church_id":1}]}
 
                             senão houver eventos que o usuário participe
 

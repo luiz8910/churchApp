@@ -739,20 +739,35 @@ class EventController extends Controller
         return $events;
     }
 
-    public function personSubs($person_id)
+    public function personSubs($person_id, $church_id = null)
     {
         $list = $this->listRepository->findByField('person_id', $person_id);
 
-        $events = [];
+        $collection = collect([]);
 
-        if(count($list) > 0)
+        if($list)
         {
-            foreach ($list as $item)
+            if($church_id)
             {
-                $events[] = $item->event_id;
+                foreach ($list as $item)
+                {
+                    /*$collection = collect([
+                        ['account_id' => 1, 'product' => 'Desk'],
+                        ['account_id' => 2, 'product' => 'Chair'],
+                    ]);*/
+
+                    $collection[] = ['event_id' => $item->id, 'church_id' => $this->repository->find($item->id)->church_id];
+                }
+            }
+            else{
+
+                foreach ($list as $item)
+                {
+                    $collection[] = ['event_id' => $item->id];
+                }
             }
 
-            return json_encode(['status' => true, 'events' => $events]);
+            return json_encode(['status' => true, 'events' => $collection]);
         }
 
         return json_encode(['status' => false, 'events' => 0]);
