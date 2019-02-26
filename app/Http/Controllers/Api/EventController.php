@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Repositories\ChurchRepository;
 use App\Repositories\EventRepository;
 use App\Repositories\EventSubscribedListRepository;
 use App\Repositories\FrequencyRepository;
@@ -68,12 +69,17 @@ class EventController extends Controller
      * @var EventSubscribedListRepository
      */
     private $listRepository;
+    /**
+     * @var ChurchRepository
+     */
+    private $churchRepository;
 
     public function __construct(EventRepository $repository, EventServices $eventServices,
                                 PersonRepository $personRepository, UserRepository $userRepository,
                                 VisitorRepository $visitorRepository, GroupRepository $groupRepository,
                                 FrequencyRepository $frequencyRepository, AgendaServices $agendaServices,
-                                ApiServices $apiServices, EventSubscribedListRepository $listRepository)
+                                ApiServices $apiServices, EventSubscribedListRepository $listRepository,
+                                ChurchRepository $churchRepository)
     {
 
         $this->repository = $repository;
@@ -86,6 +92,7 @@ class EventController extends Controller
         $this->agendaServices = $agendaServices;
         $this->apiServices = $apiServices;
         $this->listRepository = $listRepository;
+        $this->churchRepository = $churchRepository;
     }
 
 
@@ -747,7 +754,7 @@ class EventController extends Controller
 
         if($list)
         {
-            if($church_id)
+            if($church_id && $this->churchRepository->findByField('id', $church_id)->first())
             {
                 foreach ($list as $item)
                 {
