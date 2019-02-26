@@ -752,7 +752,7 @@ class EventController extends Controller
 
         $collection = collect([]);
 
-        if($list)
+        if(count($list) > 0)
         {
             if($church_id && $this->churchRepository->findByField('id', $church_id)->first())
             {
