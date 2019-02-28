@@ -109,14 +109,19 @@ class FeedController extends Controller
         return json_encode($result);
     }
 
-    public function eventFeed($event, $text, $link = null, $expires_in = null, $feed_type = null)
+    public function eventFeed(Request $request)//$event, $text, $link = null, $expires_in = null, $feed_type = null
     {
         try {
             $dt = Carbon::now();
+
             $dt = $dt->addWeek();
 
-            $feed_type = $feed_type ? $feed_type : 1;
-            $expires_in = $expires_in ? $expires_in : $dt;
+            $data = $request->all();
+
+            $data['feed_type'] = $data['feed_type'] ? $data['feed_type'] : 1;
+            $data['expires_in'] = $data['expires_in'] ? $data['expires_in'] : $dt;
+            $data['text'] = $data['text'] ? $data['text'] : null;
+            $data['link'] = $data['link'] ? $data['link'] : null;
 
             $data['church_id'] = $this->getUserChurch();
 
@@ -125,11 +130,11 @@ class FeedController extends Controller
 
             $data['model'] = "events";
             $data['model_id'] = null;
-            $data['text'] = $text;
             $data['show'] = 1;
-            $data['feed_type'] = $feed_type;
-            $data['expires_in'] = $expires_in;
-            $data['link'] = $link;
+
+            $event = $data['event'];
+
+            unset($data['event']);
 
             $id = $this->repository->create($data)->id;
 
@@ -160,8 +165,10 @@ class FeedController extends Controller
             DB::commit();
 
             return json_encode(['status' => true]);
+
         } catch (\Exception $e) {
-            DB::rollback();
+
+            DB::rollBack();
 
             return json_encode(['status' => false, 'msg' => $e->getMessage()]);
         }

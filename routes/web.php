@@ -237,7 +237,7 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('/newFeed/{feed_notif}/{text}/{link}/{expires_in?}', 'FeedController@newFeed');
 
-        Route::get('/event-newFeed/{event}/{text}/{link?}/{expires_in?}', 'FeedController@eventFeed');
+        Route::post('/event-newFeed', 'FeedController@eventFeed')->name('event-newFeed');
 
         Route::get('/group-newFeed/{event}/{text}/{link?}/{expires_in?}', 'FeedController@groupFeed');
 
@@ -708,6 +708,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('docs/enquetes', function(){
         return view('docs.polls');
     })->name('docs.polls');
+
+    Route::get('docs/config', function(){
+        return view('docs.config');
+    })->name('docs.config');
 
 
 //Login Twitter

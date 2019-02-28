@@ -73,6 +73,14 @@ Route::get('/old-events/{church_id?}', 'Api\EventController@oldEvents');
 
 Route::get('/person-subs/{person_id}/{church_id?}', 'Api\EventController@personSubs');
 
+Route::put('/change-notif-activity', 'Api\EventController@changeNotifyActivity');
+
+Route::put('/change-notif-updates', 'Api\EventController@changeNotifyUpdates');
+
+Route::get('/notif-activity/{person_id}/{event_id}', 'Api\EventController@getNotifyActivity');
+
+Route::get('/notif-updates/{person_id}/{event_id}', 'Api\EventController@getNotifyUpdates');
+
 
 
 

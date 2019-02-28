@@ -27,6 +27,10 @@
 </li>
 
 <li>
+    <a href="{{ route('docs.config') }}">Configurações</a>
+</li>
+
+<li>
     <a href="{{ route('docs.check-in') }}">Check-in</a>
 </li>
 

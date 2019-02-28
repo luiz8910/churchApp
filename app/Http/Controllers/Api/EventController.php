@@ -763,7 +763,8 @@ class EventController extends Controller
                         ['account_id' => 2, 'product' => 'Chair'],
                     ]);*/
 
-                    $collection[] = ['event_id' => $item->id, 'church_id' => $this->repository->find($item->id)->church_id];
+                    $collection[] = ['event_id' => $item->id,
+                        'church_id' => $this->repository->findByField('id', $item->id)->first()->church_id];
                 }
             }
             else{
@@ -782,5 +783,174 @@ class EventController extends Controller
     }
 
 
+    public function changeNotifyActivity(Request $request)
+    {
+        $data = $request->only(['person_id', 'event_id', 'value']);
+
+        if(!isset($data['person_id']) || $data['person_id'] == '')
+        {
+            return json_encode(['status' => false, 'msg' => 'Campo person_id é nulo ou não existe']);
+        }
+
+        if(!isset($data['event_id']) || $data['event_id'] == '')
+        {
+            return json_encode(['status' => false, 'msg' => 'Campo event_id é nulo ou não existe']);
+        }
+
+        if(!isset($data['value']) || $data['value'] == '')
+        {
+            return json_encode(['status' => false, 'msg' => 'Campo value é nulo ou não existe']);
+        }
+
+        if($data['value'] != 0 && $data['value'] != 1)
+        {
+            return json_encode(['status' => false, 'msg' => 'Campo value pode ser 0 ou 1']);
+        }
+        else{
+
+            $person = $this->personRepository->findByField('id', $data['person_id'])->first();
+
+            if($person)
+            {
+                $event = $this->repository->findByField('id', $data['event_id'])->first();
+
+                if($event)
+                {
+                    $data['notification_activity'] = $data['value'];
+
+                    unset($data['value']);
+
+                    $id = $this->listRepository->findWhere(
+                        [
+                            'person_id' => $data['person_id'],
+                            'event_id' => $data['event_id']
+                        ])->first()->id;
+
+                    try{
+
+                        DB::beginTransaction();
+
+                        if($this->listRepository->update($data, $id))
+                        {
+                            DB::commit();
+
+                            return json_encode(['status' => true]);
+                        }
+
+                    }catch (\Exception $e)
+                    {
+                        DB::rollBack();
+
+                        return json_encode(['status' => false, 'msg' => $e->getMessage()]);
+                    }
+
+
+                }
+
+                return json_encode(['status' => false, 'msg' => 'Este evento não existe ou foi excluído']);
+            }
+
+
+            return json_encode(['status' => false, 'msg' => 'Este usuário não existe ou foi excluído']);
+
+        }
+    }
+
+    public function changeNotifyUpdates(Request $request)
+    {
+        $data = $request->only(['person_id', 'event_id', 'value']);
+
+        if(!isset($data['person_id']) || $data['person_id'] == '')
+        {
+            return json_encode(['status' => false, 'msg' => 'Campo person_id é nulo ou não existe']);
+        }
+
+        if(!isset($data['event_id']) || $data['event_id'] == '')
+        {
+            return json_encode(['status' => false, 'msg' => 'Campo event_id é nulo ou não existe']);
+        }
+
+        if(!isset($data['value']) || $data['value'] == '')
+        {
+            return json_encode(['status' => false, 'msg' => 'Campo value é nulo ou não existe']);
+        }
+
+        if($data['value'] != 0 && $data['value'] != 1)
+        {
+            return json_encode(['status' => false, 'msg' => 'Campo value pode ser 0 ou 1']);
+        }
+        else{
+
+            $person = $this->personRepository->findByField('id', $data['person_id'])->first();
+
+            if($person)
+            {
+                $event = $this->repository->findByField('id', $data['event_id'])->first();
+
+                if($event)
+                {
+                    $data['notification_updates'] = $data['value'];
+
+                    unset($data['value']);
+
+                    $id = $this->listRepository->findWhere(
+                        [
+                            'person_id' => $data['person_id'],
+                            'event_id' => $data['event_id']
+                        ])->first()->id;
+
+                    try{
+
+                        DB::beginTransaction();
+
+                        if($this->listRepository->update($data, $id))
+                        {
+                            DB::commit();
+
+                            return json_encode(['status' => true]);
+                        }
+
+                    }catch (\Exception $e)
+                    {
+                        DB::rollBack();
+
+                        return json_encode(['status' => false, 'msg' => $e->getMessage()]);
+                    }
+
+
+                }
+
+                return json_encode(['status' => false, 'msg' => 'Este evento não existe ou foi excluído']);
+            }
+
+
+            return json_encode(['status' => false, 'msg' => 'Este usuário não existe ou foi excluído']);
+
+        }
+    }
+
+    public function getNotifyActivity($person_id, $event_id)
+    {
+        $value = $this->listRepository->findWhere(
+            [
+                'person_id' => $person_id,
+                'event_id' => $event_id
+            ])->first()->notification_activity;
+
+        return json_encode(['status' => true, 'value' => $value]);
+
+    }
+
+    public function getNotifyUpdates($person_id, $event_id)
+    {
+        $value = $this->listRepository->findWhere(
+            [
+                'person_id' => $person_id,
+                'event_id' => $event_id
+            ])->first()->notification_updates;
+
+        return json_encode(['status' => true, 'value' => $value]);
+
+    }
 
 }
