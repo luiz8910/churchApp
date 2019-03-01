@@ -205,6 +205,82 @@
             </div>
         </div>
 
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Recuperar Permissão do usuário
+                            <span class="span-btn-minimize" id="btn-minimize-visibility-permissions">_</span>
+                        </h3>
+
+                    </div>
+                    <div class="panel-body hide-panel" id="visibility-permissions">
+
+                        https://beconnect.com.br/api/visibility-permissions/{person_id)}
+                        <span class="label label-primary">GET</span>
+
+                        <br><br>
+
+                        person_id = id da pessoa <span class="label label-info" style="font-size: 12px;">Inteiro</span><br>
+
+
+                        <br><br>
+
+                        <p class="text-center">Exemplo de Retorno</p>
+
+                        <pre>
+                            {"status":true, value: 0}} //Valor de retorno 0 ou 1
+
+                            se houver algum erro
+
+                            {"status":false,"msg": mensagem aqui}
+                        </pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-warning">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Mudar Permissões de Usuários
+                            <span class="span-btn-minimize" id="btn-minimize-change-visibility-permissions">_</span>
+                        </h3>
+
+                    </div>
+                    <div class="panel-body hide-panel" id="change-visibility-permissions">
+
+                        https://beconnect.com.br/api/change-visibility-permissions/
+                        <span class="label label-warning">PUT</span>
+
+                        <br><br>
+
+                        person_id = id da pessoa <span class="label label-info" style="font-size: 12px;">Inteiro</span><br>
+                        value = 1 ou 0 <span class="label label-info" style="font-size: 12px;">Inteiro</span>
+
+
+                        <br><br>
+
+                        <p class="text-center">Exemplo de Retorno</p>
+
+                        <pre>
+                            {"status":true}}
+
+                            se houver algum erro
+
+                            {"status":false,"msg": mensagem aqui}
+                        </pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
     </div>
 </div>
 

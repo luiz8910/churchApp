@@ -417,4 +417,72 @@ class PersonController extends Controller
         }
     }
 
+
+    public function getVisibilityPermissions($person_id)
+    {
+        $person = $this->repository->findByField('id', $person_id)->first();
+
+        if($person)
+        {
+            return json_encode(['status' => true, 'value' => $person->visibility]);
+        }
+
+        return json_encode(['status' => false, 'msg' => 'Usuário não encontrado']);
+    }
+
+    public function changeVisibilityPermissions(Request $request)
+    {
+        $data = $request->all();
+
+        if(!isset($data['person_id']) || $data['person_id'] == "")
+        {
+            return json_encode(['status' => false, 'msg' => 'Usuário não encontrado']);
+
+        }else{
+
+            $person = $this->repository->findByField('id', $data['person_id'])->first();
+
+            if(!$person)
+            {
+                return json_encode(['status' => false, 'msg' => 'Usuário não encontrado']);
+            }
+        }
+
+        if(!isset($data['value']) || $data['value'] == "")
+        {
+            return json_encode(['status' => false, 'msg' => 'Campo value não foi definido, valor deve ser 1 ou 0']);
+        }
+
+        if(!is_numeric($data['value']))
+        {
+            return json_encode(['status' => false, 'msg' => 'Campo value deve ser 1 ou 0']);
+        }
+
+        if($data['value'] != 0 && $data['value'] != 1)
+        {
+            return json_encode(['status' => false, 'msg' => 'Campo value deve ser 1 ou 0']);
+        }
+
+        $person_id = $data['person_id'];
+
+        $x['visibility'] = $data['value'];
+
+        try{
+            DB::beginTransaction();
+
+            if($this->repository->update($x, $person_id))
+            {
+                DB::commit();
+
+                return json_encode(['status' => true]);
+            }
+        }catch (\Exception $e){
+            DB::rollBack();
+
+            return json_encode(['status' => false, 'msg' => $e->getMessage()]);
+        }
+
+
+    }
+
 }
