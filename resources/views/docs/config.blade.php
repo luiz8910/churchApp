@@ -21,7 +21,7 @@
     <div class="jumbotron">
         <div class="container">
             <h1 class="text-center">Documentação (API)</h1>
-            <p class="text-center">Lista de Eventos</p>
+            <p class="text-center">Configurações</p>
 
         </div>
     </div>
