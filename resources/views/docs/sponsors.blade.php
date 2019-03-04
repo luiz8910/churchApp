@@ -51,10 +51,13 @@
             <div class="col-md-12">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Lista de Patrocinadores</h3>
+                        <h3 class="panel-title">
+                            Lista de Patrocinadores
+                            <span class="span-btn-minimize" id="btn-minimize-sponsors">_</span>
+                        </h3>
                     </div>
 
-                    <div class="panel-body">
+                    <div class="panel-body hide-panel" id="sponsors">
 
                         https://beconnect.com.br/api/sponsors
                         <span class="label label-primary">GET</span>
@@ -78,10 +81,13 @@
             <div class="col-md-12">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Lista de Patrocinadores por categoria</h3>
+                        <h3 class="panel-title">
+                            Lista de Patrocinadores por categoria
+                            <span class="span-btn-minimize" id="btn-minimize-sponsors-cat">_</span>
+                        </h3>
                     </div>
 
-                    <div class="panel-body">
+                    <div class="panel-body hide-panel" id="sponsors-cat">
 
                         https://beconnect.com.br/api/sponsors-cat/{category}
                         <span class="label label-primary">GET</span>
@@ -112,10 +118,13 @@
             <div class="col-md-12">
                 <div class="panel panel-success">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Cadastro de Patrocinadores</h3>
+                        <h3 class="panel-title">
+                            Cadastro de Patrocinadores
+                            <span class="span-btn-minimize" id="btn-minimize-sponsors-post">_</span>
+                        </h3>
                     </div>
 
-                    <div class="panel-body">
+                    <div class="panel-body hide-panel" id="sponsors-post">
 
                         https://beconnect.com.br/api/sponsors/
                         <span class="label label-success">POST</span>
@@ -169,10 +178,13 @@
             <div class="col-md-12">
                 <div class="panel panel-warning">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Alteração de Patrocinadores</h3>
+                        <h3 class="panel-title">
+                            Alteração de Patrocinadores
+                            <span class="span-btn-minimize" id="btn-minimize-sponsors-put">_</span>
+                        </h3>
                     </div>
 
-                    <div class="panel-body">
+                    <div class="panel-body hide-panel" id="sponsors-put">
 
                         https://beconnect.com.br/api/sponsors/{id}
                         <span class="label label-warning">PUT</span>
@@ -227,12 +239,15 @@
             <div class="col-md-12">
                 <div class="panel panel-danger">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Exclusão de Patrocinadores</h3>
+                        <h3 class="panel-title">
+                            Exclusão de Patrocinadores
+                            <span class="span-btn-minimize" id="btn-minimize-sponsors-delete">_</span>
+                        </h3>
                     </div>
 
-                    <div class="panel-body">
+                    <div class="panel-body hide-panel" id="sponsors-delete">
 
-                        https://beconnect.com.br/api/sponsors/{category}
+                        https://beconnect.com.br/api/sponsors/{id}
                         <span class="label label-danger">DELETE</span>
 
                         <br><br>
@@ -270,10 +285,13 @@
             <div class="col-md-12">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Lista de Categorias</h3>
+                        <h3 class="panel-title">
+                            Lista de Categorias
+                            <span class="span-btn-minimize" id="btn-minimize-sponsors-categories">_</span>
+                        </h3>
                     </div>
 
-                    <div class="panel-body">
+                    <div class="panel-body hide-panel" id="sponsors-categories">
 
                         https://beconnect.com.br/api/sponsors-categories
                         <span class="label label-primary">GET</span>
@@ -297,10 +315,13 @@
             <div class="col-md-12">
                 <div class="panel panel-success">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Cadastro de Categorias</h3>
+                        <h3 class="panel-title">
+                            Cadastro de Categorias
+                            <span class="span-btn-minimize" id="btn-minimize-sponsors-categories-post">_</span>
+                        </h3>
                     </div>
 
-                    <div class="panel-body">
+                    <div class="panel-body hide-panel" id="sponsors-categories-post">
 
                         https://beconnect.com.br/api/sponsors-categories
                         <span class="label label-success">POST</span>
@@ -343,10 +364,13 @@
             <div class="col-md-12">
                 <div class="panel panel-warning">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Alteração de Categoria</h3>
+                        <h3 class="panel-title">
+                            Alteração de Categoria
+                            <span class="span-btn-minimize" id="btn-minimize-sponsors-categories-put">_</span>
+                        </h3>
                     </div>
 
-                    <div class="panel-body">
+                    <div class="panel-body hide-panel" id="sponsors-categories-put">
 
                         https://beconnect.com.br/api/sponsors-categories/{category}
                         <span class="label label-warning">PUT</span>
@@ -389,10 +413,13 @@
             <div class="col-md-12">
                 <div class="panel panel-danger">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Exclusão de Categorias</h3>
+                        <h3 class="panel-title">
+                            Exclusão de Categorias
+                            <span class="span-btn-minimize" id="btn-minimize-sponsors-categories-delete">_</span>
+                        </h3>
                     </div>
 
-                    <div class="panel-body">
+                    <div class="panel-body hide-panel" id="sponsors-categories-delete">
 
                         https://beconnect.com.br/api/sponsors-categories/{category}
                         <span class="label label-danger">DELETE</span>
@@ -423,10 +450,13 @@
             <div class="col-md-12">
                 <div class="panel panel-success">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Feed de Patrocinadores</h3>
+                        <h3 class="panel-title">
+                            Feed de Patrocinadores
+                            <span class="span-btn-minimize" id="btn-minimize-sponsors-feed">_</span>
+                        </h3>
                     </div>
 
-                    <div class="panel-body">
+                    <div class="panel-body hide-panel" id="sponsors-feed">
 
                         https://beconnect.com.br/api/sponsors-feed/
                         <span class="label label-success">POST</span>

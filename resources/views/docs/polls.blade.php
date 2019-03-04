@@ -51,10 +51,13 @@
             <div class="col-md-12">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Responder Enquete</h3>
+                        <h3 class="panel-title">
+                            Responder Enquete
+                            <span class="span-btn-minimize" id="btn-minimize-choose">_</span>
+                        </h3>
                     </div>
 
-                    <div class="panel-body">
+                    <div class="panel-body hide-panel" id="choose">
 
                         https://beconnect.com.br/api/choose/{id}/{person_id}
                         <span class="label label-primary">GET</span>

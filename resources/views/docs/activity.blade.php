@@ -55,10 +55,13 @@
             <div class="col-md-12">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Grupos Recentes</h3>
+                        <h3 class="panel-title">
+                            Grupos Recentes
+                            <span class="span-btn-minimize" id="btn-minimize-recent-groups">_</span>
+                        </h3>
                     </div>
 
-                    <div class="panel-body">
+                    <div class="panel-body hide-panel" id="recent-groups">
 
                         https://beconnect.com.br/api/recent-groups/{church}
                         <span class="label label-primary">GET</span>
@@ -97,10 +100,13 @@
             <div class="col-md-12">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Eventos Recentes</h3>
+                        <h3 class="panel-title">
+                            Eventos Recentes
+                            <span class="span-btn-minimize" id="btn-minimize-recent-events">_</span>
+                        </h3>
                     </div>
 
-                    <div class="panel-body">
+                    <div class="panel-body hide-panel" id="recent-events">
 
                         https://beconnect.com.br/api/recent-events/{church}
                         <span class="label label-primary">GET</span>
@@ -151,10 +157,13 @@
             <div class="col-md-12">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Membros Recentes</h3>
+                        <h3 class="panel-title">
+                            Membros Recentes
+                            <span class="span-btn-minimize" id="btn-minimize-recent-people">_</span>
+                        </h3>
                     </div>
 
-                    <div class="panel-body">
+                    <div class="panel-body hide-panel" id="recent-people">
 
                         https://beconnect.com.br/api/recent-people/{church}
                         <span class="label label-primary">GET</span>

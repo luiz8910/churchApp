@@ -55,9 +55,12 @@
             <div class="col-md-12">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Lista de Todas as Igrejas</h3>
+                        <h3 class="panel-title">
+                            Lista de Todas as Igrejas
+                            <span class="span-btn-minimize" id="btn-minimize-church-list">_</span>
+                        </h3>
                     </div>
-                    <div class="panel-body">
+                    <div class="panel-body hide-panel" id="church-list">
 
                         https://beconnect.com.br/api/church-list
                         <span class="label label-primary">GET</span>

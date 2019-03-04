@@ -55,9 +55,12 @@
             <div class="col-md-12">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Informações de um grupo específico</h3>
+                        <h3 class="panel-title">
+                            Informações de um grupo específico
+                            <span class="span-btn-minimize" id="btn-minimize-getGroupInfo">_</span>
+                        </h3>
                     </div>
-                    <div class="panel-body">
+                    <div class="panel-body hide-panel" id="getGroupInfo">
 
                         https://beconnect.com.br/api/getGroupInfo/{id}
                         <span class="label label-primary">GET</span>
@@ -95,9 +98,12 @@
             <div class="col-md-12">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Lista de todos os Grupos da Igreja</h3>
+                        <h3 class="panel-title">
+                            Lista de todos os Grupos da Igreja
+                            <span class="span-btn-minimize" id="btn-minimize-groups">_</span>
+                        </h3>
                     </div>
-                    <div class="panel-body">
+                    <div class="panel-body hide-panel" id="groups">
 
                         https://beconnect.com.br/api/groups/{church}
                         <span class="label label-primary">GET</span>
@@ -125,10 +131,13 @@
             <div class="col-md-12">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Grupos em que o usuário logado pertence</h3>
+                        <h3 class="panel-title">
+                            Grupos em que o usuário logado pertence
+                            <span class="span-btn-minimize" id="btn-minimize-my-groups">_</span>
+                        </h3>
                     </div>
 
-                    <div class="panel-body">
+                    <div class="panel-body hide-panel" id="my-groups">
                         https://beconnect.com.br/api/my-groups/{person_id}
                         <span class="label label-primary">GET</span>
 
@@ -168,9 +177,12 @@
             <div class="col-md-12">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Membros do grupo selecionado</h3>
+                        <h3 class="panel-title">
+                            Membros do grupo selecionado
+                            <span class="span-btn-minimize" id="btn-minimize-group-people">_</span>
+                        </h3>
                     </div>
-                    <div class="panel-body">
+                    <div class="panel-body hide-panel" id="group-people">
 
                         https://beconnect.com.br/api/group-people/{group_id}
                         <span class="label label-primary">GET</span>

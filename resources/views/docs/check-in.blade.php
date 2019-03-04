@@ -51,10 +51,13 @@
             <div class="col-md-12">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Lista de Eventos do dia atual (dos quais o usuário está inscrito)</h3>
+                        <h3 class="panel-title">
+                            Lista de Eventos do dia atual (dos quais o usuário está inscrito)
+                            <span class="span-btn-minimize" id="btn-minimize-today-events">_</span>
+                        </h3>
                     </div>
 
-                    <div class="panel-body">
+                    <div class="panel-body hide-panel" id="today-events">
 
                         https://beconnect.com.br/api/today-events/{id}/{visitor?}
                         <span class="label label-primary">GET</span>
@@ -96,10 +99,13 @@
             <div class="col-md-12">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Check-in Manual</h3>
+                        <h3 class="panel-title">
+                            Check-in Manual
+                            <span class="span-btn-minimize" id="btn-minimize-check-in">_</span>
+                        </h3>
                     </div>
 
-                    <div class="panel-body">
+                    <div class="panel-body hide-panel" id="check-in">
 
                         https://beconnect.com.br/api/check-in/{id}/{person_id}/{visitor?}
                         <span class="label label-primary">GET</span>
@@ -138,10 +144,13 @@
             <div class="col-md-12">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Verificar Check-in</h3>
+                        <h3 class="panel-title">
+                            Verificar Check-in
+                            <span class="span-btn-minimize" id="btn-minimize-is-check">_</span>
+                        </h3>
                     </div>
 
-                    <div class="panel-body">
+                    <div class="panel-body hide-panel" id="is-check">
 
                         https://beconnect.com.br/api/is-check/{id}/{person_id}/{visitor?}
                         <span class="label label-primary">GET</span>
@@ -186,10 +195,13 @@
             <div class="col-md-12">
                 <div class="panel panel-success">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Check-in Massivo</h3>
+                        <h3 class="panel-title">
+                            Check-in Massivo
+                            <span class="span-btn-minimize" id="btn-minimize-checkin-all">_</span>
+                        </h3>
                     </div>
 
-                    <div class="panel-body">
+                    <div class="panel-body hide-panel" id="checkin-all">
 
                         https://beconnect.com.br/api/checkin-all/{people}/{id}
                         <span class="label label-success">POST</span>

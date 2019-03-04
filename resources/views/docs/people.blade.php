@@ -55,10 +55,13 @@
             <div class="col-md-12">
                 <div class="panel panel-success">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Mudança de Senha</h3>
+                        <h3 class="panel-title">
+                            Mudança de Senha
+                            <span class="span-btn-minimize" id="btn-minimize-change-password">_</span>
+                        </h3>
                     </div>
 
-                    <div class="panel-body">
+                    <div class="panel-body hide-panel" id="change-password">
 
                         https://beconnect.com.br/api/change-password
                         <span class="label label-success">POST</span>
@@ -102,10 +105,13 @@
             <div class="col-md-12">
                 <div class="panel panel-success">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Cadastro de Pessoas e Visitantes</h3>
+                        <h3 class="panel-title">
+                            Cadastro de Pessoas e Visitantes
+                            <span class="span-btn-minimize" id="btn-minimize-store-person">_</span>
+                        </h3>
                     </div>
 
-                    <div class="panel-body">
+                    <div class="panel-body hide-panel" id="store-person">
 
                         https://beconnect.com.br/api/store-person
                         <span class="label label-success">POST</span>

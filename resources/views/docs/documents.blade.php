@@ -51,10 +51,13 @@
             <div class="col-md-12">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Lista de Documentos</h3>
+                        <h3 class="panel-title">
+                            Lista de Documentos
+                            <span class="span-btn-minimize" id="btn-minimize-doc">_</span>
+                        </h3>
                     </div>
 
-                    <div class="panel-body">
+                    <div class="panel-body hide-panel" id="doc">
 
                         https://beconnect.com.br/api/doc
                         <span class="label label-primary">GET</span>
@@ -78,10 +81,13 @@
             <div class="col-md-12">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Lista de Documentos por evento</h3>
+                        <h3 class="panel-title">
+                            Lista de Documentos por evento
+                            <span class="span-btn-minimize" id="btn-minimize-doc-event_id">_</span>
+                        </h3>
                     </div>
 
-                    <div class="panel-body">
+                    <div class="panel-body hide-panel" id="doc-event_id">
 
                         https://beconnect.com.br/api/doc/{event_id}
                         <span class="label label-primary">GET</span>
@@ -112,10 +118,13 @@
             <div class="col-md-12">
                 <div class="panel panel-success">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Upload de Documentos</h3>
+                        <h3 class="panel-title">
+                            Upload de Documentos
+                            <span class="span-btn-minimize" id="btn-minimize-doc-upload">_</span>
+                        </h3>
                     </div>
 
-                    <div class="panel-body">
+                    <div class="panel-body hide-panel" id="doc-upload">
 
                         https://beconnect.com.br/api/doc-upload/
                         <span class="label label-success">POST</span>
@@ -161,10 +170,13 @@
             <div class="col-md-12">
                 <div class="panel panel-danger">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Exclusão de Documentos</h3>
+                        <h3 class="panel-title">
+                            Exclusão de Documentos
+                            <span class="span-btn-minimize" id="btn-minimize-doc-file_id-person_id">_</span>
+                        </h3>
                     </div>
 
-                    <div class="panel-body">
+                    <div class="panel-body hide-panel" id="doc-file_id-person_id">
 
                         https://beconnect.com.br/api/doc/{file_id}/{person_id}
                         <span class="label label-danger">DELETE</span>
@@ -198,10 +210,13 @@
             <div class="col-md-12">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Procurar arquivo pelo nome completo</h3>
+                        <h3 class="panel-title">
+                            Procurar arquivo pelo nome completo
+                            <span class="span-btn-minimize" id="btn-minimize-doc-find">_</span>
+                        </h3>
                     </div>
 
-                    <div class="panel-body">
+                    <div class="panel-body hide-panel" id="doc-find">
 
                         https://beconnect.com.br/api/doc-find/{name}
                         <span class="label label-primary">GET</span>
@@ -231,10 +246,13 @@
             <div class="col-md-12">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Procurar arquivo pelo nome enquanto usuário digita</h3>
+                        <h3 class="panel-title">
+                            Procurar arquivo pelo nome enquanto usuário digita
+                            <span class="span-btn-minimize" id="btn-minimize-doc-search">_</span>
+                        </h3>
                     </div>
 
-                    <div class="panel-body">
+                    <div class="panel-body hide-panel" id="doc-search">
 
                         https://beconnect.com.br/api/doc-search/{input}
                         <span class="label label-primary">GET</span>

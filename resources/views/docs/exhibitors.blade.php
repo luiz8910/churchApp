@@ -51,10 +51,13 @@
             <div class="col-md-12">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Lista de Expositores</h3>
+                        <h3 class="panel-title">
+                            Lista de Expositores
+                            <span class="span-btn-minimize" id="btn-minimize-exhibitors">_</span>
+                        </h3>
                     </div>
 
-                    <div class="panel-body">
+                    <div class="panel-body hide-panel" id="exhibitors">
 
                         https://beconnect.com.br/api/exhibitors
                         <span class="label label-primary">GET</span>
@@ -78,10 +81,13 @@
             <div class="col-md-12">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Lista de Expositores por categoria</h3>
+                        <h3 class="panel-title">
+                            Lista de Expositores por categoria
+                            <span class="span-btn-minimize" id="btn-minimize-exhibitors-cat">_</span>
+                        </h3>
                     </div>
 
-                    <div class="panel-body">
+                    <div class="panel-body hide-panel" id="exhibitors-cat">
 
                         https://beconnect.com.br/api/exhibitors-cat/{category}
                         <span class="label label-primary">GET</span>
@@ -112,10 +118,13 @@
             <div class="col-md-12">
                 <div class="panel panel-success">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Cadastro de Expositores</h3>
+                        <h3 class="panel-title">
+                            Cadastro de Expositores
+                            <span class="span-btn-minimize" id="btn-minimize-exhibitors-post">_</span>
+                        </h3>
                     </div>
 
-                    <div class="panel-body">
+                    <div class="panel-body hide-panel" id="exhibitors-post">
 
                         https://beconnect.com.br/api/exhibitors/
                         <span class="label label-success">POST</span>
@@ -169,10 +178,13 @@
             <div class="col-md-12">
                 <div class="panel panel-warning">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Alteração de Expositores</h3>
+                        <h3 class="panel-title">
+                            Alteração de Expositores
+                            <span class="span-btn-minimize" id="btn-minimize-exhibitors-put">_</span>
+                        </h3>
                     </div>
 
-                    <div class="panel-body">
+                    <div class="panel-body hide-panel" id="exhibitors-put">
 
                         https://beconnect.com.br/api/exhibitors/{id}
                         <span class="label label-warning">PUT</span>
@@ -225,10 +237,13 @@
             <div class="col-md-12">
                 <div class="panel panel-danger">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Exclusão de Expositores</h3>
+                        <h3 class="panel-title">
+                            Exclusão de Expositores
+                            <span class="span-btn-minimize" id="btn-minimize-exhibitors-delete">_</span>
+                        </h3>
                     </div>
 
-                    <div class="panel-body">
+                    <div class="panel-body hide-panel" id="exhibitors-delete">
 
                         https://beconnect.com.br/api/exhibitors/{id}
                         <span class="label label-danger">DELETE</span>
@@ -268,10 +283,13 @@
             <div class="col-md-12">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Lista de Categorias</h3>
+                        <h3 class="panel-title">
+                            Lista de Categorias
+                            <span class="span-btn-minimize" id="btn-minimize-exhibitors-categories">_</span>
+                        </h3>
                     </div>
 
-                    <div class="panel-body">
+                    <div class="panel-body hide-panel" id="exhibitors-categories">
 
                         https://beconnect.com.br/api/exhibitors-categories
                         <span class="label label-primary">GET</span>
@@ -295,10 +313,13 @@
             <div class="col-md-12">
                 <div class="panel panel-success">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Cadastro de Categorias</h3>
+                        <h3 class="panel-title">
+                            Cadastro de Categorias
+                            <span class="span-btn-minimize" id="btn-minimize-exhibitors-categories-post">_</span>
+                        </h3>
                     </div>
 
-                    <div class="panel-body">
+                    <div class="panel-body hide-panel" id="exhibitors-categories-post">
 
                         https://beconnect.com.br/api/exhibitors-categories
                         <span class="label label-success">POST</span>
@@ -341,10 +362,13 @@
             <div class="col-md-12">
                 <div class="panel panel-warning">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Alteração de Categoria</h3>
+                        <h3 class="panel-title">
+                            Alteração de Categoria
+                            <span class="span-btn-minimize" id="btn-minimize-exhibitors-categories-put">_</span>
+                        </h3>
                     </div>
 
-                    <div class="panel-body">
+                    <div class="panel-body hide-panel" id="exhibitors-categories-put">
 
                         https://beconnect.com.br/api/exhibitors-categories/{category}
                         <span class="label label-warning">PUT</span>
@@ -387,10 +411,13 @@
             <div class="col-md-12">
                 <div class="panel panel-danger">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Exclusão de Categorias</h3>
+                        <h3 class="panel-title">
+                            Exclusão de Categorias
+                            <span class="span-btn-minimize" id="btn-minimize-exhibitors-categories-delete">_</span>
+                        </h3>
                     </div>
 
-                    <div class="panel-body">
+                    <div class="panel-body hide-panel" id="exhibitors-categories-delete">
 
                         https://beconnect.com.br/api/exhibitors-categories/{category}
                         <span class="label label-danger">DELETE</span>
@@ -422,10 +449,13 @@
             <div class="col-md-12">
                 <div class="panel panel-success">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Feed de Expositores</h3>
+                        <h3 class="panel-title">
+                            Feed de Expositores
+                            <span class="span-btn-minimize" id="btn-minimize-exhibitors-feed">_</span>
+                        </h3>
                     </div>
 
-                    <div class="panel-body">
+                    <div class="panel-body hide-panel" id="exhibitors-feed">
 
                         https://beconnect.com.br/api/exhibitors-feed/
                         <span class="label label-success">POST</span>
