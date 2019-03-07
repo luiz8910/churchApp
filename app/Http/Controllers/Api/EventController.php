@@ -631,17 +631,19 @@ class EventController extends Controller
 
         if($event)
         {
-            $result = $this->personRepository->findWhere(['status' => 'active']);
+            //$result = $this->personRepository->findWhere(['status' => 'active']);
 
-            if(count($result) > 0)
+            $result = $this->listRepository->findByField('event_id', $id);
+
+            if($result)
             {
                 foreach ($result as $item)
                 {
-                    $person = $this->personRepository->find($item->id);
+                    $person = $this->personRepository->find($item->person_id);
 
                     $item->name = $person->name . ' ' . $person->lastName;
 
-                    $sub = json_decode($this->eventServices->isSubscribed($id, $item->id)) or null;
+                    $sub = json_decode($this->eventServices->isSubscribed($id, $item->person_id)) or null;
 
                     $check = 'check-in';
 
