@@ -766,8 +766,8 @@ class EventController extends Controller
                         ]);*/
 
                         $collection[] = [
-                            'event_id' => $item->id,
-                            'church_id' => $this->repository->findByField('id', $item->id)->first()->church_id
+                            'event_id' => $item->event_id,
+                            'church_id' => $this->repository->findByField('id', $item->event_id)->first()->church_id
                         ];
                     }
                 }
@@ -775,7 +775,7 @@ class EventController extends Controller
 
                     foreach ($list as $item)
                     {
-                        $collection[] = ['event_id' => $item->id];
+                        $collection[] = ['event_id' => $item->event_id];
                     }
                 }
 
