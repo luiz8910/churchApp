@@ -627,11 +627,11 @@ class EventController extends Controller
     {
         //$result = $this->eventServices->getListSubEventAPP($id);
 
-        $church = $this->repository->findByField('id', $id)->first();
+        $event = $this->repository->findByField('id', $id)->first();
 
-        if(count($church) == 1)
+        if($event)
         {
-            $result = $this->personRepository->findWhere(['status' => 'active', 'church_id' => $church->church_id]);
+            $result = $this->personRepository->findWhere(['status' => 'active']);
 
             if(count($result) > 0)
             {
@@ -663,7 +663,7 @@ class EventController extends Controller
             return json_encode(['status' => true, 'people' => 0]);
         }
 
-        return $this->returnFalse('Erro ao buscar igreja');
+        return $this->returnFalse('Erro ao buscar evento');
 
     }
 
