@@ -5,7 +5,7 @@
     <ul class="nav navbar-nav">
         <li><a href="javascript:;"></a></li>
 
-        <li class=""><a href="{{ route('docs.churchs') }}">Igrejas</a></li>
+        <li class=""><a href="{{ route('docs.churchs') }}">Organizações</a></li>
 
         <li>
             <a href="{{ route('docs.login') }}">Login </a>

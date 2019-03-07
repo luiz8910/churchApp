@@ -748,38 +748,45 @@ class EventController extends Controller
 
     public function personSubs($person_id, $church_id = null)
     {
-        $list = $this->listRepository->findByField('person_id', $person_id);
-
-        $collection = collect([]);
-
-        if(count($list) > 0)
+        if($this->personRepository->findByField('id', $person_id))
         {
-            if($church_id && $this->churchRepository->findByField('id', $church_id)->first())
+            $list = $this->listRepository->findByField('person_id', $person_id);
+
+            $collection = collect([]);
+
+            if(count($list) > 0)
             {
-                foreach ($list as $item)
+                if(is_numeric($church_id) && $this->churchRepository->findByField('id', $church_id)->first())
                 {
-                    /*$collection = collect([
-                        ['account_id' => 1, 'product' => 'Desk'],
-                        ['account_id' => 2, 'product' => 'Chair'],
-                    ]);*/
+                    foreach ($list as $item)
+                    {
+                        /*$collection = collect([
+                            ['account_id' => 1, 'product' => 'Desk'],
+                            ['account_id' => 2, 'product' => 'Chair'],
+                        ]);*/
 
-                    $collection[] = ['event_id' => $item->id,
-                        'church_id' => $this->repository->findByField('id', $item->id)->first()->church_id];
+                        $collection[] = [
+                            'event_id' => $item->id,
+                            'church_id' => $this->repository->findByField('id', $item->id)->first()->church_id
+                        ];
+                    }
                 }
-            }
-            else{
+                else{
 
-                foreach ($list as $item)
-                {
-                    $collection[] = ['event_id' => $item->id];
+                    foreach ($list as $item)
+                    {
+                        $collection[] = ['event_id' => $item->id];
+                    }
                 }
+
+                return json_encode(['status' => true, 'events' => $collection]);
             }
 
-            return json_encode(['status' => true, 'events' => $collection]);
+            return json_encode(['status' => false, 'events' => 0]);
         }
 
-        return json_encode(['status' => false, 'events' => 0]);
 
+        return json_encode(['status' => false, 'events' => 0, 'msg' => 'Usuário não encontrado']);
     }
 
 
