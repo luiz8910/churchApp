@@ -80,7 +80,16 @@
                         <p class="text-center">Exemplo de Retorno</p>
 
                         <pre>
-                            {"status":true,"events":[{"event_id":1,"church_id":1},{"event_id":2,"church_id":1}]}
+                            {"status":true,"events":[{"id":1,"group_id":null,"name":"Encontro de Jovens","createdBy_id":1,"eventDate":"2019-02-17",
+                            "endEventDate":"2019-02-20","startTime":"10:00","endTime":"12:00","frequency":"Di\u00e1rio","day":null,"allDay":0,
+                            "description":"","street":"Avenida Londres","neighborhood":"Jardim Europa","city":"Sorocaba","zipCode":"18045330",
+                            "state":"SP","deleted_at":null,"created_at":"2019-02-16 16:28:02","updated_at":"2019-02-16 16:28:03",
+                            "church_id":1,"imgEvent":null,"day_2":null,"number":"375","check_auto":0},{"id":2,"group_id":null,
+                            "name":"Evento Teste API","createdBy_id":1,"eventDate":"2019-02-20","endEventDate":"2019-03-27",
+                            "startTime":"19:00","endTime":"20:00","frequency":"Semanal","day":"Quarta-Feira","allDay":0,
+                            "description":"","street":"Avenida Londres","neighborhood":"Jardim Europa","city":"Sorocaba",
+                            "zipCode":"18045330","state":"SP","deleted_at":null,"created_at":"2019-02-18 01:50:41",
+                            "updated_at":"2019-02-18 01:50:41","church_id":1,"imgEvent":null,"day_2":null,"number":"375","check_auto":0}]}
 
                             senão houver eventos que o usuário participe
 

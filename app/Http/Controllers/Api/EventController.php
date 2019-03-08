@@ -754,7 +754,9 @@ class EventController extends Controller
         {
             $list = $this->listRepository->findByField('person_id', $person_id);
 
-            $collection = collect([]);
+            //$collection = collect([]);
+
+            $arr = [];
 
             if(count($list) > 0)
             {
@@ -767,21 +769,31 @@ class EventController extends Controller
                             ['account_id' => 2, 'product' => 'Chair'],
                         ]);*/
 
-                        $collection[] = [
+                        /*$collection[] = [
                             'event_id' => $item->event_id,
                             'church_id' => $this->repository->findByField('id', $item->event_id)->first()->church_id
-                        ];
+                        ];*/
+
+                        $event = $this->repository->findByField('id', $item->event_id)->first();
+
+                        if($event->church_id == $church_id)
+                        {
+                            $arr[] = $event;
+                        }
+
                     }
                 }
                 else{
 
                     foreach ($list as $item)
                     {
-                        $collection[] = ['event_id' => $item->event_id];
+                        //$collection[] = ['event_id' => $item->event_id];
+                        
+                        $arr[] = $this->repository->findByField('id', $item->event_id)->first();
                     }
                 }
 
-                return json_encode(['status' => true, 'events' => $collection]);
+                return json_encode(['status' => true, 'events' => $arr]);
             }
 
             return json_encode(['status' => false, 'events' => 0]);
