@@ -69,13 +69,6 @@
                                         @if(isset($countPerson)){{ $countPerson[0][1] }} @else 0 @endif
                                     </span></a> <!-- Qtde de Crianças/Jovens cad.-->
                             </li>
-                            <li class=" ">
-                                <a href="{{ route('visitors.index') }}" class="nav-link  ">
-                                    <i class="icon-bulb"></i> Visitantes
-                                    <span class="badge badge-success">
-                                        @if(isset($countPerson)){{ $countPerson[0][2] }} @else 0 @endif
-                                    </span></a> <!-- Qtde de Visitantes cad.-->
-                            </li>
 
                             <li class=" ">
                                 <a href="{{ route('person.inactive') }}" class="nav-link  ">

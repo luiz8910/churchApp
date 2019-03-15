@@ -87,6 +87,7 @@ class SiteController extends Controller
         $feature_item = $this->featuresItemRepository->all();
 
         foreach ($feature_item as $item) {
+
             $icon = DB::table('icons')->where('id', $item->icon_id)->select('path')->first();
 
             if(count($icon) == 1)
@@ -113,9 +114,10 @@ class SiteController extends Controller
             $plan->type_name = $this->typePlansRepository->find($plan->type_id)->type;
         }
 
+        $name = 'Admin';
 
         return view('site.home', compact('main', 'about', 'about_item',
-            'features', 'feature_item', 'faq', 'plans', 'plans_item', 'plans_types', 'plan_features'));
+            'features', 'feature_item', 'faq', 'plans', 'plans_item', 'plans_types', 'plan_features', 'name'));
     }
 
     public function adminHome()
@@ -128,7 +130,9 @@ class SiteController extends Controller
 
         $faq = $this->faqRepository->all();
 
-        return view('site.admin', compact('main', 'about', 'about_item', 'faq'));
+        $name = 'Admin';
+
+        return view('site.admin', compact('main', 'about', 'about_item', 'faq', 'name'));
     }
 
     public function adminFeatures()
@@ -151,7 +155,9 @@ class SiteController extends Controller
 
         $icons = $this->iconRepository->all();
 
-        return view('site.features', compact('features', 'features_item', 'icons'));
+        $name = 'Admin';
+
+        return view('site.features', compact('features', 'features_item', 'icons', 'name'));
     }
 
     public function adminPlans()
@@ -172,8 +178,10 @@ class SiteController extends Controller
 
         $url2 = '/newPlanType';
 
+        $name = 'Admin';
 
-        return view('site.plans', compact('plans', 'plans_item', 'url', 'url2', 'plans_types', 'plan_features'));
+        return view('site.plans', compact('plans', 'plans_item', 'url',
+            'url2', 'plans_types', 'plan_features', 'name'));
     }
 
 

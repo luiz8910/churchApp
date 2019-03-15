@@ -301,7 +301,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                             <div class="row">
 
 
-                                                <div class="col-md-6">
+                                                <div class="col-md-4">
                                                     {!! Form::FormGroup('gender', $errors) !!}
                                                     <label class="control-label">Gênero</label>
                                                     <select name="gender" class="form-control" required>
@@ -314,23 +314,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 </div>
 
 
-                                                <div class="col-md-6">
-                                                    {!! Form::FormGroup('dateBaptism', $errors) !!}
-                                                    <label class="control-label">Data de Batismo.</label>
-                                                    <div class="input-group date date-picker" data-date-format="dd/mm/yyyy">
-                                                        <span class="input-group-addon">
-                                                            <i class="fa fa-calendar font-blue"></i>
-                                                        </span>
-                                                        <input type="text" placeholder="dd/mm/aaaa" value="{{ $model->dateBaptism }}"
-                                                               name="dateBaptism" class="form-control input-date" />
-                                                    </div>
-                                                    {!! Form::error('dateBaptism', $errors) !!}
-                                                    {!! Form::endFormGroup() !!}
-                                                </div>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-md-6">
+                                                <div class="col-md-4">
                                                     {!! Form::FormGroup('cpf', $errors) !!}
                                                     <label>CPF (Sem pontos ou traços)</label>
                                                     <div class="input-group input-icon right">
@@ -349,7 +333,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     {!! Form::endFormGroup() !!}
                                                 </div>
 
-                                                <div class="col-md-6">
+                                                <div class="col-md-4">
                                                     {!! Form::FormGroup('rg', $errors) !!}
                                                     <label class="control-label">RG</label>
                                                     <input type="text" placeholder="123.123.123-12" value="{{ $model->rg }}"

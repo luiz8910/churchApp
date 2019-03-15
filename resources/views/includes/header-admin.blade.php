@@ -43,20 +43,20 @@
 
                                 $img = '';
 
-                                if(isset(Auth::user()->person))
-                                {
-                                    $name = Auth::user()->person->name;
-
-                                    if(Auth::user()->facebook_id || Auth::user()->google_id)
-                                    {
-                                        $img = Auth::user()->person->imgProfile;
-                                    }
-                                    else{
-                                        $img = "../" . Auth::user()->person->imgProfile;
-                                    }
-                                }
-
                                 ?>
+
+                                @if(isset(Auth::user()->person))
+
+                                    @if(Auth::user()->facebook_id || Auth::user()->google_id)
+
+                                            <?php $img = Auth::user()->person->imgProfile; ?>
+
+                                    @else
+                                        <?php $img = "../" . Auth::user()->person->imgProfile; ?>
+                                    @endif
+                                @endif
+
+
 
                                 <img alt="" class="img-circle" src="{{ $img }}">
                                 <span class="username username-hide-mobile">{{ $name }}</span>

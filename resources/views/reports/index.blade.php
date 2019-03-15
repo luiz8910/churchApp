@@ -95,13 +95,13 @@
                                                             <span class="caption-subject font-green-sharp bold uppercase">Eventos</span>
                                                         </div>
                                                         <div class="actions">
-                                                            <div class="btn-group">
+                                                            <div class="btn-group" style="display: none;">
                                                                 <a class="btn green-haze btn-outline btn-circle btn-sm" href="javascript:;" data-toggle="dropdown" data-hover="dropdown" data-close-others="true"> Opções
                                                                     <i class="fa fa-angle-down"></i>
                                                                 </a>
-                                                                <ul class="dropdown-menu pull-right">
+                                                                <ul class="dropdown-menu pull-right" >
                                                                     <li>
-                                                                        <a href="javascript:;" data-toggle="modal" data-target="#modalChooseEvent">
+                                                                        <a href="javascript:;" data-toggle="modal" data-target="#modalChooseEvent" >
                                                                             <i class="fa fa-calendar font-green-sharp"></i>
                                                                             Escolher Evento
                                                                         </a>
@@ -131,13 +131,7 @@
                                                                     <a href="#tab2" data-toggle="tab">Faixa Etária</a>
                                                                 </li>
                                                                 <li>
-                                                                    <a href="#tab3" data-toggle="tab">Membros x Visitantes</a>
-                                                                </li>
-                                                                <li>
-                                                                    <a href="#tab4" data-toggle="tab">Frequência por membro</a>
-                                                                </li>
-                                                                <li>
-                                                                    <a href="#tab5" data-toggle="tab">Frequência por visitante</a>
+                                                                    <a href="#tab3" data-toggle="tab">Frequência por membro</a>
                                                                 </li>
                                                                 {{--<li>
                                                                     <a href="#tab6" data-toggle="tab">Section 6</a>
@@ -168,16 +162,8 @@
                                                                     <div id="container-age-range" class="hidden-xs hidden-sm chart" style="min-width: 1100px !important; height: 500px !important;"></div>
                                                                     <div id="container-age-range-app" class="hidden-lg hidden-md chart" ></div>
                                                                 </div>
+
                                                                 <div class="tab-pane" id="tab3">
-                                                                    <p> &nbsp; </p>
-                                                                    <p> &nbsp; </p>
-
-                                                                    @include('includes.noEvent')
-
-                                                                    <div id="container-member_visitor" class="hidden-xs hidden-sm chart" style="min-width: 800px !important; height: 600px !important;"></div>
-                                                                    <div id="container-member_visitor-app" class="hidden-lg hidden-md chart" ></div>
-                                                                </div>
-                                                                <div class="tab-pane" id="tab4">
                                                                     <p> &nbsp; </p>
                                                                     <p> &nbsp; </p>
 

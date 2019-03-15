@@ -788,7 +788,7 @@ class EventController extends Controller
                     foreach ($list as $item)
                     {
                         //$collection[] = ['event_id' => $item->event_id];
-                        
+
                         $arr[] = $this->repository->findByField('id', $item->event_id)->first();
                     }
                 }

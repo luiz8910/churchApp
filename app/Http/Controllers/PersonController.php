@@ -647,8 +647,6 @@ class PersonController extends Controller
 
         $data['dateBirth'] = $this->formatDateBD($data['dateBirth']);
 
-        $data['dateBaptism'] = $data['dateBaptism'] == "" ? null :$this->formatDateBD($data['dateBaptism']);
-
         $data['imgProfile'] = 'uploads/profile/noimage.png';
 
         $children = $request->get('group-a');
@@ -860,8 +858,6 @@ class PersonController extends Controller
 
         $model->dateBirth = $this->formatDateView($model->dateBirth);
 
-        $model->dateBaptism = !$model->dateBaptism ? null : $this->formatDateView($model->dateBaptism);
-
         $leader = $this->getLeaderRoleId();
 
         $admin = $this->getAdminRoleId();
@@ -1004,8 +1000,6 @@ class PersonController extends Controller
         $roles = $this->roleRepository->all();
 
         $model->dateBirth = $this->formatDateView($model->dateBirth);
-
-        $model->dateBaptism = !$model->dateBaptism ? null : $this->formatDateView($model->dateBaptism);
 
         $location = $this->formatGoogleMaps($model);
 
