@@ -167,11 +167,9 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 </div>
                                                 <ul class="nav nav-tabs">
                                                     <li class="active">
-                                                        <a href="#tab_feed_1_1" data-toggle="tab"> System </a>
+                                                        <a href="#tab_feed_1_1" data-toggle="tab"> Sistema </a>
                                                     </li>
-                                                    <li>
-                                                        <a href="#tab_feed_1_2" data-toggle="tab"> Activities </a>
-                                                    </li>
+
                                                 </ul>
                                             </div>
                                             <div class="portlet-body">
