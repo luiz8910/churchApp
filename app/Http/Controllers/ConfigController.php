@@ -47,7 +47,7 @@ class ConfigController extends Controller
 
         $notify = $this->notify();
 
-        $qtde = count($notify) or 0;
+        $qtde = $notify ? count($notify) : 0;
 
         $church_id = $this->getUserChurch();
 
@@ -239,7 +239,7 @@ class ConfigController extends Controller
 
         $notify = $this->notify();
 
-        $qtde = count($notify) or 0;
+        $qtde = $notify ? count($notify) : 0;
 
         //Fim variáveis gerais
 
@@ -325,7 +325,7 @@ class ConfigController extends Controller
 
         $notify = $this->notify();
 
-        $qtde = count($notify) or 0;
+        $qtde = $notify ? count($notify) : 0;
 
         $church_id = $this->getUserChurch();
 

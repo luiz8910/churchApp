@@ -75,7 +75,7 @@ class FeedController extends Controller
 
         $notify = $this->notify();
 
-        $qtde = count($notify) or 0;
+        $qtde = $notify ? count($notify) : 0;
 
         $leader = $this->getLeaderRoleId();
 

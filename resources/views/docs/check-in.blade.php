@@ -52,6 +52,46 @@
                 <div class="panel panel-primary">
                     <div class="panel-heading">
                         <h3 class="panel-title">
+                            Verificar se o usuário está inscrito no evento (qrcode)
+                            <span class="span-btn-minimize" id="btn-minimize-is-sub">_</span>
+                        </h3>
+                    </div>
+
+                    <div class="panel-body hide-panel" id="is-sub">
+
+                        https://beconnect.com.br/api/is-sub/{event_id}/{person_id}
+                        <span class="label label-primary">GET</span>
+
+                        <br><br>
+                        event_id = id do event <span class="label label-info" style="font-size: 12px;">Inteiro</span> <br><br>
+                        person_id = id da pessoa <span class="label label-info" style="font-size: 12px;">Inteiro</span>
+
+
+                        <br><br>
+
+                        <p class="text-center">Exemplo de Retorno</p>
+
+                        <pre>
+
+                        Se inscrito e estiver na hora do evento
+
+                        {"status":true}
+
+                        Senão estiver inscrito
+
+                        {"status":false, "msg": Usuário não está inscrito}
+                    </pre>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
                             Lista de Eventos do dia atual (dos quais o usuário está inscrito)
                             <span class="span-btn-minimize" id="btn-minimize-today-events">_</span>
                         </h3>

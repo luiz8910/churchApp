@@ -122,7 +122,7 @@ class GroupController extends Controller
 
         $notify = $this->notify();
 
-        $qtde = count($notify) or 0;
+        $qtde = $notify ? count($notify) : 0;
 
         $leader = $this->getLeaderRoleId();
 
@@ -151,7 +151,7 @@ class GroupController extends Controller
 
         $notify = $this->notify();
 
-        $qtde = count($notify);
+        $qtde = $notify ? count($notify) : 0;
 
         $leader = $this->getLeaderRoleId();
 
@@ -333,7 +333,7 @@ class GroupController extends Controller
 
         $notify = $this->notify();
 
-        $qtde = count($notify);
+        $qtde = $notify ? count($notify) : 0;
 
         $owner_person_id = $this->userRepository->find($model->owner_id)->person_id;
 

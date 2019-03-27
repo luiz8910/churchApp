@@ -109,7 +109,7 @@ class DashboardController extends Controller
 
             $notify = $this->notify();
 
-            $qtde = count($notify) or 0;
+            $qtde = $notify ? count($notify) : 0;
 
             $id = Auth::user()->person_id;
 

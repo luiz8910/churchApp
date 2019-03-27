@@ -73,7 +73,7 @@ class ReportController extends Controller
 
         $notify = $this->notify();
 
-        $qtde = count($notify);
+        $qtde = $notify ? count($notify) : 0;
 
         //Fim Variáveis comuns
 

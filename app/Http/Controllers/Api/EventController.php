@@ -974,4 +974,23 @@ class EventController extends Controller
 
     }
 
+    public function isSub($person_id, $event_id)
+    {
+        $list = $this->listRepository->findWhere(
+            [
+                'person_id' => $person_id,
+                'event_id' => $event_id
+
+            ])->first();
+
+        if ($list)
+        {
+            return $this->eventServices->checkApp($event_id, $person_id);
+        }
+
+
+        return json_encode(['status' => false, 'msg' => 'Este usuário não está inscrito']);
+
+    }
+
 }

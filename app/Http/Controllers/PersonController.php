@@ -24,6 +24,7 @@ use App\Repositories\VisitorRepository;
 use App\Services\ChurchServices;
 use App\Services\EventServices;
 use App\Services\FeedServices;
+use App\Services\qrServices;
 use App\Traits\ConfigTrait;
 use App\Traits\CountRepository;
 use App\Traits\DateRepository;
@@ -114,12 +115,16 @@ class PersonController extends Controller
      * @var ChurchServices
      */
     private $churchServices;
+    /**
+     * @var qrServices
+     */
+    private $qrServices;
 
     public function __construct(PersonRepository $repository, StateRepository $stateRepositoryTrait, RoleRepository $roleRepository,
                                 UserRepository $userRepository, RequiredFieldsRepository $fieldsRepository, EventSubscribedListRepository $listRepository,
                                 GroupRepository $groupRepository, ChurchRepository $churchRepository, EventRepository $eventRepository,
                                 EventServices $eventServices, UploadStatusRepository $uploadStatusRepository, ImportRepository $importRepository,
-                                VisitorRepository $visitorRepository, FeedServices $feedServices, ChurchServices $churchServices)
+                                VisitorRepository $visitorRepository, FeedServices $feedServices, ChurchServices $churchServices, qrServices $qrServices)
     {
         $this->repository = $repository;
         $this->stateRepository = $stateRepositoryTrait;
@@ -136,6 +141,7 @@ class PersonController extends Controller
         $this->visitorRepository = $visitorRepository;
         $this->feedServices = $feedServices;
         $this->churchServices = $churchServices;
+        $this->qrServices = $qrServices;
     }
 
     /**
@@ -165,7 +171,7 @@ class PersonController extends Controller
 
         $notify = $this->notify();
 
-        $qtde = count($notify);
+        $qtde = $notify ? count($notify) : 0;
 
         $leader = $this->getLeaderRoleId();
 
@@ -198,7 +204,7 @@ class PersonController extends Controller
 
         $notify = $this->notify();
 
-        $qtde = count($notify);
+        $qtde = $notify ? count($notify) : 0;
 
         $leader = $this->getLeaderRoleId();
 
@@ -231,7 +237,7 @@ class PersonController extends Controller
 
         $notify = $this->notify();
 
-        $qtde = count($notify);
+        $qtde = $notify ? count($notify) : 0;
 
         $leader = $this->getLeaderRoleId();
 
@@ -257,7 +263,7 @@ class PersonController extends Controller
 
         $notify = $this->notify();
 
-        $qtde = count($notify);
+        $qtde = $notify ? count($notify) : 0;
 
         $leader = $this->getLeaderRoleId();
 
@@ -381,7 +387,7 @@ class PersonController extends Controller
 
         $notify = $this->notify();
 
-        $qtde = count($notify);
+        $qtde = $notify ? count($notify) : 0;
 
         $fields = $this->fieldsRepository->findWhere([
             'model' => 'person',
@@ -459,7 +465,7 @@ class PersonController extends Controller
 
         $notify = $this->notify();
 
-        $qtde = count($notify);
+        $qtde = $notify ? count($notify) : 0;
 
         $route = $this->getRoute();
 
@@ -715,6 +721,8 @@ class PersonController extends Controller
             $this->imgProfile($file, $id, $data['name'], 'people');
         }
 
+        $this->qrServices->generateQrCode($id);
+
         if(!$origin)
         {
             $this->newRecentUser($id, $church_id);
@@ -910,7 +918,7 @@ class PersonController extends Controller
 
         $notify = $this->notify();
 
-        $qtde = count($notify);
+        $qtde = $notify ? count($notify) : 0;
 
         $children = null;
 
@@ -1011,7 +1019,7 @@ class PersonController extends Controller
 
         $notify = $this->notify();
 
-        $qtde = count($notify) or 0;
+        $qtde = $notify ? count($notify) : 0;
 
         $leader = $this->getLeaderRoleId();
 
@@ -2046,7 +2054,7 @@ class PersonController extends Controller
 
         $notify = $this->notify();
 
-        $qtde = count($notify);
+        $qtde = $notify ? count($notify) : 0;
 
         $leader = $this->getLeaderRoleId();
 

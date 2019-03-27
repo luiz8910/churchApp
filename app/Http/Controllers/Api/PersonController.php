@@ -13,6 +13,7 @@ use App\Repositories\RoleRepository;
 use App\Repositories\UserRepository;
 use App\Repositories\VisitorRepository;
 use App\Services\FeedServices;
+use App\Services\qrServices;
 use App\Traits\ConfigTrait;
 use App\Traits\CountRepository;
 use App\Traits\DateRepository;
@@ -53,9 +54,14 @@ class PersonController extends Controller
      * @var RoleRepository
      */
     private $roleRepository;
+    /**
+     * @var qrServices
+     */
+    private $qrServices;
 
     public function __construct(PersonRepository $repository, ChurchRepository $churchRepository, UserRepository $userRepository,
-                                FeedServices $feedServices, VisitorRepository $visitorRepository, RoleRepository $roleRepository)
+                                FeedServices $feedServices, VisitorRepository $visitorRepository, RoleRepository $roleRepository,
+                                qrServices $qrServices)
 
     {
 
@@ -65,6 +71,7 @@ class PersonController extends Controller
         $this->feedServices = $feedServices;
         $this->visitorRepository = $visitorRepository;
         $this->roleRepository = $roleRepository;
+        $this->qrServices = $qrServices;
     }
 
 
@@ -184,6 +191,8 @@ class PersonController extends Controller
                 $id = $this->repository->create($data)->id;
 
                 $password = isset($data['password']) ? $data['password'] : $this->randomPassword();
+
+                $this->qrServices->generateQrCode($id);
 
                 $token = null;
 
@@ -483,6 +492,11 @@ class PersonController extends Controller
         }
 
 
+    }
+
+    public function qrcode($id)
+    {
+        return $this->qrServices->generateQrCode($id);
     }
 
 }

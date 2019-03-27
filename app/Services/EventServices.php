@@ -740,7 +740,7 @@ class EventServices
         /*
          * Se true então existe um evento para a data atual
          */
-        if(count($event) > 0)
+        if($event)
         {
             $sub = DB::table('event_person')
                 ->where(
@@ -816,7 +816,6 @@ class EventServices
     public function checkApp($id, $person)
     {
 
-
         $date = date_create();
 
         /*
@@ -852,7 +851,7 @@ class EventServices
                 ->first();
         }
 
-        if(count($event_person) > 0)
+        if($event_person)
         {
             $this->subEvent($id, $person);
 
@@ -869,14 +868,13 @@ class EventServices
 
             return json_encode(['status' => true, 'check-in' => true]);
         }
-        else{
 
             return json_encode(
                 [
                     'status' => false,
                     'check-in' => false,
                     'msg' => 'Data do evento é diferente da data atual']);
-        }
+
 
 
     }
@@ -1216,7 +1214,7 @@ class EventServices
                 ])
             ->first();
 
-        if (count($event) > 0)
+        if ($event)
         {
             $eventTime = Event::select('startTime', 'endTime')->where('id', $id)->first();
 

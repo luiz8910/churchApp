@@ -102,6 +102,8 @@ Route::get('/sub/{id}/{person_id}', 'Api\EventController@sub');
 
 Route::any('/checkin-all/', 'Api\EventController@checkInPeopleAPP');
 
+Route::get('/is-sub/{person_id}/{event_id}', 'Api\EventController@isSub');
+
 
 
 
@@ -134,6 +136,8 @@ Route::post('/change-password/', 'Api\PersonController@changePassword');
 Route::get('/visibility-permissions/{person_id}', 'Api\PersonController@getVisibilityPermissions');
 
 Route::put('/change-visibility-permissions/', 'Api\PersonController@changeVisibilityPermissions');
+
+Route::get('qrcode/{person_id}', 'Api\PersonController@qrcode');
 
 
 //------------------------- Expositores --------------------------------------------------------------------------------

@@ -1,7 +1,6 @@
 <?php
 
 use App\Services\PagSeguroServices;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -737,6 +736,7 @@ Route::get('/map', function(){
 
     dd($obj->results[0]->geometry->location);
 });
+
 
 Route::get('cron', 'EventController@Cron');
 
