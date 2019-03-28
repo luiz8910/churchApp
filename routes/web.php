@@ -762,6 +762,10 @@ Route::get('/api/events', 'EventController@getEventsApi');
 
 Route::get('api/churches', 'ChurchController@getChurchesApi');
 
+Route::get('phpinfo', function(){
+    phpinfo();
+});
+
 Route::get('/api', function (){
     $query = http_build_query([
         'client_id' => '4',
