@@ -487,7 +487,7 @@
 																		<?php $events_to_check = 0; ?>
 																	@endif
 
-																		@if(count($events_to_check) == 0 || $events_to_check == 0)
+																		@if(sizeof($events_to_check) == 0 || $events_to_check == 0)
 																			<p class="text-center">Não há eventos disponíveis para check-in</p>
 
 																		@else
