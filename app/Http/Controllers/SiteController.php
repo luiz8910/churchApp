@@ -90,7 +90,7 @@ class SiteController extends Controller
 
             $icon = DB::table('icons')->where('id', $item->icon_id)->select('path')->first();
 
-            if(count($icon) == 1)
+            if($icon)
             {
                 $item->icon_name = $icon;
             }
@@ -336,7 +336,7 @@ class SiteController extends Controller
 
             $item = $this->featuresItemRepository->findByField('feature_id', $id);
 
-            if(count($item) > 0)
+            if($item)
             {
                 foreach ($item as $value)
                 {
