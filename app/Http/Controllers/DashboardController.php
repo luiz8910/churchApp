@@ -404,19 +404,20 @@ class DashboardController extends Controller
                 }
             }
 
+            dd($allEventsNames);
+
+
+            return view('dashboard.index', compact('countPerson', 'countGroups', 'events', 'notify', 'qtde', 'event',
+                'countMembers', 'nextEvent', 'location', 'street', 'groups', 'eventDate', 'event_person', 'allMonths',
+                'allDays', 'days', 'allEvents', 'thisMonth', 'today', 'ano', 'allEventsNames', 'allEventsTimes',
+                'allEventsFrequencies', 'allEventsAddresses', 'numWeek', 'people', 'groups_recent', 'events_recent',
+                'qtde_users', 'qtde_groups', 'qtde_events', 'leader', 'church_id', 'feeds', 'event_list', 'is_sub',
+                'events_to_sub', 'events_to_check','admin'));
 
     }catch(\Exception $e){
         dd($e);
     }
 
-
-
-        return view('dashboard.index', compact('countPerson', 'countGroups', 'events', 'notify', 'qtde', 'event',
-            'countMembers', 'nextEvent', 'location', 'street', 'groups', 'eventDate', 'event_person', 'allMonths',
-            'allDays', 'days', 'allEvents', 'thisMonth', 'today', 'ano', 'allEventsNames', 'allEventsTimes',
-            'allEventsFrequencies', 'allEventsAddresses', 'numWeek', 'people', 'groups_recent', 'events_recent',
-            'qtde_users', 'qtde_groups', 'qtde_events', 'leader', 'church_id', 'feeds', 'event_list', 'is_sub',
-            'events_to_sub', 'events_to_check','admin'));
     }
 
     public function check_in()

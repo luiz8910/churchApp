@@ -597,7 +597,7 @@ class EventController extends Controller
 
         $notify = $this->notify();
 
-        $qtde = count($notify);
+        $qtde = $notify ? count($notify) : null;
 
         $groups = $this->groupRepository->findByField('church_id', $this->getUserChurch());
 
@@ -831,7 +831,7 @@ class EventController extends Controller
 
         $notify = $this->notify();
 
-        $qtde = count($notify);
+        $qtde = $notify ? count($notify) : null;
 
         $eventDays = $this->eventServices->eventDays($id);
 
@@ -1035,7 +1035,7 @@ class EventController extends Controller
                 'check-in' => 1
             ])->get();
 
-        if(count($event_person) > 0)
+        if($event_person)
         {
             DB::table('event_person')
                 ->where([

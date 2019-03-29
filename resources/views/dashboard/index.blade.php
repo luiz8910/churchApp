@@ -487,7 +487,7 @@
 																		<?php $events_to_check = 0; ?>
 																	@endif
 
-																		@if(sizeof($events_to_check) == 0 || $events_to_check == 0)
+																		@if($events_to_check == 0)
 																			<p class="text-center">Não há eventos disponíveis para check-in</p>
 
 																		@else
@@ -672,7 +672,7 @@
 										<div class="row">
 											<div class="col-md-12">
 
-													@include('includes.calendar')
+													
 
 											</div> <!-- FIM DIV .col-md-12 -->
 										</div> <!-- FIM DIV .row -->

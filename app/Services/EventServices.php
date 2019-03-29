@@ -753,7 +753,7 @@ class EventServices
                     ])
                 ->first();
 
-            if(count($sub) > 0)
+            if($sub)
             {
                 return json_encode(['status' => true, 'check-in' => true]);
             }
@@ -782,7 +782,7 @@ class EventServices
             ->first();
 
 
-        return count($sub) > 0 ? true : false;
+        return $sub ? true : false;
     }
 
     public function isSubVisitor($id, $visitor_id)
@@ -807,7 +807,7 @@ class EventServices
             ->first();
 
 
-        return count($sub) > 0 ? true : false;
+        return $sub ? true : false;
     }
 
     /*
@@ -1897,7 +1897,7 @@ class EventServices
             'event_id' => $event_id
         ])->first();
 
-        if(count($list) > 0)
+        if($list)
         {
             $this->listRepository->delete($list->id);
 
