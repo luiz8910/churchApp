@@ -126,7 +126,7 @@ class DashboardController extends Controller
                 ->paginate(5);
 
 
-            if (count($groups) == 0) {
+            if ($groups) {
                 $groups = null;
             }
 
@@ -176,7 +176,7 @@ class DashboardController extends Controller
                 $feeds = $this->feedServices->myFeeds();
             }
 
-            if (count($events) == 0) {
+            if ($events) {
                 $location = $street = null;
 
                 return view('dashboard.index', compact('countPerson', 'countGroups', 'events', 'notify', 'qtde',
@@ -507,7 +507,7 @@ class DashboardController extends Controller
 
         $notify = $this->notify();
 
-        $qtde = count($notify) or 0;
+        $qtde = $notify ? count($notify) : 0;
 
         $id = Auth::getUser()->person_id;
 
@@ -529,7 +529,7 @@ class DashboardController extends Controller
             }
         }
 
-        if (count($events) == 0)
+        if ($events)
         {
             return view('dashboard.index', compact('countPerson', 'countGroups', 'events', 'notify', 'qtde',
                 'countMembers', 'street', 'groups', 'event_person', 'nextEvent'));
