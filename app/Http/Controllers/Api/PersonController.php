@@ -494,9 +494,9 @@ class PersonController extends Controller
 
     }
 
-    public function qrcode($id) : bool 
+    public function qrcode($id) : bool
     {
-        return $this->qrServices->generateQrCode($id);
+        return (string) $this->qrServices->generateQrCode($id);
     }
 
 }
