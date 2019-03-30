@@ -22,7 +22,7 @@ class qrServices{
     /*
      * $id = id da pessoa (person_id)
      */
-    public function generateQrCode($id) : bool 
+    public function generateQrCode($id)
     {
         $person = $this->personRepository->findByField('id', $id)->first();
 
