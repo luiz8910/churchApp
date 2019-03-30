@@ -46,7 +46,7 @@ class qrServices{
             {
                 DB::rollBack();
 
-                return json_encode(['status' => false]);
+                return json_encode(['status' => false, 'msg' => $e->getMessage()]);
             }
 
         }
