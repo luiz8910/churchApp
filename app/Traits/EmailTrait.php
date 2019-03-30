@@ -31,7 +31,7 @@ trait EmailTrait
     {
         $user = User::select('id')->where('email', $email)->first();
 
-        if(count($user) > 0)
+        if($user)
         {
             if($user->id == $id)
             {

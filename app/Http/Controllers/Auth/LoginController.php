@@ -133,7 +133,7 @@ class LoginController extends Controller
 
             $user = $this->userRepository->findByField('email', $email)->first();
 
-            if(count($user) > 0)
+            if($user)
             {
                 $token = $request->get('token');
 
@@ -160,7 +160,8 @@ class LoginController extends Controller
                         'number' => $person->number,
                         'neighborhood' => $person->neighborhood,
                         'city' => $person->city,
-                        'state' => $person->state
+                        'state' => $person->state,
+                        'qrCode' => $person->qrCode
                     ]);
                 }
             }
@@ -173,7 +174,7 @@ class LoginController extends Controller
 
             $user = User::where('email', $email)->first();
 
-            if($user->church_id == $church)
+            if($user && $user->church_id == $church)
             {
                 $person = $this->personRepository->find($user->person->id);
 
@@ -196,7 +197,8 @@ class LoginController extends Controller
                     'number' => $person->number,
                     'neighborhood' => $person->neighborhood,
                     'city' => $person->city,
-                    'state' => $person->state
+                    'state' => $person->state,
+                    'qrCode' => $person->qrCode
                 ]);
             }
 

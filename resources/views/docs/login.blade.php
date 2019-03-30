@@ -94,7 +94,8 @@
                                 "number": "100",
                                 "neighborhood": "Bairro do Admin",
                                 "city": "Cidade Admin",
-                                "state": "SP"
+                                "state": "SP",
+                                "qrCode": "qrcodes/1.png"
                         }
 
                         Ou
