@@ -30,8 +30,6 @@ class qrServices{
         {
             try{
 
-                DB::beginTransaction();
-
                 $path = 'qrcodes/'.$id.'.png';
 
                 $x['qrCode'] = $path;
@@ -42,17 +40,17 @@ class qrServices{
 
                 DB::commit();
 
-                return true;
+                return json_encode(['status' => true]);
 
             }catch (\Exception $e)
             {
                 DB::rollBack();
 
-                return false;
+                return json_encode(['status' => false]);
             }
 
         }
 
-        return false;
+        return json_encode(['status' => false]);
     }
 }
