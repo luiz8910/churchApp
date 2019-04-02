@@ -232,7 +232,7 @@
                                                                             <td>{{ $main->text_1 or null}}</td>
                                                                             <td>{{ $main->text_2 or null}}</td>
                                                                             <td>
-                                                                                @if(count($main) > 0)
+                                                                                @if($main)
                                                                                     <a href="javascript:;" class="btn blue btn-circle btn-outline" id="btn-main">
                                                                                         <i class="fa fa-pencil"></i>
                                                                                         Editar
@@ -258,7 +258,7 @@
                                                                             <td>{{ $about->text_1 or null }}</td>
                                                                             <td>{{ $about->text_2 or null }}</td>
                                                                             <td>
-                                                                                @if(count($about) > 0)
+                                                                                @if($about)
                                                                                     <a href="javascript:;" class="btn blue btn-circle btn-outline" id="btn-about">
                                                                                         <i class="fa fa-pencil"></i>
                                                                                         Editar
@@ -278,7 +278,7 @@
                                                                             <th> Título </th>
                                                                             <th> Subtítulo </th>
                                                                             <th>
-                                                                                @if(count($about_item) > 0)
+                                                                                @if($about_item)
                                                                                     <a href="javascript:;" class="btn blue btn-circle btn-outline" id="btn-about-item">
                                                                                         <i class="fa fa-pencil"></i>
                                                                                         Editar
@@ -288,7 +288,7 @@
                                                                         </tr>
                                                                         </thead>
 
-                                                                        @if(count($about_item) > 0)
+                                                                        @if($about_item)
                                                                             @foreach($about_item as $item)
                                                                                 <tr>
                                                                                     <td>{{ $item->title }}</td>
@@ -310,7 +310,7 @@
                                                                         </tr>
                                                                         </thead>
 
-                                                                        @if(count($faq) > 0)
+                                                                        @if($faq)
                                                                             @foreach($faq as $f)
                                                                                 <tr id="tr-faq-{{ $f->id }}">
                                                                                     <td>{{ $f->question }}</td>

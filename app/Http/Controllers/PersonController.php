@@ -548,7 +548,7 @@ class PersonController extends Controller
         }*/
 
 
-        if($request->get('dateBirth') == ""){
+        /*if($request->get('dateBirth') == ""){
 
             if($origin == 'app')
             {
@@ -568,7 +568,7 @@ class PersonController extends Controller
             }
 
 
-        }
+        }*/
 
 
         $user = User::select('id')->where('email', $email)->first() or null;
@@ -651,7 +651,7 @@ class PersonController extends Controller
         }
 
 
-        $data['dateBirth'] = $this->formatDateBD($data['dateBirth']);
+
 
         $data['imgProfile'] = 'uploads/profile/noimage.png';
 
@@ -665,12 +665,13 @@ class PersonController extends Controller
             }
         }
 
-        if(!isset($data["maritalStatus"])){
+        /*if(!isset($data["maritalStatus"])){
             $data["maritalStatus"] = "Solteiro";
-        }
+        }*/
 
         if(!isset($data["role_id"])){
-            $member = $this->roleRepository->findByField('name', 'Membro')->first()->id;
+            $member = $this->roleRepository->findByField('name', 'Participante')->first()->id;
+
             $data["role_id"] = $member;
         }
 
@@ -684,6 +685,27 @@ class PersonController extends Controller
         }
 
         $id = $this->repository->create($data)->id;
+
+        if(!isset($data['dateBirth']) || $data['dateBirth'] == "")
+        {
+            $this->updateTag('adult', $id, 'people');
+        }
+        else{
+
+            $data['dateBirth'] = $this->formatDateBD($data['dateBirth']);
+
+            $this->updateTag($this->tag($data['dateBirth']), $id, 'people');
+
+        }
+
+        $church_id = $this->getUserChurch();
+
+        $password = $this->randomPassword();
+
+        $user = $this->createUserLogin($id, $password, $email, $church_id);
+
+        $this->welcome($user, $password);
+
 
         /*
          * Se a pessoa for casada e $data['partner'] = 0 então o parceiro é de fora da igreja
@@ -699,23 +721,7 @@ class PersonController extends Controller
             $this->updateMaritalStatus($data['partner'], $id, 'people');
         }
 
-        $church_id = $this->getUserChurch();
 
-        if ($this->repository->isAdult($data['dateBirth'])) {
-
-            $password = $this->randomPassword();
-
-            $user = $this->createUserLogin($id, $password, $email, $church_id);
-
-            $this->welcome($user, $password);
-
-            if ($children) {
-                $this->children($children, $id, $data['gender'], $data["role_id"]);
-            }
-
-        }
-
-        $this->updateTag($this->tag($data['dateBirth']), $id, 'people');
 
         if ($file) {
             $this->imgProfile($file, $id, $data['name'], 'people');

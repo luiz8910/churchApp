@@ -349,7 +349,11 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             <option value="">Selecione</option>
                                                             @foreach($roles as $role)
                                                                 <option value="{{ $role->id }}"
-                                                                        @if(old('role_id') == $role->id) selected @endif>
+                                                                        @if(old('role_id'))
+                                                                            @if(old('role_id') == $role->id) selected @endif
+                                                                        @else
+                                                                            @if($role->id == 2) selected @endif
+                                                                        @endif>
                                                                     {{ $role->name }}
                                                                 </option>
                                                             @endforeach
