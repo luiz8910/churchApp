@@ -85,7 +85,7 @@
                                         "id":1,
                                         "event_id":7,
                                         "name":"Café",
-                                        "max_capacity":-1,
+                                        "max_capacity":-1, (Se capacidade máxima = -1, então não há limitações)
                                         "location":"Refeitório",
                                         "start_time":"2019-04-06 08:00:00",
                                         "end_time":"2019-04-06 08:30:00",
