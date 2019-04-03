@@ -34,7 +34,7 @@ Route::get('/church-list', 'ChurchController@churchesApi')->middleware('cors');
 
 
 
-//------------------------- Login ------------------------------------------------------------------------------------
+//------------------------- Login --------------------------------------------------------------------------------------
 
 Route::post('/login', 'Auth\LoginController@loginApp');
 
@@ -198,7 +198,7 @@ Route::delete('/sponsors/{id}', 'Api\SponsorController@delete');
 
 
 
-//------------------------ Categorias de Patrocinadores -------------------------------------------------------------------
+//------------------------ Categorias de Patrocinadores ----------------------------------------------------------------
 
 //Lista de todas as Categorias
 Route::get('/sponsors-categories', 'Api\SponsorController@index_cat');
@@ -213,7 +213,7 @@ Route::put('/sponsors-categories/{category}', 'Api\SponsorController@update_cat'
 Route::delete('/sponsors-categories/{category}', 'Api\SponsorController@delete_cat');
 
 
-//---------------------------------- Documentos ---------------------------------------------------------------------------
+//---------------------------------- Documentos ------------------------------------------------------------------------
 
 /*
  * Lista de todos os Documentos, se passado o parâmetro event_id,
@@ -238,7 +238,7 @@ Route::get('/doc-search/{input}', 'Api\DocumentsController@search');
 
 
 
-//---------------------------------- Enquetes ------------------------------------------------------------------------------
+//---------------------------------- Enquetes --------------------------------------------------------------------------
 
 /*
  * Escolhe uma alternativa da enquete.
@@ -246,6 +246,11 @@ Route::get('/doc-search/{input}', 'Api\DocumentsController@search');
  */
 
 Route::post('/choose/{id}/{person_id}', 'Api\PollController@choose');
+
+
+//-------------------------- Sessões de Eventos ------------------------------------------------------------------------
+
+Route::get('/sessions/{event_id}', 'Api\SessionController@list');
 
 //-------------------------- Outros ------------------------------------------------------------------------------------
 

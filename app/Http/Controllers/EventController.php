@@ -10,6 +10,7 @@ use App\Models\RecentEvents;
 use App\Models\User;
 use App\Repositories\FrequencyRepository;
 use App\Repositories\RoleRepository;
+use App\Repositories\SessionRepository;
 use App\Repositories\VisitorRepository;
 use App\Services\AgendaServices;
 use App\Services\EventServices;
@@ -79,6 +80,10 @@ class EventController extends Controller
      * @var VisitorRepository
      */
     private $visitorRepository;
+    /**
+     * @var SessionRepository
+     */
+    private $sessionRepository;
 
     /**
      * EventController constructor.
@@ -97,7 +102,8 @@ class EventController extends Controller
                                 UserRepository $userRepository, GroupRepository $groupRepository,
                                 PersonRepository $personRepository, RoleRepository $roleRepository,
                                 EventServices $eventServices, AgendaServices $agendaServices,
-                                FrequencyRepository $frequencyRepository, VisitorRepository $visitorRepository)
+                                FrequencyRepository $frequencyRepository, VisitorRepository $visitorRepository,
+                                SessionRepository $sessionRepository)
     {
         $this->repository = $repository;
         $this->stateRepository = $stateRepositoryTrait;
@@ -109,6 +115,7 @@ class EventController extends Controller
         $this->agendaServices = $agendaServices;
         $this->frequencyRepository = $frequencyRepository;
         $this->visitorRepository = $visitorRepository;
+        $this->sessionRepository = $sessionRepository;
     }
 
 
@@ -632,7 +639,13 @@ class EventController extends Controller
     {
         //try{
 
-            $data = $request->all();
+            $data = $request->except([
+                'session_name', 'location', 'max_capacity', 'start_time_session', 'end_time_session', 'session_description'
+            ]);
+
+            $s = $request->only([
+                'session_name', 'location', 'max_capacity', 'start_time_session', 'end_time_session', 'session_description'
+            ]);
 
             $data['createdBy_id'] = \Auth::user()->id;
 
@@ -765,14 +778,31 @@ class EventController extends Controller
                         ]);
                 }
 
-
-
                 $this->eventServices->subAllMembers($event->id, $event->eventDate, $person_id);
             }
 
             $this->setChurch_id($event);
 
             $this->eventServices->newRecentEvents($event->id, $this->getUserChurch());
+
+            $s['event_id'] = $event->id;
+
+            $s['name'] = $s['session_name'];
+
+            $s['start_time'] = date_create($data['eventDate'] . $s['start_time_session']);
+
+            $s['end_time'] = date_create($data['eventDate'] . $s['end_time_session']);
+
+            $s['description'] = $s['session_description'];
+
+            $s['max_capacity'] = $s['max_capacity'] ? $s['max_capacity'] : -1;
+
+            unset($s['session_name']);
+            unset($s['start_time_session']);
+            unset($s['end_time_session']);
+            unset($s['session_description']);
+
+            $this->sessionRepository->create($s);
 
             //DB::commit();
 

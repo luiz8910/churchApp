@@ -189,7 +189,7 @@
                                                             <tr class="uppercase">
                                                                 <th> Foto</th>
                                                                 <th> Nome</th>
-                                                                <th> CPF</th>
+                                                                <th> Tel</th>
                                                                 <th> Cargo</th>
                                                                 <th> Data de Nasc.</th>
                                                                 <th></th>
@@ -209,7 +209,7 @@
                                                                             {{ $item->name }} {{ $item->lastName }}
                                                                         @endif
                                                                     </td>
-                                                                    <td> {{ $item->cpf }} </td>
+                                                                    <td> {{ $item->cel }} </td>
                                                                     <td> {{ $item->role }} </td>
                                                                     <td> {{ $item->dateBirth }} </td>
 

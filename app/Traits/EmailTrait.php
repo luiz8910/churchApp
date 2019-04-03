@@ -49,7 +49,7 @@ trait EmailTrait
         }
     }
 
-    public function emailExists($email)
+    /*public function emailExists($email)
     {
 
         $result = count(User::withTrashed()->where('email', $email)->get());
@@ -60,6 +60,31 @@ trait EmailTrait
         }
 
         return false;
+
+
+    }*/
+
+    public function emailExists($email)
+    {
+        $user = new User();
+
+        $trashed = $user->onlyTrashed()->where('email', $email)->first();
+
+        if($trashed)
+        {
+            $trashed->forceDelete();
+
+            return false;
+        }
+
+        $email_exist = $user->where('email', $email)->first();
+
+        if($email_exist)
+        {
+            return false;
+        }
+
+        return true;
 
 
     }

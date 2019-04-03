@@ -669,7 +669,6 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                         @endif
                                                                 <?php $i++; ?>
                                                                 >
-                                                                    <option value="">Selecione</option>
                                                                     @foreach($roles as $role)
                                                                         <option value="{{ $role->id }}" @if($role->id == $model->role_id) selected @endif >{{ $role->name }}</option>
                                                                     @endforeach

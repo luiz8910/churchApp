@@ -338,7 +338,99 @@ License: You must have a valid license purchased only from themeforest(the above
                                             </div>
                                         </div>
 
+                                        <br><br>
+                                        <div class="caption caption-md">
+                                            <i class="icon-globe theme-font hide"></i>
+                                            <span class="caption-subject font-blue-madison bold uppercase">Sessões de Eventos</span>
+                                        </div>
+                                        <hr><br>
 
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="" class="control-label">Nome da Sessão</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-calendar font-blue"></i>
+                                                        </span>
+
+                                                        <input type="text" name="session_name" class="form-control" autocomplete="new-password"
+                                                               placeholder="Ex: Coffee Break, Introdução, Sessão de Perguntas" value="{{ old('session_name') }}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="" class="control-label">Local</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-globe font-blue"></i>
+                                                        </span>
+
+                                                        <input type="text" name="location" class="form-control" autocomplete="new-pass"
+                                                            placeholder="Ex: Auditório Principal, Sala de Reuniões, Refeitório" value="{{ old('location') }}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="max_capacity" class="control-label">Capacidade Máxima</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-user font-blue"></i>
+                                                        </span>
+
+
+                                                        <input type="text" name="max_capacity" value="{{ old('max_capacity') }}"
+                                                               placeholder="Deixe em Branco quando não houver limite" class="form-control number">
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="" class="control-label">Início</label>
+                                                    <div class="input-group timepicker timepicker-24">
+                                                        <span class="input-group-btn">
+                                                            <button class="btn default" type="button">
+                                                                <i class="fa fa-calendar"></i>
+                                                            </button>
+                                                        </span>
+
+                                                        <input type="text" name="start_time_session" class="form-control" >
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="" class="control-label">Término</label>
+                                                    <div class="input-group date timepicker-24" data-date-format="dd/mm/yyyy" data-date-start-date="+0d">
+                                                        <span class="input-group-btn">
+                                                            <button class="btn default" type="button">
+                                                                <i class="fa fa-calendar"></i>
+                                                            </button>
+                                                        </span>
+
+                                                        <input type="text" name="end_time_session" class="form-control">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="" class="control-label">Descrição</label>
+                                                    <textarea name="session_description" class="form-control" placeholder="Entre com a Descrição da Sessão" id="description_session" rows="5"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <br><br>
                                        @include('includes.address-create')
                                     </div>
                                     <div class="form-actions">

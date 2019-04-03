@@ -161,7 +161,11 @@ class PersonController extends Controller
 
 
         foreach ($adults as $item) {
-            $item->dateBirth = $this->formatDateView($item->dateBirth);
+            if($item->dateBirth)
+            {
+                $item->dateBirth = $this->formatDateView($item->dateBirth);
+            }
+
             $item->role = $this->roleRepository->find($item->role_id)->name;
         }
 
@@ -1547,6 +1551,171 @@ class PersonController extends Controller
         return $this->traitCheckCPF($cpf);
     }
 
+
+    public function getSimpleContact()
+    {
+        ini_set('max_execution_time', '60');
+
+        $request->session()->forget('errors');
+
+        $church = $this->getUserChurch();
+
+        $file = $request->file('file');
+
+        $name = $file->getClientOriginalName();
+
+        $fileName = 'file.' . $file->getClientOriginalExtension();
+
+        $alias = $this->churchRepository->find($church)->alias;
+
+        $path = 'uploads/sheets/'.$alias.'/';
+
+        $file->move($path, $fileName);
+
+        $i = -1;
+
+        $import['code'] = bin2hex(random_bytes(15));
+
+        $import['table'] = 'people';
+
+        $import['church_id'] = $church;
+
+        $this->importRepository->create($import);
+
+        DB::transaction(function () use($church, $alias, $i, $path, $fileName, $name, $import, $request){
+
+            Excel::load($path . $fileName, function ($reader) use($church, $alias, $i, $import, $request){
+
+                $errors = [];
+
+                $count_reader = count($reader->get());
+
+                $x = 1;
+
+                foreach ($reader->get() as $item) {
+
+                    if($x == $count_reader)
+                    {
+                        break;
+                    }
+                    else{
+                        $x++;
+                    }
+
+                    $stop = false;
+
+                    $nome = '';
+
+                    if(isset($item->nome))
+                    {
+                        $nome = 'nome';
+                    }
+                    elseif(isset($item->Nome)){
+                        $nome = 'Nome';
+                    }
+                    elseif(isset($item->NOME)){
+                        $nome = 'NOME';
+                    }
+                    else{
+                        $stop = true;
+
+                        $errors[] = 'Nome não informado ou coluna com nome incorreto';
+                    }
+
+                    if(!$stop)
+                    {
+                        $fullName = $this->surname($item->nome);
+
+                        $data["name"] = ucfirst($fullName[0]);
+
+                        $data["lastName"] = ucwords($fullName[1]);
+                    }
+
+                    if(isset($item->tel))
+                    {
+                        $data['tel'] = $item->tel;
+                    }
+                    elseif(isset($item->Tel))
+                    {
+                        $data['tel'] = $item->Tel;
+                    }
+                    elseif(isset($item->telefone))
+                    {
+                        $data['tel'] = $item->telefone;
+                    }
+                    elseif (isset($item->Telefone))
+                    {
+                        $data['tel'] = $item->Telefone;
+                    }
+                    else{
+
+                        $stop = true;
+
+                        $errors[] = 'Telefone não informado ou coluna com nome incorreto';
+                    }
+
+                    $email = '';
+
+                    if(!$stop)
+                    {
+                        if(isset($item->email))
+                        {
+                            $email =  "email";
+                        }
+                        elseif (isset($item->e_mail))
+                        {
+                            $email = "e_mail";
+                        }
+                        elseif(isset($item->Email))
+                        {
+                            $email = "Email";
+                        }
+                        elseif (isset($item->EMAIL))
+                        {
+                            $email = "EMAIL";
+                        }
+                        else{
+                            $stop = true;
+
+                            $errors[] = 'Email não informado ou coluna com nome incorreto';
+                        }
+
+                        if(!$stop)
+                        {
+                            if(!$this->emailExists($item->$email))
+                            {
+                                $data["email"] = $item->$email;
+
+                                $password = $this->randomPassword();
+
+                                $person_id = $this->repository->create($data)->id;
+
+                                $church = $this->getUserChurch();
+
+                                $this->createUserLogin($person_id, $password, $data['email'], $church);
+                            }
+                        }
+
+                    }
+
+                }
+
+                session(['qtde' => $i]);
+
+                session(['errors' => $errors]);
+
+                print_r(session('errors'));
+
+            })->get();
+
+            $qtde = session('qtde');
+
+            //\Session::flash('upload.success', $qtde[0] . " usuários foram cadastrados");
+
+            $this->uploadComplete($name, $qtde);
+        });
+    }
+
     /*
      * Planilha com todos os contatos da igreja
      */
@@ -1609,6 +1778,7 @@ class PersonController extends Controller
                     $fullName = $this->surname($item->nome);
 
                     $data["name"] = ucfirst($fullName[0]);
+
                     $data["lastName"] = ucwords($fullName[1]);
 
                     $name = $this->repository->findByField('name', $data['name']);

@@ -11,7 +11,21 @@
             <a href="{{ route('docs.login') }}">Login </a>
         </li>
         <li>
-            <a href="{{ route('docs.events') }}">Eventos</a>
+
+            <button class="btn btn-default custom-dropdown" type="button" id="dropdownMenuEvents"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                Eventos
+                <span class="caret"></span>
+            </button>
+
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuEvents">
+                <li>
+                    <a href="{{ route('docs.events') }}">Geral</a>
+                </li>
+                <li>
+                    <a href="{{ route('docs.events.sessions') }}">Sessões</a>
+                </li>
+            </ul>
         </li>
 
         <li>
