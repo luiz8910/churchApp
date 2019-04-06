@@ -200,6 +200,12 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/check_auto/{event_id}/{check}', 'EventController@check_auto');
 
+    Route::get('/sessoes-lista/{event_id}', 'SessionController@list')->name('event.sessions');
+
+    Route::post('/sessoes-store/{event_id}', 'SessionController@store')->name('event.session.store');
+
+    Route::post('/sessoes-update/{event_id}', 'SessionController@update')->name('event.session.update');
+
     // Fim Eventos
 
 

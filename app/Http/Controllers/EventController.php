@@ -984,10 +984,17 @@ class EventController extends Controller
 
         $model->sub = count($this->eventServices->getListSubEvent($id));
 
+        $sessions = $this->sessionRepository->findByField('event_id', $id);
+
+        if(count($sessions) == 0)
+        {
+            $sessions = false;
+        }
+
         return view('events.edit', compact('countPerson', 'countGroups', 'state', 'roles',
             'model', 'location', 'notify', 'qtde', 'eventDays', 'eventFrequency', 'check',
             'eventPeople', 'group', 'groups', 'sub', 'canCheckIn', 'createdBy_id', 'createdBy',
-            'nextEventDate', 'leader', 'preposicao', 'frequencies', 'church_id', 'leader', 'admin'));
+            'nextEventDate', 'leader', 'preposicao', 'frequencies', 'church_id', 'leader', 'admin', 'sessions'));
     }
 
     public function update(Request $request, $id)

@@ -5,3 +5,21 @@
     padding-left: 0 !important;
     padding-right: 0 !important;
 }
+
+html{ height:100%; }
+body{ min-height:100%; padding:0; margin:0; position:relative; }
+
+body::after{ content:''; display:block; height:100px; }
+
+#footer{
+    clear: both;
+    position: absolute;
+    height: 40px;
+    width: 100%;
+    margin-top: 50px;
+
+    /*position:absolute;
+    bottom:0;
+    width:100%;
+    height:10px;*/
+}

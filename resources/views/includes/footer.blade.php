@@ -1,4 +1,4 @@
-<div class="page-wrapper-row">
+<div class="page-wrapper-row" id="footer">
     <div class="page-wrapper-bottom">
         <!-- BEGIN FOOTER -->
         <?php $today_year = date_create(); $today_year = date_format($today_year, "Y")?>

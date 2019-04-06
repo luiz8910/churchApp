@@ -197,6 +197,12 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             </a>
                                                         </li>
                                                         <li>
+                                                            <a href="{{ route('event.sessions', ['event_id' => $model->id]) }}">
+                                                                <i class="fa fa-calendar font-purple"></i>
+                                                                Sessões
+                                                            </a>
+                                                        </li>
+                                                        <li>
                                                             <a href="javascript:;" id="check-auto">
                                                                 <i class="fa fa-check font-purple"></i>
                                                                 Check-in Automático
@@ -331,7 +337,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                             </div>
                                         @endif
 
-                                        <div class="col-md-8 col-xs-12">
+                                        <div class="col-md-6 col-xs-12">
 
                                             <p>
                                                 <i class="fa fa-user font-purple"></i> Criado Por:
