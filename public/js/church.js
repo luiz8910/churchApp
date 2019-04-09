@@ -168,7 +168,7 @@ $(function () {
                 var envelope_error = $("#envelope-error");
                 var index = 0;
 
-                if(e.email)
+                if(!e.email)
                 {
 
                     error.css('display', 'block');
