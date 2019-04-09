@@ -81,10 +81,10 @@ trait EmailTrait
 
         if($email_exist)
         {
-            return false;
+            return true;
         }
 
-        return true;
+        return false;
 
 
     }
