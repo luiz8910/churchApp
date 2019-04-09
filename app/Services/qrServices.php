@@ -36,7 +36,7 @@ class qrServices{
 
                 $this->personRepository->update($x, $id);
 
-                QrCode::format('png')->size(100)->generate($id, $path);
+                QrCode::format('png')->size(1000)->generate($id, $path);
 
                 DB::commit();
 

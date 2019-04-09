@@ -70,6 +70,8 @@ License: You must have a valid license purchased only from themeforest(the above
                     </div>
                 @endif
 
+                @include('includes.messages')
+
                 <div class="page-content-inner">
                     <!--<div class="row">-->
                     <div class="col-md-12 col-sm-12 col-xs-12">
@@ -203,41 +205,44 @@ License: You must have a valid license purchased only from themeforest(the above
 
                             <div class="portlet-body">
                                 <div class="row">
-                                    {!! Form::open(['route' => ['event.addMembers', 'event' => $event], 'method' => 'POST']) !!}
-                                    <div class="col-md-9 col-sm-8 col-xs-8">
-
-                                        <select class="form-control select2" id="subUser" name="person_id" required>
-                                            <option></option>
-                                            <optgroup label="Pessoas">
-                                                @foreach($merged as $item)
-                                                    <option value="@if(!isset($item->church_id)) {{ $item->id . "/visit"}} @else {{ $item->id }} @endif ">
-                                                        {{ $item->name }} {{ $item->lastName }} @if($item->role_id == $visitor_id) (Visitante) @endif
-                                                    </option>
-                                                @endforeach
-                                            </optgroup>
-                                            {{--<optgroup label="Grupos">
-                                                <option value="">grupo teste</option>
-                                            </optgroup>--}}
-                                        </select>
+                                    <form action="{{ route('event.addMembers', ['event' => $event->id]) }}" method="POST">
+                                        {{ csrf_field() }}
 
 
-                                    </div>
+                                        <div class="col-md-9 col-sm-8 col-xs-8">
 
-                                    <div class="col-md-1 col-sm-2 col-xs-2">
-                                        <button type="submit" class="btn btn-success btn-sm btn-circle">
-                                            <i class="fa fa-sign-in"></i>
-                                            Inscrever
-                                        </button>
-                                    </div>
+                                            <select class="form-control select2" id="subUser" name="person_id" required>
+                                                <option></option>
+                                                <optgroup label="Pessoas">
+                                                    @foreach($merged as $item)
+                                                        <option value="@if(!isset($item->church_id)) {{ $item->id . "/visit"}} @else {{ $item->id }} @endif ">
+                                                            {{ $item->name }} {{ $item->lastName }} @if($item->role_id == $visitor_id) (Visitante) @endif
+                                                        </option>
+                                                    @endforeach
+                                                </optgroup>
+                                                {{--<optgroup label="Grupos">
+                                                    <option value="">grupo teste</option>
+                                                </optgroup>--}}
+                                            </select>
 
-                                    <div class="col-md-1 col-sm-2 col-xs-2">
-                                        <a href="{{ route('event.edit', ['event' => $event]) }}" type="button" class="btn btn-danger btn-sm btn-circle">
-                                            <i class="fa fa-arrow-left"></i>
-                                            Voltar
-                                        </a>
-                                    </div>
 
-                                    {!! Form::close() !!}
+                                        </div>
+
+                                        <div class="col-md-1 col-sm-2 col-xs-2">
+                                            <button type="submit" class="btn btn-success btn-sm btn-circle">
+                                                <i class="fa fa-sign-in"></i>
+                                                Inscrever
+                                            </button>
+                                        </div>
+
+                                        <div class="col-md-1 col-sm-2 col-xs-2">
+                                            <a href="{{ route('event.edit', ['event' => $event]) }}" type="button" class="btn btn-danger btn-sm btn-circle">
+                                                <i class="fa fa-arrow-left"></i>
+                                                Voltar
+                                            </a>
+                                        </div>
+
+                                    </form>
                                 </div>
 
                                 <br><br>

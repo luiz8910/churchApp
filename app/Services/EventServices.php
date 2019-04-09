@@ -1741,6 +1741,52 @@ class EventServices
     }
 
     /*
+     * Usado para inscrever um usuário,
+     * válido apenas para eventos únicos
+     */
+    /**
+     * @param $event_id
+     * @param $person_id
+     * @return bool
+     */
+    public function subUnique($event_id, $person_id)
+    {
+        try{
+
+            $exists = $this->listRepository->findWhere([
+                'event_id' => $event_id,
+                'person_id' => $person_id
+            ]);
+
+            if(count($exists) > 0)
+            {
+                return false;
+            }
+            else{
+
+                $data["event_id"] = $event_id;
+
+                $data['person_id'] = $person_id;
+
+                $data["sub_by"] = isset(Auth::user()->person) ? Auth::user()->person->id : 0;
+
+                $this->listRepository->create($data);
+
+                DB::commit();
+
+                return true;
+            }
+        }catch (\Exception $e)
+        {
+            DB::rollBack();
+
+            dd($e->getMessage());
+
+            return false;
+        }
+    }
+
+    /*
      * Usado para inscrever um usuário
     /**
      * @param $event_id
@@ -1827,7 +1873,7 @@ class EventServices
 
         }catch(\Exception $e){
 
-            DB::rollback();
+            DB::rollBack();
 
             return false;
         }

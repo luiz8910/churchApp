@@ -430,6 +430,7 @@ License: You must have a valid license purchased only from themeforest(the above
                 <br><br>
 
                 <div class="page-content-inner">
+                    @if(!$local)
                     <div class="row">
                         <div class="col-md-12">
                             <!-- BEGIN PROFILE CONTENT -->
@@ -475,6 +476,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
 
                     </div>
+                    @endif
 
                     <div class="row">
                         <div class="col-md-12">

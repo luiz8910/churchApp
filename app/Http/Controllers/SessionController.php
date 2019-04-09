@@ -66,10 +66,8 @@ class SessionController extends Controller
 
         $event = $this->eventRepository->findByField('id', $event_id)->first();
 
-        if(count($sessions) > 0)
-        {
-            foreach ($sessions as $session)
-            {
+        if (count($sessions) > 0) {
+            foreach ($sessions as $session) {
                 $session->start_time = date_format(date_create($session->start_time), 'd/m/Y H:i');
                 $session->short_start_time = date_format(date_create($session->start_time), 'H:i');
                 $session->end_time = date_format(date_create($session->end_time), 'H:i');
@@ -77,8 +75,7 @@ class SessionController extends Controller
 
             return view('events.sessions-list',
                 compact('sessions', 'state', 'roles', 'leader', 'admin', 'notify', 'qtde', 'event'));
-        }
-        else{
+        } else {
 
             $sessions = false;
 
@@ -94,23 +91,20 @@ class SessionController extends Controller
 
         $event = $this->eventRepository->findByField('id', $event_id)->first();
 
-        if($event)
-        {
+        if ($event) {
             $data['event_id'] = $event_id;
 
-            if($data['max_capacity'] == 0 || $data['max_capacity'] == "")
-            {
+            if ($data['max_capacity'] == 0 || $data['max_capacity'] == "") {
                 $data['max_capacity'] = -1;
             }
 
             $data['start_time'] = date_create($event->eventDate . " " . $data['start_time']);
 
-            if($data['end_time'] != "")
-            {
+            if ($data['end_time'] != "") {
                 $data['end_time'] = date_create($event->eventDate . " " . $data['end_time']);
             }
 
-            try{
+            try {
 
                 $this->repository->create($data);
 
@@ -120,7 +114,7 @@ class SessionController extends Controller
 
                 return redirect()->back();
 
-            }catch (\Exception $e){
+            } catch (\Exception $e) {
                 DB::rollBack();
 
                 dd($e->getMessage());
@@ -148,26 +142,22 @@ class SessionController extends Controller
 
         $event = $this->eventRepository->findByField('id', $event_id)->first();
 
-        if($event)
-        {
+        if ($event) {
 
-            if($this->repository->findByField('id', $session_id)->first())
-            {
+            if ($this->repository->findByField('id', $session_id)->first()) {
                 $data['event_id'] = $event_id;
 
-                if($data['max_capacity'] == 0 || $data['max_capacity'] == "")
-                {
+                if ($data['max_capacity'] == 0 || $data['max_capacity'] == "") {
                     $data['max_capacity'] = -1;
                 }
 
                 $data['start_time'] = date_create($event->eventDate . " " . $data['start_time']);
 
-                if($data['end_time'] != "")
-                {
+                if ($data['end_time'] != "") {
                     $data['end_time'] = date_create($event->eventDate . " " . $data['end_time']);
                 }
 
-                try{
+                try {
 
                     $this->repository->update($data, $session_id);
 
@@ -177,7 +167,7 @@ class SessionController extends Controller
 
                     return redirect()->back();
 
-                }catch (\Exception $e){
+                } catch (\Exception $e) {
                     DB::rollBack();
 
                     $request->session()->flash('error.msg', 'Um erro ocorreu, tente novamente mais tarde');
@@ -195,5 +185,45 @@ class SessionController extends Controller
         $request->session()->flash('error.message', 'O evento selecionado não existe');
 
         return redirect()->back();
+    }
+
+    public function check_in_list($id)
+    {
+        $session = $this->repository->findByField('id', $id)->first();
+
+        $countPerson[] = $this->countPerson();
+
+        $countGroups[] = $this->countGroups();
+
+        $state = $this->stateRepository->all();
+
+        $roles = $this->roleRepository->all();
+
+        $leader = $this->getLeaderRoleId();
+
+        $admin = $this->getAdminRoleId();
+
+        $notify = $this->notify();
+
+        $qtde = $notify ? count($notify) : null;
+
+        $event = $this->eventRepository->findByField('id', $session->event_id)->first();
+
+        if ($session) {
+
+            $session->start_time = date_format(date_create($session->start_time), 'd/m/Y H:i');
+            $session->short_start_time = date_format(date_create($session->start_time), 'H:i');
+            $session->end_time = date_format(date_create($session->end_time), 'H:i');
+
+
+            return view('events.check_in_sessions',
+                compact('session', 'state', 'roles', 'leader', 'admin', 'notify', 'qtde', 'event'));
+        } else {
+
+            $session = false;
+
+            return view('events.check_in_sessions',
+                compact('session', 'state', 'roles', 'leader', 'admin', 'notify', 'qtde', 'event'));
+        }
     }
 }

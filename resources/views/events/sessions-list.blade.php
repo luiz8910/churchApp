@@ -177,10 +177,10 @@
                                                                         <td id="td_start_time_{{ $item->id }}">{{ $item->start_time }}</td>
 
                                                                         <td>
-                                                                            <button class="btn btn-info btn-sm btn-circle btn-sub-session"
-                                                                                id="btn-sub-session-{{ $item->id }}" title="Inscritos">
+                                                                            <a href="{{ route('event.session.check_in_list', ['id' => $item->id]) }}"
+                                                                               class="btn btn-info btn-sm btn-circle" title="Inscritos">
                                                                                 <i class="fa fa-users"></i>
-                                                                            </button>
+                                                                            </a>
                                                                             <button class="btn btn-success btn-sm btn-circle btn-edit-session"
                                                                                     title="Editar" id="btn-edit-session-{{ $item->id }}"
                                                                                     data-toggle="modal" data-target="#edit-session">
@@ -208,6 +208,7 @@
                                                 @endif
                                                 <!-- FIM DIV .table-scrollable table-scrollable-borderless -->
                                                 </div> <!-- FIM DIV .portlet-body-config -->
+
 
                                                 <div id="new-session" style="display: none;">
                                                     <br><br>

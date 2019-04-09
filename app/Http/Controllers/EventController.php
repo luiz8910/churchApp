@@ -8,6 +8,7 @@ use App\Models\Event;
 use App\Models\EventSubscribedList;
 use App\Models\RecentEvents;
 use App\Models\User;
+use App\Repositories\ChurchRepository;
 use App\Repositories\FrequencyRepository;
 use App\Repositories\RoleRepository;
 use App\Repositories\SessionRepository;
@@ -84,6 +85,10 @@ class EventController extends Controller
      * @var SessionRepository
      */
     private $sessionRepository;
+    /**
+     * @var ChurchRepository
+     */
+    private $churchRepository;
 
     /**
      * EventController constructor.
@@ -103,7 +108,7 @@ class EventController extends Controller
                                 PersonRepository $personRepository, RoleRepository $roleRepository,
                                 EventServices $eventServices, AgendaServices $agendaServices,
                                 FrequencyRepository $frequencyRepository, VisitorRepository $visitorRepository,
-                                SessionRepository $sessionRepository)
+                                SessionRepository $sessionRepository, ChurchRepository $churchRepository)
     {
         $this->repository = $repository;
         $this->stateRepository = $stateRepositoryTrait;
@@ -116,6 +121,7 @@ class EventController extends Controller
         $this->frequencyRepository = $frequencyRepository;
         $this->visitorRepository = $visitorRepository;
         $this->sessionRepository = $sessionRepository;
+        $this->churchRepository = $churchRepository;
     }
 
 
@@ -991,10 +997,20 @@ class EventController extends Controller
             $sessions = false;
         }
 
+        $org = $this->churchRepository->findByField('id', $church_id)->first();
+
+        $local = false;
+
+        if($model->street == $org->street && $model->number == $org->number)
+        {
+            $local = true;
+        }
+
         return view('events.edit', compact('countPerson', 'countGroups', 'state', 'roles',
             'model', 'location', 'notify', 'qtde', 'eventDays', 'eventFrequency', 'check',
             'eventPeople', 'group', 'groups', 'sub', 'canCheckIn', 'createdBy_id', 'createdBy',
-            'nextEventDate', 'leader', 'preposicao', 'frequencies', 'church_id', 'leader', 'admin', 'sessions'));
+            'nextEventDate', 'leader', 'preposicao', 'frequencies', 'church_id', 'leader',
+            'admin', 'sessions', 'local'));
     }
 
     public function update(Request $request, $id)
@@ -1677,7 +1693,7 @@ class EventController extends Controller
 
         $notify = $this->notify();
 
-        $qtde = count($notify);
+        $qtde = $notify ? count($notify) : null;
 
         //Fim Variáveis comuns
 
@@ -1800,29 +1816,45 @@ class EventController extends Controller
     /*
      * Usado para inscrever um usuário no evento $event
     */
-    public function eventSub(Request $request, $event)
+    public function eventSub(Request $request, $event_id)
     {
         $data = $request->all();
 
-
-
         if($data["person_id"] != "")
         {
-            $role = $this->getUserRole();
+            $event = $this->repository->findByField('id', $event_id)->first();
 
-            $leader = $this->roleRepository->find($this->getLeaderRoleId())->name;
-
-            if((isset($event->group_id) && $role == $leader) || (!isset($event->group_id)))
+            if($event)
             {
-                $exists = $this->eventServices->subEvent($event, $data["person_id"]);
+                $role = $this->getUserRole();
 
-                if($exists){
-                    $request->session()->flash('event.sub', 'O usuário foi inscrito');
-                }
-                else{
-                    $request->session()->flash('event.sub', 'Este usuário ja está inscrito');
+                $leader = $this->roleRepository->find($this->getLeaderRoleId())->name;
+
+                if((isset($event->group_id) && $role == $leader) || (!isset($event->group_id)))
+                {
+                    if($event->frequency == $this->unique())
+                    {
+                        $exists = $this->eventServices->subUnique($event_id, $data['person_id']);
+                    }
+                    else{
+                        $exists = $this->eventServices->subEvent($event_id, $data["person_id"]);
+                    }
+
+                    if($exists){
+                        $request->session()->flash('success.msg', 'O usuário foi inscrito');
+                    }
+                    else{
+                        $request->session()->flash('error.msg', 'Um erro ocorreu, tente novamente mais tarde');
+                    }
                 }
             }
+            else{
+                $request->session()->flash('error.msg', 'Evento não encontrado');
+            }
+
+        }
+        else{
+            $request->session()->flash('error.msg', 'Usuário não encontrado');
         }
 
         return redirect()->back();
