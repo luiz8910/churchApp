@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\RequiredFields;
+use App\Repositories\FeedbackRepository;
+use App\Repositories\PersonRepository;
 use App\Repositories\RegisterModelsRepository;
 use App\Repositories\RequiredFieldsRepository;
 use App\Repositories\RoleRepository;
@@ -25,11 +27,22 @@ class ConfigController extends Controller
      * @var RegisterModelsRepository
      */
     private $modelsRepository;
+    /**
+     * @var FeedbackRepository
+     */
+    private $feedbackRepository;
+    /**
+     * @var PersonRepository
+     */
+    private $personRepository;
 
-    public function __construct(RequiredFieldsRepository $fieldsRepository, RegisterModelsRepository $modelsRepository)
+    public function __construct(RequiredFieldsRepository $fieldsRepository, RegisterModelsRepository $modelsRepository,
+                                FeedbackRepository $feedbackRepository, PersonRepository $personRepository)
     {
         $this->fieldsRepository = $fieldsRepository;
         $this->modelsRepository = $modelsRepository;
+        $this->feedbackRepository = $feedbackRepository;
+        $this->personRepository = $personRepository;
     }
 
     public function index()
@@ -345,5 +358,39 @@ class ConfigController extends Controller
     public function downloadPlan()
     {
         return response()->download('uploads/sheets/examples/exemplo.xlsx');
+    }
+
+    public function sendFeedback(Request $request)
+    {
+        $data = $request->all();
+
+        if($data['person_id'] == '')
+        {
+            return json_encode(['status' => false, 'msg' => 'Insira o id da pessoa']);
+        }
+        else if(!$this->personRepository->findByField('id', $data['person_id'])->first())
+        {
+            return json_encode(['status' => false, 'msg' => 'Usuário não encontrado']);
+        }
+
+        if($data['feedback'] == '')
+        {
+            return json_encode(['status' => false, 'msg' => 'Insira a mensagem da pessoa']);
+        }
+
+        try{
+            $this->feedbackRepository->create($data);
+
+            DB::commit();
+
+            return json_encode(['status' => true]);
+
+        }catch (\Exception $e){
+
+            DB::rollBack();
+
+            return json_encode(['status' => false, 'msg' => $e->getMessage()]);
+        }
+
     }
 }

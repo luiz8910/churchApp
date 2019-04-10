@@ -255,3 +255,5 @@ Route::get('/sessions/{event_id}', 'Api\SessionController@list');
 //-------------------------- Outros ------------------------------------------------------------------------------------
 
 Route::any('/new-bug/', 'BugController@storeApp');
+
+Route::post('/feedback-store/', 'ConfigController@sendFeedback');

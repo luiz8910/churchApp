@@ -56,23 +56,24 @@
 
         <div class="row">
             <div class="col-md-12">
-                <div class="panel panel-primary">
+                <div class="panel panel-success">
                     <div class="panel-heading">
                         <h3 class="panel-title">
-                            Notificação de Atividades de Eventos
-                            <span class="span-btn-minimize" id="btn-minimize-notif-activity">_</span>
+                            Envio de Feedback
+                            <span class="span-btn-minimize" id="btn-minimize-feedback-store">_</span>
                         </h3>
 
                     </div>
-                    <div class="panel-body hide-panel" id="notif-activity">
+                    <div class="panel-body hide-panel" id="feedback-store">
 
-                        https://beconnect.com.br/api/notif-activity/{person_id)}/{event_id}
-                        <span class="label label-primary">GET</span>
+                        https://beconnect.com.br/api/feedback-store
+                        <span class="label label-success">POST</span>
 
                         <br><br>
 
                         person_id = id da pessoa <span class="label label-info" style="font-size: 12px;">Inteiro</span><br>
-                        event_id = id do evento <span class="label label-info" style="font-size: 12px;">Inteiro</span>
+                        feedback = texto <span class="label label-success" style="font-size: 12px;">String</span><br>
+
 
 
                         <br><br>
@@ -80,7 +81,7 @@
                         <p class="text-center">Exemplo de Retorno</p>
 
                         <pre>
-                            {"status":true, value: 0}} //Valor de retorno 0 ou 1
+                            {"status":true}
 
                             se houver algum erro
 
@@ -91,43 +92,6 @@
             </div>
         </div>
 
-
-        <div class="row">
-            <div class="col-md-12">
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">
-                            Notificação de Atualizações de Eventos
-                            <span class="span-btn-minimize" id="btn-minimize-notif-updates">_</span>
-                        </h3>
-
-                    </div>
-                    <div class="panel-body hide-panel" id="notif-updates">
-
-                        https://beconnect.com.br/api/notif-updates/{person_id)}/{event_id}
-                        <span class="label label-primary">GET</span>
-
-                        <br><br>
-
-                        person_id = id da pessoa <span class="label label-info" style="font-size: 12px;">Inteiro</span><br>
-                        event_id = id do evento <span class="label label-info" style="font-size: 12px;">Inteiro</span>
-
-
-                        <br><br>
-
-                        <p class="text-center">Exemplo de Retorno</p>
-
-                        <pre>
-                            {"status":true, value: 0}} //Valor de retorno 0 ou 1
-
-                            se houver algum erro
-
-                            {"status":false,"msg": mensagem aqui}
-                        </pre>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <div class="row">
             <div class="col-md-12">
@@ -204,44 +168,6 @@
                 </div>
             </div>
         </div>
-
-
-        <div class="row">
-            <div class="col-md-12">
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">
-                            Recuperar Permissão do usuário
-                            <span class="span-btn-minimize" id="btn-minimize-visibility-permissions">_</span>
-                        </h3>
-
-                    </div>
-                    <div class="panel-body hide-panel" id="visibility-permissions">
-
-                        https://beconnect.com.br/api/visibility-permissions/{person_id)}
-                        <span class="label label-primary">GET</span>
-
-                        <br><br>
-
-                        person_id = id da pessoa <span class="label label-info" style="font-size: 12px;">Inteiro</span><br>
-
-
-                        <br><br>
-
-                        <p class="text-center">Exemplo de Retorno</p>
-
-                        <pre>
-                            {"status":true, value: 0}} //Valor de retorno 0 ou 1
-
-                            se houver algum erro
-
-                            {"status":false,"msg": mensagem aqui}
-                        </pre>
-                    </div>
-                </div>
-            </div>
-        </div>
-
 
         <div class="row">
             <div class="col-md-12">
