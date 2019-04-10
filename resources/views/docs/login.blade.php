@@ -95,7 +95,10 @@
                                 "neighborhood": "Bairro do Admin",
                                 "city": "Cidade Admin",
                                 "state": "SP",
-                                "qrCode": "qrcodes/1.png"
+                                "qrCode": "qrcodes/1.png",
+                                "notif_activity": 0 ou 1,
+                                "notif_updates": 0 ou 1,
+                                "visibility" : 0 ou 1
                         }
 
                         Ou

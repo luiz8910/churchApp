@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Role;
 use App\Models\User;
 use App\Repositories\CodeRepository;
+use App\Repositories\EventSubscribedListRepository;
 use App\Repositories\PersonRepository;
 use App\Repositories\RoleRepository;
 use App\Repositories\UserRepository;
@@ -58,6 +59,10 @@ class LoginController extends Controller
      * @var PeopleServices
      */
     private $peopleServices;
+    /**
+     * @var EventSubscribedListRepository
+     */
+    private $listRepository;
 
 
     /**
@@ -70,7 +75,8 @@ class LoginController extends Controller
      * @param PeopleServices $peopleServices
      */
     public function __construct(RoleRepository $roleRepository, PersonRepository $personRepository,
-                                CodeServices $codeServices, UserRepository $userRepository, PeopleServices $peopleServices)
+                                CodeServices $codeServices, UserRepository $userRepository, PeopleServices $peopleServices,
+                                EventSubscribedListRepository $listRepository)
     {
         $this->middleware('guest', ['except' => 'logout']);
         $this->roleRepository = $roleRepository;
@@ -78,6 +84,7 @@ class LoginController extends Controller
         $this->codeServices = $codeServices;
         $this->userRepository = $userRepository;
         $this->peopleServices = $peopleServices;
+        $this->listRepository = $listRepository;
     }
 
     /**
@@ -145,6 +152,20 @@ class LoginController extends Controller
 
                     $role = $this->roleRepository->find($role_id)->name;
 
+                    $notif_activity = $this->listRepository->findWhere(
+                        [
+                            'person_id' => $user->person->id,
+                            //'event_id' => $event_id
+
+                        ])->first()->notification_activity;
+
+                    $notif_updates = $this->listRepository->findWhere(
+                        [
+                            'person_id' => $person_id,
+                            //'event_id' => $event_id
+                        ])->first()->notification_updates;
+
+
                     return json_encode([
                         'status' => true,
                         'person_id' => $user->person->id,
@@ -161,7 +182,10 @@ class LoginController extends Controller
                         'neighborhood' => $person->neighborhood,
                         'city' => $person->city,
                         'state' => $person->state,
-                        'qrCode' => $person->qrCode
+                        'qrCode' => $person->qrCode,
+                        'notif_activity' => $notif_activity,
+                        'notif_updates' => $notif_updates,
+                        'visibility' => $user->person->visibility
                     ]);
                 }
             }
