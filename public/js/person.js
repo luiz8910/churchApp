@@ -30,6 +30,12 @@ $(function(){
 
         });
     });
+
+    $('#user').keypress(function (e) {
+        console.log(e);
+
+        //findUserTransfer(input);
+    })
 });
 
 
@@ -53,4 +59,9 @@ function deleteAllInactives()
 
     return false;
 
+}
+
+function findUserTransfer(input)
+{
+    console.log(input);
 }

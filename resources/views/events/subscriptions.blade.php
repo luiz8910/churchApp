@@ -261,7 +261,6 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         </label>--}}
 
                                                     <th class="printable-table-header"> Nome </th>
-                                                    <th class="printable-table-header"> Presença </th>
                                                     <th class="hidden-xs hidden-sm"> Cancelar Inscrição </th>
                                                     <th class="hidden-md hidden-lg"> Cancelar </th>
                                                 </tr>
@@ -310,16 +309,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             @endif
 
                                                         </td>
-                                                        <td>
-                                                            {{ $person->presence }}
-                                                            <span class="hidden-xs hidden-sm">
-                                                                participações
-                                                            </span>
 
-                                                            <span class="hidden-md hidden-lg">
-                                                                particip.
-                                                            </span>
-                                                        </td>
                                                         <td>
                                                             <a href="javascript:;" class="btn btn-danger btn-sm btn-circle pop-sub"
                                                                title="Excluir Pessoa?"

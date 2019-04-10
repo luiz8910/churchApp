@@ -65,7 +65,7 @@
                                             <div class="portlet-title">
                                                 <div class="caption font-green-haze">
                                                     <i class="fa fa-user font-green-haze"></i>
-                                                    <span class="caption-subject font-green-haze bold ">Sessões</span>
+                                                    <span class="caption-subject font-green-haze bold ">Sessões - {{ $session->name }}</span>
                                                 </div>
                                                 <div class="actions">
                                                     <div class="btn-group btn-group-sm">

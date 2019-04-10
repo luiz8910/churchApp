@@ -113,10 +113,10 @@
                                                                 <ul class="dropdown-menu pull-right"
                                                                     id="sample_3_tools">
                                                                     <li>
-                                                                        <a href="javascript:;" id="print"
-                                                                           onclick="printDiv('printable-table')"
-                                                                           data-action="0" class="tool-action">
-                                                                            <i class="icon-printer"></i> Imprimir
+                                                                        <a href="javascript:;" class="tool-action" data-toggle="modal"
+                                                                           data-target="#transfer_users">
+                                                                            <i class="fa fa-users"></i>
+                                                                            Transferir Usuários
                                                                         </a>
                                                                     </li>
                                                                     <!--<li>
@@ -274,6 +274,8 @@
                                                            style="display: none;">
 
                                                         </a>
+
+
                                                     </div>
                                                     <!-- FIM DIV .table-scrollable table-scrollable-borderless -->
                                                 </div> <!-- FIM DIV .portlet-body-config -->
@@ -290,6 +292,72 @@
     </div> <!-- FIM DIV .page-wrapper-row full-height -->
 </div> <!-- FIM DIV .page-wrapper -->
 
+<!-- Modal -->
+<div class="modal fade" id="transfer_users" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title text-center" id="myModalLabel">Transferir Usuários entre Organizações</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="fa fa-users font-blue"></i>
+                        </span>
+
+                        <input type="text" class="form-control" placeholder="Digite aqui o nome de usuário" id="user">
+
+                    </div>
+
+
+
+                    <br><br>
+
+                    <div class="table-scrollable table-scrollable-borderless ">
+                        <table class="table table-hover table-light ">
+                            <thead>
+                            <tr class="uppercase">
+                                <th> Foto</th>
+                                <th> Nome</th>
+                                <th> Adicionar </th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <img src="uploads/profile/noimage.png" alt="" style="width: 50px; height: 50px;">
+                                </td>
+                                <td>
+                                    Teste
+                                </td>
+                                <td>
+                                    <input type="checkbox" id="switch" />
+                                    <label for="switch">Toggle</label>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">
+                    <i class="fa fa-close"></i>
+                    Fechar
+                </button>
+                <button type="button" class="btn btn-success btn-sm">
+                    <i class="fa fa-check"></i>
+                    Transferir
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- END CONTAINER -->
 @include('includes.footer')
