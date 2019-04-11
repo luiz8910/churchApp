@@ -138,7 +138,7 @@ class PersonController extends Controller
         }
 
         if(isset($data['role'])){
-            $data['role_id'] = count($this->roleRepository->findByField('name', $data['role'])->first()->id) > 0
+            $data['role_id'] = $this->roleRepository->findByField('name', $data['role'])->first()
                 ? $this->roleRepository->findByField('name', $data['role'])->first()
                 : $this->roleRepository->findByField('name', 'Membro')->first()->id;
 
@@ -206,7 +206,7 @@ class PersonController extends Controller
             $user = $this->userRepository->findByField('email', $data['email'])->first();
 
 
-            if(count($user) > 0)
+            if($user)
             {
                 if($this->updateSocial($data, $user))
                 {
@@ -337,7 +337,7 @@ class PersonController extends Controller
 
         $data['imgProfile'] = $data['picture_url'];
 
-        $data['role_id'] = count($this->roleRepository->findByField('name', $data['role'])->first()->id) > 0 ?
+        $data['role_id'] = $this->roleRepository->findByField('name', $data['role'])->first() ?
             $this->roleRepository->findByField('name', $data['role'])->first() : $this->roleRepository->findByField('name', 'Membro')->first()->id;
 
         unset($data['phone']);
