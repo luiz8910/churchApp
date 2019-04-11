@@ -1299,17 +1299,76 @@ class EventController extends Controller
     {
         $file = $request->file('file');
 
-        $event = $this->repository->find($event);
+        $event = $this->repository->findByField('id', $event)->first();
 
-        $imgName = 'uploads/event/' . $event->id . '-' . $event->name . '.' .$file->getClientOriginalExtension();
+        if($event)
+        {
+            try{
+                $imgName = 'uploads/event/' . $event->id . '-' . $event->name . '.' .$file->getClientOriginalExtension();
 
-        $file->move('uploads/event', $imgName);
+                $file->move('uploads/event', $imgName);
 
-        DB::table('events')->
-            where('id', $event->id)->
-            update(['imgEvent' => $imgName]);
+                $x['imgEvent'] = $imgName;
 
-        return redirect()->route('event.edit', ['event' => $event->id]);
+                $this->repository->update($x, $event->id);
+
+                $request->session()->flash('success.msg', 'A imagem foi alterada');
+
+                DB::commit();
+
+            }catch (\Exception $e)
+            {
+                DB::rollBack();
+
+                dd($e->getMessage());
+
+                $request->session()->flash('error.msg', 'Um erro aconteceu, tente novamente mais tarde');
+            }
+
+            return redirect()->route('event.edit', ['event' => $event->id]);
+        }
+
+        $request->session()->flash('error.msg', 'Este Evento não existe');
+
+        return redirect()->route('event.index');
+    }
+
+    public function imgEventBg(Request $request, $event)
+    {
+        $file = $request->file('file');
+
+        $event = $this->repository->findByField('id', $event)->first();
+
+        if($event)
+        {
+            try{
+                $imgName = 'uploads/event/' . $event->id . '-' . $event->name . '-bg' . '.' .$file->getClientOriginalExtension();
+
+                $file->move('uploads/event', $imgName);
+
+                $x['imgEvent_bg'] = $imgName;
+
+                $this->repository->update($x, $event->id);
+
+                $request->session()->flash('success.msg', 'A imagem de fundo foi alterada');
+
+                DB::commit();
+
+            }catch (\Exception $e)
+            {
+                DB::rollBack();
+
+                $request->session()->flash('error.msg', 'Um erro aconteceu, tente novamente mais tarde');
+            }
+
+
+            return redirect()->route('event.edit', ['event' => $event->id]);
+        }
+
+        $request->session()->flash('error.msg', 'Evento não encontrado');
+
+        return redirect()->route('event.index');
+
     }
 
     //Função de teste somente, não tem uso em produção

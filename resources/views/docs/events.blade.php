@@ -189,6 +189,7 @@
                               +"deleted_at": null,
                               +"lat": "-23.479", <---- latitude
                               +"lng": "-47.455", <---- longitude
+                              +"imgEvent_bg": "uploads\/event\/33-Evento de Teste.jpg"
                             }
 
 

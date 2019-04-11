@@ -97,6 +97,7 @@ License: You must have a valid license purchased only from themeforest(the above
                     </div>
                 @endif
 
+                @include('includes.messages')
 
                 <div class="page-content-inner">
 
@@ -214,6 +215,12 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 Trocar Imagem
                                                             </a>
                                                         </li>
+                                                            <li>
+                                                                <a href="javascript:;" data-target="#changePictureBg" data-toggle="modal">
+                                                                    <i class="fa fa-file-picture-o font-purple"></i>
+                                                                    Trocar Imagem Fundo
+                                                                </a>
+                                                            </li>
                                                         <li>
                                                             <a href="javascript:;" data-toggle="modal"
                                                                data-target=".event-delete-modal-sm">
@@ -289,6 +296,74 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         </div>
 
                                                     {!! Form::close() !!}
+
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="modal fade" tabindex="-1" role="dialog" id="changePictureBg" aria-labelledby="mySmallModalLabel">
+                                        <div class="modal-dialog modal-md" role="document">
+
+                                            <div class="modal-content">
+
+                                                <div class="modal-header">
+
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close"><span aria-hidden="true">&times;</span>
+                                                    </button>
+
+                                                    <h4 class="modal-title text-center" id="myModalLabel">Escolha uma imagem de Fundo</h4>
+
+                                                </div>
+
+                                                <form action="{{ route('event.edit.imgEvent_bg', ['event' => $model]) }}"
+                                                      method="POST" id="img-submit-bg" enctype="multipart/form-data">
+
+                                                    {{ csrf_field() }}
+
+                                                    {{--<input type="file" name="file" id="file" style="display: none;">
+
+                                                <input type="submit" id="submit-img" hidden>--}}
+
+                                                    <div class="modal-body text-center">
+
+                                                        <div class="form-group">
+                                                            <div class="fileinput fileinput-new" data-provides="fileinput">
+                                                                <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
+                                                                    <img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=Imagem+do+Evento" alt="" /> </div>
+                                                                <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"> </div>
+                                                                <div>
+                                                                        <span class="btn default btn-file">
+                                                                            <span class="fileinput-new"> Escolher Imagem </span>
+                                                                            <span class="fileinput-exists"> Alterar </span>
+                                                                            <input type="file" name="file" id="file_bg"> </span>
+                                                                    <a href="javascript:;" id="removeImg_bg"
+                                                                       class="btn default fileinput-exists" data-dismiss="fileinput"> Remover </a>
+                                                                </div>
+                                                                <br>
+
+                                                                <span class="text-center" id="img-error-bg" style="color: red; display: none;"></span>
+
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+
+
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                                                            <i class="fa fa-close"></i>
+                                                            Cancelar
+                                                        </button>
+                                                        <button type="submit"
+                                                                class="btn btn-success" id="btn-upload-img-bg" disabled>
+                                                            <i class="fa fa-check"></i>
+                                                            Upload
+                                                        </button>
+                                                    </div>
+                                                </form>
 
 
 

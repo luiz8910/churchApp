@@ -199,7 +199,7 @@
 
         <div class="row">
             <div class="col-md-12">
-                <div class="panel panel-warning">
+                <div class="panel panel-success">
                     <div class="panel-heading">
                         <h3 class="panel-title">
                             Alteração de Pessoas
@@ -210,7 +210,7 @@
                     <div class="panel-body hide-panel" id="update-person">
 
                         https://beconnect.com.br/api/update-person/{person_id}
-                        <span class="label label-warning">PUT</span>
+                        <span class="label label-success">POST</span>
 
                         <br><br>
 

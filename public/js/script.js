@@ -648,6 +648,43 @@ $(function () {
 
     });
 
+    $("#file_bg").change(function(){
+
+        $("#btn-upload-img-bg").attr('disabled', true);
+
+        var interval = setInterval(function(){
+            var img = $(".fileinput-preview > img")[0];
+
+            if(img.naturalWidth)
+            {
+
+                if(img.naturalWidth < 150 || img.naturalHeight < 150)
+                {
+                    $("#removeImg_bg").trigger('click');
+
+                    $('#img-error-bg')
+                        .text('Envie uma imagem maior que 150x150')
+                        .css('display', 'block');
+                }
+
+                else{
+                    $('#img-error-bg').css('display', 'none');
+
+                    $("#btn-upload-img-bg").attr('disabled', null);
+                }
+
+                clearInterval(interval)
+            }
+
+            else{
+                $("#btn-upload-img-bg").attr('disabled', null);
+
+            }
+
+        }, 500);
+
+    });
+
     if(window.localStorage.getItem('edit') != null)
     {
         $("#delete-group-alert").css("display", "block");

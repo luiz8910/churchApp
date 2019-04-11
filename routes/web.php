@@ -184,6 +184,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post("/imgEvent/{event}", 'EventController@imgEvent')->name('event.edit.imgEvent');
 
+    Route::post("/imgEventBg/{event}", 'EventController@imgEventBg')->name('event.edit.imgEvent_bg');
+
     Route::get("/inscricoes/{event}", "EventController@getSubEventList")->name('event.subscriptions');
 
     Route::post("/sub/{event}", 'EventController@eventSub')->name('event.addMembers');
