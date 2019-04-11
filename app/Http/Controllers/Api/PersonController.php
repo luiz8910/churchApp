@@ -74,6 +74,51 @@ class PersonController extends Controller
         $this->qrServices = $qrServices;
     }
 
+    public function update(Request $request, $id)
+    {
+        $data = $request->all();
+
+        $person = $this->repository->findByField('id', $id)->first();
+
+        if($person)
+        {
+            if($request->file('imgProfile'))
+            {
+                $file = $request->file('imgProfile');
+
+                $imgName = 'uploads/profile/' . $id . '-' . $person->name . '.' . $file->getClientOriginalExtension();
+
+                $file->move('uploads/profile', $imgName);
+
+                $data['imgProfile'] = $imgName;
+            }
+
+            try{
+
+                if($data['email'] != '')
+                {
+                    $x['email'] = $data['email'];
+
+                    $this->userRepository->update($x, $person->user->id);
+                }
+
+                $this->repository->update($data, $id);
+
+                DB::commit();
+
+                return json_encode(['status' => true]);
+
+            }catch (\Exception $e)
+            {
+                DB::rollBack();
+
+                return json_encode(['status' => false, 'msg' => $e->getMessage()]);
+            }
+        }
+
+        return json_encode(['status' => false, 'msg' => 'Usúario não encontrado']);
+
+    }
 
 
 

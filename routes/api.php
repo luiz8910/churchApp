@@ -25,7 +25,7 @@ Route::get('/log', function (){
     return 'token valido';
 })->middleware('jwt.auth');
 
-//------------------------- Igrejas ------------------------------------------------------------------------------------
+//------------------------- Orgs ------------------------------------------------------------------------------------
 
 Route::get('/church-list', 'ChurchController@churchesApi')->middleware('cors');
 
@@ -138,6 +138,8 @@ Route::get('/visibility-permissions/{person_id}', 'Api\PersonController@getVisib
 Route::put('/change-visibility-permissions/', 'Api\PersonController@changeVisibilityPermissions');
 
 Route::get('qrcode/{person_id}', 'Api\PersonController@qrcode');
+
+Route::post('update-person/{person_id}', 'Api\PersonController@update');
 
 
 //------------------------- Expositores --------------------------------------------------------------------------------
