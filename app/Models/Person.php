@@ -15,7 +15,7 @@ class Person extends Model implements Transformable
         'name', 'lastName', 'email', 'church_id', 'tel', 'cel', 'role_id', 'imgProfile', 'gender',
         'dateBirth', 'cpf', 'rg', 'maritalStatus', 'partner', 'father_id', 'mother_id','mailing',
         'hasKids', 'tag', 'specialNeeds', 'street', 'neighborhood', 'city', 'zipCode', 'state', 'number',
-        'dateBaptism', 'import_code', 'deleted_at', 'status', 'terms', 'visibility', 'qrCode'
+        'import_code', 'deleted_at', 'status', 'terms', 'visibility', 'qrCode'
     ];
 
     /**

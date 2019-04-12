@@ -848,4 +848,6 @@ Route::get('basic-config', 'ChurchController@setBasicConfig');
 
 Route::get('prod-changes', 'ChurchController@sendChangesProd');
 
+Route::get('generate-users/{stop_number}', 'PersonController@generateUsers');
+
 

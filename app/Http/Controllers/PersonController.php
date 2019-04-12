@@ -1633,19 +1633,19 @@ class PersonController extends Controller
 
                     if(isset($item->tel))
                     {
-                        $data['tel'] = $item->tel;
+                        $data['cel'] = $item->tel;
                     }
                     elseif(isset($item->Tel))
                     {
-                        $data['tel'] = $item->Tel;
+                        $data['cel'] = $item->Tel;
                     }
                     elseif(isset($item->telefone))
                     {
-                        $data['tel'] = $item->telefone;
+                        $data['cel'] = $item->telefone;
                     }
                     elseif (isset($item->Telefone))
                     {
-                        $data['tel'] = $item->Telefone;
+                        $data['cel'] = $item->Telefone;
                     }
                     else{
 
@@ -1948,11 +1948,11 @@ class PersonController extends Controller
     {
         $user = $this->repository->find($id)->user;
 
-        $groups = $user ? $this->groupRepository->findByField('owner_id', $user->id) : 0;
+        $groups = $user ? $this->groupRepository->findByField('owner_id', $user->id)->first() : 0;
 
-        $events = $user ? $this->eventRepository->findByField('createdBy_id', $user->id) : 0;
+        $events = $user ? $this->eventRepository->findByField('createdBy_id', $user->id)->first() : 0;
 
-        if(count($groups) > 0 || count($events) > 0)
+        if($groups || $events)
         {
             return json_encode(
                 [
@@ -2361,6 +2361,63 @@ class PersonController extends Controller
         }
 
         return redirect()->route('person.index');
+    }
+
+    public function generateUsers($stop_number)
+    {
+        $i = 0;
+        $users_count = 0;
+
+        if($this->getUserChurch())
+        {
+            while ($users_count < $stop_number)
+            {
+                $verif_name = 'Teste ' . $i;
+
+                $verif_email =  'teste_'.$i.'@teste.com';
+
+                $name = $this->repository->findByField('name', $verif_name)->first();
+
+                $email = $this->repository->findByField('email', $verif_email)->first();
+
+                if(!$name && !$email)
+                {
+                    $data['name'] = $verif_name;
+
+                    $data['email'] = $verif_email;
+
+                    $data['cel'] = '15999999999';
+
+                    $data['church_id'] = $this->getUserChurch();
+
+                    $data['tag'] = 'adult';
+
+                    $data['role_id'] = $this->roleRepository->findByField('name', 'Participante')->first()->id;
+
+                    $data['imgProfile'] = 'uploads/profile/noimage.png';
+
+                    $data['status'] = 'test';
+
+                    $id = $this->repository->create($data)->id;
+
+                    $password = $this->randomPassword();
+
+                    $this->createUserLoginTest($id, $password, $data['email'], $this->getUserChurch());
+
+                    //Qrcode
+                    $this->qrServices->generateQrCode($id);
+
+                    $users_count++;
+                }
+
+                $i++;
+            }
+
+            return 'Foram cadastrados ' .$users_count. ' novos usuários';
+        }
+
+        return 'Org não encontrada';
+
     }
 
 

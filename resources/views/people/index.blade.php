@@ -227,14 +227,9 @@
 
                                                                         @else
 
-                                                                            <button class="btn btn-danger btn-sm btn-circle pop"
+                                                                            <button class="btn btn-danger btn-sm btn-circle deleteUser"
                                                                                     title="Deseja Excluir o Membro"
-                                                                                    data-toggle="confirmation"
-                                                                                    data-placement="top"
-                                                                                    data-original-title="Deseja Excluir?"
-                                                                                    data-popout="true"
-                                                                                    onclick="event.preventDefault()"
-                                                                                    id="btn-{{ $deleteForm }}">
+                                                                                    id="btn-delete-{{ $item->id }}">
                                                                                 <i class="fa fa-trash"></i>
                                                                                 Inativar
                                                                             </button>

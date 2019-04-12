@@ -172,7 +172,7 @@
 
                                                         @endif
 
-                                                        <div class="modal fade" id="info" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+                                                        <div class="modal fade" id="info_old" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
                                                             <div class="modal-dialog modal-lg" role="document">
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">
@@ -202,6 +202,39 @@
                                                                                 Se classificação for <strong>"DESLIGADO"</strong> então o membro será cadastrado como inativo</p>
                                                                         <p></p>
                                                                         <p></p>
+
+                                                                        <p>Faça o download da planilha modelo no botão download abaixo</p>
+
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+
+                                                                        <button type="button" class="btn btn-success" onclick="downloadPlan()">
+                                                                            <i class="fa fa-download"></i> Download
+                                                                        </button>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="modal fade" id="info" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+                                                            <div class="modal-dialog modal-lg" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                                        <h4 class="modal-title" id="myModalLabel">Instruções</h4>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <p>Upload simples com 3 campos Obrigatórios</p>
+
+                                                                        <p>1. As colunas devem ser nomeadas desta exata maneira:</p>
+                                                                        <p></p>
+
+                                                                        <p> &nbsp; &nbsp; &nbsp; Nome, Telefone, Email</p>
+
+                                                                        <p>2. O sistema não cadastrará emails repetidos, mesmo que os mesmos não estejam repetidos na planilha</p>
+
 
                                                                         <p>Faça o download da planilha modelo no botão download abaixo</p>
 

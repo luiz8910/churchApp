@@ -18,7 +18,7 @@ class User extends Authenticatable implements Transformable
      * @var array
      */
     protected $fillable = [
-        'email', 'password', 'church_id', 'facebook_id',
+        'email', 'password', 'church_id', 'facebook_id', 'type',
         'linkedin_id', 'google_id', 'twitter_id', 'person_id', 'social_token'
     ];
 

@@ -16,9 +16,9 @@ trait UserLoginRepository
 {
     public function createUserLogin($id = null, $password, $email = null, $church = null, $token = null)
     {
-        $qtde = count(User::where('email', $email)->get());
+        $qtde = User::where('email', $email)->first();
 
-        if($qtde == 0)
+        if(!$qtde)
         {
             $user = User::create(
                 [
@@ -27,6 +27,33 @@ trait UserLoginRepository
                     'email' => $email,
                     'password' => bcrypt($password),
                     'social_token' => $token ? $token : null,
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'updated_at' => date('Y-m-d H:i:s'),
+                ]
+            );
+
+            return $user;
+        }
+
+
+        return false;
+
+    }
+
+    public function createUserLoginTest($id = null, $password, $email = null, $church = null, $token = null)
+    {
+        $qtde = User::where('email', $email)->first();
+
+        if(!$qtde)
+        {
+            $user = User::create(
+                [
+                    'church_id' => $church,
+                    'person_id' => $id,
+                    'email' => $email,
+                    'password' => bcrypt($password),
+                    'social_token' => $token ? $token : null,
+                    'type' => 'test',
                     'created_at' => date('Y-m-d H:i:s'),
                     'updated_at' => date('Y-m-d H:i:s'),
                 ]
