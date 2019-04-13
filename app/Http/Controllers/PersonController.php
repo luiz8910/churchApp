@@ -2363,6 +2363,8 @@ class PersonController extends Controller
         return redirect()->route('person.index');
     }
 
+//--------------------------------------------- Testes -----------------------------------------------------------------
+
     public function generateUsers($stop_number)
     {
         $i = 0;
@@ -2414,6 +2416,37 @@ class PersonController extends Controller
             }
 
             return 'Foram cadastrados ' .$users_count. ' novos usuários';
+        }
+
+        return 'Org não encontrada';
+
+    }
+
+
+    public function check_inQr()
+    {
+        if($this->getUserChurch())
+        {
+            $people = $this->repository->findByField('status', 'test');
+
+            return view('people.qr-check_in', compact('people'));
+        }
+
+        return 'Org não encontrada';
+    }
+
+    public function subTestUsers($event_id)
+    {
+        if($this->getUserChurch())
+        {
+            $people = $this->repository->findByField('status', 'test');
+
+            foreach ($people as $person)
+            {
+                $this->eventServices->subUnique($event_id, $person->id);
+            }
+
+            return true;
         }
 
         return 'Org não encontrada';

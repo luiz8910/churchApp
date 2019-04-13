@@ -850,4 +850,8 @@ Route::get('prod-changes', 'ChurchController@sendChangesProd');
 
 Route::get('generate-users/{stop_number}', 'PersonController@generateUsers');
 
+Route::get('check_in-test', 'PersonController@check_inQr');
+
+Route::get('subTestUsers/{event_id}', 'PersonController@subTestUsers');
+
 
