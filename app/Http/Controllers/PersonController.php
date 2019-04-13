@@ -2453,6 +2453,23 @@ class PersonController extends Controller
 
     }
 
+    public function checkTestUsers($event_id)
+    {
+        if($this->getUserChurch())
+        {
+            $people = $this->repository->findByField('status', 'test');
+
+            foreach ($people as $person)
+            {
+                $this->eventServices->checkApp($person->id, $event_id);
+            }
+
+            return true;
+        }
+
+        return 'Org não encontrada';
+    }
+
 
 
 //--------------------------------------------------------- API --------------------------------------------------------
