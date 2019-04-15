@@ -206,18 +206,12 @@ class LoginController extends Controller
 
                 $role = $this->roleRepository->find($role_id)->name;
 
-                $notif_activity = $this->listRepository->findWhere(
-                    [
-                        'person_id' => $user->person->id,
-                        //'event_id' => $event_id
+                $notif_activity = $this->listRepository
+                    ->findByField('person_id', $user->person->id)->first()->notification_activity;
 
-                    ])->first()->notification_activity;
 
-                $notif_updates = $this->listRepository->findWhere(
-                    [
-                        'person_id' => $user->person->id,
-                        //'event_id' => $event_id
-                    ])->first()->notification_updates;
+                $notif_updates = $this->listRepository
+                    ->findByField('person_id', $user->person->id)->first()->notification_updates;
 
                 return json_encode([
                     'status' => true,
