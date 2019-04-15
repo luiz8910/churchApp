@@ -211,7 +211,10 @@ class LoginController extends Controller
 
                 if(!$notif_activity)
                 {
-                    $notif_activity->notification_activity = 0;
+                    $notif_activity = 0;
+                }
+                else{
+                    $notif_activity = $notif_activity->notification_activity;
                 }
 
                 $notif_updates = $this->listRepository
@@ -219,7 +222,10 @@ class LoginController extends Controller
 
                 if(!$notif_updates)
                 {
-                    $notif_updates->notification_updates = 0;
+                    $notif_updates = 0;
+                }
+                else{
+                    $notif_updates = $notif_updates->notification_updates;
                 }
 
                 return json_encode([
@@ -239,8 +245,8 @@ class LoginController extends Controller
                     'city' => $person->city,
                     'state' => $person->state,
                     'qrCode' => $person->qrCode,
-                    'notif_activity' => $notif_activity->notification_activity,
-                    'notif_updates' => $notif_updates->notification_updates,
+                    'notif_activity' => $notif_activity,
+                    'notif_updates' => $notif_updates,
                     'visibility' => $user->person->visibility
                 ]);
             }
