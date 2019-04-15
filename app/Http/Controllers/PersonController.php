@@ -2248,15 +2248,21 @@ class PersonController extends Controller
 
             $this->repository->update($data, $id);
 
-            $user = $this->repository->find($id)->user;
+            $person = $this->repository->findByField('id', $id)->first();
 
-            $password = $this->randomPassword();
+            if($person)
+            {
+                $password = $this->randomPassword();
 
-            $this->welcome($user, $password->alias);
+                $this->welcome($person->user, $password);
 
-            DB::commit();
+                DB::commit();
 
-            return json_encode(['status' => true]);
+                return json_encode(['status' => true]);
+            }
+
+            return json_encode(['status' => false, 'msg' => 'Usuário não encontrado']);
+
         }
         catch(\Exception $e)
         {
