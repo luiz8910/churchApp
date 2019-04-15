@@ -207,11 +207,20 @@ class LoginController extends Controller
                 $role = $this->roleRepository->find($role_id)->name;
 
                 $notif_activity = $this->listRepository
-                    ->findByField('person_id', $user->person->id)->first()->notification_activity;
+                    ->findByField('person_id', $user->person->id)->first();
 
+                if(!$notif_activity)
+                {
+                    $notif_activity = 0;
+                }
 
                 $notif_updates = $this->listRepository
-                    ->findByField('person_id', $user->person->id)->first()->notification_updates;
+                    ->findByField('person_id', $user->person->id)->first();
+
+                if(!$notif_updates)
+                {
+                    $notif_updates = 0;
+                }
 
                 return json_encode([
                     'status' => true,
@@ -230,8 +239,8 @@ class LoginController extends Controller
                     'city' => $person->city,
                     'state' => $person->state,
                     'qrCode' => $person->qrCode,
-                    'notif_activity' => $notif_activity,
-                    'notif_updates' => $notif_updates,
+                    'notif_activity' => $notif_activity->notification_activity,
+                    'notif_updates' => $notif_updates->notification_updates,
                     'visibility' => $user->person->visibility
                 ]);
             }
