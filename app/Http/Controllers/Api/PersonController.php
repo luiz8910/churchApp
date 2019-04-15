@@ -208,10 +208,12 @@ class PersonController extends Controller
 
                     $data['dateBirth'] = $this->formatDateBD($data['dateBirth']);
 
-                    $data['tag'] = $this->tag($data['dateBirth']);
+
 
                 }
             }
+
+                $data['tag'] = 'adult';
 
                 $data['role_id'] = 2;
 
