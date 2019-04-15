@@ -211,7 +211,7 @@ class LoginController extends Controller
 
                 if(!$notif_activity)
                 {
-                    $notif_activity = 0;
+                    $notif_activity->notification_activity = 0;
                 }
 
                 $notif_updates = $this->listRepository
@@ -219,7 +219,7 @@ class LoginController extends Controller
 
                 if(!$notif_updates)
                 {
-                    $notif_updates = 0;
+                    $notif_updates->notification_updates = 0;
                 }
 
                 return json_encode([
