@@ -140,7 +140,7 @@ class PersonController extends Controller
         if(isset($data['role'])){
             $data['role_id'] = $this->roleRepository->findByField('name', $data['role'])->first()
                 ? $this->roleRepository->findByField('name', $data['role'])->first()
-                : $this->roleRepository->findByField('name', 'Membro')->first()->id;
+                : $this->roleRepository->findByField('name', 'Participante')->first()->id;
 
         }
 
@@ -162,7 +162,6 @@ class PersonController extends Controller
         }
 
 
-
         if(isset($data['church_id']))
         {
             //Cadastro de Membro
@@ -172,19 +171,6 @@ class PersonController extends Controller
                 $church = $this->churchRepository->find($data['church_id']);
             }
 
-            //Cadastro de Visitante
-
-            else{
-
-                return $this->storeVisitors($request);
-            }
-        }
-        else{
-
-            //Cadastro de Visitante
-
-
-            return $this->storeVisitors($request);
         }
 
 
@@ -249,15 +235,15 @@ class PersonController extends Controller
                 $user = $this->createUserLogin($id, $password, $data['email'], $church->id, $token);
 
 
-                if(($data['role'] == 'Lider' || $data['role'] == 'Administrador') || ($data['role'] == $leader || $data['role'] == $admin))
-                {
+                //if(($data['role'] == 'Lider' || $data['role'] == 'Administrador') || ($data['role'] == $leader || $data['role'] == $admin))
+                //{
                     $this->welcome($user, $password);
 
                     $this->newRecentUser($id, $church->id);
 
                     $this->feedServices->newFeed(5, 'Novo Usuário Cadastrado', $id, null, 'person', $id );
-                }
-                else{
+                //}
+                /*else{
 
                     $data['status'] = 'waiting';
 
@@ -269,7 +255,7 @@ class PersonController extends Controller
                     $person = $this->repository->find($id);
 
                     $this->newWaitingApproval($person, $church->id);
-                }
+                }*/
 
             }
 
