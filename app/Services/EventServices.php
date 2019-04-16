@@ -831,7 +831,7 @@ class EventServices
             $event_person = DB::table('event_person')
                 ->where([
                     'event_id' => $id,
-                    //'person_id' => $person,
+                    'person_id' => $person,
                     'eventDate' => date_format($date, "Y-m-d"),
                     ['event_date', '<=', $date],
                 ])
@@ -843,7 +843,7 @@ class EventServices
             $event_person = DB::table('event_person')
                 ->where([
                     'event_id' => $id,
-                    //'person_id' => $person,
+                    'person_id' => $person,
                     'eventDate' => date_format($date, "Y-m-d"),
                     ['event_date', '<=', $date],
                     ['end_event_date', '>', $date]
