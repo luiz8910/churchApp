@@ -43,7 +43,7 @@ class PeopleServices{
 
         $time = date("H:i");
 
-        if (count($user) > 0) {
+        if ($user) {
 
             if($password)
             {
@@ -70,7 +70,7 @@ class PeopleServices{
     {
         $user = $this->userRepository->findByField('email', $email)->first();
 
-        if (count($user) > 0) {
+        if ($user) {
 
             DB::table('users')
                 ->where('email', $email)
