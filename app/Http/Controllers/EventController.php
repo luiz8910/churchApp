@@ -1763,8 +1763,8 @@ class EventController extends Controller
 
         $person_sub = DB::table('people')
             ->whereIn('id', $arr)
-            ->get()
-            //->paginate(5)
+            //->get()
+            ->paginate(5)
         ;
 
         $visit_sub = DB::table('visitors')
@@ -1835,19 +1835,18 @@ class EventController extends Controller
             ->get();
 
 
-        $visitors = $this->visitorRepository->findWhereNotIn('id', $vis);
+        /*$visitors = $this->visitorRepository->findWhereNotIn('id', $vis);
 
         $merged = $people->merge($visitors);
 
         $person_sub = $person_sub->merge($visit_sub);
 
-        $visitor_id = $this->roleRepository->findByField('name', 'Visitante')->first()->id;
+        $visitor_id = $this->roleRepository->findByField('name', 'Visitante')->first()->id;*/
 
 
         return view('events.subscriptions',
             compact('people', 'countPerson', 'countGroups', 'leader',
-                'notify', 'qtde', 'event', 'sub', 'person_sub',
-                'merged', 'merged_list', 'admin', 'visitor_id'));
+                'notify', 'qtde', 'event', 'sub', 'person_sub', 'admin'));
     }
 
     /*
@@ -1865,17 +1864,11 @@ class EventController extends Controller
             {
                 $role = $this->getUserRole();
 
-                $leader = $this->roleRepository->find($this->getLeaderRoleId())->name;
+                //$leader = $this->roleRepository->find($this->getLeaderRoleId())->name;
 
-                if((isset($event->group_id) && $role == $leader) || (!isset($event->group_id)))
-                {
-                    if($event->frequency == $this->unique())
-                    {
-                        $exists = $this->eventServices->subUnique($event_id, $data['person_id']);
-                    }
-                    else{
-                        $exists = $this->eventServices->subEvent($event_id, $data["person_id"]);
-                    }
+                //if((isset($event->group_id) && $role == $leader) || (!isset($event->group_id)))
+                //{
+                    $exists = $this->eventServices->subEvent($event_id, $data["person_id"]);
 
                     if($exists){
                         $request->session()->flash('success.msg', 'O usuário foi inscrito');
@@ -1883,7 +1876,7 @@ class EventController extends Controller
                     else{
                         $request->session()->flash('error.msg', 'Um erro ocorreu, tente novamente mais tarde');
                     }
-                }
+                //}
             }
             else{
                 $request->session()->flash('error.msg', 'Evento não encontrado');

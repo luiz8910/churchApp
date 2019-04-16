@@ -54,6 +54,39 @@ $(function () {
 
     });
 
+    $(".btn-person").click(function () {
+
+        var person = this.id.replace("btn-person-", "");
+
+        var event = $("#event-id").val();
+
+        swal({
+            title: 'Atenção',
+            text: 'Deseja Desinscrever este usuário?',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Sim, Excluir",
+            cancelButtonText: "Não",
+            closeOnConfirm: true,
+            closeOnCancel: true
+
+        }, function (isConfirm) {
+            if (isConfirm) {
+
+                $("#progress-danger").css("display", "block");
+
+                UnsubscribeUser(person, event);
+
+                swal("Sucesso!", "O usuário foi desinscrito do evento", "success");
+            }
+
+        });
+
+
+
+    });
+
 
 });
 

@@ -1967,6 +1967,13 @@ class EventServices
         {
             $this->listRepository->delete($list->id);
 
+            DB::table('event_person')
+                ->where([
+                    'event_id' => $event_id,
+                    'person_id' => $person_id
+
+                ])->delete();
+
             return true;
         }
 
