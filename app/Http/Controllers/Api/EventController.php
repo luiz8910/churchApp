@@ -113,6 +113,12 @@ class EventController extends Controller
             ->limit($qtde)
             ->get();
 
+        foreach ($events as $event)
+        {
+            $event->event_date = date_create($event->eventDate . $event->startTime);
+        }
+
+        //dd($events);
         return json_encode($events);
     }
 
