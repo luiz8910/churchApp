@@ -276,7 +276,6 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                         <th class="printable-table-header"> Frequência </th>
                                                                         <th class="printable-table-header"> Criado Por </th>
                                                                         <th class="printable-table-header"> Grupo </th>
-                                                                        <th>  </th>
                                                                     </tr>
                                                                     </thead>
 
@@ -333,7 +332,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
 
                                                                             <?php $deleteForm = "delete-" . $event->id; ?>
-                                                                            <td>
+                                                                            <!--<td>
                                                                                 <div class="actions">
                                                                                     <div class="btn-group @if($pag % 5 == 0 || $pag == count($events)) dropup @endif">
                                                                                         <a class="btn blue btn-outline btn-circle" href="javascript:;" data-toggle="dropdown">
@@ -389,7 +388,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                                     </div>
                                                                                 </div>
 
-                                                                            </td>
+                                                                            </td>-->
 
 
 
