@@ -1000,7 +1000,7 @@ class EventController extends Controller
 
     }
 
-    public function isSub($person_id, $event_id)
+    public function isSub($event_id, $person_id)
     {
         $list = $this->listRepository->findWhere(
             [
@@ -1008,6 +1008,7 @@ class EventController extends Controller
                 'event_id' => $event_id
 
             ])->first();
+
 
         if ($list)
         {

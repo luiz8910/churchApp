@@ -102,7 +102,7 @@ Route::get('/sub/{id}/{person_id}', 'Api\EventController@sub');
 
 Route::any('/checkin-all/', 'Api\EventController@checkInPeopleAPP');
 
-Route::get('/is-sub/{person_id}/{event_id}', 'Api\EventController@isSub');
+Route::get('/is-sub/{event_id}/{person_id}', 'Api\EventController@isSub');
 
 
 
