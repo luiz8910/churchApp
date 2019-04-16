@@ -1091,7 +1091,6 @@ class PersonController extends Controller
         $email = $email["email"];
 
 
-
         if(!$teen)
         {
             foreach ($fields as $field) {
@@ -1219,6 +1218,8 @@ class PersonController extends Controller
 
             $data['status'] = 'waiting';
         }*/
+
+        $data['email'] = $email;
 
         $this->repository->update($data, $id);
 
