@@ -115,7 +115,7 @@ class EventController extends Controller
 
         foreach ($events as $event)
         {
-            $event->event_date = date_create($event->eventDate . $event->startTime);
+            $event->event_date = date_format(date_create($event->eventDate . $event->startTime), 'Y-m-d H:i:s');
         }
 
         //dd($events);
