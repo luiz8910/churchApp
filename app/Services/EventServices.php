@@ -866,7 +866,21 @@ class EventServices
                     'show' => 1
                 ]);
 
-            return json_encode(['status' => true, 'check-in' => true]);
+            $p = $this->personRepository->findByField('id', $person)->first();
+
+            $msg = 'Check-in realizado com sucesso';
+
+            if($p)
+            {
+                $msg =  'O usuário ' . $p->name . ' realizou o check-in com sucesso';
+            }
+
+            return json_encode(
+                [
+                    'status' => true,
+                    'check-in' => true,
+                    'msg' => $msg
+                ]);
         }
 
             return json_encode(
