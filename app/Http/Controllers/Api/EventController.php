@@ -96,8 +96,28 @@ class EventController extends Controller
     }
 
 
-
     public function getEventsApi($qtde, $church)
+    {
+        $today = date_create();
+
+        $day = date_format($today, 'Y-m-d');
+
+        $events = DB::table('events')
+            ->where([
+                'church_id' => $church,
+                ['eventDate', '>=', $day]
+            ])
+            ->whereNull('deleted_at')
+            ->orderBy('eventDate')
+            ->distinct()
+            ->limit($qtde)
+            ->get();
+
+        return json_encode($events);
+    }
+
+
+    public function getEventsApitest($qtde, $church)
     {
         $today = date_create();
 

@@ -874,7 +874,7 @@ class PersonController extends Controller
 
         $roles = $this->roleRepository->all();
 
-        $model->dateBirth = $this->formatDateView($model->dateBirth);
+        $model->dateBirth = $model->dateBirth ? date_format(date_create($model->dateBirth), 'd/m/Y') : null;
 
         $leader = $this->getLeaderRoleId();
 
@@ -932,7 +932,7 @@ class PersonController extends Controller
 
         $children = null;
 
-        if($model->hasKids == 1)
+        /*if($model->hasKids == 1)
         {
             $parent = $model->gender == "M" ? 'father_id' : 'mother_id';
 
@@ -943,7 +943,7 @@ class PersonController extends Controller
                 $child->dateBirth = $this->formatDateView($child->dateBirth);
             }
 
-        }
+        }*/
 
 
         $fathers = DB::table('people')
@@ -1090,19 +1090,7 @@ class PersonController extends Controller
         //Formatação correta do email
         $email = $email["email"];
 
-        if($request->get('dateBirth') == ""){
 
-            \Session::flash("email.exists", "Insira a data de Nascimento");
-
-            if($teen){
-
-                return redirect()->route("teen.edit", ['person' => $id])->withInput();
-            }
-
-                return redirect()->route("person.edit", ['person' => $id])->withInput();
-
-
-        }
 
         if(!$teen)
         {
@@ -1116,7 +1104,7 @@ class PersonController extends Controller
             }
         }
 
-        if($teen)
+        /*if($teen)
         {
             $verifyFields = $this->verifyRequiredFields($data, 'teen');
 
@@ -1126,7 +1114,7 @@ class PersonController extends Controller
                 return redirect()->route("teen.edit", ['person' => $id])->withInput();
             }
 
-        }else{
+        }else{*/
             $verifyFields = $this->verifyRequiredFields($data, 'person');
 
             if($verifyFields)
@@ -1134,39 +1122,43 @@ class PersonController extends Controller
                 \Session::flash("error.required-fields", "Preencha o campo " . $verifyFields);
                 return redirect()->route("person.edit", ['person' => $id])->withInput();
             }
+
+
+
+        if($data['dateBirth'] != '')
+        {
+            //Formatação correta da data
+            $data['dateBirth'] = $this->formatDateBD($data['dateBirth']);
+
+            /*if(isset($data['father_id_input']) || isset($data['mother_id_input'])){
+                if($data['father_id_input'] || $data['mother_id_input'])
+                {
+                    $data['father_id'] = $data['father_id_input'] or null;
+                    $data['mother_id'] = $data['mother_id_input'] or null;
+                }
+            }*/
         }
 
 
-
-        //Formatação correta da data
-        $data['dateBirth'] = $this->formatDateBD($data['dateBirth']);
-
-        if(isset($data['father_id_input']) || isset($data['mother_id_input'])){
-            if($data['father_id_input'] || $data['mother_id_input'])
-            {
-                $data['father_id'] = $data['father_id_input'] or null;
-                $data['mother_id'] = $data['mother_id_input'] or null;
-            }
+        if(!isset($data["role_id"]) || $data["role_id"] == "")
+        {
+            $member = $this->roleRepository->findByField('name', 'Participante')->first()->id;
+            $data["role_id"] = $member;
         }
 
-
-        if(!isset($data['maritalStatus']))
+        /*if(!isset($data['maritalStatus']))
         {
             $data['maritalStatus'] = 'Solteiro';
         }
 
-        if(!isset($data["role_id"]))
-        {
-            $member = $this->roleRepository->findByField('name', 'Membro')->first()->id;
-            $data["role_id"] = $member;
-        }
 
-        /*
+
+
          * Se a pessoa for casada e $data['partner'] = 0 então o parceiro é de fora da igreja
          * Se a pessoa não for casada e $data['partner'] = 0 então não há parceiro para incluir
          * Se a pessoa for casada e $data['partner'] != "0" então a pessoa é casada com o id informado
          *
-        */
+
         if ($data['maritalStatus'] != 'Casado') {
             $data['partner'] = null;
 
@@ -1179,7 +1171,7 @@ class PersonController extends Controller
 
         } else if ($data['partner'] != "0") {
             $this->updateMaritalStatus($data['partner'], $id, 'people');
-        }
+        }*/
 
         $user = $this->userRepository->findByField('person_id', $id)->first();
 
@@ -1194,13 +1186,13 @@ class PersonController extends Controller
             }
         }
 
-        $tag = $this->tag($data["dateBirth"]);
+        $tag = 'adult';
 
-        $person = $this->repository->find($id);
+        $person = $this->repository->findByField('id', $id)->first();
 
         $church_id = $this->getUserChurch();
 
-        if($person->tag != 'adult' && $tag == 'adult')
+        if($person)
         {
             if($email)
             {
@@ -1221,16 +1213,16 @@ class PersonController extends Controller
 
         $data["city"] = ucwords($data["city"]);
 
-        if($person->status != 'active')
+        /*if($person->status != 'active')
         {
             $this->newWaitingApproval($person, $church_id, 'Dados alterados - ');
 
             $data['status'] = 'waiting';
-        }
+        }*/
 
         $this->repository->update($data, $id);
 
-        if($teen){
+        /*if($teen){
             if(is_numeric($data['father_id'])){
                 $parentId = $this->repository->find($data['father_id'])->id;
 
@@ -1254,7 +1246,7 @@ class PersonController extends Controller
 
             Session::flash('teen.crud', 'Usuário '. $data['name'] . ' alterado com sucesso');
             return redirect()->route('person.teen');
-        }
+        }*/
 
         Session::flash('person.crud', 'Usuário '. $data['name'] . ' alterado com sucesso');
         return redirect()->route('person.index');
