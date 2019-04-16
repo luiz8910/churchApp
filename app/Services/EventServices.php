@@ -464,8 +464,6 @@ class EventServices
             if($event->eventDate == $event->endEventDate)
             {
 
-
-
                 //$endTime = date_format($endTime, "Y-m-d");
 
                 //$endTime = date_create($endTime);
@@ -840,15 +838,17 @@ class EventServices
 
         }else{
 
+
             $event_person = DB::table('event_person')
                 ->where([
                     'event_id' => $id,
                     'person_id' => $person,
                     'eventDate' => date_format($date, "Y-m-d"),
                     ['event_date', '<=', $date],
-                    ['end_event_date', '>', $date]
+                    //['end_event_date', '>', $date]
                 ])
                 ->first();
+
         }
 
         if($event_person)
@@ -1821,32 +1821,50 @@ class EventServices
 
             if(count($exists) == 0)
             {
-                $nextEvent = $this->getNextEvent($event_id);
 
-                $event = $this->repository->find($event_id);
+                $event = $this->repository->findByField('id', $event_id)->first();
 
-                $frequency = $event->frequency;
-
-                $data['eventDate'] = $nextEvent[1];
-
-                $data['startTime'] = $event->startTime;
-
-                if($frequency == $this->weekly())
+                if($event)
                 {
-                    $this->setNextEvents($event_id, $data, "7 days", $person_id);
-                }
-                elseif($frequency == $this->monthly())
-                {
-                    $this->setNextEvents($event_id, $data, "30 days", $person_id);
-                }
-                elseif ($frequency == $this->daily())
-                {
-                    $this->setNextEvents($event_id, $data, "1 days", $person_id);
-                }
-                elseif ($frequency == $this->biweekly())
-                {
-                    $this->setNextEvents($event_id, $data, "15 days", $person_id);
-                }
+                    $frequency = $event->frequency;
+
+                    if($frequency == $this->unique())
+                    {
+                        DB::table('event_person')
+                            ->insert([
+                                'event_id' => $event_id,
+                                'person_id' => $person_id,
+                                'eventDate' => $event->eventDate,
+                                'check-in' => 0,
+                                'show' => 0,
+                                'event_date' => date_create($event->eventDate . $event->start_date),
+                                'end_event_date' => date_create($event->eventDate . $event->endTime)
+                            ]);
+                    }
+                    else{
+                        $nextEvent = $this->getNextEvent($event_id);
+
+                        $data['eventDate'] = $nextEvent[1];
+
+                        $data['startTime'] = $event->startTime;
+
+                        if($frequency == $this->weekly())
+                        {
+                            $this->setNextEvents($event_id, $data, "7 days", $person_id);
+                        }
+                        elseif($frequency == $this->monthly())
+                        {
+                            $this->setNextEvents($event_id, $data, "30 days", $person_id);
+                        }
+                        elseif ($frequency == $this->daily())
+                        {
+                            $this->setNextEvents($event_id, $data, "1 days", $person_id);
+                        }
+                        elseif ($frequency == $this->biweekly())
+                        {
+                            $this->setNextEvents($event_id, $data, "15 days", $person_id);
+                        }
+                    }
 
                 if($visitor_id != 0)
                 {
@@ -1867,6 +1885,8 @@ class EventServices
                 DB::commit();
 
                 return true;
+                }
+
             }
 
             return false;
