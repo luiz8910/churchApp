@@ -1764,6 +1764,7 @@ class EventController extends Controller
         $person_sub = DB::table('people')
             ->whereIn('id', $arr)
             //->get()
+            ->orderBy('name')
             ->paginate(5)
         ;
 
