@@ -282,7 +282,7 @@ class PersonController extends Controller
                     ->where('id', $person)
                     ->first();
 
-        if(count($person) > 0)
+        if($person)
         {
             if($person->tag == 'adult')
             {
@@ -325,7 +325,7 @@ class PersonController extends Controller
             ->where('id', $person)
             ->first();
 
-        if(count($person) > 0)
+        if($person)
         {
             if ($person->tag == 'adult') {
                 $user = $person->user()->withTrashed()->first();
@@ -686,6 +686,13 @@ class PersonController extends Controller
         if($origin)
         {
             $data['status'] = 'waiting';
+        }
+
+        if(isset($data['cel']) || $data['cel'] != "")
+        {
+            $data['cel'] = str_replace('(', '', $data['cel']);
+            $data['cel'] = str_replace(')', '', $data['cel']);
+            $data['cel'] = str_replace('-', '', $data['cel']);
         }
 
         $id = $this->repository->create($data)->id;
@@ -1221,6 +1228,13 @@ class PersonController extends Controller
 
         $data['email'] = $email;
 
+        if(isset($data['cel']) || $data['cel'] != "")
+        {
+            $data['cel'] = str_replace('(', '', $data['cel']);
+            $data['cel'] = str_replace(')', '', $data['cel']);
+            $data['cel'] = str_replace('-', '', $data['cel']);
+        }
+
         $this->repository->update($data, $id);
 
         /*if($teen){
@@ -1545,7 +1559,7 @@ class PersonController extends Controller
     }
 
 
-    public function getSimpleContact()
+    public function getSimpleContact(Request $request)
     {
         ini_set('max_execution_time', '60');
 
@@ -1598,98 +1612,163 @@ class PersonController extends Controller
                     $stop = false;
 
                     $nome = '';
-
-                    if(isset($item->nome))
-                    {
-                        $nome = 'nome';
-                    }
-                    elseif(isset($item->Nome)){
-                        $nome = 'Nome';
-                    }
-                    elseif(isset($item->NOME)){
-                        $nome = 'NOME';
-                    }
-                    else{
-                        $stop = true;
-
-                        $errors[] = 'Nome não informado ou coluna com nome incorreto';
-                    }
-
-                    if(!$stop)
-                    {
-                        $fullName = $this->surname($item->nome);
-
-                        $data["name"] = ucfirst($fullName[0]);
-
-                        $data["lastName"] = ucwords($fullName[1]);
-                    }
-
-                    if(isset($item->tel))
-                    {
-                        $data['cel'] = $item->tel;
-                    }
-                    elseif(isset($item->Tel))
-                    {
-                        $data['cel'] = $item->Tel;
-                    }
-                    elseif(isset($item->telefone))
-                    {
-                        $data['cel'] = $item->telefone;
-                    }
-                    elseif (isset($item->Telefone))
-                    {
-                        $data['cel'] = $item->Telefone;
-                    }
-                    else{
-
-                        $stop = true;
-
-                        $errors[] = 'Telefone não informado ou coluna com nome incorreto';
-                    }
-
                     $email = '';
+                    $tel = '';
+
+                    if(isset($item->email))
+                    {
+                        $email =  "email";
+                    }
+                    elseif (isset($item->e_mail))
+                    {
+                        $email = "e_mail";
+                    }
+                    elseif(isset($item->Email))
+                    {
+                        $email = "Email";
+                    }
+                    elseif (isset($item->EMAIL))
+                    {
+                        $email = "EMAIL";
+                    }
+                    else{
+                        $stop = true;
+
+                        $errors[] = 'Email não informado ou coluna com nome incorreto';
+                    }
 
                     if(!$stop)
                     {
-                        if(isset($item->email))
+                        if($item->$email == "")
                         {
-                            $email =  "email";
+                            $stop = true;
+
+                            $errors[] = 'Campo Email está em branco';
                         }
-                        elseif (isset($item->e_mail))
+                    }
+
+                    if(!$stop)
+                    {
+
+                        if(isset($item->nome))
                         {
-                            $email = "e_mail";
+                            $nome = 'nome';
                         }
-                        elseif(isset($item->Email))
-                        {
-                            $email = "Email";
+                        elseif(isset($item->Nome)){
+                            $nome = 'Nome';
                         }
-                        elseif (isset($item->EMAIL))
-                        {
-                            $email = "EMAIL";
+                        elseif(isset($item->NOME)){
+                            $nome = 'NOME';
                         }
                         else{
                             $stop = true;
 
-                            $errors[] = 'Email não informado ou coluna com nome incorreto';
+                            $errors[] = 'Nome não informado ou coluna com nome incorreto';
                         }
+                    }
 
-                        if(!$stop)
+                    if(!$stop)
+                    {
+                        if($item->$nome == '')
                         {
-                            if(!$this->emailExists($item->$email))
-                            {
-                                $data["email"] = $item->$email;
+                            $stop = true;
 
-                                $password = $this->randomPassword();
+                            $errors[] = 'Nome em branco';
+                            //$data["name"] = strstr($item->$email, '@', true);
+                        }
+                        else{
 
-                                $person_id = $this->repository->create($data)->id;
+                            $fullName = $this->surname($item->$nome);
 
-                                $church = $this->getUserChurch();
+                            $data["name"] = ucfirst($fullName[0]);
 
-                                $this->createUserLogin($person_id, $password, $data['email'], $church);
-                            }
+                            $data["lastName"] = ucwords($fullName[1]);
                         }
 
                     }
+
+                    if(!$stop)
+                    {
+                        if(isset($item->tel))
+                        {
+                            $data['cel'] = $item->tel;
+                        }
+                        elseif(isset($item->Tel))
+                        {
+                            $data['cel'] = $item->Tel;
+                        }
+                        elseif(isset($item->telefone))
+                        {
+                            $data['cel'] = $item->telefone;
+                        }
+                        elseif (isset($item->Telefone))
+                        {
+                            $data['cel'] = $item->Telefone;
+
+                            $tel = 'Telefone';
+                        }
+                        else{
+
+                            $stop = true;
+
+                            $errors[] = 'Telefone não informado ou coluna com nome incorreto';
+                        }
+                    }
+
+                    if(!$stop)
+                    {
+                        if(!$this->emailExists($item->$email))
+                        {
+
+                            $data["email"] = $item->$email;
+
+
+                            $data['cel'] = str_replace('(', '', $data['cel']);
+                            $data['cel'] = str_replace(')', '', $data['cel']);
+                            $data['cel'] = str_replace('-', '', $data['cel']);
+
+                            $password = $data['cel']; //$this->randomPassword();
+
+                            $data['church_id'] = $church;
+
+                            $data['role_id'] = 2;
+
+                            $data['tag'] = 'adult';
+
+                            $data['imgProfile'] = 'uploads/profile/noimage.png';
+
+                            //$data['cel'] = $item->Telefone;
+
+                            $person_id = $this->repository->create($data)->id;
+
+                            $this->qrServices->generateQrCode($person_id);
+
+                            $church = $this->getUserChurch();
+
+                            $this->createUserLogin($person_id, $password, $data['email'], $church);
+
+                            /*if($user)
+                            {
+                                $this->welcome($user, $password);
+                            }*/
+
+                            if($item->event_id != "")
+                            {
+                                $event = $this->eventRepository->findByField('id', $item->event_id)->first();
+
+                                if($event)
+                                {
+                                    $this->eventServices->subEvent($event->id, $person_id);
+                                }
+                            }
+
+                            $i++;
+
+                            unset($data);
+                        }
+                    }
+
+
 
                 }
 
@@ -2069,7 +2148,7 @@ class PersonController extends Controller
     {
         $up = $this->uploadStatusRepository->findByField('name', $name)->first();
 
-        if(count($up) > 0)
+        if($up)
         {
             $up->delete();
         }
@@ -2099,13 +2178,19 @@ class PersonController extends Controller
     {
         $status = $this->uploadStatusRepository->findByField('name', $name)->first();
 
-        $data['code'] = $qtde;
+        if($status)
+        {
+            $data['code'] = $qtde;
 
-        $data['status'] = 1;
+            $data['status'] = 1;
 
-        $this->uploadStatusRepository->update($data, $status->id);
+            $this->uploadStatusRepository->update($data, $status->id);
 
-        return true;
+            return true;
+        }
+
+        return false;
+
     }
 
     public function listPeople()
@@ -2336,7 +2421,7 @@ class PersonController extends Controller
             ->orderBy('created_at', 'desc')
             ->first();
 
-        if(count($details) > 0)
+        if($details)
         {
             $denied_by = $this->repository->find($details->denied_by_person);
 
@@ -2469,6 +2554,17 @@ class PersonController extends Controller
         return 'Org não encontrada';
     }
 
+
+    public function testeTelefone()
+    {
+        $tel = '(15)99761-7918';
+
+        $tel = str_replace('(', '', $tel);
+        $tel = str_replace(')', '', $tel);
+        $tel = str_replace('-', '', $tel);
+
+        echo $tel;
+    }
 
 
 //--------------------------------------------------------- API --------------------------------------------------------

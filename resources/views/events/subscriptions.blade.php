@@ -261,8 +261,8 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         </label>--}}
 
                                                     <th class="printable-table-header"> Nome </th>
-                                                    <th class="hidden-xs hidden-sm"> Cancelar Inscrição </th>
-                                                    <th class="hidden-md hidden-lg"> Cancelar </th>
+                                                    <th class="hidden-xs hidden-sm"> Opções </th>
+                                                    <th class="hidden-md hidden-lg"> Opções </th>
                                                 </tr>
                                                 </thead>
 
@@ -307,10 +307,27 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         </td>
 
                                                         <td>
+                                                            @if(!$person->check)
+                                                                <a href="javascript:;" class="btn btn-success btn-sm btn-circle btn-person-check"
+                                                                   title="Fazer Check-in"
+                                                                   id="btn-person-check-{{ $person->id }}">
+                                                                    <i class="fa fa-check"></i>
+                                                                    Check-in
+                                                                </a>
+
+                                                            @else
+                                                                <a href="javascript:;" class="btn btn-danger btn-sm btn-circle btn-person-uncheck"
+                                                                   title="Retirar Check-in"
+                                                                   id="btn-person-uncheck-{{ $person->id }}">
+                                                                    <i class="fa fa-close"></i>
+                                                                    Retirar Check-in
+                                                                </a>
+                                                            @endif
                                                             <a href="javascript:;" class="btn btn-danger btn-sm btn-circle btn-person"
                                                                title="Excluir Pessoa?"
                                                                id="btn-person-{{ $person->id }}">
                                                                 <i class="fa fa-trash"></i>
+                                                                Excluir
                                                             </a>
                                                         </td>
                                                     </tr>

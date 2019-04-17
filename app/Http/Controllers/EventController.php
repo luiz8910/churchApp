@@ -1780,6 +1780,14 @@ class EventController extends Controller
 
             $p->social_media = false;
 
+            $p->check = DB::table('event_person')
+                ->where([
+                    'event_id' => $id,
+                    'person_id' => $p->id,
+                    'check-in' => 1
+                ])->first();
+
+
             if($user)
             {
                 if($user->facebook_id || $user->google_id)
@@ -1920,9 +1928,15 @@ class EventController extends Controller
     }
 
 
+    public function checkin_manual($event_id, $person_id)
+    {
+        return $this->eventServices->check($event_id, $person_id);
+    }
 
-
-
+    public function uncheckin_manual($event_id, $person_id)
+    {
+        return $this->eventServices->uncheck($event_id, $person_id);
+    }
 
 
 }

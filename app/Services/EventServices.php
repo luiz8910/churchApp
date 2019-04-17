@@ -905,6 +905,8 @@ class EventServices
 
             $person = $person ? $person : \Auth::user()->person;
 
+            $person = $this->personRepository->findByField('id', $person)->first();
+
             $this->subEvent($id, $person->id);
 
             $date = date_create(date('Y-m-d'));
@@ -1030,7 +1032,122 @@ class EventServices
         }catch(\Exception $e){
             DB::rollback();
 
-            return json_encode(['status' => false]);
+            return json_encode(['status' => false, 'msg' => $e->getMessage()]);
+        }
+
+
+
+    }
+
+    /*
+     * @param int $id
+     * $id = id do evento
+     * Usado para retirar check-in do evento selecionado
+     * */
+    public function uncheck($id, $person = null, $visitor = null)
+    {
+        try{
+
+            $person = $person ? $person : \Auth::user()->person;
+
+            $person = $this->personRepository->findByField('id', $person)->first();
+
+            //$this->subEvent($id, $person->id);
+
+            $date = date_create(date('Y-m-d'));
+
+            if($visitor)
+            {
+                $event_person = DB::table('event_person')
+                    ->where([
+                        'event_id' => $id,
+                        'visitor_id' => $person->id,
+                        'eventDate' => date_format($date, "Y-m-d"),
+                        'check-in' => 0
+                    ])->get();
+
+                if(count($event_person) > 0)
+                {
+                    DB::table('event_person')
+                        ->where([
+                            'event_id' => $id,
+                            'visitor_id' => $person->id,
+                            'eventDate' => date_format($date, "Y-m-d"),
+                            'check-in' => 0
+                        ])->update([
+                            'check-in' => 1,
+                            'show' => 1
+                        ]);
+                }
+                else{
+                    $days = $this->eventDays($id);
+
+                    $today = date("Y-m-d");
+
+                    for($i = 0; $i < count($days); $i++)
+                    {
+                        $check = $days[$i]->eventDate == $today ? 1 : 0;
+
+                        DB::table('event_person')
+                            ->insert([
+                                'event_id' => $id,
+                                'visitor_id' => $person->id,
+                                'eventDate' => $days[$i]->eventDate,
+                                'event_date' => date_create($days[$i]->eventDate),
+                                'check-in' => $check,
+                                'show' => 1
+                            ]);
+                    }
+
+
+                }
+            }
+            else{
+
+                /*
+                 * $event_person = Exibir se há alguma data para o
+                 * evento $id no dia de hoje e
+                 * que o usuário $person esteja inscrito
+                 */
+                $event_person = DB::table('event_person')
+                    ->where([
+                        'event_id' => $id,
+                        'person_id' => $person->id,
+                        'eventDate' => date_format($date, "Y-m-d"),
+                        //'check-in' => 0
+                    ])->get();
+
+
+                /*
+                 * Se achar algum evento
+                 */
+                if(count($event_person) > 0)
+                {
+                    /*
+                     * Realiza o check-in
+                     */
+                    DB::table('event_person')
+                        ->where([
+                            'event_id' => $id,
+                            'person_id' => $person->id,
+                            'eventDate' => date_format($date, "Y-m-d"),
+                            'check-in' => 1
+                        ])->update([
+                            'check-in' => 0,
+                        ]);
+                }
+
+            }
+
+
+
+            DB::commit();
+
+            return json_encode(['status' => true]);
+        }catch(\Exception $e){
+            DB::rollback();
+
+            return json_encode(['status' => false, 'msg' => $e->getMessage()]);
         }
 
 

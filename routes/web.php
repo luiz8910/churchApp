@@ -85,6 +85,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/delete-all-inactives', 'PersonController@forceDeleteAll');
 
+    Route::get('new-password/{person_id}', 'UsersController@newPassword');
+
     // Fim Usuários e pessoas
 
     //Inicio Grupos
@@ -209,6 +211,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/sessoes-update/{event_id}', 'SessionController@update')->name('event.session.update');
 
     Route::get('sessoes-check-in/{id}', 'SessionController@check_in_list')->name('event.session.check_in_list');
+
+    Route::get('check-in_manual/{event_id}/{person_id}', 'EventController@checkin_manual');
+
+    Route::get('uncheck-in_manual/{event_id}/{person_id}', 'EventController@uncheckin_manual');
 
     // Fim Eventos
 
@@ -853,5 +859,7 @@ Route::get('generate-users/{stop_number}', 'PersonController@generateUsers');
 Route::get('check_in-test', 'PersonController@check_inQr');
 
 Route::get('subTestUsers/{event_id}', 'PersonController@subTestUsers');
+
+Route::get('teste-telefone', 'PersonController@testeTelefone');
 
 

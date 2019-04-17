@@ -36,6 +36,103 @@ $(function(){
 
         //findUserTransfer(input);
     })
+
+
+    $(".new-password").click(function () {
+
+        var id = this.id.replace('new-password-', '');
+
+        var request = $.ajax({
+            url: '/new-password/' + id,
+            method: 'GET',
+            dataType: 'json'
+
+        });
+
+        request.done(function(e){
+
+            if(e.status)
+            {
+                swal("Sucesso!", "Uma nova senha foi gerada", "success");
+
+
+                return true;
+            }
+            else{
+                console.log(e.msg);
+
+                swal("Atenção!", "Verifique o log", "error");
+            }
+        });
+
+        request.fail(function (e) {
+            console.log('fail');
+            console.log(e);
+        })
+    });
+
+
+    $(".btn-person-check").click(function () {
+
+        var event_id = $("#event-id").val();
+        var person = this.id.replace('btn-person-check-', '');
+
+        var request = $.ajax({
+            url: '/check-in_manual/' + event_id + '/' + person,
+            method: 'GET',
+            dataType: 'json'
+
+        });
+
+        request.done(function(e){
+
+            if(e.status)
+            {
+                location.reload();
+            }
+            else{
+                console.log(e.msg);
+
+                swal("Atenção!", "Verifique o log", "error");
+            }
+        });
+
+        request.fail(function (e) {
+            console.log('fail');
+            console.log(e);
+        })
+    });
+
+    $(".btn-person-uncheck").click(function () {
+
+        var event_id = $("#event-id").val();
+        var person = this.id.replace('btn-person-uncheck-', '');
+
+        var request = $.ajax({
+            url: '/uncheck-in_manual/' + event_id + '/' + person,
+            method: 'GET',
+            dataType: 'json'
+
+        });
+
+        request.done(function(e){
+
+            if(e.status)
+            {
+                location.reload();
+            }
+            else{
+                console.log(e.msg);
+
+                swal("Atenção!", "Verifique o log", "error");
+            }
+        });
+
+        request.fail(function (e) {
+            console.log('fail');
+            console.log(e);
+        })
+    });
 });
 
 

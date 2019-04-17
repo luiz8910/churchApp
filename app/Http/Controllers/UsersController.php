@@ -505,4 +505,49 @@ class UsersController extends Controller
 
         return response()->json(compact('token'));
     }
+
+    public function newPassword($person_id)
+    {
+        $person = $this->personRepository->findByField('id', $person_id)->first();
+
+        if($person)
+        {
+            try{
+                if($person->cel != "")
+                {
+                    $password = bcrypt($person->cel);
+
+                    $id = $person->user->id;
+
+                    if($id)
+                    {
+                        DB::table('users')->
+                        where('id', $id)->
+                        update(['password' => $password]);
+
+                        DB::commit();
+
+                        return json_encode(['status' => true]);
+                    }
+
+                    DB::rollBack();
+
+                    return json_encode(['status' => false, 'msg' => 'Usuário não existe']);
+                }
+
+                DB::rollBack();
+
+                return json_encode(['status' => false, 'msg' => 'Telefone não existe']);
+
+            }catch (\Exception $e)
+            {
+                DB::rollBack();
+
+                return json_encode(['status' => false, 'msg' => $e->getMessage()]);
+            }
+
+        }
+
+        return json_encode(['status' => false, 'msg' => 'Pessoa não existe']);
+    }
 }

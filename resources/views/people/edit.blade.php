@@ -234,6 +234,14 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                                 @endif
                                             @endif
+
+                                            <li>
+                                                <a href="javascript:;" class="new-password" id="new-password-{{ $model->id }}">
+                                                    <i class="fa fa-unlock-alt"></i>
+
+                                                    Gerar nova Senha
+                                                </a>
+                                            </li>
                                         </ul>
                                     </div>
                                     <!-- END MENU -->
@@ -536,7 +544,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <span class="input-group-addon">
                                                         <i class="fa fa-mobile font-blue"></i>
                                                     </span>
-                                                            <input type="text" class="form-control tel" name="cel"
+                                                            <input type="text" class="form-control" name="cel"
                                                                    id="exampleInputPassword1" value="{{ $model->cel }}" placeholder="(15) 9231413423"
                                                                     @if($fields[$i]->required == 1)
                                                                         required
