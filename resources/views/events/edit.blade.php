@@ -1031,13 +1031,13 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    {!! Form::FormGroup('description', $errors) !!}
-                                                    <label class="control-label">Descrição</label>
-                                                    <textarea class="form-control" name="description"
-                                                              placeholder="Digite aqui observações importantes sobre o evento"
-                                                              rows="5">{{ $model->description }}</textarea>
-                                                    {!! Form::error('description', $errors) !!}
-                                                    {!! Form::endFormGroup() !!}
+                                                    <div class="form-group">
+                                                        <label class="control-label">Descrição</label>
+                                                        <textarea class="form-control" name="description"
+                                                                  placeholder="Digite aqui observações importantes sobre o evento"
+                                                                  rows="5">{{ $model->description }}</textarea>
+                                                    </div>
+
                                                 </div>
                                             </div>
 
