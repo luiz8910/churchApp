@@ -84,6 +84,12 @@ License: You must have a valid license purchased only from themeforest(the above
                                             <span id="span-sub">{{ count($sub) }}</span>
                                         pessoas inscritas
                                     </span>
+                                    <br><br>
+                                    <span class="caption-subject bold font-dark uppercase ">
+                                        Lista de Presentes -
+                                            <span id="span-sub">{{ $qtde_check }}</span>
+                                        pessoas
+                                    </span>
                                     <span class="caption-helper"></span>
 
 

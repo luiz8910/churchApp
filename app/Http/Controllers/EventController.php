@@ -1852,10 +1852,18 @@ class EventController extends Controller
 
         $visitor_id = $this->roleRepository->findByField('name', 'Visitante')->first()->id;*/
 
+        $qtde_check = DB::table('event_person')
+            ->where([
+                'event_id' => $id,
+                'check-in' => 1
+            ])->get();
+
+        $qtde_check = count($qtde_check);
+
 
         return view('events.subscriptions',
             compact('people', 'countPerson', 'countGroups', 'leader',
-                'notify', 'qtde', 'event', 'sub', 'person_sub', 'admin'));
+                'notify', 'qtde', 'event', 'sub', 'person_sub', 'admin', 'qtde_check'));
     }
 
     /*
