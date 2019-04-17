@@ -729,22 +729,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 </div>
                                             </div>
 
-                                            @if($model->tag != 'adult')
 
-                                                <h3 class="form-section">Observações</h3>
-
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        {!! Form::FormGroup('specialNeeds', $errors) !!}
-                                                            <label class="control-label">Anotações Gerais</label>
-                                                            <textarea class="form-control" name="specialNeeds" value="{{ $model->specialNeeds }}"
-                                                                      placeholder="Digite aqui observações importantes sobre a criança/adolescente"
-                                                                      rows="5"></textarea>
-                                                        {!! Form::error('specialNeeds', $errors) !!}
-                                                        {!! Form::endFormGroup() !!}
-                                                    </div>
-                                                </div>
-                                            @endif
 
 
                                             <br><br>
