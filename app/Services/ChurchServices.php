@@ -50,6 +50,20 @@ class ChurchServices{
         return Church::where('id', $church)->first();
     }
 
+    public function getOrgAlias()
+    {
+        $church_id = $this->getUserChurch();
+
+        $church = Church::where('id', $church_id)->first();
+
+        if($church)
+        {
+            return $church->alias;
+        }
+
+        return false;
+    }
+
 
     /*
      * Verifica se a sigla da Unidade Federativa informada existe

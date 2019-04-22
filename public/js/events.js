@@ -83,13 +83,73 @@ $(function () {
 
         });
 
+    });
+
+
+    $("#gen_public_url").click(function () {
+
+        gen_public_url();
+
+    });
+
+    $("#name").change(function () {
+
+        if(!$("#gen_public_url").is(':checked'))
+        {
+            $('#gen_public_url').trigger('click');
+        }
+        else{
+            if($("#name").val() == "")
+            {
+                $("#public_url").val('');
+                $('#gen_public_url').trigger('click');
+            }
+            else{
+                gen_public_url();
+            }
+        }
 
 
     });
 
-
 });
 
+
+
+
+function gen_public_url()
+{
+    var name = $("#name").val();
+    var public_url = '';
+    var org_name = $("#org_name").val();
+
+    if($("#gen_public_url").is(':checked'))
+    {
+
+        if(name == "")
+        {
+            $("#public_url").val('');
+
+            swal('Atenção', 'Preencha o campo nome primeiro', 'error');
+
+            $("#gen_public_url").attr('checked', false);
+        }
+        else{
+
+            var r_name = name.replace(/ /g, '-');
+
+            var r_org = org_name.replace(' ', '-');
+
+            public_url = r_name + '-' + r_org;
+
+            $("#public_url").val(public_url.toLowerCase());
+        }
+    }
+    else{
+        $("#public_url").val('');
+    }
+
+}
 
 
 

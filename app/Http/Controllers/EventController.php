@@ -14,9 +14,11 @@ use App\Repositories\RoleRepository;
 use App\Repositories\SessionRepository;
 use App\Repositories\VisitorRepository;
 use App\Services\AgendaServices;
+use App\Services\ChurchServices;
 use App\Services\EventServices;
 use App\Notifications\EventNotification;
 use App\Notifications\Notifications;
+use App\Services\qrServices;
 use App\Traits\ConfigTrait;
 use App\Traits\CountRepository;
 use App\Traits\DateRepository;
@@ -40,7 +42,7 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class EventController extends Controller
 {
-    use CountRepository, DateRepository, FormatGoogleMaps, NotifyRepository, ConfigTrait;
+    use CountRepository, DateRepository, FormatGoogleMaps, NotifyRepository, ConfigTrait, UserLoginRepository;
     /**
      * @var EventRepository
      */
@@ -89,6 +91,14 @@ class EventController extends Controller
      * @var ChurchRepository
      */
     private $churchRepository;
+    /**
+     * @var ChurchServices
+     */
+    private $churchServices;
+    /**
+     * @var qrServices
+     */
+    private $qrServices;
 
     /**
      * EventController constructor.
@@ -108,7 +118,8 @@ class EventController extends Controller
                                 PersonRepository $personRepository, RoleRepository $roleRepository,
                                 EventServices $eventServices, AgendaServices $agendaServices,
                                 FrequencyRepository $frequencyRepository, VisitorRepository $visitorRepository,
-                                SessionRepository $sessionRepository, ChurchRepository $churchRepository)
+                                SessionRepository $sessionRepository, ChurchRepository $churchRepository,
+                                ChurchServices $churchServices, qrServices $qrServices)
     {
         $this->repository = $repository;
         $this->stateRepository = $stateRepositoryTrait;
@@ -122,6 +133,8 @@ class EventController extends Controller
         $this->visitorRepository = $visitorRepository;
         $this->sessionRepository = $sessionRepository;
         $this->churchRepository = $churchRepository;
+        $this->churchServices = $churchServices;
+        $this->qrServices = $qrServices;
     }
 
 
@@ -614,14 +627,16 @@ class EventController extends Controller
 
         $groups = $this->groupRepository->findByField('church_id', $this->getUserChurch());
 
+        $org_name = $this->churchServices->getOrgAlias();
+
         if($id)
         {
             return view('events.create', compact('countPerson', 'countGroups', 'state', 'roles',
-                'id', 'notify', 'qtde', 'groups', 'frequencies', 'leader', 'admin'));
+                'id', 'notify', 'qtde', 'groups', 'frequencies', 'leader', 'admin', 'org_name'));
         }
         else{
             return view('events.create', compact('countPerson', 'countGroups', 'state', 'roles',
-                'notify', 'qtde', 'groups', 'frequencies', 'leader', 'admin'));
+                'notify', 'qtde', 'groups', 'frequencies', 'leader', 'admin', 'org_name'));
         }
 
 
@@ -645,9 +660,7 @@ class EventController extends Controller
     {
         //try{
 
-            $data = $request->except([
-                'session_name', 'location', 'max_capacity', 'start_time_session', 'end_time_session', 'session_description'
-            ]);
+            $data = $request->all();
 
 
             $data['createdBy_id'] = \Auth::user()->id;
@@ -680,10 +693,6 @@ class EventController extends Controller
                 $data['endEventDate'] = $this->formatDateBD($data['endEventDate']);
             }
 
-            if($data["group_id"] == "")
-            {
-                $data["group_id"] = null;
-            }
 
             if($data["frequency"] == $this->biweekly())
             {
@@ -714,12 +723,20 @@ class EventController extends Controller
 
             $data["city"] = ucwords($data["city"]);
 
+            //Verificar url do evento
+            if($data['public_url'] != "")
+            {
+                if($this->eventServices->checkUrlEvent($data['public_url']))
+                {
+                    $request->session()->flash('error.msg', 'Url ja está em uso, mude o nome do evento');
+
+                    return redirect()->back()->withInput();
+                }
+            }
+
+
             $event = $this->repository->create($data);
 
-            if($data["group_id"] == null)
-            {
-                unset($data['group_id']);
-            }
 
             $this->eventServices->sendNotification($data, $event);
 
@@ -984,11 +1001,13 @@ class EventController extends Controller
             $local = true;
         }
 
+        $org_name = $this->churchServices->getOrgAlias();
+
         return view('events.edit', compact('countPerson', 'countGroups', 'state', 'roles',
             'model', 'location', 'notify', 'qtde', 'eventDays', 'eventFrequency', 'check',
             'eventPeople', 'group', 'groups', 'sub', 'canCheckIn', 'createdBy_id', 'createdBy',
             'nextEventDate', 'leader', 'preposicao', 'frequencies', 'church_id', 'leader',
-            'admin', 'sessions', 'local'));
+            'admin', 'sessions', 'local', 'org_name'));
     }
 
     public function update(Request $request, $id)
@@ -1041,6 +1060,14 @@ class EventController extends Controller
         }
 
         $data["city"] = ucwords($data["city"]);
+
+        //Verificar url do evento
+        if($this->eventServices->checkUrlEvent($data['public_url']))
+        {
+            $request->session()->flash('error.msg', 'Url ja está em uso, mude o nome do evento');
+
+            return redirect()->back()->withInput();
+        }
 
         $this->repository->update($data, $id);
 
@@ -1947,5 +1974,91 @@ class EventController extends Controller
         return $this->eventServices->uncheck($event_id, $person_id);
     }
 
+    public function subUrl($url)
+    {
+        $event = $this->eventServices->checkUrlEvent($url);
+
+        if($event)
+        {
+            $church = $this->churchRepository->findByField('id', $event->church_id)->first();
+
+            if($church)
+            {
+                return view('events.sub', compact('event', 'church'));
+            }
+
+            return 'Nenhuma Organização Encontrada';
+        }
+
+        return 'Nenhum Evento Encontrado';
+
+    }
+
+    public function subFromUrl(Request $request)
+    {
+        $data = $request->except(['event_id']);
+
+        $event_id = $request->get('event_id');
+
+        if($data['email'] == "")
+        {
+            $errors['email'] = 'Preencha seu email';
+
+            return redirect()->back()->withInput()->withErrors($errors);
+        }
+
+        if($data['name'] == "")
+        {
+            $errors['name'] = 'Preencha seu nome';
+
+            return redirect()->back()->withInput()->withErrors($errors);
+        }
+
+        if($data['cel'] == "")
+        {
+            $errors['cel'] = 'Preencha seu celular';
+
+            return redirect()->back()->withInput()->withErrors($errors);
+        }
+
+        $person = $this->personRepository->findByField('email', $data['email'])->first();
+
+        if($person)
+        {
+            if($person->user)
+            {
+                $this->eventServices->subEvent($event_id, $person->id);
+
+                $request->session()->flash('success.msg', 'Sucesso! Você está inscrito');
+
+                return redirect()->back()->withInput();
+            }
+        }
+        else{
+            $data['role_id'] = 2;
+
+            $data['imgProfile'] = 'uploads/profile/noimage.png';
+
+            $data['tag'] = 'adult';
+
+            $person_id = $this->personRepository->create($data)->id;
+
+            $this->qrServices->generateQrCode($person_id);
+
+            $this->createUserLogin($person_id, 'secret', $data['email'], $data['church_id']);
+
+            $this->eventServices->subEvent($event_id, $person_id);
+
+            $request->session()->flash('success.msg', 'Sucesso! Você está inscrito');
+
+            return redirect()->back()->withInput();
+        }
+
+        $request->session()->flash('error.msg', 'Atenção! Um erro ocorreu');
+
+        return redirect()->back()->withInput();
+
+
+    }
 
 }

@@ -94,6 +94,8 @@ License: You must have a valid license purchased only from themeforest(the above
                     </div>
                 @endif
 
+                @include('includes.messages')
+
 
                 <!-- END PAGE BREADCRUMBS -->
                 <!-- BEGIN PAGE CONTENT INNER -->
@@ -146,7 +148,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             <span class="input-group-addon">
                                                                 <i class="fa fa-user font-blue"></i>
                                                             </span>
-                                                        <input type="text" name="name" class="form-control" autocomplete="new-password"
+                                                        <input type="text" name="name" id="name" class="form-control" autocomplete="new-password"
                                                                placeholder="Encontro de Jovens" value="{{ old('name') }}">
                                                     </div>
                                                 </div>
@@ -294,7 +296,35 @@ License: You must have a valid license purchased only from themeforest(the above
                                             </div>
                                         </div>
 
-                                            <div class="row">
+                                        <br>
+
+                                        <input type="hidden" value="{{ $org_name }}" id="org_name">
+
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <span class="help-block">
+                                                        <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                                            <input type="checkbox" name="" id="gen_public_url" class="checkboxes" value="1" />
+                                                            <span></span>Gerar Url Pública
+                                                        </label>
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-10">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-globe font-blue"></i>
+                                                        </span>
+                                                        <input type="text" class="form-control" name="public_url" id="public_url" readonly>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                            {{--<div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label for="">Pertencente ao grupo</label>
@@ -324,7 +354,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div>--}}
 
                                         <div class="row">
                                             <div class="col-md-12">

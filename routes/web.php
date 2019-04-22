@@ -216,6 +216,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('uncheck-in_manual/{event_id}/{person_id}', 'EventController@uncheckin_manual');
 
+
+
     // Fim Eventos
 
 
@@ -575,6 +577,10 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/new-church', 'ChurchController@store')->name('new.church');
 
     });
+
+    Route::get('/url/{public_url}', 'EventController@subUrl');
+
+    Route::post('/url', 'EventController@subFromUrl')->name('event.url.sub');
 
     Route::get('/login-admin', 'Auth\LoginController@loginAdmin')->name('login.admin');
 

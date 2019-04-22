@@ -2820,6 +2820,20 @@ class EventServices
             return false;
         }
     }
+
+
+
+    public function checkUrlEvent($url)
+    {
+        $event = $this->repository->findByField('public_url', $url)->first();
+
+        if($event)
+        {
+            return $event;
+        }
+
+        return false;
+    }
 }
 
 

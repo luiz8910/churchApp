@@ -466,18 +466,12 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 </span>
                                             </p>
 
-                                            <p>
-                                                <i class="fa fa-users font-purple"></i>
-                                                Pertence ao Grupo:
-                                                @if(isset($group))
-                                                    <a href="{{ route('group.edit', ['group' => $group->id]) }}">
-                                                        {{ $group->name }}
-                                                    </a>
-                                                @else
-                                                    Sem Grupo
-                                                @endif
-                                            </p>
-
+                                            @if($model->public_url)
+                                                <p>
+                                                    <i class="fa fa-lock font-purple" aria-hidden="true"></i>
+                                                    Url Pública: https://beconnect.com.br/url/{{ $model->public_url }}
+                                                </p>
+                                            @endif
                                             <p>
                                                 <i class="fa fa-map-marker font-purple"></i>
                                                 {{ $model->street }}, {{ $model->number }} -
@@ -998,33 +992,30 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 </div>
                                             </div>
 
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label for="">Pertencente ao grupo</label>
-                                                        <div class="input-group">
-                                                            <span class="input-group-addon">
-                                                                <i class="fa fa-users font-blue"></i>
-                                                            </span>
+                                            <input type="hidden" value="{{ $org_name }}" id="org_name">
 
-                                                            <select name="group_id" id="" class="form-control">
-                                                                <option value="">Nenhum</option>
-                                                                @if(isset($group))
-                                                                    @foreach($groups as $item)
-                                                                        <option value="{{ $item->id }}"
-                                                                                @if($item == $group) selected @endif >
-                                                                            {{ $item->name }}
-                                                                        </option>
-                                                                    @endforeach
-                                                                @else
-                                                                    @foreach($groups as $item)
-                                                                        <option value="{{ $item->id }}">
-                                                                            {{ $item->name }}
-                                                                        </option>
-                                                                    @endforeach
-                                                                @endif
-                                                            </select>
+                                            <div class="row">
+                                                <div class="col-md-2">
+                                                    <div class="form-group">
+                                                    <span class="help-block">
+                                                        <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                                            <input type="checkbox" name="" id="gen_public_url" class="checkboxes" value="1" />
+                                                            <span></span>Gerar Url Pública
+                                                        </label>
+                                                    </span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-10">
+                                                    <div class="form-group">
+                                                        <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-globe font-blue"></i>
+                                                        </span>
+                                                            <input type="text" class="form-control"
+                                                                   name="public_url" id="public_url" value="{{ $model->public_url }}" readonly>
                                                         </div>
+
                                                     </div>
                                                 </div>
                                             </div>
