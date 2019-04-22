@@ -138,15 +138,8 @@
         <div class="hidden-sm-up col-12 transparent-grape">
             <div class="row text-center">
                 <div class="col">
-                    <h6 class="color-white py-3 text-center">ACESSAR COM</h6>
-                    <ul class="list-unstyled login-social-list d-flex">
-                        <li>
-                            <a href="{{ url('pre/auth/facebook') }}" class="facebook"><i class="fab fa-3x fa-facebook"></i></a>
-                        </li>
-                        <li>
-                            <a href="{{ url('pre/auth/google') }}" class="googleplus"><i class="fab fa-3x fa-google-plus-square"></i></a>
-                        </li>
-                    </ul>
+
+
                 </div>
             </div>
         </div>
