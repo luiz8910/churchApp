@@ -170,8 +170,6 @@ class EventController extends Controller
             'church_id' => $church_id
         ]);*/
 
-
-
         $sub = false;
 
         /*

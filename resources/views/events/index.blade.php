@@ -151,7 +151,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <div class="portlet-title">
                                                         <div class="caption">
                                                             <i class="fa fa-calendar font-red"></i>
-                                                            <span class="caption-subject font-red sbold uppercase">Eventos</span>
+                                                            <span class="caption-subject font-red sbold uppercase">Próximos Eventos</span>
 
                                                         </div>
 

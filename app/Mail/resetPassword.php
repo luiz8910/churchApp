@@ -61,7 +61,7 @@ class resetPassword extends Mailable
         }
 
         return $this
-            ->from('contato@beconnect.com.br')
+            ->from('admin@beconnect.com.br')
             ->subject($text)
             ->view("emails.resetEmail");
     }
