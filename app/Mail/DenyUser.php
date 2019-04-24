@@ -45,7 +45,7 @@ class DenyUser extends Mailable
         $subject = 'Seu Cadastro está quase pronto';
 
         return $this
-                ->from('membros@beconnect.com.br')
+                ->from('admin@beconnect.com.br')
                 ->subject($subject)
                 ->view('emails.denyUser');
     }

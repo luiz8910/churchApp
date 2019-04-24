@@ -37,7 +37,7 @@ class Contact_Site extends Mailable
     public function build()
     {
         return $this
-            ->from('contato@beconnect.com.br')
+            ->from('admin@beconnect.com.br')
             ->subject('Contato pelo Formulário do site')
             ->view("emails.contact_site");
     }

@@ -46,7 +46,7 @@ class welcome extends Mailable
         $text = "Bem vindo ao Beconnect";
 
         return $this
-            ->from('contato@beconnect.com.br')
+            ->from('admin@beconnect.com.br')
             ->subject($text)
             ->view("emails.welcome");
     }

@@ -44,7 +44,7 @@ class resetPasswordApp extends Mailable
     {
         return
             $this
-                ->from('contato@beconnect.com.br')
+                ->from('admin@beconnect.com.br')
                 ->subject('Seu código de reenvio de senha')
                 ->view('emails.resetPasswordApp');
     }
