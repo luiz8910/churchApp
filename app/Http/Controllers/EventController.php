@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Cron\CronEvents;
 use App\Events\AgendaEvent;
+use App\Mail\welcome_sub;
 use App\Models\Event;
 use App\Models\EventSubscribedList;
 use App\Models\RecentEvents;
@@ -42,7 +43,7 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class EventController extends Controller
 {
-    use CountRepository, DateRepository, FormatGoogleMaps, NotifyRepository, ConfigTrait, UserLoginRepository;
+    use CountRepository, DateRepository, FormatGoogleMaps, NotifyRepository, ConfigTrait, UserLoginRepository, EmailTrait;
     /**
      * @var EventRepository
      */
@@ -2057,6 +2058,17 @@ class EventController extends Controller
         return redirect()->back()->withInput();
 
 
+    }
+
+    public function subTest()
+    {
+        $event = $this->repository->find(12);
+
+        $person = $this->personRepository->find(632);
+
+        $user = $person->user;
+
+        $this->welcome_sub($user, $event);
     }
 
 }

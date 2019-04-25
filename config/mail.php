@@ -60,6 +60,11 @@ return [
         'name' => 'Example',
     ],
 
+    'to' => [
+        'address' => 'contato@beconnect.com.br',
+        'name' => 'Contato'
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | E-Mail Encryption Protocol

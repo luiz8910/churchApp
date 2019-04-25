@@ -13,6 +13,7 @@ use App\Mail\ForLeaders;
 use App\Mail\resetPassword;
 use App\Mail\welcome;
 use App\Mail\Contact_Site;
+use App\Mail\welcome_sub;
 use App\Models\ContactSite;
 use App\Models\Person;
 use App\Models\Role;
@@ -96,6 +97,18 @@ trait EmailTrait
         Mail::to($user)
             ->send(new welcome(
                 $user, $url, $password
+            ));
+
+        return true;
+    }
+
+    public function welcome_sub($user, $event)
+    {
+        $url = $this->getUrl();
+
+        Mail::to($user)
+            ->send(new welcome_sub(
+                $user, $url, $event
             ));
 
         return true;

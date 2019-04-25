@@ -763,6 +763,7 @@ Route::get('/map', function(){
     dd($obj->results[0]->geometry->location);
 });
 
+Route::get('sub-test', 'EventController@subTest');
 
 Route::get('cron', 'EventController@Cron');
 
