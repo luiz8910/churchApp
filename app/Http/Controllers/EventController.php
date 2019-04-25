@@ -2064,7 +2064,7 @@ class EventController extends Controller
     {
         $event = $this->repository->find(12);
 
-        $person = $this->personRepository->find(632);
+        $person = $this->personRepository->find(1030);
 
         $user = $person->user;
 

@@ -390,6 +390,11 @@
             background-color: #4F0C53;
         }
 
+        .app_badge{
+            width: 100px;
+            height: 100px;
+        }
+
     </style>
 </head>
 <body>
@@ -426,9 +431,11 @@
                                                         <td align="center">
                                                             <table border="0" cellspacing="0" cellpadding="0">
                                                                 <tr>
-                                                                    <td>
+                                                                    @if(isset($password))
 
-                                                                        @if(isset($password))
+                                                                        <td>
+
+
 
                                                                             <p>Sua senha é: {{ $password }}</p>
 
@@ -440,10 +447,12 @@
 
                                                                             <p>Se o login for feito com redes sociais, a senha não é necessária</p>
 
-                                                                        @endif
 
 
-                                                                    </td>
+
+                                                                        </td>
+
+                                                                    @endif
 
                                                                     <td>
 
@@ -452,7 +461,7 @@
 
                                                                         No dia do evento ({{ date_format(date_create($event->eventDate), 'd/m') }})
 
-                                                                        exiba seu qrcode na entrada para realizar o check-in, que se encontra dentro do app Beconnect
+                                                                        acesse o app Beconnect com seu email e exiba seu qrcode na entrada para realizar o check-in
 
                                                                     </td>
 
@@ -471,6 +480,12 @@
                                     <table class="body-sub">
                                         <tr>
                                             <td>
+                                                <p class="sub">
+                                                    <a href="{{ $apple_url }}">
+                                                        <img src="https://beconnect.com.br/images/Download_on_the_App_Store_Badge_PTBR_RGB_wht_100317.png"
+                                                             class="app_badge" alt="">
+                                                    </a>
+                                                </p>
                                                 <p class="sub">Visite nosso site</p>
                                                 <p class="sub"><a href="https://beconnect.com.br" target="_blank">https://beconnect.com.br</a></p>
                                             </td>

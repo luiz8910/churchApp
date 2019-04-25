@@ -24,6 +24,8 @@ class welcome_sub extends Mailable
      */
     public $event;
 
+    public $apple_url;
+
     /**
      * Create a new message instance.
      *
@@ -34,6 +36,7 @@ class welcome_sub extends Mailable
         $this->user = $user;
         $this->url = $url;
         $this->event = $event;
+        $this->apple_url = 'https://itunes.apple.com/app/id1430220715';
     }
 
     /**
