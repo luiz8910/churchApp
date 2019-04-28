@@ -341,7 +341,7 @@ class EventController extends Controller
          */
         $notify = $this->notify();
 
-        $qtde = count($notify) or 0;
+        $qtde = $notify ? count($notify) : null;
 
         //Fim notificação
 

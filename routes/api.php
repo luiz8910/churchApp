@@ -50,6 +50,8 @@ Route::get('/get-social-token/{token}', 'Auth\LoginController@getSocialToken');
 
 Route::post('/new-password', 'Auth\LoginController@newPassword');
 
+Route::get('/getUserRole/{email}', 'Auth\LoginController@getUserRole');
+
 
 
 

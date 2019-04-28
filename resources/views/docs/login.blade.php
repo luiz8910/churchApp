@@ -165,6 +165,57 @@
                 <div class="panel panel-primary">
                     <div class="panel-heading">
                         <h3 class="panel-title">
+                            Verificar Cargo do usuário
+                            <span class="span-btn-minimize" id="btn-minimize-getUserRole">_</span>
+                        </h3>
+                    </div>
+                    <div class="panel-body hide-panel" id="getUserRole">
+
+                        https://beconnect.com.br/api/getUserRole/{email}
+                        <span class="label label-primary">GET</span>
+
+                        <br><br>
+
+                        <p class="text-center">Exemplo de Lista de Parâmetros</p>
+
+                        <pre>
+                            email = admin@admin.com (Obrigatório) <span class="label label-success">String</span>
+                        </pre>
+
+                        <p class="text-center">Exemplo de Retorno</p>
+
+                        <pre>
+
+
+                            {"status":true, "role" : 1, org: 9}
+
+                            Ou
+
+                            {"status":false, msg: 'Usuário não encontrado'}
+
+
+                            Valores possíveis para atributo role:
+
+                            1, 2 ou 5 que representam líder, participante e administrador respectivamente,
+                            o campo senha deve ser omitido apenas para role = 2
+
+
+
+
+                    </pre>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
                             Recuperação de código
                             <span class="span-btn-minimize" id="btn-minimize-get-code">_</span>
                         </h3>

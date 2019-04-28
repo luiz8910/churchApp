@@ -408,4 +408,16 @@ class LoginController extends Controller
             return json_encode(['status' => false, 'msg' => $e->getMessage()]);
         }
     }
+
+    public function getUserRole($email)
+    {
+        $person = $this->personRepository->findByField('email', $email)->first();
+
+        if($person)
+        {
+            return json_encode(['status' => true, 'role' => $person->role_id, 'org' => $person->church_id]);
+        }
+
+        return json_encode(['status' => false, 'msg' => 'Usuário não encontrado']);
+    }
 }
