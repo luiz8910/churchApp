@@ -272,7 +272,7 @@ class UsersController extends Controller
             return redirect()->route("users.myAccount")->withInput();
         }
 
-        $user = User::select('id')->where('email', $email)->first() or null;
+        $user = $this->repository->findByField('email', $email)->first();
 
         $oldMail = $this->repository->find($id)->email;
 
@@ -317,15 +317,17 @@ class UsersController extends Controller
         if ($data["role"] == "Visitante") {
             $this->visitorRepository->update($data, $id);
         } else {
-            $person_id = $this->repository->find($id)->person_id;
 
-            $this->personRepository->update($data, $person_id);
+            $data['email'] = $email;
+
+            $this->personRepository->update($data, Auth::getUser()->person->id);
+
         }
 
 
-        DB::table('users')
-            ->where('id', $id)
-            ->update(['email' => $email]);
+        $x['email'] = $email;
+
+        $this->repository->update($x, $id);
 
         $request->session()->flash('updateUser', 'Alterações realizadas com sucesso');
 
