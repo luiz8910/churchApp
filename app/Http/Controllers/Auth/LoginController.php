@@ -409,13 +409,16 @@ class LoginController extends Controller
         }
     }
 
-    public function getUserRole($email)
+    public function getUserRole($email = null)
     {
-        $person = $this->personRepository->findByField('email', $email)->first();
-
-        if($person)
+        if($email)
         {
-            return json_encode(['status' => true, 'role' => $person->role_id, 'org' => $person->church_id]);
+            $person = $this->personRepository->findByField('email', $email)->first();
+
+            if($person)
+            {
+                return json_encode(['status' => true, 'role' => $person->role_id, 'org' => $person->church_id]);
+            }
         }
 
         return json_encode(['status' => false, 'msg' => 'Usuário não encontrado']);
