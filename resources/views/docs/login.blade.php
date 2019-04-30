@@ -166,12 +166,12 @@
                     <div class="panel-heading">
                         <h3 class="panel-title">
                             Verificar Cargo do usuário
-                            <span class="span-btn-minimize" id="btn-minimize-getUserRole">_</span>
+                            <span class="span-btn-minimize" id="btn-minimize-getUserRoleByEmail">_</span>
                         </h3>
                     </div>
-                    <div class="panel-body hide-panel" id="getUserRole">
+                    <div class="panel-body hide-panel" id="getUserRoleByEmail">
 
-                        https://beconnect.com.br/api/getUserRole/{email}
+                        https://beconnect.com.br/api/getUserRoleByEmail/{email}
                         <span class="label label-primary">GET</span>
 
                         <br><br>

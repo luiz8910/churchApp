@@ -409,7 +409,7 @@ class LoginController extends Controller
         }
     }
 
-    public function getUserRole($email = null)
+    public function getUserRoleByEmail($email = null)
     {
         if($email)
         {
