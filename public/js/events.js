@@ -195,6 +195,8 @@ function findSubUsers(e)
 
                     var button = '';
 
+                    var lastName = e.person_sub[i].lastName ? e.person_sub[i].lastName : '';
+
                     if(e.person_sub[i].check == 0)
                     {
                         button = '<a href="javascript:;" class="btn btn-success btn-sm btn-circle"' +
@@ -220,7 +222,7 @@ function findSubUsers(e)
                         '\n' +
                         '                                                                    <img src="../../uploads/profile/noimage.png" class="img-circle" style="width: 50px; height: 50px;">\n' +
                         '\n' +
-                        '                                                                    <span>'+e.person_sub[i].name + ' ' + e.person_sub[i].lastName+'</span>\n' +
+                        '                                                                    <span>'+e.person_sub[i].name + ' ' +lastName+'</span>\n' +
                         '                                                                </a>\n' +
                         '\n' +
                         '\n' +
