@@ -10,6 +10,7 @@ use App\Models\EventSubscribedList;
 use App\Models\RecentEvents;
 use App\Models\User;
 use App\Repositories\ChurchRepository;
+use App\Repositories\EventSubscribedListRepository;
 use App\Repositories\FrequencyRepository;
 use App\Repositories\RoleRepository;
 use App\Repositories\SessionRepository;
@@ -100,6 +101,10 @@ class EventController extends Controller
      * @var qrServices
      */
     private $qrServices;
+    /**
+     * @var EventSubscribedListRepository
+     */
+    private $listRepository;
 
     /**
      * EventController constructor.
@@ -120,7 +125,8 @@ class EventController extends Controller
                                 EventServices $eventServices, AgendaServices $agendaServices,
                                 FrequencyRepository $frequencyRepository, VisitorRepository $visitorRepository,
                                 SessionRepository $sessionRepository, ChurchRepository $churchRepository,
-                                ChurchServices $churchServices, qrServices $qrServices)
+                                ChurchServices $churchServices, qrServices $qrServices,
+                                EventSubscribedListRepository $listRepository)
     {
         $this->repository = $repository;
         $this->stateRepository = $stateRepositoryTrait;
@@ -136,6 +142,7 @@ class EventController extends Controller
         $this->churchRepository = $churchRepository;
         $this->churchServices = $churchServices;
         $this->qrServices = $qrServices;
+        $this->listRepository = $listRepository;
     }
 
 
@@ -1963,16 +1970,25 @@ class EventController extends Controller
     }
 
 
+    /*
+     * Usado para realizar check-in pela plataforma web
+     */
     public function checkin_manual($event_id, $person_id)
     {
         return $this->eventServices->check($event_id, $person_id);
     }
 
+    /*
+     * Usado para retirar check-in pela plataforma web
+     */
     public function uncheckin_manual($event_id, $person_id)
     {
         return $this->eventServices->uncheck($event_id, $person_id);
     }
 
+    /*
+     * View para inscrição via Url pública
+     */
     public function subUrl($url)
     {
         $event = $this->eventServices->checkUrlEvent($url);
@@ -1993,6 +2009,9 @@ class EventController extends Controller
 
     }
 
+    /*
+     * Cadastro de Participante via Url pública com inscrição em evento
+     */
     public function subFromUrl(Request $request)
     {
         $data = $request->except(['event_id']);
@@ -2057,6 +2076,50 @@ class EventController extends Controller
 
         return redirect()->back()->withInput();
 
+
+    }
+
+    public function findSubUsers($input, $event_id)
+    {
+        $list = $this->listRepository
+            ->findWhere(
+                ['event_id' => $event_id]);
+
+        $arr = [];
+
+        foreach ($list as $l)
+        {
+            $arr[] = $l->person_id;
+        }
+
+        $person_sub = DB::table('people')
+            ->where(
+                [
+                    ['name', 'like', $input.'%'],
+                    ['deleted_at', '=', null],
+                    'status' => 'active'
+                ]
+            )
+            ->whereIn('id', $arr)
+            ->limit(5)
+            ->get();
+
+        $check = 'check-in';
+
+        foreach ($person_sub as $item) {
+            $item->check =
+                DB::table('event_person')
+                    ->where([
+                        'event_id' => $event_id,
+                        'person_id' => $item->id
+                    ])
+                    ->first()->$check;
+        }
+
+        $count = count($person_sub);
+
+
+        return json_encode(['status' => true, 'person_sub' => $person_sub, 'count' => $count]);
 
     }
 

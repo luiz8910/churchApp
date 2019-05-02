@@ -1,3 +1,4 @@
+
 /**
  * Created by Luiz on 08/03/2017.
  */
@@ -79,6 +80,8 @@ $(function () {
                 UnsubscribeUser(person, event);
 
                 swal("Sucesso!", "O usuário foi desinscrito do evento", "success");
+
+                location.reload();
             }
 
         });
@@ -112,10 +115,149 @@ $(function () {
 
     });
 
+
+    $("#btn-search-check").click(function () {
+
+        $("#div_search").css('display', 'block');
+
+        $("#row_sub").css('display', 'none');
+
+        $("#input-search-check").trigger('focus');
+    });
+
+    $("#close-search").click(function () {
+
+        $("#div_search").css('display', 'none');
+
+        $("#row_sub").css('display', 'block');
+
+        $("#input-search-check").val('');
+
+        $("#search_results").css('display', 'none');
+    });
+
+
+    $("#input-search-check")
+        .keyup(function () {
+
+            if(this.value == "")
+            {
+                $("#search_results").css('display', 'none');
+            }
+
+        })
+        .keypress(function (e) {
+
+
+            //Verifica se apenas letras foram digitadas
+            if(isString(e))
+            {
+
+                findSubUsers(e);
+            }
+            else{
+
+                return false;
+            }
+
+    });
+
 });
 
+function findSubUsers(e)
+{
+
+    var input = $("#input-search-check").val() + e.key;
+    var event_id = $('#event-id').val();
+
+    var request = $.ajax({
+        url: '/findSubUsers/' + input + '/' + event_id,
+        method: 'GET',
+        dataType: 'json'
+    });
+
+    request.done(function (e) {
+
+        if(e.status)
+        {
+            if(e.count > 0)
+            {
+
+                $("#search_results").css('display', 'block');
+
+                var i = 0;
+                var append = '';
+
+                $("#tbody-search tr").remove();
+
+                while (i < e.count)
+                {
+
+                    var button = '';
+
+                    if(e.person_sub[i].check == 0)
+                    {
+                        button = '<a href="javascript:;" class="btn btn-success btn-sm btn-circle"' +
+                            'title="Fazer Check-in"' +
+                            'onclick="check('+event_id+', '+e.person_sub[i].id+', false)">' +
+                            '<i class="fa fa-check"></i> Check-in</a>';
+                    }
+                    else{
+                        button = '<a href="javascript:;" class="btn btn-danger btn-sm btn-circle"' +
+                            'title="Retirar Check-in"' +
+                            'onclick="uncheck('+event_id+', '+e.person_sub[i].id+', false)">' +
+                            '<i class="fa fa-close"></i> Retirar Check-in</a>';
+                    }
 
 
+                    append += '' +
+                        '<tr id="tr-result">\n' +
+                        '                                                            <td>\n' +
+                        '                                                                <!-- Img Profile e Name -->\n' +
+                        '\n' +
+                        '                                                                <a href="javascript:"  style="margin-left: 10px;">\n' +
+                        '\n' +
+                        '\n' +
+                        '                                                                    <img src="../../uploads/profile/noimage.png" class="img-circle" style="width: 50px; height: 50px;">\n' +
+                        '\n' +
+                        '                                                                    <span>'+e.person_sub[i].name + ' ' + e.person_sub[i].lastName+'</span>\n' +
+                        '                                                                </a>\n' +
+                        '\n' +
+                        '\n' +
+                        '                                                            </td>\n' +
+                        '\n' +
+                        '                                                            <td>\n' +
+                        '\n' +
+                        '                                                                '+button+'\n' +
+                        '\n' +
+                        '\n' +
+                        '                                                                <a href="javascript:;" class="btn btn-danger btn-sm btn-circle"\n' +
+                        '                                                                   title="Excluir Pessoa?"\n' +
+                        '                                                                   onclick="unsubUser('+event_id+', '+e.person_sub[i].id+')">\n' +
+                        '                                                                    <i class="fa fa-trash"></i>\n' +
+                        '                                                                    Excluir\n' +
+                        '                                                                </a>\n' +
+                        '                                                            </td>\n' +
+                        '                                                        </tr>'
+
+                    i++;
+
+                }
+
+                $("#tbody-search").append(append);
+            }
+            else{
+                $("#search_results").css('display', 'none');
+            }
+        }
+    });
+
+    request.fail(function (e) {
+
+        console.log('fail');
+        console.log(e);
+    })
+}
 
 function gen_public_url()
 {
@@ -150,8 +292,6 @@ function gen_public_url()
     }
 
 }
-
-
 
 
 function showPeopleCheckIn(event) {
@@ -294,4 +434,32 @@ function peopleCheckIn(array, event) {
         });
     }
 
+}
+
+function unsubUser(event_id, person_id)
+{
+    swal({
+        title: 'Atenção',
+        text: 'Deseja Desinscrever este usuário?',
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonClass: "btn-danger",
+        confirmButtonText: "Sim, Excluir",
+        cancelButtonText: "Não",
+        closeOnConfirm: true,
+        closeOnCancel: true
+
+    }, function (isConfirm) {
+        if (isConfirm) {
+
+            $("#progress-danger").css("display", "block");
+
+            UnsubscribeUser(person_id, event_id);
+
+            swal("Sucesso!", "O usuário foi desinscrito do evento", "success");
+
+            location.reload();
+        }
+
+    });
 }

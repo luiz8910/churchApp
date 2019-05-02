@@ -146,6 +146,46 @@ $(function () {
         });
     });
 
+    $(".input-date").keypress(function (e) {
+
+        if(e.which < 48 || e.which > 57)
+        {
+            return false;
+        }
+
+        var v = this.value;
+        if (v.match(/^\d{2}$/) !== null) {
+            this.value = v + '/';
+        } else if (v.match(/^\d{2}\/\d{2}$/) !== null) {
+            this.value = v + '/';
+        }
+
+    });
+
+    $("#zipCode").keypress(function (e) {
+        if(e.which < 48 || e.which > 57)
+        {
+            return false;
+        }
+
+    });
+
+    $("#rg").keypress(function (e) {
+        if(e.which < 48 || e.which > 57){
+            if(e.which != 88 && e.which != 120){
+                return false;
+            }
+        }
+    });
+
+
+    $(".tel").maskbrphone({
+        useDdd: true,
+        useDddParenthesis: true,
+        dddSeparator: ' ',
+        numberSeparator:'-'
+    });
+
 
     //called when key is pressed in input
     $(".time").keypress(function (e) {
@@ -186,6 +226,25 @@ $(function () {
             if(value.indexOf(',') != -1){
                 return false;
             }
+        }
+    });
+
+    $(".url").blur(function () {
+        if(this.value.indexOf("http://") == -1)
+        {
+            this.value = "http://" + this.value;
+        }
+
+    });
+
+    $('.string').keypress(function (e) {
+        if((e.which > 32 && e.which < 65) || (e.which > 90 && e.which < 97) || e.which > 122)
+        {
+
+            console.log(e.which);
+
+            return false;
+
         }
     });
 
@@ -479,45 +538,7 @@ $(function () {
         allDay();
     });
 
-    $(".input-date").keypress(function (e) {
 
-        if(e.which < 48 || e.which > 57)
-        {
-            return false;
-        }
-
-        var v = this.value;
-        if (v.match(/^\d{2}$/) !== null) {
-            this.value = v + '/';
-        } else if (v.match(/^\d{2}\/\d{2}$/) !== null) {
-            this.value = v + '/';
-        }
-
-    });
-
-    $("#zipCode").keypress(function (e) {
-        if(e.which < 48 || e.which > 57)
-        {
-            return false;
-        }
-
-    });
-
-    $("#rg").keypress(function (e) {
-        if(e.which < 48 || e.which > 57){
-            if(e.which != 88 && e.which != 120){
-                return false;
-            }
-        }
-    });
-
-
-    $(".tel").maskbrphone({
-        useDdd: true,
-        useDddParenthesis: true,
-        dddSeparator: ' ',
-        numberSeparator:'-'
-    });
 
     $("#role_id").change(function () {
        if(this.value != 3)
@@ -721,13 +742,7 @@ $(function () {
     });
 
     
-    $(".url").blur(function () {
-        if(this.value.indexOf("http://") == -1)
-        {
-            this.value = "http://" + this.value;
-        }
 
-    });
     /*$("#container-pagination").cleverInfiniteScroll({
         contentsWrapperSelector: "#container-pagination",
         contentSelector: ".feeds",
@@ -736,4 +751,14 @@ $(function () {
     })*/
 });
 
+function isString(input)
+{
+    if((input.which > 32 && input.which < 65) || (input.which > 90 && input.which < 97) || input.which > 122)
+    {
+        return false;
+    }
+
+    return true;
+
+}
 

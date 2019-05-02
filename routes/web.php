@@ -216,7 +216,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('uncheck-in_manual/{event_id}/{person_id}', 'EventController@uncheckin_manual');
 
-
+    Route::get('/findSubUsers/{input}/{event_id}', 'EventController@findSubUsers');
 
     // Fim Eventos
 

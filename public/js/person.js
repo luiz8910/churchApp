@@ -77,30 +77,7 @@ $(function(){
         var event_id = $("#event-id").val();
         var person = this.id.replace('btn-person-check-', '');
 
-        var request = $.ajax({
-            url: '/check-in_manual/' + event_id + '/' + person,
-            method: 'GET',
-            dataType: 'json'
-
-        });
-
-        request.done(function(e){
-
-            if(e.status)
-            {
-                location.reload();
-            }
-            else{
-                console.log(e.msg);
-
-                swal("Atenção!", "Verifique o log", "error");
-            }
-        });
-
-        request.fail(function (e) {
-            console.log('fail');
-            console.log(e);
-        })
+        check(event_id, person, false);
     });
 
     $(".btn-person-uncheck").click(function () {
@@ -108,33 +85,85 @@ $(function(){
         var event_id = $("#event-id").val();
         var person = this.id.replace('btn-person-uncheck-', '');
 
-        var request = $.ajax({
-            url: '/uncheck-in_manual/' + event_id + '/' + person,
-            method: 'GET',
-            dataType: 'json'
-
-        });
-
-        request.done(function(e){
-
-            if(e.status)
-            {
-                location.reload();
-            }
-            else{
-                console.log(e.msg);
-
-                swal("Atenção!", "Verifique o log", "error");
-            }
-        });
-
-        request.fail(function (e) {
-            console.log('fail');
-            console.log(e);
-        })
+        uncheck(event_id, person, false);
     });
 });
 
+
+function check(event_id, person_id, static_page)
+{
+
+    var request = $.ajax({
+        url: '/check-in_manual/' + event_id + '/' + person_id,
+        method: 'GET',
+        dataType: 'json'
+
+    });
+
+    request.done(function(e){
+
+        if(e.status)
+        {
+            if(!static_page)
+            {
+                swal('Sucesso', 'O check-in foi feito', 'success');
+
+                setTimeout(function () {
+                    location.reload();
+                }, 1000);
+
+            }
+
+
+        }
+        else{
+            console.log(e.msg);
+
+            swal("Atenção!", "Verifique o log", "error");
+        }
+    });
+
+    request.fail(function (e) {
+        console.log('fail');
+        console.log(e);
+    })
+}
+
+function uncheck(event_id, person_id, static_page)
+{
+    var request = $.ajax({
+        url: '/uncheck-in_manual/' + event_id + '/' + person_id,
+        method: 'GET',
+        dataType: 'json'
+
+    });
+
+    request.done(function(e){
+
+        if(e.status)
+        {
+            if(!static_page)
+            {
+                swal('Atenção', 'O check-in foi retirado', 'warning');
+
+                setTimeout(function () {
+                    location.reload();
+                }, 1000);
+            }
+
+        }
+        else{
+            console.log(e.msg);
+
+            swal("Atenção!", "Verifique o log", "error");
+        }
+    });
+
+    request.fail(function (e) {
+        console.log('fail');
+        console.log(e);
+    })
+}
 
 function deleteAllInactives()
 {

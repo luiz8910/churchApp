@@ -248,12 +248,90 @@ License: You must have a valid license purchased only from themeforest(the above
                                             </a>
                                         </div>
 
+                                        <div class="col-md-1 col-sm-2 col-xs-2">
+                                            <a href="javascript:" type="button" class="btn btn-info btn-sm btn-circle" id="btn-search-check" style="margin-left: -16px;">
+                                                <i class="fa fa-search"></i>
+                                                Pesquisar
+                                            </a>
+                                        </div>
+
                                     </form>
                                 </div>
 
+
+                                <div id="div_search" style="display: none;">
+                                    <br>
+
+                                    <div class="row">
+
+                                        <div class="col-md-9">
+
+                                            <div class="input-group">
+
+                                                <input type="text" class="form-control" id="input-search-check" placeholder="Pesquise por usuários inscritos">
+
+                                                <span class="input-group-btn">
+
+                                                <button class="btn btn-default" type="button" id="close-search">
+
+                                                    <i class="fa fa-close font-green"></i>
+
+                                                </button>
+
+                                                </span>
+
+                                            </div><!-- /input-group -->
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div id="search_results" style="display: none;">
+
+                                    <br><br>
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="table-scrollable table-scrollable-borderless">
+                                                <table class="table table-hover table-light">
+                                                    <thead>
+                                                    <tr class="uppercase">
+
+                                                        {{--<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                                            <input type="checkbox" name="events" class="checkboxes check-model" id="check-0"
+                                                                   value="0" />
+                                                            <span></span>
+                                                        </label>--}}
+
+                                                        <th class="printable-table-header"> Nome </th>
+                                                        <th class=""> Opções </th>
+                                                    </tr>
+                                                    </thead>
+
+
+                                                    <tbody id="tbody-search">
+
+
+
+
+
+                                                    </tbody>
+
+                                                </table>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
                                 <br><br>
 
-                                <div class="row">
+                                <div class="row" id="row_sub">
                                     <div class="col-md-12">
                                         <div class="table-scrollable table-scrollable-borderless">
                                             <table class="table table-hover table-light">
@@ -267,8 +345,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         </label>--}}
 
                                                     <th class="printable-table-header"> Nome </th>
-                                                    <th class="hidden-xs hidden-sm"> Opções </th>
-                                                    <th class="hidden-md hidden-lg"> Opções </th>
+                                                    <th class=""> Opções </th>
                                                 </tr>
                                                 </thead>
 
