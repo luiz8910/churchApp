@@ -595,14 +595,21 @@
             <span class="footer-title">Contato</span>
             <ul class="footer-list list-unstyled">
                 <li>contato@beconnect.com.br</li>
-                <li>(11)99310 5830</li>
+                <li>
+                    <a href="https://wa.me/5511993105830">
+                        <img src="images/whats_app.png" style="width: 30px; height: 30px; margin-top: -4px;" alt="">
+                        <span style="color: #A29FA2;">(11)99310 5830</span>
+                    </a>
+
+
+                </li>
             </ul>
         </div>
         <div class="col-sm-3 pl-sm-5 mb-5">
             <span class="footer-title">Redes sociais</span>
             <div class="row">
                 <div class="col-2">
-                    <a href="#">
+                    <a href="https://www.facebook.com/beconnect.br" target="_blank">
                         <i class="fab fa-facebook icon"></i>
                     </a>
                 </div>

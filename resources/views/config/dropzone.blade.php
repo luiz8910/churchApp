@@ -32,6 +32,7 @@
         <link href="../../css/geral.css" rel="stylesheet" type="text/css" />
         <link href="../../assets/global/plugins/bootstrap-sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
         <link href="../../uploadify/uploadify.css" rel="stylesheet" type="text/css">
+        <link src="../../css/import.css"></link>
         <!--<script src="../js/ajax.js"></script>-->
     @endif
 
@@ -145,14 +146,35 @@
 
                                                 <div class="portlet-body form">
                                                     <div class="form-body">
-                                                        <!-- Evento submit desencadeado em form-dropzone.js -->
-                                                        {!! Form::open(['route' => 'config.person.contacts', 'method' => 'POST', 'enctype' => 'multipart/form-data',
+                                                        <!-- Evento submit desencadeado em form-dropzone.js
+                                                         Form::open(['route' => 'config.person.contacts', 'method' => 'POST', 'enctype' => 'multipart/form-data',
                                                                 'class' => 'dropzone dropzone-file-area', 'id' => 'my-dropzone', 'style' => 'margin-top: 30px; margin-bottom: 30px;']) !!}
                                                         {{--<form action="../assets/global/plugins/dropzone/upload.php" class="dropzone dropzone-file-area" id="my-dropzone" style=" margin-top: 30px; margin-bottom: 30px;">--}}
                                                             <h3 class="sbold">Solte as planilhas aqui ou clique para carregar</h3>
                                                             <p> <strong>Atenção!</strong> Somente arquivos do Excel(.xls ou .xlsx) </p>
-                                                        {!! Form::close() !!}
+                                                        Form::close() -->
                                                     </div>  <!-- FIM DIV .form-body -->
+
+                                                    <div class="form-body">
+
+                                                        <form action="{{ route('config.person.contacts') }}" method="POST" enctype="multipart/form-data">
+
+                                                        </form>
+                                                            <div class="dropfile" style="border: 3px dashed #3b64a5;text-align: center; cursor: pointer;">
+                                                                <br>
+
+                                                                <h3 class="sbold">Clique aqui para Carregar</h3>
+
+                                                                <p> <strong>Atenção!</strong> Somente arquivos do Excel(.xls ou .xlsx) </p>
+
+                                                                <br>
+
+                                                                <p id="p-filename"></p>
+                                                            </div>
+
+                                                        <input type="file" id="file_input" name="file" style="display: none;">
+
+                                                    </div>
 
                                                     <div class="form-actions ">
                                                         <button type="button" class="btn green" id="btn-dropzone" onclick="dropzone()">
@@ -314,13 +336,14 @@
 
 @include('includes.core-scripts-edit')
 <!-- SCRIPTS PAGINAS DE DROPZONE -->
-<script src="../../assets/global/plugins/dropzone/dropzone.min.js" type="text/javascript"></script>
-<script src="../../assets/pages/scripts/form-dropzone.js" type="text/javascript"></script>
+{{--<script src="../../assets/global/plugins/dropzone/dropzone.min.js" type="text/javascript"></script>
+<script src="../../assets/pages/scripts/form-dropzone.js" type="text/javascript"></script>--}}
 <!-- FIM SCRIPTS PAGINAS DE DROPZONE -->
 <script src="../../assets/pages/scripts/search.min.js" type="text/javascript"></script>
 <script src="../../uploadify/jquery.uploadify.min.js" type="text/javascript" ></script>
 
 <script src="../../js/import.js"></script>
+
 
 <script>
 
