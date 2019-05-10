@@ -486,11 +486,11 @@
                                             <td>
                                                 <p class="sub">
                                                     <a href="{{ $apple_url }}">
-                                                        <img src="https://beconnect.com.br/images/app_store.png"
+                                                        <img src="https://beconnect.com.br/images/app_store_50.png"
                                                              class="app_badge" alt="">
                                                     </a>
                                                     <a href="{{ $android_url }}">
-                                                        <img src="https://beconnect.com.br/images/play_store.png"
+                                                        <img src="https://beconnect.com.br/images/play_store_50.png"
                                                              alt="" class="app_badge">
                                                     </a>
                                                 </p>
