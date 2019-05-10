@@ -2125,13 +2125,19 @@ class EventController extends Controller
 
     public function subTest()
     {
-        $event = $this->repository->find(12);
+        $event = $this->repository->findByField('id', 14)->first();
 
         $person = $this->personRepository->find(1030);
 
         $user = $person->user;
 
-        $this->welcome_sub($user, $event);
+        //$event = DB::table('events')->where('id', 14)->first();
+
+        $qrCode = 'https://beconnect.com.br/' . $person->qrCode;
+
+        //dd($qrCode);
+
+        $this->welcome_sub($user, $event, $qrCode);
     }
 
 }

@@ -102,13 +102,13 @@ trait EmailTrait
         return true;
     }
 
-    public function welcome_sub($user, $event)
+    public function welcome_sub($user, $event, $qrCode)
     {
         $url = $this->getUrl();
 
         Mail::to($user)
             ->send(new welcome_sub(
-                $user, $url, $event
+                $user, $url, $event, $qrCode
             ));
 
         return true;

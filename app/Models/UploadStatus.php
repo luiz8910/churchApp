@@ -11,7 +11,7 @@ class UploadStatus extends Model implements Transformable
     use TransformableTrait;
 
     protected $fillable = [
-        'code', 'name', 'status'
+        'code', 'name', 'status', 'people_stored'
     ];
 
 }

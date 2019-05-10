@@ -1558,6 +1558,32 @@ class PersonController extends Controller
         return $this->traitCheckCPF($cpf);
     }
 
+    /*
+     * Usado para verificar a quantidade de linhas da planilha
+     */
+    public function planSize(Request $request)
+    {
+        $file = $request->file('file');
+
+        $fileName = 'file.' . $file->getClientOriginalExtension();
+
+        $church = $this->getUserChurch();
+
+        $alias = $this->churchRepository->find($church)->alias;
+
+        $path = 'uploads/sheets/'.$alias.'/';
+
+        $file->move($path, $fileName);
+
+        Excel::load($path . $fileName, function ($reader){
+
+            $qtde = count($reader->get());
+
+            Session::flash('qtde', $qtde);
+        });
+
+        return redirect()->back();
+    }
 
     public function getSimpleContact(Request $request)
     {
@@ -1567,28 +1593,40 @@ class PersonController extends Controller
 
         $church = $this->getUserChurch();
 
-        $file = $request->file('file');
+        //$file = $request->file('file');
 
-        $name = $file->getClientOriginalName();
+        //$name = $file->getClientOriginalName();
 
-        $fileName = 'file.' . $file->getClientOriginalExtension();
+        //$fileName = 'file.' . $file->getClientOriginalExtension();
+        $fileName = 'file.xlsx';
 
         $alias = $this->churchRepository->find($church)->alias;
 
         $path = 'uploads/sheets/'.$alias.'/';
 
-        $file->move($path, $fileName);
+        //$file->move($path, $fileName);
 
         $i = -1;
 
-        $import['code'] = bin2hex(random_bytes(15));
+        /*$import['code'] = bin2hex(random_bytes(15));
 
         $import['table'] = 'people';
 
         $import['church_id'] = $church;
 
-        $this->importRepository->create($import);
-        Excel::load($path . $fileName, function ($reader) use($church, $alias, $i, $import, $request){
+        $this->importRepository->create($import);*/
+
+        $up['code'] = bin2hex(random_bytes(15));
+
+        $up['name'] = $fileName;
+
+        $up['status'] = 0;
+
+        $up['people_stored'] = 0;
+
+        $this->uploadStatusRepository->create($up);
+
+        Excel::load($path . $fileName, function ($reader) use($church, $alias, $i, $import){
 
             $errors = [];
 

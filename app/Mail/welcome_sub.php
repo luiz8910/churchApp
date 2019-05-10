@@ -26,17 +26,24 @@ class welcome_sub extends Mailable
 
     public $apple_url;
 
+    public $android_url;
+
+    public $qrCode;
+
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(User $user, $url, $event)
+    public function __construct(User $user, $url, $event, $qrCode)
     {
         $this->user = $user;
         $this->url = $url;
         $this->event = $event;
+        $this->qrCode = $qrCode;
         $this->apple_url = 'https://itunes.apple.com/app/id1430220715';
+        $this->android_url = 'https://play.google.com/store/apps/details?id=com.br.beconnect';
+
     }
 
     /**

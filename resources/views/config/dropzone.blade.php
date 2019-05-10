@@ -157,9 +157,12 @@
 
                                                     <div class="form-body">
 
-                                                        <form action="{{ route('config.person.contacts') }}" method="POST" enctype="multipart/form-data">
+                                                        <form action="{{ route('plan.size') }}" method="POST" enctype="multipart/form-data">
+                                                            <input type="file" id="file_input" name="file" style="display: none;">
 
+                                                            <button type="submit" hidden id="btn-submit-plan"></button>
                                                         </form>
+
                                                             <div class="dropfile" style="border: 3px dashed #3b64a5;text-align: center; cursor: pointer;">
                                                                 <br>
 
@@ -172,18 +175,28 @@
                                                                 <p id="p-filename"></p>
                                                             </div>
 
-                                                        <input type="file" id="file_input" name="file" style="display: none;">
+                                                        <h3>Qtde: {{ Session::get('qtde') }}</h3>
+
+                                                        <input type="hidden" id="qtde" value="{{ Session::get('qtde') }}">
 
                                                     </div>
 
                                                     <div class="form-actions ">
-                                                        <button type="button" class="btn green" id="btn-dropzone" onclick="dropzone()">
+                                                        <button type="button" class="btn green" id="btn-dropzone" disabled>
                                                             <i class="fa fa-check"></i> Enviar
                                                         </button>
 
                                                         <button type="button" class="btn btn-info" data-toggle="modal" data-target="#info" id="btn-info-upload">
                                                             <i class="fa fa-info-circle"></i> Instruções para upload
                                                         </button>
+
+
+                                                        <div class="progress" style="margin-top: 10px;">
+                                                            <div class="progress-bar  progress-bar-striped active" role="progressbar" aria-valuenow="40"
+                                                                 aria-valuemin="0" aria-valuemax="100" style="width: 50%; min-width: 2em; background-color: #5cb85c !important;">
+                                                                50%
+                                                            </div>
+                                                        </div>
 
 
                                                         @if(session('errors'))

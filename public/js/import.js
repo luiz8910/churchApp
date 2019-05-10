@@ -4,7 +4,6 @@ $(function () {
 
         $("#file_input").trigger('click');
 
-
     });
 
 
@@ -32,13 +31,53 @@ $(function () {
                 $("#error-msg").click(function () {
                     swal("Arquivo Inválido!", text, "info");
                 }).trigger('click');
+
+                $("#btn-dropzone").attr('disabled', true);
             }
 
         }else{
+
             $("#p-filename").text('Nome do Arquivo: ' + name);
+
             stop = false;
+
+            $("#btn-dropzone").attr('disabled', null);
         }
-    })
+    });
+
+    $("#btn-dropzone").click(function(){
+
+        $("#btn-submit-plan").trigger('click');
+    });
+
+
+    $("#btn-submit-plan").submit(function () {
+
+        var name = $("#file_input")[0].files[0].name;
+
+        /*setUploadStatus(name);
+
+        var i = 0;
+
+        var get = false;
+
+        var repeat = setInterval(function () {
+            get = getUploadStatus(name);
+
+            if(get)
+            {
+                clearInterval(repeat);
+                location.reload();
+            }
+
+        }, 3000);
+
+
+        if(get)
+        {
+            location.reload();
+        }*/
+    });
 });
 
 function setUploadStatus(name) {
@@ -92,4 +131,23 @@ function getUploadStatus(name) {
 
     return status;
 
+}
+
+readPlan();
+
+function readPlan()
+{
+    var qtde = $("#qtde").val();
+
+    if(qtde)
+    {
+        console.log(qtde);
+
+
+    }
+    else{
+
+        console.log('session empty')
+
+    }
 }

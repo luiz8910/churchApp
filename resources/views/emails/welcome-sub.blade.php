@@ -398,7 +398,7 @@
     </style>
 </head>
 <body>
-<span class="preheader" style="margin-bottom: 10px;">Novo Cadastro</span>
+<span class="preheader" style="margin-bottom: 10px;"></span>
 
 <table class="email-wrapper" width="100%" cellpadding="0" cellspacing="0">
     <tr>
@@ -461,7 +461,11 @@
 
                                                                         No dia do evento ({{ date_format(date_create($event->eventDate), 'd/m') }})
 
-                                                                        acesse o app Beconnect com seu email e exiba seu qrcode na entrada para realizar o check-in
+                                                                        acesse o app Beconnect com seu email e exiba seu QR Code na entrada para realizar o check-in
+                                                                        
+                                                                        ou exiba QR Code abaixo:
+
+                                                                        <img src="{{ $qrCode }}" alt="" style="width: 95%; height: 50%;">
 
                                                                     </td>
 
@@ -482,10 +486,15 @@
                                             <td>
                                                 <p class="sub">
                                                     <a href="{{ $apple_url }}">
-                                                        <img src="https://beconnect.com.br/images/Download_on_the_App_Store_Badge_PTBR_RGB_wht_100317.png"
+                                                        <img src="https://beconnect.com.br/images/app_store.png"
                                                              class="app_badge" alt="">
                                                     </a>
+                                                    <a href="{{ $android_url }}">
+                                                        <img src="https://beconnect.com.br/images/play_store.png"
+                                                             alt="" class="app_badge">
+                                                    </a>
                                                 </p>
+
                                                 <p class="sub">Visite nosso site</p>
                                                 <p class="sub"><a href="https://beconnect.com.br" target="_blank">https://beconnect.com.br</a></p>
                                             </td>

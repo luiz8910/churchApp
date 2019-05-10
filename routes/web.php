@@ -234,6 +234,8 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::post("/getChurchContacts", "PersonController@getSimpleContact")->name('config.person.contacts');
 
+        Route::post('/planSize', 'PersonController@planSize')->name('plan.size');
+
         Route::get("/importar", "ConfigController@import")->name('config.person.contacts.view');
 
         Route::post("/addPlan", "ConfigController@addPlan")->name('config.person.contacts.example');
@@ -243,6 +245,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/downloadPlan', 'ConfigController@downloadPlan')->name('download.plan');
 
         Route::get('/showPlan', 'ConfigController@showPlan')->name('show.plan');
+
+
 
         Route::get('rollback/{table}', 'ImportController@rollbackLast')->name('import.rollback-last');
 
