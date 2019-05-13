@@ -157,7 +157,7 @@
 
                                                     <div class="form-body">
 
-                                                        <form action="{{ route('plan.size') }}" method="POST" enctype="multipart/form-data">
+                                                        <form action="{{ route('config.person.contacts') }}" method="POST" enctype="multipart/form-data">
                                                             <input type="file" id="file_input" name="file" style="display: none;">
 
                                                             <button type="submit" hidden id="btn-submit-plan"></button>

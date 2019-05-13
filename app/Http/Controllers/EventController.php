@@ -20,6 +20,7 @@ use App\Services\ChurchServices;
 use App\Services\EventServices;
 use App\Notifications\EventNotification;
 use App\Notifications\Notifications;
+use App\Services\PeopleServices;
 use App\Services\qrServices;
 use App\Traits\ConfigTrait;
 use App\Traits\CountRepository;
@@ -105,6 +106,10 @@ class EventController extends Controller
      * @var EventSubscribedListRepository
      */
     private $listRepository;
+    /**
+     * @var PeopleServices
+     */
+    private $peopleServices;
 
     /**
      * EventController constructor.
@@ -126,7 +131,7 @@ class EventController extends Controller
                                 FrequencyRepository $frequencyRepository, VisitorRepository $visitorRepository,
                                 SessionRepository $sessionRepository, ChurchRepository $churchRepository,
                                 ChurchServices $churchServices, qrServices $qrServices,
-                                EventSubscribedListRepository $listRepository)
+                                EventSubscribedListRepository $listRepository, PeopleServices $peopleServices)
     {
         $this->repository = $repository;
         $this->stateRepository = $stateRepositoryTrait;
@@ -143,6 +148,7 @@ class EventController extends Controller
         $this->churchServices = $churchServices;
         $this->qrServices = $qrServices;
         $this->listRepository = $listRepository;
+        $this->peopleServices = $peopleServices;
     }
 
 
@@ -2047,7 +2053,9 @@ class EventController extends Controller
             {
                 $this->eventServices->subEvent($event_id, $person->id);
 
-                $request->session()->flash('success.msg', 'Sucesso! Você está inscrito');
+                $this->peopleServices->send_sub_email($event_id, $person_id);
+
+                $request->session()->flash('success.msg', 'Sucesso! Você está inscrito, um email foi enviado para ' . $data['email']);
 
                 return redirect()->back()->withInput();
             }
@@ -2067,7 +2075,9 @@ class EventController extends Controller
 
             $this->eventServices->subEvent($event_id, $person_id);
 
-            $request->session()->flash('success.msg', 'Sucesso! Você está inscrito');
+            $this->peopleServices->send_sub_email($event_id, $person_id);
+
+            $request->session()->flash('success.msg', 'Sucesso! Você está inscrito, um email foi enviado para ' . $data['email']);
 
             return redirect()->back()->withInput();
         }
