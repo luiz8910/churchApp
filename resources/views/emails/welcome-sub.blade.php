@@ -487,11 +487,11 @@
                                                 <p class="sub">
                                                     <a href="{{ $apple_url }}">
                                                         <img src="https://beconnect.com.br/images/Download_on_the_App_Store_Badge_PTBR_RGB_wht_100317.png"
-                                                             class="app_badge" alt="">
+                                                             class="" alt="">
                                                     </a>
                                                     <a href="{{ $android_url }}">
                                                         <img src="https://beconnect.com.br/images/play_store_red.png"
-                                                             alt="" class="app_badge">
+                                                             alt="" class="">
                                                     </a>
                                                 </p>
 

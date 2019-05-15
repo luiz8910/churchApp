@@ -2141,6 +2141,8 @@ class EventController extends Controller
 
         $user = $person->user;
 
+        //dd($user);
+
         //$event = DB::table('events')->where('id', 14)->first();
 
         $qrCode = 'https://beconnect.com.br/' . $person->qrCode;
