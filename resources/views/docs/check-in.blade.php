@@ -147,7 +147,7 @@
 
                     <div class="panel-body hide-panel" id="check-in">
 
-                        https://beconnect.com.br/api/check-in/{id}/{person_id}/{visitor?}
+                        https://beconnect.com.br/api/check-in/{id}/{person_id}
                         <span class="label label-primary">GET</span>
 
                         <br><br>
