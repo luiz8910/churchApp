@@ -88,7 +88,7 @@ Route::get('/notif-updates/{person_id}/{event_id}', 'Api\EventController@getNoti
 
 //--------------------------- Check-in ---------------------------------------------------------------------------------
 
-Route::get('/check-in/{id}/{person_id}/{visitor?}', 'Api\EventController@checkInAPP');
+Route::get('/check-in/{id}/{person_id}', 'Api\EventController@checkInAPP');
 
 Route::get('/is-check/{id}/{person_id}/{visitor?}', 'Api\EventController@isCheckedApp');
 

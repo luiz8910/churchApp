@@ -352,18 +352,28 @@ class EventController extends Controller
      * $person_id = id do membro
      * Check-in Manual API
      */
-    public function checkInAPP($id, $person_id, $visitor = null)
+    public function checkInAPP($id, $person_id)
     {
-        if($visitor)
+
+        $person = $this->personRepository->findByField('id', $person_id)->first();
+
+        if($person)
         {
-            $model = $this->visitorRepository->find($person_id);
+            return $this->eventServices->checkApp($id, $person_id);
         }
         else{
 
-            $model = $this->personRepository->find($person_id);
+            $user = $this->userRepository->findByField('id', $person_id)->first();
+
+            if($user)
+            {
+                return $this->eventServices->checkApp($id, $user->person_id);
+            }
+
         }
 
-        return $this->eventServices->checkApp($id, $person_id);
+        return json_encode(['status' => false, 'msg' => 'Usuário ou evento não encontrado']);
+
     }
 
 

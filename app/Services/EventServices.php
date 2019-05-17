@@ -822,7 +822,7 @@ class EventServices
          * que o usuário $person esteja inscrito
          */
 
-        $event = $this->repository->find($id);
+        $event = $this->repository->findByField('id', $id)->first();
 
         if($event->endTime == "")
         {
