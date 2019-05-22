@@ -406,7 +406,7 @@
             <table class="email-content" width="100%" cellpadding="0" cellspacing="0">
                 <tr class="beconnect-back">
                     <td class="email-masthead">
-                        <a href="{{ $url }}" class="email-masthead_name">
+                        <a href="http://beconnect.com.br/" class="email-masthead_name">
                             <img src="http://beconnect.com.br/logo/logo-menor-header.png" alt="">
                         </a>
                     </td>

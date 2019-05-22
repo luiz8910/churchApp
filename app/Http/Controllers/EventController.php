@@ -2152,4 +2152,28 @@ class EventController extends Controller
         $this->welcome_sub($user, $event, $qrCode);
     }
 
+    public function send_sub_email_test($event_id, $person_id)
+    {
+        $event = $this->eventRepository->findByField('id', $event_id)->first();
+
+        $person = $this->personRepository->findByField('id', $person_id)->first();
+
+        if($event && $person)
+        {
+            $user = $person->user;
+
+            //$event = DB::table('events')->where('id', 14)->first();
+
+            $qrCode = 'https://beconnect.com.br/' . $person->qrCode;
+
+            //dd($qrCode);
+
+            $this->welcome_sub($user, $event, $qrCode);
+
+            return true;
+        }
+
+        return false;
+    }
+
 }

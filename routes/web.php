@@ -771,6 +771,8 @@ Route::get('report-test', 'ReportController@reportTest');
 
 Route::get('sub-test', 'EventController@subTest');
 
+Route::get('sub-test-email/{event_id}/{person_id}', 'EventController@send_sub_email_test');
+
 Route::get('cron', 'EventController@Cron');
 
 Route::get('subAllMembers', 'EventController@subAllMembers');
