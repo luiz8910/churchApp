@@ -2154,7 +2154,7 @@ class EventController extends Controller
 
     public function send_sub_email_test($event_id, $person_id)
     {
-        $event = $this->eventRepository->findByField('id', $event_id)->first();
+        $event = $this->repository->findByField('id', $event_id)->first();
 
         $person = $this->personRepository->findByField('id', $person_id)->first();
 
