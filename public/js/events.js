@@ -217,7 +217,7 @@ function findSubUsers(e)
                         '                                                            <td>\n' +
                         '                                                                <!-- Img Profile e Name -->\n' +
                         '\n' +
-                        '                                                                <a href="javascript:"  style="margin-left: 10px;">\n' +
+                        '                                                                <a href="/person/'+e.person_sub[i].id+'/edit"  style="margin-left: 10px;">\n' +
                         '\n' +
                         '\n' +
                         '                                                                    <img src="../../uploads/profile/noimage.png" class="img-circle" style="width: 50px; height: 50px;">\n' +

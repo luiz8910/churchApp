@@ -51,32 +51,43 @@
                             <div class="modal fade" id="modalChooseEvent" role="dialog" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                            <h4 class="modal-title text-center" id="myModalLabel">Escolha o Evento</h4>
-                                        </div>
-                                        <div class="modal-body">
-                                            <form action="#" class="form-horizontal">
 
-                                                <label for="chooseEvent" class="form-control-label">Escolha o Evento</label>
-                                                <select name="chooseEvent" id="chooseEvent" class="form-control select2">
-                                                    @foreach($events as $event)
-                                                        <option value="{{ $event->id }}">{{ $event->name }}</option>
-                                                    @endforeach
-                                                </select>
+                                        <form action="{{ route('report.index') }}" method="POST">
 
-                                            </form>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">
-                                                <i class="fa fa-close"></i>
-                                                Fechar
-                                            </button>
-                                            <button type="button" class="btn btn-success" id="btnChooseEvent">
-                                                <i class="fa fa-check"></i>
-                                                Ir
-                                            </button>
-                                        </div>
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                <h4 class="modal-title text-center" id="myModalLabel">Escolha o Evento</h4>
+                                            </div>
+
+                                            <div class="modal-body">
+
+                                                    <label for="chooseEvent" class="form-control-label">Escolha o Evento</label>
+
+                                                    <select name="event_id" id="chooseEvent" class="form-control select2">
+                                                        <option value="" selected>Selecione</option>
+
+                                                        @foreach($events as $event)
+
+                                                            <option value="{{ $event->id }}">{{ $event->name }}</option>
+
+                                                        @endforeach
+                                                    </select>
+
+                                            </div>
+
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">
+                                                    <i class="fa fa-close"></i>
+                                                    Fechar
+                                                </button>
+                                                <button type="submit" class="btn btn-success" id="btnChooseEvent">
+                                                    <i class="fa fa-check"></i>
+                                                    Ir
+                                                </button>
+                                            </div>
+
+                                        </form>
+
                                     </div>
                                 </div>
                             </div>
@@ -95,7 +106,7 @@
                                                             <span class="caption-subject font-green-sharp bold uppercase">Eventos</span>
                                                         </div>
                                                         <div class="actions">
-                                                            <div class="btn-group" style="display: none;">
+                                                            <div class="btn-group">
                                                                 <a class="btn green-haze btn-outline btn-circle btn-sm" href="javascript:;" data-toggle="dropdown" data-hover="dropdown" data-close-others="true"> Opções
                                                                     <i class="fa fa-angle-down"></i>
                                                                 </a>
@@ -125,6 +136,9 @@
                                                         <div class="tabbable tabbable-tabdrop">
                                                             <ul class="nav nav-tabs">
                                                                 <li class="active">
+                                                                    <a href="#tab0" data-toggle="tab">Inscritos por Dia</a>
+                                                                </li>
+                                                                <li class="">
                                                                     <a href="#tab1" data-toggle="tab">Último Evento</a>
                                                                 </li>
                                                                 <li>
@@ -144,7 +158,12 @@
                                                                 </li>--}}
                                                             </ul>
                                                             <div class="tab-content">
-                                                                <div class="tab-pane active" id="tab1">
+                                                                <div class="tab-pane active" id="tab0">
+
+                                                                    <div id="container_1"></div>
+                                                                </div>
+
+                                                                <div class="tab-pane" id="tab1">
                                                                     <p> &nbsp; </p>
                                                                     <p> &nbsp; </p>
 
@@ -318,6 +337,8 @@
 		<!-- BEGIN PAGE LEVEL SCRIPTS -->
 		<script src="assets/pages/scripts/table-datatables-buttons.min.js" type="text/javascript"></script>
 		<script src="../assets/global/plugins/bootstrap-tabdrop/js/bootstrap-tabdrop.js" type="text/javascript"></script>
+        <script src="../assets/global/plugins/highstock/js/highstock.js" type="text/javascript"></script>
+        <script src="../assets/pages/scripts/charts-highstock.min.js" type="text/javascript"></script>
         <script src="../js/chart.js"></script>
 		<!-- END PAGE LEVEL SCRIPTS -->
 	</body>

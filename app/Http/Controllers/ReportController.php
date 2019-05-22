@@ -14,6 +14,7 @@ use App\Traits\DateRepository;
 use App\Traits\NotifyRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 use Maatwebsite\Excel\Facades\Excel;
 use GuzzleHttp;
 
@@ -92,6 +93,47 @@ class ReportController extends Controller
 
         return view('reports.index', compact('countPerson', 'countGroups', 'leader',
             'admin', 'notify', 'qtde', 'events', 'members', 'visitors'));
+    }
+
+    /*
+     * $id = id do evento
+     */
+    public function eventReport(Request $request)
+    {
+        $data = $request->all();
+
+        $event = $this->eventRepository->findByField('id', $data['event_id'])->first();
+
+        if($event)
+        {
+
+            $countPerson[] = $this->countPerson();
+
+            $countGroups[] = $this->countGroups();
+
+            $leader = $this->getLeaderRoleId();
+
+            $admin = $this->getAdminRoleId();
+
+            $notify = $this->notify();
+
+            $qtde = $notify ? count($notify) : 0;
+
+            //Fim Variáveis comuns
+
+            $events = $this->eventRepository->findByField('church_id', $this->getUserChurch());
+
+            $members = $this->personRepository->findByField('church_id', $this->getUserChurch());
+
+            return view('reports.index', compact('countPerson', 'countGroups', 'leader',
+                'admin', 'notify', 'qtde', 'events', 'members', 'visitors'));
+
+        }
+
+        Session::flash('error.msg', 'Evento não encontrado');
+
+        return redirect()->back();
+
     }
 
     /*
@@ -516,5 +558,12 @@ class ReportController extends Controller
 
 
 
+    }
+
+
+    public function reportTest()
+    {
+
+        return view('reports.teste');
     }
 }

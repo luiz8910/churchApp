@@ -270,7 +270,7 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('/relatorios-eventos', "ReportController@index")->name('report.index');
 
-        Route::get('/relatorios-eventos/{id}', "ReportController@index")->name('report.index-id');
+        Route::post('/relatorios-eventos', "ReportController@index")->name('report.index');
 
         Route::get('/getReport', 'ReportController@getReport');
 
@@ -766,6 +766,8 @@ Route::get('/map', function(){
 
     dd($obj->results[0]->geometry->location);
 });
+
+Route::get('report-test', 'ReportController@reportTest');
 
 Route::get('sub-test', 'EventController@subTest');
 

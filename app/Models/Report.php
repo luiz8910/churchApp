@@ -11,7 +11,7 @@ class Report extends Model implements Transformable
 {
     use TransformableTrait, SoftDeletes;
 
-    protected $fillable = [];
+    protected $fillable = ['event_id'];
 
     protected $dates = ['deleted_at'];
 
