@@ -2053,7 +2053,7 @@ class EventController extends Controller
             {
                 $this->eventServices->subEvent($event_id, $person->id);
 
-                $this->peopleServices->send_sub_email($event_id, $person_id);
+                $this->peopleServices->send_sub_email($event_id, $person->id);
 
                 $request->session()->flash('success.msg', 'Sucesso! Você está inscrito, um email foi enviado para ' . $data['email']);
 
@@ -2075,7 +2075,7 @@ class EventController extends Controller
 
             $this->eventServices->subEvent($event_id, $person_id);
 
-            $this->peopleServices->send_sub_email($event_id, $person_id);
+            $this->peopleServices->send_sub_email($event_id, $person->id);
 
             $request->session()->flash('success.msg', 'Sucesso! Você está inscrito, um email foi enviado para ' . $data['email']);
 
