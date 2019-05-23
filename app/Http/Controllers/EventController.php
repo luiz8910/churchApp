@@ -2069,17 +2069,26 @@ class EventController extends Controller
 
             $person_id = $this->personRepository->create($data)->id;
 
-            $this->qrServices->generateQrCode($person_id);
+            if($person_id)
+            {
+                $this->qrServices->generateQrCode($person_id);
 
-            $this->createUserLogin($person_id, 'secret', $data['email'], $data['church_id']);
+                $this->createUserLogin($person_id, 'secret', $data['email'], $data['church_id']);
 
-            $this->eventServices->subEvent($event_id, $person_id);
+                $this->eventServices->subEvent($event_id, $person_id);
 
-            $this->peopleServices->send_sub_email($event_id, $person->id);
+                $this->peopleServices->send_sub_email($event_id, $person_id);
 
-            $request->session()->flash('success.msg', 'Sucesso! Você está inscrito, um email foi enviado para ' . $data['email']);
+                $request->session()->flash('success.msg', 'Sucesso! Você está inscrito, um email foi enviado para ' . $data['email']);
+
+                return redirect()->back()->withInput();
+            }
+
+            $request->session()->flash('error.msg', 'Não foi possível fazer sua inscrição, tente novamente mais tarde!' );
 
             return redirect()->back()->withInput();
+
+
         }
 
         $request->session()->flash('error.msg', 'Atenção! Um erro ocorreu');
