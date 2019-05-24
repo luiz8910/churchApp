@@ -1047,7 +1047,7 @@ class EventController extends Controller
             $data['endEventDate'] = $this->formatDateBD($data['endEventDate']);
         }
 
-        if($data["group_id"] == "")
+        if(isset($data["group_id"]) && $data['group_id'] == "")
         {
             $data["group_id"] = null;
         }
