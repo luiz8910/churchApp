@@ -2823,16 +2823,27 @@ class EventServices
 
 
 
-    public function checkUrlEvent($url)
+    public function checkUrlEvent($url, $id = null)
     {
         $event = $this->repository->findByField('public_url', $url)->first();
 
         if($event)
         {
+            if($id)
+            {
+                if($id == $event->id)
+                {
+                    return false;
+                }
+
+                return $event;
+            }
+
             return $event;
         }
 
         return false;
+
     }
 }
 

@@ -1074,7 +1074,7 @@ class EventController extends Controller
         $data["city"] = ucwords($data["city"]);
 
         //Verificar url do evento
-        if($this->eventServices->checkUrlEvent($data['public_url']))
+        if($this->eventServices->checkUrlEvent($data['public_url'], $id))
         {
             $request->session()->flash('error.msg', 'Url ja está em uso, mude o nome do evento');
 

@@ -584,7 +584,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 <span class="input-group-addon">
                                                                     <i class="fa fa-user font-blue"></i>
                                                                 </span>
-                                                            <input type="text" name="name" class="form-control"
+                                                            <input type="text" name="name" id="name" class="form-control"
                                                                    placeholder="Encontro de Jovens"
                                                                    value="{{ $model->name }}" required>
                                                         </div>
