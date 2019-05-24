@@ -1026,66 +1026,83 @@ class EventController extends Controller
     {
         $data = $request->all();
 
-        $data['createdBy_id'] = $this->repository->find($id)->createdBy_id;
+        $event = $this->repository->findByField('id', $id)->first();
 
-        $data['eventDate'] = $this->formatDateBD($data['eventDate']);
-
-        $endEventDate = $request->get('endEventDate');
-
-        if(!$data['eventDate'])
+        if($event)
         {
-            $request->session()->flash('invalidDate', 'Insira a data do primeiro encontro');
-            return redirect()->back()->withInput();
-        }
+            $data['createdBy_id'] = $this->repository->findByField('id', $id)->first() ?
+                $this->repository->findByField('id', $id)->first()->createdBy_id : 0;
 
-        if ($endEventDate == "")
-        {
-            $data['endEventDate'] = $data['eventDate'];
-        }
-        else
-        {
-            $data['endEventDate'] = $this->formatDateBD($data['endEventDate']);
-        }
+            $data['eventDate'] = $this->formatDateBD($data['eventDate']);
 
-        if(isset($data["group_id"]) && $data['group_id'] == "")
-        {
-            $data["group_id"] = null;
-        }
+            $endEventDate = $request->get('endEventDate');
 
-        if($data["frequency"] == "Quinzenal")
-        {
-            $firstDay = substr($data['eventDate'], 8, 2);
-
-            if($data['day'][0] != $firstDay)
+            if(!$data['eventDate'])
             {
-                $request->session()->flash('invalidDate', 'Data do Próximo evento está inválida');
+                $request->session()->flash('invalidDate', 'Insira a data do primeiro encontro');
                 return redirect()->back()->withInput();
             }
-            else{
-                $day = $data['day'][0];
-                $data['day_2'] = $data['day'][1];
 
-                unset($data['day']);
-
-                $data['day'] = $day;
+            if ($endEventDate == "")
+            {
+                $data['endEventDate'] = $data['eventDate'];
             }
+            else
+            {
+                $data['endEventDate'] = $this->formatDateBD($data['endEventDate']);
+            }
+
+            if(isset($data["group_id"]) && $data['group_id'] == "")
+            {
+                $data["group_id"] = null;
+            }
+
+            if($data["frequency"] == "Quinzenal")
+            {
+                $firstDay = substr($data['eventDate'], 8, 2);
+
+                if($data['day'][0] != $firstDay)
+                {
+                    $request->session()->flash('invalidDate', 'Data do Próximo evento está inválida');
+                    return redirect()->back()->withInput();
+                }
+                else{
+                    $day = $data['day'][0];
+                    $data['day_2'] = $data['day'][1];
+
+                    unset($data['day']);
+
+                    $data['day'] = $day;
+                }
+            }
+
+            $data["city"] = ucwords($data["city"]);
+
+            if($data['public_url'] == "" && $event->public_url != "")
+            {
+                $data['public_url'] = $event->public_url;
+            }
+
+            //Verificar url do evento
+            if($this->eventServices->checkUrlEvent($data['public_url'], $id))
+            {
+                $request->session()->flash('error.msg', 'Url ja está em uso, mude o nome do evento');
+
+                return redirect()->back()->withInput();
+            }
+
+            $this->repository->update($data, $id);
+
+            $this->eventServices->changeEventDays($id);
+
+            return redirect()->route('event.index');
         }
 
-        $data["city"] = ucwords($data["city"]);
-
-        //Verificar url do evento
-        if($this->eventServices->checkUrlEvent($data['public_url'], $id))
-        {
-            $request->session()->flash('error.msg', 'Url ja está em uso, mude o nome do evento');
-
-            return redirect()->back()->withInput();
-        }
-
-        $this->repository->update($data, $id);
-
-        $this->eventServices->changeEventDays($id);
+        $request->session()->flash('error.msg', 'O evento selecionado não existe');
 
         return redirect()->route('event.index');
+
+
     }
 
 

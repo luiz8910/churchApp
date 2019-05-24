@@ -118,7 +118,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                             </div>
                                         </div>
 
-
+                                        @include('includes.messages')
 
                                         <div class="alert alert-success alert-dismissible" id="alert-success" role="alert" style="display: none;">
                                             <button type="button" class="close" id="button-success" aria-label="Close"><span aria-hidden="true">&times;</span></button>

@@ -99,7 +99,12 @@ $(function () {
 
         if(!$("#gen_public_url").is(':checked'))
         {
-            $('#gen_public_url').trigger('click');
+            if(location.pathname.search('edit') == -1)
+            {
+
+                $('#gen_public_url').trigger('click');
+            }
+
         }
         else{
             if($("#name").val() == "")

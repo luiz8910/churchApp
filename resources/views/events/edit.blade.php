@@ -1000,7 +1000,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <span class="help-block">
                                                         <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
                                                             <input type="checkbox" name="" id="gen_public_url" class="checkboxes" value="1" />
-                                                            <span></span>Gerar Url Pública
+                                                            <span></span>Gerar/Mudar Url Pública
                                                         </label>
                                                     </span>
                                                     </div>
