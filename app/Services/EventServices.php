@@ -968,15 +968,13 @@ class EventServices
                     ->where([
                         'event_id' => $id,
                         'person_id' => $person->id,
-                        'eventDate' => date_format($date, "Y-m-d"),
-                        //'check-in' => 0
-                    ])->get();
+                    ])->first();
 
 
                 /*
                  * Se achar algum evento
                  */
-                if(count($event_person) > 0)
+                if($event_person)
                 {
                     /*
                      * Realiza o check-in
@@ -1400,7 +1398,7 @@ class EventServices
     {
         $today = date("Y-m-d");
 
-        $event = Event::where('id' , $id)->first();
+        $event = $this->repository->findByField('id' , $id)->first();
 
         DB::table('event_person')
             ->where(
@@ -1412,7 +1410,7 @@ class EventServices
             ->delete();
 
         //Eventos Semanais
-        if(!is_numeric($event->day))
+        if($event->frequency == $this->weekly())
         {
             $dayNumber = $this->getDayNumber($event->day);
 
@@ -1450,6 +1448,7 @@ class EventServices
 
 
         }
+
         //Eventos Mensais
         elseif ($event->frequency == $this->monthly()){
 
@@ -1941,6 +1940,7 @@ class EventServices
                     'visitor_id' => $visitor_id
                 ]);
             }
+
             else{
                 $exists = $this->listRepository->findWhere([
                     'event_id' => $event_id,
@@ -1948,18 +1948,15 @@ class EventServices
                 ]);
             }
 
-
+            $event = $this->repository->findByField('id', $event_id)->first();
 
             if(count($exists) == 0)
             {
 
-                $event = $this->repository->findByField('id', $event_id)->first();
-
                 if($event)
                 {
-                    $frequency = $event->frequency;
 
-                    if($frequency == $this->unique())
+                    if($event->frequency == $this->unique())
                     {
                         DB::table('event_person')
                             ->insert([
@@ -1979,19 +1976,19 @@ class EventServices
 
                         $data['startTime'] = $event->startTime;
 
-                        if($frequency == $this->weekly())
+                        if($event->frequency == $this->weekly())
                         {
                             $this->setNextEvents($event_id, $data, "7 days", $person_id);
                         }
-                        elseif($frequency == $this->monthly())
+                        elseif($event->frequency == $this->monthly())
                         {
                             $this->setNextEvents($event_id, $data, "30 days", $person_id);
                         }
-                        elseif ($frequency == $this->daily())
+                        elseif ($event->frequency == $this->daily())
                         {
                             $this->setNextEvents($event_id, $data, "1 days", $person_id);
                         }
-                        elseif ($frequency == $this->biweekly())
+                        elseif ($event->frequency == $this->biweekly())
                         {
                             $this->setNextEvents($event_id, $data, "15 days", $person_id);
                         }
@@ -2005,18 +2002,50 @@ class EventServices
                     $data["person_id"] = $person_id;
                 }
 
-                $data["event_id"] = $event_id;
+                    $data["event_id"] = $event_id;
 
-                $data["sub_by"] = isset(Auth::user()->person) ? Auth::user()->person->id : 0;
+                    $data["sub_by"] = isset(Auth::user()->person) ? Auth::user()->person->id : 0;
 
-                $this->listRepository->create($data);
+                    $this->listRepository->create($data);
 
-                //$this->addGeofence($event_id, $person_id);
+                    //$this->addGeofence($event_id, $person_id);
+
+                    DB::commit();
+
+                    return true;
+
+                }
+
+            }
+            else{
+
+                if($event->frequency == $this->unique())
+                {
+                    $ep = DB::table('event_person')
+                        ->where([
+                            'event_id' => $event_id,
+                            'person_id' => $person_id,
+                        ])->first();
+
+                    if(!$ep)
+                    {
+                        DB::table('event_person')
+                            ->insert([
+                                'event_id' => $event_id,
+                                'person_id' => $person_id,
+                                'eventDate' => $event->eventDate,
+                                'check-in' => 0,
+                                'show' => 0,
+                                'event_date' => date_create($event->eventDate . $event->start_date),
+                                'end_event_date' => date_create($event->eventDate . $event->endTime)
+                            ]);
+                    }
+
+                }
 
                 DB::commit();
 
                 return true;
-                }
 
             }
 

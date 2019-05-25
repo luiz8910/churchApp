@@ -767,6 +767,8 @@ Route::get('/map', function(){
     dd($obj->results[0]->geometry->location);
 });
 
+Route::get('resub-test/{event_id}', 'EventController@reSub');
+
 Route::get('report-test', 'ReportController@reportTest');
 
 Route::get('sub-test', 'EventController@subTest');

@@ -1198,13 +1198,13 @@ class EventController extends Controller
 
         DB::table('event_person')
             ->where(['event_id' => $id])
-            ->update(['deleted_at' => Carbon::now()]);
+            ->delete();
 
         DB::table('recent_events')->where('event_id', $id)->delete();
 
         DB::table('event_subscribed_lists')
             ->where(['event_id' => $id])
-            ->update(['deleted_at' => Carbon::now()]);
+            ->delete();
 
         $event->delete();
 
@@ -2143,6 +2143,15 @@ class EventController extends Controller
         $check = 'check-in';
 
         foreach ($person_sub as $item) {
+
+            $d = DB::table('event_person')
+                ->where([
+                    'event_id' => $event_id,
+                    'person_id' => $item->id
+                ])->get();
+
+            dd($event_id);
+
             $item->check =
                 DB::table('event_person')
                     ->where([
@@ -2150,6 +2159,8 @@ class EventController extends Controller
                         'person_id' => $item->id
                     ])
                     ->first()->$check;
+
+
         }
 
         $count = count($person_sub);
@@ -2200,6 +2211,22 @@ class EventController extends Controller
         }
 
         return false;
+    }
+
+    /*
+     * Usado para reinscrever os usuários
+     */
+    public function reSub($event_id)
+    {
+        $people = $this->listRepository->findByField('event_id', $event_id);
+
+        foreach ($people as $item)
+        {
+            $this->eventServices->subEvent($event_id, $item->person_id);
+        }
+
+        //return true;
+
     }
 
 }

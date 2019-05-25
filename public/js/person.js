@@ -77,6 +77,7 @@ $(function(){
         var event_id = $("#event-id").val();
         var person = this.id.replace('btn-person-check-', '');
 
+
         check(event_id, person, false);
     });
 
