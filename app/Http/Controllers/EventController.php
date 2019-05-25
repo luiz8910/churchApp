@@ -2150,7 +2150,7 @@ class EventController extends Controller
                     'person_id' => $item->id
                 ])->get();
 
-            dd($event_id);
+
 
             $item->check =
                 DB::table('event_person')
