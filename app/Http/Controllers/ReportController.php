@@ -86,13 +86,16 @@ class ReportController extends Controller
 
         if ($event) {
 
+            $event_id = $event;
+
             return view('reports.index-id', compact('countPerson', 'countGroups', 'leader',
-                'admin', 'notify', 'qtde', 'events', 'members', 'visitors'));
+                'admin', 'notify', 'qtde', 'events', 'members', 'visitors', 'event_id'));
         }
 
+        $event_id = $this->eventServices->getNextEvent() ? $this->eventServices->getNextEvent()[0] : null;
 
         return view('reports.index', compact('countPerson', 'countGroups', 'leader',
-            'admin', 'notify', 'qtde', 'events', 'members', 'visitors'));
+            'admin', 'notify', 'qtde', 'events', 'members', 'visitors', 'event_id'));
     }
 
     /*
@@ -563,7 +566,56 @@ class ReportController extends Controller
 
     public function reportTest()
     {
+        $event_id = 14;
 
-        return view('reports.teste');
+
+        return view('reports.teste', compact( 'event_id'));
+    }
+
+    public function getSubDays($event_id)
+    {
+        $days = $this->listRepository->findByField('event_id', $event_id);
+
+        $unique_days = [];
+        $dates = [];
+        $values = [];
+        $i = $x = 0;
+
+        foreach ($days as $day)
+        {
+            $date = date_format(date_create($day->created_at), 'd/m');
+
+            $unique_days[] = $date;
+
+        }
+
+        while($i < count($unique_days))
+        {
+            $date = $unique_days[$i];
+
+            $x = 0;
+
+            foreach ($unique_days as $day)
+            {
+                if($day == $date)
+                {
+                    $x++;
+
+                    $dates[$unique_days[$i]] = $x;
+                }
+            }
+
+            $i++;
+        }
+
+        foreach ($dates as $date)
+        {
+            $values[] = $date;
+        }
+
+        $unique_days = array_unique($unique_days);
+
+
+        return json_encode(['unique_days' => $unique_days, 'dates' => $values]);
     }
 }

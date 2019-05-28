@@ -10,6 +10,7 @@
 	<head>
 		@include('includes.head')
 		<!-- BEGIN PAGE LEVEL PLUGINS -->
+        <script src="../assets/global/plugins/jquery.min.js" type="text/javascript"></script>
 		<link href="assets/global/plugins/datatables/datatables.min.css" rel="stylesheet" type="text/css" />
 		<link href="assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css" rel="stylesheet" type="text/css" />
 		<link href="assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
@@ -160,7 +161,8 @@
                                                             <div class="tab-content">
                                                                 <div class="tab-pane active" id="tab0">
 
-                                                                    <div id="container_1"></div>
+                                                                    <br>
+                                                                    @include('reports.sub_day')
                                                                 </div>
 
                                                                 <div class="tab-pane" id="tab1">

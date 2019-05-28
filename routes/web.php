@@ -771,6 +771,8 @@ Route::get('resub-test/{event_id}', 'EventController@reSub');
 
 Route::get('report-test', 'ReportController@reportTest');
 
+Route::get('getSubDays/{event_id}', 'ReportController@getSubDays');
+
 Route::get('sub-test', 'EventController@subTest');
 
 Route::get('sub-test-email/{event_id}/{person_id}', 'EventController@send_sub_email_test');
