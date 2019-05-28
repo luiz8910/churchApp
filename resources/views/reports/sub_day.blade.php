@@ -2,6 +2,8 @@
 
     <input type="hidden" id="event_id" value="{{ $event_id }}">
 
+    <input type="hidden" id="event_name" value="{{ $event_name }}">
+
     <div id="container_sub_day" style="width: 100% !important; height: 500px !important;"></div>
 
 
@@ -25,7 +27,7 @@
                         type: 'column'
                     },
                     title: {
-                        text: 'Quantidade de Inscritos por dia'
+                        text: 'Quantidade de Inscritos por dia (' + $('#event_name').val() +')',
                     },
                     subtitle: {
                         text: ''

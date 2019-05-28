@@ -88,14 +88,18 @@ class ReportController extends Controller
 
             $event_id = $event;
 
+            $event_name = $this->eventRepository->findByField('id', $event_id)->first()->name;
+
             return view('reports.index-id', compact('countPerson', 'countGroups', 'leader',
-                'admin', 'notify', 'qtde', 'events', 'members', 'visitors', 'event_id'));
+                'admin', 'notify', 'qtde', 'events', 'members', 'visitors', 'event_id', 'event_name'));
         }
 
         $event_id = $this->eventServices->getNextEvent() ? $this->eventServices->getNextEvent()[0] : null;
 
+        $event_name = $this->eventRepository->findByField('id', $event_id)->first()->name;
+
         return view('reports.index', compact('countPerson', 'countGroups', 'leader',
-            'admin', 'notify', 'qtde', 'events', 'members', 'visitors', 'event_id'));
+            'admin', 'notify', 'qtde', 'events', 'members', 'visitors', 'event_id', 'event_name'));
     }
 
     /*
