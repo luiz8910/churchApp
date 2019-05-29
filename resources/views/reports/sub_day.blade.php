@@ -4,6 +4,8 @@
 
     <input type="hidden" id="event_name" value="{{ $event_name }}">
 
+    <input type="hidden" id="qtde_sub" value="{{ $qtde_sub }}">
+
     <div id="container_sub_day" style="width: 100% !important; height: 500px !important;"></div>
 
 
@@ -40,10 +42,10 @@
                         type: 'column'
                     },
                     title: {
-                        text: 'Quantidade de Inscritos por dia (' + $('#event_name').val() +')',
+                        text: 'Inscritos por dia (' + $('#event_name').val() +')',
                     },
                     subtitle: {
-                        text: ''
+                        text: 'Total: ' + $('#qtde_sub').val() + ''
                     },
                     xAxis: {
                         categories: e.unique_days,
@@ -52,7 +54,7 @@
                     yAxis: {
                         min: 0,
                         title: {
-                            text: 'Inscrições'
+                            text: 'Inscrições (' + $('#qtde_sub').val() + ')'
                         }
                     },
                     tooltip: {
