@@ -14,7 +14,8 @@
 		<link href="assets/global/plugins/datatables/datatables.min.css" rel="stylesheet" type="text/css" />
 		<link href="assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css" rel="stylesheet" type="text/css" />
 		<link href="assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
-        <script src="../assets/global/plugins/highcharts/highcharts.js"></script>
+        <script src="https://code.highcharts.com/highcharts.js"></script>
+        {{--<script src="../assets/global/plugins/highcharts/highcharts.js"></script>--}}
         <script src="../assets/pages/scripts/highcharts-exporting.js"></script>
 		<!-- END PAGE LEVEL PLUGINS -->
 	</head>

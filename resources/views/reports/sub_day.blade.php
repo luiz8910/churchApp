@@ -21,6 +21,7 @@
 
             subs.done(function (e) {
 
+                console.log(e.unique_days);
                 // Create the chart
                 Highcharts.chart('container_sub_day', {
                     chart: {
