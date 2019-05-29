@@ -568,14 +568,6 @@ class ReportController extends Controller
     }
 
 
-    public function reportTest()
-    {
-        $event_id = 14;
-
-
-        return view('reports.teste', compact( 'event_id'));
-    }
-
     public function getSubDays($event_id)
     {
         $days = $this->listRepository->findByField('event_id', $event_id);
@@ -583,6 +575,7 @@ class ReportController extends Controller
         $unique_days = [];
         $dates = [];
         $values = [];
+        $u_days = [];
         $i = $x = 0;
 
         foreach ($days as $day)
@@ -619,7 +612,12 @@ class ReportController extends Controller
 
         $unique_days = array_unique($unique_days);
 
+        foreach ($unique_days as $day)
+        {
+            $u_days[] = $day;
+        }
 
-        return json_encode(['unique_days' => $unique_days, 'dates' => $values]);
+
+        return json_encode(['unique_days' => $u_days, 'dates' => $values]);
     }
 }

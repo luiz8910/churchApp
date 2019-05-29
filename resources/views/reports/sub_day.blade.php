@@ -24,6 +24,16 @@
                 console.log(e.unique_days);
                 console.log('dates: ' + e.dates);
 
+                var arr = [];
+
+                for (var i = 0; i < e.unique_days.length; i++)
+                {
+                    arr.push(e.unique_days[i]);
+
+                }
+
+                console.log(arr);
+
                 // Create the chart
                 Highcharts.chart('container_sub_day', {
                     chart: {
