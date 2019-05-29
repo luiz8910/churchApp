@@ -21,7 +21,7 @@
 
             subs.done(function (e) {
 
-                console.log('unique :' + e.unique_days);
+                console.log(e.unique_days);
                 console.log('dates: ' + e.dates);
 
                 // Create the chart
