@@ -9,18 +9,20 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 
-class Teste implements ShouldQueue
+class Messages implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
+    private $event_id;
 
     /**
      * Create a new job instance.
      *
+     * @return void
      */
-    public function __construct()
+    public function __construct($event_id)
     {
         //
+        $this->event_id = $event_id;
     }
 
     /**
@@ -32,18 +34,12 @@ class Teste implements ShouldQueue
     {
         $message = new MessageServices();
 
-        $data['person_id'] = '1000';
+        //$data['number'] = '5515997454531';//'5511993105830';
 
-        $data['number'] = '5515997454531';//'5511993105830';
-
-        $data['event_name'] = 'Indústria 4.0 (Noturno)';
-
-        $data['person_name'] = 'Luiz Fernando';
-
-        $data['text'] = 'Parabéns '.$data['person_name'] .'. Você foi inscrito pelo BeConnect no evento '. $data['event_name']. ' que acontecerá em 05/06/2019. Lembre-se de apresentar o QR code acima para se identificar em sua entrada. Bom evento!!';
+        $message->send_QR_WP($this->event_id);
 
         sleep(10);
 
-        $message->send_QR_WP($data);
+
     }
 }

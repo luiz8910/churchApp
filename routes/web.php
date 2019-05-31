@@ -19,204 +19,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     // Início Usuários e pessoas
 
-    Route::resource('users', 'UsersController');
 
-    Route::resource('person', 'PersonController');
-
-    Route::get('teen-create', 'PersonController@createTeen')->name('teen.create');
-
-    Route::get('teen', 'PersonController@teenagers')->name('person.teen');
-
-    Route::get('teen/{person}/edit', 'PersonController@editTeen')->name('teen.edit');
-
-    Route::get('teen/{person}', 'PersonController@destroyTeen')->name('teen.destroy');
-
-    Route::get('teen-detach/{id}/{parentId}', 'PersonController@detachTeen');
-
-    Route::get('inactive-person', 'PersonController@inactive')->name('person.inactive');
-
-    Route::get('turnActive/{id}', 'PersonController@turnActive')->name('person.turnActive');
-
-    Route::post('person-imgProfile/{id}', 'PersonController@imgEditProfile')->name('person.imgEditProfile');
-
-    Route::get('myAccount', 'UsersController@myAccount')->name('users.myAccount');
-
-    Route::post('imgProfile', 'UsersController@imgProfile')->name('users.imgProfile');
-
-    Route::post('changePass', 'UsersController@changePassword')->name('users.changePass');
-
-    Route::get("email", "PersonController@email");
-
-    Route::get("check-cpf/{cpf}", "PersonController@checkCPF");
-
-    Route::get('/person-delete/{id}', 'PersonController@destroy');
-
-    Route::get('/teen-delete/{id}', 'PersonController@destroy');
-
-    Route::get('notify', 'PersonController@notify')->name('notify.user');
-
-    Route::get('/findUserAction/{id}', 'PersonController@findUserAction');
-
-    Route::get('/keepActions/{id}', 'PersonController@keepActions');
-
-    Route::get('/deleteActions/{id}', 'PersonController@deleteActions');
-
-    Route::get('/verifyMaritalStatus/{id}', "PersonController@verifyMaritalStatus");
-
-    Route::get('/setUploadStatus/{name}', 'PersonController@setUploadStatus');
-
-    Route::get('/getUploadStatus/{name}', 'PersonController@getUploadStatus');
-
-    Route::get('/reactivateUser/{person}', 'PersonController@reactivate');
-
-    Route::get('/inactive-person-delete/{person}', 'PersonController@forceDelete');
-
-    Route::get('/make-member/{id}', 'PersonController@makeMember');
-
-    Route::get('aguardando-aprovacao', 'PersonController@waitingApproval')->name('person.waitingApproval');
-
-    Route::get('approve-member/{id}', 'PersonController@approveMember');
-
-    Route::post('/denyMember/{id}', 'PersonController@denyMember');
-
-    Route::get('/deny-details/{id}', 'PersonController@denyDetails');
-
-    Route::post('/waiting-approval', 'PersonController@storeWaitingApproval')->name('person.store.waitingApproval');
-
-    Route::get('/delete-all-inactives', 'PersonController@forceDeleteAll');
-
-    Route::get('new-password/{person_id}', 'UsersController@newPassword');
-
-    // Fim Usuários e pessoas
-
-    //Inicio Grupos
-
-    Route::get('group', 'GroupController@index')->name('group.index');
-
-    //Route::get('group/{group}', 'GroupController@show')->name('group.show');
-
-    Route::get('group/create', 'GroupController@create')->name('group.create');
-
-    Route::put('/group/{group}', 'GroupController@update')->name('group.update');
-
-    Route::post('group/store', 'GroupController@store')->name('group.store');
-
-    Route::get('group/{group}', 'GroupController@destroy')->name('group.destroy');
-
-    Route::post('groups/addMembers/{group}', 'GroupController@addMembers')->name('group.addMembers');
-
-    Route::post('newMember/{group}', 'GroupController@newMemberToGroup')->name('group.newMember');
-
-    Route::post('group/deleteManyUsers', 'GroupController@destroyManyUsers')->name('group.destroyManyUsers');
-
-    Route::get('/group-delete/{id}', 'GroupController@destroy');
-
-    Route::get('/addUserToGroup/{personId}/{group}', 'GroupController@addUserToGroup');
-
-    Route::get('/addNote/{id}/{notes}', 'GroupController@addNote');
-
-    Route::get('/getChartData/{group}', 'GroupController@getChartData');
-
-    Route::delete('deleteMemberGroup/{group}/{member}', 'GroupController@deleteMember')->name('group.deleteMember');
-
-    Route::get('deleteMemberGroup/{group}/{member}', 'GroupController@deleteMember');
-
-    Route::get('group/{group}/edit', 'GroupController@edit')->name('group.edit');
-
-    Route::get("/showGroupEvents/{group}", 'GroupController@showGroupEvents');
-
-    Route::get('/addRemoveLoggedMember/{id}', 'GroupController@addRemoveLoggedMember')->name('group.addRemoveLoggedMember');
-
-    // Fim Grupos
-
-
-    //Visitantes
-
-    Route::get('visitors-create', 'VisitorController@create')->name('visitors.create');
-
-    Route::post('visitors-store', 'VisitorController@store')->name('visitors.store');
-
-    Route::get('visitors', 'PersonController@visitors')->name('visitors.index');
-
-    Route::get("visitors/{visitor}/edit", "VisitorController@edit")->name('visitors.edit');
-
-    Route::post('visitors-update/{visitor}', "VisitorController@update")->name('visitors.update');
-
-    Route::delete("visitors-delete/{visitor}", "VisitorController@destroy")->name('visitors.destroy');
-
-    Route::post('visitor-imgProfile/{id}', 'VisitorController@imgEditProfile')->name('visitor.imgEditProfile');
-
-    Route::post('/events/checkInEventVisitor/{id}', 'EventController@checkInEventVisitor')->name('event.checkInEvent.visitor');
-
-    Route::post('/events/checkOutEventVisitor/{id}', 'EventController@checkOutEventVisitor')->name('event.checkOutEvent.visitor');
-
-    // Fim Visitantes
-
-    //Eventos
-
-    Route::get('events/create', 'EventController@create')->name('event.create');
-
-    Route::get('events', 'EventController@index')->name('event.index');
-
-    Route::get('events/{event}/edit', 'EventController@edit')->name('event.edit');
-
-    Route::get('events/create/{id}', 'EventController@create')->name('group.event.create');
-
-    Route::post('events/store', 'EventController@store')->name('event.store');
-
-    Route::put('events/{event}', 'EventController@update')->name('event.update');
-
-    Route::get('json-events', 'EventController@json')->name('json-events');
-
-    Route::post('/events/checkInEvent/{id}', 'EventController@checkInEvent')->name('event.checkInEvent');
-
-    Route::post('/events/checkOutEvent/{id}', 'EventController@checkOutEvent')->name('event.checkOutEvent');
-
-    Route::delete('events/delete/{id}', 'EventController@destroy')->name('event.destroy');
-
-    Route::get('events/deleteMany/', 'EventController@destroyMany')->name('event.destroyMany');
-
-    Route::get('events/test', 'EventController@testEventNotification');
-
-    Route::get('/events/check/{id}', 'EventController@checkInEvent');
-
-    Route::get("agenda-mes/{thisMonth}/{church_id?}", "EventController@nextMonth")->name("events.agenda-mes");
-
-    Route::get('/events-delete/{id}', 'EventController@destroy');
-
-    Route::post("/imgEvent/{event}", 'EventController@imgEvent')->name('event.edit.imgEvent');
-
-    Route::post("/imgEventBg/{event}", 'EventController@imgEventBg')->name('event.edit.imgEvent_bg');
-
-    Route::get("/inscricoes/{event}", "EventController@getSubEventList")->name('event.subscriptions');
-
-    Route::post("/sub/{event}", 'EventController@eventSub')->name('event.addMembers');
-
-    Route::get('/getSubEventListAjax/{event}', 'EventController@getSubEventListAjax');
-
-    Route::get('/getCheckInListAjax/{event}', 'EventController@getCheckInListAjax');
-
-    Route::get('/subPeople/{people}/{event}', 'EventController@subPeople');
-
-    Route::any('/checkInPeople/{people}/{event}', 'EventController@checkInPeople');
-
-    Route::get('/delete-sub/{person_id}/{event_id}', 'EventController@UnsubUser');
-
-    Route::get('/check_auto/{event_id}/{check}', 'EventController@check_auto');
-
-    Route::get('/sessoes-lista/{event_id}', 'SessionController@list')->name('event.sessions');
-
-    Route::post('/sessoes-store/{event_id}', 'SessionController@store')->name('event.session.store');
-
-    Route::post('/sessoes-update/{event_id}', 'SessionController@update')->name('event.session.update');
-
-    Route::get('sessoes-check-in/{id}', 'SessionController@check_in_list')->name('event.session.check_in_list');
-
-    Route::get('check-in_manual/{event_id}/{person_id}', 'EventController@checkin_manual');
-
-    Route::get('uncheck-in_manual/{event_id}/{person_id}', 'EventController@uncheckin_manual');
-
-    Route::get('/findSubUsers/{input}/{event_id}', 'EventController@findSubUsers');
 
     // Fim Eventos
 
@@ -409,6 +212,218 @@ Route::group(['middleware' => 'auth'], function () {
 
         //Resultados da enquete
         Route::get('/poll-report/{id}', 'PollController@report')->name('poll.report');
+
+
+
+
+
+
+
+
+
+        Route::resource('users', 'UsersController');
+
+        Route::resource('person', 'PersonController');
+
+        Route::get('teen-create', 'PersonController@createTeen')->name('teen.create');
+
+        Route::get('teen', 'PersonController@teenagers')->name('person.teen');
+
+        Route::get('teen/{person}/edit', 'PersonController@editTeen')->name('teen.edit');
+
+        Route::get('teen/{person}', 'PersonController@destroyTeen')->name('teen.destroy');
+
+        Route::get('teen-detach/{id}/{parentId}', 'PersonController@detachTeen');
+
+        Route::get('inactive-person', 'PersonController@inactive')->name('person.inactive');
+
+        Route::get('turnActive/{id}', 'PersonController@turnActive')->name('person.turnActive');
+
+        Route::post('person-imgProfile/{id}', 'PersonController@imgEditProfile')->name('person.imgEditProfile');
+
+        Route::get('myAccount', 'UsersController@myAccount')->name('users.myAccount');
+
+        Route::post('imgProfile', 'UsersController@imgProfile')->name('users.imgProfile');
+
+        Route::post('changePass', 'UsersController@changePassword')->name('users.changePass');
+
+        Route::get("email", "PersonController@email");
+
+        Route::get("check-cpf/{cpf}", "PersonController@checkCPF");
+
+        Route::get('/person-delete/{id}', 'PersonController@destroy');
+
+        Route::get('/teen-delete/{id}', 'PersonController@destroy');
+
+        Route::get('notify', 'PersonController@notify')->name('notify.user');
+
+        Route::get('/findUserAction/{id}', 'PersonController@findUserAction');
+
+        Route::get('/keepActions/{id}', 'PersonController@keepActions');
+
+        Route::get('/deleteActions/{id}', 'PersonController@deleteActions');
+
+        Route::get('/verifyMaritalStatus/{id}', "PersonController@verifyMaritalStatus");
+
+        Route::get('/setUploadStatus/{name}', 'PersonController@setUploadStatus');
+
+        Route::get('/getUploadStatus/{name}', 'PersonController@getUploadStatus');
+
+        Route::get('/reactivateUser/{person}', 'PersonController@reactivate');
+
+        Route::get('/inactive-person-delete/{person}', 'PersonController@forceDelete');
+
+        Route::get('/make-member/{id}', 'PersonController@makeMember');
+
+        Route::get('aguardando-aprovacao', 'PersonController@waitingApproval')->name('person.waitingApproval');
+
+        Route::get('approve-member/{id}', 'PersonController@approveMember');
+
+        Route::post('/denyMember/{id}', 'PersonController@denyMember');
+
+        Route::get('/deny-details/{id}', 'PersonController@denyDetails');
+
+        Route::post('/waiting-approval', 'PersonController@storeWaitingApproval')->name('person.store.waitingApproval');
+
+        Route::get('/delete-all-inactives', 'PersonController@forceDeleteAll');
+
+        Route::get('new-password/{person_id}', 'UsersController@newPassword');
+
+        // Fim Usuários e pessoas
+
+        //Inicio Grupos
+
+        Route::get('group', 'GroupController@index')->name('group.index');
+
+        //Route::get('group/{group}', 'GroupController@show')->name('group.show');
+
+        Route::get('group/create', 'GroupController@create')->name('group.create');
+
+        Route::put('/group/{group}', 'GroupController@update')->name('group.update');
+
+        Route::post('group/store', 'GroupController@store')->name('group.store');
+
+        Route::get('group/{group}', 'GroupController@destroy')->name('group.destroy');
+
+        Route::post('groups/addMembers/{group}', 'GroupController@addMembers')->name('group.addMembers');
+
+        Route::post('newMember/{group}', 'GroupController@newMemberToGroup')->name('group.newMember');
+
+        Route::post('group/deleteManyUsers', 'GroupController@destroyManyUsers')->name('group.destroyManyUsers');
+
+        Route::get('/group-delete/{id}', 'GroupController@destroy');
+
+        Route::get('/addUserToGroup/{personId}/{group}', 'GroupController@addUserToGroup');
+
+        Route::get('/addNote/{id}/{notes}', 'GroupController@addNote');
+
+        Route::get('/getChartData/{group}', 'GroupController@getChartData');
+
+        Route::delete('deleteMemberGroup/{group}/{member}', 'GroupController@deleteMember')->name('group.deleteMember');
+
+        Route::get('deleteMemberGroup/{group}/{member}', 'GroupController@deleteMember');
+
+        Route::get('group/{group}/edit', 'GroupController@edit')->name('group.edit');
+
+        Route::get("/showGroupEvents/{group}", 'GroupController@showGroupEvents');
+
+        Route::get('/addRemoveLoggedMember/{id}', 'GroupController@addRemoveLoggedMember')->name('group.addRemoveLoggedMember');
+
+        // Fim Grupos
+
+
+        //Visitantes
+
+        Route::get('visitors-create', 'VisitorController@create')->name('visitors.create');
+
+        Route::post('visitors-store', 'VisitorController@store')->name('visitors.store');
+
+        Route::get('visitors', 'PersonController@visitors')->name('visitors.index');
+
+        Route::get("visitors/{visitor}/edit", "VisitorController@edit")->name('visitors.edit');
+
+        Route::post('visitors-update/{visitor}', "VisitorController@update")->name('visitors.update');
+
+        Route::delete("visitors-delete/{visitor}", "VisitorController@destroy")->name('visitors.destroy');
+
+        Route::post('visitor-imgProfile/{id}', 'VisitorController@imgEditProfile')->name('visitor.imgEditProfile');
+
+        Route::post('/events/checkInEventVisitor/{id}', 'EventController@checkInEventVisitor')->name('event.checkInEvent.visitor');
+
+        Route::post('/events/checkOutEventVisitor/{id}', 'EventController@checkOutEventVisitor')->name('event.checkOutEvent.visitor');
+
+        // Fim Visitantes
+
+        //Eventos
+
+        Route::get('events/create', 'EventController@create')->name('event.create');
+
+        Route::get('events', 'EventController@index')->name('event.index');
+
+        Route::get('events/{event}/edit', 'EventController@edit')->name('event.edit');
+
+        Route::get('events/create/{id}', 'EventController@create')->name('group.event.create');
+
+        Route::post('events/store', 'EventController@store')->name('event.store');
+
+        Route::put('events/{event}', 'EventController@update')->name('event.update');
+
+        Route::get('json-events', 'EventController@json')->name('json-events');
+
+        Route::post('/events/checkInEvent/{id}', 'EventController@checkInEvent')->name('event.checkInEvent');
+
+        Route::post('/events/checkOutEvent/{id}', 'EventController@checkOutEvent')->name('event.checkOutEvent');
+
+        Route::delete('events/delete/{id}', 'EventController@destroy')->name('event.destroy');
+
+        Route::get('events/deleteMany/', 'EventController@destroyMany')->name('event.destroyMany');
+
+        Route::get('events/test', 'EventController@testEventNotification');
+
+        Route::get('/events/check/{id}', 'EventController@checkInEvent');
+
+        Route::get("agenda-mes/{thisMonth}/{church_id?}", "EventController@nextMonth")->name("events.agenda-mes");
+
+        Route::get('/events-delete/{id}', 'EventController@destroy');
+
+        Route::post("/imgEvent/{event}", 'EventController@imgEvent')->name('event.edit.imgEvent');
+
+        Route::post("/imgEventBg/{event}", 'EventController@imgEventBg')->name('event.edit.imgEvent_bg');
+
+        Route::get("/inscricoes/{event}", "EventController@getSubEventList")->name('event.subscriptions');
+
+        Route::post("/sub/{event}", 'EventController@eventSub')->name('event.addMembers');
+
+        Route::get('/getSubEventListAjax/{event}', 'EventController@getSubEventListAjax');
+
+        Route::get('/getCheckInListAjax/{event}', 'EventController@getCheckInListAjax');
+
+        Route::get('/subPeople/{people}/{event}', 'EventController@subPeople');
+
+        Route::any('/checkInPeople/{people}/{event}', 'EventController@checkInPeople');
+
+        Route::get('/delete-sub/{person_id}/{event_id}', 'EventController@UnsubUser');
+
+        Route::get('/check_auto/{event_id}/{check}', 'EventController@check_auto');
+
+        Route::get('/sessoes-lista/{event_id}', 'SessionController@list')->name('event.sessions');
+
+        Route::post('/sessoes-store/{event_id}', 'SessionController@store')->name('event.session.store');
+
+        Route::post('/sessoes-update/{event_id}', 'SessionController@update')->name('event.session.update');
+
+        Route::get('sessoes-check-in/{id}', 'SessionController@check_in_list')->name('event.session.check_in_list');
+
+        Route::get('check-in_manual/{event_id}/{person_id}', 'EventController@checkin_manual');
+
+        Route::get('uncheck-in_manual/{event_id}/{person_id}', 'EventController@uncheckin_manual');
+
+        Route::get('/findSubUsers/{input}/{event_id}', 'EventController@findSubUsers');
+
+
+
+
+
         
     });
 
@@ -769,7 +784,7 @@ Route::get('/map', function(){
     dd($obj->results[0]->geometry->location);
 });
 
-Route::get('whatsapp', 'EventController@sendWhatsApp');
+Route::get('whatsapp/{event_id}', 'EventController@sendWhatsApp');
 
 Route::get('resub-test/{event_id}', 'EventController@reSub');
 
@@ -883,4 +898,6 @@ Route::get('subTestUsers/{event_id}', 'PersonController@subTestUsers');
 
 Route::get('teste-telefone', 'PersonController@testeTelefone');
 
-
+Route::get('queue', function (){
+    \App\Jobs\Teste::dispatch();
+});

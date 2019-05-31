@@ -2236,9 +2236,11 @@ class EventController extends Controller
 
     }
 
-    public function sendWhatsApp()
+    public function sendWhatsApp($event_id)
     {
-        $data['person_id'] = '1000';
+        \App\Jobs\Messages::dispatch($event_id);
+
+        /*$data['person_id'] = '1000';
 
         $data['number'] = '5511993105830';
 
@@ -2246,7 +2248,8 @@ class EventController extends Controller
 
         $data['text'] = 'Parabéns Isabella. Você foi inscrito pelo BeConnect no evento '. $data['event_name']. ' que acontecerá em 05/06/2019. Lembre-se de apresentar o QR code acima para se identificar em sua entrada. Bom evento!!';
 
-        return $this->messageServices->send_QR_WP($data);
+        return $this->messageServices->send_QR_WP($data);*/
     }
+
 
 }
