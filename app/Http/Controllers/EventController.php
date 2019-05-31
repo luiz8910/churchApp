@@ -20,6 +20,7 @@ use App\Services\ChurchServices;
 use App\Services\EventServices;
 use App\Notifications\EventNotification;
 use App\Notifications\Notifications;
+use App\Services\MessageServices;
 use App\Services\PeopleServices;
 use App\Services\qrServices;
 use App\Traits\ConfigTrait;
@@ -110,6 +111,10 @@ class EventController extends Controller
      * @var PeopleServices
      */
     private $peopleServices;
+    /**
+     * @var MessageServices
+     */
+    private $messageServices;
 
     /**
      * EventController constructor.
@@ -131,7 +136,8 @@ class EventController extends Controller
                                 FrequencyRepository $frequencyRepository, VisitorRepository $visitorRepository,
                                 SessionRepository $sessionRepository, ChurchRepository $churchRepository,
                                 ChurchServices $churchServices, qrServices $qrServices,
-                                EventSubscribedListRepository $listRepository, PeopleServices $peopleServices)
+                                EventSubscribedListRepository $listRepository, PeopleServices $peopleServices,
+                                MessageServices $messageServices)
     {
         $this->repository = $repository;
         $this->stateRepository = $stateRepositoryTrait;
@@ -149,6 +155,7 @@ class EventController extends Controller
         $this->qrServices = $qrServices;
         $this->listRepository = $listRepository;
         $this->peopleServices = $peopleServices;
+        $this->messageServices = $messageServices;
     }
 
 
@@ -2227,6 +2234,19 @@ class EventController extends Controller
 
         //return true;
 
+    }
+
+    public function sendWhatsApp()
+    {
+        $data['person_id'] = '1000';
+
+        $data['number'] = '5511993105830';
+
+        $data['event_name'] = 'Indústria 4.0 (Noturno)';
+
+        $data['text'] = 'Parabéns Isabella. Você foi inscrito pelo BeConnect no evento '. $data['event_name']. ' que acontecerá em 05/06/2019. Lembre-se de apresentar o QR code acima para se identificar em sua entrada. Bom evento!!';
+
+        return $this->messageServices->send_QR_WP($data);
     }
 
 }

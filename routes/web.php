@@ -594,6 +594,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/check-email/{email}', 'ChurchController@checkEmail');
 
+    Route::get('getSubDays/{event_id}', 'ReportController@getSubDays');
+
     // Fim Admin site
 
     Route::get('/events-ajax', 'EventController@getListEvents');
@@ -767,11 +769,11 @@ Route::get('/map', function(){
     dd($obj->results[0]->geometry->location);
 });
 
+Route::get('whatsapp', 'EventController@sendWhatsApp');
+
 Route::get('resub-test/{event_id}', 'EventController@reSub');
 
 Route::get('report-test', 'ReportController@reportTest');
-
-Route::get('getSubDays/{event_id}', 'ReportController@getSubDays');
 
 Route::get('sub-test', 'EventController@subTest');
 
