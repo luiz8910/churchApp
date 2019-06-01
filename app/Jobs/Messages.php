@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Repositories\EventSubscribedListRepository;
 use App\Services\MessageServices;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
@@ -12,6 +13,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 class Messages implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
     private $event_id;
 
     /**
@@ -32,14 +34,17 @@ class Messages implements ShouldQueue
      */
     public function handle()
     {
-        $message = new MessageServices();
+
+        /*$message = new MessageServices();
 
         //$data['number'] = '5515997454531';//'5511993105830';
 
         $message->send_QR_WP($this->event_id);
 
-        sleep(10);
+        */
 
 
+
+        echo 'job enviado';
     }
 }

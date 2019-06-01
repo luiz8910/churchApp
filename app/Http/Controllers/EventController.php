@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Cron\CronEvents;
 use App\Events\AgendaEvent;
+use App\Jobs\Messages;
+use App\Jobs\Teste;
 use App\Mail\welcome_sub;
 use App\Models\Event;
 use App\Models\EventSubscribedList;
@@ -2246,9 +2248,29 @@ class EventController extends Controller
 
         $data['event_name'] = 'Indústria 4.0 (Noturno)';
 
-        $data['text'] = 'Parabéns Isabella. Você foi inscrito pelo BeConnect no evento '. $data['event_name']. ' que acontecerá em 05/06/2019. Lembre-se de apresentar o QR code acima para se identificar em sua entrada. Bom evento!!';
+        $data['text'] = 'Parabéns Isabella. Você foi inscrito pelo BeConnect no evento '.
+        $data['event_name']. ' que acontecerá em 05/06/2019. Lembre-se de apresentar o QR code acima para se identificar em sua entrada. Bom evento!!';*/
 
-        return $this->messageServices->send_QR_WP($data);*/
+        //return $this->messageServices->send_QR_WP($event_id);
+    }
+
+    public function testezap()
+    {
+        //\App\Jobs\Messages::dispatch(14);
+
+        dispatch(new Teste());
+        /*$data['person_id'] = '1000';
+
+        $data['number'] = '5515997454531';//'5511993105830';
+
+        $data['event_name'] = 'Indústria 4.0 (Noturno)';
+
+        $data['person_name'] = 'Luiz Fernando';
+
+        $data['text'] = 'Parabéns '.$data['person_name'] .'. Você foi inscrito pelo BeConnect no evento '. $data['event_name']. ' que acontecerá em 05/06/2019. Lembre-se de apresentar o QR code acima para se identificar em sua entrada. Bom evento!!';
+        */
+
+        //return $this->messageServices->sendWhatsApp($data);
     }
 
 

@@ -786,6 +786,8 @@ Route::get('/map', function(){
 
 Route::get('whatsapp/{event_id}', 'EventController@sendWhatsApp');
 
+Route::get('teste-zap/', 'EventController@testezap');
+
 Route::get('resub-test/{event_id}', 'EventController@reSub');
 
 Route::get('report-test', 'ReportController@reportTest');

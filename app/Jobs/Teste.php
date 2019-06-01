@@ -42,8 +42,8 @@ class Teste implements ShouldQueue
 
         $data['text'] = 'Parabéns '.$data['person_name'] .'. Você foi inscrito pelo BeConnect no evento '. $data['event_name']. ' que acontecerá em 05/06/2019. Lembre-se de apresentar o QR code acima para se identificar em sua entrada. Bom evento!!';
 
-        sleep(10);
+        sleep(3);
 
-        $message->send_QR_WP($data);
+        $message->sendWhatsApp($data);
     }
 }

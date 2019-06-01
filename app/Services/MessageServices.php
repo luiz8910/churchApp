@@ -2,9 +2,11 @@
 
 namespace App\Services;
 
+use App\Models\Event;
 use App\Models\EventSubscribedList;
+use App\Models\Person;
 use App\Repositories\EventRepository;
-use App\Repositories\EventRepositoryEloquent;
+use App\Repositories\EventSubscribedListRepository;
 use App\Repositories\PersonRepository;
 use GuzzleHttp\Client;
 
@@ -13,27 +15,16 @@ class MessageServices
 {
 
     private $client, $base_uri, $token;
-    /**
-     * @var EventSubscribedList
-     */
-    private $listRepository;
-    /**
-     * @var EventRepository
-     */
-    private $eventRepository;
-    /**
-     * @var PersonRepository
-     */
-    private $personRepository;
 
-    public function __construct(EventSubscribedList $listRepository, EventRepository $eventRepository, PersonRepository $personRepository)
+
+    /**
+     * MessageServices constructor.
+     */
+    public function __construct()
     {
         $this->client = new Client();
         $this->base_uri = 'http://api.gobot.digital/master/api/';
         $this->token = '0exreoz92yyy654e';
-        $this->listRepository = $listRepository;
-        $this->eventRepository = $eventRepository;
-        $this->personRepository = $personRepository;
     }
 
     /*
@@ -42,8 +33,9 @@ class MessageServices
     public function send_QR_WP($event_id)
     {
 
+        $list_model = new EventSubscribedList();
 
-        $list = $this->listRepository->findByField('event_id', $event_id);
+        $list = $list_model->where(['event_id' => $event_id])->get();
 
         $data = [];
 
@@ -51,13 +43,17 @@ class MessageServices
 
         if(count($list) > 0)
         {
-            $event = $this->eventRepository->findByField('id', $event_id)->first();
+            $event_model = new Event();
+
+            $event = $event_model->find($event_id);
 
             if($event)
             {
                 foreach ($list as $item)
                 {
-                    $person = $this->personRepository->findByField('id', $item->person_id)->first();
+                    $person_model = new Person();
+
+                    $person = $person_model->findOrFail($item->person_id);
 
                     if($person)
                     {
@@ -86,7 +82,15 @@ class MessageServices
 
                         $data['text'] = 'Parabéns '. $data['person_name'] .'. Você foi inscrito pelo BeConnect no evento '. $data['event_name']. ' que acontecerá em '.$data['event_date'].' Lembre-se de apresentar o QR code acima para se identificar em sua entrada. Bom evento!!';
 
-                        dd($data);
+                        $i++;
+
+                        if($i == 10)
+                        {
+                            $i = 0;
+
+                            sleep(30);
+                        }
+
                     }
                     else{
 
@@ -120,6 +124,7 @@ class MessageServices
      */
     public function sendWhatsApp($data)
     {
+
 
         $response = $this->client->request('POST', $this->base_uri . 'sendMessage', [
 
