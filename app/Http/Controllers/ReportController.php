@@ -136,8 +136,14 @@ class ReportController extends Controller
 
             $members = $this->personRepository->findByField('church_id', $this->getUserChurch());
 
+            $event_id = $data['event_id'];
+
+            $event_name = $event->name;
+
+            $qtde_sub = count($this->listRepository->findByField('event_id', $event_id));
+
             return view('reports.index', compact('countPerson', 'countGroups', 'leader',
-                'admin', 'notify', 'qtde', 'events', 'members', 'visitors'));
+                'admin', 'notify', 'qtde', 'events', 'members', 'event_id', 'event_name', 'qtde_sub'));
 
         }
 

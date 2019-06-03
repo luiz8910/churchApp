@@ -65,7 +65,7 @@
 
                                                     <label for="chooseEvent" class="form-control-label">Escolha o Evento</label>
 
-                                                    <select name="event_id" id="chooseEvent" class="form-control select2">
+                                                    <select name="event_id" id="chooseEvent" class="form-control select2" required>
                                                         <option value="" selected>Selecione</option>
 
                                                         @foreach($events as $event)
@@ -238,57 +238,7 @@
                                                                     <div id="container-member-frequency" class="hidden-xs hidden-sm chart" style="min-width: 1100px !important; height: 500px !important; display: none;"></div>
                                                                     <div id="container-member-frequency-app" class="hidden-lg hidden-md chart" style="display: none;"></div>
                                                                 </div>
-                                                                <div class="tab-pane" id="tab5">
-                                                                    <p> &nbsp; </p>
-                                                                    <p> &nbsp; </p>
 
-                                                                    @include('includes.noEvent')
-
-                                                                    <button class="btn btn-info pull-right" id="btn-visitor" style="display: none;">
-                                                                        <i class="fa fa-user"></i>
-                                                                        Escolher outro visitante
-                                                                    </button>
-
-                                                                    <p>&nbsp;</p>
-
-                                                                    <form action="#" id="form-visitor">
-                                                                        <div class="row">
-                                                                            <div class="col-md-6">
-                                                                                <div class="form-group">
-                                                                                    <label for="visitors">Escolha um Visitante</label>
-                                                                                    <select name="visitors" id="visitors" class="form-control select2" required>
-                                                                                        <option value="">Selecione um Visitante</option>
-                                                                                        @foreach($visitors as $visitor)
-                                                                                            <option value="{{ $visitor->id }}">{{ $visitor->name }} {{ $visitor->lastName }}</option>
-                                                                                        @endforeach
-                                                                                    </select>
-
-                                                                                </div>
-
-                                                                            </div>
-
-                                                                            <div class="col-md-3">
-                                                                                <div class="form-group">
-                                                                                    <br>
-                                                                                    <button type="submit" class="btn btn-success" id="btn-form-visitor" style="margin-top: 5px;">
-                                                                                        <i class="fa fa-check" id="fa-check"></i> Ir
-                                                                                    </button>
-
-                                                                                    <button id="btn-fake-visitor" class="btn btn-success" style="display: none; margin-top: 5px;">
-                                                                                        <i class="fa fa-refresh fa-spin fa-fw" id="fa-refresh"></i>
-                                                                                    </button>
-
-                                                                                </div>
-
-                                                                            </div>
-                                                                        </div>
-
-
-                                                                    </form>
-
-                                                                    <div id="container-visitor-frequency" class="hidden-xs hidden-sm chart" style="min-width: 1100px !important; height: 500px !important; display: none;"></div>
-                                                                    <div id="container-visitor-frequency-app" class="hidden-lg hidden-md chart" style="display: none;"></div>
-                                                                </div>
                                                                 {{--<div class="tab-pane" id="tab6">
                                                                     <p> Howdy, I'm in Section 6. </p>
                                                                 </div>

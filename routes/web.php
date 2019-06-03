@@ -73,7 +73,7 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('/relatorios-eventos', "ReportController@index")->name('report.index');
 
-        Route::post('/relatorios-eventos', "ReportController@index")->name('report.index');
+        Route::post('/relatorios-eventos', "ReportController@eventReport")->name('report.index');
 
         Route::get('/getReport', 'ReportController@getReport');
 

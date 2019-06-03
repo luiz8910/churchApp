@@ -15,6 +15,7 @@
 
         function chart()
         {
+
             var subs = $.ajax({
                 url: '/getSubDays/' + $('#event_id').val(),
                 method: 'GET',
