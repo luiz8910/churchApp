@@ -1830,7 +1830,7 @@ class EventController extends Controller
             ->whereIn('id', $arr)
             //->get()
             ->orderBy('name')
-            ->paginate(5)
+            ->paginate(30)
         ;
 
         $visit_sub = DB::table('visitors')
@@ -2238,39 +2238,51 @@ class EventController extends Controller
 
     }
 
-    public function sendWhatsApp($event_id)
+    public function sendWhatsApp($event_id, $person_id)
     {
-        \App\Jobs\Messages::dispatch($event_id);
+        //$data['number'] = '5515997454531';//'5511993105830';
 
-        /*$data['person_id'] = '1000';
+        $person = $this->personRepository->findByField('id', $person_id)->first();
 
-        $data['number'] = '5511993105830';
+        $event = $this->repository->findByField('id', $event_id)->first();
 
-        $data['event_name'] = 'Indústria 4.0 (Noturno)';
+        $data['person_id'] = $person_id;
 
-        $data['text'] = 'Parabéns Isabella. Você foi inscrito pelo BeConnect no evento '.
-        $data['event_name']. ' que acontecerá em 05/06/2019. Lembre-se de apresentar o QR code acima para se identificar em sua entrada. Bom evento!!';*/
+        if($person->cel == "" && $person->tel == "")
+        {
+            return json_encode(['status' => false]);
+        }
 
-        //return $this->messageServices->send_QR_WP($event_id);
+        if($person->cel == "")
+        {
+            $data['number'] = $person->tel;
+        }
+        else{
+            $data['number'] = $person->cel;
+        }
+
+        $data['number'] = $this->messageServices->formatPhoneNumber($data['number']);
+
+        $data['person_name'] = $person->name;
+
+        $data['event_name'] = $event->name;
+
+        $data['event_date'] = date_format(date_create($event->eventDate . $event->startTime), 'd/m/Y H:i');
+
+        $data['text'] = 'Parabéns '. $data['person_name'] .'. Você foi inscrito pelo BeConnect no evento '. $data['event_name']. ' que acontecerá em '.$data['event_date'].' Lembre-se de apresentar o QR code acima para se identificar em sua entrada. Bom evento!!';
+
+        $this->messageServices->send_QR_Teste($data);
+
+        return json_encode(['status' => true]);
+
     }
 
-    public function testezap()
+    public function testezap($event_id)
     {
         //\App\Jobs\Messages::dispatch(14);
 
-        dispatch(new Teste());
-        /*$data['person_id'] = '1000';
 
-        $data['number'] = '5515997454531';//'5511993105830';
 
-        $data['event_name'] = 'Indústria 4.0 (Noturno)';
-
-        $data['person_name'] = 'Luiz Fernando';
-
-        $data['text'] = 'Parabéns '.$data['person_name'] .'. Você foi inscrito pelo BeConnect no evento '. $data['event_name']. ' que acontecerá em 05/06/2019. Lembre-se de apresentar o QR code acima para se identificar em sua entrada. Bom evento!!';
-        */
-
-        //return $this->messageServices->sendWhatsApp($data);
     }
 
 

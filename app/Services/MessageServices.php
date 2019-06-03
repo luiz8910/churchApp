@@ -8,7 +8,9 @@ use App\Models\Person;
 use App\Repositories\EventRepository;
 use App\Repositories\EventSubscribedListRepository;
 use App\Repositories\PersonRepository;
+use Carbon\Carbon;
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\DB;
 
 
 class MessageServices
@@ -139,6 +141,36 @@ class MessageServices
         ]);
 
         return $response->getStatusCode();
+    }
+
+    public function send_QR_Teste($data)
+    {
+
+        $response = $this->client->request('POST', $this->base_uri . 'sendFile', [
+
+            'headers' => [
+                'Content-Type' => 'application/x-www-form-urlencoded',
+                'token'      => $this->token
+            ],
+            'form_params' => [
+                'phone' => $data['number'],
+                'body' => 'https://beconnect.com.br/qrcodes/'. $data['person_id'] . '.png',
+                'filename' => $data['person_id'] . '.png',
+                'caption' => $data['text']
+            ]
+        ]);
+
+        DB::table('msg_jobs')
+            ->insert([
+                'person_id' => $data['person_id'],
+                'channel' => 'whatsapp',
+                'responseCode' => $response->getStatusCode(),
+                'responseText' => $response->getReasonPhrase(),
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ]);
+
+        return true;
     }
 
     public function formatPhoneNumber($number)

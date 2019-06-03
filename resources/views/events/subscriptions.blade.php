@@ -412,6 +412,11 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 <i class="fa fa-trash"></i>
                                                                 Excluir
                                                             </a>
+                                                                <a href="javascript:" class="btn btn-success btn-circle btn-sm btn-whats"
+                                                                title="Enviar QR Code" id="btn-whats-{{ $person->id }}">
+                                                                    <i class="fa fa-whatsapp"></i>
+                                                                    <span id="span-whatsapp-{{ $person->id }}">WhatsApp</span>
+                                                                </a>
                                                         </td>
                                                     </tr>
 

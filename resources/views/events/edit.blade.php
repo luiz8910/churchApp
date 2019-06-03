@@ -748,101 +748,149 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                                             <select name="startTime" class="form-control" required>
                                                                 <option value="">Selecione</option>
-                                                                <option value="00:00"
-                                                                        @if($model->startTime == "00:00") selected @endif
-                                                                >00:00
-                                                                </option>
-                                                                <option value="01:00"
-                                                                        @if($model->startTime == "01:00") selected @endif
-                                                                >01:00
-                                                                </option>
-                                                                <option value="02:00"
-                                                                        @if($model->startTime == "02:00") selected @endif
-                                                                >02:00
-                                                                </option>
-                                                                <option value="03:00"
-                                                                        @if($model->startTime == "03:00") selected @endif
-                                                                >03:00
-                                                                </option>
-                                                                <option value="04:00"
-                                                                        @if($model->startTime == "04:00") selected @endif
-                                                                >04:00
-                                                                </option>
-                                                                <option value="05:00"
-                                                                        @if($model->startTime == "05:00") selected @endif
-                                                                >05:00
-                                                                </option>
                                                                 <option value="06:00"
                                                                         @if($model->startTime == "06:00") selected @endif
                                                                 >06:00
+                                                                </option>
+                                                                <option value="06:30"
+                                                                        @if($model->startTime == "06:30") selected @endif
+                                                                >06:30
                                                                 </option>
                                                                 <option value="07:00"
                                                                         @if($model->startTime == "07:00") selected @endif
                                                                 >07:00
                                                                 </option>
+                                                                <option value="07:30"
+                                                                        @if($model->startTime == "07:30") selected @endif
+                                                                >07:30
+                                                                </option>
                                                                 <option value="08:00"
                                                                         @if($model->startTime == "08:00") selected @endif
                                                                 >08:00
+                                                                </option>
+                                                                <option value="08:30"
+                                                                        @if($model->startTime == "08:30") selected @endif
+                                                                >08:30
                                                                 </option>
                                                                 <option value="09:00"
                                                                         @if($model->startTime == "09:00") selected @endif
                                                                 >09:00
                                                                 </option>
+                                                                <option value="09:30"
+                                                                        @if($model->startTime == "09:30") selected @endif
+                                                                >09:30
+                                                                </option>
                                                                 <option value="10:00"
                                                                         @if($model->startTime == "10:00") selected @endif
                                                                 >10:00
+                                                                </option>
+                                                                <option value="10:30"
+                                                                        @if($model->startTime == "10:30") selected @endif
+                                                                >10:30
                                                                 </option>
                                                                 <option value="11:00"
                                                                         @if($model->startTime == "11:00") selected @endif
                                                                 >11:00
                                                                 </option>
+                                                                <option value="11:30"
+                                                                        @if($model->startTime == "11:30") selected @endif
+                                                                >11:30
+                                                                </option>
                                                                 <option value="12:00"
                                                                         @if($model->startTime == "12:00") selected @endif
                                                                 >12:00
+                                                                </option>
+                                                                <option value="12:30"
+                                                                        @if($model->startTime == "12:30") selected @endif
+                                                                >12:30
                                                                 </option>
                                                                 <option value="13:00"
                                                                         @if($model->startTime == "13:00") selected @endif
                                                                 >13:00
                                                                 </option>
+                                                                <option value="13:30"
+                                                                        @if($model->startTime == "13:30") selected @endif
+                                                                >13:30
+                                                                </option>
                                                                 <option value="14:00"
                                                                         @if($model->startTime == "14:00") selected @endif
                                                                 >14:00
+                                                                </option>
+                                                                <option value="14:30"
+                                                                        @if($model->startTime == "14:30") selected @endif
+                                                                >14:30
                                                                 </option>
                                                                 <option value="15:00"
                                                                         @if($model->startTime == "15:00") selected @endif
                                                                 >15:00
                                                                 </option>
+                                                                <option value="15:30"
+                                                                        @if($model->startTime == "15:30") selected @endif
+                                                                >15:30
+                                                                </option>
                                                                 <option value="16:00"
                                                                         @if($model->startTime == "16:00") selected @endif
                                                                 >16:00
+                                                                </option>
+                                                                <option value="16:30"
+                                                                        @if($model->startTime == "16:30") selected @endif
+                                                                >16:30
                                                                 </option>
                                                                 <option value="17:00"
                                                                         @if($model->startTime == "17:00") selected @endif
                                                                 >17:00
                                                                 </option>
+                                                                <option value="17:30"
+                                                                        @if($model->startTime == "17:30") selected @endif
+                                                                >17:30
+                                                                </option>
                                                                 <option value="18:00"
                                                                         @if($model->startTime == "18:00") selected @endif
                                                                 >18:00
+                                                                </option>
+                                                                <option value="18:30"
+                                                                        @if($model->startTime == "18:30") selected @endif
+                                                                >18:30
                                                                 </option>
                                                                 <option value="19:00"
                                                                         @if($model->startTime == "19:00") selected @endif
                                                                 >19:00
                                                                 </option>
+                                                                <option value="19:30"
+                                                                        @if($model->startTime == "19:30") selected @endif
+                                                                >19:30
+                                                                </option>
                                                                 <option value="20:00"
                                                                         @if($model->startTime == "20:00") selected @endif
                                                                 >20:00
+                                                                </option>
+                                                                <option value="20:30"
+                                                                        @if($model->startTime == "20:30") selected @endif
+                                                                >20:30
                                                                 </option>
                                                                 <option value="21:00"
                                                                         @if($model->startTime == "21:00") selected @endif
                                                                 >21:00
                                                                 </option>
+                                                                <option value="21:30"
+                                                                        @if($model->startTime == "21:30") selected @endif
+                                                                >21:30
+                                                                </option>
                                                                 <option value="22:00"
                                                                         @if($model->startTime == "22:00") selected @endif
                                                                 >22:00
                                                                 </option>
+                                                                <option value="22:30"
+                                                                        @if($model->startTime == "22:30") selected @endif
+                                                                >22:30
+                                                                </option>
                                                                 <option value="23:00"
                                                                         @if($model->startTime == "23:00") selected @endif
                                                                 >23:00
+                                                                </option>
+                                                                <option value="23:30"
+                                                                        @if($model->startTime == "23:30") selected @endif
+                                                                >23:30
                                                                 </option>
                                                             </select>
                                                         </div>
@@ -859,30 +907,42 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             <select name="endTime" class="form-control" id="">
                                                                 @if($model->endTime == null)
                                                                     <option value="">Selecione</option>
-                                                                    <option value="00:00">00:00</option>
-                                                                    <option value="01:00">01:00</option>
-                                                                    <option value="02:00">02:00</option>
-                                                                    <option value="03:00">03:00</option>
-                                                                    <option value="04:00">04:00</option>
-                                                                    <option value="05:00">05:00</option>
                                                                     <option value="06:00">06:00</option>
+                                                                    <option value="06:30">06:30</option>
                                                                     <option value="07:00">07:00</option>
+                                                                    <option value="07:30">07:30</option>
                                                                     <option value="08:00">08:00</option>
+                                                                    <option value="08:30">08:30</option>
                                                                     <option value="09:00">09:00</option>
+                                                                    <option value="09:30">09:30</option>
                                                                     <option value="10:00">10:00</option>
+                                                                    <option value="10:30">10:30</option>
                                                                     <option value="11:00">11:00</option>
+                                                                    <option value="11:30">11:30</option>
                                                                     <option value="12:00">12:00</option>
+                                                                    <option value="12:30">12:30</option>
                                                                     <option value="13:00">13:00</option>
+                                                                    <option value="13:30">13:30</option>
                                                                     <option value="14:00">14:00</option>
+                                                                    <option value="14:30">14:30</option>
                                                                     <option value="15:00">15:00</option>
+                                                                    <option value="15:30">15:30</option>
                                                                     <option value="16:00">16:00</option>
+                                                                    <option value="16:30">16:30</option>
                                                                     <option value="17:00">17:00</option>
+                                                                    <option value="17:30">17:30</option>
                                                                     <option value="18:00">18:00</option>
+                                                                    <option value="18:30">18:30</option>
                                                                     <option value="19:00">19:00</option>
+                                                                    <option value="19:30">19:30</option>
                                                                     <option value="20:00">20:00</option>
+                                                                    <option value="20:30">20:30</option>
                                                                     <option value="21:00">21:00</option>
+                                                                    <option value="21:30">21:30</option>
                                                                     <option value="22:00">22:00</option>
+                                                                    <option value="22:30">22:30</option>
                                                                     <option value="23:00">23:00</option>
+                                                                    <option value="23:30">23:30</option>
 
                                                                 @else
 

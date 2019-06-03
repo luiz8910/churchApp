@@ -88,6 +88,14 @@ $(function(){
 
         uncheck(event_id, person, false);
     });
+
+    $(".btn-whats").click(function () {
+
+        var person_id = this.id.replace('btn-whats-', '');
+        var event_id = $("#event-id").val();
+
+        sendWhatsAppQR(event_id, person_id);
+    })
 });
 
 
@@ -157,6 +165,31 @@ function uncheck(event_id, person_id, static_page)
             console.log(e.msg);
 
             swal("Atenção!", "Verifique o log", "error");
+        }
+    });
+
+    request.fail(function (e) {
+        console.log('fail');
+        console.log(e);
+    })
+}
+
+function sendWhatsAppQR(event_id, person_id)
+{
+    var request = $.ajax({
+        url: '/whatsapp/' + event_id + '/' + person_id,
+        method: 'GET',
+        dataType: 'json'
+    });
+
+    request.done(function (e) {
+
+        if(e.status)
+        {
+            $('#span-whatsapp-' + person_id).text('Enviado');
+        }
+        else{
+            swal('Atenção', 'Não há celular ou telefone cadastrado para este usuário', 'error');
         }
     });
 

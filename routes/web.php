@@ -784,7 +784,7 @@ Route::get('/map', function(){
     dd($obj->results[0]->geometry->location);
 });
 
-Route::get('whatsapp/{event_id}', 'EventController@sendWhatsApp');
+Route::get('whatsapp/{event_id}/{person_id}', 'EventController@sendWhatsApp');
 
 Route::get('teste-zap/', 'EventController@testezap');
 
