@@ -2081,6 +2081,8 @@ class EventController extends Controller
 
                 $this->peopleServices->send_sub_email($event_id, $person->id);
 
+                $this->sendWhatsApp($event_id, $person->id);
+
                 $request->session()->flash('success.msg', 'Sucesso! Você está inscrito, um email foi enviado para ' . $data['email']);
 
                 return redirect()->back()->withInput();
@@ -2104,6 +2106,8 @@ class EventController extends Controller
                 $this->eventServices->subEvent($event_id, $person_id);
 
                 $this->peopleServices->send_sub_email($event_id, $person_id);
+
+                $this->sendWhatsApp($event_id, $person_id);
 
                 $request->session()->flash('success.msg', 'Sucesso! Você está inscrito, um email foi enviado para ' . $data['email']);
 
