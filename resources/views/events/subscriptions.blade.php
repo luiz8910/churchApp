@@ -20,7 +20,7 @@ License: You must have a valid license purchased only from themeforest(the above
 <!-- BEGIN HEAD -->
 
 <head>
-@include('includes.head-edit')
+@include('includes.head')
 
 <link href="../../assets/global/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
 <link href="../../assets/global/plugins/select2/css/select2-bootstrap.min.css" rel="stylesheet" type="text/css" />

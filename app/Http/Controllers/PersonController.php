@@ -1949,11 +1949,13 @@ class PersonController extends Controller
                     }
                     else{
 
-                        $fullName = $this->surname($item->$nome);
+                        /*$fullName = $this->surname($item->$nome);
 
                         $data["name"] = ucfirst($fullName[0]);
 
-                        $data["lastName"] = ucwords($fullName[1]);
+                        $data["lastName"] = ucwords($fullName[1]);*/
+
+                        $data["name"] = $item->$nome;
                     }
 
                 }
@@ -2000,20 +2002,11 @@ class PersonController extends Controller
                             $data['cel'] = str_replace(')', '', $data['cel']);
                             $data['cel'] = str_replace('-', '', $data['cel']);
 
-                            $cel_exists = $this->repository->findByField('cel', $data['cel'])->first();
+                            $name = $this->repository->findByField('name', $data['name'])->first();
 
-                            if($cel_exists)
+                            if($name)
                             {
                                 $stop = true;
-                            }
-                            else{
-
-                                $cel_exists = $this->repository->findByField('tel', $data['cel'])->first();
-
-                                if($cel_exists)
-                                {
-                                    $stop = true;
-                                }
                             }
 
                             if(!$stop)
@@ -2093,20 +2086,11 @@ class PersonController extends Controller
 
                         $data['cel'] = str_replace('-', '', $data['cel']);
 
-                        $cel_exists = $this->repository->findByField('cel', $data['cel'])->first();
+                        $name = $this->repository->findByField('name', $data['name'])->first();
 
-                        if($cel_exists)
+                        if($name)
                         {
                             $stop = true;
-                        }
-                        else{
-
-                            $cel_exists = $this->repository->findByField('tel', $data['cel'])->first();
-
-                            if($cel_exists)
-                            {
-                                $stop = true;
-                            }
                         }
 
                         if(!$stop)

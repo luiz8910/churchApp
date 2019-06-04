@@ -141,15 +141,15 @@
                                                                     <a href="#tab0" data-toggle="tab">Inscritos por Dia</a>
                                                                 </li>
                                                                 <li class="">
-                                                                    <a href="#tab1" data-toggle="tab">Último Evento</a>
+                                                                    <a href="#tab1" data-toggle="tab">Frequência</a>
                                                                 </li>
-                                                                <li>
+                                                                {{--<li>
                                                                     <a href="#tab2" data-toggle="tab">Faixa Etária</a>
                                                                 </li>
                                                                 <li>
                                                                     <a href="#tab3" data-toggle="tab">Frequência por membro</a>
                                                                 </li>
-                                                                {{--<li>
+                                                                <li>
                                                                     <a href="#tab6" data-toggle="tab">Section 6</a>
                                                                 </li>
                                                                 <li>
