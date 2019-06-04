@@ -2131,8 +2131,8 @@ class EventController extends Controller
     public function findSubUsers($input, $event_id)
     {
         $list = $this->listRepository
-            ->findWhere(
-                ['event_id' => $event_id]);
+            ->findByField('event_id', $event_id);
+
 
         $arr = [];
 
@@ -2140,6 +2140,7 @@ class EventController extends Controller
         {
             $arr[] = $l->person_id;
         }
+
 
         $person_sub = DB::table('people')
             ->where(
@@ -2153,6 +2154,7 @@ class EventController extends Controller
             ->limit(5)
             ->get();
 
+
         $check = 'check-in';
 
         foreach ($person_sub as $item) {
@@ -2162,7 +2164,6 @@ class EventController extends Controller
                     'event_id' => $event_id,
                     'person_id' => $item->id
                 ])->get();
-
 
 
             $item->check =
@@ -2240,6 +2241,41 @@ class EventController extends Controller
 
         //return true;
 
+    }
+
+    public function reSub_event_person($event_id)
+    {
+        $people = $this->listRepository->findByField('event_id', $event_id);
+
+        $event = $this->repository->findByField('id', $event_id)->first();
+
+        foreach ($people as $item)
+        {
+            if($event->frequency == $this->unique())
+            {
+                $exists = DB::table('event_person')
+                    ->where([
+                        'event_id' => $event_id,
+                        'person_id' => $item->person_id
+                    ])->first();
+
+                if(!$exists)
+                {
+                    DB::table('event_person')
+                        ->insert([
+                            'event_id' => $event_id,
+                            'person_id' => $item->person_id,
+                            'eventDate' => $event->eventDate,
+                            'check-in' => 0,
+                            'show' => 0,
+                            'event_date' => date_create($event->eventDate . $event->start_date),
+                            'end_event_date' => date_create($event->eventDate . $event->endTime)
+                        ]);
+                }
+
+
+            }
+        }
     }
 
     public function sendWhatsApp($event_id, $person_id)

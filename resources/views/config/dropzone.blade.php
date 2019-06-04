@@ -191,7 +191,7 @@
                                                         </button>
 
 
-                                                        <div class="progress" style="margin-top: 10px;">
+                                                        <div class="progress" style="margin-top: 10px; display: none;">
                                                             <div class="progress-bar  progress-bar-striped active" role="progressbar" aria-valuenow="40"
                                                                  aria-valuemin="0" aria-valuemax="100" style="width: 50%; min-width: 2em; background-color: #5cb85c !important;">
                                                                 50%

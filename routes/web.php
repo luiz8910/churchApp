@@ -790,6 +790,8 @@ Route::get('teste-zap/', 'EventController@testezap');
 
 Route::get('resub-test/{event_id}', 'EventController@reSub');
 
+Route::get('resub/{event_id}', 'EventController@reSub_event_person');
+
 Route::get('report-test', 'ReportController@reportTest');
 
 Route::get('sub-test', 'EventController@subTest');
