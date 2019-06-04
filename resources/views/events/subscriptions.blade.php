@@ -40,7 +40,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
 <body class="page-container-bg-solid page-boxed">
 <!-- BEGIN HEADER -->
-@include('includes.header-edit')
+@include('includes.header')
 <!-- END HEADER -->
 
 <div class="page-container">
@@ -463,7 +463,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
 @include('includes.footer')
 
-@include('includes.core-scripts-edit')
+@include('includes.core-scripts')
 
 <script src="../../assets/global/plugins/select2/js/select2.full.js" type="text/javascript"></script>
 <script src="../../assets/pages/scripts/components-select2.js" type="text/javascript"></script>
