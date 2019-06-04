@@ -1902,7 +1902,7 @@ class PersonController extends Controller
                 {
                     $email = "EMAIL";
                 }
-                else{
+                /*else{
                     $stop = true;
 
                     $errors[] = 'Email não informado ou coluna com nome incorreto';
@@ -1916,7 +1916,7 @@ class PersonController extends Controller
 
                         $errors[] = 'Campo Email está em branco';
                     }
-                }
+                }*/
 
                 if(!$stop)
                 {
@@ -1988,61 +1988,142 @@ class PersonController extends Controller
 
                 if(!$stop)
                 {
-                    if(!$this->emailExists($item->$email))
+                    if($item->$email != "")
                     {
+                        if(!$this->emailExists($item->$email))
+                        {
 
-                        $data["email"] = $item->$email;
+                            $data["email"] = $item->$email;
 
+
+                            $data['cel'] = str_replace('(', '', $data['cel']);
+                            $data['cel'] = str_replace(')', '', $data['cel']);
+                            $data['cel'] = str_replace('-', '', $data['cel']);
+
+                            $cel_exists = $this->repository->findByField('cel', $data['cel'])->first();
+
+                            if($cel_exists)
+                            {
+                                $stop = true;
+                            }
+                            else{
+
+                                $cel_exists = $this->repository->findByField('tel', $data['cel'])->first();
+
+                                if($cel_exists)
+                                {
+                                    $stop = true;
+                                }
+                            }
+
+                            if(!$stop)
+                            {
+                                $password = $data['cel']; //$this->randomPassword();
+
+                                $data['church_id'] = $church;
+
+                                $data['role_id'] = 2;
+
+                                $data['tag'] = 'adult';
+
+                                $data['imgProfile'] = 'uploads/profile/noimage.png';
+
+                                //$data['cel'] = $item->Telefone;
+
+                                $person_id = $this->repository->create($data)->id;
+
+                                $this->qrServices->generateQrCode($person_id);
+
+                                $church = $this->getUserChurch();
+
+                                $this->createUserLogin($person_id, $password, $data['email'], $church);
+
+                                /*if($user)
+                                {
+                                    $this->welcome($user, $password);
+                                }*/
+
+                                if($item->event_id != "")
+                                {
+                                    $event = $this->eventRepository->findByField('id', $item->event_id)->first();
+
+                                    if($event)
+                                    {
+                                        $this->eventServices->subEvent($event->id, $person_id);
+                                    }
+                                }
+
+                                $i++;
+
+                                unset($data);
+                            }
+
+
+                        }
+                        else{
+
+                            $person_id = $this->repository->findByField('email', $item->$email)->first()->id;
+
+                            if($person_id)
+                            {
+
+                                if($item->event_id != "")
+                                {
+                                    $event = $this->eventRepository->findByField('id', $item->event_id)->first();
+
+                                    if($event)
+                                    {
+                                        $this->eventServices->subEvent($event->id, $person_id);
+                                    }
+                                }
+
+                                $i++;
+
+                                unset($data);
+                            }
+
+                        }
+                    }
+
+                    else{
 
                         $data['cel'] = str_replace('(', '', $data['cel']);
+
                         $data['cel'] = str_replace(')', '', $data['cel']);
+
                         $data['cel'] = str_replace('-', '', $data['cel']);
 
-                        $password = $data['cel']; //$this->randomPassword();
+                        $cel_exists = $this->repository->findByField('cel', $data['cel'])->first();
 
-                        $data['church_id'] = $church;
-
-                        $data['role_id'] = 2;
-
-                        $data['tag'] = 'adult';
-
-                        $data['imgProfile'] = 'uploads/profile/noimage.png';
-
-                        //$data['cel'] = $item->Telefone;
-
-                        $person_id = $this->repository->create($data)->id;
-
-                        $this->qrServices->generateQrCode($person_id);
-
-                        $church = $this->getUserChurch();
-
-                        $this->createUserLogin($person_id, $password, $data['email'], $church);
-
-                        /*if($user)
+                        if($cel_exists)
                         {
-                            $this->welcome($user, $password);
-                        }*/
+                            $stop = true;
+                        }
+                        else{
 
-                        if($item->event_id != "")
-                        {
-                            $event = $this->eventRepository->findByField('id', $item->event_id)->first();
+                            $cel_exists = $this->repository->findByField('tel', $data['cel'])->first();
 
-                            if($event)
+                            if($cel_exists)
                             {
-                                $this->eventServices->subEvent($event->id, $person_id);
+                                $stop = true;
                             }
                         }
 
-                        $i++;
-
-                        unset($data);
-                    }
-                    else{
-
-                        $person_id = $this->repository->findByField('email', $item->$email)->first()->id;
-
-                        if($person_id)
+                        if(!$stop)
                         {
+                            $data['church_id'] = $church;
+
+                            $data['role_id'] = 2;
+
+                            $data['tag'] = 'adult';
+
+                            $data['imgProfile'] = 'uploads/profile/noimage.png';
+
+                            //$data['cel'] = $item->Telefone;
+
+                            $person_id = $this->repository->create($data)->id;
+
+                            $this->qrServices->generateQrCode($person_id);
 
                             if($item->event_id != "")
                             {
@@ -2059,7 +2140,10 @@ class PersonController extends Controller
                             unset($data);
                         }
 
+
+
                     }
+
                 }
 
 
