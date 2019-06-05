@@ -521,7 +521,16 @@ class PersonController extends Controller
 
         $file = $request->file('img');
 
-        $email = $request->only(['email']);
+        if($request->has(['email']))
+        {
+            $email = $request->only(['email']);
+            $email = $email["email"];
+        }
+        else{
+            $email = null;
+        }
+
+
 
         /*$password = $request->only(['password']);
 
@@ -533,7 +542,6 @@ class PersonController extends Controller
 
         $teen = $request->get('teen') or null;
 
-        $email = $email["email"];
 
         /*if(!$teen)
         {
@@ -1085,7 +1093,14 @@ class PersonController extends Controller
     {
         $data = $request->except(['email']);
 
-        $email = $request->only('email');
+        if($request->has(['email']))
+        {
+            $email = $request->only(['email']);
+            $email = $email["email"];
+        }
+        else{
+            $email = null;
+        }
 
         $teen = $request->get('teen') or null;
 
@@ -1094,8 +1109,6 @@ class PersonController extends Controller
             'church_id' => $this->getUserChurch()
         ]);
 
-        //Formatação correta do email
-        $email = $email["email"];
 
 
         if(!$teen)
