@@ -22,8 +22,8 @@ License: You must have a valid license purchased only from themeforest(the above
 <head>
 @include('includes.head')
 
-<link href="../../assets/global/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
-<link href="../../assets/global/plugins/select2/css/select2-bootstrap.min.css" rel="stylesheet" type="text/css" />
+<link href="../assets/global/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
+<link href="../assets/global/plugins/select2/css/select2-bootstrap.min.css" rel="stylesheet" type="text/css" />
 <!-- BEGIN PAGE LEVEL PLUGINS -->
 {{--<link href="../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet"
       type="text/css"/>
@@ -465,8 +465,8 @@ License: You must have a valid license purchased only from themeforest(the above
 
 @include('includes.core-scripts')
 
-<script src="../../assets/global/plugins/select2/js/select2.full.js" type="text/javascript"></script>
-<script src="../../assets/pages/scripts/components-select2.js" type="text/javascript"></script>
+<script src="../assets/global/plugins/select2/js/select2.full.js" type="text/javascript"></script>
+<script src="../assets/pages/scripts/components-select2.js" type="text/javascript"></script>
 
 <script type="text/javascript">
     $(".select2-allow-clear").select2();

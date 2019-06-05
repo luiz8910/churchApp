@@ -98,7 +98,8 @@ class ReportController extends Controller
 
         $event_id = $this->eventServices->getNextEvent() ? $this->eventServices->getNextEvent()[0] : null;
 
-        $event_name = $this->eventRepository->findByField('id', $event_id)->first()->name;
+        $event_name = $this->eventRepository->findByField('id', $event_id)->first()
+                        ? $this->eventRepository->findByField('id', $event_id)->first()->name : null;
 
         $qtde_sub = count($this->listRepository->findByField('event_id', $event_id));
 
