@@ -582,8 +582,13 @@ class PersonController extends Controller
 
         }*/
 
+        $user = null;
 
-        $user = User::select('id')->where('email', $email)->first() or null;
+        if($email != "")
+        {
+            $user = User::select('id')->where('email', $email)->first() or null;
+        }
+
 
         if($user)
         {
@@ -663,8 +668,6 @@ class PersonController extends Controller
         }
 
 
-
-
         $data['imgProfile'] = 'uploads/profile/noimage.png';
 
         $children = $request->get('group-a');
@@ -721,9 +724,14 @@ class PersonController extends Controller
 
         $password = $this->randomPassword();
 
-        $user = $this->createUserLogin($id, $password, $email, $church_id);
+        if($email != "")
+        {
+            $user = $this->createUserLogin($id, $password, $email, $church_id);
 
-        $this->welcome($user, $password);
+            $this->welcome($user, $password);
+
+        }
+
 
 
         /*
@@ -1093,13 +1101,14 @@ class PersonController extends Controller
     {
         $data = $request->except(['email']);
 
-        if($request->has(['email']))
+        $email = $request->only(['email']);
+
+        $email = $email["email"];
+
+        if($email == "")
         {
-            $email = $request->only(['email']);
-            $email = $email["email"];
-        }
-        else{
             $email = null;
+
         }
 
         $teen = $request->get('teen') or null;
