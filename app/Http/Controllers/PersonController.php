@@ -1101,14 +1101,13 @@ class PersonController extends Controller
     {
         $data = $request->except(['email']);
 
-        $email = $request->only(['email']);
-
-        $email = $email["email"];
-
-        if($email == "")
+        if($request->has(['email']))
         {
+            $email = $request->only(['email']);
+            $email = $email["email"];
+        }
+        else{
             $email = null;
-
         }
 
         $teen = $request->get('teen') or null;
@@ -1201,7 +1200,13 @@ class PersonController extends Controller
             $this->updateMaritalStatus($data['partner'], $id, 'people');
         }*/
 
-        $user = $this->userRepository->findByField('person_id', $id)->first();
+        $user = null;
+
+        if($email != "")
+        {
+            $user = $this->userRepository->findByField('person_id', $id)->first() or null;
+        }
+
 
         if($email && $user)
         {
