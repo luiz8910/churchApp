@@ -85,7 +85,7 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('/visitorFrequency/{visitor_id}', 'ReportController@visitorFrequency');
 
-        Route::get('/exportExcelReport', 'ReportController@exportExcel');
+        Route::get('/exportExcelReport/{event_id}', 'ReportController@exportXLS');
     });
 
     Route::group(['middleware' => 'check.role:5'], function (){
@@ -611,6 +611,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('getSubDays/{event_id}', 'ReportController@getSubDays');
 
+    Route::get('getFrequency/{event_id}', 'ReportController@getFrequency');
+
     // Fim Admin site
 
     Route::get('/events-ajax', 'EventController@getListEvents');
@@ -783,6 +785,8 @@ Route::get('/map', function(){
 
     dd($obj->results[0]->geometry->location);
 });
+
+Route::get('getListSubEvent/{event_id}', 'EventController@listEvent');
 
 Route::get('whatsapp/{event_id}/{person_id}', 'EventController@sendWhatsApp');
 

@@ -163,6 +163,23 @@ class EventServices
             ->get());
     }
 
+
+    /**
+     * Retorna quantas pessoas participaram do evento
+     * @param $event_id
+     * @return int
+     */
+    public function frequency($event_id)
+    {
+        return count(DB::table('event_person')
+            ->where([
+                'event_id' => $event_id,
+                'check-in' => 1
+            ])
+            ->distinct()
+            ->get());
+    }
+
     /**
      * Retorna a frequência da pessoa no evento
      * @param $id (event_id)

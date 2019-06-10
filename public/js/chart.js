@@ -15,12 +15,24 @@
 
     function exportXLS()
     {
-        if(location.pathname.search('relatorios-eventos') != -1)
+        /*if(location.pathname.search('relatorios-eventos') != -1)
         {
             location.href = '/exportExcelReport';
 
             swal('Sucesso', 'O Download da planilha ultimo-evento.xls foi realizado', 'success');
+        }*/
+
+        console.log('event');
+
+        var event_id = $("#event_id").val();
+
+        if(event_id)
+        {
+            location.href = '/exportExcelReport/' + event_id;
+
+            swal('Sucesso', 'O Download da planilha foi realizado', 'success');
         }
+
     }
 
     function simpleChart(data)

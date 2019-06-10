@@ -167,13 +167,13 @@
                                                                 </div>
 
                                                                 <div class="tab-pane" id="tab1">
-                                                                    <p> &nbsp; </p>
-                                                                    <p> &nbsp; </p>
+
+
+                                                                    <br>
+                                                                    @include('reports.frequency')
 
                                                                     @include('includes.noEvent')
 
-                                                                    <div id="container" class="hidden-xs hidden-sm chart" style="min-width: 1100px !important; height: 500px !important;"></div>
-                                                                    <div id="container-app" class="hidden-lg hidden-md chart"></div>
                                                                 </div>
                                                                 <div class="tab-pane" id="tab2">
                                                                     <p> &nbsp; </p>

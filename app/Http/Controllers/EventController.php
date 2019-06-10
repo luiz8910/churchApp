@@ -2325,5 +2325,39 @@ class EventController extends Controller
 
     }
 
+    public function listEvent($event_id)
+    {
+        $event = $this->repository->findByField('id', $event_id)->first();
+
+        $people = [];
+
+        if($event)
+        {
+
+            $list = DB::table('event_person')
+                ->where([
+                    'event_id' => $event_id,
+                    'check-in' => 1,
+                    ])->select('person_id')->get();
+
+            foreach ($list as $l)
+            {
+                $people[] = DB::table('people')
+                    ->where([
+                        'id' => $l->person_id
+
+                    ])->select('name', 'cel', 'email')->first();
+            }
+        }
+
+        $presence = DB::table('event_person')
+            ->where([
+                'event_id' => $event_id,
+                'check-in' => 1,
+            ])->get();
+
+        dd($people);
+    }
+
 
 }

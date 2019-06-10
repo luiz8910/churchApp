@@ -103,6 +103,11 @@ class ReportController extends Controller
 
         $qtde_sub = count($this->listRepository->findByField('event_id', $event_id));
 
+
+        //--------------------------------- Frequência -----------------------------------------------------------------
+
+
+
         return view('reports.index', compact('countPerson', 'countGroups', 'leader',
             'admin', 'notify', 'qtde', 'events', 'members', 'visitors', 'event_id', 'event_name', 'qtde_sub'));
     }
@@ -578,6 +583,38 @@ class ReportController extends Controller
 
     }
 
+    public function exportXLS($event_id)
+    {
+        $event = $this->eventRepository->findByField('id', $event_id)->first();
+
+        if($event)
+        {
+
+            $qtde_sub = count($this->listRepository->findByField('event_id', $event_id));
+
+            $presence = $this->eventServices->frequency($event_id);
+
+            $d[] = $qtde_sub;
+
+            $d[] = $presence;
+
+            Excel::create($event->name, function($excel) use ($d, $event){
+
+                $excel->sheet($event->name, function($sheet) use ($d, $event) {
+
+                    $sheet->row(1, array($event->name))
+                        ->row(2, array(
+                            'Quantidade', 'Frequência'
+                        ))->rows($d)->freezeFirstRow();
+
+                });
+
+            })->download('xlsx');
+        }
+
+
+    }
+
 
     public function getSubDays($event_id)
     {
@@ -630,5 +667,15 @@ class ReportController extends Controller
 
 
         return json_encode(['unique_days' => $u_days, 'dates' => $values]);
+    }
+
+    public function getFrequency($event_id)
+    {
+        $sub = count($this->listRepository->findByField('event_id', $event_id));
+
+        $presence = $this->eventServices->frequency($event_id);
+
+        return json_encode(['sub' => $sub, 'presence' => $presence]);
+
     }
 }
