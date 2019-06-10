@@ -2346,7 +2346,7 @@ class EventController extends Controller
                     ->where([
                         'id' => $l->person_id
 
-                    ])->select('name', 'cel', 'email')->first();
+                    ])->select('name', 'lastName','cel', 'email')->first();
             }
         }
 
