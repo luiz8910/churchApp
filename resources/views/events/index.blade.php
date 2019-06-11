@@ -48,11 +48,8 @@ License: You must have a valid license purchased only from themeforest(the above
         <div class="page-wrapper-row">
             <div class="page-wrapper-top">
                 <!-- BEGIN HEADER -->
-                @if(!isset($church_id) || $church_id == null)
-                    @include('includes.header')
-                @else
-                    @include('includes.header-edit')
-                @endif
+                @include('includes.header')
+
                 <!-- END HEADER -->
             </div>
         </div>

@@ -44,8 +44,8 @@
                     <a href="{{ route('person.index') }}" class="nav-link  ">
                         <i class="icon-bar-chart"></i> Pessoas
                         <span class="badge badge-success">
-                                        @if(isset($countPerson)){{ $countPerson[0][0] }} @else 0 @endif
-                                    </span> <!-- Qtde de Adultos cadastrados -->
+                            @if(isset($countPerson)){{ $countPerson[0][0] }} @else 0 @endif
+                        </span> <!-- Qtde de Adultos cadastrados -->
                     </a>
 
                 </li>
