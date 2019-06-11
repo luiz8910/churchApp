@@ -121,6 +121,7 @@ $(function () {
     });
 
 
+    //Pesquisa de Inscritos
     $("#btn-search-check").click(function () {
 
         $("#div_search").css('display', 'block');
@@ -141,7 +142,6 @@ $(function () {
         $("#search_results").css('display', 'none');
     });
 
-
     $("#input-search-check")
         .keyup(function () {
 
@@ -157,8 +157,13 @@ $(function () {
             //Verifica se apenas letras foram digitadas
             if(isString(e))
             {
+                var length_input_search = $("#input-search-check").val().length;
 
-                findSubUsers(e);
+                if(length_input_search >= 2)
+                {
+
+                    findSubUsers(e);
+                }
             }
             else{
 
@@ -166,6 +171,7 @@ $(function () {
             }
 
     });
+    //Fim Pesquisa Inscritos
 
 });
 

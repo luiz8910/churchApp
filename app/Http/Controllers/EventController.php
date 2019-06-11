@@ -184,49 +184,15 @@ class EventController extends Controller
         /*
          * Lista de Eventos
          */
-        $events = Event::where([
-            'church_id' => $church_id,
-            'deleted_at' => null
-        ])->paginate(5);
+
 
         /*$events = $this->repository->findWhere([
             'church_id' => $church_id
         ]);*/
 
-        $sub = false;
 
-        /*
-         * Foreach para Formatação de datas e nome do grupo pertencente se houver
-         */
-        foreach ($events as $event) {
 
-            $event->eventDate = $this->formatDateView($event->eventDate);
 
-            if($event->group_id)
-            {
-                $event['group_name'] = $this->groupRepository->find($event->group_id)->name;
-            }
-
-            //Check-in e Check-out
-
-            $canCheckIn = $this->eventServices->canCheckIn($event->id);
-
-            if($canCheckIn)
-            {
-                $sub = $this->eventServices->isSubscribed($event->id);
-
-                $event->checkIn = $sub ? false : true;
-            }
-            else{
-                $event->checkIn = null;
-            }
-
-            $event->user_createdBy_id = $this->userRepository->find($event->createdBy_id)->person;
-
-            //echo($event->id);
-
-            //echo '<br>';
-        }
 
         //dd($events);
 
@@ -2151,7 +2117,6 @@ class EventController extends Controller
                 ]
             )
             ->whereIn('id', $arr)
-            ->limit(5)
             ->get();
 
 
@@ -2333,7 +2298,6 @@ class EventController extends Controller
 
         if($event)
         {
-
             $list = DB::table('event_person')
                 ->where([
                     'event_id' => $event_id,
@@ -2356,7 +2320,7 @@ class EventController extends Controller
                 'check-in' => 1,
             ])->get();
 
-        dd($people);
+        dd($list);
     }
 
 

@@ -38,66 +38,21 @@
         <div class="hor-menu  ">
             <ul class="nav navbar-nav">
 
-                    <li class="menu-dropdown mega-menu-dropdown  ">
-                        <a href="@if(Auth::user()->church_id)
-                                    {{ route('index') }}
-                                @else
-                                    javascript:;
-                                @endif">
-                            Início
-                        </a>
-                    </li>
+
 
                 <li class="menu-dropdown classic-menu-dropdown ">
-                    <a href="javascript:;"> Pessoas
-                        <span class="arrow"></span>
-                    </a>
-                    @if(Auth::user()->church_id)
-                        <ul class="dropdown-menu pull-left">
-                            <li class=" ">
-                                <a href="{{ route('person.index') }}" class="nav-link  ">
-                                    <i class="icon-bar-chart"></i> Adultos
-                                    <span class="badge badge-success">
+                    <a href="{{ route('person.index') }}" class="nav-link  ">
+                        <i class="icon-bar-chart"></i> Pessoas
+                        <span class="badge badge-success">
                                         @if(isset($countPerson)){{ $countPerson[0][0] }} @else 0 @endif
                                     </span> <!-- Qtde de Adultos cadastrados -->
-                                </a>
-                            </li>
-                            <li class=" ">
-                                <a href="{{ route('person.teen') }}" class="nav-link  ">
-                                    <i class="icon-bulb"></i> Jovens e Crianças
-                                    <span class="badge badge-success">
-                                        @if(isset($countPerson)){{ $countPerson[0][1] }} @else 0 @endif
-                                    </span></a> <!-- Qtde de Crianças/Jovens cad.-->
-                            </li>
-
-                            <li class=" ">
-                                <a href="{{ route('person.inactive') }}" class="nav-link  ">
-                                    <i class="icon-bulb"></i> Inativos
-                                    <span class="badge badge-success">
-                                        @if(isset($countPerson)){{ $countPerson[0][3] }} @else 0 @endif
-                                    </span></a> <!-- Qtde de Visitantes cad.-->
-                            </li>
-
-                        </ul>
-                    @endif
-                </li>
-                <li class="menu-dropdown classic-menu-dropdown ">
-                    <a href="javascript:;"> Grupos
                     </a>
-                    @if(Auth::user()->church_id)
-                        <ul class="dropdown-menu pull-left">
-                            <li>
-                                <a href="{{ route('group.index') }}" class="nav-link">
-                                    <i class="icon-user"></i> Ativos
-                                    <span class="badge badge-success">@if(isset($countGroups)){{ $countGroups[0][1] }}@endif</span>
-                                </a>
-                            </li>
 
-                        </ul>
-                    @endif
                 </li>
                 <li class="menu-dropdown mega-menu-dropdown  ">
-                    <a href="{{ route('event.index') }}"> Agendas e Eventos
+                    <a href="{{ route('event.index') }}">
+                        <i class="fa fa-calendar"></i>
+                                Agendas e Eventos
                     </a>
                 </li>
                 <!--<li class="menu-dropdown classic-menu-dropdown ">
@@ -115,12 +70,23 @@
                 @if(!isset($leader) || !isset($admin)) <?php $leader = 1; $admin = 5;?> @endif
                 @if(Auth::user()->person_id != null && (Auth::user()->person->role_id == $leader || Auth::user()->person->role_id == $admin))
                     <li class="menu-dropdown classic-menu-dropdown">
-                        <a href="javascript:;">Configurações</a>
+                        <a href="javascript:;">
+                            <i class="fa fa-gears"></i>
+                            Configurações
+                        </a>
                         <ul class="dropdown-menu pull-left">
                             <li>
                                 <a href="{{ route("config.index") }}">
                                     <i class="fa fa-wrench"></i>
-                                    Permissões
+                                    Permissões em Campos
+                                    <span></span>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="javascript:">
+                                    <i class="fa fa-wrench font-red"></i>
+                                    Permissões de Usuários (Em Breve)
                                     <span></span>
                                 </a>
                             </li>
@@ -149,16 +115,14 @@
                 @if(Auth::user()->person_id != null && (Auth::user()->person->role_id == $leader
                 || Auth::user()->person->role_id == $admin))
                     <li class="menu-dropdown mega-menu-dropdown">
-                        <a href="javascript:;">
+                        <a href="{{ route("report.index") }}">
+                            <i class="fa fa-bar-chart-o"></i>
                             Relatórios
                         </a>
 
                         <ul class="dropdown-menu pull-left">
                             <li>
-                                <a href="{{ route("report.index") }}">
-                                    <i class="fa fa-calendar"></i>
-                                    Eventos
-                                </a>
+
                             </li>
 
 
@@ -171,6 +135,7 @@
 
                     <li class="menu-dropdown mega-menu-dropdown">
                         <a href="javascript:;">
+                            <i class="fa fa-file-text-o"></i>
                             Recursos
                         </a>
 

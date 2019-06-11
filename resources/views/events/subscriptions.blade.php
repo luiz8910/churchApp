@@ -268,7 +268,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                             <div class="input-group">
 
-                                                <input type="text" class="form-control" id="input-search-check" placeholder="Pesquise por usuários inscritos">
+                                                <input type="text" class="form-control" id="input-search-check" placeholder="Digite pelo menos 3 carecteres">
 
                                                 <span class="input-group-btn">
 

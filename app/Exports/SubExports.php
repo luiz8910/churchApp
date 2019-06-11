@@ -10,6 +10,7 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 class SubExports implements FromQuery, WithHeadings
 {
     use Exportable;
+
     private $event;
 
     public function __construct($event)
