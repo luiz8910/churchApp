@@ -35,16 +35,8 @@ class Messages implements ShouldQueue
     public function handle()
     {
 
-        /*$message = new MessageServices();
-
-        //$data['number'] = '5515997454531';//'5511993105830';
-
-        $message->send_QR_WP($this->event_id);
-
-        */
 
 
 
-        echo 'job enviado';
     }
 }

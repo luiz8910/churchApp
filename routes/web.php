@@ -906,6 +906,4 @@ Route::get('subTestUsers/{event_id}', 'PersonController@subTestUsers');
 
 Route::get('teste-telefone', 'PersonController@testeTelefone');
 
-Route::get('queue', function (){
-    \App\Jobs\Teste::dispatch();
-});
+Route::get('change-name', 'PersonController@changeName');

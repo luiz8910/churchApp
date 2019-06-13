@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Events\AgendaEvent;
 use App\Events\PersonEvent;
 use App\Http\Requests\PersonCreateRequest;
+use App\Jobs\Test;
 use App\Mail\ForLeaders;
 use App\Models\Event;
 use App\Models\Person;
@@ -2839,59 +2840,46 @@ class PersonController extends Controller
 
     public function generateUsers($stop_number)
     {
-        $i = 0;
-        $users_count = 0;
 
-        if($this->getUserChurch())
+        Test::dispatch($stop_number, $this->getUserChurch());
+
+        return redirect()->route('index');
+
+        /*$person = Person::where(['id' => 632])->first();
+
+        $user = new User();
+
+        $u = $person->user;
+
+        //dd($u);
+
+        //$u->notify(new \App\Notifications\Test(1000));
+
+        Notification::send($u, new \App\Notifications\Test(1000));*/
+
+    }
+
+
+    public function changeName()
+    {
+        $people = $this->repository->all();
+
+        echo 'Nomes alterados: <br><br>';
+
+        foreach ($people as $person)
         {
-            while ($users_count < $stop_number)
+
+            if($person->lastName != "")
             {
-                $verif_name = 'Teste ' . $i;
 
-                $verif_email =  'teste_'.$i.'@teste.com';
+                $data['name'] = $person->name . ' ' . $person->lastName;
+                $data['lastName'] = '';
 
-                $name = $this->repository->findByField('name', $verif_name)->first();
+                $this->repository->update($data, $person->id);
 
-                $email = $this->repository->findByField('email', $verif_email)->first();
-
-                if(!$name && !$email)
-                {
-                    $data['name'] = $verif_name;
-
-                    $data['email'] = $verif_email;
-
-                    $data['cel'] = '15999999999';
-
-                    $data['church_id'] = $this->getUserChurch();
-
-                    $data['tag'] = 'adult';
-
-                    $data['role_id'] = $this->roleRepository->findByField('name', 'Participante')->first()->id;
-
-                    $data['imgProfile'] = 'uploads/profile/noimage.png';
-
-                    $data['status'] = 'test';
-
-                    $id = $this->repository->create($data)->id;
-
-                    $password = $this->randomPassword();
-
-                    $this->createUserLoginTest($id, $password, $data['email'], $this->getUserChurch());
-
-                    //Qrcode
-                    $this->qrServices->generateQrCode($id);
-
-                    $users_count++;
-                }
-
-                $i++;
+                echo $data['name'] . '<br>';
             }
-
-            return 'Foram cadastrados ' .$users_count. ' novos usuários';
         }
-
-        return 'Org não encontrada';
-
     }
 
 

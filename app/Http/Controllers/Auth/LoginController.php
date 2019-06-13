@@ -146,47 +146,53 @@ class LoginController extends Controller
 
                 if($user->social_token == $token && $user->church_id == $church)
                 {
-                    $person = $this->personRepository->find($user->person->id);
+                    $person = $this->personRepository->findByField($user->person->id)->first();
 
-                    $role_id = $user->person->role_id;
+                    if($person)
+                    {
+                        $role_id = $user->person->role_id;
 
-                    $role = $this->roleRepository->find($role_id)->name;
+                        $role = $this->roleRepository->find($role_id)->name;
 
-                    $notif_activity = $this->listRepository->findWhere(
-                        [
+                        $notif_activity = $this->listRepository->findWhere(
+                            [
+                                'person_id' => $user->person->id,
+                                //'event_id' => $event_id
+
+                            ])->first()->notification_activity;
+
+                        $notif_updates = $this->listRepository->findWhere(
+                            [
+                                'person_id' => $person->id,
+                                //'event_id' => $event_id
+                            ])->first()->notification_updates;
+
+
+                        return json_encode([
+                            'status' => true,
                             'person_id' => $user->person->id,
-                            //'event_id' => $event_id
+                            'role_id' => $role_id,
+                            'role' => $role,
+                            'name' => $person->name . ' ' . $person->lastName,
+                            'email' => $email,
+                            'tel' => $person->tel,
+                            'cel' => $person->cel,
+                            'imgProfile' => $person->imgProfile,
+                            'zipCode' => $person->zipCode,
+                            'street' => $person->street,
+                            'number' => $person->number,
+                            'neighborhood' => $person->neighborhood,
+                            'city' => $person->city,
+                            'state' => $person->state,
+                            'qrCode' => $person->qrCode,
+                            'notif_activity' => $notif_activity,
+                            'notif_updates' => $notif_updates,
+                            'visibility' => $user->person->visibility
+                        ]);
+                    }
 
-                        ])->first()->notification_activity;
+                    return json_encode(['status' => false, 'msg' => 'Não existe este email na base de dados']);
 
-                    $notif_updates = $this->listRepository->findWhere(
-                        [
-                            'person_id' => $person_id,
-                            //'event_id' => $event_id
-                        ])->first()->notification_updates;
-
-
-                    return json_encode([
-                        'status' => true,
-                        'person_id' => $user->person->id,
-                        'role_id' => $role_id,
-                        'role' => $role,
-                        'name' => $person->name . ' ' . $person->lastName,
-                        'email' => $email,
-                        'tel' => $person->tel,
-                        'cel' => $person->cel,
-                        'imgProfile' => $person->imgProfile,
-                        'zipCode' => $person->zipCode,
-                        'street' => $person->street,
-                        'number' => $person->number,
-                        'neighborhood' => $person->neighborhood,
-                        'city' => $person->city,
-                        'state' => $person->state,
-                        'qrCode' => $person->qrCode,
-                        'notif_activity' => $notif_activity,
-                        'notif_updates' => $notif_updates,
-                        'visibility' => $user->person->visibility
-                    ]);
                 }
             }
 

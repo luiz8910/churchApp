@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Mail\welcome;
+use App\Mail\welcome_sub;
 use App\Models\Event;
 use App\Models\EventSubscribedList;
 use App\Models\Person;
@@ -11,6 +13,7 @@ use App\Repositories\PersonRepository;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 
 class MessageServices
@@ -169,6 +172,30 @@ class MessageServices
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ]);
+
+        return true;
+    }
+
+    public function welcome($user, $password)
+    {
+        $url = $this->getUrl();
+
+        Mail::to($user)
+            ->send(new welcome(
+                $user, $url, $password
+            ));
+
+        return true;
+    }
+
+    public function welcome_sub($user, $event, $qrCode)
+    {
+        $url = $this->getUrl();
+
+        Mail::to($user)
+            ->send(new welcome_sub(
+                $user, $url, $event, $qrCode
+            ));
 
         return true;
     }
