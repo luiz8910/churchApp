@@ -188,7 +188,6 @@
                                                                 <th> Nome</th>
                                                                 <th> Tel</th>
                                                                 <th> Cargo</th>
-                                                                <th> Data de Nasc.</th>
                                                                 <th></th>
                                                             </tr>
                                                             </thead>
@@ -201,14 +200,13 @@
                                                                     <td>
                                                                         @if(\Auth::user()->person_id != $item->id)
                                                                             <a href="{{ route('person.edit', ['person' => $item->id]) }}">
-                                                                                {{ $item->name }} {{ $item->lastName }}</a>
+                                                                                {{ $item->name }} </a>
                                                                         @else
-                                                                            {{ $item->name }} {{ $item->lastName }}
+                                                                            {{ $item->name }}
                                                                         @endif
                                                                     </td>
                                                                     <td> {{ $item->cel }} </td>
                                                                     <td> {{ $item->role }} </td>
-                                                                    <td> {{ $item->dateBirth }} </td>
 
 
                                                                     <?php $deleteForm = "delete-" . $item->id; ?>

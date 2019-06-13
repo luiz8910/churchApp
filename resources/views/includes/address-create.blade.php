@@ -21,7 +21,7 @@
 
 
 <div class="row">
-    <div class="col-md-6 input-address">
+    <div class="col-md-2 input-address">
         <div class="form-group">
             <label>CEP (sem traços)</label>
             <div class="input-group">
@@ -34,13 +34,7 @@
         </div>
     </div>
 
-    @if(!isset($route) && Auth::check() && !isset($no_zip_button))
-        @include('includes.address')
-    @endif
-</div>
-
-<div class="row">
-    <div class="col-md-9 input-address">
+    <div class="col-md-8 input-address">
         <div class="form-group">
             <label>Logradouro</label>
             <div class="input-group">
@@ -54,7 +48,7 @@
         </div>
     </div>
 
-    <div class="col-md-3 input-address">
+    <div class="col-md-2 input-address">
         <div class="form-group">
             <label class="hidden-xs hidden-sm">Número</label>
             <label class="hidden-md hidden-lg">N°</label>
@@ -68,6 +62,14 @@
             </div>
         </div>
     </div>
+
+
+</div>
+
+<div class="row">
+
+
+
 
 </div>
 

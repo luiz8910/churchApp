@@ -68,7 +68,7 @@ class SearchController extends Controller
             foreach ($people as $person)
             {
                 $arr[] = $person->imgProfile;
-                $arr[] = $person->name . " " . $person->lastName;
+                $arr[] = $person->name;
                 $arr[] = $person->id;
             }
 
@@ -111,7 +111,6 @@ class SearchController extends Controller
                     ->where(
                         [
                             ['name', 'like', '%'.$fullName[0].'%'],
-                            ['lastName', 'like', $fullName[1].'%'],
                             ['deleted_at', $symbol, null],
                             'status' => 'active'
                         ]
@@ -126,7 +125,6 @@ class SearchController extends Controller
                         ->where(
                             [
                                 ['name', 'like', '%'.$fullName[0].'%'],
-                                ['lastName', 'like', $fullName[1].'%'],
                                 ['church_id', '=', $church_id],
                                 ['deleted_at', $symbol, null],
                                 'status' => 'active'
@@ -142,7 +140,6 @@ class SearchController extends Controller
                             ->where(
                                 [
                                     ['name', 'like', '%'.$fullName[0].'%'],
-                                    ['lastName', 'like', $fullName[1].'%'],
                                     ['church_id', '=', $church_id],
                                     ['deleted_at', $symbol, null],
                                     ['status', '<>', 'active']
@@ -158,7 +155,6 @@ class SearchController extends Controller
                             ->where(
                                 [
                                     ['name', 'like', '%'.$fullName[0].'%'],
-                                    ['lastName', 'like', $fullName[1].'%'],
                                     ['church_id', '=', $church_id],
                                     ['tag', $tag, 'adult'],
                                     ['deleted_at', $symbol, null],
@@ -259,7 +255,7 @@ class SearchController extends Controller
                 foreach ($people as $person)
                 {
                     $arr[] = $person->imgProfile;
-                    $arr[] = $person->name . " " . $person->lastName;
+                    $arr[] = $person->name;
                     $arr[] = $person->id;
                 }
             }
@@ -272,7 +268,7 @@ class SearchController extends Controller
                     $person->cpf = $person->cpf ? $person->cpf : '';
 
                     $arr[] = $person->imgProfile;
-                    $arr[] = $person->name . " " . $person->lastName;
+                    $arr[] = $person->name;
                     $arr[] = $person->cpf;
                     $arr[] = $person->role;
                     $arr[] = $person->dateBirth;
@@ -302,7 +298,7 @@ class SearchController extends Controller
 
                     $arr[] = $person->id;
 
-                    $arr[] = $person->name . " " . $person->lastName;
+                    $arr[] = $person->name;
 
                     $arr[] = $person->email;
 
@@ -322,7 +318,7 @@ class SearchController extends Controller
                     $person->cpf = $person->cpf ? $person->cpf : '';
 
                     $arr[] = $person->imgProfile;
-                    $arr[] = $person->name . " " . $person->lastName;
+                    $arr[] = $person->name;
                     $arr[] = $person->cpf;
                     $arr[] = $person->dateBirth;
                     $arr[] = $person->id;
@@ -351,7 +347,6 @@ class SearchController extends Controller
                 ->where(
                     [
                         ['name', 'like', '%'.$fullName[0].'%'],
-                        ['lastName', 'like', $fullName[1].'%'],
                         ['deleted_at', '=', null]
                     ]
                 )
@@ -447,7 +442,7 @@ class SearchController extends Controller
 
                 $arr[] = $event->name;
                 $arr[] = $event->frequency;
-                $arr[] = $event->createdBy->name . " " . $event->createdBy->lastName;
+                $arr[] = $event->createdBy->name;
                 $arr[] = $event->group;
                 $arr[] = $event->id;
             }
@@ -600,14 +595,6 @@ class SearchController extends Controller
 
                     ])->get();
 
-        $lastName = DB::table('people')
-            ->where([
-                ['lastName', 'like', '%'.$input.'%'],
-                'church_id' => $this->getUserChurch(),
-                'deleted_at' => null
-
-            ])->get();
-
         $email = DB::table('people')
             ->where([
                 ['email', 'like', '%'.$input.'%'],
@@ -654,16 +641,6 @@ class SearchController extends Controller
             $qtde++;
 
             foreach ($name as $item)
-            {
-                $item->model = 'person';
-            }
-        }
-
-        if(count($lastName) > 0)
-        {
-            $qtde++;
-
-            foreach ($lastName as $item)
             {
                 $item->model = 'person';
             }
@@ -725,7 +702,7 @@ class SearchController extends Controller
         }
 
 
-        $merge = $name->merge($lastName)
+        $merge = $name
                     ->merge($email)
                     ->merge($groups)
                     ->merge($events)

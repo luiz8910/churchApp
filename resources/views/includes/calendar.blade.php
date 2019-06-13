@@ -1,7 +1,39 @@
 <div class="row hidden-xs hidden-sm">
     <div class="col-md-12">
         <div class="portlet light portlet-fit calendar">
+
+
             <div class="portlet-title">
+
+                <div class="btn-group btn-group-sm" style="float: right; margin-top: 5px;">
+                    <a class="btn green btn-outline btn-circle btn-sm"
+                       href="javascript:;" data-toggle="dropdown">
+                        <i class="fa fa-share"></i>
+                        <span class="hidden-xs"> Opções </span>
+                        <i class="fa fa-angle-down"></i>
+                    </a>
+                    <ul class="dropdown-menu pull-right"
+                        id="sample_3_tools">
+                        <li>
+                            <a href="{{ route('event.create') }}" class="tool-action font-purple">
+                                <i class="fa fa-calendar font-purple"></i>
+                                Novo Evento
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:" class="tool-action">
+                                <i class="fa fa-print"></i>
+                                Lista dos Próximos Eventos (.PDF)
+                            </a>
+                        </li>
+                        <!--<li>
+                            <a href="javascript:;" data-action="1" class="tool-action">
+                                <i class="icon-check"></i> Copiar</a>
+                        </li>-->
+
+                    </ul>
+                </div>
+
                 <div class="caption">
                     <i class="fa fa-calendar font-green"></i>
                     <span class="caption-subject font-green sbold uppercase">Calendário
@@ -13,7 +45,10 @@
                         <span class="label label-warning lbl-opacity" id="monthly">Mensal</span>
                         <span class="label label-danger lbl-opacity" id="singleEvent">Encontro Único</span>
                     </span>
+
                 </div>
+
+
 
             </div>
 

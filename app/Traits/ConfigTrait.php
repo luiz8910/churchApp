@@ -30,8 +30,6 @@ trait ConfigTrait
 
         $array = array_keys($data);
 
-        //dd($array[0]);
-
         $i = 0;
 
         foreach ($fields as $field)

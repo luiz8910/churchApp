@@ -413,7 +413,7 @@ class ReportController extends Controller
         $data->qtdePresence = $eventQtde;
         $data->frequencyPercentage = $eventFrequencyPercentage;
         $data->average = $average;
-        $data->personName = $person->name . " " . $person->lastName;
+        $data->personName = $person->name;
         $data->qtdeEvents = count($events);
         $data->type = 'person';
 
@@ -493,7 +493,7 @@ class ReportController extends Controller
         $data->qtdeTimes = $eventTimes;
         $data->frequencyPercentage = $eventFrequencyPercentage;
         $data->average = $average;
-        $data->personName = $visitor->name . " " . $visitor->lastName;
+        $data->personName = $visitor->name;
         $data->qtdeEvents = count($events);
         $data->type = 'visitor';
 

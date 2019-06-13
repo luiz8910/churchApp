@@ -532,16 +532,15 @@ class PersonController extends Controller
         }
 
 
-
         /*$password = $request->only(['password']);
 
         $confirmPass = $request->only(['confirm-password']);
 
         $password = implode('=>', $password);
 
-        $confirmPass = implode('=>', $confirmPass);*/
+        $confirmPass = implode('=>', $confirmPass);
 
-        $teen = $request->get('teen') or null;
+        $teen = $request->get('teen') or null;*/
 
 
         /*if(!$teen)
@@ -616,57 +615,30 @@ class PersonController extends Controller
 
         $data = $request->except(['img', 'password', 'confirm-password', '_token']);
 
-        if($teen)
+        //unset($data["email"]);
+
+        $verifyFields = $this->verifyRequiredFields($data, 'person');
+
+        if($verifyFields)
         {
-            $data["email"] = $email;
-
-            $verifyFields = $this->verifyRequiredFields($data, 'teen');
-
-            if($verifyFields)
+            if($origin == 'app')
             {
-                if($origin == 'app')
-                {
 
-                    return json_encode([
-                        'status' => false,
-                        'msg' => 'Preencha o campo ' . $verifyFields
-                    ]);
+                return json_encode([
+                    'status' => false,
+                    'msg' => 'Preencha o campo ' . $verifyFields
+                ]);
 
-                }
-                else{
+            }
+            else{
 
-                    \Session::flash("error.required-fields", "Preencha o campo " . $verifyFields);
-
-                    return redirect()->route("teen.create")->withInput();
-                }
+                \Session::flash("error.required-fields", "Preencha o campo " . $verifyFields);
+                return redirect()->route("person.create")->withInput();
 
             }
 
-        }else{
-            //unset($data["email"]);
-
-            $verifyFields = $this->verifyRequiredFields($data, 'person');
-
-            if($verifyFields)
-            {
-                if($origin == 'app')
-                {
-
-                    return json_encode([
-                        'status' => false,
-                        'msg' => 'Preencha o campo ' . $verifyFields
-                    ]);
-
-                }
-                else{
-
-                    \Session::flash("error.required-fields", "Preencha o campo " . $verifyFields);
-                    return redirect()->route("person.create")->withInput();
-
-                }
-
-            }
         }
+
 
 
         $data['imgProfile'] = 'uploads/profile/noimage.png';
@@ -774,15 +746,6 @@ class PersonController extends Controller
 
             Session::flash('person.crud', 'Usuário '. $data['name'] . ' criado com sucesso');
 
-            if($teen)
-            {
-                Session::flash('teen.crud', 'Usuário '. $data['name'] . ' criado com sucesso');
-
-                return 'teen';
-            }
-
-            Session::flash('person.crud', 'Usuário '. $data['name'] . ' criado com sucesso');
-
             return 'person';
 
         }
@@ -839,11 +802,6 @@ class PersonController extends Controller
                 ]);
 
             $request->session()->forget('new-responsible-sponsor');
-        }
-
-        if($teen){
-            Session::flash('teen.crud', 'Usuário '. $data['name'] . ' criado com sucesso');
-            return redirect()->route('person.teen');
         }
 
         Session::flash('person.crud', 'Usuário '. $data['name'] . ' criado com sucesso');
@@ -1111,26 +1069,21 @@ class PersonController extends Controller
             $email = null;
         }
 
-        $teen = $request->get('teen') or null;
-
         $fields = $this->fieldsRepository->findWhere([
             'model' => 'person',
             'church_id' => $this->getUserChurch()
         ]);
 
 
-
-        if(!$teen)
-        {
-            foreach ($fields as $field) {
-                if($field->value == "email"){
-                    if($field->required == 1 && $email == ""){
-                        \Session::flash("email.exists", "Insira seu email");
-                        return redirect()->route("person.edit", ['person' => $id])->withInput();
-                    }
+        foreach ($fields as $field) {
+            if($field->value == "email"){
+                if($field->required == 1 && $email == ""){
+                    \Session::flash("email.exists", "Insira seu email");
+                    return redirect()->route("person.edit", ['person' => $id])->withInput();
                 }
             }
         }
+
 
         /*if($teen)
         {
@@ -1205,7 +1158,7 @@ class PersonController extends Controller
 
         if($email != "")
         {
-            $user = $this->userRepository->findByField('person_id', $id)->first() or null;
+            $user = $this->userRepository->findByField('person_id', $id)->first();
         }
 
 
@@ -1226,20 +1179,11 @@ class PersonController extends Controller
 
         $church_id = $this->getUserChurch();
 
-        if($person)
+        if($person && $email && !$user)
         {
-            if($email)
-            {
-                $password = $this->randomPassword();
+            $password = $this->randomPassword();
 
-                $this->createUserLogin($id, $password, $email, $church_id);
-            }
-            else{
-
-                \Session::flash("error.required-fields", "Preencha o campo Email");
-
-                return redirect()->route("teen.edit", ['person' => $id])->withInput();
-            }
+            $this->createUserLogin($id, $password, $email, $church_id);
 
         }
 
@@ -1292,7 +1236,7 @@ class PersonController extends Controller
         }*/
 
         Session::flash('person.crud', 'Usuário '. $data['name'] . ' alterado com sucesso');
-        return redirect()->route('person.index');
+        return redirect()->route('person.edit', ['person' => $id]);
     }
 
     public function updateEmail($email, $id)
@@ -1331,7 +1275,7 @@ class PersonController extends Controller
             return json_encode(
                 [
                     'status' => true,
-                    'name' => $person->name . " " . $person->lastName
+                    'name' => $person->name
                 ]);
         }
 
@@ -1348,7 +1292,7 @@ class PersonController extends Controller
         return json_encode(
             [
                 'status' => true,
-                'name' => $person->name . " " . $person->lastName
+                'name' => $person->name
             ]);
     }
 
@@ -1407,12 +1351,6 @@ class PersonController extends Controller
 
     }*/
 
-
-    public function email()
-    {
-        $person = Person::find(1);
-        Mail::to(User::find(1))->send(new teste($person));
-    }
 
 
     public function getList($tag)
@@ -1741,11 +1679,8 @@ class PersonController extends Controller
                     }
                     else{
 
-                        $fullName = $this->surname($item->$nome);
 
-                        $data["name"] = ucfirst($fullName[0]);
-
-                        $data["lastName"] = ucwords($fullName[1]);
+                        $data["name"] = $item->$nome;
                     }
 
                 }
@@ -1977,11 +1912,6 @@ class PersonController extends Controller
                     }
                     else{
 
-                        /*$fullName = $this->surname($item->$nome);
-
-                        $data["name"] = ucfirst($fullName[0]);
-
-                        $data["lastName"] = ucwords($fullName[1]);*/
 
                         $data["name"] = $item->$nome;
                     }
@@ -2236,11 +2166,8 @@ class PersonController extends Controller
                         $x++;
                     }
 
-                    $fullName = $this->surname($item->nome);
 
-                    $data["name"] = ucfirst($fullName[0]);
-
-                    $data["lastName"] = ucwords($fullName[1]);
+                    $data["name"] = $item->nome;
 
                     $name = $this->repository->findByField('name', $data['name']);
 
@@ -2250,11 +2177,11 @@ class PersonController extends Controller
                     {
                         foreach ($name as $n)
                         {
-                            if($n->name == $data["name"] && $n->lastName == $data["lastName"])
+                            if($n->name == $data["name"])
                             {
                                 $stop = true;
 
-                                $errors[] = 'Já existe um usuário com o nome ' . $data['name'] . ' ' . $data['lastName'] . ' na base de dados';
+                                $errors[] = 'Já existe um usuário com o nome ' . $data['name'] . ' na base de dados';
                             }
                         }
                     }
@@ -2358,7 +2285,7 @@ class PersonController extends Controller
                             if ($data["tag"] == "adult") {
                                 if(!$this->createUserLogin($id, $alias, $item->$email, $church))
                                 {
-                                    $errors[] = 'Os dados de acesso para o usuário ' . $data['name'] . " " . $data['lastName'] . " não pode ser realizado porque já existe um usuário com o email " . $item->$email;
+                                    $errors[] = 'Os dados de acesso para o usuário ' . $data['name'] . " não pode ser realizado porque já existe um usuário com o email " . $item->$email;
                                 }
                             }
 
@@ -2366,14 +2293,14 @@ class PersonController extends Controller
 
                         }// Data Nasc.
                         else{
-                            $errors[] = 'A coluna email está com o nome incorreto ou o campo data de nascimento do usuário '. $data["name"] . " " . $data["lastName"] .' está vazio.';
+                            $errors[] = 'A coluna email está com o nome incorreto ou o campo data de nascimento do usuário '. $data["name"] . ' está vazio.';
 
 
                         }
                     } // $stop
 
 
-                //echo $data["name"] . " " . $data["lastName"] . ' i = ' . $i .  "<br>";
+                //echo $data["name"] . ' i = ' . $i .  "<br>";
             }
 
 
@@ -2814,7 +2741,7 @@ class PersonController extends Controller
         {
             $denied_by = $this->repository->find($details->denied_by_person);
 
-            $details->denied_by_person = $denied_by->name . ' ' . $denied_by->lastName;
+            $details->denied_by_person = $denied_by->name;
 
             return json_encode(['status' => true, 'details' => $details]);
         }

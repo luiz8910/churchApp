@@ -320,7 +320,7 @@ class EventController extends Controller
             }
 
             $fullName = $this->userRepository->find($event->createdBy_id)->person;
-            $event->createdBy_name = $fullName->name . " " . $fullName->lastName;
+            $event->createdBy_name = $fullName->name;
             //$event->created_at = $this->formatDateView($event->created_at);
         }
 
@@ -2310,7 +2310,7 @@ class EventController extends Controller
                     ->where([
                         'id' => $l->person_id
 
-                    ])->select('name', 'lastName','cel', 'email')->first();
+                    ])->select('name','cel', 'email')->first();
             }
         }
 

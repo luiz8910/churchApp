@@ -135,9 +135,29 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                     @endif
 
+
+
                                     <div class="form-body">
+
                                         <div class="row">
-                                            <div class="col-md-6">
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <div class="fileinput fileinput-new" data-provides="fileinput" style="text-align: center;">
+                                                        <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
+                                                            <img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=foto+do+perfil" alt="" /> </div>
+                                                        <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"> </div>
+                                                        <div>
+                                                                <span class="btn default btn-file">
+                                                                    <span class="fileinput-new"> Escolher Imagem </span>
+                                                                    <span class="fileinput-exists"> Alterar </span>
+                                                                    <input type="file" name="img"> </span>
+                                                            <a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Remover </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-9">
                                                 <div class="form-group">
                                                     <label>Nome</label>
                                                     <div class="input-group">
@@ -155,29 +175,8 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label>Sobrenome</label>
-                                                    <div class="input-group">
-                                                            <span class="input-group-addon">
-                                                                <i class="fa fa-user font-blue"></i>
-                                                            </span>
-                                                        <input type="text" name="lastName" class="form-control"
-                                                               placeholder="da Silva" value="{{ old('lastName') }}"
-                                                                @if($fields[$i]->required == 1)
-                                                                    required
-                                                                @endif
-                                                                <?php $i++; ?>
-                                                        >
-                                                    </div>
-                                                </div>
 
-
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-md-6">
+                                            <div class="col-md-9">
                                                 <div class="form-group" id="form-email">
                                                     <label>Email</label>
                                                     <div class="input-group input-icon right">
@@ -186,11 +185,11 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             </span>
                                                         <input type="text" name="email" id="email" class="form-control"
                                                                placeholder="email@dominio.com" value="{{ old('email') }}"
-                                                                @if($fields[$i]->required == 1)
-                                                                    required
+                                                               @if($fields[$i]->required == 1)
+                                                               required
                                                                 @endif
-                                                                <?php $i++; ?>
-                                                            >
+                                                        <?php $i++; ?>
+                                                        >
                                                         <i class="fa fa-check font-green" id="icon-success-email" style="display: none;"></i>
                                                         <i class="fa fa-exclamation font-red" id="icon-error-email" style="display: none;"></i>
                                                     </div>
@@ -209,6 +208,11 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 </div>
                                             </div>
 
+
+                                        </div>
+
+                                        <div class="row">
+
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="exampleInputPassword1">Celular</label>
@@ -226,9 +230,8 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <div class="row">
+
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="exampleInputPassword1">Telefone</label>
@@ -239,15 +242,19 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         <input type="text" class="form-control tel" name="tel"
                                                                id="exampleInputPassword1" value="{{ old('tel') }}"
                                                                placeholder="(15) 1231413423"
-                                                                @if($fields[$i]->required == 1)
-                                                                    required
+                                                               @if($fields[$i]->required == 1)
+                                                               required
                                                                 @endif
-                                                                <?php $i++; ?>
+                                                        <?php $i++; ?>
                                                         >
                                                     </div>
                                                 </div>
 
                                             </div>
+                                        </div>
+
+                                        <div class="row">
+
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Gênero</label>
@@ -270,9 +277,6 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 </div>
                                             </div>
 
-                                        </div>
-
-                                        <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Data de Nasc.</label>
@@ -282,15 +286,19 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             </span>
                                                         <input type="text" class="form-control input-date" name="dateBirth"
                                                                placeholder="dd/mm/aaaa" maxlength="10" value="{{ old('dateBirth') }}"
-                                                                @if($fields[$i]->required == 1)
-                                                                    required
+                                                               @if($fields[$i]->required == 1)
+                                                               required
                                                                 @endif
-                                                                <?php $i++; ?>
+                                                        <?php $i++; ?>
                                                         >
                                                     </div>
 
                                                 </div>
                                             </div>
+                                        </div>
+
+                                        <div class="row">
+
                                             <div class="col-md-6">
                                                 <div class="form-group" id="form-cpf">
                                                     <label>CPF (Sem pontos ou traços)</label>
@@ -314,9 +322,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <div class="help-block small-error" id="textResponse" style="color: red;"></div>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>RG (Sem pontos ou traços)</label>
@@ -327,14 +333,20 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         <input type="text" id="rg" name="rg" class="form-control"
                                                                placeholder="XX.XXX.XXX-X" value="{{ old('rg') }}" maxlength="9" minlength="9"
 
-                                                                @if($fields[$i]->required == 1)
-                                                                    required
+                                                               @if($fields[$i]->required == 1)
+                                                               required
                                                                 @endif
-                                                                <?php $i++; ?>
+                                                        <?php $i++; ?>
                                                         >
                                                     </div>
                                                 </div>
                                             </div>
+
+
+                                        </div>
+
+                                        <div class="row">
+
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Cargo</label>
@@ -363,17 +375,15 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                             </div>
 
-                                        </div>
 
-                                        <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="">Estado Civil</label>
                                                     <select name="maritalStatus" id="maritalStatus" class="form-control"
                                                             @if($fields[$i]->required == 1)
-                                                                required
+                                                            required
                                                             @endif
-                                                            <?php $i++; ?>
+                                                    <?php $i++; ?>
                                                     >
                                                         <option value="">Selecione</option>
                                                         <option value="Casado" @if(old('maritalStatus') == "Casado") selected @endif>
@@ -388,6 +398,10 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     </select>
                                                 </div>
                                             </div>
+                                        </div>
+
+                                        <div class="row">
+
 
                                             <div class="col-md-6">
                                                 <div class="form-group" id="form-partner" hidden>
@@ -397,12 +411,22 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             data-live-search="true" data-size="8">
                                                         <option value="0">Parceiro(a) fora da Organização</option>
                                                         @foreach($adults as $adult)
-                                                            <option value="{{ $adult->id }}">{{ $adult->name }} {{ $adult->lastName }}</option>
+                                                            <option value="{{ $adult->id }}">{{ $adult->name }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
                                             </div>
 
+                                        </div>
+                                        
+                                        <div class="row">
+                                            
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="">Descrição</label>
+                                                    <textarea name="description" id="" cols="30" rows="10" class="form-control"></textarea>
+                                                </div>
+                                            </div>
                                         </div>
 
                                         <!--<br>
@@ -435,7 +459,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                                             @foreach($fathers as $parent)
                                                                 <option value="{{ $parent->id }}">
-                                                                    {{ $parent->name }} {{ $parent->lastName }}
+                                                                    {{ $parent->name }}
                                                                 </option>
                                                             @endforeach
 
@@ -464,7 +488,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                                             @foreach($mothers as $parent)
                                                                 <option value="{{ $parent->id }}">
-                                                                    {{ $parent->name }} {{ $parent->lastName }}
+                                                                    {{ $parent->name }}
                                                                 </option>
                                                             @endforeach
 
@@ -588,29 +612,16 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                         @include('includes.address-create')
 
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <div class="fileinput fileinput-new" data-provides="fileinput">
-                                                        <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
-                                                            <img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=foto+do+perfil" alt="" /> </div>
-                                                        <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"> </div>
-                                                        <div>
-                                                                <span class="btn default btn-file">
-                                                                    <span class="fileinput-new"> Escolher Imagem </span>
-                                                                    <span class="fileinput-exists"> Alterar </span>
-                                                                    <input type="file" name="img"> </span>
-                                                            <a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Remover </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
 
                                     </div>
+
                                     <div class="form-actions">
-                                        {!! Form::submit('Enviar', ['class' => 'btn blue', 'id' => 'btn-submit']) !!}
+                                        <br><br>
+                                        <button class="btn blue btn-block" id="btn-submit" type="submit">
+                                            <i class="fa fa-check"></i>
+                                            Enviar
+                                        </button>
+
                                         <div class="progress" style="display: none;">
                                             <div class="progress-bar progress-bar-striped active" role="progressbar"
                                                  aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">

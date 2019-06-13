@@ -247,8 +247,6 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::post('changePass', 'UsersController@changePassword')->name('users.changePass');
 
-        Route::get("email", "PersonController@email");
-
         Route::get("check-cpf/{cpf}", "PersonController@checkCPF");
 
         Route::get('/person-delete/{id}', 'PersonController@destroy');

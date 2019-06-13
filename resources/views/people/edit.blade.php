@@ -122,7 +122,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                     <!-- END SIDEBAR USERPIC -->
                                     <!-- SIDEBAR USER TITLE -->
                                     <div class="profile-usertitle">
-                                        <div class="profile-usertitle-name"> {{ $model->name }} {{ $model->lastName }}</div>
+                                        <div class="profile-usertitle-name"> {{ $model->name }}</div>
                                         <div class="profile-usertitle-job"> {{ $model->role->name }} </div>
 
                                         @if($model->status == 'waiting')
@@ -175,7 +175,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     </li>
 
                                                     <li>
-                                                        <input type="hidden" id="deny-name" value="{{ $model->name }} {{ $model->lastName }}">
+                                                        <input type="hidden" id="deny-name" value="{{ $model->name }}">
 
                                                         <input type="hidden" id="deny-email" value="{{ $model->email }}">
 
@@ -459,11 +459,15 @@ License: You must have a valid license purchased only from themeforest(the above
                                         <input type="hidden" id="streetMap" value="{{ $model->street }}, {{ $model->number }}">
 
                                         <div class="tab-pane active" id="tab_1_1">
-                                            {!! Form::open(['route' => ['person.update', 'person' => $model->id], 'class' => 'repeater',
-                                            'method' => 'PUT', 'role' => 'form', 'id' => 'form']) !!}
+                                            <form action="{{ route('person.update', ['person' => $model->id]) }}"
+                                                  class="repeater" method="POST" role="form" id="form">
+
+                                                {{ csrf_field() }}
+                                                {{ method_field('PUT') }}
+
 
                                             <div class="row">
-                                                <div class="col-md-6">
+                                                <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label class="control-label">Nome</label>
                                                         <div class="input-group">
@@ -478,24 +482,6 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             />
                                                         </div>
 
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="control-label">Sobrenome</label>
-                                                        <div class="input-group">
-                                                            <span class="input-group-addon">
-                                                                <i class="fa fa-user font-blue"></i>
-                                                            </span>
-                                                            <input type="text" name="lastName" class="form-control"
-                                                                   placeholder="da Silva" value="{{ $model->lastName }}"
-                                                                    @if($fields[$i]->required == 1)
-                                                                        required
-                                                                    @endif
-                                                                    <?php $i++; ?>
-                                                            >
-                                                        </div>
                                                     </div>
                                                 </div>
 
@@ -722,9 +708,18 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             @foreach($adults as $adult)
                                                                 <option value="{{ $adult->id }}"
                                                                         @if($adult->id == $model->partner) selected @endif
-                                                                >{{ $adult->name }} {{ $adult->lastName }}</option>
+                                                                >{{ $adult->name }}</option>
                                                             @endforeach
                                                         </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <label for="">Descrição</label>
+                                                    <div class="form-group">
+                                                        <textarea name="description" id="" cols="30" rows="10" class="form-control">{{ $model->description }}</textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -737,8 +732,13 @@ License: You must have a valid license purchased only from themeforest(the above
                                             @include('includes.address-edit')
 
 
+                                            <br><br>
                                                 <div class="margiv-top-10">
-                                                    {!! Form::submit('Salvar', ['class' => 'btn green', 'id' => 'btn-submit']) !!}
+                                                    <button class="btn blue btn-block" id="btn-submit" type="submit">
+                                                        <i class="fa fa-check"></i>
+                                                        Enviar
+                                                    </button>
+
                                                     <div class="progress" style="display: none;">
                                                         <div class="progress-bar progress-bar-striped active" role="progressbar"
                                                              aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
@@ -748,7 +748,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     </div>
 
                                                 </div>
-                                            {!! Form::close() !!}
+                                            </form>
                                         </div>
                                         <!-- END PERSONAL INFO TAB -->
                                         <!-- CHANGE AVATAR TAB -->
