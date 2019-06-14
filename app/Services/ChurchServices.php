@@ -250,7 +250,6 @@ class ChurchServices{
                 DB::table('required_fields')
                     ->insert([
                         ['model' => 'person', 'value' => 'name', 'field' => 'Nome', 'required' => 1, 'church_id' => $church, 'updated_at' => Carbon::now(), 'created_at' => Carbon::now()],
-                        ['model' => 'person', 'value' => 'lastName', 'field' => 'Sobrenome', 'required' => 1, 'church_id' => $church, 'updated_at' => Carbon::now(), 'created_at' => Carbon::now()],
                         ['model' => 'person', 'value' => 'email', 'field' => 'Email', 'required' => 1, 'church_id' => $church, 'updated_at' => Carbon::now(), 'created_at' => Carbon::now()],
                         ['model' => 'person', 'value' => 'cel', 'field' => 'Celular', 'required' => null, 'church_id' => $church, 'updated_at' => Carbon::now(), 'created_at' => Carbon::now()],
                         ['model' => 'person', 'value' => 'tel', 'field' => 'Telefone', 'required' => 1, 'church_id' => $church, 'updated_at' => Carbon::now(), 'created_at' => Carbon::now()],
@@ -295,7 +294,6 @@ class ChurchServices{
                         ['model' => 'event', 'value' => 'number', 'field' => 'Número', 'required' => 1, 'church_id' => $church, 'updated_at' => Carbon::now(), 'created_at' => Carbon::now()],
 
                         ['model' => 'teen', 'value' => 'name', 'field' => 'Nome', 'required' => 1, 'church_id' => $church, 'updated_at' => Carbon::now(), 'created_at' => Carbon::now()],
-                        ['model' => 'teen', 'value' => 'lastName', 'field' => 'Sobrenome', 'required' => 1, 'church_id' => $church, 'updated_at' => Carbon::now(), 'created_at' => Carbon::now()],
                         ['model' => 'teen', 'value' => 'email', 'field' => 'Email', 'required' => 1, 'church_id' => $church, 'updated_at' => Carbon::now(), 'created_at' => Carbon::now()],
                         ['model' => 'teen', 'value' => 'cel', 'field' => 'Celular', 'required' => null, 'church_id' => $church, 'updated_at' => Carbon::now(), 'created_at' => Carbon::now()],
                         ['model' => 'teen', 'value' => 'tel', 'field' => 'Telefone', 'required' => 1, 'church_id' => $church, 'updated_at' => Carbon::now(), 'created_at' => Carbon::now()],
@@ -315,7 +313,6 @@ class ChurchServices{
                         ['model' => 'teen', 'value' => 'dateBaptism', 'field' => 'Date de Batismo', 'required' => null, 'church_id' => $church, 'updated_at' => Carbon::now(), 'created_at' => Carbon::now()],
 
                         ['model' => 'visitor', 'value' => 'name', 'field' => 'Nome', 'required' => 1, 'church_id' => $church, 'updated_at' => Carbon::now(), 'created_at' => Carbon::now()],
-                        ['model' => 'visitor', 'value' => 'lastName', 'field' => 'Sobrenome', 'required' => 1, 'church_id' => $church, 'updated_at' => Carbon::now(), 'created_at' => Carbon::now()],
                         ['model' => 'visitor', 'value' => 'email', 'field' => 'Email', 'required' => 1, 'church_id' => $church, 'updated_at' => Carbon::now(), 'created_at' => Carbon::now()],
                         ['model' => 'visitor', 'value' => 'cel', 'field' => 'Celular', 'required' => null, 'church_id' => $church, 'updated_at' => Carbon::now(), 'created_at' => Carbon::now()],
                         ['model' => 'visitor', 'value' => 'tel', 'field' => 'Telefone', 'required' => 1, 'church_id' => $church, 'updated_at' => Carbon::now(), 'created_at' => Carbon::now()],
