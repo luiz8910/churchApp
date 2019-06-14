@@ -29,7 +29,7 @@
                     <i class="fa fa-location-arrow font-purple"></i>
                 </span>
                 <input type="text" class="form-control" name="zipCode"
-                       id="zipCode" placeholder="XXXXX-XXX" value="{{ $org->zipCode }}">
+                       id="zipCode" placeholder="XXXXX-XXX" value="@if(isset($org)){{ $org->zipCode }}@else{{ old('zipCode') }}@endif">
             </div>
         </div>
     </div>
@@ -43,7 +43,7 @@
                 </span>
                 <input class="form-control" name="street" id="street"
                        type="text" placeholder="Av. Antonio Carlos Comitre"
-                       value="{{ $org->street }}">
+                       value="@if(isset($org)){{ $org->street }}@else{{ old('street') }}@endif">
             </div>
         </div>
     </div>
@@ -58,7 +58,7 @@
                 </span>
                 <input class="form-control number" name="number" id="number"
                        type="text" placeholder="685"
-                       value="{{ $org->number }}">
+                       value="@if(isset($org)){{ $org->number }}@else{{ old('number') }}@endif">
             </div>
         </div>
     </div>
@@ -76,7 +76,7 @@
                     <i class="fa fa-home font-purple"></i>
                 </span>
                 <input class="form-control" name="neighborhood" id="neighborhood"
-                       type="text" placeholder="Centro" value="{{ $org->neighborhood }}">
+                       type="text" placeholder="Centro" value="@if(isset($org)){{ $org->neighborhood }}@else{{ old('neighborhood') }}@endif">
             </div>
         </div>
     </div>
@@ -89,7 +89,7 @@
                     <i class="fa fa-building font-purple"></i>
                 </span>
                 <input class="form-control" name="city" id="city"
-                       type="text" placeholder="Sorocaba" value="{{ $org->city }}">
+                       type="text" placeholder="Sorocaba" value="@if(isset($org)){{ $org->city }}@else{{ old('city') }}@endif">
             </div>
         </div>
     </div>
@@ -100,7 +100,9 @@
                 <option value="">Selecione</option>
                 @foreach($state as $item)
                     <option value="{{ $item->initials }}"
-                            @if($org->state == $item->initials) selected @endif >{{ $item->state }}</option>
+                            @if(isset($org))
+                            @if($org->state == $item->initials) selected @endif @endif>{{ $item->state }}
+                            </option>
                 @endforeach
             </select>
         </div>
