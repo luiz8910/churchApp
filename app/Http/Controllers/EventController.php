@@ -616,14 +616,17 @@ class EventController extends Controller
 
         $org_name = $this->churchServices->getOrgAlias();
 
+        $org = $this->churchRepository->findByField('id', $this->getUserChurch())->first();
+
+
         if($id)
         {
             return view('events.create', compact('countPerson', 'countGroups', 'state', 'roles',
-                'id', 'notify', 'qtde', 'groups', 'frequencies', 'leader', 'admin', 'org_name'));
+                'id', 'notify', 'qtde', 'groups', 'frequencies', 'leader', 'admin', 'org_name', 'org'));
         }
         else{
             return view('events.create', compact('countPerson', 'countGroups', 'state', 'roles',
-                'notify', 'qtde', 'groups', 'frequencies', 'leader', 'admin', 'org_name'));
+                'notify', 'qtde', 'groups', 'frequencies', 'leader', 'admin', 'org_name', 'org'));
         }
 
 
@@ -1070,7 +1073,9 @@ class EventController extends Controller
 
             $this->eventServices->changeEventDays($id);
 
-            return redirect()->route('event.index');
+            $this->reSub_event_person($id);
+
+            return redirect()->route('event.edit', ['event' => $id]);
         }
 
         $request->session()->flash('error.msg', 'O evento selecionado não existe');

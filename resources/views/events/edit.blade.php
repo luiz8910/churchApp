@@ -435,8 +435,8 @@ License: You must have a valid license purchased only from themeforest(the above
                                             </p>
 
                                             <p>
-                                                <i class="fa fa-calendar font-purple"></i> Próximo
-                                                Encontro: {{ $nextEventDate }}
+                                                <i class="fa fa-calendar font-purple"></i>
+                                                Data: {{ $nextEventDate }}
                                             </p>
 
                                             <p>
@@ -447,29 +447,27 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                             <p>
                                                 <i class="fa fa-pencil font-purple"></i>
-                                                Frequência: {{ $model->frequency }}
-                                                - {{ $preposicao }} {{ $model->day }}
+                                                Frequência:
+                                                @if($model->frequency == 'Encontro Único')
+                                                    {{ $model->frequency }}
+                                                @else
+                                                    {{ $model->frequency }}
+                                                    - {{ $preposicao }} {{ $model->day }}
+                                                @endif
                                             </p>
 
                                             <p>
                                                 <i class="fa fa-book font-purple"></i>
                                                 Inscritos: {{ $model->sub }}
 
-                                                <i class="fa fa-check font-purple" style="margin-left: 20px;"></i>
-                                                Check-in Automático:
-                                                <span id="span-check">
-                                                    @if($model->check_auto == 1)
-                                                        Sim
-                                                    @else
-                                                        Não
-                                                    @endif
-                                                </span>
                                             </p>
 
                                             @if($model->public_url)
                                                 <p>
                                                     <i class="fa fa-lock font-purple" aria-hidden="true"></i>
-                                                    Url Pública: https://beconnect.com.br/url/{{ $model->public_url }}
+                                                    Url Pública: <a href="https://beconnect.com.br/url/{{ $model->public_url }}" target="_blank">
+                                                        https://beconnect.com.br/url/{{ $model->public_url }}
+                                                    </a>
                                                 </p>
                                             @endif
                                             <p>

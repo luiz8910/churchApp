@@ -144,7 +144,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         <select id="select_members" class="select2 form-control">
                                                             <option value="">Selecione</option>
                                                             @foreach($people as $person)
-                                                                <option value="{{ $person->id }}">{{ $person->name }} {{ $person->lastName}}</option>
+                                                                <option value="{{ $person->id }}">{{ $person->name }}</option>
                                                             @endforeach
                                                         </select>
 
@@ -222,7 +222,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <optgroup label="Pessoas">
                                                     @foreach($people as $item)
                                                         <option value="{{ $item->id }}">
-                                                            {{ $item->name }} {{ $item->lastName }}
+                                                            {{ $item->name }}
                                                         </option>
                                                     @endforeach
                                                 </optgroup>
@@ -368,9 +368,6 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                         <img src="../../{{ $person->imgProfile }}" style="width: 50px; height: 50px;">
                                                                     @endif
                                                                     {{ $person->name }}
-                                                                    <span class="hidden-xs hidden-sm">
-                                                                        {{ $person->lastName }}
-                                                                    </span>
                                                                 </a>
                                                             @else
                                                                 <a href="{{ route('person.edit', ['person' => $person->id]) }}"  style="margin-left: 10px;">
@@ -381,9 +378,6 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                         <img src="../../{{ $person->imgProfile }}" style="width: 50px; height: 50px;">
                                                                     @endif
                                                                     {{ $person->name }}
-                                                                    <span class="hidden-xs hidden-sm">
-                                                                        {{ $person->lastName }}
-                                                                    </span>
                                                                 </a>
                                                             @endif
 

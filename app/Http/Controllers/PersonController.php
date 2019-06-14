@@ -441,11 +441,9 @@ class PersonController extends Controller
 
         $route = $this->getRoute();
 
-        
 
         return view('people.create', compact('state', 'roles', 'countPerson', 'countGroups',
-            'adults', 'notify', 'qtde', 'fathers', 'mothers', 'leader', 'fields', 'route',
-            'admin'));
+            'adults', 'notify', 'qtde', 'fathers', 'mothers', 'leader', 'fields', 'route', 'admin'));
     }
 
     public function createTeen()
