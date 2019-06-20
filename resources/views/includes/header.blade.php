@@ -65,22 +65,12 @@
                                     else{
                                         $img = "../" . Auth::user()->person->imgProfile;
                                     }
-                                }else{
-                                    $name = Auth::user()->visitors->first()->name;
-
-                                    if(Auth::user()->first()->facebook_id || Auth::user()->first()->google_id)
-                                    {
-                                        $img = Auth::user()->visitors->first()->imgProfile;
-                                    }
-                                    else{
-                                        $img = "../" . Auth::user()->visitors->first()->imgProfile;
-                                    }
                                 }
 
                                  ?>
 
                             <img alt="" class="img-circle" src="{{ $img }}">
-                            <span class="username username-hide-mobile">{{ $name }}</span>
+                            <span class="username username-hide-mobile">@if(isset($name)){{ $name }}@endif</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-default">
                             <li>

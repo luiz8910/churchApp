@@ -191,7 +191,7 @@
 
                                         <fieldset>
                                             <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
-                                                <input type="checkbox" name="parents" class="checkboxes check-model"
+                                                <input type="checkbox" name="" class="checkboxes check-model"
                                                        id="checkbox-pass" value="1" />
                                                 <span></span>Gerar Senha
                                             </label>
@@ -209,6 +209,15 @@
 
 
                             <div class="form-actions">
+
+                                <fieldset>
+                                    <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                        <input type="checkbox" name="payment" class="checkboxes check-model"
+                                               id="checkbox-pass" value="1" checked/>
+                                        <span></span>Habilitar Módulo de Pagamento
+                                    </label>
+                                </fieldset>
+
                                 <button type="submit" class="btn blue" id="btn-submit-church">
                                     <i class="fa fa-check"></i>
                                     Enviar

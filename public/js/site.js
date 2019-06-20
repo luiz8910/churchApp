@@ -1100,20 +1100,20 @@ $(function(){
         $("#expire_date").val(value);
 
     }).blur(function(){
-        console.log('blur');
+
 
         var value = this.value;
 
         var span = $("#span-error");
 
-        if(value.length < 5)
+        if(value.length < 7)
         {
-            $("#expire_date").addClass('has-error-input');
+            $("#expire-date-form-group").addClass('has-error');
 
             span.text('Data com formato incorreto').css('display', 'block');
         }
         else{
-            $("#expire_date").removeClass('has-error-input');
+            $("#expire-date-form-group").removeClass('has-error');
 
             span.css('display', 'none');
 
@@ -1123,26 +1123,26 @@ $(function(){
 
             var year = date.getFullYear();
 
-            var input_year = "20" + value.charAt(3) + value.charAt(4);
+            var input_year = "20" + value.charAt(5) + value.charAt(6);
 
             var input_month = value.charAt(0) + value.charAt(1);
 
             if(input_year < year)
             {
-                $("#expire_date").addClass('has-error-input');
+                $("#expire-date-form-group").addClass('has-error');
 
                 span.text('Cartão de Crédito vencido').css('display', 'block');
             }
 
-            else if(input_year == year && input_month < month){
+            else if(input_year === year && input_month < month){
 
-                $("#expire_date").addClass('has-error-input');
+                $("#expire-date-form-group").addClass('has-error');
 
                 span.text('Cartão de Crédito vencido').css('display', 'block');
             }
 
             else{
-                $("#expire_date").removeClass('has-error-input');
+                $("#expire-date-form-group").removeClass('has-error');
 
                 span.css('display', 'none');
             }
@@ -1157,9 +1157,44 @@ $(function(){
         var id = this.id.replace('btn-delete-church-', '');
 
         deleteChurch(id);
+    });
+
+
+    $("#email_pay").change(function(){
+        if(validateEmail(this.value))
+        {
+            validEmail();
+            localStorage.removeItem('email');
+        }
+        else{
+            localStorage.setItem('email', 'error');
+            invalidEmail();
+        }
+    });
+
+    $("#card_number").change(function () {
+        console.log(this.value.length);
+    });
+
+
+    $("#btn-submit-pay").submit(function (e) {
+        if(localStorage.getItem('email') == 'error')
+        {
+            e.preventDefault();
+        }
+
+        if(localStorage.getItem('cpf') == 'error')
+        {
+            e.preventDefault();
+        }
+
+        if(!$("#payment-check").is(':checked'))
+        {
+            e.preventDefault();
+        }
+
+
     })
-
-
 
 });
 

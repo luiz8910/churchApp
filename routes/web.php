@@ -451,7 +451,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 });
 
-    //Pagamentos PayU
+    //Pagamentos Pagar.me
 
         //Planos
 
@@ -485,7 +485,9 @@ Route::group(['middleware' => 'auth'], function () {
 
         //Teste
 
-            Route::any('/teste-payu', 'PaymentController@teste');
+            Route::get('payment-event', function (){
+                return view('site.payment-event');
+            });
 
     // Fim Pagamentos
 

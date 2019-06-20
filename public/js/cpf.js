@@ -61,7 +61,9 @@ $("#cpf").keypress(function (e) {
             $("#icon-success-cpf").css("display", "block");
             $(".small-error").css("display", "none");
 
-            checkCPF(cpf);
+            localStorage.removeItem('cpf');
+
+            //checkCPF(cpf);
         } else{
             $("#form-cpf")
                 .removeClass("has-success")
@@ -70,6 +72,8 @@ $("#cpf").keypress(function (e) {
             $("#icon-success-cpf").css("display", "none");
             $("#icon-error-cpf").css("display", "block");
             $(".small-error").css("display", "block");
+
+            localStorage.setItem('cpf', 'error');
         }
     }
 
