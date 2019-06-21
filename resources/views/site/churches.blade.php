@@ -222,7 +222,7 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label for="exampleInputPassword1">Telefone da Oraganização</label>
+                                                    <label for="exampleInputPassword1">Telefone da Organização</label>
                                                     <div class="input-group">
                                                     <span class="input-group-addon">
                                                         <i class="fa fa-phone font-green"></i>
@@ -369,6 +369,22 @@
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <fieldset>
+                                                        <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                                            <input type="checkbox" name="payment" class="checkboxes check-model"
+                                                                   id="payment-check-edit" value="1"/>
+                                                            <span></span>Habilitar Módulo de Pagamento
+                                                        </label>
+                                                    </fieldset>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
 
                                     </div>
 

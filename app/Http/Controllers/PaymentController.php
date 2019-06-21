@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Payment;
 use App\Repositories\PaymentRepository;
+use App\Services\PaymentServices;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\Request;
@@ -15,10 +16,14 @@ class PaymentController extends Controller
      */
     private $repository;
     private $pay;
-
+    private $client;
+    /**
+     * @var PaymentServices
+     */
+    private $paymentServices;
 
     //Controller Apenas de Teste
-    public function __construct(PaymentRepository $repository)
+    public function __construct(PaymentRepository $repository, PaymentServices $paymentServices)
     {
 
         $this->repository = $repository;
@@ -26,7 +31,22 @@ class PaymentController extends Controller
         $this->pay = new Payment();
 
         $plan_url = $this->pay->plan();
+
+        $this->client = new Client();
+
+        $this->paymentServices = $paymentServices;
     }
+
+
+    public function store(Request $request)
+    {
+        $this->paymentServices->newBuyer();
+
+        $token = $this->paymentServices->newCardToken();
+
+        $this->paymentServices->newCard($token);
+    }
+
 
     public function cardDelete($customer_id, $token)
     {

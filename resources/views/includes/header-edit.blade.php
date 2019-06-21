@@ -67,7 +67,7 @@
                             ?>
 
                             <img alt="" class="img-circle" src="{{ $img }}">
-                            <span class="username username-hide-mobile">{{ $name }}</span>
+                            <span class="username username-hide-mobile">@if(isset($name)){{ $name }}@endif</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-default">
                             <li>

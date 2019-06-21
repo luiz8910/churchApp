@@ -339,6 +339,20 @@ function editChurch(id) {
 
             var state = e.church.state;
 
+            var payment = e.church.payment;
+
+            var pay = $("#payment-check-edit");
+
+            console.log(payment);
+
+            if(payment)
+            {
+                pay.attr('checked', true);
+            }
+            else {
+                pay.attr('checked', null);
+            }
+
             $("#church_name").val(name);
 
             $("#church_alias").val(alias);
@@ -358,6 +372,8 @@ function editChurch(id) {
             $("#city-2").val(city);
 
             $("#state-2").val(state);
+
+
 
             //Responsável
 

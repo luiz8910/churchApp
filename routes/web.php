@@ -451,7 +451,10 @@ Route::group(['middleware' => 'auth'], function () {
 
 });
 
-    //Pagamentos Pagar.me
+    //Pagamentos Zoop
+
+        //Criar Cartão
+            Route::post('store-payment', 'PaymentController@store')->name('payment.store');
 
         //Planos
 

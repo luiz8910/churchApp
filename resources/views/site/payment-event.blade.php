@@ -30,7 +30,32 @@ License: You must have a valid license purchased only from themeforest(the above
 
 <body class="page-container-bg-solid page-boxed">
 <!-- BEGIN HEADER -->
-@include('includes.header-edit')
+<div class="">
+    <!-- BEGIN HEADER TOP -->
+    <div class="">
+        <div class="container">
+            <!-- BEGIN LOGO -->
+            <div class="" style="text-align: center;">
+                <a href="javascript:">
+                    <img src="../../teste/logo-menor-header.png" alt="logo" class="logo-default" style="width: 270px; margin-top: 40px;">
+                    {{--<img src="../../logo/Vertical.png" alt="logo" class="logo-default" style="width: 300px; margin-top: -20px;">--}}
+                </a>
+            </div>
+            <!-- END LOGO -->
+            <!-- BEGIN RESPONSIVE MENU TOGGLER -->
+
+            <!-- END RESPONSIVE MENU TOGGLER -->
+            <!-- BEGIN TOP NAVIGATION MENU -->
+
+            <!-- END TOP NAVIGATION MENU -->
+        </div>
+    </div>
+    <!-- END HEADER TOP -->
+    <!-- BEGIN HEADER MENU -->
+
+<!-- END HEADER MENU -->
+</div>
+<!-- END HEADER -->
 <!-- END HEADER -->
 <!-- BEGIN CONTAINER -->
 <div class="page-container">
@@ -124,7 +149,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                 <div class="portlet-body form">
 
-                                    <form action="" id="form">
+                                    <form action="{{ route('payment.store') }}" id="form">
 
                                         <div class="form-body">
 
@@ -320,7 +345,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
                                                     <input type="checkbox" name="payment" class="checkboxes check-model"
                                                            id="payment-check" value="1" />
-                                                    <span></span>Autorizo a Cobrança de R$150,00 do meu cartão de crédito para a conta da CDL MAIS
+                                                    <span></span>Autorizo a Cobrança de R$1,00 do meu cartão de crédito para a conta da CDL MAIS
                                                 </label>
                                             </fieldset>
 
