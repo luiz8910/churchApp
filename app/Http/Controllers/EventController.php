@@ -2054,7 +2054,7 @@ class EventController extends Controller
 
                 $this->sendWhatsApp($event_id, $person->id);
 
-                $request->session()->flash('success.msg', 'Sucesso! Você está inscrito, um email foi enviado para ' . $data['email']);
+                //$request->session()->flash('success.msg', 'Sucesso! Você está inscrito, um email foi enviado para ' . $data['email']);
 
                 return redirect()->back()->withInput();
             }
@@ -2080,7 +2080,7 @@ class EventController extends Controller
 
                 $this->sendWhatsApp($event_id, $person_id);
 
-                $request->session()->flash('success.msg', 'Sucesso! Você está inscrito, um email foi enviado para ' . $data['email']);
+                //$request->session()->flash('success.msg', 'Sucesso! Você está inscrito, um email foi enviado para ' . $data['email']);
 
                 return redirect()->back()->withInput();
             }
