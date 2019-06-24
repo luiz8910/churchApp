@@ -29,7 +29,7 @@ class MessageServices
     {
         $this->client = new Client();
         $this->base_uri = 'http://api.gobot.digital/master/api/';
-        $this->token = '75qa5plcpsb3m6hr';
+        $this->token = "75qa5plcpsb3m6hr";//env('APP_WP_TOKEN');
     }
 
     /*
