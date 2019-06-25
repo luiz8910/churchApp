@@ -411,6 +411,12 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                     <i class="fa fa-whatsapp"></i>
                                                                     <span id="span-whatsapp-{{ $person->id }}">WhatsApp</span>
                                                                 </a>
+
+                                                                <a href="javascript:" class="btn btn-info btn-circle btn-sm btn-email"
+                                                                   title="Enviar QR Code por Email" id="btn-email-{{ $person->id }}">
+                                                                    <i class="fa fa-envelope"></i>
+                                                                    <span id="span-email-{{ $person->id }}">Email</span>
+                                                                </a>
                                                         </td>
                                                     </tr>
 

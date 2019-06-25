@@ -96,6 +96,14 @@ $(function(){
 
         sendWhatsAppQR(event_id, person_id);
     })
+
+    $(".btn-email").click(function(){
+
+        var person_id = this.id.replace('btn-email-', '');
+        var event_id = $("#event-id").val();
+
+        sendEmailQR(event_id, person_id);
+    })
 });
 
 
@@ -190,6 +198,31 @@ function sendWhatsAppQR(event_id, person_id)
         }
         else{
             swal('Atenção', 'Não há celular ou telefone cadastrado para este usuário', 'error');
+        }
+    });
+
+    request.fail(function (e) {
+        console.log('fail');
+        console.log(e);
+    })
+}
+
+function sendEmailQR(event_id, person_id)
+{
+    var request = $.ajax({
+        url: '/email-qr/' + event_id + '/' + person_id,
+        method: 'GET',
+        dataType: 'json'
+    });
+
+    request.done(function (e) {
+
+        if(e.status)
+        {
+            $('#span-email-' + person_id).text('Enviado');
+        }
+        else{
+            swal('Atenção', 'Não há email cadastrado para este usuário', 'error');
         }
     });
 

@@ -2052,10 +2052,10 @@ class EventController extends Controller
 
                 //$this->peopleServices->send_sub_email($event_id, $person->id);
 
-                $this->sendWhatsApp($event_id, $person->id);
+                //$this->sendWhatsApp($event_id, $person->id);
 
-                //$request->session()->flash('success.msg', 'Sucesso! Você está inscrito, um email foi enviado para ' . $data['email']);
-                $request->session()->flash('success.msg', 'Sucesso! Você está inscrito, o QR Code foi enviado para ' . $data['cel']);
+                $request->session()->flash('success.msg', 'Sucesso! Você está inscrito, um email foi enviado para ' . $data['email']);
+                //$request->session()->flash('success.msg', 'Sucesso! Você está inscrito, o QR Code foi enviado para ' . $data['cel']);
 
                 return redirect()->back()->withInput();
             }
@@ -2079,10 +2079,10 @@ class EventController extends Controller
 
                 //$this->peopleServices->send_sub_email($event_id, $person_id);
 
-                $this->sendWhatsApp($event_id, $person_id);
+                //$this->sendWhatsApp($event_id, $person_id);
 
-                //$request->session()->flash('success.msg', 'Sucesso! Você está inscrito, um email foi enviado para ' . $data['email']);
-                $request->session()->flash('success.msg', 'Sucesso! Você está inscrito, o QR Code foi enviado para ' . $data['cel']);
+                $request->session()->flash('success.msg', 'Sucesso! Você está inscrito, um email foi enviado para ' . $data['email']);
+                //$request->session()->flash('success.msg', 'Sucesso! Você está inscrito, o QR Code foi enviado para ' . $data['cel']);
 
                 return redirect()->back()->withInput();
             }
@@ -2287,6 +2287,26 @@ class EventController extends Controller
 
         return json_encode(['status' => true]);
 
+    }
+
+    public function sendEmailQR($event_id, $person_id)
+    {
+        $person = $this->personRepository->findByField('id', $person_id)->first();
+
+        $event = $this->repository->findByField('id', $event_id)->first();
+
+        $data['person_id'] = $person_id;
+
+        if($person->email == "")
+        {
+            return json_encode(['status' => false]);
+        }
+
+        $user = $person->user;
+
+        $this->messageServices->welcome_sub($user, $event, $person->qrCode);
+
+        return json_encode(['status' => true]);
     }
 
     public function testezap($event_id)

@@ -10,6 +10,8 @@ use App\Models\Person;
 use App\Repositories\EventRepository;
 use App\Repositories\EventSubscribedListRepository;
 use App\Repositories\PersonRepository;
+use App\Traits\ConfigTrait;
+use App\Traits\EmailTrait;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\DB;
@@ -18,7 +20,7 @@ use Illuminate\Support\Facades\Mail;
 
 class MessageServices
 {
-
+    use EmailTrait;
     private $client, $base_uri, $token;
 
 
@@ -159,7 +161,7 @@ class MessageServices
                 'phone' => $data['number'],
                 'body' => 'https://beconnect.com.br/qrcodes/'. $data['person_id'] . '.png',
                 'filename' => $data['person_id'] . '.png',
-                'caption' => $data['text']
+                'caption' => $data['text'] . ' Enviado ás ' . date_format(Carbon::now(), 'H:i')
             ]
         ]);
 
