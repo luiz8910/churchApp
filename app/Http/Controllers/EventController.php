@@ -2304,6 +2304,11 @@ class EventController extends Controller
 
         $user = $person->user;
 
+        if($person->qrCode == null)
+        {
+            $this->qrServices->generateQrCode($person_id);
+        }
+
         $this->messageServices->welcome_sub($user, $event, $person->qrCode);
 
         return json_encode(['status' => true]);
