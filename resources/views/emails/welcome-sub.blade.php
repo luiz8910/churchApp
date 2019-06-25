@@ -465,7 +465,7 @@
                                                                         
                                                                         ou exiba QR Code abaixo:
 
-                                                                        <img src="https://beconnect.com.br/{{ $qrCode }}" alt="" style="width: 95%; height: 50%;">
+                                                                        <img src="{{ $qrCode }}" alt="" style="width: 95%; height: 50%;">
 
                                                                     </td>
 

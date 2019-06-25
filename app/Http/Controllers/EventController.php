@@ -2309,7 +2309,9 @@ class EventController extends Controller
             $this->qrServices->generateQrCode($person_id);
         }
 
-        $this->messageServices->welcome_sub($user, $event, $person->qrCode);
+        $qrCode = "https://beconnect.com.br/" . $person->qrCode;
+
+        $this->messageServices->welcome_sub($user, $event, $qrCode);
 
         return json_encode(['status' => true]);
     }
