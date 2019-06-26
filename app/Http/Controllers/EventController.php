@@ -2314,12 +2314,23 @@ class EventController extends Controller
 
         $this->messageServices->welcome_sub($user, $event, $qrCode);
 
+        DB::table('msg_jobs')
+            ->insert([
+                'person_id' => $person_id,
+                'channel' => 'email',
+                'responseCode' => 200,
+                'responseText' => 'OK',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ]);
+
         return json_encode(['status' => true]);
     }
 
 
     public function sendQREmailAll($event_id)
     {
+
         SendQrEmail::dispatch($event_id);
 
         return redirect()->route('index');
