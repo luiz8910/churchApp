@@ -86,7 +86,7 @@ class Test implements ShouldQueue
         }
 
 
-        $person = Person::where(['id' => 632])->first();
+        $person = Person::where(['id' => 21])->first();
 
         $user = $person->user;
 
