@@ -56,7 +56,7 @@ class welcome_sub extends Mailable
         $text = "Bem vindo ao Beconnect";
 
         return $this
-            ->from('admin@beconnect.com.br')
+            ->from('teste@beconnect.com.br')
             ->subject($text)
             ->view("emails.welcome-sub");
     }
