@@ -204,6 +204,13 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             </a>
                                                         </li>
                                                         <li>
+                                                            <a href="{{ route('sendqr.email.all', ['event_id' => $model->id]) }}"
+                                                               id="">
+                                                                <i class="fa fa-envelope font-purple"></i>
+                                                                Enviar Qr por Email
+                                                            </a>
+                                                        </li>
+                                                        <li>
                                                             <a href="javascript:;" id="check-auto">
                                                                 <i class="fa fa-check font-purple"></i>
                                                                 Check-in Automático

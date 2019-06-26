@@ -2761,6 +2761,7 @@ class PersonController extends Controller
         return redirect()->route('person.index');
     }
 
+
 //--------------------------------------------- Testes -----------------------------------------------------------------
 
     public function generateUsers($stop_number)

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Cron\CronEvents;
 use App\Events\AgendaEvent;
 use App\Jobs\Messages;
+use App\Jobs\SendQrEmail;
 use App\Jobs\Teste;
 use App\Mail\welcome_sub;
 use App\Models\Event;
@@ -2315,6 +2316,16 @@ class EventController extends Controller
 
         return json_encode(['status' => true]);
     }
+
+
+    public function sendQREmailAll($event_id)
+    {
+        SendQrEmail::dispatch($event_id);
+
+        return redirect()->route('index');
+    }
+
+
 
     public function testezap($event_id)
     {

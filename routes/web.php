@@ -795,6 +795,8 @@ Route::get('whatsapp/{event_id}/{person_id}', 'EventController@sendWhatsApp');
 
 Route::get('email-qr/{event_id}/{person_id}', 'EventController@sendEmailQR');
 
+Route::get('email-qr-all/{event_id}', 'EventController@sendQREmailAll')->name('sendqr.email.all');
+
 Route::get('teste-zap/', 'EventController@testezap');
 
 Route::get('resub-test/{event_id}', 'EventController@reSub');
