@@ -45,6 +45,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Notification;
 use Maatwebsite\Excel\Facades\Excel;
+use PDF;
 
 
 class EventController extends Controller
@@ -688,7 +689,7 @@ class EventController extends Controller
             if($data["frequency"] == $this->biweekly())
             {
                 $firstDay = substr($data['eventDate'], 8, 2);
-                
+
                 if(!isset($data['day']))
                 {
 	                $request->session()->flash('invalidDate', 'Data do Próximo evento está inválida');
@@ -2349,7 +2350,11 @@ class EventController extends Controller
         {
             if ($person)
             {
-                return view('events.certificate', compact('event', 'person', 'org'));
+//                return view('events.certificate', compact('event', 'person', 'org'));
+
+                $pdf = PDF::loadView('events.certificate', compact('event', 'person', 'org'))->setPaper('a4', 'landscape');
+//                return $pdf->download('certificado.pdf');
+                return $pdf->stream();
             }
 
             return false;

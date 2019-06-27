@@ -188,6 +188,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         \App\Providers\RepositoryServiceProvider::class,
 
+        Barryvdh\DomPDF\ServiceProvider::class,
     ],
 
     /*
@@ -240,8 +241,8 @@ return [
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
         'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
         'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
-        'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class
-
+        'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
+        'PDF' => Barryvdh\DomPDF\Facade::class
     ],
 
 ];
