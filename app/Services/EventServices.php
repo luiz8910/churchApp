@@ -665,7 +665,7 @@ class EventServices
      */
     public function allEvents($church_id)
     {
-        
+
         //Filtrar eventos por igreja
         return DB::table('event_person')
             ->join('events', 'events.id', '=', 'event_person.event_id')
@@ -673,7 +673,7 @@ class EventServices
                 'events.church_id' => $church_id,
                 'event_person.deleted_at' => null
                 ])
-            ->select('event_person.event_id', 'event_person.eventDate')
+            ->select('event_person.event_id', 'event_person.eventDate', 'events.startTime')
             ->orderBy('event_person.eventDate', 'asc')
             ->orderBy('events.startTime', 'asc')
             ->distinct()
@@ -1608,7 +1608,7 @@ class EventServices
 
             $i++;
         }
-        
+
     }
 
     public function nextBiWeeklyEvents($day, $day_2, $id)
@@ -1754,7 +1754,7 @@ class EventServices
                 'event_person.deleted_at' => null,
                 ['event_person.event_date', '>=', $today]
             ])->select('event_id', 'event_date')->distinct()->orderBy('event_person.event_date')->get();
-            
+
             $my_event = '';
             $my_event_date = '';
 
@@ -1815,7 +1815,7 @@ class EventServices
                 $t = date_format($t, "Y-m-d");
 
                 $dates = DB::select("SELECT ep.eventDate, e.id, e.name, e.startTime FROM event_person ep, events e, event_subscribed_lists evl
-                              WHERE STR_TO_DATE(ep.eventDate, '%Y-%m-%d') > '$t' AND STR_TO_DATE(e.startTime, '%H:%i') >= '00:00' AND ep.deleted_at is null AND 
+                              WHERE STR_TO_DATE(ep.eventDate, '%Y-%m-%d') > '$t' AND STR_TO_DATE(e.startTime, '%H:%i') >= '00:00' AND ep.deleted_at is null AND
                               e.deleted_at is null AND e.church_id = '$church_id' AND evl.event_id = e.id AND evl.person_id = '$person_id' ORDER BY e.startTime limit 1");
                 */
 
@@ -1828,7 +1828,7 @@ class EventServices
                     $t = date_format($t, "Y-m-d");
 
                     $dates = DB::select("SELECT ep.eventDate, e.id, e.name, e.startTime FROM event_person ep, events e, event_subscribed_lists evl
-                              WHERE ep.eventDate = '$t' AND STR_TO_DATE(e.startTime, '%H:%i') >= '$time' AND ep.deleted_at is null AND 
+                              WHERE ep.eventDate = '$t' AND STR_TO_DATE(e.startTime, '%H:%i') >= '$time' AND ep.deleted_at is null AND
                               e.deleted_at is null AND e.church_id = '$church_id' AND evl.event_id = e.id AND evl.person_id = '$person_id' limit 1");
 
                     $i++;

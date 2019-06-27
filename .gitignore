@@ -9,3 +9,5 @@ Homestead.yaml
 /public/qrcodes
 
 *.lock
+*.sql
+/package-lock.json
