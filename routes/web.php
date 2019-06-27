@@ -418,9 +418,7 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('/findSubUsers/{input}/{event_id}', 'EventController@findSubUsers');
 
-
-
-
+        Route::get('generate-certificate/{event_id}/{person_id}', 'EventController@generateCertificate');
 
         
     });

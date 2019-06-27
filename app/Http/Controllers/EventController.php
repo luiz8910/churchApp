@@ -2337,6 +2337,28 @@ class EventController extends Controller
     }
 
 
+    public function generateCertificate($event_id, $person_id)
+    {
+        $event = $this->repository->findByField('id', $event_id)->first();
+
+        $person = $this->personRepository->findByField('id', $person_id)->first();
+
+        $org = $this->churchRepository->findByField('id', $this->getUserChurch())->first();
+
+        if($event)
+        {
+            if ($person)
+            {
+                return view('events.certificate', compact('event', 'person', 'org'));
+            }
+
+            return false;
+        }
+
+        return false;
+    }
+
+
 
     public function testezap($event_id)
     {
