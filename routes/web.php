@@ -433,8 +433,6 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get("/getChurchZipCode", "ConfigController@getChurchZipCode");
 
-    Route::get('download-certificate/{event_id}/{person_id}', 'EventController@downloadCertificate');
-
 
     Route::get('testeQueue', 'EventController@testeQueue');
 
@@ -619,6 +617,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('getSubDays/{event_id}', 'ReportController@getSubDays');
 
     Route::get('getFrequency/{event_id}', 'ReportController@getFrequency');
+
+    Route::get('download-certificate/{event_id}/{person_id}', 'EventController@downloadCertificate');
 
     // Fim Admin site
 
