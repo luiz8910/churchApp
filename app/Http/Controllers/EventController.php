@@ -6,6 +6,7 @@ use App\Cron\CronEvents;
 use App\Events\AgendaEvent;
 use App\Jobs\Messages;
 use App\Jobs\SendQrEmail;
+use App\Jobs\Test;
 use App\Jobs\Teste;
 use App\Mail\welcome_sub;
 use App\Models\Event;
@@ -39,13 +40,14 @@ use App\Repositories\StateRepository;
 use App\Repositories\UserRepository;
 use App\Traits\PeopleTrait;
 use App\Traits\UserLoginRepository;
+use Barryvdh\DomPDF\PDF;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Notification;
 use Maatwebsite\Excel\Facades\Excel;
-use PDF;
+
 
 
 class EventController extends Controller
@@ -2364,13 +2366,11 @@ class EventController extends Controller
     }
 
 
-
-    public function testezap($event_id)
+    public function testeQueue()
     {
-        //\App\Jobs\Messages::dispatch(14);
+        Test::dispatch(100, 1);
 
-
-
+        return redirect()->route('index');
     }
 
     public function listEvent($event_id)

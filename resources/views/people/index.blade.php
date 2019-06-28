@@ -72,7 +72,7 @@
                                                     <div class="btn-group btn-group-sm">
                                                         @if(Auth::user()->person->role_id == $leader
                                                         || Auth::user()->person->role_id == $admin)
-                                                            <div class="col-lg-6">
+                                                            <div class="col-lg-8">
                                                                 <div class="input-group">
                                                                     <input type="text" class="form-control"
                                                                            id="btn-search"
@@ -87,33 +87,34 @@
                                                             </div><!-- /.col-lg-8 -->
 
 
-                                                            <div class="col-lg-3">
-                                                                <div class="btn-group-devided">
-                                                                    <a role="button"
-                                                                       class="btn btn-info btn-circle btn-sm"
-                                                                       href="{{ route('person.create') }}"
-                                                                       style="margin-top: 2px;">
-                                                                        <i class="fa fa-plus"></i>
-                                                                        <span class="hidden-xs hidden-sm">Novo Membro</span>
-                                                                    </a>
-
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="col-lg-3">
-                                                                <a class="btn red btn-outline btn-circle btn-sm"
-                                                                   href="javascript:;" data-toggle="dropdown">
+                                                            <div class="col-lg-2">
+                                                                <a class="btn green btn-outline btn-circle btn-sm"
+                                                                   href="javascript:;" data-toggle="dropdown" style="margin-top: 2px; float: left;">
                                                                     <i class="fa fa-share"></i>
                                                                     <span class="hidden-xs"> Opções </span>
                                                                     <i class="fa fa-angle-down"></i>
                                                                 </a>
                                                                 <ul class="dropdown-menu pull-right"
                                                                     id="sample_3_tools">
+
                                                                     <li>
-                                                                        <a href="javascript:;" class="tool-action" data-toggle="modal"
-                                                                           data-target="#transfer_users">
-                                                                            <i class="fa fa-users"></i>
-                                                                            Transferir Usuários
+                                                                        <a class="tool-action"
+                                                                           href="{{ route('person.create') }}"
+                                                                           style="margin-top: 2px;">
+                                                                            <i class="fa fa-plus font-blue"></i>
+                                                                            <span class="hidden-xs hidden-sm">Novo Participante</span>
+                                                                        </a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript:;" class="tool-action">
+                                                                            <i class="fa fa-plus font-blue"></i>
+                                                                            Novo Responsável
+                                                                        </a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript:;" class="tool-action">
+                                                                            <i class="fa fa-users font-blue"></i>
+                                                                            Responsáveis
                                                                         </a>
                                                                     </li>
                                                                     <!--<li>

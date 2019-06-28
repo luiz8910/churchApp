@@ -41,7 +41,40 @@ class Test implements ShouldQueue
      */
     public function handle(PersonRepository $personRepository)
     {
-        $i = 0;
+
+        $person = $personRepository->findByField('email', 'luiz.sanches8910@gmail.com')->first();
+
+        if($person)
+        {
+            $user = $person->user;
+
+            \Notification::send($user, new \App\Notifications\Test(10));
+        }
+
+        $person = $personRepository->findByField('email', 'luiz.sanches89@yahoo.com')->first();
+
+        if($person)
+        {
+            $user = $person->user;
+
+            \Notification::send($user, new \App\Notifications\Test(10));
+        }
+
+
+        $person = $personRepository->findByField('email', 'luiz.sanches89@hotmail.com')->first();
+
+        if($person)
+        {
+            $user = $person->user;
+
+            \Notification::send($user, new \App\Notifications\Test(10));
+        }
+    }
+}
+
+
+/*
+ * $i = 0;
 
         $users_count = 0;
 
@@ -91,8 +124,4 @@ class Test implements ShouldQueue
         $user = $person->user;
 
         \Notification::send($user, new \App\Notifications\Test($users_count));
-
-
-
-    }
-}
+ */

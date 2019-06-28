@@ -433,6 +433,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get("/getChurchZipCode", "ConfigController@getChurchZipCode");
 
 
+    Route::get('testeQueue', 'EventController@testeQueue');
+
+
 
 
 

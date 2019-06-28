@@ -44,7 +44,7 @@ class Test extends Notification
     {
         return (new MailMessage)
             ->greeting('Hello!')
-            ->from('admin@beconnect.com.br')
+            ->from('contato@beconnect.com.br')
             ->line('O envio de email terminou, foram enviados ' . $this->qtde . ' emails')
             ->action('View Invoice', 'localhost:8000/person')
             ->line('Thank you for using our application!');
