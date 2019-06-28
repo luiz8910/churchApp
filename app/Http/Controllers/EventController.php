@@ -2340,6 +2340,35 @@ class EventController extends Controller
         return redirect()->route('index');
     }
 
+    public function showCertificate($event_id, $person_id)
+    {
+        $event = $this->repository->findByField('id', $event_id)->first();
+
+        $person = $this->personRepository->findByField('id', $person_id)->first();
+
+        $month = date_format(date_create($event->eventDate), 'm');
+
+        $all_months = $this->agendaServices->allMonths();
+
+        $month = (int) $month;
+
+        $month_name = ($all_months[$month]);
+
+        $day = date_format(date_create($event->eventDate), 'd');
+
+        $year = date_format(date_create($event->eventDate), 'Y');
+
+        $string_date = $day . ' de ' . $month_name . ' de ' . $year;
+
+        $org_id = $person->church_id;
+
+        $org = $this->churchRepository->findByField('id', $org_id)->first();
+
+        $pdf = PDF::loadView('events.certificate', compact('event', 'person', 'org', 'string_date'))
+            ->setPaper('a4', 'landscape');
+
+        return $pdf->stream();
+    }
 
     public function generateCertificate($event_id)
     {

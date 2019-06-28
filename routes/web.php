@@ -620,6 +620,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('download-certificate/{event_id}/{person_id}', 'EventController@downloadCertificate');
 
+    Route::get('show-certificate/{event_id}/{person_id}', 'EventController@showCertificate');
+
     // Fim Admin site
 
     Route::get('/events-ajax', 'EventController@getListEvents');
