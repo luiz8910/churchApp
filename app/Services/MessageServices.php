@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Mail\Certificate;
 use App\Mail\welcome;
 use App\Mail\welcome_sub;
 use App\Models\Event;
@@ -200,6 +201,14 @@ class MessageServices
             ));
 
         return true;
+    }
+
+    public function sendCertificate($user, $person, $event)
+    {
+        $url = $this->getUrl();
+
+        Mail::to($user)
+            ->send(new Certificate($person, $url, $event));
     }
 
     public function formatPhoneNumber($number)

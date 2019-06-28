@@ -418,7 +418,8 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('/findSubUsers/{input}/{event_id}', 'EventController@findSubUsers');
 
-        Route::get('generate-certificate/{event_id}/{person_id}', 'EventController@generateCertificate');
+        Route::get('generate-certificate/{event_id}/{person_id?}', 'EventController@generateCertificate')->name('generate.certificate');
+
 
         
     });
@@ -431,6 +432,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get("/markAllAsRead", "ConfigController@markAllAsRead");
 
     Route::get("/getChurchZipCode", "ConfigController@getChurchZipCode");
+
+    Route::get('download-certificate/{event_id}/{person_id}', 'EventController@downloadCertificate');
 
 
     Route::get('testeQueue', 'EventController@testeQueue');

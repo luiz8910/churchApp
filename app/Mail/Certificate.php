@@ -8,42 +8,27 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class welcome_sub extends Mailable
+class Certificate extends Mailable
 {
     use Queueable, SerializesModels;
-    /**
-     * @var User
-     */
-    public $user;
-    /**
-     * @var
-     */
-    public $url;
-    /**
-     * @var
-     */
-    public $event;
-
     public $apple_url;
-
     public $android_url;
-
-    public $qrCode;
+    public $person;
+    public $url;
+    public $event;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(User $user, $url, $event, $qrCode)
+    public function __construct($person, $url, $event)
     {
-        $this->user = $user;
+        $this->person = $person;
         $this->url = $url;
-        $this->event = $event;
-        $this->qrCode = $qrCode;
         $this->apple_url = 'https://itunes.apple.com/app/id1430220715';
         $this->android_url = 'https://play.google.com/store/apps/details?id=com.br.beconnect';
-
+        $this->event = $event;
     }
 
     /**
@@ -53,11 +38,11 @@ class welcome_sub extends Mailable
      */
     public function build()
     {
-        $text = "Bem vindo ao Beconnect";
+        $text = "Seu Certificado Está Pronto";
 
         return $this
             ->from('contato@beconnect.com.br')
             ->subject($text)
-            ->view("emails.welcome-sub");
+            ->view("emails.certificate");
     }
 }

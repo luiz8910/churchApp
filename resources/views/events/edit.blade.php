@@ -210,6 +210,14 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 Enviar Qr por Email
                                                             </a>
                                                         </li>
+
+                                                        <li>
+                                                            <a href="{{ route('generate.certificate',
+                                                                ['event_id' => $model->id]) }}" id="">
+                                                                <i class="fa fa-file-pdf-o font-purple"></i>
+                                                                Enviar Certificados por Email
+                                                            </a>
+                                                        </li>
                                                         <li>
                                                             <a href="javascript:;" id="check-auto">
                                                                 <i class="fa fa-check font-purple"></i>

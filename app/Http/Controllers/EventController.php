@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Cron\CronEvents;
 use App\Events\AgendaEvent;
+use App\Jobs\Certificate;
 use App\Jobs\Messages;
 use App\Jobs\SendQrEmail;
 use App\Jobs\Test;
@@ -40,7 +41,7 @@ use App\Repositories\StateRepository;
 use App\Repositories\UserRepository;
 use App\Traits\PeopleTrait;
 use App\Traits\UserLoginRepository;
-use Barryvdh\DomPDF\PDF;
+use Barryvdh\DomPDF\Facade as PDF;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -2340,29 +2341,68 @@ class EventController extends Controller
     }
 
 
-    public function generateCertificate($event_id, $person_id)
+    public function generateCertificate($event_id)
+    {
+        $org_id = $this->getUserChurch();
+
+        Certificate::dispatch($event_id, $org_id);
+
+        \Session::flash('success.msg', 'O certificado está sendo enviado para os participantes');
+
+        return redirect()->back();
+
+    }
+
+    public function downloadCertificate($event_id, $person_id)
     {
         $event = $this->repository->findByField('id', $event_id)->first();
 
-        $person = $this->personRepository->findByField('id', $person_id)->first();
+        $month = date_format(date_create($event->eventDate), 'm');
 
-        $org = $this->churchRepository->findByField('id', $this->getUserChurch())->first();
+        $all_months = $this->agendaServices->allMonths();
+
+        $month = (int) $month;
+
+        $month_name = ($all_months[$month]);
+
+        $day = date_format(date_create($event->eventDate), 'd');
+
+        $year = date_format(date_create($event->eventDate), 'Y');
+
+        $string_date = $day . ' de ' . $month_name . ' de ' . $year;
 
         if($event)
         {
-            if ($person)
+            $person = $this->personRepository->findByField('id', $person_id)->first();
+
+            if($person)
             {
-//                return view('events.certificate', compact('event', 'person', 'org'));
+                $org_id = $person->church_id;
 
-                $pdf = PDF::loadView('events.certificate', compact('event', 'person', 'org'))->setPaper('a4', 'landscape');
-//                return $pdf->download('certificado.pdf');
-                return $pdf->stream();
+                $org = $this->churchRepository->findByField('id', $org_id)->first();
+
+                if($org)
+                {
+                    echo 'Realizando Download...';
+
+                    $pdf = PDF::loadView('events.certificate', compact('event', 'person', 'org', 'string_date'))
+                        ->setPaper('a4', 'landscape');
+
+                    return $pdf->download($person->name.'.pdf');
+                }else{
+
+                    echo 'Um erro ocorreu, mande um email para contato@beconnect.com.br informando-nos sobre o erro no download do certificado';
+                }
             }
-
-            return false;
+            else{
+                echo 'Um erro ocorreu, mande um email para contato@beconnect.com.br informando-nos sobre o erro no download do certificado';
+            }
+        }
+        else{
+            echo 'Um erro ocorreu, mande um email para contato@beconnect.com.br informando-nos sobre o erro no download do certificado';
         }
 
-        return false;
+
     }
 
 

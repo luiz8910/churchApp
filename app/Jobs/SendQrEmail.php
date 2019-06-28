@@ -42,7 +42,7 @@ class SendQrEmail implements ShouldQueue
                            MessageServices $messageServices, EventSubscribedListRepository $listRepository, qrServices $qrServices)
     {
 
-        $i = 0;
+        /*$i = 0;
         $users_count = 0;
 
         $event = $eventRepository->findByField('id', $this->event_id)->first();
@@ -101,7 +101,7 @@ class SendQrEmail implements ShouldQueue
             }
 
 
-        }
+        }*/
 
 
     }

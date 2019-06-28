@@ -139,7 +139,7 @@
     <div class="certificate-body">
         <p class="text-center">A Prefeitura de Sorocaba por meio de seu Parque Tecnológico, certifica que: </p>
         <h1 class="text-center">{{$person->name}}</h1>
-        <p>Participou do evento denominado <b>{{$event->name}}</b>, realizado em {{ \Carbon\Carbon::parse($event->eventDate)->format('d \d\e F \d\e Y')}}
+        <p>Participou do evento denominado <b>{{$event->name}}</b>, realizado em {{ $string_date }}
             às {{ $event->startTime  }}, no Auditório Central do Parque Tecnológico de
             Sorocaba,
             localizado na {{$event->street}}, {{$event->number}} – {{$event->neighborhood}}. O evento contou com a participação do palestrante Marcelo Tas, que
