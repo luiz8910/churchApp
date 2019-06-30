@@ -14,7 +14,7 @@ class Responsible extends Model implements Transformable
     protected $fillable = [
         'name', 'lastName', 'email', 'tel', 'role_id', 'imgProfile', 'gender',
         'dateBirth', 'cpf', 'rg', 'street', 'neighborhood', 'city', 'zipCode',
-        'state', 'number', 'person_id'
+        'state', 'number', 'person_id', 'church_id', 'abbreviation', 'special_role'
     ];
 
     protected $dates = ['deleted_at'];

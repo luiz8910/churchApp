@@ -420,8 +420,16 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('generate-certificate/{event_id}/{person_id?}', 'EventController@generateCertificate')->name('generate.certificate');
 
+        Route::get('responsaveis', 'ResponsibleController@index')->name('responsibles.index');
 
-        
+        Route::post('responsible-store', 'ResponsibleController@store')->name('responsibles.store.modal');
+
+        Route::put('responsible-update/{id}', 'ResponsibleController@update')->name('responsibles.update');
+
+        Route::delete('responsible-delete/{id}', 'ResponsibleController@delete')->name('responsibles.delete');
+
+        Route::get('get-resp-data/{id}', 'ResponsibleController@getRespData');
+
     });
 
 

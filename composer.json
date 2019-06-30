@@ -25,7 +25,8 @@
     "tymon/jwt-auth": "0.5.*",
     "laravel/tinker": "^1.0",
     "simplesoftwareio/simple-qrcode": "~2",
-    "barryvdh/laravel-dompdf": "^0.8.4"
+    "barryvdh/laravel-dompdf": "^0.8.4",
+    "ext-json": "*"
   },
   "require-dev": {
     "fzaninotto/faker": "~1.4",

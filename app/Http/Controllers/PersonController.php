@@ -188,6 +188,8 @@ class PersonController extends Controller
             'leader', 'admin', 'visitor_id'));
     }
 
+
+
     public function teenagers()
     {
         $teen = DB::table("people")

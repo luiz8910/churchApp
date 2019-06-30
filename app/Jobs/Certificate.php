@@ -59,34 +59,27 @@ class Certificate implements ShouldQueue
 
                 if ($person)
                 {
-                    echo 'Realizando Download...';
+                    if($person->email)
+                    {
+                        echo 'Realizando Download...';
 
-                    $messageServices->sendCertificate($person->user, $person, $event);
+                        $messageServices->sendCertificate($person->user, $person, $event);
+
+                        $i++;
+
+                        if($i == 10)
+                        {
+                            $i = 0;
+                            sleep(1);
+                        }
+                    }
+
+
                 }
 
-                $i++;
 
-                if($i == 10)
-                {
-                    $i = 0;
-                    sleep(1);
-                }
             }
         }
-
-
-
-
-        //$org = $churchRepository->findByField('id', $this->org_id)->first();
-
-        if($event)
-        {
-
-
-
-
-        }
-
 
     }
 }

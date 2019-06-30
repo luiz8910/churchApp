@@ -57,6 +57,8 @@
                                 </div>
                             @endif
 
+                            @include('includes.messages')
+
                             <?php $route = "person";?>
 
                             <div class="page-content-inner">
@@ -106,13 +108,7 @@
                                                                         </a>
                                                                     </li>
                                                                     <li>
-                                                                        <a href="javascript:;" class="tool-action">
-                                                                            <i class="fa fa-plus font-blue"></i>
-                                                                            Novo Responsável
-                                                                        </a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="javascript:;" class="tool-action">
+                                                                        <a href="{{ route('responsibles.index') }}" class="tool-action">
                                                                             <i class="fa fa-users font-blue"></i>
                                                                             Responsáveis
                                                                         </a>
