@@ -214,5 +214,7 @@ class ResponsibleController extends Controller
                 }
             }
         }
+
+        return $this->returnFalse('Este Responsável não existe');
     }
 }
