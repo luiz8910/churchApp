@@ -143,9 +143,10 @@
         <p>Participou do evento denominado <b>{{$event->name}}</b>, realizado em {{ $string_date }}
             às {{ $event->startTime  }}, no Auditório Central do Parque Tecnológico de
             Sorocaba,
-            localizado na {{$event->street}}, {{$event->number}} – {{$event->neighborhood}}. O evento contou com a participação do palestrante Marcelo Tas, que
+            localizado na {{$event->street}}, {{$event->number}} – {{$event->neighborhood}}.
+            <!--O evento contou com a participação do palestrante Marcelo Tas, que
             abordou o tema
-            "Reinvenção da Carreira: Hackeando Marcelo Tas".</p>
+            "Reinvenção da Carreira: Hackeando Marcelo Tas".--></p>
     </div>
     <div class="certificate-footer">
         <p class="text-center">Carga horária do evento: <b>2 horas</b>.</p>
@@ -160,10 +161,12 @@
                 <p class="no-margin">Diretor Executivo - PTS</p>
             </div>
         </div>
+
         <div class="text-center">
             <img src="./images/certificate_sponsor_1.png" alt="Sponsor" class="img-responsive"/>
             <img src="./images/certificate_sponsor_2.png" alt="Sponsor" class="img-responsive"/>
             <img src="./images/certificate_sponsor_3.png" alt="Sponsor" class="img-responsive"/>
+            <img src="./images/certificate_sponsor_4.png" alt="Sponsor" class="img-responsive"/>
         </div>
     </div>
 </div>
