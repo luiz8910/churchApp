@@ -12,7 +12,14 @@ $(function () {
         form.attr('action', url + '/responsible-update/' + id);
 
         getRespData(id);
-    })
+    });
+
+    $(".btn-delete-resp").click(function () {
+
+        var id = this.id.replace('btn-delete-resp-', '');
+
+        deleteResp(id);
+    });
 
 
 });
@@ -48,4 +55,29 @@ function getRespData(id)
         console.log('fail');
         console.log(e);
     })
+}
+
+function deleteResp(id)
+{
+    var url = '/responsible-delete/';
+
+    swal({
+        title: 'Atenção',
+        text: 'Deseja Excluir este responsável?',
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonClass: "btn-danger",
+        confirmButtonText: "Sim, Excluir",
+        cancelButtonText: "Não!",
+        closeOnConfirm: false,
+        closeOnCancel: false
+    },
+        function (isConfirm) {
+            if(isConfirm)
+            {
+                Request(url, null, id, 'DELETE', false);
+            }
+        })
+
+
 }

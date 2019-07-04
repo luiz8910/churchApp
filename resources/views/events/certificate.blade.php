@@ -151,15 +151,19 @@
     <div class="certificate-footer">
         <p class="text-center">Carga horária do evento: <b>4 horas</b>.</p>
         <div class="row text-center">
-            <div class="col-xs-6">
-                <p class="no-margin"><b>Dr. Roberto Freitas</b></p>
-                <p class="no-margin">Presidente - PTS </p>
-            </div>
 
-            <div class="col-xs-6">
-                <p class="no-margin"><b> Me. Eng. Flávio Guerhardt</b></p>
-                <p class="no-margin">Diretor Executivo - PTS</p>
-            </div>
+            @foreach($resp as $item)
+
+                <div class="col-xs-{{ $col_size }}">
+                    <p class="no-margin"><b>{{ $item->abbreviation }} {{ $item->name }}</b></p>
+                    <p class="no-margin">{{ $item->special_role }}</p>
+                </div>
+
+            @endforeach
+                {{--<div class="col-xs-6">
+                    <p class="no-margin"><b> Me. Eng. Flávio Guerhardt</b></p>
+                    <p class="no-margin">Diretor Executivo - PTS</p>
+                </div>--}}
         </div>
 
         <div class="text-center">

@@ -48,11 +48,13 @@ class ResponsibleController extends Controller
 
     public function index()
     {
+        $paginate = 10;
+
         $resp = DB::table("responsibles")
             ->where([
                 'deleted_at' => null,
                 'church_id' => $this->getUserChurch(),
-            ])->orderBy('name')->paginate(5);
+            ])->orderBy('name')->paginate($paginate);
 
 
         foreach ($resp as $item) {
@@ -82,7 +84,7 @@ class ResponsibleController extends Controller
         $visitor_id = $this->roleRepository->findByField('name', 'Visitante')->first()->id;
 
         return view('responsibles.index', compact('resp', 'countPerson', 'countGroups', 'notify', 'qtde',
-            'leader', 'admin', 'visitor_id', 'roles'));
+            'leader', 'admin', 'visitor_id', 'roles', 'paginate'));
     }
 
     public function store(Request $request)

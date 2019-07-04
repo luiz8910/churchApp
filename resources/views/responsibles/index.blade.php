@@ -198,7 +198,7 @@
 
                                                                         <?php $i++; ?>
                                                                         <div class="actions hidden-lg hidden-md">
-                                                                            <div class="btn-group btn-group-sm" @if(count($resp) == $i) style="margin-bottom: 70px;" @endif>
+                                                                            <div class="btn-group btn-group-sm" @if(count($resp) == $i || $paginate == $i) style="margin-bottom: 70px;" @endif>
                                                                                 <a class="btn green btn-outline btn-circle btn-sm"
                                                                                    href="javascript:;" data-toggle="dropdown" style="margin-top: 2px; float: left;">
                                                                                     <i class="fa fa-share"></i>
@@ -213,7 +213,7 @@
                                                                                         </a>
                                                                                     </li>
                                                                                     <li>
-                                                                                        <a href="javascript:" class="tool-action" id="btn-delete-{{ $item->id }}">
+                                                                                        <a href="javascript:" class="tool-action btn-delete-resp" id="btn-delete-resp-{{ $item->id }}">
                                                                                             <i class="fa fa-trash font-red"></i>
                                                                                             Inativar
                                                                                         </a>
@@ -233,9 +233,9 @@
                                                                             <span class="hidden-sm hidden-xs">Editar</span>
                                                                         </button>
 
-                                                                        <button class="btn btn-danger btn-sm btn-circle deleteUser hidden-xs hidden-sm"
+                                                                        <button class="btn btn-danger btn-sm btn-circle btn-delete-resp hidden-xs hidden-sm"
                                                                                 title="Excluir o Responsável"
-                                                                                id="btn-delete-{{ $item->id }}">
+                                                                                id="btn-delete-resp-{{ $item->id }}">
                                                                             <i class="fa fa-trash"></i>
                                                                             <span class="hidden-sm hidden-xs">Inativar</span>
                                                                         </button>

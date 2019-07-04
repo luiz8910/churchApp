@@ -17,6 +17,7 @@ use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Twilio\Rest\Client as Twilio;
 
 
 class MessageServices
@@ -220,5 +221,25 @@ class MessageServices
         $number = '55' . $number;
 
         return $number;
+    }
+
+    public function sendWA()
+    {
+        $sid = "AC39c3042788196d1208d4a202f48afc2d";
+
+        $token = 'c8f57afd2ed2c2e2c9f6760cafad2751';
+
+        $twilio = new Twilio($sid, $token);
+
+        $message = $twilio->messages
+            ->create("whatsapp:+5515997454531", // to
+                array(
+                    "from" => "whatsapp:+14155238886",
+                    "body" => "https://beconnect.com.br/qrcodes/1000.png",
+                    //"media" => "https://beconnect.com.br/qrcodes/1000.png"
+                )
+            );
+
+        echo $message->status;
     }
 }

@@ -17,6 +17,7 @@ use App\Models\User;
 use App\Repositories\ChurchRepository;
 use App\Repositories\EventSubscribedListRepository;
 use App\Repositories\FrequencyRepository;
+use App\Repositories\ResponsibleRepository;
 use App\Repositories\RoleRepository;
 use App\Repositories\SessionRepository;
 use App\Repositories\VisitorRepository;
@@ -122,6 +123,10 @@ class EventController extends Controller
      * @var MessageServices
      */
     private $messageServices;
+    /**
+     * @var ResponsibleRepository
+     */
+    private $responsibleRepository;
 
     /**
      * EventController constructor.
@@ -144,7 +149,7 @@ class EventController extends Controller
                                 SessionRepository $sessionRepository, ChurchRepository $churchRepository,
                                 ChurchServices $churchServices, qrServices $qrServices,
                                 EventSubscribedListRepository $listRepository, PeopleServices $peopleServices,
-                                MessageServices $messageServices)
+                                MessageServices $messageServices, ResponsibleRepository $responsibleRepository)
     {
         $this->repository = $repository;
         $this->stateRepository = $stateRepositoryTrait;
@@ -163,6 +168,7 @@ class EventController extends Controller
         $this->listRepository = $listRepository;
         $this->peopleServices = $peopleServices;
         $this->messageServices = $messageServices;
+        $this->responsibleRepository = $responsibleRepository;
     }
 
 
@@ -2364,7 +2370,12 @@ class EventController extends Controller
 
         $org = $this->churchRepository->findByField('id', $org_id)->first();
 
-        $pdf = PDF::loadView('events.certificate', compact('event', 'person', 'org', 'string_date'))
+        $resp = $this->responsibleRepository->findByField('church_id', $this->getUserChurch());
+
+        $col_size = 12 / count($resp);
+
+        $pdf = PDF::loadView('events.certificate', compact('event', 'person',
+            'org', 'string_date', 'resp', 'col_size'))
             ->setPaper('a4', 'landscape');
 
         return $pdf->stream();
@@ -2440,6 +2451,11 @@ class EventController extends Controller
         Test::dispatch(100, 1);
 
         return redirect()->route('index');
+    }
+
+    public function testezap()
+    {
+        $this->messageServices->sendWA();
     }
 
     public function listEvent($event_id)
