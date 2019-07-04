@@ -225,9 +225,9 @@ class MessageServices
 
     public function sendWA()
     {
-        $sid = "AC39c3042788196d1208d4a202f48afc2d";
+        $sid = env('TWILIO_SID');
 
-        $token = 'c8f57afd2ed2c2e2c9f6760cafad2751';
+        $token = env('TWILIO_TOKEN');
 
         $twilio = new Twilio($sid, $token);
 
