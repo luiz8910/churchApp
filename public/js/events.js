@@ -173,6 +173,69 @@ $(function () {
     });
     //Fim Pesquisa Inscritos
 
+
+    $("#generate-certicate-all").click(function () {
+
+        var id = $("#event_id").val();
+        
+        var request = $.ajax({
+            method: 'GET',
+            url: '/certified-hours/' + id,
+            dataType: 'json'
+        });
+        
+        request.done(function (e) {
+            if(e.status)
+            {
+                var req = $.ajax({
+                    url: '/qtde-check/' + id,
+                    method: 'GET',
+                    dataType: 'json'
+                });
+
+                req.done(function (e) {
+
+                    if(e.status)
+                    {
+                        if(e.count > 0)
+                        {
+                            var ajax = $.ajax({
+                                url: '/generate-certificate/' + id,
+                                method: 'GET',
+                                dataType: 'json'
+                            });
+
+                            ajax.done(function (e) {
+                                if(e.status)
+                                {
+                                    location.reload();
+                                }
+                            });
+                        }
+                        else{
+
+                            swal('Atenção', 'Este evento não tem nenhum participante', 'error');
+                        }
+                    }
+                    else{
+                        swal('Atenção', e.msg, 'error');
+                    }
+                })
+
+
+            }
+            else{
+                if(e.msg)
+                {
+                    swal('Atenção', e.msg, 'error');
+                }
+                else{
+                    swal('Atenção', 'Insira a carga horária do evento', 'warning');
+                }
+            }
+        })
+    });
+
 });
 
 function findSubUsers(e)

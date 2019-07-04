@@ -219,7 +219,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                         </div>
 
                                         <div class="row">
-                                            <div class="col-md-6">
+                                            <div class="col-md-5">
                                                 <div class="form-group">
                                                     <label for="" class="control-label">Hora Inicio</label>
                                                     <div class="input-group">
@@ -268,7 +268,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-5">
                                                 <div class="form-group">
                                                     <label for="" class="control-label">Hora Fim</label>
                                                     <div class="input-group">
@@ -316,6 +316,21 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         </select>
                                                     </div>
                                                     <span class="help-block">Deixe em branco caso o término não esteja previsto</span>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label for="">Carga Horária</label>
+
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-clock-o"></i>
+                                                        </span>
+
+                                                        <input type="text" class="form-control number" id="certified_hours"
+                                                               name="certified_hours" placeholder="Em Horas">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

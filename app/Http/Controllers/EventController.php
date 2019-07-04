@@ -1080,6 +1080,11 @@ class EventController extends Controller
                 return redirect()->back()->withInput();
             }
 
+            if($data['certified_hours'] == "")
+            {
+                $data['certified_hours'] = 0;
+            }
+
             $this->repository->update($data, $id);
 
             $this->eventServices->changeEventDays($id);
@@ -2387,9 +2392,10 @@ class EventController extends Controller
 
         Certificate::dispatch($event_id, $org_id);
 
-        \Session::flash('success.msg', 'O certificado está sendo enviado para os participantes');
+        \Session::flash('success.msg', 'O certificado está sendo enviado para os participantes, 
+                    você receberá um email quando os envios tiverem terminado');
 
-        return redirect()->back();
+        return json_encode(['status' => true]);
 
     }
 
@@ -2445,6 +2451,42 @@ class EventController extends Controller
 
     }
 
+    /*
+     * Usado para verificar se o campo carga horária foi preenchido antes
+     * de enviar o certificado
+     */
+    public function certified_hours($id)
+    {
+        $event = $this->repository->findByField('id', $id)->first();
+
+        if($event)
+        {
+            if($event->certified_hours)
+            {
+                return json_encode(['status' => true]);
+            }
+
+            return json_encode(['status' => false]);
+        }
+
+        return json_encode(['status' => false, 'msg' => 'Este Evento não existe']);
+    }
+
+    public function qtde_check($id)
+    {
+        if($this->repository->findByField('id', $id)->first())
+        {
+            $list = DB::table('event_person')
+                ->where([
+                    'event_id' => $id,
+                    'check-in' => 1
+                ])->get();
+
+            return json_encode(['status' => true, 'count' => count($list)]);
+        }
+
+        return json_encode(['status' => false, 'msg' => 'Este evento não existe']);
+    }
 
     public function testeQueue()
     {

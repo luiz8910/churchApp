@@ -82,7 +82,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                     <span class="caption-subject bold font-dark uppercase ">
                                         Lista de Inscritos -
                                             <span id="span-sub">{{ count($sub) }}</span>
-                                        pessoas inscritas
+                                        pessoas
                                     </span>
                                     <br><br>
                                     <span class="caption-subject bold font-dark uppercase ">

@@ -149,7 +149,7 @@
             "Reinvenção da Carreira: Hackeando Marcelo Tas".--></p>
     </div>
     <div class="certificate-footer">
-        <p class="text-center">Carga horária do evento: <b>4 horas</b>.</p>
+        <p class="text-center">Carga horária do evento: <b>{{ $event->certified_hours }} horas</b>.</p>
         <div class="row text-center">
 
             @foreach($resp as $item)

@@ -430,6 +430,10 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('get-resp-data/{id}', 'ResponsibleController@getRespData');
 
+        Route::get('certified-hours/{id}', 'EventController@certified_hours');
+
+        Route::get('qtde-check/{id}', 'EventController@qtde_check');
+
     });
 
 

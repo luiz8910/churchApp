@@ -74,7 +74,7 @@
                                                     <div class="btn-group btn-group-sm">
                                                         @if(Auth::user()->person->role_id == $leader
                                                         || Auth::user()->person->role_id == $admin)
-                                                            <div class="col-lg-8">
+                                                            <div class="col-lg-8 col-xs-9">
                                                                 <div class="input-group">
                                                                     <input type="text" class="form-control"
                                                                            id="btn-search"
@@ -89,7 +89,7 @@
                                                             </div><!-- /.col-lg-8 -->
 
 
-                                                            <div class="col-lg-2">
+                                                            <div class="col-lg-2 col-xs-2">
                                                                 <a class="btn green btn-outline btn-circle btn-sm"
                                                                    href="javascript:;" data-toggle="dropdown" style="margin-top: 2px; float: left;">
                                                                     <i class="fa fa-share"></i>
@@ -104,7 +104,7 @@
                                                                            href="{{ route('person.create') }}"
                                                                            style="margin-top: 2px;">
                                                                             <i class="fa fa-plus font-blue"></i>
-                                                                            <span class="hidden-xs hidden-sm">Novo Participante</span>
+                                                                            Novo Participante
                                                                         </a>
                                                                     </li>
                                                                     <li>
