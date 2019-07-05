@@ -395,12 +395,19 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             <?php $deleteForm = $item->id; ?>
                                                             <td>
 
-                                                                <a href="" class="btn btn-danger btn-sm btn-circle pop-sub"
+                                                                <a href="javascript" class="btn btn-sm blue btn-circle event-certificate"
+                                                                            id="event-certificate-{{ $item->id }}">
+                                                                    <i class="fa fa-envelope"></i>
+                                                                    Certificado por Email
+                                                                </a>
+
+                                                                <a href="javascript:" class="btn btn-danger btn-sm btn-circle pop-sub"
                                                                    title="Cancelar Inscrição"
                                                                    data-toggle="confirmation" data-placement="top" data-original-title="Cancelar Inscrição?"
                                                                    data-popout="true" onclick="event.preventDefault()"
                                                                    id="btn-person-{{ $deleteForm }}">
                                                                     <i class="fa fa-trash"></i>
+                                                                    <span class="hidden-sm hidden-xs">Excluir</span>
                                                                 </a>
 
 

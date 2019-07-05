@@ -434,6 +434,8 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('qtde-check/{id}', 'EventController@qtde_check');
 
+        Route::get('/is-check/{id}/{person_id}', 'EventController@is_check');
+
     });
 
 

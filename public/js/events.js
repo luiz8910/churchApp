@@ -178,29 +178,107 @@ $(function () {
 
         var id = $("#event_id").val();
         
-        var request = $.ajax({
-            method: 'GET',
-            url: '/certified-hours/' + id,
-            dataType: 'json'
-        });
-        
-        request.done(function (e) {
-            if(e.status)
+        generateCertificateAll(id);
+    });
+
+    $(".event-certificate").click(function () {
+
+        var id = this.id.replace('event-certificate-', '');
+
+        var person_id = $("#personId").val();
+
+        generateCertificate(id, person_id);
+    })
+
+});
+
+function generateCertificateAll(id)
+{
+    var request = $.ajax({
+        method: 'GET',
+        url: '/certified-hours/' + id,
+        dataType: 'json'
+    });
+
+    request.done(function (e) {
+        if(e.status)
+        {
+            var req = $.ajax({
+                url: '/qtde-check/' + id,
+                method: 'GET',
+                dataType: 'json'
+            });
+
+            req.done(function (e) {
+
+                if(e.status)
+                {
+                    if(e.count > 0)
+                    {
+                        var ajax = $.ajax({
+                            url: '/generate-certificate/' + id,
+                            method: 'GET',
+                            dataType: 'json'
+                        });
+
+                        ajax.done(function (e) {
+                            if(e.status)
+                            {
+                                location.reload();
+                            }
+                        });
+                    }
+                    else{
+
+                        swal('Atenção', 'Este evento não tem nenhum participante', 'error');
+                    }
+
+
+                }
+                else{
+                    swal('Atenção', e.msg, 'error');
+                }
+            });
+        }
+        else{
+            if(e.msg)
             {
+                swal('Atenção', e.msg, 'error');
+            }
+            else{
+                swal('Atenção', 'Insira a carga horária do evento', 'warning');
+            }
+        }
+
+    });
+}
+
+function generateCertificate(id, person_id)
+{
+    var request = $.ajax({
+        method: 'GET',
+        url: '/certified-hours/' + id,
+        dataType: 'json'
+    });
+
+    request.done(function (e) {
+        if(e.status)
+        {
+            if(person_id) {
                 var req = $.ajax({
-                    url: '/qtde-check/' + id,
+                    url: '/is-check/' + id + '/' + person_id,
                     method: 'GET',
                     dataType: 'json'
                 });
 
                 req.done(function (e) {
 
-                    if(e.status)
+                    if (e.status)
                     {
-                        if(e.count > 0)
+                        if (e.count > 0)
                         {
                             var ajax = $.ajax({
-                                url: '/generate-certificate/' + id,
+                                url: '/generate-certificate/' + id + '/' + person_id,
                                 method: 'GET',
                                 dataType: 'json'
                             });
@@ -213,30 +291,28 @@ $(function () {
                             });
                         }
                         else{
-
-                            swal('Atenção', 'Este evento não tem nenhum participante', 'error');
+                            swal('Atenção', 'Esta pessoa não participou do evento', 'error');
                         }
                     }
                     else{
+
                         swal('Atenção', e.msg, 'error');
                     }
                 })
+            }
 
-
+        }
+        else{
+            if(e.msg)
+            {
+                swal('Atenção', e.msg, 'error');
             }
             else{
-                if(e.msg)
-                {
-                    swal('Atenção', e.msg, 'error');
-                }
-                else{
-                    swal('Atenção', 'Insira a carga horária do evento', 'warning');
-                }
+                swal('Atenção', 'Insira a carga horária do evento', 'warning');
             }
-        })
-    });
-
-});
+        }
+    })
+}
 
 function findSubUsers(e)
 {

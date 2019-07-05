@@ -2386,14 +2386,23 @@ class EventController extends Controller
         return $pdf->stream();
     }
 
-    public function generateCertificate($event_id)
+    public function generateCertificate($event_id, $person_id = null)
     {
         $org_id = $this->getUserChurch();
 
-        Certificate::dispatch($event_id, $org_id);
+        if($person_id)
+        {
+            Certificate::dispatch($event_id, $org_id, $person_id);
 
-        \Session::flash('success.msg', 'O certificado está sendo enviado para os participantes, 
-                    você receberá um email quando os envios tiverem terminado');
+            \Session::flash('success.msg', 'O certificado está sendo enviado para o participante.');
+        }
+        else{
+            Certificate::dispatch($event_id, $org_id);
+
+            \Session::flash('success.msg', 'O certificado está sendo enviado para os participantes, 
+                    você receberá um email quando os envios tiverem terminado.');
+        }
+
 
         return json_encode(['status' => true]);
 
@@ -2483,6 +2492,30 @@ class EventController extends Controller
                 ])->get();
 
             return json_encode(['status' => true, 'count' => count($list)]);
+        }
+
+        return json_encode(['status' => false, 'msg' => 'Este evento não existe']);
+    }
+
+    public function is_check($id, $person_id)
+    {
+        if($this->repository->findByField('id', $id)->first())
+        {
+            $list = DB::table('event_person')
+                ->where([
+                    'event_id' => $id,
+                    'check-in' => 1,
+                    'person_id' => $person_id
+                ])->first();
+
+            $person = $this->personRepository->findByField('id', $person_id)->first();
+
+            if($person && $person->email)
+            {
+                return json_encode(['status' => true, 'count' => $list ? 1 : 0]);
+            }
+
+            return json_encode(['status' => false, 'Este participante não tem um email cadastrado']);
         }
 
         return json_encode(['status' => false, 'msg' => 'Este evento não existe']);

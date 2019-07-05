@@ -215,7 +215,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                         {{ csrf_field() }}
 
 
-                                        <div class="col-md-9 col-sm-8 col-xs-8">
+                                        <div class="col-md-9 col-sm-6 col-xs-6">
 
                                             <select class="form-control select2" id="subUser" name="person_id" required>
                                                 <option></option>
@@ -234,28 +234,57 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                         </div>
 
-                                        <div class="col-md-1 col-sm-2 col-xs-2">
-                                            <button type="submit" class="btn btn-success btn-sm btn-circle">
+                                        <div class="col-md-3 col-xs-3">
+                                            <div class="actions hidden-md hidden-lg">
+                                                <div class="btn-group btn-group-sm">
+                                                    <a href="javascript:"
+                                                       class="btn green btn-outline btn-circle btn-sm" data-toggle="dropdown">
+
+                                                        <i class="fa fa-share"></i>
+                                                        <i class="fa fa-angle-down"></i>
+                                                    </a>
+
+                                                    <ul class="dropdown-menu pull-right">
+                                                        <li>
+                                                            <a href="{{ route('event.edit', ['event' => $event]) }}" class="tool-action">
+                                                                <i class="fa fa-arrow-left font-red"></i>
+                                                                Voltar
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="javascript:" class="tool-action" id="btn-search-check">
+                                                                <i class="fa fa-search font-blue"></i>
+                                                                Pesquisar
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-xs-3">
+                                            <button type="submit" class="btn btn-success btn-sm btn-circle" style="margin-left: -20px;">
                                                 <i class="fa fa-sign-in"></i>
                                                 Inscrever
                                             </button>
                                         </div>
 
-                                        <div class="col-md-1 col-sm-2 col-xs-2">
+                                        <div class="col-md-1 hidden-sm hidden-xs">
                                             <a href="{{ route('event.edit', ['event' => $event]) }}" type="button" class="btn btn-danger btn-sm btn-circle">
                                                 <i class="fa fa-arrow-left"></i>
                                                 Voltar
                                             </a>
                                         </div>
 
-                                        <div class="col-md-1 col-sm-2 col-xs-2">
+                                        <div class="col-md-1 hidden-sm hidden-xs">
                                             <a href="javascript:" type="button" class="btn btn-info btn-sm btn-circle" id="btn-search-check" style="margin-left: -16px;">
                                                 <i class="fa fa-search"></i>
                                                 Pesquisar
                                             </a>
                                         </div>
 
-                                    </form>
+                                        </form>
+                                    </div>
                                 </div>
 
 

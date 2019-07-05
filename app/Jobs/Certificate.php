@@ -20,17 +20,22 @@ class Certificate implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, ConfigTrait;
     private $event_id;
     private $org_id;
+    /**
+     * @var null
+     */
+    private $person_id;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($event_id, $org_id)
+    public function __construct($event_id, $org_id, $person_id = null)
     {
         //
         $this->event_id = $event_id;
         $this->org_id = $org_id;
+        $this->person_id = $person_id;
     }
 
     /**
@@ -45,17 +50,9 @@ class Certificate implements ShouldQueue
 
         if($event)
         {
-            $i = 0;
-
-            $people = DB::table('event_person')
-                ->where([
-                    'event_id' => $this->event_id,
-                    'check-in' => 1
-                ])->get();
-
-            foreach ($people as $item)
+            if($this->person_id)
             {
-                $person = $personRepository->findByField('id', $item->person_id)->first();
+                $person = $personRepository->findByField('id', $this->person_id)->first();
 
                 if ($person)
                 {
@@ -64,20 +61,45 @@ class Certificate implements ShouldQueue
                         echo 'Realizando Download...';
 
                         $messageServices->sendCertificate($person->user, $person, $event);
-
-                        $i++;
-
-                        if($i == 10)
-                        {
-                            $i = 0;
-                            sleep(1);
-                        }
                     }
 
+                }
+            }
+
+            else{
+
+                $i = 0;
+
+                $people = DB::table('event_person')
+                    ->where([
+                        'event_id' => $this->event_id,
+                        'check-in' => 1
+                    ])->get();
+
+                foreach ($people as $item)
+                {
+                    $person = $personRepository->findByField('id', $item->person_id)->first();
+
+                    if ($person)
+                    {
+                        if($person->email)
+                        {
+                            echo 'Realizando Download...';
+
+                            $messageServices->sendCertificate($person->user, $person, $event);
+
+                            $i++;
+
+                            if($i == 10)
+                            {
+                                $i = 0;
+                                sleep(1);
+                            }
+                        }
+
+                    }
 
                 }
-
-
             }
         }
 
