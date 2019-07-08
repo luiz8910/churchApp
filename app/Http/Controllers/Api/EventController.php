@@ -442,15 +442,25 @@ class EventController extends Controller
     {
         try{
 
-            $event = $this->repository->find($id);
+            $event = $this->repository->findByField('id', $id)->first();
 
-            $coords = $this->apiServices->getCoords($event);
+            if($event)
+            {
+                /*if($event->street && $event->number && $event->city && $event->state)
+                {
+                    $coords = $this->apiServices->getCoords($event);
 
-            $event->lat = $coords->lat;
+                    $event->lat = $coords->lat;
 
-            $event->lng = $coords->lng;
+                    $event->lng = $coords->lng;
+                }*/
 
-            return json_encode(['status' => true, 'event' => $event]);
+                return json_encode(['status' => true, 'event' => $event]);
+            }
+
+            return json_encode(['status' => false, 'msg' => 'Este Evento não existe']);
+
+
 
         }catch(\Exception $e)
         {
