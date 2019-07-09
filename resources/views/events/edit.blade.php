@@ -249,6 +249,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                     </div>
 
+
                                     <div class="modal fade" tabindex="-1" role="dialog" id="changePicture" aria-labelledby="mySmallModalLabel">
                                         <div class="modal-dialog modal-md" role="document">
 
@@ -265,57 +266,58 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 </div>
 
 
-                                                    {!! Form::open(['route' => ['event.edit.imgEvent', 'event' => $model],
-                                                        'enctype' => 'multipart/form-data', 'method' => 'POST', 'id' => 'img-submit']) !!}
+                                                {!! Form::open(['route' => ['event.edit.imgEvent', 'event' => $model],
+                                                    'enctype' => 'multipart/form-data', 'method' => 'POST', 'id' => 'img-submit']) !!}
 
-                                                        {{--<input type="file" name="file" id="file" style="display: none;">
+                                                {{--<input type="file" name="file" id="file" style="display: none;">
 
-                                                        <input type="submit" id="submit-img" hidden>--}}
+                                                <input type="submit" id="submit-img" hidden>--}}
 
-                                                        <div class="modal-body text-center">
+                                                <div class="modal-body text-center">
 
-                                                            <div class="form-group">
-                                                                <div class="fileinput fileinput-new" data-provides="fileinput">
-                                                                    <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
-                                                                        <img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=Imagem+do+Evento" alt="" /> </div>
-                                                                    <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"> </div>
-                                                                    <div>
+                                                    <div class="form-group">
+                                                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                                                            <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
+                                                                <img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=Imagem+do+Evento" alt="" /> </div>
+                                                            <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"> </div>
+                                                            <div>
                                                                         <span class="btn default btn-file">
                                                                             <span class="fileinput-new"> Escolher Imagem </span>
                                                                             <span class="fileinput-exists"> Alterar </span>
                                                                             <input type="file" name="file" id="file"> </span>
-                                                                        <a href="javascript:;" id="removeImg"
-                                                                           class="btn default fileinput-exists" data-dismiss="fileinput"> Remover </a>
-                                                                    </div>
-                                                                    <br>
-
-                                                                    <span class="text-center" id="img-error" style="color: red; display: none;"></span>
-
-                                                                </div>
+                                                                <a href="javascript:;" id="removeImg"
+                                                                   class="btn default fileinput-exists" data-dismiss="fileinput"> Remover </a>
                                                             </div>
+                                                            <br>
+
+                                                            <span class="text-center" id="img-error" style="color: red; display: none;"></span>
 
                                                         </div>
+                                                    </div>
+
+                                                </div>
 
 
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-default" data-dismiss="modal">
-                                                                <i class="fa fa-close"></i>
-                                                                Cancelar
-                                                            </button>
-                                                            <button type="submit"
-                                                                    class="btn btn-success" id="btn-upload-img" disabled>
-                                                                <i class="fa fa-check"></i>
-                                                                Upload
-                                                            </button>
-                                                        </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                                                        <i class="fa fa-close"></i>
+                                                        Cancelar
+                                                    </button>
+                                                    <button type="submit"
+                                                            class="btn btn-success" id="btn-upload-img" disabled>
+                                                        <i class="fa fa-check"></i>
+                                                        Upload
+                                                    </button>
+                                                </div>
 
-                                                    {!! Form::close() !!}
+                                                {!! Form::close() !!}
 
 
 
                                             </div>
                                         </div>
                                     </div>
+
 
                                     <div class="modal fade" tabindex="-1" role="dialog" id="changePictureBg" aria-labelledby="mySmallModalLabel">
                                         <div class="modal-dialog modal-md" role="document">

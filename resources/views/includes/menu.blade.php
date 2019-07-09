@@ -50,7 +50,7 @@
 
                 </li>
                 <li class="menu-dropdown mega-menu-dropdown  ">
-                    <a href="{{ route('event.index') }}">
+                    <a href="{{ route('index') }}">
                         <i class="fa fa-calendar"></i>
                                 Agendas e Eventos
                     </a>

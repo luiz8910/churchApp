@@ -44,6 +44,7 @@ use App\Traits\PeopleTrait;
 use App\Traits\UserLoginRepository;
 use Barryvdh\DomPDF\Facade as PDF;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -201,10 +202,6 @@ class EventController extends Controller
             'church_id' => $church_id
         ]);*/
 
-
-
-
-
         //dd($events);
 
         /*
@@ -298,7 +295,7 @@ class EventController extends Controller
     }
 
 
-    public function nextMonth($thisMonth, $church_id = null)
+    public function nextMonth($thisMonth = null, $church_id = null)
     {
         $countPerson[] = $this->countPerson();
 
@@ -384,7 +381,18 @@ class EventController extends Controller
         //Ano Atual
         $ano = date("Y");
 
-        $nextMonth = $thisMonth + 1;
+        if(!$thisMonth)
+        {
+            $thisMonth = (int) date_format(date_create($today), 'm');
+
+            $nextMonth = $thisMonth;
+
+        }
+        else{
+
+            $nextMonth = $thisMonth + 1;
+        }
+
 
         if($thisMonth == 12)
         {
@@ -476,7 +484,8 @@ class EventController extends Controller
         return view("events.index", compact('countPerson', 'countGroups', 'state',
             'events', 'notify', 'qtde', 'allMonths', 'allDays', 'days', 'allEvents',
             'thisMonth', 'today', 'next', 'ano', 'allEventsNames', 'allEventsTimes',
-            'allEventsFrequencies', 'allEventsAddresses', 'church_id', 'leader', 'role', 'admin'));
+            'allEventsFrequencies', 'allEventsAddresses', 'church_id', 'leader',
+            'role', 'admin'));
     }
 
     public function oldindex()
@@ -663,7 +672,6 @@ class EventController extends Controller
 
             $data = $request->all();
 
-
             $data['createdBy_id'] = \Auth::user()->id;
 
             $data['eventDate'] = $this->formatDateBD($data['eventDate']);
@@ -735,6 +743,7 @@ class EventController extends Controller
                 }
             }
 
+            $data['certified_hours'] = $data['certified_hours'] ? $data['certified_hours'] : 0;
 
             $event = $this->repository->create($data);
 
@@ -1188,26 +1197,33 @@ class EventController extends Controller
 
     public function destroy($id)
     {
-        $event = $this->repository->find($id);
+        $event = $this->repository->findByField('id', $id)->first();
 
-        $name = $event->name;
+        if($event)
+        {
 
-        DB::table('event_person')
-            ->where(['event_id' => $id])
-            ->delete();
+            DB::table('event_person')
+                ->where(['event_id' => $id])
+                ->delete();
 
-        DB::table('recent_events')->where('event_id', $id)->delete();
+            DB::table('recent_events')->where('event_id', $id)->delete();
 
-        DB::table('event_subscribed_lists')
-            ->where(['event_id' => $id])
-            ->delete();
+            DB::table('event_subscribed_lists')
+                ->where(['event_id' => $id])
+                ->delete();
 
-        $event->delete();
+            $event->delete();
 
-        return json_encode([
+            \Session::flash('success.msg', 'O evento ' . $event->name . ' foi excluído.');
+
+            return json_encode([
                 'status' => true,
-                'name' => $name
+                'name' => $event->name
             ]);
+        }
+
+        return json_encode(['status' => false, 'msg' => 'Este Evento já foi excluído']);
+
     }
 
     public function destroyMany(Request $request)

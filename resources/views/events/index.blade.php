@@ -150,6 +150,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                         <?php $x = 0; ?>
 
 
+
                                         <div class="row visible-sm visible-xs">
                                             <div class="navbar text-center">
                                                 <div class="col-xs-4">

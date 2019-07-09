@@ -13,9 +13,9 @@ use App\Services\PagSeguroServices;
 */
 
 Route::group(['middleware' => 'auth'], function () {
-    Route::get('/sistema', 'EventController@index');
+    Route::get('/sistema', 'EventController@nextMonth');
 
-    Route::get('/home', 'EventController@index')->name('index');
+    Route::get('/home', 'EventController@nextMonth')->name('index');
 
     // Início Usuários e pessoas
 
