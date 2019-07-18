@@ -104,6 +104,41 @@
                             </label>
                         </div>
 
+                        <div class="form-group p-relative {{ $errors->has('cel') ? ' has-error' : '' }}">
+
+                            <label class="has-float-label" aria-label="cel">
+                                <input class="form-control tel" type="text" placeholder="Celular" name="cel" value="{{ old('cel') }}" required/>
+                                <span>Celular</span>
+                            </label>
+
+                            @if ($errors->has('cel'))
+                                <span class="help-block"><strong>{{ $errors->first('cel') }}</strong></span>
+                            @endif
+                        </div>
+
+                        <div class="form-group p-relative {{ $errors->has('cpf') ? ' has-error' : '' }}">
+
+                            <label class="has-float-label" aria-label="cpf">
+                                <input class="form-control cpf" type="text" placeholder="CPF" name="cpf" value="{{ old('cpf') }}" required/>
+                                <span>CPF</span>
+                            </label>
+
+                            @if ($errors->has('cpf'))
+                                <span class="help-block"><strong>{{ $errors->first('cpf') }}</strong></span>
+                            @endif
+                        </div>
+
+                        <div class="form-group p-relative {{ $errors->has('dateBirth') ? ' has-error' : '' }}">
+
+                            <label class="has-float-label" aria-label="dateBirth">
+                                <input class="form-control dateBirth" type="date" placeholder="Data de Nascimento" name="dateBirth" value="{{ old('dateBirth') }}" required/>
+                                <span>Data de Nascimento</span>
+                            </label>
+
+                            @if ($errors->has('dateBirth'))
+                                <span class="help-block"><strong>{{ $errors->first('dateBirth') }}</strong></span>
+                            @endif
+                        </div>
 
                         <div class="form-group">
                             <label class="has-float-label" aria-label="Nome no cartão">
