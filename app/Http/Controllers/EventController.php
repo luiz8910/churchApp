@@ -27,6 +27,7 @@ use App\Services\EventServices;
 use App\Notifications\EventNotification;
 use App\Notifications\Notifications;
 use App\Services\MessageServices;
+use App\Services\PaymentServices;
 use App\Services\PeopleServices;
 use App\Services\qrServices;
 use App\Traits\ConfigTrait;
@@ -50,7 +51,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Notification;
 use Maatwebsite\Excel\Facades\Excel;
-
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 
 class EventController extends Controller
@@ -128,6 +129,10 @@ class EventController extends Controller
      * @var ResponsibleRepository
      */
     private $responsibleRepository;
+    /**
+     * @var PaymentServices
+     */
+    private $paymentServices;
 
     /**
      * EventController constructor.
@@ -150,7 +155,8 @@ class EventController extends Controller
                                 SessionRepository $sessionRepository, ChurchRepository $churchRepository,
                                 ChurchServices $churchServices, qrServices $qrServices,
                                 EventSubscribedListRepository $listRepository, PeopleServices $peopleServices,
-                                MessageServices $messageServices, ResponsibleRepository $responsibleRepository)
+                                MessageServices $messageServices, ResponsibleRepository $responsibleRepository,
+                                PaymentServices $paymentServices)
     {
         $this->repository = $repository;
         $this->stateRepository = $stateRepositoryTrait;
@@ -170,6 +176,7 @@ class EventController extends Controller
         $this->peopleServices = $peopleServices;
         $this->messageServices = $messageServices;
         $this->responsibleRepository = $responsibleRepository;
+        $this->paymentServices = $paymentServices;
     }
 
 
@@ -1013,11 +1020,20 @@ class EventController extends Controller
 
         $org_name = $this->churchServices->getOrgAlias();
 
+        $payment = null;
+
+        if($payment = $this->churchRepository->findByField('id', $church_id)->first())
+        {
+            $payment = $payment->payment;
+            //$model->value_money = number_format($model->value_money, 2, ',', ' ');
+            //dd($model->value_money);
+        }
+
         return view('events.edit', compact('countPerson', 'countGroups', 'state', 'roles',
             'model', 'location', 'notify', 'qtde', 'eventDays', 'eventFrequency', 'check',
             'eventPeople', 'group', 'groups', 'sub', 'canCheckIn', 'createdBy_id', 'createdBy',
             'nextEventDate', 'leader', 'preposicao', 'frequencies', 'church_id', 'leader',
-            'admin', 'sessions', 'local', 'org_name'));
+            'admin', 'sessions', 'local', 'org_name', 'payment'));
     }
 
     public function update(Request $request, $id)
@@ -1092,6 +1108,15 @@ class EventController extends Controller
             if($data['certified_hours'] == "")
             {
                 $data['certified_hours'] = 0;
+            }
+
+            if(isset($data['value_money']))
+            {
+                $data['value_money'] = substr($data['value_money'], 2);
+
+                $data['value_money'] = str_replace('.', '', $data['value_money']);
+
+                $data['value_money'] = ( float ) $data['value_money'];
             }
 
             $this->repository->update($data, $id);
@@ -2034,6 +2059,12 @@ class EventController extends Controller
 
             if($church)
             {
+                if($church->payment && $event->value_money)
+                {
+
+                    return view('events.sub-pay', compact('event', 'church'));
+                }
+
                 return view('events.sub', compact('event', 'church'));
             }
 
@@ -2045,7 +2076,7 @@ class EventController extends Controller
     }
 
     /*
-     * Cadastro de Participante via Url pública com inscrição em evento
+     * Cadastro de Participante via Url pública com inscrição em evento gratuitos
      */
     public function subFromUrl(Request $request)
     {
@@ -2131,6 +2162,29 @@ class EventController extends Controller
         return redirect()->back()->withInput();
 
 
+    }
+
+    /*
+     * Cadastro de Participante via Url pública com inscrição em eventos pagos
+     */
+    public function payment(Request $request, $event_id)
+    {
+        $event = $this->repository->findByField('id', $event_id)->first();
+
+        if($event)
+        {
+            $data = $request->all();
+
+            //$this->paymentServices->sendCustomerData();
+            //$this->paymentServices->cardStatus();
+        }
+
+        //throw new NotFoundHttpException();
+    }
+
+    public function teste4all()
+    {
+        return $this->paymentServices->requestVaultKey();
     }
 
     public function findSubUsers($input, $event_id)

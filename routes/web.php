@@ -622,6 +622,10 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('/url', 'EventController@subFromUrl')->name('event.url.sub');
 
+    Route::post('/payment/{event_id}', 'EventController@payment')->name('event.payment');
+
+    Route::get('/4all', 'EventController@teste4all');
+
     Route::get('/login-admin', 'Auth\LoginController@loginAdmin')->name('login.admin');
 
     Route::post('/login-admin', 'Auth\LoginController@authenticateAdmin')->name('login.admin.authenticate');

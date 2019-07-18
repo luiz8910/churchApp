@@ -1,5 +1,5 @@
 <div class="caption caption-md">
-    <i class="icon-globe theme-font hide"></i>
+    <i class="fa fa-globe theme-font"></i>
     <span class="caption-subject font-blue-madison bold uppercase">Endereço</span>
 </div>
 <hr><br>
@@ -25,9 +25,9 @@
             <label>CEP (sem traços)</label>
             <div class="input-group">
                 <span class="input-group-addon">
-                    <i class="fa fa-location-arrow font-purple"></i>
+                    <i class="fa fa-location-arrow font-blue"></i>
                 </span>
-                <input type="text" class="form-control" name="zipCode"
+                <input type="text" class="form-control border-input" name="zipCode"
                        id="zipCode" placeholder="XXXXX-XXX" value="{{ $model->zipCode }}">
             </div>
         </div>
@@ -39,9 +39,9 @@
             <label>Logradouro</label>
             <div class="input-group">
                 <span class="input-group-addon">
-                    <i class="fa fa-home font-purple"></i>
+                    <i class="fa fa-home font-blue"></i>
                 </span>
-                <input class="form-control" name="street" id="street"
+                <input class="form-control border-input" name="street" id="street"
                        type="text" placeholder="Av. Antonio Carlos Comitre"
                        value="{{ $model->street }}">
             </div>
@@ -54,9 +54,9 @@
             <label class="hidden-md hidden-lg">N°</label>
             <div class="input-group">
                 <span class="input-group-addon">
-                    <i class="fa fa-home font-purple"></i>
+                    <i class="fa fa-home font-blue"></i>
                 </span>
-                <input class="form-control number" name="number" id="number"
+                <input class="form-control number border-input" name="number" id="number"
                        type="text" placeholder="685"
                        value="{{ $model->number }}">
             </div>
@@ -71,9 +71,9 @@
             <label>Bairro</label>
             <div class="input-group">
                 <span class="input-group-addon">
-                    <i class="fa fa-home font-purple"></i>
+                    <i class="fa fa-home font-blue"></i>
                 </span>
-                <input class="form-control" name="neighborhood" id="neighborhood"
+                <input class="form-control border-input" name="neighborhood" id="neighborhood"
                        type="text" placeholder="Centro" value="{{ $model->neighborhood }}">
             </div>
         </div>
@@ -84,9 +84,9 @@
             <label>Cidade</label>
             <div class="input-group">
                 <span class="input-group-addon">
-                    <i class="fa fa-building font-purple"></i>
+                    <i class="fa fa-building font-blue"></i>
                 </span>
-                <input class="form-control" name="city" id="city"
+                <input class="form-control border-input" name="city" id="city"
                        type="text" placeholder="Sorocaba" value="{{ $model->city }}">
             </div>
         </div>

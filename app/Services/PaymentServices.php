@@ -23,6 +23,146 @@ class PaymentServices{
     }
 
 
+    public function payment_url()
+    {
+        //https://gateway.api.4all.com;
+        return 'https://gateway.homolog-interna.4all.com';
+    }
+
+    public function vault()
+    {
+        return 'https://vault.test.4all.com';
+        //return 'https://vault.api.4all.com';
+    }
+
+    public function getMerchantKey()
+    {
+        return env('MERCHANT_KEY');
+    }
+
+    public function getPublicKey()
+    {
+        return env('PUBLIC_API_KEY');
+    }
+
+    public function requestVaultKey()
+    {
+        $url = '/requestVaultKey';
+
+        $response = $this->client->request('post', $this->payment_url() . $url,
+            //['verify' => false],
+
+            ['json' => [
+
+                "headers" => [
+                    "Content-Type" => "application/json",
+                    //"Content-Type" => "application/x-www-form-urlencoded",
+                    "Accept" => "application/json",
+            ],
+
+
+                "merchantKey" => $this->getMerchantKey(),
+            ]
+
+        ]);
+
+        if($response->getStatusCode() == 200)
+        {
+            $access_key = json_decode($response->getBody()->read(1024))->accessKey;
+
+            $this->prepareCard($access_key);
+        }
+
+    }
+
+    public function prepareCard($access_key)
+    {
+        $url = '/prepareCard';
+
+        $response = $this->client->request('post', $this->payment_url() . $url, ['json' => [
+
+                "headers" => [
+                    "Content-Type" => "application/json",
+                    //"Content-Type" => "application/x-www-form-urlencoded",
+                    "Accept" => "application/json",
+                ],
+
+                "accessKey" => $access_key,
+                "cardData" => [
+                    "type" => 1,
+                    "cardholderName" => "John Smith",
+                    "cardNumber" => "4574849552718601",
+                    "expirationDate" => "0120",
+                    "securityCode" => "123"
+                ]
+
+            ]
+
+        ]);
+
+
+        if($response->getStatusCode() == 200)
+        {
+            dd($response->getBody()->read(2048));
+        }
+    }
+
+
+    public function sendCustomerData()
+    {
+        $url = '/authenticateCard';
+
+        //4574849552718601
+        $response = $this->client->request('post', $this->payment_url() . $url, ['json' => [
+
+                "headers" => [
+                    "Content-Type" => "application/json",
+                    //"Content-Type" => "application/x-www-form-urlencoded",
+                    "Accept" => "application/json",
+                ],
+
+
+                    "merchantKey" => $this->getMerchantKey(),
+                    "metaId" => "ANDBB476FB",
+                    "softDescriptor" => "Descrição teste",
+
+                    "cardData" => [
+                        "type" => 1,
+                        "cardholderName" => "John Smith",
+                        "cardNumber" => "4574849552718601",
+                        "expiration_date" => "0120",
+                        "security_code" => "123"
+                    ]
+
+
+            ]
+        ]);
+
+        return $response;
+    }
+
+    public function cardStatus()
+    {
+
+        $url = '/getBrands';
+
+        $response = $this->client->request('POST', $this->payment_url() . $url, ['json' => [
+                "headers" => [
+                    "ContentType" => "application/json",
+                    "Accept" => "application/json",
+                ],
+
+                "merchantKey" => $this->getMerchantKey()
+            ]
+
+        ]);
+
+        if($response->getStatusCode() == 200)
+        {
+            dd($response->getBody());
+        }
+    }
+
     public function newBuyer()
     {
         $marketplace_id = 1;

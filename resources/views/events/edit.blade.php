@@ -114,7 +114,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                     <div class="portlet-title">
                                         <div class="caption">
                                             <i class="icon-directions font-green hide"></i>
-                                            <span class="caption-subject bold font-dark uppercase "> Detalhes </span>
+                                            <span class="caption-subject bold font-blue uppercase "> Detalhes </span>
                                             <span class="caption-helper"></span>
 
                                         </div>
@@ -167,7 +167,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     </a>
                                                 @endif
 
-                                                <a class="btn purple btn-outline btn-circle btn-sm change-size"
+                                                <a class="btn blue btn-outline btn-circle btn-sm change-size"
                                                    href="javascript:;" data-toggle="dropdown"
                                                    data-hover="dropdown" data-close-others="true"> Ações
                                                     <i class="fa fa-angle-down" id="i-actions"></i>
@@ -178,7 +178,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         @if(isset($group))
                                                             <li>
                                                                 <a href="{{ route('group.addRemoveLoggedMember', ['id' => $group->id]) }}">
-                                                                    <i class="fa fa-sign-in font-purple"></i>
+                                                                    <i class="fa fa-sign-in font-blue"></i>
                                                                     @if($sub)
                                                                         Sair do grupo do Evento
                                                                     @else
@@ -190,51 +190,52 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     @endif
                                                     @if(Auth::user()->church_id == $church_id
                                                         && (Auth::user()->person->role_id == $leader || Auth::user()->person->role_id == $admin))
-                                                        <li class="divider"></li>
+
                                                         <li>
                                                             <a href="{{ route('event.subscriptions', ['event' => $model->id]) }}">
-                                                                <i class="fa fa-users font-purple"></i>
+                                                                <i class="fa fa-users font-blue"></i>
                                                                 Inscrições
                                                             </a>
                                                         </li>
                                                         <li>
                                                             <a href="{{ route('event.sessions', ['event_id' => $model->id]) }}">
-                                                                <i class="fa fa-calendar font-purple"></i>
+                                                                <i class="fa fa-calendar font-blue"></i>
                                                                 Sessões
                                                             </a>
                                                         </li>
                                                         <li>
                                                             <a href="{{ route('sendqr.email.all', ['event_id' => $model->id]) }}"
                                                                id="">
-                                                                <i class="fa fa-envelope font-purple"></i>
+                                                                <i class="fa fa-envelope font-blue"></i>
                                                                 Enviar Qr por Email
                                                             </a>
                                                         </li>
 
                                                         <li>
                                                             <a href="javascript:" id="generate-certicate-all">
-                                                                <i class="fa fa-file-pdf-o font-purple"></i>
+                                                                <i class="fa fa-file-pdf-o font-blue"></i>
                                                                 Enviar Certificados por Email
                                                             </a>
                                                         </li>
                                                         <li>
                                                             <a href="javascript:;" id="check-auto">
-                                                                <i class="fa fa-check font-purple"></i>
+                                                                <i class="fa fa-check font-blue"></i>
                                                                 Check-in Automático
                                                             </a>
                                                         </li>
                                                         <li>
                                                             <a href="javascript:;" data-target="#changePicture" data-toggle="modal">
-                                                                <i class="fa fa-picture-o font-purple"></i>
+                                                                <i class="fa fa-picture-o font-blue"></i>
                                                                 Trocar Imagem
                                                             </a>
                                                         </li>
                                                             <li>
                                                                 <a href="javascript:;" data-target="#changePictureBg" data-toggle="modal">
-                                                                    <i class="fa fa-file-picture-o font-purple"></i>
+                                                                    <i class="fa fa-file-picture-o font-blue"></i>
                                                                     Trocar Imagem Fundo
                                                                 </a>
                                                             </li>
+                                                            <li role="separator" class="divider"></li>
                                                         <li>
                                                             <a href="javascript:;" data-toggle="modal"
                                                                data-target=".event-delete-modal-sm">
@@ -431,7 +432,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                         <div class="col-md-6 col-xs-12">
 
                                             <p>
-                                                <i class="fa fa-user font-purple"></i> Criado Por:
+                                                <i class="fa fa-user font-blue"></i> Criado Por:
 
                                                 @if(Auth::user()->church_id == $church_id && Auth::user()->person_id == $createdBy_id)
                                                     <label>
@@ -451,18 +452,18 @@ License: You must have a valid license purchased only from themeforest(the above
                                             </p>
 
                                             <p>
-                                                <i class="fa fa-calendar font-purple"></i>
+                                                <i class="fa fa-calendar font-blue"></i>
                                                 Data: {{ $nextEventDate }}
                                             </p>
 
                                             <p>
-                                                <i class="fa fa-clock-o font-purple"></i>
+                                                <i class="fa fa-clock-o font-blue"></i>
                                                 Inicio: {{ $model->startTime }} /
                                                 Fim: {{ $model->endTime == '' ? 'Sem previsão' : $model->endTime }}
                                             </p>
 
                                             <p>
-                                                <i class="fa fa-pencil font-purple"></i>
+                                                <i class="fa fa-pencil font-blue"></i>
                                                 Frequência:
                                                 @if($model->frequency == 'Encontro Único')
                                                     {{ $model->frequency }}
@@ -473,28 +474,28 @@ License: You must have a valid license purchased only from themeforest(the above
                                             </p>
 
                                             <p>
-                                                <i class="fa fa-book font-purple"></i>
+                                                <i class="fa fa-book font-blue"></i>
                                                 Inscritos: {{ $model->sub }}
 
                                             </p>
 
                                             @if($model->certified_hours)
                                                 <p>
-                                                    <i class="fa fa-clock-o font-purple"></i>
+                                                    <i class="fa fa-clock-o font-blue"></i>
                                                     Carga Horária: {{ $model->certified_hours }}
                                                 </p>
                                             @endif
 
                                             @if($model->public_url)
                                                 <p>
-                                                    <i class="fa fa-lock font-purple" aria-hidden="true"></i>
+                                                    <i class="fa fa-lock font-blue" aria-hidden="true"></i>
                                                     Url Pública: <a href="https://beconnect.com.br/url/{{ $model->public_url }}" target="_blank">
                                                         https://beconnect.com.br/url/{{ $model->public_url }}
                                                     </a>
                                                 </p>
                                             @endif
                                             <p>
-                                                <i class="fa fa-map-marker font-purple"></i>
+                                                <i class="fa fa-map-marker font-blue"></i>
                                                 {{ $model->street }}, {{ $model->number }} -
                                                 {{ $model->neighborhood }} - {{ $model->city }} - {{ $model->state }}
                                             </p>
@@ -502,7 +503,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                             <p>
 
                                             <div>
-                                                <i class="fa fa-comments font-purple"></i>
+                                                <i class="fa fa-comments font-blue"></i>
                                                 Observações: <span> {{ $model->description }} </span>
                                             </div>
 
@@ -605,7 +606,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 <span class="input-group-addon">
                                                                     <i class="fa fa-user font-blue"></i>
                                                                 </span>
-                                                            <input type="text" name="name" id="name" class="form-control"
+                                                            <input type="text" name="name" id="name" class="form-control border-input"
                                                                    placeholder="Encontro de Jovens"
                                                                    value="{{ $model->name }}" required>
                                                         </div>
@@ -621,7 +622,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         <label>Frequência</label>
                                                         <div class="input-icon input-icon-sm">
 
-                                                            <i class="fa fa-briefcase"></i>
+
                                                             <select class="form-control" name="frequency"
                                                                     id="select-frequency">
                                                                 @foreach($frequencies as $frequency)
@@ -641,7 +642,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         <div class="form-group">
                                                             <label>Selecione o dia da semana</label>
                                                             <div class="input-icon input-icon-sm">
-                                                                <i class="fa fa-briefcase"></i>
+
                                                                 <select class="form-control" name="day" required>
                                                                     <option value="Domingo"
                                                                             @if($model->day == "Domingo") selected @endif
@@ -686,7 +687,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         <div class="form-group">
                                                             <label>Selecione o dia</label>
                                                             <div class="input-icon input-icon-sm">
-                                                                <i class="fa fa-briefcase"></i>
+
                                                                 <select class="form-control" name="day" required>
                                                                     <option value="">Selecione</option>
                                                                     <?php $days = 32; $i = 1;?>
@@ -718,10 +719,10 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                                             <span class="input-group-btn">
                                                                 <button class="btn default" type="button">
-                                                                    <i class="fa fa-calendar"></i>
+                                                                    <i class="fa fa-calendar font-blue"></i>
                                                                 </button>
                                                             </span>
-                                                            <input type="text" class="form-control" name="eventDate"
+                                                            <input type="text" class="form-control border-input" name="eventDate"
                                                                    id="eventDate" readonly
                                                                    value="{{ $model->eventDate }}" required>
                                                         </div>
@@ -744,10 +745,10 @@ License: You must have a valid license purchased only from themeforest(the above
                                                              data-date-format="dd/mm/yyyy" data-date-start-date="+0d">
                                                                 <span class="input-group-btn">
                                                                     <button class="btn default" type="button">
-                                                                        <i class="fa fa-calendar"></i>
+                                                                        <i class="fa fa-calendar font-blue"></i>
                                                                     </button>
                                                                 </span>
-                                                            <input type="text" class="form-control" name="endEventDate"
+                                                            <input type="text" class="form-control border-input" name="endEventDate"
                                                                    id="endEventDate" readonly
                                                                    value="{{ $model->endEventDate }}">
                                                         </div>
@@ -1079,7 +1080,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 <i class="fa fa-clock-o font-blue"></i>
                                                             </span>
 
-                                                            <input type="text" class="form-control number" id="certified_hours"
+                                                            <input type="text" class="form-control number border-input" id="certified_hours"
                                                                    name="certified_hours" placeholder="Em Horas" value="{{ $model->certified_hours }}">
                                                         </div>
                                                     </div>
@@ -1106,7 +1107,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         <span class="input-group-addon">
                                                             <i class="fa fa-globe font-blue"></i>
                                                         </span>
-                                                            <input type="text" class="form-control"
+                                                            <input type="text" class="form-control border-input"
                                                                    name="public_url" id="public_url" value="{{ $model->public_url }}" readonly>
                                                         </div>
 
@@ -1118,7 +1119,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label class="control-label">Descrição</label>
-                                                        <textarea class="form-control" name="description"
+                                                        <textarea class="form-control border-input" name="description"
                                                                   placeholder="Digite aqui observações importantes sobre o evento"
                                                                   rows="5">{{ $model->description }}</textarea>
                                                     </div>
@@ -1131,9 +1132,89 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                             @include('includes.address-edit')
 
+                                            <br><br>
+
+                                            @if($payment)
+                                                <div class="portlet-title tabbable-line">
+                                                    <div class="caption caption-md">
+                                                        <i class="fa fa-money theme-font"></i>
+                                                        <span class="caption-subject font-blue-madison bold uppercase">Custo do Evento</span>
+                                                    </div>
+
+                                                </div>
+
+                                                <br><hr><br>
+
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label for="">Valor do Evento</label>
+                                                            <div class="input-group">
+                                                            <span class="input-group-addon">
+                                                                <i class="fa fa-money font-blue"></i>
+                                                            </span>
+
+                                                                <input type="text" class="form-control border-input" id="value_money"
+                                                                       name="value_money" placeholder="Valor do Evento"
+                                                                       value="@if($model->value_money){{ $model->value_money }}@else 0 @endif">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                        <span class="help-block fix-bottom-check">
+                                                        <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                                            <input type="checkbox" name="credit_card" id="credit_card" class="checkboxes" value="1" checked />
+                                                            <span></span>Cartão de Crédito
+                                                        </label>
+                                                    </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                        <span class="help-block fix-bottom-check">
+                                                        <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                                            <input type="checkbox" name="boleto" id="boleto" class="checkboxes" value="1" disabled/>
+                                                            <span></span>Boleto
+                                                        </label>
+                                                    </span>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label for="">Opções de Parcelamento</label>
+                                                            <div class="input-group">
+
+                                                                <select name="installments" id="installments" class="form-control" required>
+                                                                    <option value="">Selecione o valor do Evento antes do Parcelamento</option>
+                                                                    <option value="1" @if($model->installments == 1) selected @endif>1x á vista</option>
+                                                                    @for($i = 2; $i < 13; $i++)
+                                                                        <option value="{{ $i }}" @if($i == $model->installments) selected @endif>
+
+                                                                            {{ $i }}x de
+                                                                            R$ {{ number_format($model->value_money / $i, 2, ',', ' ') }}
+
+                                                                        </option>
+                                                                    @endfor
+
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endif
+
+
+
+
                                         </div>
                                         <div class="form-actions">
-                                            {!! Form::submit('Enviar', ['class' => 'btn blue', 'id' => 'btn-submit']) !!}
+                                            <button type="submit" class="btn blue btn-block" id="btn-submit">
+                                                <i class="fa fa-check"></i>
+                                                Enviar
+                                            </button>
+
                                             <div class="progress" style="display: none;">
                                                 <div class="progress-bar progress-bar-striped active" role="progressbar"
                                                      aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"
@@ -1772,6 +1853,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
 <script src="../../js/maps.js"></script>
 <script src="../../js/os.js"></script>
+<script src="../../js/payment.js"></script>
 
 
 <script async defer
