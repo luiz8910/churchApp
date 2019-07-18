@@ -118,6 +118,30 @@
                             @endif
                         </div>
 
+                        <div class="form-group p-relative {{ $errors->has('cpf') ? ' has-error' : '' }}">
+
+                            <label class="has-float-label" aria-label="cpf">
+                                <input class="form-control cpf" type="text" placeholder="CPF" name="cpf" value="{{ old('cpf') }}" required maxlength="11"/>
+                                <span>CPF</span>
+                            </label>
+
+                            @if ($errors->has('cpf'))
+                                <span class="help-block"><strong>{{ $errors->first('cpf') }}</strong></span>
+                            @endif
+                        </div>
+
+                        <div class="form-group p-relative {{ $errors->has('dateBirth') ? ' has-error' : '' }}">
+
+                            <label class="has-float-label" aria-label="dateBirth">
+                                <input class="form-control" type="date" placeholder="Data de Nascimento" name="dateBirth" value="{{ old('dateBirth') }}" required/>
+                                <span>Data de Nascimento</span>
+                            </label>
+
+                            @if ($errors->has('dateBirth'))
+                                <span class="help-block"><strong>{{ $errors->first('dateBirth') }}</strong></span>
+                            @endif
+                        </div>
+
                         <div class="form-group pt-3 d-flex justify-content-between align-items-baseline">
 
                             <button type="submit" class="btn btn-secondary float-right">Inscrever</button>

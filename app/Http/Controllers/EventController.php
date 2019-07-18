@@ -2105,6 +2105,20 @@ class EventController extends Controller
             return redirect()->back()->withInput()->withErrors($errors);
         }
 
+        if($data['cpf'] == "")
+        {
+            $errors['cpf'] = 'Preencha seu CPF';
+
+            return redirect()->back()->withInput()->withErrors($errors);
+        }
+
+        if($data['dateBirth'] == "")
+        {
+            $errors['dateBirth'] = 'Preencha sua Data de Nascimento';
+
+            return redirect()->back()->withInput()->withErrors($errors);
+        }
+
         $person = $this->personRepository->findByField('email', $data['email'])->first();
 
         if($person)

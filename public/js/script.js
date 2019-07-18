@@ -101,7 +101,7 @@ $(function () {
             '</tr>');
 
     });
-    
+
     $("#maritalStatus").change(function () {
         var status = $("#maritalStatus").val();
 
@@ -170,7 +170,7 @@ $(function () {
 
     });
 
-    $("#rg").keypress(function (e) {
+    $("#rg, .cpf").keypress(function (e) {
         if(e.which < 48 || e.which > 57){
             if(e.which != 88 && e.which != 120){
                 return false;
@@ -741,7 +741,7 @@ $(function () {
         $("#results").addClass('open');
     });
 
-    
+
 
     /*$("#container-pagination").cleverInfiniteScroll({
         contentsWrapperSelector: "#container-pagination",
