@@ -626,6 +626,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/4all', 'EventController@teste4all');
 
+    Route::get('check_card_token', 'EventController@check_card_token');
+
     Route::get('/login-admin', 'Auth\LoginController@loginAdmin')->name('login.admin');
 
     Route::post('/login-admin', 'Auth\LoginController@authenticateAdmin')->name('login.admin.authenticate');

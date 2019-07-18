@@ -12,7 +12,7 @@ class CreditCard extends Model implements Transformable
     use TransformableTrait, SoftDeletes;
 
     protected $fillable = [
-        'owner_id', 'person_name', 'number', 'expires_in', 'cvc', 'company'
+        'person_id', 'card_token', 'status', 'type', 'lastDigits', 'expirationDate', 'brandId'
     ];
 
     protected $dates = ['deleted_at'];

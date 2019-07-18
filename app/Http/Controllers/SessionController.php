@@ -66,10 +66,17 @@ class SessionController extends Controller
 
         $event = $this->eventRepository->findByField('id', $event_id)->first();
 
-        if (count($sessions) > 0) {
-            foreach ($sessions as $session) {
+        if (count($sessions) > 0)
+        {
+            foreach ($sessions as $session)
+            {
+
+                $start_time = $session->start_time;
+
                 $session->start_time = date_format(date_create($session->start_time), 'd/m/Y H:i');
-                $session->short_start_time = date_format(date_create($session->start_time), 'H:i');
+
+                $session->short_start_time = date_format(date_create($start_time), 'H:i');
+
                 $session->end_time = date_format(date_create($session->end_time), 'H:i');
             }
 

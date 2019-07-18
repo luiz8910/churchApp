@@ -5,7 +5,9 @@ namespace App\Services;
 use App\Repositories\CreditCardRepository;
 use GuzzleHttp\Client;
 
-class PaymentServices{
+
+class PaymentServices
+{
 
     /**
      * @var CreditCardRepository
@@ -45,6 +47,7 @@ class PaymentServices{
         return env('PUBLIC_API_KEY');
     }
 
+    //1ª Função no fluxo de pagamentos
     public function requestVaultKey()
     {
         $url = '/requestVaultKey';
@@ -58,28 +61,34 @@ class PaymentServices{
                     "Content-Type" => "application/json",
                     //"Content-Type" => "application/x-www-form-urlencoded",
                     "Accept" => "application/json",
-            ],
+                ],
 
 
                 "merchantKey" => $this->getMerchantKey(),
             ]
 
-        ]);
+            ]);
 
-        if($response->getStatusCode() == 200)
-        {
+        if ($response->getStatusCode() == 200) {
             $access_key = json_decode($response->getBody()->read(1024))->accessKey;
 
-            $this->prepareCard($access_key);
+            return $access_key;
         }
+
+        return false;
 
     }
 
-    public function prepareCard($access_key)
+    //2ª Função no fluxo de pagamentos
+    public function prepareCard($data)
     {
-        $url = '/prepareCard';
+        $access_key = $this->requestVaultKey();
 
-        $response = $this->client->request('post', $this->payment_url() . $url, ['json' => [
+        if($access_key)
+        {
+            $url = '/prepareCard';
+
+            $response = $this->client->request('post', $this->payment_url() . $url, ['json' => [
 
                 "headers" => [
                     "Content-Type" => "application/json",
@@ -90,21 +99,53 @@ class PaymentServices{
                 "accessKey" => $access_key,
                 "cardData" => [
                     "type" => 1,
-                    "cardholderName" => "John Smith",
-                    "cardNumber" => "4574849552718601",
-                    "expirationDate" => "0120",
-                    "securityCode" => "123"
+                    "cardholderName" => $data['holder_name'],
+                    "cardNumber" => $data['credit_card_number'],
+                    "expirationDate" => str_replace('/', '', $data['expires_in']),
+                    "securityCode" => $data['cvc']
                 ]
 
             ]
 
-        ]);
+            ]);
 
+
+            if ($response->getStatusCode() == 200) {
+                $card_nonce = json_decode($response->getBody()->read(2048))->cardNonce;
+
+                return $this->createCardToken($card_nonce);
+            }
+        }
+
+        return false;
+
+
+    }
+
+    //3ª Função no fluxo de pagamentos
+    public function createCardToken($card_nonce)
+    {
+        $url = '/createCardToken';
+
+        $response = $this->client->request('post', $this->payment_url() . $url, ['json' =>
+
+            [
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                    'Accept' => 'application/json',
+                ],
+
+                'merchantKey' => $this->getMerchantKey(),
+                'cardNonce' => $card_nonce
+            ]
+        ]);
 
         if($response->getStatusCode() == 200)
         {
-            dd($response->getBody()->read(2048));
+            return $response->getBody()->read(2048);
         }
+
+        return false;
     }
 
 
@@ -115,52 +156,56 @@ class PaymentServices{
         //4574849552718601
         $response = $this->client->request('post', $this->payment_url() . $url, ['json' => [
 
-                "headers" => [
-                    "Content-Type" => "application/json",
-                    //"Content-Type" => "application/x-www-form-urlencoded",
-                    "Accept" => "application/json",
-                ],
+            "headers" => [
+                "Content-Type" => "application/json",
+                //"Content-Type" => "application/x-www-form-urlencoded",
+                "Accept" => "application/json",
+            ],
 
 
-                    "merchantKey" => $this->getMerchantKey(),
-                    "metaId" => "ANDBB476FB",
-                    "softDescriptor" => "Descrição teste",
+            "merchantKey" => $this->getMerchantKey(),
+            "metaId" => "ANDBB476FB",
+            "softDescriptor" => "Descrição teste",
 
-                    "cardData" => [
-                        "type" => 1,
-                        "cardholderName" => "John Smith",
-                        "cardNumber" => "4574849552718601",
-                        "expiration_date" => "0120",
-                        "security_code" => "123"
-                    ]
-
-
+            "cardData" => [
+                "type" => 1,
+                "cardholderName" => "John Smith",
+                "cardNumber" => "4574849552718601",
+                "expiration_date" => "0120",
+                "security_code" => "123"
             ]
+
+
+        ]
         ]);
 
         return $response;
     }
 
-    public function cardStatus()
+    public function check_card_token($card_token)
     {
 
-        $url = '/getBrands';
+        $url = '/checkCardToken';
 
-        $response = $this->client->request('POST', $this->payment_url() . $url, ['json' => [
+        $response = $this->client->request('post', $this->payment_url() . $url, ['json' =>
+            [
                 "headers" => [
-                    "ContentType" => "application/json",
-                    "Accept" => "application/json",
+                    'Content-Type' => 'application/json',
+                    'Accept' => 'application/json',
                 ],
 
-                "merchantKey" => $this->getMerchantKey()
+                'merchantKey' => $this->getMerchantKey(),
+                'cardToken' => $card_token
             ]
-
         ]);
 
         if($response->getStatusCode() == 200)
         {
-            dd($response->getBody());
+            return json_decode($response->getBody()->read(1024))->status;
+
         }
+
+
     }
 
     public function newBuyer()
@@ -238,7 +283,6 @@ class PaymentServices{
         return $response;
 
 
-
     }
 
 
@@ -246,10 +290,8 @@ class PaymentServices{
     {
         $cardExists = $this->cardExists($data['number']);
 
-        if(!$cardExists)
-        {
-            if($this->creditCardRepository->create($data))
-            {
+        if (!$cardExists) {
+            if ($this->creditCardRepository->create($data)) {
                 return true;
             }
         }
@@ -264,8 +306,7 @@ class PaymentServices{
     {
         $card = $this->creditCardRepository->findByField('number', $number);
 
-        if(count($card) > 0)
-        {
+        if (count($card) > 0) {
             return true;
         }
 

@@ -15,6 +15,8 @@ use App\Models\EventSubscribedList;
 use App\Models\RecentEvents;
 use App\Models\User;
 use App\Repositories\ChurchRepository;
+use App\Repositories\CreditCardRepository;
+use App\Repositories\CreditCardRepositoryEloquent;
 use App\Repositories\EventSubscribedListRepository;
 use App\Repositories\FrequencyRepository;
 use App\Repositories\ResponsibleRepository;
@@ -133,6 +135,10 @@ class EventController extends Controller
      * @var PaymentServices
      */
     private $paymentServices;
+    /**
+     * @var CreditCardRepository
+     */
+    private $creditCardRepository;
 
     /**
      * EventController constructor.
@@ -156,7 +162,7 @@ class EventController extends Controller
                                 ChurchServices $churchServices, qrServices $qrServices,
                                 EventSubscribedListRepository $listRepository, PeopleServices $peopleServices,
                                 MessageServices $messageServices, ResponsibleRepository $responsibleRepository,
-                                PaymentServices $paymentServices)
+                                PaymentServices $paymentServices, CreditCardRepository $creditCardRepository)
     {
         $this->repository = $repository;
         $this->stateRepository = $stateRepositoryTrait;
@@ -177,6 +183,7 @@ class EventController extends Controller
         $this->messageServices = $messageServices;
         $this->responsibleRepository = $responsibleRepository;
         $this->paymentServices = $paymentServices;
+        $this->creditCardRepository = $creditCardRepository;
     }
 
 
@@ -2173,13 +2180,70 @@ class EventController extends Controller
 
         if($event)
         {
-            $data = $request->all();
+            try{
+                $data = $request->all();
 
-            //$this->paymentServices->sendCustomerData();
-            //$this->paymentServices->cardStatus();
+                $person = $this->personRepository->findByField('email', $data['email'])->first();
+
+                if($person)
+                {
+                    $x['person_id'] = $person->id;
+                }
+
+                else{
+
+                    $p['name'] = $data['name'];
+                    $p['email'] = $data['email'];
+                    $p['cel'] = '15997454531';//$data['cel'];
+
+                    $x['person_id'] = $this->personRepository->create($p)->id;
+                }
+
+                $json_data = $this->paymentServices->prepareCard($data);
+
+                $result = json_decode($json_data);
+
+                $x['card_token'] = $result->cardToken;
+                $x['type'] = $result->type;
+                $x['lastDigits'] = $result->lastDigits;
+                $x['expirationDate'] = $result->expirationDate;
+                $x['brandId'] = $result->brandId;
+                $x['status'] = $result->status;
+
+                $this->creditCardRepository->create($x);
+
+                DB::commit();
+
+                echo 'Credit card token ok';
+
+            }catch (\Exception $e)
+            {
+                DB::rollBack();
+
+                dd($e->getMessage());
+            }
+
         }
 
-        //throw new NotFoundHttpException();
+        throw new NotFoundHttpException();
+    }
+
+    public function check_card_token()
+    {
+        $card_token = '7b71gvWwLjPNZuXRJ6WlzC6cdS2fJNGyd9CO6EEsSv0=';
+
+        $card = $this->creditCardRepository->findByField('card_token', $card_token)->first();
+
+        if($card)
+        {
+            $c['status'] = $this->paymentServices->check_card_token($card_token);
+
+            $this->creditCardRepository->update($c, $card->id);
+
+            echo $c['status'];
+        }
+
+
     }
 
     public function teste4all()
