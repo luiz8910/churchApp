@@ -47,6 +47,7 @@
             <div class="row">
                 <div class="col-sm-7 mr-sm-auto ml-sm-5">
                     <h6 class="color-grape">CONFIRME SUA INSCRIÇÃO</h6>
+                    @include('includes.messages')
                     <p class="inner-text">Escolha o método de pagamento</p>
 
                     <div class="row hidden-sm-up mb-3">

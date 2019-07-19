@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use App\Cron\CronEvents;
 use App\Events\AgendaEvent;
 use App\Jobs\Certificate;
+use App\Jobs\CheckCardToken;
 use App\Jobs\Messages;
 use App\Jobs\SendQrEmail;
 use App\Jobs\Test;
 use App\Jobs\Teste;
 use App\Mail\welcome_sub;
+use App\Models\Bug;
 use App\Models\Event;
 use App\Models\EventSubscribedList;
 use App\Models\RecentEvents;
@@ -58,7 +60,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class EventController extends Controller
 {
-    use CountRepository, DateRepository, FormatGoogleMaps, NotifyRepository, ConfigTrait, UserLoginRepository, EmailTrait;
+    use CountRepository, DateRepository, FormatGoogleMaps, NotifyRepository, ConfigTrait,
+        UserLoginRepository, EmailTrait, PeopleTrait;
     /**
      * @var EventRepository
      */
@@ -2197,20 +2200,31 @@ class EventController extends Controller
             try{
                 $data = $request->all();
 
+                $p['name'] = $data['name'];
+                $p['email'] = $data['email'];
+                $p['cel'] = $data['cel'];
+                $p['cpf'] = $data['cpf'];
+                $p['dateBirth'] = date_format(date_create($data['dateBirth']), "Y-m-d");
+
                 $person = $this->personRepository->findByField('email', $data['email'])->first();
 
                 if($person)
                 {
                     $x['person_id'] = $person->id;
+
+                    $this->personRepository->update($p, $person->id);
+
+                    if(!$this->userRepository->findByField('email', $p['email'])->first())
+                    {
+                        $this->createUserLogin($x['person_id'], $this->randomPassword(), $p['email'], $event->church_id);
+                    }
                 }
 
                 else{
 
-                    $p['name'] = $data['name'];
-                    $p['email'] = $data['email'];
-                    $p['cel'] = '15997454531';//$data['cel'];
-
                     $x['person_id'] = $this->personRepository->create($p)->id;
+
+                    $this->createUserLogin($x['person_id'], $this->randomPassword(), $p['email'], $event->church_id);
                 }
 
                 $json_data = $this->paymentServices->prepareCard($data);
@@ -2228,13 +2242,34 @@ class EventController extends Controller
 
                 DB::commit();
 
-                echo 'Credit card token ok';
+                $x['installments'] = $data['installments'];
+
+                CheckCardToken::dispatch($x, $event_id);
+
+                $request->session()->flash('success.msg', 'Um email foi enviado para ' .
+                    $data['email'] . ' com status do pagamento');
+
+                return redirect()->back();
 
             }catch (\Exception $e)
             {
                 DB::rollBack();
 
-                dd($e->getMessage());
+                $bug = new Bug();
+
+                $b['description'] = $e->getMessage();
+                $b['platform'] = 'Back-end';
+                $b['location'] = 'payment() EventController.php';
+                $b['model'] = '4all';
+                $b['status'] = 'Pendente';
+                $b['created_at'] = Carbon::now();
+
+                $bug->save($b);
+
+                $request->session()->flash('error.msg',
+                    'Um erro ocorreu entre em contato pelo contato@beconnect.com.br');
+
+                return redirect()->back();
             }
 
         }

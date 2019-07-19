@@ -17,7 +17,13 @@ class CreatePaymentsTable extends Migration
 	{
 		Schema::create('payments', function(Blueprint $table) {
             $table->increments('id');
-
+            $table->string('transactionId');
+            $table->string('metaId');
+            $table->integer('status');
+            $table->string('antiFraude_success');
+            $table->string('antiFraude_validator');
+            $table->decimal('antiFraude_score');
+            $table->string('antiFraude_recommendation');
             $table->timestamps();
 		});
 	}
