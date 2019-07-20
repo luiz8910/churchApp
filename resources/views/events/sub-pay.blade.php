@@ -77,7 +77,7 @@
 
                             <select class="form-control border-0" name="installments" required>
                                 <option value="">Selecione um parcelamento</option>
-                                <option value="1">1x á vista</option>
+                                <option value="1" selected>1x á vista</option>
                                 @if($event->installments > 1)
                                     @for($i = 2; $i <= $event->installments; $i++)
                                         <option value="{{ $i }}" @if(old('installments') == $i) selected @endif >
@@ -92,7 +92,7 @@
                         <div class="form-group">
                             <label class="has-float-label" aria-label="Nome">
                                 <input class="form-control" type="text" placeholder="Nome"
-                                       name="name" value="{{ old('name') }}" required/>
+                                       name="name" value="Luiz Yahoo"{{--"{{ old('name') }}"--}}/>
                                 <span>Nome</span>
                             </label>
                         </div>
@@ -100,7 +100,7 @@
                         <div class="form-group">
                             <label class="has-float-label" aria-label="Email">
                                 <input class="form-control" type="email" placeholder="Email"
-                                       name="email" value="{{ old('email') }}" required/>
+                                       name="email" value="luiz.sanches89@yahoo.com"{{--"{{ old('email') }}"--}} required/>
                                 <span>Email</span>
                             </label>
                         </div>
@@ -108,7 +108,8 @@
                         <div class="form-group p-relative {{ $errors->has('cel') ? ' has-error' : '' }}">
 
                             <label class="has-float-label" aria-label="cel">
-                                <input class="form-control tel" type="text" placeholder="Celular" name="cel" value="{{ old('cel') }}" required/>
+                                <input class="form-control tel" type="text" placeholder="Celular" name="cel"
+                                       value="15997454531"{{--"{{ old('cel') }}"--}} required/>
                                 <span>Celular</span>
                             </label>
 
@@ -120,7 +121,8 @@
                         <div class="form-group p-relative {{ $errors->has('cpf') ? ' has-error' : '' }}">
 
                             <label class="has-float-label" aria-label="cpf">
-                                <input class="form-control cpf" type="text" placeholder="CPF" name="cpf" value="{{ old('cpf') }}" required/>
+                                <input class="form-control cpf" type="text" placeholder="CPF" name="cpf"
+                                       value="38418189860"{{--"{{ old('cpf') }}"--}} required maxlength="11"/>
                                 <span>CPF</span>
                             </label>
 
@@ -132,7 +134,8 @@
                         <div class="form-group p-relative {{ $errors->has('dateBirth') ? ' has-error' : '' }}">
 
                             <label class="has-float-label" aria-label="dateBirth">
-                                <input class="form-control dateBirth" type="date" placeholder="Data de Nascimento" name="dateBirth" value="{{ old('dateBirth') }}" required/>
+                                <input class="form-control dateBirth" type="date" placeholder="Data de Nascimento" name="dateBirth"
+                                       value="15/09/1944"{{--"{{ old('dateBirth') }}"--}} required/>
                                 <span>Data de Nascimento</span>
                             </label>
 
@@ -144,7 +147,7 @@
                         <div class="form-group">
                             <label class="has-float-label" aria-label="Nome no cartão">
                                 <input class="form-control" type="text"
-                                       placeholder="Nome no cartão" name="holder_name" value="{{ old('holder_name') }}" required/>
+                                       placeholder="Nome no cartão" name="holder_name" value="Luiz F Sanches"{{--"{{ old('holder_name') }}"--}} required/>
                                 <span>Nome no cartão</span>
                             </label>
                         </div>
@@ -153,7 +156,7 @@
                             <label class="has-float-label" aria-label="Número do cartão de crédito">
                                 <input class="form-control number" id="credit_card_number" type="text"
                                        placeholder="Número do cartão de crédito"
-                                       name="credit_card_number" maxlength="16" value="{{ old('credit_card_number') }}" required/>
+                                       name="credit_card_number" maxlength="16" value="4574849552718601"{{--"{{ old('credit_card_number') }}"--}} required/>
                                 <span>Número do cartão de crédito</span>
 
                             </label>
@@ -166,7 +169,7 @@
                                 <div class="form-group">
                                     <label class="has-float-label" aria-label="Data de expiração">
                                         <input class="form-control number" type="text" id="expire_date"
-                                               placeholder="mm/AA" value="{{ old('expires_in') }}"
+                                               placeholder="mm/AA" value="12/19"{{--"{{ old('expires_in') }}"--}}
                                                maxlength="5" name="expires_in" required />
                                         <span>Data de expiração (mm/AA) </span>
                                     </label>
@@ -177,7 +180,7 @@
                                 <div class="form-group">
                                     <label class="has-float-label" aria-label="CVC">
                                         <input class="form-control number" type="text"
-                                               placeholder="CVC" name="cvc" value="{{ old('cvc') }}" required/>
+                                               placeholder="CVC" name="cvc" value="123"{{--"{{ old('cvc') }}"--}} required/>
                                         <span>CVC</span>
                                     </label>
                                 </div>

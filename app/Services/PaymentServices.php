@@ -96,14 +96,13 @@ class PaymentServices
         {
             $bug = new Bug();
 
-            $b['description'] = $e->getMessage();
-            $b['platform'] = 'Back-end';
-            $b['location'] = 'requestVaultKey() PaymentServices.php';
-            $b['model'] = '4all';
-            $b['status'] = 'Pendente';
-            $b['created_at'] = Carbon::now();
+            $bug->description = $e->getMessage();
+            $bug->platform = 'Back-end';
+            $bug->location = 'requestVaultKey() PaymentServices.php';
+            $bug->model = '4all';
+            $bug->status = 'Pendente';
 
-            $bug->save($b);
+            $bug->save();
         }
 
 
@@ -114,15 +113,19 @@ class PaymentServices
     //2ª Função no fluxo de pagamentos
     public function prepareCard($data)
     {
-        $access_key = $this->requestVaultKey();
+        $card = $this->creditCardRepository->findByField('card_number', $data['credit_card_number'])->first();
 
-        if($access_key)
+        if(!$card)
         {
-            try{
+            $access_key = $this->requestVaultKey();
 
-                $url = '/prepareCard';
+            if($access_key)
+            {
+                try{
 
-                $response = $this->client->request('post', $this->payment_url() . $url, ['json' => [
+                    $url = '/prepareCard';
+
+                    $response = $this->client->request('post', $this->payment_url() . $url, ['json' => [
 
                         "headers" => [
                             "Content-Type" => "application/json",
@@ -141,33 +144,36 @@ class PaymentServices
 
                     ]
 
-                ]);
+                    ]);
 
 
-                if ($response->getStatusCode() == 200)
+                    if ($response->getStatusCode() == 200)
+                    {
+                        $card_nonce = json_decode($response->getBody()->read(2048))->cardNonce;
+
+                        return $this->createCardToken($card_nonce);
+                    }
+
+                }catch (\Exception $e)
                 {
-                    $card_nonce = json_decode($response->getBody()->read(2048))->cardNonce;
+                    $bug = new Bug();
 
-                    return $this->createCardToken($card_nonce);
+                    $bug->description = $e->getMessage();
+                    $bug->platform = 'Back-end';
+                    $bug->location = 'prepareCard() PaymentServices.php';
+                    $bug->model = '4all';
+                    $bug->status = 'Pendente';
+
+                    $bug->save();
+
+                    return json_encode(['status' => false, 'card' => false]);
                 }
 
-            }catch (\Exception $e)
-            {
-                $bug = new Bug();
-
-                $b['description'] = $e->getMessage();
-                $b['platform'] = 'Back-end';
-                $b['location'] = 'prepareCard() PaymentServices.php';
-                $b['model'] = '4all';
-                $b['status'] = 'Pendente';
-                $b['created_at'] = Carbon::now();
-
-                $bug->save($b);
             }
-
         }
 
-        return false;
+
+        return json_encode(['status' => false, 'card' => true]);
 
 
     }
@@ -194,25 +200,24 @@ class PaymentServices
 
             if($response->getStatusCode() == 200)
             {
-                return $response->getBody()->read(2048);
+                return $response->getBody()->read(2048) . json_encode(['status' => true]);
             }
 
         }catch (\Exception $e){
             $bug = new Bug();
 
-            $b['description'] = $e->getMessage();
-            $b['platform'] = 'Back-end';
-            $b['location'] = 'createCardToken() PaymentServices.php';
-            $b['model'] = '4all';
-            $b['status'] = 'Pendente';
-            $b['created_at'] = Carbon::now();
+            $bug->description = $e->getMessage();
+            $bug->platform = 'Back-end';
+            $bug->location = 'createCardToken() PaymentServices.php';
+            $bug->model = '4all';
+            $bug->status = 'Pendente';
 
-            $bug->save($b);
+            $bug->save();
 
         }
 
 
-        return false;
+        return json_encode(['status' => false, 'card' => false]);
     }
 
 
@@ -246,14 +251,13 @@ class PaymentServices
         {
             $bug = new Bug();
 
-            $b['description'] = $e->getMessage();
-            $b['platform'] = 'Back-end';
-            $b['location'] = 'check_card_token() PaymentServices.php';
-            $b['model'] = '4all';
-            $b['status'] = 'Pendente';
-            $b['created_at'] = Carbon::now();
+            $bug->description = $e->getMessage();
+            $bug->platform = 'Back-end';
+            $bug->location = 'check_card_token() PaymentServices.php';
+            $bug->model = '4all';
+            $bug->status = 'Pendente';
 
-            $bug->save($b);
+            $bug->save();
         }
 
         return false;

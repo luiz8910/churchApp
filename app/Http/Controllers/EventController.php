@@ -2231,23 +2231,27 @@ class EventController extends Controller
 
                 $result = json_decode($json_data);
 
-                $x['card_token'] = $result->cardToken;
-                $x['type'] = $result->type;
-                $x['lastDigits'] = $result->lastDigits;
-                $x['expirationDate'] = $result->expirationDate;
-                $x['brandId'] = $result->brandId;
-                $x['status'] = $result->status;
+                if($result->status)
+                {
+                    $x['card_token'] = $result->cardToken;
+                    $x['type'] = $result->type;
+                    $x['lastDigits'] = $data['credit_card_number'];
+                    $x['expirationDate'] = $result->expirationDate;
+                    $x['brandId'] = $result->brandId;
+                    $x['status'] = $result->status;
 
-                $this->creditCardRepository->create($x);
+                    $this->creditCardRepository->create($x);
 
-                DB::commit();
+                    DB::commit();
 
-                $x['installments'] = $data['installments'];
+                    $x['installments'] = $data['installments'];
 
-                CheckCardToken::dispatch($x, $event_id);
+                    CheckCardToken::dispatch($x, $event_id);
 
-                $request->session()->flash('success.msg', 'Um email foi enviado para ' .
-                    $data['email'] . ' com status do pagamento');
+                    $request->session()->flash('success.msg', 'Um email foi enviado para ' .
+                        $data['email'] . ' com status do pagamento');
+                }
+
 
                 return redirect()->back();
 
@@ -2257,14 +2261,13 @@ class EventController extends Controller
 
                 $bug = new Bug();
 
-                $b['description'] = $e->getMessage();
-                $b['platform'] = 'Back-end';
-                $b['location'] = 'payment() EventController.php';
-                $b['model'] = '4all';
-                $b['status'] = 'Pendente';
-                $b['created_at'] = Carbon::now();
+                $bug->description = $e->getMessage();
+                $bug->platform = 'Back-end';
+                $bug->location = 'line ' . $e->getLine() . ' payment() EventController.php';
+                $bug->model = '4all';
+                $bug->status = 'Pendente';
 
-                $bug->save($b);
+                $bug->save();
 
                 $request->session()->flash('error.msg',
                     'Um erro ocorreu entre em contato pelo contato@beconnect.com.br');
@@ -2287,7 +2290,7 @@ class EventController extends Controller
         {
             $c['status'] = $this->paymentServices->check_card_token($card_token);
 
-            $this->creditCardRepository->update($c, $card->id);
+            //$this->creditCardRepository->update($c, $card->id);
 
             echo $c['status'];
         }
