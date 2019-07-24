@@ -36,31 +36,15 @@ class CheckCardToken implements ShouldQueue
      */
     public function handle(PaymentServices $paymentServices, CreditCardRepository $creditCardRepository)
     {
-        $card = $creditCardRepository->findByField('card_token', $this->data['card_token'])->first();
+        sleep(10);
 
-        if($card)
-        {
-            $status = $paymentServices->check_card_token($this->data['card_token']);
+        do{
 
-            if(!$status === false)
-            {
-                while ($status === 0)
-                {
-                    $status = $paymentServices->check_card_token($this->data['card_token']);
+            $status = $paymentServices->check_card($this->data, $this->event_id);
 
-                    if(!$status === 0)
-                    {
-                        $x['status'] = $status;
+            echo 'status: ' . $status . '\n';
 
-                        $creditCardRepository->update($x, $card->id);
+        }while($status =! 1);
 
-                        if($status === 1)
-                        {
-                            $paymentServices->createTransaction($this->data, $this->event_id);
-                        }
-                    }
-                }
-            }
-        }
     }
 }

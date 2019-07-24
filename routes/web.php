@@ -534,6 +534,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('new-responsible/{plan}', 'ChurchController@newResponsible')->name('new.church-responsible');
 
+    //Localizado em site.js
     Route::get('/verify-credit-card/{number}', 'ChurchController@verifyCreditCard');
 
     Route::post('/responsible-side-data', 'ChurchController@storeResponsible')->name('responsible.store');
@@ -626,7 +627,9 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/4all', 'EventController@teste4all');
 
-    Route::get('check_card_token', 'EventController@check_card_token');
+    Route::get('check_transaction', 'EventController@check_transaction');
+
+    Route::get('/check_card_token', 'EventController@check_card_token');
 
     Route::get('/login-admin', 'Auth\LoginController@loginAdmin')->name('login.admin');
 

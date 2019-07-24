@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bug;
 use App\Repositories\BugRepository;
 use App\Traits\ConfigTrait;
 use Illuminate\Http\Request;
@@ -22,9 +23,20 @@ class BugController extends Controller
 
     public function bugs()
     {
-        $desk = $this->repository->findWhere(['status' => 'pending', 'platform' => 'Desktop']);
+        $desk = Bug::where([
+            'status' => 'Pendente',
+            'platform' => 'Back-end'
+        ])
+            ->orderBy('created_at', 'desc')
+            ->get();
 
-        $app = $this->repository->findWhere(['status' => 'pending', 'platform' => 'App']);
+
+        $app = Bug::where([
+            'status' => 'Pendente',
+            'platform' => 'App'
+        ])
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         return view('bugs.index', compact('desk','app'));
     }
@@ -33,7 +45,7 @@ class BugController extends Controller
     {
         $bug = $request->all();
 
-        $bug['platform'] = 'Desktop';
+        $bug['platform'] = 'Back-end';
 
         if(!isset($bug['church_id']) || $bug['church_id'] == "")
         {

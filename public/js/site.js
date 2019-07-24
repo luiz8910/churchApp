@@ -1044,7 +1044,7 @@ $(function(){
             input.removeClass('visa').addClass('mastercard');
             company.val('mastercard');
         }
-    }).blur(function(){
+    });/*.blur(function(){
         var input = $("#credit_card_number");
         var span = $("#span-error-number");
 
@@ -1080,7 +1080,7 @@ $(function(){
         }
 
 
-    });
+    });*/
 
     $("#expire_date").keyup(function(e){
 

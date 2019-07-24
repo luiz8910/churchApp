@@ -65,7 +65,7 @@ class PaymentServices
     }
 
 
-    //1ª Função no fluxo de pagamentos
+    //2ª Função no fluxo de pagamentos
     public function requestVaultKey()
     {
         $url = '/requestVaultKey';
@@ -110,7 +110,7 @@ class PaymentServices
 
     }
 
-    //2ª Função no fluxo de pagamentos
+    //1ª Função no fluxo de pagamentos
     public function prepareCard($data)
     {
         $card = $this->creditCardRepository->findByField('card_number', $data['credit_card_number'])->first();
@@ -149,9 +149,21 @@ class PaymentServices
 
                     if ($response->getStatusCode() == 200)
                     {
-                        $card_nonce = json_decode($response->getBody()->read(2048))->cardNonce;
 
-                        return $this->createCardToken($card_nonce);
+                        $json = $response->getBody()->read(2048);
+
+                        $card_nonce = json_decode($json)->cardNonce;
+
+                        $brandId = json_decode($json)->brandId;
+
+
+                        return json_encode([
+                            'response_status'=> true,
+                            'card_nonce' => $card_nonce,
+                            'brandId' => $brandId
+                        ]);
+
+                        //return $this->createCardToken($card_nonce);
                     }
 
                 }catch (\Exception $e)
@@ -166,14 +178,14 @@ class PaymentServices
 
                     $bug->save();
 
-                    return json_encode(['status' => false, 'card' => false]);
+                    return json_encode(['response_status' => false, 'card' => false]);
                 }
 
             }
         }
 
 
-        return json_encode(['status' => false, 'card' => true]);
+        return json_encode(['response_status' => false, 'card' => true]);
 
 
     }
@@ -200,7 +212,7 @@ class PaymentServices
 
             if($response->getStatusCode() == 200)
             {
-                return $response->getBody()->read(2048) . json_encode(['status' => true]);
+                return $response->getBody()->read(2048);
             }
 
         }catch (\Exception $e){
@@ -217,7 +229,7 @@ class PaymentServices
         }
 
 
-        return json_encode(['status' => false, 'card' => false]);
+        return json_encode(['response_status' => false, 'card' => false]);
     }
 
 
@@ -260,8 +272,71 @@ class PaymentServices
             $bug->save();
         }
 
-        return false;
+        return json_encode(['response_status' => false]);
 
+    }
+
+
+    public function check_card($data, $event_id)
+    {
+
+        $card = $this->creditCardRepository->findByField('card_token', $data['card_token'])->first();
+
+        if($card)
+        {
+            try{
+
+                $status = $this->check_card_token($data['card_token']);
+
+                $result = json_decode($status);
+
+                if(!isset($result->response_status))
+                {
+                    if($status == 1)
+                    {
+                        $x['status'] = $status;
+
+                        $this->creditCardRepository->update($x, $card->id);
+
+                        $this->createTransaction($data, $event_id);
+
+                        \DB::commit();
+
+                        return $status;
+                    }
+                }
+                else{
+                    return -1;
+                }
+
+
+            }catch (\Exception $e)
+            {
+                \DB::rollBack();
+
+                $bug = new Bug();
+
+                $bug->description = $e->getMessage();
+                $bug->platform = 'Back-end';
+                $bug->location = 'line ' . $e->getLine() . ' check_card_token() PaymentServices.php';
+                $bug->model = '4all';
+                $bug->status = 'Pendente';
+
+                $bug->save();
+            }
+
+        }else{
+
+            $bug = new Bug();
+
+            $bug->description = 'Não existe com o card_token informado: ' . $data['card_token'];
+            $bug->platform = 'Back-end';
+            $bug->location = 'check_card PaymentServices.php';
+            $bug->model = '4all';
+            $bug->status = 'Pendente';
+
+            $bug->save();
+        }
     }
 
     //5ª Função no fluxo de pagamentos
@@ -287,17 +362,18 @@ class PaymentServices
                     "merchantKey" => $this->getMerchantKey(),
                     "amount" => $event->value_money * 100,
                     "metaId" => $metaId,
-                    "softDescriptor" => "MIGS",
 
-                    "interestRules" => [
+
+                    /*"interestRules" => [
                         "min" => 1,
                         "max" => $event->installments,
                         "percentual" => 0
-                    ],
+                    ],*/
 
                     "paymentMethod" => [
-
-                        "cardToken" => $data['card_token'],
+                        "softDescriptor" => "MIGS",
+                        "cardNonce" => $data['card_nonce'],
+                        "cardBrandId" => $data['brandId'],
                         "paymentMode" => 1,
                         "installmentType" => $data['installments'] > 1 ? 2 : 1,
                         "installments" => $data['installments'],
@@ -318,17 +394,57 @@ class PaymentServices
 
             if($response->getStatusCode() == 200)
             {
-                $pay['transactionId'] = json_decode($response->getBody()->read(2048))->transactionId;
-                $pay['status'] = json_decode($response->getBody()->read(2048))->status;
-                $pay['metaId'] = $metaId;
-                $pay['antiFraude_success'] = json_decode($response->getBody()->read(2048))->antiFraude->success;
-                $pay['antiFraude_validator'] = json_decode($response->getBody()->read(2048))->antiFraude->validator;
-                $pay['antiFraude_score'] = json_decode($response->getBody()->read(2048))->antiFraude->score;
-                $pay['antiFraude_recommendation'] = json_decode($response->getBody()->read(2048))->antiFraude->recommendation;
+                try{
+                    $json = $response->getBody()->read(2048);
 
-                $this->paymentRepository->create($pay);
+
+                    $pay['transactionId'] = json_decode($json)->transactionId;
+                    $pay['status'] = json_decode($json)->status;
+                    $pay['metaId'] = $metaId;
+                    /*$pay['antiFraude_success'] = json_decode($json)->antifraude->success;
+                    $pay['antiFraude_validator'] = json_decode($json)->antifraude->validator;
+                    $pay['antiFraude_score'] = json_decode($json)->antifraude->score;
+                    $pay['antiFraude_recommendation'] = json_decode($json)->antifraude->recommendation;*/
+                    $pay['person_id'] = $person->id;
+                    $pay['event_id'] = $event_id;
+
+                    $this->paymentRepository->create($pay);
+
+                    \DB::commit();
+
+                    return true;
+
+                }catch (\Exception $e)
+                {
+                    \DB::rollBack();
+
+                    $bug = new Bug();
+
+                    $bug->description = $e->getMessage();
+                    $bug->platform = 'Back-end';
+                    $bug->location = 'line ' . $e->getLine() . ' createTransaction() PaymentServices.php';
+                    $bug->model = '4all';
+                    $bug->status = 'Pendente';
+
+                    $bug->save();
+                }
+
+            }
+            else{
+                $bug = new Bug();
+
+                $bug->description = $response->getReasonPhrase() . ' Código: ' . $response->getStatusCode();
+                $bug->platform = 'Back-end';
+                $bug->location = 'createTransaction() PaymentServices.php';
+                $bug->model = '4all';
+                $bug->status = 'Pendente';
+
+                $bug->save();
+
             }
         }
+
+        return false;
 
 
     }

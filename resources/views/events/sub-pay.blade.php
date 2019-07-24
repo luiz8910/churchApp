@@ -156,7 +156,7 @@
                             <label class="has-float-label" aria-label="Número do cartão de crédito">
                                 <input class="form-control number" id="credit_card_number" type="text"
                                        placeholder="Número do cartão de crédito"
-                                       name="credit_card_number" maxlength="16" value="4574849552718601"{{--"{{ old('credit_card_number') }}"--}} required/>
+                                       name="credit_card_number" maxlength="16" value="5552116333491301"{{--"{{ old('credit_card_number') }}"--}} required/>
                                 <span>Número do cartão de crédito</span>
 
                             </label>

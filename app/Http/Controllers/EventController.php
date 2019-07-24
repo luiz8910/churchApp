@@ -21,6 +21,7 @@ use App\Repositories\CreditCardRepository;
 use App\Repositories\CreditCardRepositoryEloquent;
 use App\Repositories\EventSubscribedListRepository;
 use App\Repositories\FrequencyRepository;
+use App\Repositories\PaymentRepository;
 use App\Repositories\ResponsibleRepository;
 use App\Repositories\RoleRepository;
 use App\Repositories\SessionRepository;
@@ -142,6 +143,10 @@ class EventController extends Controller
      * @var CreditCardRepository
      */
     private $creditCardRepository;
+    /**
+     * @var PaymentRepository
+     */
+    private $paymentRepository;
 
     /**
      * EventController constructor.
@@ -165,7 +170,8 @@ class EventController extends Controller
                                 ChurchServices $churchServices, qrServices $qrServices,
                                 EventSubscribedListRepository $listRepository, PeopleServices $peopleServices,
                                 MessageServices $messageServices, ResponsibleRepository $responsibleRepository,
-                                PaymentServices $paymentServices, CreditCardRepository $creditCardRepository)
+                                PaymentServices $paymentServices, CreditCardRepository $creditCardRepository,
+                                PaymentRepository $paymentRepository)
     {
         $this->repository = $repository;
         $this->stateRepository = $stateRepositoryTrait;
@@ -187,6 +193,7 @@ class EventController extends Controller
         $this->responsibleRepository = $responsibleRepository;
         $this->paymentServices = $paymentServices;
         $this->creditCardRepository = $creditCardRepository;
+        $this->paymentRepository = $paymentRepository;
     }
 
 
@@ -2227,29 +2234,68 @@ class EventController extends Controller
                     $this->createUserLogin($x['person_id'], $this->randomPassword(), $p['email'], $event->church_id);
                 }
 
-                $json_data = $this->paymentServices->prepareCard($data);
+                //Verifica se o cliente ja pagou pela inscrição
+                $pay_exists = $this->paymentRepository->findWhere([
+                    'person_id' => $x['person_id'],
+                    'event_id' => $event_id
+                ]);
 
-                $result = json_decode($json_data);
-
-                if($result->status)
+                /*
+                 * Se pay_exists == 0 então o cliente
+                 * não pagou pela inscrição
+                 */
+                if (count($pay_exists) == 0)
                 {
-                    $x['card_token'] = $result->cardToken;
-                    $x['type'] = $result->type;
-                    $x['lastDigits'] = $data['credit_card_number'];
-                    $x['expirationDate'] = $result->expirationDate;
-                    $x['brandId'] = $result->brandId;
-                    $x['status'] = $result->status;
+                    $json_data = $this->paymentServices->prepareCard($data);
 
-                    $this->creditCardRepository->create($x);
+                    $response_status = json_decode($json_data)->response_status;
 
-                    DB::commit();
+                    $card_nonce = json_decode($json_data)->card_nonce;
 
-                    $x['installments'] = $data['installments'];
+                    $brandId = json_decode($json_data)->brandId;
 
-                    CheckCardToken::dispatch($x, $event_id);
+                    if($response_status)
+                    {
 
-                    $request->session()->flash('success.msg', 'Um email foi enviado para ' .
-                        $data['email'] . ' com status do pagamento');
+                        $x['installments'] = (int) $data['installments'];
+
+                        $x['card_nonce'] = $card_nonce;
+
+                        $x['brandId'] = $brandId;
+
+                        if($this->paymentServices->createTransaction($x, $event_id))
+                        {
+                            $request->session()->flash('success.msg', 'Um email foi enviado para ' .
+                                $data['email'] . ' com informações sobre o pagamento');
+                        }
+
+
+                        /*$x['card_token'] = $result->cardToken;
+                        $x['type'] = $result->type;
+                        $x['card_number'] = $data['credit_card_number'];
+                        $x['expirationDate'] = $result->expirationDate;
+                        $x['brandId'] = $result->brandId;
+                        $x['status'] = $result->status;
+
+                        $this->creditCardRepository->create($x);
+
+                        DB::commit();
+
+                        */
+
+                        //CheckCardToken::dispatch($x, $event_id);
+
+
+                    }
+                    else{
+                        dd($response_status);
+                    }
+                }
+
+                //Se já pagou
+                else{
+
+                    $request->session()->flash('error.msg', 'Este usuário já efetuou o pagamento');
                 }
 
 
@@ -2280,22 +2326,27 @@ class EventController extends Controller
         throw new NotFoundHttpException();
     }
 
+    public function check_transaction()
+    {
+
+
+            $data['card_token'] = '7b71gvWwLjPNZuXRJ6WlzC6cdS2fJNGyd9CO6EEsSv0=';
+
+            $data['person_id'] = 1535;
+
+            $data['installments'] = 2;
+
+            $this->paymentServices->createTransaction($data, 19);
+
+            return true;
+
+    }
+
     public function check_card_token()
     {
-        $card_token = '7b71gvWwLjPNZuXRJ6WlzC6cdS2fJNGyd9CO6EEsSv0=';
+        $card_token = '1wYgMd6uOHBebndFQ8BcwSWAqH+ZxFhqiwT4+nTBJRs=';
 
-        $card = $this->creditCardRepository->findByField('card_token', $card_token)->first();
-
-        if($card)
-        {
-            $c['status'] = $this->paymentServices->check_card_token($card_token);
-
-            //$this->creditCardRepository->update($c, $card->id);
-
-            echo $c['status'];
-        }
-
-
+        return $this->paymentServices->check_card_token($card_token);
     }
 
     public function teste4all()

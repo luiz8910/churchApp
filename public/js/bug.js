@@ -57,10 +57,29 @@ $(function(){
     $('[data-toggle="tooltip"]').tooltip();
 
 
+    $(".tr").click(function () {
+
+        var id = ($(this).parent()[0].id);
+
+        id = id.replace('tr-', '');
+
+        var text = $("#input-" + id).val();
+
+        textarea(text);
+    })
+
 });
 
 function textarea(text)
 {
+    var textarea = $("#textarea");
 
-    $("#textarea").text(text);
+    textarea.text('');
+
+    $('html, body').animate({
+        scrollTop: textarea.offset().top
+    }, 2000);
+
+
+    textarea.text(text);
 }

@@ -1,9 +1,7 @@
 <html>
     <head>
         <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-        <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
-        <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-        <script src="js/bug.js"></script>
+
 
         <style>
             .row{
@@ -37,7 +35,7 @@
                     <div class="col-md-6">
                         <div class="panel panel-primary">
                             <div class="panel-heading">
-                                <h3 class="panel-title">Desktop</h3>
+                                <h3 class="panel-title">Desktop (Back-end)</h3>
                                 <div class="pull-right">
                                     <span class="clickable filter" data-toggle="tooltip" title="Toggle table filter" data-container="body">
                                         <i class="glyphicon glyphicon-filter"></i>
@@ -53,23 +51,22 @@
                                     <th>#</th>
                                     <th>Descrição</th>
                                     <th>Local</th>
-                                    <th>Model</th>
                                     <th>Organização</th>
+                                    <th>Data</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                     @if(count($desk) > 0)
                                         @foreach($desk as $item)
-                                            <tr>
-                                                <td>{{ $item->id }}</td>
-                                                <td style="cursor: pointer;"
-                                                    onclick="textarea('{{ $item->description }}');">
-
+                                            <tr id="tr-{{ $item->id }}" style="cursor: pointer;">
+                                                <td class="tr">{{ $item->id }}</td>
+                                                <td class="tr" id="description-{{ $item->id }}">
                                                     {{ substr($item->description, 0, 10) }}...
                                                 </td>
-                                                <td>{{$item->location}}</td>
-                                                <td>{{$item->model}}</td>
-                                                <td>{{$item->church_id}}</td>
+                                                <td class="tr">{{$item->location}}</td>
+                                                <td class="tr">{{$item->church_id}}</td>
+                                                <td class="tr">{{date_format(date_create($item->created_at), 'd/m/Y')}}</td>
+                                                <input type="hidden" value="{{ $item->description }}" id="input-{{ $item->id }}">
                                             </tr>
                                         @endforeach
                                     @endif
@@ -96,22 +93,22 @@
                                     <th>#</th>
                                     <th>Descrição</th>
                                     <th>Local</th>
-                                    <th>Model</th>
                                     <th>Organização</th>
+                                    <th>Data</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                     @if(count($app) > 0)
                                         @foreach($app as $item)
-                                            <tr>
-                                                <td>{{ $item->id }}</td>
-                                                <td style="cursor: pointer;"
-                                                    onclick="textarea('{{ $item->description }}')">
+                                            <tr id="tr-{{ $item->id }}" style="cursor: pointer;">
+                                                <td class="tr">{{ $item->id }}</td>
+                                                <td class="tr" id="description-{{ $item->id }}">
                                                     {{ substr($item->description, 0, 10) }}...
                                                 </td>
-                                                <td>{{$item->location}}</td>
-                                                <td>{{$item->model}}</td>
-                                                <td>{{$item->church_id}}</td>
+                                                <td class="tr">{{$item->location}}</td>
+                                                <td class="tr">{{$item->church_id}}</td>
+                                                <td class="tr">{{date_format(date_create($item->created_at), 'd/m/Y')}}</td>
+                                                <input type="hidden" value="{{ $item->description }}" id="input-{{ $item->id }}">
                                             </tr>
                                         @endforeach
                                     @endif
@@ -145,6 +142,9 @@
 
         @endif
     </body>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+    <script src="js/bug.js"></script>
 </html>
 
 <!------ Include the above in your HEAD tag ---------->
