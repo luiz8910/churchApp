@@ -348,7 +348,7 @@ class PaymentServices
 
         $person = $this->personRepository->findByField('id', $data['person_id'])->first();
 
-        $metaId = $this->randomPassword(10);
+
 
         if($event && $person)
         {
@@ -361,7 +361,7 @@ class PaymentServices
 
                     "merchantKey" => $this->getMerchantKey(),
                     "amount" => $event->value_money * 100,
-                    "metaId" => $metaId,
+                    "metaId" => $data['metaId'],
 
 
                     /*"interestRules" => [

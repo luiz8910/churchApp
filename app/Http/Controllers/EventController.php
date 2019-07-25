@@ -2263,8 +2263,32 @@ class EventController extends Controller
 
                         $x['brandId'] = $brandId;
 
+                        $x['metaId'] = $this->randomPassword(10);
+
                         if($this->paymentServices->createTransaction($x, $event_id))
                         {
+
+                            $li = [];
+
+                            $li[] = 'Estado do Pagamento: ' . 'Processado (pago).';
+
+                            $li[] = 'Método de Pagamento: ' . 'Cartão de Crédito.';
+
+                            $li[] = 'Últimos 4 dígitos do cartão: ' . substr($data['credit_card_number'], 11, 4) . '.';
+
+                            $li[] = 'Valor da Transação: R$' . $event->value_money . '.';
+
+                            $li[] = 'Parcelamento: ' .  $data['installments'] == 1 ? 'Á vista' :
+                                    $data['installments'] . 'x de R$' . $event->value_money / $data['installments'] . '.';
+
+                            $li[] = 'Código da Transação: ' . $x['metaId'] . '.';
+
+                            $url = 'https://migs.med.br/2019/home/';
+
+                            $url_img = 'https://migs.med.br/2019/wp-content/uploads/2019/03/MIGS2019_curva_OK.png';
+
+                            $subject = 'Seu pagamento no MIGS 2019 foi concluído.';
+
                             $request->session()->flash('success.msg', 'Um email foi enviado para ' .
                                 $data['email'] . ' com informações sobre o pagamento');
                         }

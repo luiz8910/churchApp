@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Certificado BeConnect</title>
+    <title>Pagamentos BeConnect</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.6 -->
@@ -66,7 +66,7 @@
         <div class="row">
             <div class="col-xs-12 text-center">
                 <a href="https://www.beconnect.com.br/">
-                    <img src="http://beconnect.com.br/logo/Simbolo.png" alt="BeConnect" class="img-responsive logo"/>
+                    <img src="https://migs.med.br/2019/wp-content/uploads/2019/03/MIGS2019_curva_OK.png" alt="BeConnect" class="img-responsive logo" style="max-width: 25vw !important;"/>
                 </a>
             </div>
 
@@ -74,21 +74,29 @@
                 <div class="row" style="margin-bottom: 2rem">
                     <div class="col-xs-12 bg-white" style="padding: 5rem 5rem 0 5rem">
                         <h1>Olá {{ $person->name }},</h1>
-                        @if($payment)
 
-                            <p>Seu pagamento está sendo processado. <strong style="color: black"></strong></p>
-                            <p>Avisaremos por email quando seu pagamento for aprovado.</p>
+                        <p>Seu pagamento está sendo processado. <strong style="color: black"></strong></p>
 
-                        @else
+                        <ul>
+                            <li>Estado do Pagamento: Em Análise.</li>
+                            <li>Método de Pagamento: Cartão de Crédito.</li>
+                            <li>Últimos 4 dígitos do cartão: 4321.</li>
+                            <li>Valor da Transação: R$600,00.</li>
+                            <li>Parcelamento: 3x de R$200,00.</li>
+                            <li>Código da Transação: mhr935g.</li>
+                        </ul>
+                        <br>
 
-                            <p>Você participou do evento <strong style="color: black">{{ $event->name }}</strong></p>
-                            <p>Faça o download do seu certificado no botão abaixo</p>
-                            <a href="https://beconnect.com.br/download-certificate/{{ $event->id }}/{{ $person->id }}"
-                               class="btn-outline btn btn-block">
-                                Download
-                            </a>
+                        <p>Em caso de dúvidas envie um email para contato@beconnect.com.br informando o código da transação.</p>
+                        <p>Avisaremos por email quando seu pagamento for aprovado.</p>
 
-                        @endif
+                        <p>
+                            Atenciosamente.
+                        </p>
+
+                        <p>
+                            Equipe Beconnect e MIGS
+                        </p>
 
                     </div>
 
@@ -100,8 +108,9 @@
                     <div class="col-xs-12 bg-white" style="padding: 3rem 5rem 3rem 5rem">
                         <div class="row" style="display: flex; align-items: center">
                             <div class="col-xs-4">
+                                <br><br>
                                 <a href="https://www.beconnect.com.br/">
-                                    <img src="http://beconnect.com.br/logo/logo-menor-header.png" alt="BeConnect" class="img-responsive" style="width: 110px"/>
+                                    <img src="https://migs.med.br/2019/wp-content/uploads/2019/03/MIGS2019_curva_OK.png" alt="BeConnect" class="img-responsive" style="width: 110px"/>
                                 </a>
                             </div>
                             <div class="col-xs-8">
@@ -131,4 +140,3 @@
 </div>
 </body>
 </html>
-
