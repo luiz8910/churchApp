@@ -54,7 +54,6 @@
                             @include('includes.messages')
 
 
-
                             <div class="page-content-inner">
                                 <div class="row">
                                     <div class="col-md-12">
@@ -193,7 +192,8 @@
                                                                         </td>
                                                                     </tr>
 
-                                                                    <input type="hidden" id="short_start_time_{{ $item->id }}" value="{{ $item->short_start_time}}">
+                                                                    <input type="hidden" id="short_start_time_{{ $item->id }}"
+                                                                           value="{{ $item->short_start_time}}">
                                                                     <input type="hidden" id="end_time_{{ $item->id }}" value="{{ $item->end_time}}">
                                                                     <input type="hidden" id="max_capacity_{{ $item->id }}" value="{{ $item->max_capacity}}">
                                                                     <input type="hidden" id="description_{{ $item->id }}" value="{{ $item->description}}">
@@ -216,14 +216,15 @@
                                                         <i class="icon-globe theme-font hide"></i>
                                                         <span class="caption-subject font-blue-madison bold uppercase">Sessões de Eventos</span>
                                                     </div>
-                                                    <hr><br>
+                                                    <hr>
+                                                    <br>
 
 
                                                     <form action="{{ route('event.session.store', ['event_id' => $event->id]) }}" method="POST">
 
 
                                                         <div class="row">
-                                                            <div class="col-md-6">
+                                                            <div class="col-md-4">
                                                                 <div class="form-group">
                                                                     <label for="" class="control-label">Nome da Sessão</label>
                                                                     <div class="input-group">
@@ -231,12 +232,14 @@
                                                                 <i class="fa fa-calendar font-blue"></i>
                                                             </span>
 
-                                                                        <input type="text" name="name" id="name" class="form-control" autocomplete="new-password" required
-                                                                               placeholder="Ex: Coffee Break, Introdução, Sessão de Perguntas" value="{{ old('name') }}">
+                                                                        <input type="text" name="name" id="name" class="form-control"
+                                                                               autocomplete="new-password" required
+                                                                               placeholder="Ex: Coffee Break, Introdução, Sessão de Perguntas"
+                                                                               value="{{ old('name') }}">
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-6">
+                                                            <div class="col-md-4">
                                                                 <div class="form-group">
                                                                     <label for="" class="control-label">Local</label>
                                                                     <div class="input-group">
@@ -244,14 +247,14 @@
                                                                 <i class="fa fa-globe font-blue"></i>
                                                             </span>
 
-                                                                        <input type="text" name="location" id="location" class="form-control" autocomplete="new-pass" required
-                                                                               placeholder="Ex: Auditório Principal, Sala de Reuniões, Refeitório" value="{{ old('location') }}">
+                                                                        <input type="text" name="location" id="location" class="form-control"
+                                                                               autocomplete="new-pass" required
+                                                                               placeholder="Ex: Auditório Principal, Sala de Reuniões, Refeitório"
+                                                                               value="{{ old('location') }}">
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
 
-                                                        <div class="row">
                                                             <div class="col-md-4">
                                                                 <div class="form-group">
                                                                     <label for="max_capacity" class="control-label">Capacidade Máxima</label>
@@ -261,12 +264,31 @@
                                                             </span>
 
 
-                                                                        <input type="text" name="max_capacity" id="max_capacity" value="{{ old('max_capacity') }}"
-                                                                               placeholder="Deixe em Branco quando não houver limite" class="form-control number">
+                                                                        <input type="text" name="max_capacity" id="max_capacity"
+                                                                               value="{{ old('max_capacity') }}"
+                                                                               placeholder="Deixe em Branco quando não houver limite"
+                                                                               class="form-control number">
                                                                     </div>
 
                                                                 </div>
                                                             </div>
+                                                        </div>
+
+                                                        <div class="row">
+                                                            <div class="col-md-4">
+                                                                <div class="form-group @if(Session::has('invalidDate')) has-error @endif ">
+                                                                    <label>Dat</label>
+                                                                    <div class="input-group date date-picker" data-date-format="dd/mm/yyyy"
+                                                                         data-date-start-date="+0d">
+
+                                                                        <span class="input-group-btn"><button class="btn default" type="button"><i
+                                                                                        class="fa fa-calendar"></i></button></span>
+                                                                        <input type="text" class="form-control" name="session_date" id="session_date"
+                                                                               value="{{ old('session_date') }}" readonly>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
                                                             <div class="col-md-4">
                                                                 <div class="form-group">
                                                                     <label for="" class="control-label">Início</label>
@@ -277,7 +299,8 @@
                                                                 </button>
                                                             </span>
 
-                                                                        <select name="start_time" id="start_time" class="form-control" required value="{{ old('start_time') }}">
+                                                                        <select name="start_time" id="start_time" class="form-control" required
+                                                                                value="{{ old('start_time') }}">
                                                                             <option value="">Selecione</option>
                                                                             <option value="06:00">06:00</option>
                                                                             <option value="06:30">06:30</option>
@@ -318,21 +341,23 @@
                                                                         </select>
 
                                                                     </div>
-                                                                        <small id="error-start-time" style="color: red; display: none;">
-                                                                            Selecione o início antes do término
-                                                                        </small>
+                                                                    <small id="error-start-time" style="color: red; display: none;">
+                                                                        Selecione o início antes do término
+                                                                    </small>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <div class="form-group">
                                                                     <label for="" class="control-label">Término</label>
-                                                                    <div class="input-group date timepicker-24" data-date-format="dd/mm/yyyy" data-date-start-date="+0d">
+                                                                    <div class="input-group date timepicker-24" data-date-format="dd/mm/yyyy"
+                                                                         data-date-start-date="+0d">
                                                             <span class="input-group-btn">
                                                                 <button class="btn default" type="button">
                                                                     <i class="fa fa-calendar"></i>
                                                                 </button>
                                                             </span>
-                                                                        <select name="end_time" id="end_time" class="form-control" value="{{ old('end_time') }}">
+                                                                        <select name="end_time" id="end_time" class="form-control"
+                                                                                value="{{ old('end_time') }}">
                                                                             <option value="">Selecione</option>
 
                                                                             <option value="06:00">06:00</option>
@@ -384,7 +409,9 @@
                                                             <div class="col-md-12">
                                                                 <div class="form-group">
                                                                     <label for="" class="control-label">Descrição</label>
-                                                                    <textarea name="description" class="form-control" value="{{ old('description') }}" placeholder="Entre com a Descrição da Sessão" id="description" rows="5"></textarea>
+                                                                    <textarea name="description" class="form-control" value="{{ old('description') }}"
+                                                                              placeholder="Entre com a Descrição da Sessão" id="description"
+                                                                              rows="5"></textarea>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -458,7 +485,8 @@
 
                     <br>
                     <label for="" class="control-label">Descrição</label>
-                    <textarea name="description" class="form-control" id="modal_description" cols="20" rows="5" placeholder="Digite aqui informações sobre essa sessão"></textarea>
+                    <textarea name="description" class="form-control" id="modal_description" cols="20" rows="5"
+                              placeholder="Digite aqui informações sobre essa sessão"></textarea>
 
                 </div>
                 <div class="modal-footer">
