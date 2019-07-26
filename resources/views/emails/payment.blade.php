@@ -65,8 +65,8 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-12 text-center">
-                <a href="https://www.beconnect.com.br/">
-                    <img src="https://migs.med.br/2019/wp-content/uploads/2019/03/MIGS2019_curva_OK.png" alt="BeConnect" class="img-responsive logo" style="max-width: 25vw !important;"/>
+                <a href="{{ $url }}">
+                    <img src="{{ $url_img }}" alt="BeConnect" class="img-responsive logo" style="max-width: 25vw !important;"/>
                 </a>
             </div>
 
@@ -75,20 +75,32 @@
                     <div class="col-xs-12 bg-white" style="padding: 5rem 5rem 0 5rem">
                         <h1>Olá {{ $person->name }},</h1>
 
-                        <p>Seu pagamento está sendo processado. <strong style="color: black"></strong></p>
+                        <p>{{ $p1 }} <strong style="color: black"></strong></p>
 
-                        <ul>
-                            <li>Estado do Pagamento: Em Análise.</li>
+                        @if(isset($li))
+                            <ul>
+                                @foreach($li as $l)
+                                    <li>{{ $l }}</li>
+                                @endforeach
+                            </ul>
+
+                            @else
+                                <img src="https://beconnect.com.br/qrcodes/ {{ $person->id }} .png" style="max-width: 500px;">
+                        @endif
+
+                            {{--<li>Estado do Pagamento: Em Análise.</li>
                             <li>Método de Pagamento: Cartão de Crédito.</li>
                             <li>Últimos 4 dígitos do cartão: 4321.</li>
                             <li>Valor da Transação: R$600,00.</li>
                             <li>Parcelamento: 3x de R$200,00.</li>
-                            <li>Código da Transação: mhr935g.</li>
-                        </ul>
+                            <li>Código da Transação: mhr935g.</li>--}}
+
+
+
                         <br>
 
                         <p>Em caso de dúvidas envie um email para contato@beconnect.com.br informando o código da transação.</p>
-                        <p>Avisaremos por email quando seu pagamento for aprovado.</p>
+                        <p>{{ $p2 }}</p>
 
                         <p>
                             Atenciosamente.
@@ -109,8 +121,8 @@
                         <div class="row" style="display: flex; align-items: center">
                             <div class="col-xs-4">
                                 <br><br>
-                                <a href="https://www.beconnect.com.br/">
-                                    <img src="https://migs.med.br/2019/wp-content/uploads/2019/03/MIGS2019_curva_OK.png" alt="BeConnect" class="img-responsive" style="width: 110px"/>
+                                <a href="{{ $url }}">
+                                    <img src="{{ $url_img }}" alt="BeConnect" class="img-responsive" style="width: 110px"/>
                                 </a>
                             </div>
                             <div class="col-xs-8">

@@ -67,4 +67,24 @@ class BugController extends Controller
 
         return json_encode(['status' => true]);
     }
+
+    public function bug_solved($id)
+    {
+        $bug['status'] = 'OK';
+
+        try{
+            $this->repository->update($bug, $id);
+
+            \DB::commit();
+
+            return json_encode(['status' => true]);
+
+        }catch (\Exception $e)
+        {
+            \DB::rollBack();
+
+            return json_encode(['status' => false]);
+        }
+
+    }
 }

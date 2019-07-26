@@ -349,7 +349,6 @@ class PaymentServices
         $person = $this->personRepository->findByField('id', $data['person_id'])->first();
 
 
-
         if($event && $person)
         {
             $response = $this->client->request('POST', $this->payment_url() . $url, ['json' => [
@@ -400,13 +399,14 @@ class PaymentServices
 
                     $pay['transactionId'] = json_decode($json)->transactionId;
                     $pay['status'] = json_decode($json)->status;
-                    $pay['metaId'] = $metaId;
+                    $pay['metaId'] = $data['metaId'];
+                    $pay['person_id'] = $person->id;
+                    $pay['event_id'] = $event_id;
                     /*$pay['antiFraude_success'] = json_decode($json)->antifraude->success;
                     $pay['antiFraude_validator'] = json_decode($json)->antifraude->validator;
                     $pay['antiFraude_score'] = json_decode($json)->antifraude->score;
                     $pay['antiFraude_recommendation'] = json_decode($json)->antifraude->recommendation;*/
-                    $pay['person_id'] = $person->id;
-                    $pay['event_id'] = $event_id;
+
 
                     $this->paymentRepository->create($pay);
 

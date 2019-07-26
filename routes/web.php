@@ -737,6 +737,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('bugs', 'BugController@bugs');
 
+    Route::get('bug-solved/{id}', 'BugController@bug_solved');
+
 
     //Documentação da API
     Route::get('docs', function(){

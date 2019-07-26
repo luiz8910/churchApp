@@ -1,7 +1,7 @@
 <html>
     <head>
         <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-
+        <link href="../assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
 
         <style>
             .row{
@@ -32,7 +32,7 @@
             <div class="container">
                 <h1>Click no ícone de filtro <small>(<i class="glyphicon glyphicon-filter"></i>)</small></h1>
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="panel panel-primary">
                             <div class="panel-heading">
                                 <h3 class="panel-title">Desktop (Back-end)</h3>
@@ -53,6 +53,7 @@
                                     <th>Local</th>
                                     <th>Organização</th>
                                     <th>Data</th>
+                                    <th>Opções</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -66,6 +67,12 @@
                                                 <td class="tr">{{$item->location}}</td>
                                                 <td class="tr">{{$item->church_id}}</td>
                                                 <td class="tr">{{date_format(date_create($item->created_at), 'd/m/Y')}}</td>
+                                                <td>
+                                                    <a href="javascript:" class="btn btn-success btn-outline btn-ok" id="btn-ok-{{ $item->id }}">
+                                                        <i class="fa fa-check"></i>
+                                                    </a>
+
+                                                </td>
                                                 <input type="hidden" value="{{ $item->description }}" id="input-{{ $item->id }}">
                                             </tr>
                                         @endforeach
@@ -74,7 +81,9 @@
                             </table>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
                         <div class="panel panel-success">
                             <div class="panel-heading">
                                 <h3 class="panel-title">App</h3>

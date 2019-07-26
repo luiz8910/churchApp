@@ -66,6 +66,25 @@ $(function(){
         var text = $("#input-" + id).val();
 
         textarea(text);
+    });
+
+    $(".btn-ok").click(function () {
+        var id = this.id.replace('btn-ok-', '');
+
+        var request = $.ajax({
+            url: 'bug-solved/' + id,
+            method: 'GET',
+            dataType: 'json'
+        });
+
+        request.done(function (e) {
+
+            if(e.status)
+            {
+                $('#tr-'+id).css('display', 'none');
+            }
+
+        })
     })
 
 });

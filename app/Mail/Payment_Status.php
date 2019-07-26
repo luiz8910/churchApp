@@ -18,13 +18,15 @@ class Payment_Status extends Mailable
     public $p2;
     public $subject;
     public $person;
+    public $li;
+    public $event_id;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($url, $url_img, $p1, $p2, $subject, $person,
+    public function __construct($url, $url_img, $p1, $p2, $subject, $person, $event_id, $li = null,
                                 $android_url = null, $apple_url = null)
     {
 
@@ -36,6 +38,8 @@ class Payment_Status extends Mailable
         $this->p2 = $p2;
         $this->subject = $subject;
         $this->person = $person;
+        $this->li = $li;
+        $this->event_id = $event_id;
     }
 
     /**
