@@ -277,7 +277,7 @@
                                                         <div class="row">
                                                             <div class="col-md-4">
                                                                 <div class="form-group @if(Session::has('invalidDate')) has-error @endif ">
-                                                                    <label>Dat</label>
+                                                                    <label>Data</label>
                                                                     <div class="input-group date date-picker" data-date-format="dd/mm/yyyy"
                                                                          data-date-start-date="+0d">
 
