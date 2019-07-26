@@ -79,9 +79,9 @@
 
                         @if(isset($li))
                             <ul>
-                                @foreach($li as $l)
-                                    <li>{{ $l }}</li>
-                                @endforeach
+                                @for($i = 0; $i < count($li); $i++)
+                                    <li>{{ $li[$i] }}</li>
+                                @endfor
                             </ul>
 
                             @else
