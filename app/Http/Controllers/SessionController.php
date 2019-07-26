@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bug;
 use App\Repositories\EventRepository;
 use App\Repositories\RoleRepository;
 use App\Repositories\SessionRepository;
@@ -78,6 +79,8 @@ class SessionController extends Controller
                 $session->short_start_time = date_format(date_create($start_time), 'H:i');
 
                 $session->end_time = date_format(date_create($session->end_time), 'H:i');
+
+                $session->session_date = date_format(date_create($session->session_date), 'd/m/Y');
             }
 
             return view('events.sessions-list',
@@ -105,26 +108,47 @@ class SessionController extends Controller
                 $data['max_capacity'] = -1;
             }
 
-            $data['start_time'] = date_create($event->eventDate . " " . $data['start_time']);
+            if($data['session_date'] != "")
+            {
+                $data['session_date'] = date_format(date_create($data['session_date']), 'Y-m-d');
 
-            if ($data['end_time'] != "") {
-                $data['end_time'] = date_create($event->eventDate . " " . $data['end_time']);
+                $data['start_time'] = date_create($data['session_date'] . " " . $data['start_time']);
+
+                if ($data['end_time'] != "") {
+                    $data['end_time'] = date_create($data['session_date'] . " " . $data['end_time']);
+                }
             }
+            else{
+                $data['start_time'] = date_create($event->eventDate . " " . $data['start_time']);
+
+                if ($data['end_time'] != "") {
+                    $data['end_time'] = date_create($event->eventDate . " " . $data['end_time']);
+                }
+            }
+
 
             try {
 
                 $this->repository->create($data);
 
-                DB::commit();
+                \DB::commit();
 
                 $request->session()->flash('success.msg', 'A sessão foi incluída com sucesso');
 
                 return redirect()->back();
 
             } catch (\Exception $e) {
-                DB::rollBack();
+                \DB::rollBack();
 
-                dd($e->getMessage());
+                $bug = new Bug();
+
+                $bug->description = $e->getMessage();
+                $bug->platform = 'Back-end';
+                $bug->location = 'line ' . $e->getLine() . ' store() SessionController.php';
+                $bug->model = 'Session';
+                $bug->status = 'Pendente';
+
+                $bug->save();
 
                 $request->session()->flash('error.msg', 'Um erro ocorreu, tente novamente mais tarde');
 
@@ -158,30 +182,53 @@ class SessionController extends Controller
                     $data['max_capacity'] = -1;
                 }
 
-                $data['start_time'] = date_create($event->eventDate . " " . $data['start_time']);
+                if($data['session_date'] != "")
+                {
+                    $data['session_date'] = date_format(date_create($data['session_date']), 'Y-m-d');
 
-                if ($data['end_time'] != "") {
-                    $data['end_time'] = date_create($event->eventDate . " " . $data['end_time']);
+                    $data['start_time'] = date_create($data['session_date'] . " " . $data['start_time']);
+
+                    if ($data['end_time'] != "") {
+                        $data['end_time'] = date_create($data['session_date'] . " " . $data['end_time']);
+                    }
+                }
+                else{
+                    $data['start_time'] = date_create($event->eventDate . " " . $data['start_time']);
+
+                    if ($data['end_time'] != "") {
+                        $data['end_time'] = date_create($event->eventDate . " " . $data['end_time']);
+                    }
                 }
 
-                try {
-
+                try{
                     $this->repository->update($data, $session_id);
 
-                    DB::commit();
+                    \DB::commit();
 
                     $request->session()->flash('success.msg', 'A sessão foi incluída com sucesso');
 
                     return redirect()->back();
 
-                } catch (\Exception $e) {
-                    DB::rollBack();
+                }catch (\Exception $e)
+                {
+
+                    \DB::rollBack();
+
+                    $bug = new Bug();
+
+                    $bug->description = $e->getMessage();
+                    $bug->platform = 'Back-end';
+                    $bug->location = 'line ' . $e->getLine() . ' update() SessionController.php';
+                    $bug->model = 'Session';
+                    $bug->status = 'Pendente';
+
+                    $bug->save();
 
                     $request->session()->flash('error.msg', 'Um erro ocorreu, tente novamente mais tarde');
 
                     return redirect()->back();
-
                 }
+
             }
 
             $request->session()->flash('error.message', 'O sessão selecionada não existe');
@@ -219,8 +266,12 @@ class SessionController extends Controller
         if ($session) {
 
             $session->start_time = date_format(date_create($session->start_time), 'd/m/Y H:i');
+
             $session->short_start_time = date_format(date_create($session->start_time), 'H:i');
+
             $session->end_time = date_format(date_create($session->end_time), 'H:i');
+
+            $session->session_date = date_format(date_create($session->session_date), 'd/m/Y');
 
 
             return view('events.check_in_sessions',
