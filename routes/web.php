@@ -86,6 +86,10 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/visitorFrequency/{visitor_id}', 'ReportController@visitorFrequency');
 
         Route::get('/exportExcelReport/{event_id}', 'ReportController@exportXLS');
+
+        //Pagamentos
+
+        Route::get('/pagamentos/{id?}', 'PaymentController@index')->name('payment.index');
     });
 
     Route::group(['middleware' => 'check.role:5'], function (){
@@ -469,48 +473,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 });
 
-    //Pagamentos Zoop
 
-        //Criar Cartão
-            Route::post('store-payment', 'PaymentController@store')->name('payment.store');
-
-        //Planos
-
-            Route::get('/payu-store-plan', 'PaymentController@planStore');
-
-            Route::get('payu-get-plan/{code}', 'PaymentController@planGet');
-
-            Route::get('payu-update-plan/{code}', 'PaymentController@planUpdate');
-
-            Route::get('payu-delete-plan/{code}', 'PaymentController@planDelete');
-
-        //Clientes
-
-            Route::get('/payu-get-customer/{id}', 'PaymentController@customerGet');
-
-            Route::get('/payu-update-customer/{id}', 'PaymentController@customerUpdate');
-
-            Route::get('/payu-delete-customer/{id}', 'PaymentController@customerDelete');
-
-            Route::get('payu-store-customer', 'PaymentController@customerStore');
-
-        //Cartões
-
-            Route::get('/payu-store-card/{customer_id}', 'PaymentController@cardStore');
-
-            Route::get('payu-get-card/{token}', 'PaymentController@cardGet');
-
-            Route::get('payu-update-card/{token}', 'PaymentController@cardUpdate');
-
-            Route::get('payu-delete-card/{customer_id}/{token}', 'PaymentController@cardDelete');
-
-        //Teste
-
-            Route::get('payment-event', function (){
-                return view('site.payment-event');
-            });
-
-    // Fim Pagamentos
 
 
     Auth::routes();

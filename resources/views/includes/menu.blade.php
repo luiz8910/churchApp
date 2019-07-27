@@ -171,6 +171,13 @@
                         </ul>
                     </li>
 
+                    <li class="menu-dropdown mega-menu-dropdown">
+                        <a href="{{ route('payment.index') }}">
+                            <i class="fa fa-credit-card"></i>
+                            Pagamentos
+                        </a>
+                    </li>
+
                 @endif
 
             </ul>

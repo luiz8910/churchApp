@@ -2313,7 +2313,7 @@ class EventController extends Controller
 
                         $subject = 'Seu pagamento no MIGS 2019 foi concluído.';
 
-                        $p1 = 'Seu pagamento foi aprovado';
+                        $p1 = 'Seu pagamento foi aprovado.';
 
                         $p2 = '';
 

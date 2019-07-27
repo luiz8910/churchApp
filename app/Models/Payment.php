@@ -27,7 +27,8 @@ class Payment extends Model implements Transformable
      * @var array
      */
     protected $fillable = ['transactionId', 'metaId', 'status', 'antiFraude_success',
-        'antiFraude_validator', 'antiFraude_score', 'antiFraude_recommendation', 'person_id', 'event_id'];
+        'antiFraude_validator', 'antiFraude_score', 'antiFraude_recommendation',
+        'person_id', 'event_id', 'church_id'];
 
     protected $dates = ['deleted_at'];
 

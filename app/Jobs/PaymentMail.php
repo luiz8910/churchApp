@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Mail\Payment_Status;
 use App\Models\Bug;
+use App\Repositories\EventRepository;
 use App\Repositories\PaymentRepository;
 use App\Repositories\PersonRepository;
 use App\Services\EventServices;
@@ -51,7 +52,7 @@ class PaymentMail implements ShouldQueue
      * @return void
      */
     public function handle(PersonRepository $personRepository, EventServices $eventServices, qrServices $qrServices,
-                           PaymentRepository $paymentRepository)
+                           PaymentRepository $paymentRepository, EventRepository $eventRepository)
     {
         $payment = $paymentRepository->findByField('metaId', $this->x['metaId'])->first();
 
@@ -64,22 +65,28 @@ class PaymentMail implements ShouldQueue
 
                     $user = $person->user;
 
-                    Mail::to($user)->send(new Payment_Status($this->url, $this->url_img,
-                        $this->p1, $this->p2, $this->subject, $person, $this->li));
+                    $event = $eventRepository->findByField('id', $this->event_id)->first();
 
-                    $qrServices->generateQrCode($person->id);
+                    if($event)
+                    {
+                        Mail::to($user)->send(new Payment_Status($this->url, $this->url_img,
+                            $this->p1, $this->p2, $this->subject, $person, $this->li));
 
-                    $eventServices->subEvent($this->event_id, $person->id);
+                        $qrServices->generateQrCode($person->id);
 
-                    $this->subject = 'Seu acesso ao evento MIGS 2019';
+                        $eventServices->subEvent($this->event_id, $person->id);
 
-                    $this->p1 = 'Nos dias 12, 13 e 14 de setembro, exiba o QrCode abaixo para ter acesso ao evento. 
-                Você pode ter acesso também pelo app MIGS (link no final)';
+                        $this->subject = 'Seu acesso ao evento ' . $event->name;
 
-                    Mail::to($user)->send(new Payment_Status($this->url, $this->url_img,
-                        $this->p1, $this->p2, $this->subject, $person, $this->event_id));
+                        $this->p1 = 'No dia '. date_format(date_create($event->eventDate), 'd/m').', exiba o 
+                        QrCode abaixo para ter acesso ao evento. Você pode ter acesso também pelo app 
+                        Beconnect (link no final)';
 
-                    \DB::commit();
+                        Mail::to($user)->send(new Payment_Status($this->url, $this->url_img,
+                            $this->p1, $this->p2, $this->subject, $person, $this->event_id));
+
+                        \DB::commit();
+                    }
 
                 }catch (\Exception $e)
                 {

@@ -148,6 +148,8 @@ class ReportController extends Controller
 
             $qtde_sub = count($this->listRepository->findByField('event_id', $event_id));
 
+
+
             return view('reports.index', compact('countPerson', 'countGroups', 'leader',
                 'admin', 'notify', 'qtde', 'events', 'members', 'event_id', 'event_name', 'qtde_sub'));
 
