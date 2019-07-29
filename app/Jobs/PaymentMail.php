@@ -82,8 +82,10 @@ class PaymentMail implements ShouldQueue
                         QrCode abaixo para ter acesso ao evento. Você pode ter acesso também pelo app 
                         Beconnect (link no final)';
 
+                        $qrCode = 'https://beconnect.com.br/qrcodes/ ' . $person->id . '.png';
+
                         Mail::to($user)->send(new Payment_Status($this->url, $this->url_img,
-                            $this->p1, $this->p2, $this->subject, $person, $this->event_id));
+                            $this->p1, $this->p2, $this->subject, $person, $this->event_id, $qrCode));
 
                         \DB::commit();
                     }

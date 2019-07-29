@@ -78,7 +78,7 @@
         <div class="row">
             <div class="col-xs-12 text-center">
                 <a href="{{ $url }}">
-                    <img src="{{ $url_img }}" alt="BeConnect" class="img-responsive logo" style="max-width: 25vw !important;"/>
+                    <img src="{{ $url_img }}" alt="BeConnect" class="img-responsive logo"/>
                 </a>
             </div>
 
@@ -97,7 +97,7 @@
                             </ul>
 
                             @else
-                                <img src="https://beconnect.com.br/qrcodes/ {{ $person->id }} .png" style="max-width: 500px;">
+                                <img src="{{ $qrCode }}" style="max-width: 500px;">
                         @endif
 
                             {{--<li>Estado do Pagamento: Em Análise.</li>

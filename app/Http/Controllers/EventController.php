@@ -2314,11 +2314,11 @@ class EventController extends Controller
 
                         $li[] = 'Código da Transação: ' . $x['metaId'] . '.';
 
-                        $url = 'https://migs.med.br/2019/home/';
+                        $url = 'https://www.beconnect.com.br/';//'https://migs.med.br/2019/home/';
 
-                        $url_img = 'https://migs.med.br/2019/wp-content/uploads/2019/03/MIGS2019_curva_OK.png';
+                        $url_img = 'http://beconnect.com.br/logo/logo-menor-header.png';//'https://migs.med.br/2019/wp-content/uploads/2019/03/MIGS2019_curva_OK.png';
 
-                        $subject = 'Seu pagamento no MIGS 2019 foi concluído.';
+                        $subject = 'Seu pagamento no evento ' . $event->name;//'Seu pagamento no MIGS 2019 foi concluído.';
 
                         $p1 = 'Seu pagamento foi aprovado.';
 

@@ -20,13 +20,14 @@ class Payment_Status extends Mailable
     public $person;
     public $li;
     public $event_id;
+    public $qrCode;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($url, $url_img, $p1, $p2, $subject, $person, $event_id, $li = null,
+    public function __construct($url, $url_img, $p1, $p2, $subject, $person, $event_id, $qrCode = null, $li = null,
                                 $android_url = null, $apple_url = null)
     {
 
@@ -40,6 +41,7 @@ class Payment_Status extends Mailable
         $this->person = $person;
         $this->li = $li;
         $this->event_id = $event_id;
+        $this->qrCode = $qrCode;
     }
 
     /**

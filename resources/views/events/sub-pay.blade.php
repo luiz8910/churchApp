@@ -63,14 +63,20 @@
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="card-block">
-                                            <h4 class="card-title">Teste</h4>
-                                            <a href="#" class="btn btn-primary">ALTERAR PLANO</a>
+                                            @if(isset($split_name))
+
+                                                <h4 class="card-title">{{ $abrv }}</h4>
+
+                                            @else
+                                                <h4 class="card-title">{{ $event->name }}</h4>
+                                            @endif
+
+                                            <p class="card-subtitle">{{ $church->name }}</p>
                                         </div>
                                     </div>
                                     <div class="col-auto ml-auto">
                                         <div class="card-header">
-                                            <h3 class="display-2"><span class="currency">R$</span>Teste
-                                                <span class="period">Teste</span></h3>
+                                            <h3 class="display-2"><span class="currency">R$</span>{{ number_format($event->value_money, 2, ',', '') }}</h3>
                                         </div>
                                     </div>
                                 </div>
