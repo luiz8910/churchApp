@@ -110,6 +110,7 @@ class SessionController extends Controller
 
             if($data['session_date'] != "")
             {
+
                 $data['session_date'] = date_format(date_create($data['session_date']), 'Y-m-d');
 
                 $data['start_time'] = date_create($data['session_date'] . " " . $data['start_time']);

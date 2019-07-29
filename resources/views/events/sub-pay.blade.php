@@ -24,7 +24,14 @@
                     <h6 class="color-white pb-3"></h6>
                     <div class="card-price text-xs-center h-normal mx-auto">
                         <div class="card-block">
-                            <h4 class="card-title">{{ $event->name }}</h4>
+                            @if(isset($split_name))
+
+                                <h4 class="card-title">{{ $abrv }}</h4>
+
+                            @else
+                                <h4 class="card-title">{{ $event->name }}</h4>
+                            @endif
+
                             <p class="card-subtitle">{{ $church->name }}</p>
                         </div>
                         <div class="col-12 px-0">

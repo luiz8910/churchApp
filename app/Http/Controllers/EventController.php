@@ -2080,8 +2080,15 @@ class EventController extends Controller
             {
                 if($church->payment && $event->value_money)
                 {
+                    if(strlen($event->name) > 20)
+                    {
+                        $abrv = '2º Coworking - Miguel Falabella';
 
-                    return view('events.sub-pay', compact('event', 'church'));
+                        $split_name = true;
+                    }
+
+
+                    return view('events.sub-pay', compact('event', 'church', 'split_name', 'abrv'));
                 }
 
                 return view('events.sub', compact('event', 'church'));

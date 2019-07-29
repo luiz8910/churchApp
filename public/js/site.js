@@ -1106,7 +1106,7 @@ $(function(){
 
         var span = $("#span-error");
 
-        if(value.length < 7)
+        if(value.length < 5)
         {
             $("#expire-date-form-group").addClass('has-error');
 
@@ -1123,7 +1123,7 @@ $(function(){
 
             var year = date.getFullYear();
 
-            var input_year = "20" + value.charAt(5) + value.charAt(6);
+            var input_year = "20" + value.charAt(3) + value.charAt(4);
 
             var input_month = value.charAt(0) + value.charAt(1);
 
