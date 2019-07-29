@@ -66,7 +66,7 @@
                                                 </td>
                                                 <td class="tr">{{$item->location}}</td>
                                                 <td class="tr">{{$item->church_id}}</td>
-                                                <td class="tr">{{date_format(date_create($item->created_at), 'd/m/Y')}}</td>
+                                                <td class="tr">{{date_format(date_create($item->created_at), 'd/m/Y H:i')}}</td>
                                                 <td>
                                                     <a href="javascript:" class="btn btn-success btn-outline btn-ok" id="btn-ok-{{ $item->id }}">
                                                         <i class="fa fa-check"></i>

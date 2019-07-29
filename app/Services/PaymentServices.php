@@ -402,6 +402,7 @@ class PaymentServices
                     $pay['metaId'] = $data['metaId'];
                     $pay['person_id'] = $person->id;
                     $pay['event_id'] = $event_id;
+                    $pay['church_id'] = $event->church_id;
                     /*$pay['antiFraude_success'] = json_decode($json)->antifraude->success;
                     $pay['antiFraude_validator'] = json_decode($json)->antifraude->validator;
                     $pay['antiFraude_score'] = json_decode($json)->antifraude->score;
