@@ -92,7 +92,7 @@
                         <div class="form-group">
                             <label class="has-float-label" aria-label="Nome">
                                 <input class="form-control" type="text" placeholder="Nome"
-                                       name="name" value="Luiz Yahoo"{{--"{{ old('name') }}"--}}/>
+                                       name="name" value="{{ old('name') }}"/>
                                 <span>Nome</span>
                             </label>
                         </div>
@@ -100,7 +100,7 @@
                         <div class="form-group">
                             <label class="has-float-label" aria-label="Email">
                                 <input class="form-control" type="email" placeholder="Email"
-                                       name="email" value="luiz.sanches89@yahoo.com"{{--"{{ old('email') }}"--}} required/>
+                                       name="email" value="{{ old('email') }}"required/>
                                 <span>Email</span>
                             </label>
                         </div>
@@ -109,7 +109,7 @@
 
                             <label class="has-float-label" aria-label="cel">
                                 <input class="form-control tel" type="text" placeholder="Celular" name="cel"
-                                       value="15997454531"{{--"{{ old('cel') }}"--}} required/>
+                                       value="{{ old('cel') }}" required/>
                                 <span>Celular</span>
                             </label>
 
@@ -122,7 +122,7 @@
 
                             <label class="has-float-label" aria-label="cpf">
                                 <input class="form-control cpf" type="text" placeholder="CPF" name="cpf"
-                                       value="38418189860"{{--"{{ old('cpf') }}"--}} required maxlength="11"/>
+                                       value="{{ old('cpf') }}" required maxlength="11"/>
                                 <span>CPF</span>
                             </label>
 
@@ -135,7 +135,7 @@
 
                             <label class="has-float-label" aria-label="dateBirth">
                                 <input class="form-control dateBirth" type="date" placeholder="Data de Nascimento" name="dateBirth"
-                                       value="15/09/1944"{{--"{{ old('dateBirth') }}"--}} required/>
+                                       value="{{ old('dateBirth') }}" required/>
                                 <span>Data de Nascimento</span>
                             </label>
 
@@ -147,7 +147,7 @@
                         <div class="form-group">
                             <label class="has-float-label" aria-label="Nome no cartão">
                                 <input class="form-control" type="text"
-                                       placeholder="Nome no cartão" name="holder_name" value="Luiz F Sanches"{{--"{{ old('holder_name') }}"--}} required/>
+                                       placeholder="Nome no cartão" name="holder_name" value="{{ old('holder_name') }}" required/>
                                 <span>Nome no cartão</span>
                             </label>
                         </div>
@@ -156,7 +156,7 @@
                             <label class="has-float-label" aria-label="Número do cartão de crédito">
                                 <input class="form-control number" id="credit_card_number" type="text"
                                        placeholder="Número do cartão de crédito"
-                                       name="credit_card_number" maxlength="16" value="5552116333491301"{{--"{{ old('credit_card_number') }}"--}} required/>
+                                       name="credit_card_number" maxlength="16" value="{{ old('credit_card_number') }}" required/>
                                 <span>Número do cartão de crédito</span>
 
                             </label>
@@ -169,7 +169,7 @@
                                 <div class="form-group">
                                     <label class="has-float-label" aria-label="Data de expiração">
                                         <input class="form-control number" type="text" id="expire_date"
-                                               placeholder="mm/AA" value="12/19"{{--"{{ old('expires_in') }}"--}}
+                                               placeholder="mm/AA" value="{{ old('expires_in') }}"
                                                maxlength="5" name="expires_in" required />
                                         <span>Data de expiração (mm/AA) </span>
                                     </label>
@@ -180,7 +180,7 @@
                                 <div class="form-group">
                                     <label class="has-float-label" aria-label="CVC">
                                         <input class="form-control number" type="text"
-                                               placeholder="CVC" name="cvc" value="123"{{--"{{ old('cvc') }}"--}} required/>
+                                               placeholder="CVC" name="cvc" value="{{ old('cvc') }}" required/>
                                         <span>CVC</span>
                                     </label>
                                 </div>
