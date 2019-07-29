@@ -21,7 +21,7 @@ class PaymentServices
      */
     private $creditCardRepository;
     private $client;
-    private $api_token;
+
     /**
      * @var EventRepository
      */
@@ -41,7 +41,6 @@ class PaymentServices
 
         $this->creditCardRepository = $creditCardRepository;
         $this->client = new Client();
-        $this->api_token = 'API_TOKEN';
         $this->eventRepository = $eventRepository;
         $this->personRepository = $personRepository;
         $this->paymentRepository = $paymentRepository;
@@ -50,8 +49,14 @@ class PaymentServices
 
     public function payment_url()
     {
-        //https://gateway.api.4all.com;
+
+        if(env('APP_ENV') == 'prod')
+        {
+            return 'https://gateway.api.4all.com';
+        }
+
         return 'https://gateway.homolog-interna.4all.com';
+
     }
 
     public function getMerchantKey()
