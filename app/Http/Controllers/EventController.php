@@ -2289,7 +2289,7 @@ class EventController extends Controller
 
                             while (!$stop)
                             {
-                                $x['metaId'] = $this->randomPassword(10);
+                                $x['metaId'] = $this->paymentServices->setMetaId();
 
                                 if(!$this->paymentRepository->findByField('metaId', $x['metaId'])->first())
                                 {
@@ -2298,21 +2298,14 @@ class EventController extends Controller
                             }
                         }
 
-                        $li = [];
+                        $li = '<li>Estado do Pagamento: Processado (pago)</li>';
+                        $li .= '<li>Método de Pagamento: Cartão de Crédito</li>';
+                        $li .= '<li>Últimos 4 dígitos do cartão: '.substr($data['credit_card_number'], 11, 4).'</li>';
+                        $li .= '<li>Valor da Transação: R$'.$event->value_money.'</li>';
+                        $li .= '<li>Parcelamento: '.$data['installments'] == 1 ? 'Á vista' :
+                            $data['installments'] . 'x de R$' . $event->value_money / $data['installments'].'</li>';
+                        $li .= '<li>Código da Transação: ' . $x["metaId"] . '</li>';
 
-                        $li[] = 'Estado do Pagamento: ' . 'Processado (pago).';
-
-                        $li[] = 'Método de Pagamento: ' . 'Cartão de Crédito.';
-
-                        $li[] = 'Últimos 4 dígitos do cartão: '
-                            . substr($data['credit_card_number'], 11, 4) . '.';
-
-                        $li[] = 'Valor da Transação: R$' . $event->value_money . '.';
-
-                        $li[] = 'Parcelamento: ' .  $data['installments'] == 1 ? 'Á vista' :
-                            $data['installments'] . 'x de R$' . $event->value_money / $data['installments'] . '.';
-
-                        $li[] = 'Código da Transação: ' . $x['metaId'] . '.';
 
                         $url = 'https://www.beconnect.com.br/';//'https://migs.med.br/2019/home/';
 

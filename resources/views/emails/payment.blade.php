@@ -97,7 +97,7 @@
                             </ul>
 
                             @else
-                                <img src="{{ $qrCode }}" style="max-width: 500px;">
+                                <p><img src="{{ $qrCode }}" style="max-width: 500px;"></p>
                         @endif
 
                             {{--<li>Estado do Pagamento: Em Análise.</li>
@@ -111,15 +111,18 @@
 
                         <br>
 
-                        <p>Em caso de dúvidas envie um email para contato@beconnect.com.br informando o código da transação.</p>
-                        <p>{{ $p2 }}</p>
+                        <div class="col-xs-12">
+                            <p>Em caso de dúvidas envie um email para contato@beconnect.com.br informando o código da transação.</p>
+                            <p>{{ $p2 }}</p>
+                        </div>
+
 
                         <p>
                             Atenciosamente.
                         </p>
 
                         <p>
-                            Equipe Beconnect e MIGS
+                            Equipe Beconnect
                         </p>
 
                     </div>
