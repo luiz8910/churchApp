@@ -2277,7 +2277,7 @@ class EventController extends Controller
 
                         $x['brandId'] = $brandId;
 
-                        $x['metaId'] = $this->randomPassword(10);
+                        $x['metaId'] = $this->paymentServices->setMetaId();
 
                         /*
                          * Se houver um metaId repetido o código abaixo
