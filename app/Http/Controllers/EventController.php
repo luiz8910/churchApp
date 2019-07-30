@@ -262,8 +262,7 @@ class EventController extends Controller
         $numWeek = $this->getDefaultWeeks();
 
         //Listagem até a 6° semana por padrão
-        while ($cont < $numWeek)
-        {
+        while ($cont < $numWeek) {
             $time = $cont == 1 ? 'next' : $cont;
 
             $days = array_merge($days, $this->agendaServices->findWeek($time));
@@ -348,8 +347,7 @@ class EventController extends Controller
         foreach ($events as $event) {
             $event->eventDate = $this->formatDateView($event->eventDate);
 
-            if($event->group_id)
-            {
+            if ($event->group_id) {
                 $event->group_name = $this->groupRepository->find($event->group_id)->name;
             }
 
@@ -407,25 +405,21 @@ class EventController extends Controller
         //Ano Atual
         $ano = date("Y");
 
-        if(!$thisMonth)
-        {
-            $thisMonth = (int) date_format(date_create($today), 'm');
+        if (!$thisMonth) {
+            $thisMonth = (int)date_format(date_create($today), 'm');
 
             $nextMonth = $thisMonth;
 
-        }
-        else{
+        } else {
 
             $nextMonth = $thisMonth + 1;
         }
 
 
-        if($thisMonth == 12)
-        {
+        if ($thisMonth == 12) {
             $ano++;
             $nextMonth = 1;
-        }
-        elseif ($thisMonth == -1){
+        } elseif ($thisMonth == -1) {
             $ano--;
             $nextMonth = 12;
         }
@@ -445,15 +439,14 @@ class EventController extends Controller
 
         $x = $firstDayNumber == 0 ? 7 : $firstDayNumber;
 
-        while($x != 1)
-        {
+        while ($x != 1) {
             // $i = 0, 1, 2, 3
 
             $x--; //3, 2, 1, 0
 
             $x *= -1; //-3, -2, -1, 0
 
-            date_add($date, date_interval_create_from_date_string($x. "days"));
+            date_add($date, date_interval_create_from_date_string($x . "days"));
 
             //$days[$i] = date_create($date);
 
@@ -468,8 +461,7 @@ class EventController extends Controller
             $i++;
         }
 
-        while(!$stop)
-        {
+        while (!$stop) {
             $days[$i] = date_create(date_format($date, "Y-m-d"));
 
             $days[$i] = date_format($days[$i], "Y-m-d");
@@ -484,8 +476,7 @@ class EventController extends Controller
 
             $i++;
 
-            if($month != $nextMonth)
-            {
+            if ($month != $nextMonth) {
                 $stop = true;
                 array_pop($days);
             }
@@ -528,8 +519,7 @@ class EventController extends Controller
         foreach ($events as $event) {
             $event->eventDate = $this->formatDateView($event->eventDate);
 
-            if($event->group_id)
-            {
+            if ($event->group_id) {
                 $event['group_name'] = $this->groupRepository->find($event->group_id)->name;
             }
 
@@ -554,11 +544,17 @@ class EventController extends Controller
 
         $allEvents = EventServices::allEvents();
 
-        for($i = 0; $i < 7; $i++) { array_push($days, $nextWeek[$i]); }
+        for ($i = 0; $i < 7; $i++) {
+            array_push($days, $nextWeek[$i]);
+        }
 
-        for($i = 0; $i < 7; $i++) { array_push($days, $twoWeeks[$i]); }
+        for ($i = 0; $i < 7; $i++) {
+            array_push($days, $twoWeeks[$i]);
+        }
 
-        foreach ($days as $day) { array_push($prevWeek, $day); }
+        foreach ($days as $day) {
+            array_push($prevWeek, $day);
+        }
 
         $days = $prevWeek;
 
@@ -635,7 +631,7 @@ class EventController extends Controller
         return view('events.index', compact('countPerson', 'countGroups', 'state', 'allEvents',
             'events', 'notify', 'qtde', 'days', 'nextMonth', 'nextMonth2',
             'nextMonth3', 'nextMonth4', 'nextMonth5', 'nextMonth6', 'prevMonth', 'prevMonth2',
-            'prevMonth3', 'prevMonth4', 'prevMonth5', 'prevMonth6','allMonths', 'allDays'));
+            'prevMonth3', 'prevMonth4', 'prevMonth5', 'prevMonth6', 'allMonths', 'allDays'));
     }
 
     public function create($id = null)
@@ -665,12 +661,10 @@ class EventController extends Controller
         $org = $this->churchRepository->findByField('id', $this->getUserChurch())->first();
 
 
-        if($id)
-        {
+        if ($id) {
             return view('events.create', compact('countPerson', 'countGroups', 'state', 'roles',
                 'id', 'notify', 'qtde', 'groups', 'frequencies', 'leader', 'admin', 'org_name', 'org'));
-        }
-        else{
+        } else {
             return view('events.create', compact('countPerson', 'countGroups', 'state', 'roles',
                 'notify', 'qtde', 'groups', 'frequencies', 'leader', 'admin', 'org_name', 'org'));
         }
@@ -688,7 +682,7 @@ class EventController extends Controller
 
         $user[] = User::find(11);
 
-        \Notification::send($user, new Notifications($event->name, 'events/'.$event->id.'/edit'));
+        \Notification::send($user, new Notifications($event->name, 'events/' . $event->id . '/edit'));
     }
 
 
@@ -696,133 +690,105 @@ class EventController extends Controller
     {
         //try{
 
-            $data = $request->all();
+        $data = $request->all();
 
-            $data['createdBy_id'] = \Auth::user()->id;
+        $data['createdBy_id'] = \Auth::user()->id;
 
-            $data['eventDate'] = $this->formatDateBD($data['eventDate']);
+        $data['eventDate'] = $this->formatDateBD($data['eventDate']);
 
-            if(!$data['eventDate'])
-            {
-                $request->session()->flash('invalidDate', 'Insira a data do primeiro encontro');
+        if (!$data['eventDate']) {
+            $request->session()->flash('invalidDate', 'Insira a data do primeiro encontro');
+
+            return redirect()->back()->withInput();
+        }
+
+        $verifyFields = $this->verifyRequiredFields($data, 'event');
+
+        if ($verifyFields) {
+            \Session::flash("error.required-fields", "Preencha o campo " . $verifyFields);
+
+            return redirect()->route("event.create")->withInput();
+        }
+
+        $endEventDate = $request->get('endEventDate');
+
+        if ($endEventDate == "") {
+            $data['endEventDate'] = $data['eventDate'];
+        } else {
+            $data['endEventDate'] = $this->formatDateBD($data['endEventDate']);
+        }
+
+
+        if ($data["frequency"] == $this->biweekly()) {
+            $firstDay = substr($data['eventDate'], 8, 2);
+
+            if (!isset($data['day'])) {
+                $request->session()->flash('invalidDate', 'Data do Próximo evento está inválida');
 
                 return redirect()->back()->withInput();
             }
 
-            $verifyFields = $this->verifyRequiredFields($data, 'event');
+            if ($data['day'][0] != $firstDay) {
+                $request->session()->flash('invalidDate', 'Data do Próximo evento está inválida');
 
-            if($verifyFields)
-            {
-                \Session::flash("error.required-fields", "Preencha o campo " . $verifyFields);
+                return redirect()->back()->withInput();
+            } else {
+                $day = $data['day'][0];
+                $data['day_2'] = $data['day'][1];
 
-                return redirect()->route("event.create")->withInput();
+                unset($data['day']);
+
+                $data['day'] = $day;
             }
+        }
 
-            $endEventDate = $request->get('endEventDate');
+        $data["city"] = ucwords($data["city"]);
 
-            if ($endEventDate == "")
-            {
-                $data['endEventDate'] = $data['eventDate'];
+        //Verificar url do evento
+        if ($data['public_url'] != "") {
+            if ($this->eventServices->checkUrlEvent($data['public_url'])) {
+                $request->session()->flash('error.msg', 'Url ja está em uso, mude o nome do evento');
+
+                return redirect()->back()->withInput();
             }
-            else{
-                $data['endEventDate'] = $this->formatDateBD($data['endEventDate']);
-            }
+        }
+
+        $data['certified_hours'] = $data['certified_hours'] ? $data['certified_hours'] : 0;
+
+        $event = $this->repository->create($data);
 
 
-            if($data["frequency"] == $this->biweekly())
-            {
-                $firstDay = substr($data['eventDate'], 8, 2);
+        $this->eventServices->sendNotification($data, $event);
 
-                if(!isset($data['day']))
-                {
-	                $request->session()->flash('invalidDate', 'Data do Próximo evento está inválida');
+        if ($data["frequency"] != $this->unique()) {
+            $this->eventServices->newEventDays($event->id, $data);
+        } else {
+            $show = $event->eventDate == date("Y-m-d") ? 1 : 0;
 
-                    return redirect()->back()->withInput();
-                }
+            $person_id = \Auth::user()->person_id;
 
-                if($data['day'][0] != $firstDay)
-                {
-                    $request->session()->flash('invalidDate', 'Data do Próximo evento está inválida');
+            $event_date = date_create($data['eventDate'] . $data['startTime']);
 
-                    return redirect()->back()->withInput();
-                }
-                else{
-                    $day = $data['day'][0];
-                    $data['day_2'] = $data['day'][1];
+            if ($data['endTime'] == "") {
+                if ($data['endEventDate'] == $data['eventDate']) {
+                    $endTime = date_create();
 
-                    unset($data['day']);
+                    date_add($endTime, date_interval_create_from_date_string("1 day"));
 
-                    $data['day'] = $day;
-                }
-            }
+                    $endTime = date_format($endTime, "Y-m-d");
 
-            $data["city"] = ucwords($data["city"]);
+                    $endTime = date_create($endTime);
 
-            //Verificar url do evento
-            if($data['public_url'] != "")
-            {
-                if($this->eventServices->checkUrlEvent($data['public_url']))
-                {
-                    $request->session()->flash('error.msg', 'Url ja está em uso, mude o nome do evento');
-
-                    return redirect()->back()->withInput();
-                }
-            }
-
-            $data['certified_hours'] = $data['certified_hours'] ? $data['certified_hours'] : 0;
-
-            $event = $this->repository->create($data);
-
-
-            $this->eventServices->sendNotification($data, $event);
-
-            if($data["frequency"] != $this->unique())
-            {
-                $this->eventServices->newEventDays($event->id, $data);
-            }
-            else{
-                $show = $event->eventDate == date("Y-m-d") ? 1 : 0;
-
-                $person_id = \Auth::user()->person_id;
-
-                $event_date = date_create($data['eventDate'] . $data['startTime']);
-
-                if($data['endTime'] == "")
-                {
-                    if($data['endEventDate'] == $data['eventDate'])
-                    {
-                        $endTime = date_create();
-
-                        date_add($endTime, date_interval_create_from_date_string("1 day"));
-
-                        $endTime = date_format($endTime, "Y-m-d");
-
-                        $endTime = date_create($endTime);
-
-                        DB::table('event_person')
-                            ->insert([
-                                'event_id' => $event->id,
-                                'person_id' => $person_id,
-                                'eventDate' => $event->eventDate,
-                                'event_date' => $event_date,
-                                'end_event_date' => $endTime,
-                                'show' => $show
-                            ]);
-                    }
-                    else{
-                        DB::table('event_person')
-                            ->insert([
-                                'event_id' => $event->id,
-                                'person_id' => $person_id,
-                                'eventDate' => $event->eventDate,
-                                'event_date' => $event_date,
-                                'end_event_date' => date_create($data['endEventDate'] . $data['endTime']),
-                                'show' => $show
-                            ]);
-                    }
-
-                }
-                else{
+                    DB::table('event_person')
+                        ->insert([
+                            'event_id' => $event->id,
+                            'person_id' => $person_id,
+                            'eventDate' => $event->eventDate,
+                            'event_date' => $event_date,
+                            'end_event_date' => $endTime,
+                            'show' => $show
+                        ]);
+                } else {
                     DB::table('event_person')
                         ->insert([
                             'event_id' => $event->id,
@@ -834,16 +800,28 @@ class EventController extends Controller
                         ]);
                 }
 
-                $this->eventServices->subAllMembers($event->id, $event->eventDate, $person_id);
+            } else {
+                DB::table('event_person')
+                    ->insert([
+                        'event_id' => $event->id,
+                        'person_id' => $person_id,
+                        'eventDate' => $event->eventDate,
+                        'event_date' => $event_date,
+                        'end_event_date' => date_create($data['endEventDate'] . $data['endTime']),
+                        'show' => $show
+                    ]);
             }
 
-            $this->setChurch_id($event);
+            $this->eventServices->subAllMembers($event->id, $event->eventDate, $person_id);
+        }
 
-            $this->eventServices->newRecentEvents($event->id, $this->getUserChurch());
+        $this->setChurch_id($event);
 
-            //DB::commit();
+        $this->eventServices->newRecentEvents($event->id, $this->getUserChurch());
 
-            return redirect()->route('event.index');
+        //DB::commit();
+
+        return redirect()->route('event.index');
 
         /*}catch(\Exception $e)
         {
@@ -881,11 +859,9 @@ class EventController extends Controller
 
         $admin = $this->getAdminRoleId();
 
-        if($this->getUserChurch() == null)
-        {
+        if ($this->getUserChurch() == null) {
             $church_id = null;
-        }
-        else{
+        } else {
             $church_id = $this->getUserChurch();
         }
 
@@ -919,11 +895,9 @@ class EventController extends Controller
         $people = [];
 
         foreach ($eventPeople as $item) {
-            if(isset($item->person_id))
-            {
+            if (isset($item->person_id)) {
                 $arr[] = $item->person_id;
-            }
-            else{
+            } else {
                 $vis[] = $item->visitor_id;
             }
 
@@ -938,8 +912,7 @@ class EventController extends Controller
             ->whereIn('id', $arr)
             ->get();
 
-        foreach ($eventPeople as $item)
-        {
+        foreach ($eventPeople as $item) {
             //$item->name = $this->personRepository->find($item->person_id)->name;
             $item->frequency = $this->eventServices->userFrequency($id, $item->id);
         }
@@ -948,13 +921,11 @@ class EventController extends Controller
             ->whereIn('id', $vis)
             ->get();
 
-        foreach ($eventVisitor as $item)
-        {
+        foreach ($eventVisitor as $item) {
             $item->frequency = $this->eventServices->userFrequency($id, $item->id . "/visit");
         }
 
         //dd($arr);
-
 
 
         $eventPeople = $eventPeople->merge($eventVisitor);
@@ -969,8 +940,7 @@ class EventController extends Controller
 
         $canCheckIn = $this->eventServices->canCheckIn($id);
 
-        if($canCheckIn)
-        {
+        if ($canCheckIn) {
             $sub = $this->eventServices->isSubscribed($id);
         }
 
@@ -979,8 +949,7 @@ class EventController extends Controller
 
         $createdBy = $this->userRepository->find($model->createdBy_id)->person;
 
-        if($model->frequency != $this->unique())
-        {
+        if ($model->frequency != $this->unique()) {
             $nextEventDate = DB::table('event_person')
                 ->select('eventDate')
                 ->where(
@@ -991,8 +960,7 @@ class EventController extends Controller
                 )->first();
 
             $nextEventDate = $nextEventDate != null ? $this->formatDateView($nextEventDate->eventDate) : null;
-        }
-        else{
+        } else {
             $nextEventDate = $model->eventDate;
         }
 
@@ -1005,17 +973,13 @@ class EventController extends Controller
 
         $biweekly = $this->biweekly();
 
-        if($model->frequency == $weekly)
-        {
-            if($model->day == "Sabado" || $model->day == "Domingo")
-            {
+        if ($model->frequency == $weekly) {
+            if ($model->day == "Sabado" || $model->day == "Domingo") {
                 $preposicao = "todo";
-            }
-            else{
+            } else {
                 $preposicao = "toda";
             }
-        }
-        elseif($model->frequency == $monthly || $model->frequency == $biweekly){
+        } elseif ($model->frequency == $monthly || $model->frequency == $biweekly) {
             $preposicao = "todo dia";
         }
 
@@ -1023,8 +987,7 @@ class EventController extends Controller
 
         $sessions = $this->sessionRepository->findByField('event_id', $id);
 
-        if(count($sessions) == 0)
-        {
+        if (count($sessions) == 0) {
             $sessions = false;
         }
 
@@ -1032,8 +995,7 @@ class EventController extends Controller
 
         $local = false;
 
-        if($model->street == $org->street && $model->number == $org->number)
-        {
+        if ($model->street == $org->street && $model->number == $org->number) {
             $local = true;
         }
 
@@ -1041,8 +1003,7 @@ class EventController extends Controller
 
         $payment = null;
 
-        if($payment = $this->churchRepository->findByField('id', $church_id)->first())
-        {
+        if ($payment = $this->churchRepository->findByField('id', $church_id)->first()) {
             $payment = $payment->payment;
             //$model->value_money = number_format($model->value_money, 2, ',', ' ');
             //dd($model->value_money);
@@ -1061,8 +1022,7 @@ class EventController extends Controller
 
         $event = $this->repository->findByField('id', $id)->first();
 
-        if($event)
-        {
+        if ($event) {
             $data['createdBy_id'] = $this->repository->findByField('id', $id)->first() ?
                 $this->repository->findByField('id', $id)->first()->createdBy_id : 0;
 
@@ -1070,36 +1030,28 @@ class EventController extends Controller
 
             $endEventDate = $request->get('endEventDate');
 
-            if(!$data['eventDate'])
-            {
+            if (!$data['eventDate']) {
                 $request->session()->flash('invalidDate', 'Insira a data do primeiro encontro');
                 return redirect()->back()->withInput();
             }
 
-            if ($endEventDate == "")
-            {
+            if ($endEventDate == "") {
                 $data['endEventDate'] = $data['eventDate'];
-            }
-            else
-            {
+            } else {
                 $data['endEventDate'] = $this->formatDateBD($data['endEventDate']);
             }
 
-            if(isset($data["group_id"]) && $data['group_id'] == "")
-            {
+            if (isset($data["group_id"]) && $data['group_id'] == "") {
                 $data["group_id"] = null;
             }
 
-            if($data["frequency"] == "Quinzenal")
-            {
+            if ($data["frequency"] == "Quinzenal") {
                 $firstDay = substr($data['eventDate'], 8, 2);
 
-                if($data['day'][0] != $firstDay)
-                {
+                if ($data['day'][0] != $firstDay) {
                     $request->session()->flash('invalidDate', 'Data do Próximo evento está inválida');
                     return redirect()->back()->withInput();
-                }
-                else{
+                } else {
                     $day = $data['day'][0];
                     $data['day_2'] = $data['day'][1];
 
@@ -1111,31 +1063,27 @@ class EventController extends Controller
 
             $data["city"] = ucwords($data["city"]);
 
-            if($data['public_url'] == "" && $event->public_url != "")
-            {
+            if ($data['public_url'] == "" && $event->public_url != "") {
                 $data['public_url'] = $event->public_url;
             }
 
             //Verificar url do evento
-            if($this->eventServices->checkUrlEvent($data['public_url'], $id))
-            {
+            if ($this->eventServices->checkUrlEvent($data['public_url'], $id)) {
                 $request->session()->flash('error.msg', 'Url ja está em uso, mude o nome do evento');
 
                 return redirect()->back()->withInput();
             }
 
-            if($data['certified_hours'] == "")
-            {
+            if ($data['certified_hours'] == "") {
                 $data['certified_hours'] = 0;
             }
 
-            if(isset($data['value_money']))
-            {
+            if (isset($data['value_money'])) {
                 $data['value_money'] = substr($data['value_money'], 2);
 
                 $data['value_money'] = str_replace('.', '', $data['value_money']);
 
-                $data['value_money'] = ( float ) $data['value_money'];
+                $data['value_money'] = ( float )$data['value_money'];
             }
 
             $this->repository->update($data, $id);
@@ -1171,8 +1119,7 @@ class EventController extends Controller
                 'check-in' => 1
             ])->get();
 
-        if($event_person)
-        {
+        if ($event_person) {
             DB::table('event_person')
                 ->where([
                     'event_id' => $id,
@@ -1181,7 +1128,7 @@ class EventController extends Controller
                 ])->update(['check-in' => 0]);
 
             echo json_encode(['status' => false]);
-        }else{
+        } else {
             $event->people()->attach($user->person_id, [
                 'eventDate' => date_format($date, "Y-m-d"),
                 'check-in' => 1
@@ -1243,8 +1190,7 @@ class EventController extends Controller
     {
         $event = $this->repository->findByField('id', $id)->first();
 
-        if($event)
-        {
+        if ($event) {
 
             DB::table('event_person')
                 ->where(['event_id' => $id])
@@ -1277,8 +1223,7 @@ class EventController extends Controller
         $data = $request->all();
 
 
-        while($i < count($data['input']))
-        {
+        while ($i < count($data['input'])) {
             $this->repository->delete($data['input'][$i]);
 
             DB::table('event_person')
@@ -1307,15 +1252,14 @@ class EventController extends Controller
 
         $text = "";
 
-        while($i < count($events))
-        {
+        while ($i < count($events)) {
             $events[$i]->createdBy_id = $this->userRepository->find($events[$i]->createdBy_id)->person->name;
 
             $events[$i]->group_id = $events[$i]->group_id ? $this->groupRepository->find($events[$i]->group_id)->name : "Sem Grupo";
 
             $x = $i == (count($events) - 1) ? "" : ",";
 
-            $text .= '["'.$events[$i]->name.'","'.''.$events[$i]->frequency.''.'","'.''.$events[$i]->createdBy_id.''.'","'.''.$events[$i]->group_id.'"'.']'.$x.'';
+            $text .= '["' . $events[$i]->name . '","' . '' . $events[$i]->frequency . '' . '","' . '' . $events[$i]->createdBy_id . '' . '","' . '' . $events[$i]->group_id . '"' . ']' . $x . '';
 
             $i++;
         }
@@ -1328,19 +1272,17 @@ class EventController extends Controller
                     "widths": [ "*", "auto", 100, "*" ],
             
                     "body":[
-                      ["'.$header[0].'", "'.$header[1].'", "'.$header[2].'", "'.$header[3].'"],
-                      '.$text.'
+                      ["' . $header[0] . '", "' . $header[1] . '", "' . $header[2] . '", "' . $header[3] . '"],
+                      ' . $text . '
                     ]
                   }
                 }
               ]
             }';
 
-        if (env('APP_ENV') == "local")
-        {
+        if (env('APP_ENV') == "local") {
             File::put(public_path('js/print.json'), $json);
-        }
-        else{
+        } else {
             File::put(getcwd() . '/js/print.json', $json);
         }
 
@@ -1390,7 +1332,7 @@ class EventController extends Controller
             $info[$i]["UF"] = $data[$i]->state;
         }
 
-        Excel::create('Eventos', function($excel) use ($info) {
+        Excel::create('Eventos', function ($excel) use ($info) {
 
             // Set the title
             //$excel->setTitle('Our new awesome title');
@@ -1398,8 +1340,8 @@ class EventController extends Controller
             // Call them separately
             //$excel->setDescription('A demonstration to change the file properties');
 
-            $excel->sheet('Eventos', function ($sheet) use ($info){
-               $sheet->fromArray($info);
+            $excel->sheet('Eventos', function ($sheet) use ($info) {
+                $sheet->fromArray($info);
             });
 
         })->export($format);
@@ -1413,10 +1355,9 @@ class EventController extends Controller
 
         $event = $this->repository->findByField('id', $event)->first();
 
-        if($event)
-        {
-            try{
-                $imgName = 'uploads/event/' . $event->id . '-' . $event->name . '.' .$file->getClientOriginalExtension();
+        if ($event) {
+            try {
+                $imgName = 'uploads/event/' . $event->id . '-' . $event->name . '.' . $file->getClientOriginalExtension();
 
                 $file->move('uploads/event', $imgName);
 
@@ -1428,8 +1369,7 @@ class EventController extends Controller
 
                 DB::commit();
 
-            }catch (\Exception $e)
-            {
+            } catch (\Exception $e) {
                 DB::rollBack();
 
                 dd($e->getMessage());
@@ -1451,10 +1391,9 @@ class EventController extends Controller
 
         $event = $this->repository->findByField('id', $event)->first();
 
-        if($event)
-        {
-            try{
-                $imgName = 'uploads/event/' . $event->id . '-' . $event->name . '-bg' . '.' .$file->getClientOriginalExtension();
+        if ($event) {
+            try {
+                $imgName = 'uploads/event/' . $event->id . '-' . $event->name . '-bg' . '.' . $file->getClientOriginalExtension();
 
                 $file->move('uploads/event', $imgName);
 
@@ -1466,8 +1405,7 @@ class EventController extends Controller
 
                 DB::commit();
 
-            }catch (\Exception $e)
-            {
+            } catch (\Exception $e) {
                 DB::rollBack();
 
                 $request->session()->flash('error.msg', 'Um erro aconteceu, tente novamente mais tarde');
@@ -1490,6 +1428,7 @@ class EventController extends Controller
 
         $cron->setNextEvents();
     }
+
     //Função de teste somente, não tem uso em produção
     public function Cron2()
     {
@@ -1503,7 +1442,6 @@ class EventController extends Controller
         //dd($today);
 
 
-
         $events = DB::table('event_person')
             ->where(
                 [
@@ -1515,8 +1453,7 @@ class EventController extends Controller
             ->get();
 
 
-        if(count($events) > 0)
-        {
+        if (count($events) > 0) {
             DB::table('event_person')
                 ->where(
                     [
@@ -1526,8 +1463,7 @@ class EventController extends Controller
                     ]
                 )->update(['show' => 1]);
 
-            foreach ($events as $event)
-            {
+            foreach ($events as $event) {
                 $e = Event::find($event->event_id);
 
                 $last = DB::table('event_person')
@@ -1541,34 +1477,27 @@ class EventController extends Controller
                     ->first();
 
 
-                if($e->frequency == $this->daily())
-                {
+                if ($e->frequency == $this->daily()) {
                     $this->setDays($event, $last, '1 day');
-                }
-                elseif ($e->frequency == $this->weekly())
-                {
+                } elseif ($e->frequency == $this->weekly()) {
                     $todayNumber = date('w');
 
                     $dayNumber = $this->eventServices->getDayNumber($e->day);
 
-                    if($todayNumber == $dayNumber)
-                    {
+                    if ($todayNumber == $dayNumber) {
                         $this->setDays($event, $last, '7 days');
                     }
 
-                }
-                elseif($e->frequency == $this->monthly())
-                {
+                } elseif ($e->frequency == $this->monthly()) {
                     $todayNumber = date('d');
 
-                    if($todayNumber == $e->day)
-                    {
+                    if ($todayNumber == $e->day) {
                         $this->setDays($event, $last);
                     }
                 }
             }
 
-        }else return 0;
+        } else return 0;
 
 
     }
@@ -1577,27 +1506,24 @@ class EventController extends Controller
     {
         $lastEvent = date_create($last->eventDate);
 
-        if(!$days)
-        {
+        if (!$days) {
             $day = date_format($lastEvent, "d");
             $month = date_format($lastEvent, "m");
             $year = date_format($lastEvent, "Y");
 
             $month++;
 
-            if($month == 13)
-            {
+            if ($month == 13) {
                 $month = 01;
                 $year++;
             }
 
-            $nextEvent = date_create($year."-".$month."-".$day);
+            $nextEvent = date_create($year . "-" . $month . "-" . $day);
 
 
-        }else{
+        } else {
             $nextEvent = date_add($lastEvent, date_interval_create_from_date_string($days));
         }
-
 
 
         DB::table('event_person')
@@ -1616,7 +1542,7 @@ class EventController extends Controller
      */
     public function getSubEventListAjax($id)
     {
-        try{
+        try {
             $sub = $this->eventServices->getListSubEvent($id);
 
             $person_sub = [];
@@ -1627,11 +1553,9 @@ class EventController extends Controller
             $vis = [];
 
             foreach ($sub as $item) {
-                if(isset($item->person_id))
-                {
+                if (isset($item->person_id)) {
                     $arr[] = $item->person_id;
-                }
-                else{
+                } else {
                     $vis[] = $item->visitor_id;
                 }
 
@@ -1644,14 +1568,12 @@ class EventController extends Controller
 
             $person_sub = DB::table('people')
                 ->whereIn('id', $arr)
-                ->get()
-                //->paginate(5)
+                ->get()//->paginate(5)
             ;
 
             $visit_sub = DB::table('visitors')
                 ->whereIn('id', $vis)
-                ->get()
-                //->paginate(5)
+                ->get()//->paginate(5)
             ;
 
             $event = $this->repository->find($id);
@@ -1678,7 +1600,7 @@ class EventController extends Controller
             ]);
 
 
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             DB::rollback();
 
             return json_encode([
@@ -1737,8 +1659,7 @@ class EventController extends Controller
     {
         $people = \GuzzleHttp\json_decode($people);
 
-        foreach($people as $item)
-        {
+        foreach ($people as $item) {
             $item = str_replace("-", "/", $item);
 
             $this->eventServices->subToday($event, $item);
@@ -1748,7 +1669,6 @@ class EventController extends Controller
 
         return json_encode(['status' => true]);
     }
-
 
 
     /*
@@ -1762,9 +1682,8 @@ class EventController extends Controller
 
         //dd($people);
 
-        if(!$people)
-        {
-            try{
+        if (!$people) {
+            try {
                 $this->eventServices->checkInAll($event);
 
                 $qtde = count($this->eventServices->getListSubEvent($event));
@@ -1776,8 +1695,7 @@ class EventController extends Controller
                     'qtde' => $qtde
                 ]);
 
-            }catch(\Exception $e)
-            {
+            } catch (\Exception $e) {
                 DB::rollback();
 
                 return json_encode([
@@ -1786,19 +1704,16 @@ class EventController extends Controller
                 ]);
             }
 
-        }
-        else{
-            foreach ($people as $item)
-            {
+        } else {
+            foreach ($people as $item) {
                 //$item = str_replace("-", "/", $item, $count);
 
                 //if($count == 0){
-                    $isSub = $this->eventServices->isSubPeople($event, $item);
+                $isSub = $this->eventServices->isSubPeople($event, $item);
 
-                    if(!$isSub)
-                    {
-                        $this->eventServices->checkInBatch($event, $item);
-                    }
+                if (!$isSub) {
+                    $this->eventServices->checkInBatch($event, $item);
+                }
 
                 //}
                 /*else{
@@ -1812,9 +1727,7 @@ class EventController extends Controller
                 }*/
 
 
-
             }
-
 
 
             return json_encode(['status' => true]);
@@ -1856,11 +1769,9 @@ class EventController extends Controller
         $vis = [];
 
         foreach ($sub as $item) {
-            if(isset($item->person_id))
-            {
+            if (isset($item->person_id)) {
                 $arr[] = $item->person_id;
-            }
-            else{
+            } else {
                 $vis[] = $item->visitor_id;
             }
 
@@ -1877,17 +1788,14 @@ class EventController extends Controller
             ->whereIn('id', $arr)
             //->get()
             ->orderBy('name')
-            ->paginate(30)
-        ;
+            ->paginate(30);
 
         $visit_sub = DB::table('visitors')
             ->whereIn('id', $vis)
-            ->get()
-            //->paginate(5)
+            ->get()//->paginate(5)
         ;
 
-        foreach($person_sub as $p)
-        {
+        foreach ($person_sub as $p) {
             $person = $this->personRepository->find($p->id);
             $user = isset($person->user) ? $person->user : false;
 
@@ -1901,10 +1809,8 @@ class EventController extends Controller
                 ])->first();
 
 
-            if($user)
-            {
-                if($user->facebook_id || $user->google_id)
-                {
+            if ($user) {
+                if ($user->facebook_id || $user->google_id) {
                     $p->social_media = true;
                 }
             }
@@ -1914,22 +1820,18 @@ class EventController extends Controller
 
             $presence = $this->eventServices->presenceMember($id, $p->id);
 
-            if($presence > 0)
-            {
+            if ($presence > 0) {
                 $p->presence = $presence;
             }
         }
 
-        foreach ($visit_sub as $v)
-        {
+        foreach ($visit_sub as $v) {
             $user = $this->visitorRepository->find($v->id)->users()->first();
 
             $v->social_media = false; //echo $v->id . "<br>";
 
-            if($user)
-            {
-                if($user->facebook_id || $user->google_id)
-                {
+            if ($user) {
+                if ($user->facebook_id || $user->google_id) {
                     $v->social_media = true;
                 }
             }
@@ -1938,8 +1840,7 @@ class EventController extends Controller
 
             $presence = $this->eventServices->presenceVisitor($id, $v->id);
 
-            if($presence > 0)
-            {
+            if ($presence > 0) {
                 $v->presence = $presence;
             }
         }
@@ -1985,34 +1886,29 @@ class EventController extends Controller
     {
         $data = $request->all();
 
-        if($data["person_id"] != "")
-        {
+        if ($data["person_id"] != "") {
             $event = $this->repository->findByField('id', $event_id)->first();
 
-            if($event)
-            {
+            if ($event) {
                 $role = $this->getUserRole();
 
                 //$leader = $this->roleRepository->find($this->getLeaderRoleId())->name;
 
                 //if((isset($event->group_id) && $role == $leader) || (!isset($event->group_id)))
                 //{
-                    $exists = $this->eventServices->subEvent($event_id, $data["person_id"]);
+                $exists = $this->eventServices->subEvent($event_id, $data["person_id"]);
 
-                    if($exists){
-                        $request->session()->flash('success.msg', 'O usuário foi inscrito');
-                    }
-                    else{
-                        $request->session()->flash('error.msg', 'Um erro ocorreu, tente novamente mais tarde');
-                    }
+                if ($exists) {
+                    $request->session()->flash('success.msg', 'O usuário foi inscrito');
+                } else {
+                    $request->session()->flash('error.msg', 'Um erro ocorreu, tente novamente mais tarde');
+                }
                 //}
-            }
-            else{
+            } else {
                 $request->session()->flash('error.msg', 'Evento não encontrado');
             }
 
-        }
-        else{
+        } else {
             $request->session()->flash('error.msg', 'Usuário não encontrado');
         }
 
@@ -2072,16 +1968,12 @@ class EventController extends Controller
     {
         $event = $this->eventServices->checkUrlEvent($url);
 
-        if($event)
-        {
+        if ($event) {
             $church = $this->churchRepository->findByField('id', $event->church_id)->first();
 
-            if($church)
-            {
-                if($church->payment && $event->value_money)
-                {
-                    if(strlen($event->name) > 20)
-                    {
+            if ($church) {
+                if ($church->payment && $event->value_money) {
+                    if (strlen($event->name) > 20) {
                         $abrv = '2º Coworking - Miguel Falabella';
 
                         $split_name = true;
@@ -2110,36 +2002,31 @@ class EventController extends Controller
 
         $event_id = $request->get('event_id');
 
-        if($data['email'] == "")
-        {
+        if ($data['email'] == "") {
             $errors['email'] = 'Preencha seu email';
 
             return redirect()->back()->withInput()->withErrors($errors);
         }
 
-        if($data['name'] == "")
-        {
+        if ($data['name'] == "") {
             $errors['name'] = 'Preencha seu nome';
 
             return redirect()->back()->withInput()->withErrors($errors);
         }
 
-        if($data['cel'] == "")
-        {
+        if ($data['cel'] == "") {
             $errors['cel'] = 'Preencha seu celular';
 
             return redirect()->back()->withInput()->withErrors($errors);
         }
 
-        if($data['cpf'] == "")
-        {
+        if ($data['cpf'] == "") {
             $errors['cpf'] = 'Preencha seu CPF';
 
             return redirect()->back()->withInput()->withErrors($errors);
         }
 
-        if($data['dateBirth'] == "")
-        {
+        if ($data['dateBirth'] == "") {
             $errors['dateBirth'] = 'Preencha sua Data de Nascimento';
 
             return redirect()->back()->withInput()->withErrors($errors);
@@ -2147,10 +2034,8 @@ class EventController extends Controller
 
         $person = $this->personRepository->findByField('email', $data['email'])->first();
 
-        if($person)
-        {
-            if($person->user)
-            {
+        if ($person) {
+            if ($person->user) {
                 $this->eventServices->subEvent($event_id, $person->id);
 
                 //$this->peopleServices->send_sub_email($event_id, $person->id);
@@ -2162,8 +2047,7 @@ class EventController extends Controller
 
                 return redirect()->back()->withInput();
             }
-        }
-        else{
+        } else {
             $data['role_id'] = 2;
 
             $data['imgProfile'] = 'uploads/profile/noimage.png';
@@ -2172,8 +2056,7 @@ class EventController extends Controller
 
             $person_id = $this->personRepository->create($data)->id;
 
-            if($person_id)
-            {
+            if ($person_id) {
                 $this->qrServices->generateQrCode($person_id);
 
                 $this->createUserLogin($person_id, 'secret', $data['email'], $data['church_id']);
@@ -2190,7 +2073,7 @@ class EventController extends Controller
                 return redirect()->back()->withInput();
             }
 
-            $request->session()->flash('error.msg', 'Não foi possível fazer sua inscrição, tente novamente mais tarde!' );
+            $request->session()->flash('error.msg', 'Não foi possível fazer sua inscrição, tente novamente mais tarde!');
 
             return redirect()->back()->withInput();
 
@@ -2211,9 +2094,9 @@ class EventController extends Controller
     {
         $event = $this->repository->findByField('id', $event_id)->first();
 
-        if($event)
-        {
-            try{
+
+        if ($event) {
+            try {
                 $data = $request->all();
 
                 $p['name'] = $data['name'];
@@ -2224,19 +2107,15 @@ class EventController extends Controller
 
                 $person = $this->personRepository->findByField('email', $data['email'])->first();
 
-                if($person)
-                {
+                if ($person) {
                     $x['person_id'] = $person->id;
 
                     $this->personRepository->update($p, $person->id);
 
-                    if(!$this->userRepository->findByField('email', $p['email'])->first())
-                    {
+                    if (!$this->userRepository->findByField('email', $p['email'])->first()) {
                         $this->createUserLogin($x['person_id'], $this->randomPassword(), $p['email'], $event->church_id);
                     }
-                }
-
-                else{
+                } else {
                     $p['role_id'] = 2;
 
                     $p['imgProfile'] = 'uploads/profile/noimage.png';
@@ -2258,8 +2137,7 @@ class EventController extends Controller
                  * Se pay_exists == 0 então o cliente
                  * não pagou pela inscrição
                  */
-                if (count($pay_exists) == 0)
-                {
+                if (count($pay_exists) == 0) {
                     $json_data = $this->paymentServices->prepareCard($data);
 
                     $response_status = json_decode($json_data)->response_status;
@@ -2268,10 +2146,9 @@ class EventController extends Controller
 
                     $brandId = json_decode($json_data)->brandId;
 
-                    if($response_status)
-                    {
+                    if ($response_status) {
 
-                        $x['installments'] = (int) $data['installments'];
+                        $x['installments'] = (int)$data['installments'];
 
                         $x['card_nonce'] = $card_nonce;
 
@@ -2283,28 +2160,25 @@ class EventController extends Controller
                          * Se houver um metaId repetido o código abaixo
                          * vai iterar até encontrar um metaId sem uso.
                          */
-                        if($this->paymentRepository->findByField('metaId', $x['metaId'])->first())
-                        {
+                        if ($this->paymentRepository->findByField('metaId', $x['metaId'])->first()) {
                             $stop = false;
 
-                            while (!$stop)
-                            {
+                            while (!$stop) {
                                 $x['metaId'] = $this->paymentServices->setMetaId();
 
-                                if(!$this->paymentRepository->findByField('metaId', $x['metaId'])->first())
-                                {
+                                if (!$this->paymentRepository->findByField('metaId', $x['metaId'])->first()) {
                                     $stop = true;
                                 }
                             }
                         }
 
-                        $li = '<li>Estado do Pagamento: Processado (pago)</li>';
-                        $li .= '<li>Método de Pagamento: Cartão de Crédito</li>';
-                        $li .= '<li>Últimos 4 dígitos do cartão: '.substr($data['credit_card_number'], 11, 4).'</li>';
-                        $li .= '<li>Valor da Transação: R$'.$event->value_money.'</li>';
-                        $li .= '<li>Parcelamento: '.$data['installments'] == 1 ? 'Á vista' :
-                            $data['installments'] . 'x de R$' . $event->value_money / $data['installments'].'</li>';
-                        $li .= '<li>Código da Transação: ' . $x["metaId"] . '</li>';
+                        $li_0 = 'Estado do Pagamento: Processado (pago)';
+                        $li_1 = 'Método de Pagamento: Cartão de Crédito';
+                        $li_2 = 'Últimos 4 dígitos do cartão: ' . substr($data['credit_card_number'], 11, 4);
+                        $li_3 = 'Valor da Transação: R$' . $event->value_money;
+                        $li_4 = 'Parcelamento: ' . $data['installments'] == 1 ? 'Á vista' :
+                            $data['installments'] . 'x de R$' . $event->value_money / $data['installments'];
+                        $li_5 = 'Código da Transação: ' . $x["metaId"];
 
 
                         $url = 'https://www.beconnect.com.br/';//'https://migs.med.br/2019/home/';
@@ -2319,7 +2193,8 @@ class EventController extends Controller
 
                         PaymentApproved::dispatch($x, $event_id, $data);
 
-                        PaymentMail::dispatch($li, $url, $url_img, $subject, $p1, $p2, $x, $event_id)
+                        PaymentMail::dispatch($li_0, $li_1, $li_2, $li_3, $li_4,
+                            $li_5, $url, $url_img, $subject, $p1, $p2, $x, $event_id)
                             ->delay(now()->addMinutes(3));
 
                         $request->session()->flash('success.msg', 'Um email será enviado para ' .
@@ -2342,14 +2217,11 @@ class EventController extends Controller
                         //CheckCardToken::dispatch($x, $event_id);
 
 
-                    }
-                    else{
+                    } else {
                         dd($response_status);
                     }
-                }
-
-                //Se já pagou
-                else{
+                } //Se já pagou
+                else {
 
                     $request->session()->flash('error.msg', 'Este usuário já efetuou o pagamento');
                 }
@@ -2357,8 +2229,7 @@ class EventController extends Controller
 
                 return redirect()->back();
 
-            }catch (\Exception $e)
-            {
+            } catch (\Exception $e) {
                 DB::rollBack();
 
                 $bug = new Bug();
@@ -2386,15 +2257,15 @@ class EventController extends Controller
     {
 
 
-            $data['card_token'] = '7b71gvWwLjPNZuXRJ6WlzC6cdS2fJNGyd9CO6EEsSv0=';
+        $data['card_token'] = '7b71gvWwLjPNZuXRJ6WlzC6cdS2fJNGyd9CO6EEsSv0=';
 
-            $data['person_id'] = 1535;
+        $data['person_id'] = 1535;
 
-            $data['installments'] = 2;
+        $data['installments'] = 2;
 
-            $this->paymentServices->createTransaction($data, 19);
+        $this->paymentServices->createTransaction($data, 19);
 
-            return true;
+        return true;
 
     }
 
@@ -2418,8 +2289,7 @@ class EventController extends Controller
 
         $arr = [];
 
-        foreach ($list as $l)
-        {
+        foreach ($list as $l) {
             $arr[] = $l->person_id;
         }
 
@@ -2427,7 +2297,7 @@ class EventController extends Controller
         $person_sub = DB::table('people')
             ->where(
                 [
-                    ['name', 'like', $input.'%'],
+                    ['name', 'like', $input . '%'],
                     ['deleted_at', '=', null],
                     'status' => 'active'
                 ]
@@ -2490,8 +2360,7 @@ class EventController extends Controller
 
         $person = $this->personRepository->findByField('id', $person_id)->first();
 
-        if($event && $person)
-        {
+        if ($event && $person) {
             $user = $person->user;
 
             //$event = DB::table('events')->where('id', 14)->first();
@@ -2515,8 +2384,7 @@ class EventController extends Controller
     {
         $people = $this->listRepository->findByField('event_id', $event_id);
 
-        foreach ($people as $item)
-        {
+        foreach ($people as $item) {
             $this->eventServices->subEvent($event_id, $item->person_id);
         }
 
@@ -2530,18 +2398,15 @@ class EventController extends Controller
 
         $event = $this->repository->findByField('id', $event_id)->first();
 
-        foreach ($people as $item)
-        {
-            if($event->frequency == $this->unique())
-            {
+        foreach ($people as $item) {
+            if ($event->frequency == $this->unique()) {
                 $exists = DB::table('event_person')
                     ->where([
                         'event_id' => $event_id,
                         'person_id' => $item->person_id
                     ])->first();
 
-                if(!$exists)
-                {
+                if (!$exists) {
                     DB::table('event_person')
                         ->insert([
                             'event_id' => $event_id,
@@ -2569,16 +2434,13 @@ class EventController extends Controller
 
         $data['person_id'] = $person_id;
 
-        if($person->cel == "" && $person->tel == "")
-        {
+        if ($person->cel == "" && $person->tel == "") {
             return json_encode(['status' => false]);
         }
 
-        if($person->cel == "")
-        {
+        if ($person->cel == "") {
             $data['number'] = $person->tel;
-        }
-        else{
+        } else {
             $data['number'] = $person->cel;
         }
 
@@ -2590,7 +2452,7 @@ class EventController extends Controller
 
         $data['event_date'] = date_format(date_create($event->eventDate . $event->startTime), 'd/m/Y H:i');
 
-        $data['text'] = 'Parabéns '. $data['person_name'] .'. Você foi inscrito pelo BeConnect no evento '. $data['event_name']. ' que acontecerá em '.$data['event_date'].' Lembre-se de apresentar o QR code acima para se identificar em sua entrada. Bom evento!!';
+        $data['text'] = 'Parabéns ' . $data['person_name'] . '. Você foi inscrito pelo BeConnect no evento ' . $data['event_name'] . ' que acontecerá em ' . $data['event_date'] . ' Lembre-se de apresentar o QR code acima para se identificar em sua entrada. Bom evento!!';
 
         $this->messageServices->send_QR_Teste($data);
 
@@ -2606,15 +2468,13 @@ class EventController extends Controller
 
         $data['person_id'] = $person_id;
 
-        if($person->email == "")
-        {
+        if ($person->email == "") {
             return json_encode(['status' => false]);
         }
 
         $user = $person->user;
 
-        if($person->qrCode == null)
-        {
+        if ($person->qrCode == null) {
             $this->qrServices->generateQrCode($person_id);
         }
 
@@ -2654,7 +2514,7 @@ class EventController extends Controller
 
         $all_months = $this->agendaServices->allMonths();
 
-        $month = (int) $month;
+        $month = (int)$month;
 
         $month_name = ($all_months[$month]);
 
@@ -2683,13 +2543,11 @@ class EventController extends Controller
     {
         $org_id = $this->getUserChurch();
 
-        if($person_id)
-        {
+        if ($person_id) {
             Certificate::dispatch($event_id, $org_id, $person_id);
 
             \Session::flash('success.msg', 'O certificado está sendo enviado para o participante.');
-        }
-        else{
+        } else {
             Certificate::dispatch($event_id, $org_id);
 
             \Session::flash('success.msg', 'O certificado está sendo enviado para os participantes, 
@@ -2709,7 +2567,7 @@ class EventController extends Controller
 
         $all_months = $this->agendaServices->allMonths();
 
-        $month = (int) $month;
+        $month = (int)$month;
 
         $month_name = ($all_months[$month]);
 
@@ -2719,34 +2577,29 @@ class EventController extends Controller
 
         $string_date = $day . ' de ' . $month_name . ' de ' . $year;
 
-        if($event)
-        {
+        if ($event) {
             $person = $this->personRepository->findByField('id', $person_id)->first();
 
-            if($person)
-            {
+            if ($person) {
                 $org_id = $person->church_id;
 
                 $org = $this->churchRepository->findByField('id', $org_id)->first();
 
-                if($org)
-                {
+                if ($org) {
                     echo 'Realizando Download...';
 
                     $pdf = PDF::loadView('events.certificate', compact('event', 'person', 'org', 'string_date'))
                         ->setPaper('a4', 'landscape');
 
-                    return $pdf->download($person->name.'.pdf');
-                }else{
+                    return $pdf->download($person->name . '.pdf');
+                } else {
 
                     echo 'Um erro ocorreu, mande um email para contato@beconnect.com.br informando-nos sobre o erro no download do certificado';
                 }
-            }
-            else{
+            } else {
                 echo 'Um erro ocorreu, mande um email para contato@beconnect.com.br informando-nos sobre o erro no download do certificado';
             }
-        }
-        else{
+        } else {
             echo 'Um erro ocorreu, mande um email para contato@beconnect.com.br informando-nos sobre o erro no download do certificado';
         }
 
@@ -2761,10 +2614,8 @@ class EventController extends Controller
     {
         $event = $this->repository->findByField('id', $id)->first();
 
-        if($event)
-        {
-            if($event->certified_hours)
-            {
+        if ($event) {
+            if ($event->certified_hours) {
                 return json_encode(['status' => true]);
             }
 
@@ -2776,8 +2627,7 @@ class EventController extends Controller
 
     public function qtde_check($id)
     {
-        if($this->repository->findByField('id', $id)->first())
-        {
+        if ($this->repository->findByField('id', $id)->first()) {
             $list = DB::table('event_person')
                 ->where([
                     'event_id' => $id,
@@ -2792,8 +2642,7 @@ class EventController extends Controller
 
     public function is_check($id, $person_id)
     {
-        if($this->repository->findByField('id', $id)->first())
-        {
+        if ($this->repository->findByField('id', $id)->first()) {
             $list = DB::table('event_person')
                 ->where([
                     'event_id' => $id,
@@ -2803,8 +2652,7 @@ class EventController extends Controller
 
             $person = $this->personRepository->findByField('id', $person_id)->first();
 
-            if($person && $person->email)
-            {
+            if ($person && $person->email) {
                 return json_encode(['status' => true, 'count' => $list ? 1 : 0]);
             }
 
@@ -2832,21 +2680,19 @@ class EventController extends Controller
 
         $people = [];
 
-        if($event)
-        {
+        if ($event) {
             $list = DB::table('event_person')
                 ->where([
                     'event_id' => $event_id,
                     'check-in' => 1,
-                    ])->select('person_id')->get();
+                ])->select('person_id')->get();
 
-            foreach ($list as $l)
-            {
+            foreach ($list as $l) {
                 $people[] = DB::table('people')
                     ->where([
                         'id' => $l->person_id
 
-                    ])->select('name','cel', 'email')->first();
+                    ])->select('name', 'cel', 'email')->first();
             }
         }
 

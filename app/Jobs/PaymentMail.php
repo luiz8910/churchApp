@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Mail;
 class PaymentMail implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-    public $li;
+    public $li_0;
     public $url;
     public $url_img;
     public $subject;
@@ -27,16 +27,26 @@ class PaymentMail implements ShouldQueue
     public $p2;
     public $x;
     public $event_id;
+    public $li_1;
+    public $li_2;
+    public $li_3;
+    public $li_4;
+    public $li_5;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($li, $url, $url_img, $subject, $p1, $p2, $x, $event_id)
+    public function __construct($li_0, $li_1, $li_2, $li_3, $li_4, $li_5, $url, $url_img, $subject, $p1, $p2, $x, $event_id)
     {
         //
-        $this->li = $li;
+        $this->li_0 = $li_0;
+        $this->li_1 = $li_1;
+        $this->li_2 = $li_2;
+        $this->li_3 = $li_3;
+        $this->li_4 = $li_4;
+        $this->li_5 = $li_5;
         $this->url = $url;
         $this->url_img = $url_img;
         $this->subject = $subject;
@@ -44,6 +54,7 @@ class PaymentMail implements ShouldQueue
         $this->p2 = $p2;
         $this->x = $x;
         $this->event_id = $event_id;
+
     }
 
     /**
@@ -70,7 +81,7 @@ class PaymentMail implements ShouldQueue
                     if($event)
                     {
                         Mail::to($user)->send(new Payment_Status($this->url, $this->url_img,
-                            $this->p1, $this->p2, $this->subject, $person, $this->li));
+                            $this->p1, $this->p2, $this->subject, $person, $this->event_id));
 
                         $qrServices->generateQrCode($person->id);
 
@@ -82,10 +93,11 @@ class PaymentMail implements ShouldQueue
                         QrCode abaixo para ter acesso ao evento. Você pode ter acesso também pelo app 
                         Beconnect (link no final)';
 
-                        $qrCode = 'https://beconnect.com.br/qrcodes/ ' . $person->id . '.png';
+                        $qrCode = 'https://beconnect.com.br/qrcodes/' . $person->id . '.png';
 
                         Mail::to($user)->send(new Payment_Status($this->url, $this->url_img,
-                            $this->p1, $this->p2, $this->subject, $person, $this->event_id, $qrCode));
+                            $this->p1, $this->p2, $this->subject, $person, $this->event_id, $qrCode,
+                            $this->li_0, $this->li_1, $this->li_2, $this->li_3, $this->li_4, $this->li_5));
 
                         \DB::commit();
                     }
