@@ -76,7 +76,7 @@
                                                 <i class="fa fa-phone font-blue"></i>
                                             </span>
                                             <input type="text" name="tel" class="form-control tel" id="tel"
-                                                   placeholder="Telefone da Organização" value="{{ old('tel') }}" required>
+                                                   placeholder="Telefone da Organização" value="{{ old('tel') }}">
                                         </div>
                                     </div>
                                 </div>
