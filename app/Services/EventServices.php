@@ -10,6 +10,7 @@ namespace App\Services;
 
 
 use App\Events\AgendaEvent;
+use App\Models\Bug;
 use App\Models\Event;
 use App\Models\EventSubscribedList;
 use App\Models\Person;
@@ -1967,24 +1968,83 @@ class EventServices
 
             $event = $this->repository->findByField('id', $event_id)->first();
 
+            /*
+             * Se a pessoa não estiver escrita então
+             */
             if(count($exists) == 0)
             {
 
                 if($event)
                 {
-
+                    /*
+                     * Se a frequência do evento for "Evento Único"
+                     */
                     if($event->frequency == $this->unique())
                     {
-                        DB::table('event_person')
-                            ->insert([
-                                'event_id' => $event_id,
-                                'person_id' => $person_id,
-                                'eventDate' => $event->eventDate,
-                                'check-in' => 0,
-                                'show' => 0,
-                                'event_date' => date_create($event->eventDate . $event->start_date),
-                                'end_event_date' => date_create($event->eventDate . $event->endTime)
-                            ]);
+                        /*
+                         * Se o evento tiver mais de um dia de duração
+                         */
+                        if($event->eventDate != $event->endEventDate)
+                        {
+
+                            $s_ev = new Carbon(date_format(date_create($event->eventDate), 'Y-m-d'));
+                            $e_ev = new Carbon(date_format(date_create($event->endEventDate), 'Y-m-d'));
+
+
+                            /*
+                             * Diferença em dias do ínicio e do fim do evento
+                             */
+                            $diff = $s_ev->diffInDays($e_ev);
+
+                            /*
+                             * Se a diferença for pelo menos um dia
+                             */
+                            if($diff > 0)
+                            {
+                                $i = 0;
+
+                                /*
+                                 * Vai inserindo no bd até chegar no
+                                 * dia de encerramento.
+                                 */
+                                while ($i < ($diff + 1))
+                                {
+
+                                    $eventDate = date_add(date_create($event->eventDate), date_interval_create_from_date_string($i . ' days'));
+
+                                    $eventDate = date_format($eventDate, 'Y-m-d');
+
+
+                                    DB::table('event_person')
+                                        ->insert([
+                                            'event_id' => $event_id,
+                                            'person_id' => $person_id,
+                                            'eventDate' => $eventDate,
+                                            'check-in' => 0,
+                                            'show' => 0,
+                                            'event_date' => date_create($eventDate . ' ' . $event->startTime),
+                                            'end_event_date' => date_create($eventDate . ' ' . $event->endTime)
+                                        ]);
+
+                                    $i++;
+                                }
+                            }
+
+
+                        }
+                        else{
+                            DB::table('event_person')
+                                ->insert([
+                                    'event_id' => $event_id,
+                                    'person_id' => $person_id,
+                                    'eventDate' => $event->eventDate,
+                                    'check-in' => 0,
+                                    'show' => 0,
+                                    'event_date' => date_create($event->eventDate . $event->startTime),
+                                    'end_event_date' => date_create($event->eventDate . $event->endTime)
+                                ]);
+                        }
+
                     }
                     else{
                         $nextEvent = $this->getNextEvent($event_id);
@@ -2027,7 +2087,7 @@ class EventServices
 
                     //$this->addGeofence($event_id, $person_id);
 
-                    DB::commit();
+                    \DB::commit();
 
                     return true;
 
@@ -2060,7 +2120,7 @@ class EventServices
 
                 }
 
-                DB::commit();
+                \DB::commit();
 
                 return true;
 
@@ -2070,7 +2130,18 @@ class EventServices
 
         }catch(\Exception $e){
 
-            DB::rollBack();
+            \DB::rollBack();
+
+            $bug = new Bug();
+
+            $bug->description = $e->getMessage();
+            $bug->platform = 'Back-end';
+            $bug->location = $e->getLine() . ' subEvent() EventServices.php';
+            $bug->model = 'Events event_person';
+            $bug->status = 'Pendente';
+            $bug->church_id = $this->getUserChurch();
+
+            $bug->save();
 
             return false;
         }

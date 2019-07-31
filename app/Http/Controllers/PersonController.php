@@ -532,61 +532,11 @@ class PersonController extends Controller
         }
 
 
-        /*$password = $request->only(['password']);
-
-        $confirmPass = $request->only(['confirm-password']);
-
-        $password = implode('=>', $password);
-
-        $confirmPass = implode('=>', $confirmPass);
-
-        $teen = $request->get('teen') or null;*/
-
-
-        /*if(!$teen)
-        {
-            /*if(!$password){
-                \Session::flash("email.exists", "Escolha uma senha");
-                return redirect()->route("person.create")->withInput();
-            }
-            elseif($password != $confirmPass){
-                \Session::flash("email.exists", "As senhas não combinam");
-                $request->flashExcept('password');
-
-                return redirect()->route("person.create")->withInput();
-            }
-
-
-        }*/
-
-
-        /*if($request->get('dateBirth') == ""){
-
-            if($origin == 'app')
-            {
-                return json_encode(['status' => false, 'msg' => 'Insira a data de Nascimento']);
-            }
-            else{
-
-                \Session::flash("email.exists", "Insira a data de Nascimento");
-
-                if($teen)
-                {
-                    return redirect()->route("teen.create")->withInput();
-                }
-                else{
-                    return redirect()->route("person.create")->withInput();
-                }
-            }
-
-
-        }*/
-
         $user = null;
 
         if($email != "")
         {
-            $user = User::select('id')->where('email', $email)->first() or null;
+            $user = User::select('id')->where('email', $email)->first();
         }
 
 

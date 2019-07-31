@@ -688,107 +688,121 @@ class EventController extends Controller
 
     public function store(Request $request)
     {
-        //try{
+        try{
 
-        $data = $request->all();
+            $data = $request->all();
 
-        $data['createdBy_id'] = \Auth::user()->id;
+            $data['createdBy_id'] = \Auth::user()->id;
 
-        $data['eventDate'] = $this->formatDateBD($data['eventDate']);
+            $data['eventDate'] = $this->formatDateBD($data['eventDate']);
 
-        if (!$data['eventDate']) {
-            $request->session()->flash('invalidDate', 'Insira a data do primeiro encontro');
-
-            return redirect()->back()->withInput();
-        }
-
-        $verifyFields = $this->verifyRequiredFields($data, 'event');
-
-        if ($verifyFields) {
-            \Session::flash("error.required-fields", "Preencha o campo " . $verifyFields);
-
-            return redirect()->route("event.create")->withInput();
-        }
-
-        $endEventDate = $request->get('endEventDate');
-
-        if ($endEventDate == "") {
-            $data['endEventDate'] = $data['eventDate'];
-        } else {
-            $data['endEventDate'] = $this->formatDateBD($data['endEventDate']);
-        }
-
-
-        if ($data["frequency"] == $this->biweekly()) {
-            $firstDay = substr($data['eventDate'], 8, 2);
-
-            if (!isset($data['day'])) {
-                $request->session()->flash('invalidDate', 'Data do Próximo evento está inválida');
+            if (!$data['eventDate']) {
+                $request->session()->flash('invalidDate', 'Insira a data do primeiro encontro');
 
                 return redirect()->back()->withInput();
             }
 
-            if ($data['day'][0] != $firstDay) {
-                $request->session()->flash('invalidDate', 'Data do Próximo evento está inválida');
+            $verifyFields = $this->verifyRequiredFields($data, 'event');
 
-                return redirect()->back()->withInput();
+            if ($verifyFields) {
+                \Session::flash("error.required-fields", "Preencha o campo " . $verifyFields);
+
+                return redirect()->route("event.create")->withInput();
+            }
+
+            $endEventDate = $request->get('endEventDate');
+
+            if ($endEventDate == "") {
+                $data['endEventDate'] = $data['eventDate'];
             } else {
-                $day = $data['day'][0];
-                $data['day_2'] = $data['day'][1];
-
-                unset($data['day']);
-
-                $data['day'] = $day;
+                $data['endEventDate'] = $this->formatDateBD($data['endEventDate']);
             }
-        }
-
-        $data["city"] = ucwords($data["city"]);
-
-        //Verificar url do evento
-        if ($data['public_url'] != "") {
-            if ($this->eventServices->checkUrlEvent($data['public_url'])) {
-                $request->session()->flash('error.msg', 'Url ja está em uso, mude o nome do evento');
-
-                return redirect()->back()->withInput();
-            }
-        }
-
-        $data['certified_hours'] = $data['certified_hours'] ? $data['certified_hours'] : 0;
-
-        $event = $this->repository->create($data);
 
 
-        $this->eventServices->sendNotification($data, $event);
+            if ($data["frequency"] == $this->biweekly()) {
+                $firstDay = substr($data['eventDate'], 8, 2);
 
-        if ($data["frequency"] != $this->unique()) {
-            $this->eventServices->newEventDays($event->id, $data);
-        } else {
-            $show = $event->eventDate == date("Y-m-d") ? 1 : 0;
+                if (!isset($data['day'])) {
+                    $request->session()->flash('invalidDate', 'Data do Próximo evento está inválida');
 
-            $person_id = \Auth::user()->person_id;
+                    return redirect()->back()->withInput();
+                }
 
-            $event_date = date_create($data['eventDate'] . $data['startTime']);
+                if ($data['day'][0] != $firstDay) {
+                    $request->session()->flash('invalidDate', 'Data do Próximo evento está inválida');
 
-            if ($data['endTime'] == "") {
-                if ($data['endEventDate'] == $data['eventDate']) {
-                    $endTime = date_create();
-
-                    date_add($endTime, date_interval_create_from_date_string("1 day"));
-
-                    $endTime = date_format($endTime, "Y-m-d");
-
-                    $endTime = date_create($endTime);
-
-                    DB::table('event_person')
-                        ->insert([
-                            'event_id' => $event->id,
-                            'person_id' => $person_id,
-                            'eventDate' => $event->eventDate,
-                            'event_date' => $event_date,
-                            'end_event_date' => $endTime,
-                            'show' => $show
-                        ]);
+                    return redirect()->back()->withInput();
                 } else {
+                    $day = $data['day'][0];
+                    $data['day_2'] = $data['day'][1];
+
+                    unset($data['day']);
+
+                    $data['day'] = $day;
+                }
+            }
+
+            $data["city"] = ucwords($data["city"]);
+
+            //Verificar url do evento
+            if ($data['public_url'] != "") {
+                if ($this->eventServices->checkUrlEvent($data['public_url'])) {
+                    $request->session()->flash('error.msg', 'Url ja está em uso, mude o nome do evento');
+
+                    return redirect()->back()->withInput();
+                }
+            }
+
+            $data['certified_hours'] = $data['certified_hours'] ? $data['certified_hours'] : 0;
+
+            $event = $this->repository->create($data);
+
+
+            $this->eventServices->sendNotification($data, $event);
+
+            if ($data["frequency"] != $this->unique()) {
+                $this->eventServices->newEventDays($event->id, $data);
+            } else {
+                $show = $event->eventDate == date("Y-m-d") ? 1 : 0;
+
+                $person_id = \Auth::user()->person_id;
+
+                $event_date = date_create($data['eventDate'] . $data['startTime']);
+
+                if ($data['endTime'] == "") {
+                    if ($data['endEventDate'] == $data['eventDate']) {
+                        $endTime = date_create();
+
+                        date_add($endTime, date_interval_create_from_date_string("1 day"));
+
+                        $endTime = date_format($endTime, "Y-m-d");
+
+                        $endTime = date_create($endTime);
+
+                        DB::table('event_person')
+                            ->insert([
+                                'event_id' => $event->id,
+                                'person_id' => $person_id,
+                                'eventDate' => $event->eventDate,
+                                'event_date' => $event_date,
+                                'end_event_date' => $endTime,
+                                'show' => $show
+                            ]);
+                    } else {
+
+                        DB::table('event_person')
+                            ->insert([
+                                'event_id' => $event->id,
+                                'person_id' => $person_id,
+                                'eventDate' => $event->eventDate,
+                                'event_date' => $event_date,
+                                'end_event_date' => date_create($data['endEventDate'] . $data['endTime']),
+                                'show' => $show
+                            ]);
+                    }
+
+                } else {
+
                     DB::table('event_person')
                         ->insert([
                             'event_id' => $event->id,
@@ -800,28 +814,38 @@ class EventController extends Controller
                         ]);
                 }
 
-            } else {
-                DB::table('event_person')
-                    ->insert([
-                        'event_id' => $event->id,
-                        'person_id' => $person_id,
-                        'eventDate' => $event->eventDate,
-                        'event_date' => $event_date,
-                        'end_event_date' => date_create($data['endEventDate'] . $data['endTime']),
-                        'show' => $show
-                    ]);
+                $this->eventServices->subAllMembers($event->id, $event->eventDate, $person_id);
             }
 
-            $this->eventServices->subAllMembers($event->id, $event->eventDate, $person_id);
+            $this->setChurch_id($event);
+
+            $this->eventServices->newRecentEvents($event->id, $this->getUserChurch());
+
+            \DB::commit();
+
+            return redirect()->route('event.index');
+
+        }catch (\Exception $e)
+        {
+            \DB::rollBack();
+
+            $bug = new Bug();
+
+            $bug->description = $e->getMessage();
+            $bug->platform = 'Back-end';
+            $bug->location = $e->getLine() . ' store() EventController.php';
+            $bug->model = 'Events';
+            $bug->status = 'Pendente';
+            $bug->church_id = $this->getUserChurch();
+
+            $bug->save();
+
+            $request->session()->flash('error.msg', 'Um erro ocorreu, entre em contato pelo contato@beconnect.com.br');
+
+            return redirect()->back();
         }
 
-        $this->setChurch_id($event);
 
-        $this->eventServices->newRecentEvents($event->id, $this->getUserChurch());
-
-        //DB::commit();
-
-        return redirect()->route('event.index');
 
         /*}catch(\Exception $e)
         {
