@@ -2127,7 +2127,7 @@ class EventController extends Controller
                 $p['email'] = $data['email'];
                 $p['cel'] = $data['cel'];
                 $p['cpf'] = $data['cpf'];
-                $p['dateBirth'] = date_format(date_create($data['dateBirth']), "Y-m-d");
+                $p['dateBirth'] = $data['dateBirth'];
 
                 $person = $this->personRepository->findByField('email', $data['email'])->first();
 
