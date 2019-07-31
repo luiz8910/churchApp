@@ -189,6 +189,15 @@
                                                                                     title="Excluir" id="btn-delete-session-{{ $item->id }}">
                                                                                 <i class="fa fa-trash"></i>
                                                                             </button>
+                                                                            <a href="{{ route('event.session.modal_code', ['id' => $item->id]) }}"
+                                                                               class="btn btn-warning btn-sm btn-circle" title="Visualizar Código"
+                                                                                    data-toggle="modal" data-target="#modal-padrao" data-remote="false" modal-remote="true">
+                                                                                <i class="fa fa-barcode"></i>
+                                                                            </a>
+                                                                            <a href="{{ route('event.session.list_questions', ['id' => $item->id]) }}"
+                                                                               class="btn btn-warning btn-sm btn-circle" title="Listar Perguntas">
+                                                                                <i class="fa fa-question"></i>
+                                                                            </a>
                                                                         </td>
                                                                     </tr>
 

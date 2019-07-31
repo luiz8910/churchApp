@@ -416,6 +416,12 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('sessoes-check-in/{id}', 'SessionController@check_in_list')->name('event.session.check_in_list');
 
+        Route::get('session-modal-code/{id}', 'SessionController@modal_code')->name('event.session.modal_code');
+
+        Route::get('session-list-questions/{id}', 'SessionController@list_questions')->name('event.session.list_questions');
+
+        Route::get('session-view-question/{id}', 'SessionController@view_question')->name('event.session.view_question');
+
         Route::get('check-in_manual/{event_id}/{person_id}', 'EventController@checkin_manual');
 
         Route::get('uncheck-in_manual/{event_id}/{person_id}', 'EventController@uncheckin_manual');

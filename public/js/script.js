@@ -762,3 +762,26 @@ function isString(input)
 
 }
 
+$(".modal").on("show.bs.modal", function (e) {
+    var link = $(e.relatedTarget);
+    if (link.attr("modal-remote") == 'true') {
+
+        var $modal = $(this);
+        var body = $(this).find(".modal-body");
+        body.html('Carregando...');
+        body.load(link.attr("href"), function () {
+            if (link.data('modal-title')) {
+                body.prepend('<h4 class="modal-title">' + link.data('modal-title') + '</h4>');
+            }
+
+            if (link.data('modal-class')) {
+                $modal.addClass(link.data('modal-class'));
+            }
+            else {
+                $modal.removeClass('modal-invert');
+            }
+
+            esconderLoader();
+        });
+    }
+});

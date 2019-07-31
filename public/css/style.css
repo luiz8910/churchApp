@@ -1,13 +1,13 @@
-.beconnect{
+.beconnect {
     color: #4F0C53;
 }
 
-.beconnect-back{
+.beconnect-back {
     background: #4F0C53;
     color: white;
 }
 
-.sidebar-extended{
+.sidebar-extended {
     width: 420px !important;
 }
 
@@ -22,57 +22,57 @@
     cursor: pointer;
 }
 
-.small-button{
+.small-button {
     width: 70px !important;
 }
 
-.green{
+.green {
     color: #269224;
 }
 
-.desktop span{
+.desktop span {
     margin-left: 100px;
     font-weight: 800;
 }
 
-.tbody-agenda-desktop tr td label{
+.tbody-agenda-desktop tr td label {
     margin-bottom: 50px;
 }
 
-.tbody-agenda-desktop tr td label:hover{
+.tbody-agenda-desktop tr td label:hover {
     cursor: pointer;
 }
 
-.tbody-agenda-desktop tr td h6{
+.tbody-agenda-desktop tr td h6 {
     text-align: right;
 }
 
-.tbody-agenda-desktop tr td h5{
+.tbody-agenda-desktop tr td h5 {
     margin-top: -40px;
     margin-bottom: 80px;
 }
 
-.thead-agenda tr th{
+.thead-agenda tr th {
     text-align: center;
 }
 
-.desktop a{
+.desktop a {
     margin-top: -30px;
 }
 
-.panel-mobile{
+.panel-mobile {
     margin-bottom: -1px;
 }
 
-.day-panel-mobile{
+.day-panel-mobile {
     margin-top: -10px;
 }
 
-.today-back{
+.today-back {
     background-color: #ffffcc;
 }
 
-.agenda{
+.agenda {
     transition: all 1s linear;
 }
 
@@ -84,15 +84,15 @@
     opacity: 0;
 }
 
-.check-hidden{
+.check-hidden {
     visibility: hidden;
 }
 
-.ui-loader{
+.ui-loader {
     display: none;
 }
 
-#input-search{
+#input-search {
     width: 60px;
     box-sizing: border-box;
     border: 2px solid #ccc;
@@ -107,11 +107,11 @@
     transition: width 0.4s ease-in-out;
 }
 
-#input-search:focus{
+#input-search:focus {
     width: 100%;
 }
 
-.search{
+.search {
     width: 10px;
     height: 10px;
 
@@ -127,57 +127,65 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0,0,0,0.5); /* Black background with opacity */
+    background-color: rgba(0, 0, 0, 0.5); /* Black background with opacity */
     z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
     /*cursor: pointer;*/ /* Add a pointer on hover */
 }
 
 
 @-webkit-keyframes spin {
-    0% { -webkit-transform: rotate(0deg); }
-    100% { -webkit-transform: rotate(360deg); }
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
-.small-error{
+.small-error {
     color: red;
     display: none;
 }
 
-.ul-search{
+.ul-search {
     display: none;
     list-style-type: none;
 }
 
-.ul-search li a{
+.ul-search li a {
     color: #a2abb7;
 }
 
-.ul-search li a:hover{
+.ul-search li a:hover {
     color: #373E47 !important;
 }
 
-#ul-results{
+#ul-results {
     list-style-type: none;
 }
 
-#ul-results li{
+#ul-results li {
     margin-top: 10px;
 }
 
-#ul-results li a{
+#ul-results li a {
 
 }
 
-.small-img{
+.small-img {
     width: 50px;
 }
 
-.read-message{
+.read-message {
     background-color: #4c4d4f;
 }
 
@@ -188,13 +196,13 @@
     margin: 0 auto;
 }
 
-.div-loading{
+.div-loading {
     display: none;
     margin-top: 100px;
     margin-bottom: 20px;
 }
 
-#icon-loading-cep{
+#icon-loading-cep {
     display: block;
     margin: 0 auto;
     text-align: center;
@@ -202,38 +210,38 @@
     z-index: 5000
 }
 
-#p-loading-cep{
+#p-loading-cep {
     margin-top: 50px;
 }
 
 
-#loading-spin{
+#loading-spin {
     margin: 0 auto;
     margin-top: 30px;
 }
 
-#msg-spin{
+#msg-spin {
     display: none;
 }
 
-.disabled-links{
+.disabled-links {
     pointer-events: none;
 }
 
-.empty_table{
+.empty_table {
     margin-top: 30px !important;
     text-align: center;
 }
 
-fieldset label{
+fieldset label {
     margin-bottom: 30px;
 }
 
-.lbl-txt{
+.lbl-txt {
     margin-right: 50px;
 }
 
-.btn-ios{
+.btn-ios {
     margin-right: 10px !important;
     width: 110px !important;
     height: 40px !important;
@@ -241,7 +249,7 @@ fieldset label{
     padding: 7px !important;
 }
 
-.div-z-index{
+.div-z-index {
     position: absolute;
     z-index: 100;
     /*width: 150px;*/
@@ -251,12 +259,19 @@ fieldset label{
     top: 70%;
 }
 
-.hide{
+.hide {
     display: none;
 }
 
-.imgProfile{
+.imgProfile {
     width: 50px;
     height: 50px;
 }
 
+.fs-10 {
+    font-size: 10em !important;
+}
+
+.fs-2 {
+    font-size: 2em !important;
+}

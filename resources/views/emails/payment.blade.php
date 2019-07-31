@@ -15,7 +15,8 @@
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
           integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i"
+          rel="stylesheet">
     <style>
         body {
             background: #2F3243;
@@ -60,7 +61,7 @@
             display: block;
         }
 
-        .carousel-inner>.item>a>img, .carousel-inner>.item>img, .img-responsive, .thumbnail a>img, .thumbnail>img {
+        .carousel-inner > .item > a > img, .carousel-inner > .item > img, .img-responsive, .thumbnail a > img, .thumbnail > img {
             display: block;
             max-width: 100%;
             height: auto;
@@ -73,7 +74,6 @@
         img {
             border: 0;
         }
-
 
 
     </style>
@@ -97,30 +97,30 @@
 
                         @if($li_0)
                             <ul>
-                               <li>{{ $li_0 }}</li>
-                               <li>{{ $li_1 }}</li>
-                               <li>{{ $li_2 }}</li>
-                               <li>{{ $li_3 }}</li>
-                               <li>{{ $li_4 }}</li>
-                               <li>{{ $li_5 }}</li>
+                                <li>{{ $li_0 }}</li>
+                                <li>{{ $li_1 }}</li>
+                                <li>{{ $li_2 }}</li>
+                                <li>{{ $li_3 }}</li>
+                                <li>{{ $li_4 }}</li>
+                                <li>{{ $li_5 }}</li>
                             </ul>
                         @endif
-                            @if($qrCode)
-                                <a href="{{ $qrCode }}">Clique aqui para ver seu QrCode</a>
-                            @endif
-                            {{--<li>Estado do Pagamento: Em Análise.</li>
-                            <li>Método de Pagamento: Cartão de Crédito.</li>
-                            <li>Últimos 4 dígitos do cartão: 4321.</li>
-                            <li>Valor da Transação: R$600,00.</li>
-                            <li>Parcelamento: 3x de R$200,00.</li>
-                            <li>Código da Transação: mhr935g.</li>--}}
-
+                        @if($qrCode)
+                            <a href="{{ $qrCode }}">Clique aqui para ver seu QrCode</a>
+                        @endif
+                        {{--<li>Estado do Pagamento: Em Análise.</li>
+                        <li>Método de Pagamento: Cartão de Crédito.</li>
+                        <li>Últimos 4 dígitos do cartão: 4321.</li>
+                        <li>Valor da Transação: R$600,00.</li>
+                        <li>Parcelamento: 3x de R$200,00.</li>
+                        <li>Código da Transação: mhr935g.</li>--}}
 
 
                         <br>
 
                         <div class="col-xs-12">
-                            <p>Em caso de dúvidas envie um email para contato@beconnect.com.br informando o código da transação.</p>
+                            <p>Em caso de dúvidas envie um email para contato@beconnect.com.br informando o código da
+                                transação.</p>
                             <p>{{ $p2 }}</p>
                         </div>
 
@@ -136,33 +136,39 @@
                     </div>
 
                     <div class="col-xs-12 bg-gray" style="padding: 5rem 5rem 2rem 5rem">
-                        <p>Este e-mail foi enviado a <b>{{ $person->email  }}</b>. Para garantir o correto recebimento de nossos e-mails, adicione-nos a
+                        <p>Este e-mail foi enviado a <b>{{ $person->email  }}</b>. Para garantir o correto recebimento
+                            de nossos e-mails, adicione-nos a
                             sua lista de e-mails seguros.</p>
                     </div>
 
                     <div class="col-xs-12 bg-white" style="padding: 3rem 5rem 3rem 5rem">
                         <div class="row" style="display: flex; align-items: center">
-                            <div class="col-xs-4">
+                            <div class="col-xs-4" style="width: 10%">
                                 <br><br>
                                 <a href="{{ $url }}">
-                                    <img src="{{ $url_img }}" alt="BeConnect" class="img-responsive" style="width: 110px"/>
+                                    <img src="{{ $url_img }}" alt="BeConnect" class="img-responsive"
+                                         style="width: 110px"/>
                                 </a>
                             </div>
-                            <div class="col-xs-8">
+                            <div class="col-xs-8" style="width: 90%">
                                 <div class="row">
                                     <div class="col-xs-12 text-center">
                                         <h4><b>Baixe o App:</b></h4>
                                     </div>
-                                    <div class="col-xs-6">
-                                        <a href="{{ $android_url }}">
-                                            <img src="https://beconnect.com.br/images/play_store_red.png" alt="Google Play" class="img-responsive">
-                                        </a>
-                                    </div>
-                                    <div class="col-xs-6">
-                                        <a href="{{ $apple_url }}">
-                                            <img src="https://beconnect.com.br/images/Download_on_the_App_Store_Badge_PTBR_RGB_wht_100317.png" alt="App Store"
-                                                 class="img-responsive">
-                                        </a>
+                                    <div style="display: flex">
+                                        <div class="col-xs-6">
+                                            <a href="{{ $android_url }}">
+                                                <img src="https://beconnect.com.br/images/play_store_red.png"
+                                                     alt="Google Play" class="img-responsive">
+                                            </a>
+                                        </div>
+                                        <div class="col-xs-6">
+                                            <a href="{{ $apple_url }}">
+                                                <img src="https://beconnect.com.br/images/Download_on_the_App_Store_Badge_PTBR_RGB_wht_100317.png"
+                                                     alt="App Store"
+                                                     class="img-responsive">
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

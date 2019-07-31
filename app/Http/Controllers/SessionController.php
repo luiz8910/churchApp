@@ -10,6 +10,7 @@ use App\Repositories\StateRepository;
 use App\Traits\ConfigTrait;
 use App\Traits\CountRepository;
 use App\Traits\NotifyRepository;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -110,8 +111,7 @@ class SessionController extends Controller
 
             if($data['session_date'] != "")
             {
-
-                $data['session_date'] = date_format(date_create($data['session_date']), 'Y-m-d');
+                $data['session_date'] = DateTime::createFromFormat('d/m/Y', $data['session_date'])->format('Y-m-d');
 
                 $data['start_time'] = date_create($data['session_date'] . " " . $data['start_time']);
 
@@ -285,4 +285,53 @@ class SessionController extends Controller
                 compact('session', 'state', 'roles', 'leader', 'admin', 'notify', 'qtde', 'event'));
         }
     }
+
+    public function modal_code($id) {
+        $session = $this->repository->findByField('id', $id)->first();
+        return view('events.session_modal_code', compact('session'));
+    }
+
+    public function list_questions($id) {
+        $session = $this->repository->findByField('id', $id)->first();
+
+        $countPerson[] = $this->countPerson();
+
+        $countGroups[] = $this->countGroups();
+
+        $state = $this->stateRepository->all();
+
+        $roles = $this->roleRepository->all();
+
+        $leader = $this->getLeaderRoleId();
+
+        $admin = $this->getAdminRoleId();
+
+        $notify = $this->notify();
+
+        $qtde = $notify ? count($notify) : null;
+
+        $event = $this->eventRepository->findByField('id', $session->event_id)->first();
+
+        $questions = json_decode(json_encode([
+            [
+                'id' => 1,
+                'user' => ['name' => 'Joãozinho'],
+                'content' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad, architecto dolores eaque, eos est impedit itaque maxime minima nostrum nulla quam totam voluptas voluptatem? Aliquid atque blanditiis quaerat velit veritatis!',
+                'like_count' => 4,
+                'approved' => true
+            ],
+            [
+                'id' => 2,
+                'user' => ['name' => 'Mariazinha'],
+                'content' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad, architecto dolores eaque, eos est impedit itaque maxime minima nostrum nulla quam totam voluptas voluptatem? Aliquid atque blanditiis quaerat velit veritatis!',
+                'like_count' => 0,
+                'approved' => false
+            ]
+        ])); // TODO
+
+        return view('events.session_list_questions',
+            compact('session', 'state', 'roles', 'leader', 'admin', 'notify', 'qtde', 'event', 'questions'));
+    }
+
+    public function view_question($id) {}
 }
