@@ -11,6 +11,7 @@ use App\Traits\ConfigTrait;
 use App\Traits\CountRepository;
 use App\Traits\NotifyRepository;
 use DateTime;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -68,31 +69,73 @@ class SessionController extends Controller
 
         $event = $this->eventRepository->findByField('id', $event_id)->first();
 
-        if (count($sessions) > 0)
+        if($event)
         {
-            foreach ($sessions as $session)
+            $days = DB::table('event_person')
+                ->where([
+                    'event_id' => $event_id,
+                ])
+                ->select('eventDate')
+                ->distinct()
+                ->get();
+
+            $eventDate = null;
+
+            /*
+             * Se houver uma data apenas para o evento,
+             * então o campo Data em criação de sessão
+             * vai se autocompletar com a data do evento
+             */
+            if(count($days) == 1)
             {
-
-                $start_time = $session->start_time;
-
-                $session->start_time = date_format(date_create($session->start_time), 'd/m/Y H:i');
-
-                $session->short_start_time = date_format(date_create($start_time), 'H:i');
-
-                $session->end_time = date_format(date_create($session->end_time), 'H:i');
-
-                $session->session_date = date_format(date_create($session->session_date), 'd/m/Y');
+                $eventDate = $days->eventDate;
             }
 
-            return view('events.sessions-list',
-                compact('sessions', 'state', 'roles', 'leader', 'admin', 'notify', 'qtde', 'event'));
-        } else {
 
-            $sessions = false;
+            if (count($sessions) > 0)
+            {
+                foreach ($sessions as $session)
+                {
 
-            return view('events.sessions-list',
-                compact('sessions', 'state', 'roles', 'leader', 'admin', 'notify', 'qtde', 'event'));
+                    $start_time = $session->start_time;
+
+                    $session->start_time = date_format(date_create($session->start_time), 'd/m/Y H:i');
+
+                    $session->short_start_time = date_format(date_create($start_time), 'H:i');
+
+                    $session->end_time = date_format(date_create($session->end_time), 'H:i');
+
+                    $session->session_date = date_format(date_create($session->session_date), 'd/m/Y');
+                }
+
+                return view('events.sessions-list',
+                    compact('sessions', 'state', 'roles', 'leader', 'admin', 'notify', 'qtde', 'event', 'eventDate'));
+            } else {
+
+                $sessions = false;
+
+                return view('events.sessions-list',
+                    compact('sessions', 'state', 'roles', 'leader', 'admin', 'notify', 'qtde', 'event', 'eventDate'));
+            }
         }
+        else{
+
+            $bug = new Bug();
+
+            $bug->description = 'Evento ' . $event_id . ' não encontrado';
+            $bug->platform = 'Back-end';
+            $bug->location = 'list() SessionController.php';
+            $bug->model = 'Session';
+            $bug->status = 'Pendente';
+            $bug->church_id = $this->getUserChurch();
+
+            $bug->save();
+
+            throw new ModelNotFoundException();
+
+        }
+
+
 
     }
 
@@ -284,6 +327,39 @@ class SessionController extends Controller
             return view('events.check_in_sessions',
                 compact('session', 'state', 'roles', 'leader', 'admin', 'notify', 'qtde', 'event'));
         }
+    }
+
+    /*
+     * Usado para verificar quantos dias o evento ocorre
+     */
+    public function event_days($event_id)
+    {
+        $event = $this->eventRepository->findByField('id', $event_id)->first();
+
+        if($event)
+        {
+            $days = DB::table('event_person')
+                ->where([
+                    'event_id' => $event_id,
+                ])
+                ->select('eventDate')
+                ->distinct()
+                ->get();
+
+
+            /*
+             * Se houver mais datas no evento
+             */
+            if(count($days) > 1)
+            {
+                return json_encode(['status' => true, 'days' => $days]);
+            }
+
+            //Apenas um evento
+            return json_encode(['status' => false, 'msg' => 1]);
+        }
+
+        return json_encode(['status' => false, 'msg' => 'Evento não existe']);
     }
 
     public function modal_code($id) {

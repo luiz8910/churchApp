@@ -1418,14 +1418,18 @@ class EventServices
 
         $event = $this->repository->findByField('id' , $id)->first();
 
-        DB::table('event_person')
-            ->where(
-                [
-                    'event_id' => $id,
-                    'show' => 0
-                ]
-            )
-            ->delete();
+        if($event->frequency != $this->unique())
+        {
+            DB::table('event_person')
+                ->where(
+                    [
+                        'event_id' => $id,
+                        'show' => 0
+                    ]
+                )
+                ->delete();
+        }
+
 
         //Eventos Semanais
         if($event->frequency == $this->weekly())

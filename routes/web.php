@@ -422,6 +422,8 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('session-view-question/{id}', 'SessionController@view_question')->name('event.session.view_question');
 
+        Route::get('verify_days_session/{id}', 'SessionController@event_days');
+
         Route::get('check-in_manual/{event_id}/{person_id}', 'EventController@checkin_manual');
 
         Route::get('uncheck-in_manual/{event_id}/{person_id}', 'EventController@uncheckin_manual');
@@ -798,6 +800,8 @@ Route::get('whatsapp/{event_id}/{person_id}', 'EventController@sendWhatsApp');
 Route::get('email-qr/{event_id}/{person_id}', 'EventController@sendEmailQR');
 
 Route::get('email-qr-all/{event_id}', 'EventController@sendQREmailAll')->name('sendqr.email.all');
+
+Route:get('generate-qr/{person_id}', 'EventController@generateQr');
 
 Route::get('teste-zap/', 'EventController@testezap');
 

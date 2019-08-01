@@ -1114,7 +1114,7 @@ class EventController extends Controller
 
             $this->eventServices->changeEventDays($id);
 
-            $this->reSub_event_person($id);
+            //$this->reSub_event_person($id);
 
             return redirect()->route('event.edit', ['event' => $id]);
         }
@@ -2727,6 +2727,11 @@ class EventController extends Controller
             ])->get();
 
         dd($list);
+    }
+
+    public function generateQr($person_id)
+    {
+        $this->qrServices->generateQrCode($person_id);
     }
 
 

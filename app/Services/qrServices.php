@@ -38,13 +38,13 @@ class qrServices{
 
                 QrCode::format('png')->size(1000)->generate($id, $path);
 
-                DB::commit();
+                \DB::commit();
 
                 return json_encode(['status' => true]);
 
             }catch (\Exception $e)
             {
-                DB::rollBack();
+                \DB::rollBack();
 
                 return json_encode(['status' => false, 'msg' => $e->getMessage()]);
             }

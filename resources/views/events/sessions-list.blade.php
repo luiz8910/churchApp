@@ -230,7 +230,7 @@
 
 
                                                     <form action="{{ route('event.session.store', ['event_id' => $event->id]) }}" method="POST">
-
+                                                        <input type="hidden" value="{{ $event->id }}" id="event_id">
 
                                                         <div class="row">
                                                             <div class="col-md-4">
@@ -257,7 +257,7 @@
                                                             </span>
 
                                                                         <input type="text" name="location" id="location" class="form-control"
-                                                                               autocomplete="new-pass" required
+                                                                               autocomplete="new-pass"
                                                                                placeholder="Ex: Auditório Principal, Sala de Reuniões, Refeitório"
                                                                                value="{{ old('location') }}">
                                                                     </div>
@@ -287,13 +287,17 @@
                                                             <div class="col-md-4">
                                                                 <div class="form-group @if(Session::has('invalidDate')) has-error @endif ">
                                                                     <label>Data</label>
-                                                                    <div class="input-group date date-picker" data-date-format="dd/mm/yyyy"
+                                                                    <div class="input-group date @if(!$eventDate) date-picker @endif" data-date-format="dd/mm/yyyy"
                                                                          data-date-start-date="+0d">
 
-                                                                        <span class="input-group-btn"><button class="btn default" type="button"><i
-                                                                                        class="fa fa-calendar"></i></button></span>
-                                                                        <input type="text" class="form-control" name="session_date" id="session_date"
-                                                                               value="{{ old('session_date') }}" readonly>
+                                                                        <span class="input-group-btn">
+                                                                            <button class="btn default" type="button">
+                                                                                <i class="fa fa-calendar font-blue"></i>
+                                                                            </button>
+                                                                        </span>
+
+                                                                        <input type="text" class="form-control" name="session_date" id="session_date" required
+                                                                               value="@if(old('session_date')) {{ old('session_date') }} @else @if($eventDate) {{ $eventDate }} @endif @endif" readonly>
                                                                     </div>
                                                                 </div>
                                                             </div>

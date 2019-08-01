@@ -73,6 +73,11 @@ $(function(){
         {
             verifyHours(end_time);
         }
+    });
+
+    $("#session_date").change(function () {
+
+        verify_days();
     })
 
 
@@ -126,4 +131,32 @@ function verifyHours(end_time)
         }
 
     }
+}
+
+function verify_days()
+{
+    var event_id = $("#event_id").val();
+
+    var request = $.ajax({
+
+        url: '/verify_days_session/' + event_id,
+        method: 'GET',
+        dataType: 'json'
+
+    });
+
+
+    request.done(function (e) {
+
+        if(e.status)
+        {
+            console.log(e.days);
+        }
+    });
+
+    request.fail(function (e) {
+
+        console.log('fail');
+        console.log(e);
+    })
 }
