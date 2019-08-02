@@ -422,6 +422,14 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('session-view-question/{id}', 'SessionController@view_question')->name('event.session.view_question');
 
+        Route::get('session-list_quizz/{id}', 'SessionController@list_quizz')->name('event.session.list_quizz');
+
+        Route::get('session-view-quizz-question/{id}', 'SessionController@view_quizz_question')->name('event.session.view_quizz_question');
+
+        Route::post('quizz/store', 'SessionController@quizz_store')->name('event.quizz_store');
+
+        Route::get('session-new-quizz', 'SessionController@new_quizz')->name('event.session.new_quizz');
+
         Route::get('check-in_manual/{event_id}/{person_id}', 'EventController@checkin_manual');
 
         Route::get('uncheck-in_manual/{event_id}/{person_id}', 'EventController@uncheckin_manual');

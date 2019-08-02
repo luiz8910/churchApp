@@ -21,16 +21,33 @@ License: You must have a valid license purchased only from themeforest(the above
 
 <head>
     @include('includes.head-edit')
-    <link href="../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet" type="text/css" />
-    <link href="../../assets/pages/css/profile.min.css" rel="stylesheet" type="text/css" />
-    <link href="../../assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.css" rel="stylesheet" type="text/css" />
-    <link href="../../assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
-    <link href="../../assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css" rel="stylesheet" type="text/css" />
-    <link href="../../assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
-    <link href="../../assets/global/plugins/clockface/css/clockface.css" rel="stylesheet" type="text/css" />
-    <link href="../../assets/global/plugins/fancybox/source/jquery.fancybox.css" rel="stylesheet" type="text/css" />
-    <link href="../../assets/global/plugins/bootstrap-color-picker/css/bootstrap-colorpicker.min.css" rel="stylesheet" type="text/css" />
+    <link href="../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet"
+          type="text/css"/>
+    <link href="../../assets/pages/css/profile.min.css" rel="stylesheet" type="text/css"/>
+    <link href="../../assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.css" rel="stylesheet"
+          type="text/css"/>
+    <link href="../../assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet"
+          type="text/css"/>
+    <link href="../../assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css" rel="stylesheet"
+          type="text/css"/>
+    <link href="../../assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css"
+          rel="stylesheet" type="text/css"/>
+    <link href="../../assets/global/plugins/clockface/css/clockface.css" rel="stylesheet" type="text/css"/>
+    <link href="../../assets/global/plugins/fancybox/source/jquery.fancybox.css" rel="stylesheet" type="text/css"/>
+    <link href="../../assets/global/plugins/bootstrap-color-picker/css/bootstrap-colorpicker.min.css" rel="stylesheet"
+          type="text/css"/>
 
+    <style>
+        .alternative_content {
+            width: 100%;
+            height: 150px;
+            padding: 1rem;
+        }
+
+        .alternative_template {
+            display: none;
+        }
+    </style>
 </head>
 <!-- END HEAD -->
 
@@ -57,381 +74,114 @@ License: You must have a valid license purchased only from themeforest(the above
         <!-- BEGIN PAGE CONTENT BODY -->
         <div class="page-content">
             <div class="container">
-                <!-- BEGIN PAGE BREADCRUMBS
-                <ul class="page-breadcrumb breadcrumb">
-                    <li>
-                        <a href=" route('index') ">Home</a>
-                        <i class="fa fa-circle"></i>
-                    </li>
-                    <li>
-                        <a href="#">Eventos</a>
-                        <i class="fa fa-circle"></i>
-                    </li>
-                    <li>
-                        <span>Novo</span>
-                    </li>
-                </ul>-->
+            <!-- BEGIN PAGE BREADCRUMBS
+               @if(Session::has('invalidDate'))
 
-                @if(Session::has('invalidDate'))
-
-                    <div class="alert alert-danger alert-dismissible" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <strong>Erro!</strong> {{ Session::get('invalidDate') }}
-                    </div>
-                @endif
+                        </div>
+@endif
 
-                @if(Session::has('error.required-fields'))
+            @if(Session::has('error.required-fields'))
 
-                    <div class="alert alert-danger alert-dismissible" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <strong>Erro!</strong> {{ Session::get('error.required-fields') }}
-                    </div>
-                @endif
+                        </div>
+@endif
 
-                @if(Session::has('error.db'))
-                    <div class="alert alert-danger alert-dismissible" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            @if(Session::has('error.db'))
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <strong>Erro!</strong> {{ Session::get('error.db') }}
-                    </div>
-                @endif
+                        </div>
+@endif
 
                 @include('includes.messages')
 
 
-                <!-- END PAGE BREADCRUMBS -->
-                <!-- BEGIN PAGE CONTENT INNER -->
-                <div class="page-content-inner">
-                    <div class="row">
-                        <div class="col-md-12 ">
-                            <!-- BEGIN SAMPLE FORM PORTLET-->
-                            <div class="portlet light ">
-                                <div class="portlet-title">
-                                    <div class="caption font-red-sunglo">
-                                        <i class="fa fa-user font-red-sunglo"></i>
-                                        <span class="caption-subject bold uppercase"> Novo Evento</span>
+                        <!-- END PAGE BREADCRUMBS -->
+                    <!-- BEGIN PAGE CONTENT INNER -->
+                    <div class="page-content-inner">
+                        <div class="row">
+                            <div class="col-md-12 ">
+                                <!-- BEGIN SAMPLE FORM PORTLET-->
+                                <div class="portlet light ">
+                                    <div class="portlet-title">
+                                        <div class="caption font-red-sunglo">
+                                            <i class="fa fa-question-circle font-red-sunglo"></i>
+                                            <span class="caption-subject bold uppercase"> Novo Quizz</span>
+                                        </div>
                                     </div>
-                                    <!--<div class="actions">
-                                        <div class="btn-group">
-                                            <a class="btn btn-sm green dropdown-toggle" href="javascript:;"
-                                               data-toggle="dropdown"> Actions
-                                                <i class="fa fa-angle-down"></i>
-                                            </a>
-                                            <ul class="dropdown-menu pull-right">
-                                                <li>
-                                                    <a href="javascript:;">
-                                                        <i class="fa fa-pencil"></i> Edit </a>
-                                                </li>
-                                                <li>
-                                                    <a href="javascript:;">
-                                                        <i class="fa fa-trash-o"></i> Delete </a>
-                                                </li>
-                                                <li>
-                                                    <a href="javascript:;">
-                                                        <i class="fa fa-ban"></i> Ban </a>
-                                                </li>
-                                                <li class="divider"></li>
-                                                <li>
-                                                    <a href="javascript:;"> Make admin </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>-->
-                                </div>
-                                <div class="portlet-body form">
-                                    {!! Form::open(['route' => 'event.store', 'method' => 'POST', 'role' => 'form', 'id' => 'form']) !!}
-                                    <div class="form-body">
-
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label>Nome</label>
-                                                    <div class="input-group">
-                                                            <span class="input-group-addon">
-                                                                <i class="fa fa-user font-blue"></i>
-                                                            </span>
-                                                        <input type="text" name="name" id="name" class="form-control" autocomplete="new-password"
-                                                               placeholder="Encontro de Jovens" value="{{ old('name') }}">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6" id="frequency">
-                                                <div class="form-group">
-                                                    <label>Frequência</label>
-                                                    <div class="input-icon input-icon-sm">
-                                                        <i class="fa fa-briefcase"></i>
-                                                        <select class="form-control" id="select-frequency" name="frequency">
-                                                            @foreach($frequencies as $frequency)
-                                                                <option value="{{ $frequency->frequency }}"
-                                                                    @if(old('frequency') == $frequency->frequency) selected @endif>
-                                                                    {{ $frequency->frequency }}
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                </div>
+                                    <div class="portlet-body form">
+                                        {!! Form::open(['route' => 'event.quizz_store', 'method' => 'POST', 'role' => 'form', 'id' => 'form']) !!}
+                                        <div class="form-body">
+                                            <legend>Questão do Quizz</legend>
+                                            <div class="form-group">
+                                            <textarea name="content" cols="30" rows="10"
+                                                      class="form-control"></textarea>
                                             </div>
 
-
-
-
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-md-6 col-sm-12">
-                                                <div class="form-group @if(Session::has('invalidDate')) has-error @endif ">
-                                                    <label>Data do Próximo/Primeiro Encontro</label>
-                                                    <div class="input-group date date-picker" data-date-format="dd/mm/yyyy" data-date-start-date="+0d">
-
-                                                        <span class="input-group-btn">
-                                                            <button class="btn default" type="button">
-                                                                <i class="fa fa-calendar"></i>
-                                                            </button>
-                                                        </span>
-                                                        <input type="text" class="form-control" name="eventDate" id="eventDate" value="{{ old('eventDate') }}" readonly>
-                                                    </div>
-
-                                                    <span class="help-block">
-                                                        <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
-                                                            <input type="checkbox" name="allDay" id="allDay" class="checkboxes" value="1" />
-                                                            <span></span>Dia Inteiro
-                                                        </label>
-                                                    </span>
-
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-6 col-sm-12">
-                                                <div class="form-group">
-                                                    <label class="control-label">Término do Evento</label>
-
-                                                        <div class="input-group date date-picker" data-date-format="dd/mm/yyyy" data-date-start-date="+0d">
-                                                            <span class="input-group-btn">
-                                                                <button class="btn default" type="button">
-                                                                    <i class="fa fa-calendar"></i>
-                                                                </button>
-                                                            </span>
-                                                            <input type="text" class="form-control" name="endEventDate" id="endEventDate" value="{{ old('endEventDate') }}" readonly>
+                                            <legend>Alternativas</legend>
+                                            <div class="list-group">
+                                                <div class="list-group-item alternative_template alternative">
+                                                    <div class="row">
+                                                        <div class="col-xs-11">
+                    <textarea name="alternative_content[]"
+                              class="alternative_content"></textarea>
                                                         </div>
-                                                        <!-- /input-group -->
-                                                        <span class="help-block"> Deixe em branco se a data de término é indeterminada </span>
-
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-md-5">
-                                                <div class="form-group">
-                                                    <label for="" class="control-label">Hora Inicio</label>
-                                                    <div class="input-group">
-                                                            <span class="input-group-addon">
-                                                                <i class="fa fa-clock-o font-blue"></i>
-                                                            </span>
-                                                        <select name="startTime" class="form-control">
-                                                            <option value="">Selecione</option>
-                                                            <option value="06:00">06:00</option>
-                                                            <option value="06:30">06:30</option>
-                                                            <option value="07:00">07:00</option>
-                                                            <option value="07:30">07:30</option>
-                                                            <option value="08:00">08:00</option>
-                                                            <option value="08:30">08:30</option>
-                                                            <option value="09:00">09:00</option>
-                                                            <option value="09:30">09:30</option>
-                                                            <option value="10:00">10:00</option>
-                                                            <option value="10:30">10:30</option>
-                                                            <option value="11:00">11:00</option>
-                                                            <option value="11:30">11:30</option>
-                                                            <option value="12:00">12:00</option>
-                                                            <option value="12:30">12:30</option>
-                                                            <option value="13:00">13:00</option>
-                                                            <option value="13:30">13:30</option>
-                                                            <option value="14:00">14:00</option>
-                                                            <option value="14:30">14:30</option>
-                                                            <option value="15:00">15:00</option>
-                                                            <option value="15:30">15:30</option>
-                                                            <option value="16:00">16:00</option>
-                                                            <option value="16:30">16:30</option>
-                                                            <option value="17:00">17:00</option>
-                                                            <option value="17:30">17:30</option>
-                                                            <option value="18:00">18:00</option>
-                                                            <option value="18:30">18:30</option>
-                                                            <option value="19:00">19:00</option>
-                                                            <option value="19:30">19:30</option>
-                                                            <option value="20:00">20:00</option>
-                                                            <option value="20:30">20:30</option>
-                                                            <option value="21:00">21:00</option>
-                                                            <option value="21:30">21:30</option>
-                                                            <option value="22:00">22:00</option>
-                                                            <option value="22:30">22:30</option>
-                                                            <option value="23:00">23:00</option>
-                                                            <option value="23:30">23:30</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-5">
-                                                <div class="form-group">
-                                                    <label for="" class="control-label">Hora Fim</label>
-                                                    <div class="input-group">
-                                                            <span class="input-group-addon">
-                                                                <i class="fa fa-clock-o font-blue"></i>
-                                                            </span>
-                                                        <select name="endTime" class="form-control">
-                                                            <option value="">Selecione</option>
-                                                            <option value="06:00">06:00</option>
-                                                            <option value="06:30">06:30</option>
-                                                            <option value="07:00">07:00</option>
-                                                            <option value="07:30">07:30</option>
-                                                            <option value="08:00">08:00</option>
-                                                            <option value="08:30">08:30</option>
-                                                            <option value="09:00">09:00</option>
-                                                            <option value="09:30">09:30</option>
-                                                            <option value="10:00">10:00</option>
-                                                            <option value="10:30">10:30</option>
-                                                            <option value="11:00">11:00</option>
-                                                            <option value="11:30">11:30</option>
-                                                            <option value="12:00">12:00</option>
-                                                            <option value="12:30">12:30</option>
-                                                            <option value="13:00">13:00</option>
-                                                            <option value="13:30">13:30</option>
-                                                            <option value="14:00">14:00</option>
-                                                            <option value="14:30">14:30</option>
-                                                            <option value="15:00">15:00</option>
-                                                            <option value="15:30">15:30</option>
-                                                            <option value="16:00">16:00</option>
-                                                            <option value="16:30">16:30</option>
-                                                            <option value="17:00">17:00</option>
-                                                            <option value="17:30">17:30</option>
-                                                            <option value="18:00">18:00</option>
-                                                            <option value="18:30">18:30</option>
-                                                            <option value="19:00">19:00</option>
-                                                            <option value="19:30">19:30</option>
-                                                            <option value="20:00">20:00</option>
-                                                            <option value="20:30">20:30</option>
-                                                            <option value="21:00">21:00</option>
-                                                            <option value="21:30">21:30</option>
-                                                            <option value="22:00">22:00</option>
-                                                            <option value="22:30">22:30</option>
-                                                            <option value="23:00">23:00</option>
-                                                            <option value="23:30">23:30</option>
-                                                        </select>
-                                                    </div>
-                                                    <span class="help-block">Deixe em branco caso o término não esteja previsto</span>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-2">
-                                                <div class="form-group">
-                                                    <label for="">Carga Horária</label>
-
-                                                    <div class="input-group">
-                                                        <span class="input-group-addon">
-                                                            <i class="fa fa-clock-o"></i>
-                                                        </span>
-
-                                                        <input type="text" class="form-control number" id="certified_hours"
-                                                               name="certified_hours" placeholder="Em Horas">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <br>
-
-                                        <input type="hidden" value="{{ $org_name }}" id="org_name">
-
-                                        <div class="row">
-                                            <div class="col-md-2">
-                                                <div class="form-group">
-                                                    <span class="help-block">
-                                                        <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
-                                                            <input type="checkbox" name="" id="gen_public_url" class="checkboxes" value="1" />
-                                                            <span></span>Gerar Url Pública
-                                                        </label>
-                                                    </span>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-10">
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                        <span class="input-group-addon">
-                                                            <i class="fa fa-globe font-blue"></i>
-                                                        </span>
-                                                        <input type="text" class="form-control" name="public_url" id="public_url" readonly>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                            {{--<div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label for="">Pertencente ao grupo</label>
-                                                        <div class="input-group">
-                                                        <span class="input-group-addon">
-                                                            <i class="fa fa-users font-blue"></i>
-                                                        </span>
-
-                                                            <select name="group_id" id="" class="form-control">
-                                                                <option value="">Nenhum</option>
-                                                                @if(isset($id))
-                                                                    @foreach($groups as $item)
-                                                                        <option value="{{ $item->id }}"
-                                                                                @if($item->id == $id || old('group_id') == $id) selected @endif >
-                                                                            {{ $item->name }}
-                                                                        </option>
-                                                                    @endforeach
-                                                                @else
-                                                                    @foreach($groups as $item)
-                                                                        <option value="{{ $item->id }}"
-                                                                            @if(old('group_id') == $item->id) selected @endif >
-                                                                            {{ $item->name }}
-                                                                        </option>
-                                                                    @endforeach
-                                                                @endif
-                                                            </select>
+                                                        <div class="col-xs-1">
+                                                            <button onclick="removeAlternative(this)" type="button"
+                                                                    class="btn btn-danger"
+                                                                    title="Remover Alternativa"><i
+                                                                        class="fa fa-trash"></i></button>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>--}}
 
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                {!! Form::FormGroup('description', $errors) !!}
-                                                <label class="control-label">Descrição</label>
-                                                <textarea class="form-control" name="description" value="{{ old('description') }}"
-                                                          placeholder="Digite aqui observações importantes sobre o evento"
-                                                          rows="5"></textarea>
-                                                {!! Form::error('description', $errors) !!}
-                                                {!! Form::endFormGroup() !!}
+                                                <div class="alternatives">
+                                                    {{--                                                @foreach($question->alternatives as $alternative)--}}
+                                                    {{--                                                    <a href="#" class="list-group-item alternative">--}}
+                                                    {{--                                                        <div class="row">--}}
+                                                    {{--                                                            <div class="col-xs-11">--}}
+                                                    {{--                    <textarea name="alternative_content[]"--}}
+                                                    {{--                              class="alternative_content">{{$alternative->content}}</textarea>--}}
+                                                    {{--                                                            </div>--}}
+                                                    {{--                                                            <div class="col-xs-1">--}}
+                                                    {{--                                                                <button onclick="removeAlternative(this)" type="button" class="btn btn-danger"--}}
+                                                    {{--                                                                        title="Remover Alternativa"><i--}}
+                                                    {{--                                                                            class="fa fa-trash"></i></button>--}}
+                                                    {{--                                                            </div>--}}
+                                                    {{--                                                        </div>--}}
+                                                    {{--                                                    </a>--}}
+                                                    {{--                                                @endforeach--}}
+                                                </div>
+
+                                                <button type="button" class="btn btn-info" onclick="addAlternative()">
+                                                    <i class="fa fa-plus"></i> Adicionar Alternativa
+                                                </button>
                                             </div>
                                         </div>
-
-
-                                        <br><br>
-                                       @include('includes.address-create')
-                                        <br><br>
-                                       @include('includes.event-app-config')
-                                    </div>
-                                    <div class="form-actions">
-                                        {!! Form::submit('Enviar', ['class' => 'btn blue', 'id' => 'btn-submit']) !!}
-                                        <div class="progress" style="display: none;">
-                                            <div class="progress-bar progress-bar-striped active" role="progressbar"
-                                                 aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-                                                Enviando...
-                                                <span class="sr-only">Enviando...</span>
+                                        <div class="form-actions">
+                                            {!! Form::submit('Enviar', ['class' => 'btn blue', 'id' => 'btn-submit']) !!}
+                                            <div class="progress" style="display: none;">
+                                                <div class="progress-bar progress-bar-striped active" role="progressbar"
+                                                     aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"
+                                                     style="width: 100%">
+                                                    Enviando...
+                                                    <span class="sr-only">Enviando...</span>
+                                                </div>
                                             </div>
                                         </div>
+                                        {!! Form::close() !!}
                                     </div>
-                                    {!! Form::close() !!}
                                 </div>
+                                <!-- END SAMPLE FORM PORTLET-->
                             </div>
-                            <!-- END SAMPLE FORM PORTLET-->
                         </div>
                     </div>
-                </div>
-                <!-- END PAGE CONTENT INNER -->
+                    <!-- END PAGE CONTENT INNER -->
             </div>
         </div>
         <!-- END PAGE CONTENT BODY -->
@@ -1029,9 +779,17 @@ License: You must have a valid license purchased only from themeforest(the above
 @include('includes.core-scripts-edit')
 <script src="../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js" type="text/javascript"></script>
 <script src="../../assets/global/plugins/moment.min.js" type="text/javascript"></script>
-<script src="../../assets/global/plugins/bootstrap-color-picker/js/bootstrap-colorpicker.min.js" type="text/javascript"></script>
 <!-- BEGIN PAGE LEVEL PLUGINS -->
+<script type="text/javascript">
+    function removeAlternative(obj) {
+        $(obj).closest('.alternative').remove();
+    }
 
+    function addAlternative() {
+        $('.alternatives').append($(".alternative_template").clone().removeClass('alternative_template'));
+
+    }
+</script>
 <!-- END PAGE LEVEL PLUGINS -->
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
 

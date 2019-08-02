@@ -68,10 +68,8 @@ class SessionController extends Controller
 
         $event = $this->eventRepository->findByField('id', $event_id)->first();
 
-        if (count($sessions) > 0)
-        {
-            foreach ($sessions as $session)
-            {
+        if (count($sessions) > 0) {
+            foreach ($sessions as $session) {
 
                 $start_time = $session->start_time;
 
@@ -109,8 +107,7 @@ class SessionController extends Controller
                 $data['max_capacity'] = -1;
             }
 
-            if($data['session_date'] != "")
-            {
+            if ($data['session_date'] != "") {
                 $data['session_date'] = DateTime::createFromFormat('d/m/Y', $data['session_date'])->format('Y-m-d');
 
                 $data['start_time'] = date_create($data['session_date'] . " " . $data['start_time']);
@@ -118,8 +115,7 @@ class SessionController extends Controller
                 if ($data['end_time'] != "") {
                     $data['end_time'] = date_create($data['session_date'] . " " . $data['end_time']);
                 }
-            }
-            else{
+            } else {
                 $data['start_time'] = date_create($event->eventDate . " " . $data['start_time']);
 
                 if ($data['end_time'] != "") {
@@ -183,8 +179,7 @@ class SessionController extends Controller
                     $data['max_capacity'] = -1;
                 }
 
-                if($data['session_date'] != "")
-                {
+                if ($data['session_date'] != "") {
                     $data['session_date'] = date_format(date_create($data['session_date']), 'Y-m-d');
 
                     $data['start_time'] = date_create($data['session_date'] . " " . $data['start_time']);
@@ -192,8 +187,7 @@ class SessionController extends Controller
                     if ($data['end_time'] != "") {
                         $data['end_time'] = date_create($data['session_date'] . " " . $data['end_time']);
                     }
-                }
-                else{
+                } else {
                     $data['start_time'] = date_create($event->eventDate . " " . $data['start_time']);
 
                     if ($data['end_time'] != "") {
@@ -201,7 +195,7 @@ class SessionController extends Controller
                     }
                 }
 
-                try{
+                try {
                     $this->repository->update($data, $session_id);
 
                     \DB::commit();
@@ -210,8 +204,7 @@ class SessionController extends Controller
 
                     return redirect()->back();
 
-                }catch (\Exception $e)
-                {
+                } catch (\Exception $e) {
 
                     \DB::rollBack();
 
@@ -286,12 +279,14 @@ class SessionController extends Controller
         }
     }
 
-    public function modal_code($id) {
+    public function modal_code($id)
+    {
         $session = $this->repository->findByField('id', $id)->first();
         return view('events.session_modal_code', compact('session'));
     }
 
-    public function list_questions($id) {
+    public function list_questions($id)
+    {
         $session = $this->repository->findByField('id', $id)->first();
 
         $countPerson[] = $this->countPerson();
@@ -333,5 +328,114 @@ class SessionController extends Controller
             compact('session', 'state', 'roles', 'leader', 'admin', 'notify', 'qtde', 'event', 'questions'));
     }
 
-    public function view_question($id) {}
+    public function view_question($id)
+    {
+        // TODO
+    }
+
+    public function list_quizz($id)
+    {
+        $session = $this->repository->findByField('id', $id)->first();
+
+        $countPerson[] = $this->countPerson();
+
+        $countGroups[] = $this->countGroups();
+
+        $state = $this->stateRepository->all();
+
+        $roles = $this->roleRepository->all();
+
+        $leader = $this->getLeaderRoleId();
+
+        $admin = $this->getAdminRoleId();
+
+        $notify = $this->notify();
+
+        $qtde = $notify ? count($notify) : null;
+
+        $event = $this->eventRepository->findByField('id', $session->event_id)->first();
+
+        $quizzes = json_decode(json_encode([
+            [
+                'id' => 1,
+                'order' => 1,
+                'content' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad, architecto dolores eaque, eos est impedit itaque maxime minima nostrum nulla quam totam voluptas voluptatem? Aliquid atque blanditiis quaerat velit veritatis!',
+                'alternatives' => [
+                    [
+                        'id' => 1,
+                        'content' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad, architecto dolores eaque, eos est impedit itaque maxime minima nostrum nulla quam totam voluptas voluptatem? Aliquid atque blanditiis quaerat velit veritatis!'
+                    ],
+                    [
+                        'id' => 2,
+                        'content' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad, architecto dolores eaque, eos est impedit itaque maxime minima nostrum nulla quam totam voluptas voluptatem? Aliquid atque blanditiis quaerat velit veritatis!'
+                    ],
+                    [
+                        'id' => 3,
+                        'content' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad, architecto dolores eaque, eos est impedit itaque maxime minima nostrum nulla quam totam voluptas voluptatem? Aliquid atque blanditiis quaerat velit veritatis!'
+                    ],
+                ]
+            ],
+            [
+                'id' => 2,
+                'order' => 2,
+                'content' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad, architecto dolores eaque, eos est impedit itaque maxime minima nostrum nulla quam totam voluptas voluptatem? Aliquid atque blanditiis quaerat velit veritatis!',
+                'alternatives' => [
+                    [
+                        'id' => 4,
+                        'content' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad, architecto dolores eaque, eos est impedit itaque maxime minima nostrum nulla quam totam voluptas voluptatem? Aliquid atque blanditiis quaerat velit veritatis!'
+                    ],
+                    [
+                        'id' => 5,
+                        'content' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad, architecto dolores eaque, eos est impedit itaque maxime minima nostrum nulla quam totam voluptas voluptatem? Aliquid atque blanditiis quaerat velit veritatis!'
+                    ],
+                    [
+                        'id' => 6,
+                        'content' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad, architecto dolores eaque, eos est impedit itaque maxime minima nostrum nulla quam totam voluptas voluptatem? Aliquid atque blanditiis quaerat velit veritatis!'
+                    ],
+                ]
+            ],
+        ])); // TODO
+
+        return view('events.session_list_quizz',
+            compact('session', 'state', 'roles', 'leader', 'admin', 'notify', 'qtde', 'event', 'quizzes'));
+    }
+
+    public function view_quizz_question($id)
+    {
+        // TODO
+        $question = json_decode(json_encode([
+            'id' => 1,
+            'order' => 1,
+            'content' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad, architecto dolores eaque, eos est impedit itaque maxime minima nostrum nulla quam totam voluptas voluptatem? Aliquid atque blanditiis quaerat velit veritatis!',
+            'alternatives' => [
+                [
+                    'id' => 1,
+                    'content' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad, architecto dolores eaque, eos est impedit itaque maxime minima nostrum nulla quam totam voluptas voluptatem? Aliquid atque blanditiis quaerat velit veritatis!',
+                    'choice_rate' => 10
+                ],
+                [
+                    'id' => 2,
+                    'content' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad, architecto dolores eaque, eos est impedit itaque maxime minima nostrum nulla quam totam voluptas voluptatem? Aliquid atque blanditiis quaerat velit veritatis!',
+                    'choice_rate' => 50
+                ],
+                [
+                    'id' => 3,
+                    'content' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad, architecto dolores eaque, eos est impedit itaque maxime minima nostrum nulla quam totam voluptas voluptatem? Aliquid atque blanditiis quaerat velit veritatis!',
+                    'choice_rate' => 40
+                ],
+            ]
+        ]));
+
+        return view('events.session_modal_quizz_question', compact('question'));
+    }
+
+    public function quizz_store()
+    {
+        // TODO
+    }
+
+    public function new_quizz()
+    {
+        return view('events.session_new_quizz');
+    }
 }

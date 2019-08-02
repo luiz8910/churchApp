@@ -75,7 +75,35 @@
             border: 0;
         }
 
+        .content-padding {
+            padding: 5rem 5rem 0 5rem;
+        }
 
+        .footer-content {
+            padding: 5rem 5rem 2rem 5rem
+        }
+
+        .app-content {
+            padding: 3rem 5rem 3rem 5rem
+        }
+
+        @media (max-width: 600px) {
+            .content-padding {
+                padding: 0;
+            }
+
+            .footer-content {
+                padding: 1rem;
+            }
+
+            .app-content {
+                padding: 0;
+            }
+
+            .mobile-flex-column {
+                flex-direction: column;
+            }
+        }
     </style>
 </head>
 <body>
@@ -90,7 +118,7 @@
 
             <div class="col-xs-12 col-sm-8 col-sm-offset-2">
                 <div class="row" style="margin-bottom: 2rem">
-                    <div class="col-xs-12 bg-white" style="padding: 5rem 5rem 0 5rem">
+                    <div class="col-xs-12 bg-white content-padding">
                         <h1>Olá {{ $person->name }},</h1>
 
                         <p>{{ $p1 }} <strong style="color: black"></strong></p>
@@ -135,22 +163,21 @@
 
                     </div>
 
-                    <div class="col-xs-12 bg-gray" style="padding: 5rem 5rem 2rem 5rem">
+                    <div class="col-xs-12 bg-gray footer-content">
                         <p>Este e-mail foi enviado a <b>{{ $person->email  }}</b>. Para garantir o correto recebimento
                             de nossos e-mails, adicione-nos a
                             sua lista de e-mails seguros.</p>
                     </div>
 
-                    <div class="col-xs-12 bg-white" style="padding: 3rem 5rem 3rem 5rem">
-                        <div class="row" style="display: flex; align-items: center">
-                            <div class="col-xs-4" style="width: 10%">
+                    <div class="col-xs-12 bg-white app-content">
+                        <div class="row mobile-flex-column" style="display: flex; align-items: center">
+                            <div class="col-xs-4" style="width: 33%; padding-right: 1%;">
                                 <br><br>
                                 <a href="{{ $url }}">
-                                    <img src="{{ $url_img }}" alt="BeConnect" class="img-responsive"
-                                         style="width: 110px"/>
+                                    <img src="{{ $url_img }}" alt="BeConnect" class="img-responsive"/>
                                 </a>
                             </div>
-                            <div class="col-xs-8" style="width: 90%">
+                            <div class="col-xs-8" style="width: 77%">
                                 <div class="row">
                                     <div class="col-xs-12 text-center">
                                         <h4><b>Baixe o App:</b></h4>

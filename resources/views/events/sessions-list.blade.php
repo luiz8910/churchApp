@@ -195,8 +195,12 @@
                                                                                 <i class="fa fa-barcode"></i>
                                                                             </a>
                                                                             <a href="{{ route('event.session.list_questions', ['id' => $item->id]) }}"
-                                                                               class="btn btn-warning btn-sm btn-circle" title="Listar Perguntas">
+                                                                               class="btn btn-warning btn-sm btn-circle" title="Listar Perguntas Recebidas">
                                                                                 <i class="fa fa-question"></i>
+                                                                            </a>
+                                                                            <a href="{{ route('event.session.list_quizz', ['id' => $item->id]) }}"
+                                                                               class="btn btn-warning btn-sm btn-circle" title="Listar Quizz">
+                                                                                <i class="fa fa-check-square"></i>
                                                                             </a>
                                                                         </td>
                                                                     </tr>
