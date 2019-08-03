@@ -412,7 +412,7 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::post('/sessoes-store/{event_id}', 'SessionController@store')->name('event.session.store');
 
-        Route::post('/sessoes-update/{event_id}', 'SessionController@update')->name('event.session.update');
+        Route::put('/sessoes-update/{event_id}', 'SessionController@update')->name('event.session.update');
 
         Route::get('sessoes-check-in/{id}', 'SessionController@check_in_list')->name('event.session.check_in_list');
 
@@ -423,6 +423,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('session-view-question/{id}', 'SessionController@view_question')->name('event.session.view_question');
 
         Route::get('verify_days_session/{id}', 'SessionController@event_days');
+
+        Route::delete('session/{id}', 'SessionController@delete');
 
         Route::get('check-in_manual/{event_id}/{person_id}', 'EventController@checkin_manual');
 
@@ -920,3 +922,5 @@ Route::get('subTestUsers/{event_id}', 'PersonController@subTestUsers');
 Route::get('teste-telefone', 'PersonController@testeTelefone');
 
 Route::get('change-name', 'PersonController@changeName');
+
+Route::get('setCode', 'SessionController@setCode');

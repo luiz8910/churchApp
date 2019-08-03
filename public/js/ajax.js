@@ -1,4 +1,4 @@
-function Request(url, data, id, method, static_page)
+function Request(url, data, id, method, static_page, msg)
 {
     var values = [];
     var request = '';
@@ -22,11 +22,15 @@ function Request(url, data, id, method, static_page)
         request.done(function(e){
             if(e.status)
             {
-                SuccessMsg(static_page);
+                SuccessMsg(static_page, msg);
+
+                return true
             }
             else{
 
                 ErrorMsg();
+
+                return false;
 
             }
         });
@@ -36,6 +40,8 @@ function Request(url, data, id, method, static_page)
             console.log(e);
 
             ErrorMsg();
+
+            return false;
         });
     }
 
@@ -99,7 +105,7 @@ function Request(url, data, id, method, static_page)
 
 }
 
-function SimpleRequest(url, data, id, method, static_page)
+function SimpleRequest(url, data, id, method, static_page, msg)
 {
     var request = '';
 
@@ -113,7 +119,7 @@ function SimpleRequest(url, data, id, method, static_page)
 
         request.done(function(e){
             if(e.status){
-                SuccessMsg(static_page);
+                SuccessMsg(static_page, msg);
             }
             else{
                 ErrorMsg();
@@ -130,9 +136,11 @@ function SimpleRequest(url, data, id, method, static_page)
 
 }
 
-function SuccessMsg(static_page)
+function SuccessMsg(static_page, msg)
 {
-    swal('Sucesso', 'Os dados foram salvos', 'success');
+    msg = msg ? msg : 'Os dados foram salvos';
+
+    swal('Sucesso', msg, 'success');
 
     if(!static_page){
         setTimeout(function(){

@@ -106,6 +106,52 @@
             </div>
         </div>
 
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Verificar Código da Sessão
+                            <span class="span-btn-minimize" id="btn-minimize-session-code">_</span>
+                        </h3>
+
+                    </div>
+                    <div class="panel-body hide-panel" id="session-code">
+
+                        https://beconnect.com.br/api/session-code/{code}
+                        <span class="label label-primary">GET</span>
+
+                        <br><br>
+
+                        code = código da sessão <span class="label label-info" style="font-size: 12px;">Inteiro</span><br>
+
+
+                        <br><br>
+
+                        <p class="text-center">Exemplo de Retorno</p>
+
+                        <pre>
+                            Se encontrado
+                            {
+                                "status":true,
+                                "session":{
+                                    "id":3,"event_id":22,"name":"Apresentação","max_capacity":1000,"location":"",
+                                    "start_time":"2019-02-08 11:00:00","end_time":"2019-02-08 13:00:00",
+                                    "description":"Apresentação do Evento","tag":null,"created_at":"2019-08-01 19:11:50",
+                                    "updated_at":"2019-08-01 22:31:22","deleted_at":null,
+                                    "session_date":"2019-02-08 00:00:00","code":"7986543210"
+                                }
+                            }
+
+                            Senão
+
+                            {"status":false,"msg": "O código está incorreto ou não existe"}
+                        </pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
     </div>
 </div>

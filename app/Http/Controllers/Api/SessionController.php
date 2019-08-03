@@ -36,7 +36,23 @@ class SessionController extends Controller
             return json_encode(['status' => true, 'sessions' => $sessions]);
         }
 
-        return json_encode(['status' => false, 'Não há sessões para o evento selecionado']);
+        return json_encode(['status' => false, 'msg' => 'Não há sessões para o evento selecionado']);
 
+    }
+
+    /*
+     * Usado para verificar se o código existe e
+     * qual sessão correspondente.
+     */
+    public function getCode($code)
+    {
+        $session = $this->repository->findByField('code', $code)->first();
+
+        if($session)
+        {
+            return json_encode(['status' => true, 'session' => $session]);
+        }
+
+        return json_encode(['status' => false, 'msg' => 'O código está incorreto ou não existe']);
     }
 }

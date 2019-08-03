@@ -170,11 +170,11 @@
                                                                 <tbody class="hide" id="tbody-search"></tbody>
                                                                 <tbody>
                                                                 @foreach($sessions as $item)
-                                                                    <tr>
+                                                                    <tr id="tr_{{ $item->id }}">
                                                                         <td id="td_name_{{ $item->id }}">{{ $item->name }}</td>
                                                                         <td id="td_location_{{ $item->id }}">{{ $item->location }}</td>
                                                                         <td id="td_start_time_{{ $item->id }}">{{ $item->start_time }}</td>
-
+                                                                        <input type="hidden" id="session_date_{{ $item->id }}" value="{{ $item->session_date }}">
                                                                         <td>
                                                                             <a href="{{ route('event.session.check_in_list', ['id' => $item->id]) }}"
                                                                                class="btn btn-info btn-sm btn-circle" title="Inscritos">
@@ -483,13 +483,103 @@
 
                     <br>
 
+                    <label for="" class="control-label">Data da Sessão</label>
+                    <div class="input-group date @if(!$eventDate) date-picker @endif" data-date-format="dd/mm/yyyy" data-date-start-date="+0d">
+
+                        <span class="input-group-btn">
+                            <button class="btn default" type="button">
+                                <i class="fa fa-calendar font-blue"></i>
+                            </button>
+                        </span>
+
+                        <input type="text" class="form-control" name="session_date" id="modal_session_date" required readonly>
+                    </div>
+
+                    <br>
+
                     <label for="" class="control-label">Ínicio</label>
-                    <input type="text" class="form-control number" placeholder="08:00" id="modal_start_time" name="start_time">
+                    <select id="modal_start_time" name="start_time" class="form-control" required>
+                        <option value="">Selecione</option>
+                        <option value="06:00">06:00</option>
+                        <option value="06:30">06:30</option>
+                        <option value="07:00">07:00</option>
+                        <option value="07:30">07:30</option>
+                        <option value="08:00">08:00</option>
+                        <option value="08:30">08:30</option>
+                        <option value="09:00">09:00</option>
+                        <option value="09:30">09:30</option>
+                        <option value="10:00">10:00</option>
+                        <option value="10:30">10:30</option>
+                        <option value="11:00">11:00</option>
+                        <option value="11:30">11:30</option>
+                        <option value="12:00">12:00</option>
+                        <option value="12:30">12:30</option>
+                        <option value="13:00">13:00</option>
+                        <option value="13:30">13:30</option>
+                        <option value="14:00">14:00</option>
+                        <option value="14:30">14:30</option>
+                        <option value="15:00">15:00</option>
+                        <option value="15:30">15:30</option>
+                        <option value="16:00">16:00</option>
+                        <option value="16:30">16:30</option>
+                        <option value="17:00">17:00</option>
+                        <option value="17:30">17:30</option>
+                        <option value="18:00">18:00</option>
+                        <option value="18:30">18:30</option>
+                        <option value="19:00">19:00</option>
+                        <option value="19:30">19:30</option>
+                        <option value="20:00">20:00</option>
+                        <option value="20:30">20:30</option>
+                        <option value="21:00">21:00</option>
+                        <option value="21:30">21:30</option>
+                        <option value="22:00">22:00</option>
+                        <option value="22:30">22:30</option>
+                        <option value="23:00">23:00</option>
+                        <option value="23:30">23:30</option>
+                    </select>
 
                     <br>
 
                     <label for="" class="control-label">Fim</label>
-                    <input type="text" class="form-control number" placeholder="10:00" id="modal_end_time" name="end_time">
+                    <select id="modal_end_time" name="end_time" class="form-control" required>
+                        <option value="">Selecione</option>
+                        <option value="06:00">06:00</option>
+                        <option value="06:30">06:30</option>
+                        <option value="07:00">07:00</option>
+                        <option value="07:30">07:30</option>
+                        <option value="08:00">08:00</option>
+                        <option value="08:30">08:30</option>
+                        <option value="09:00">09:00</option>
+                        <option value="09:30">09:30</option>
+                        <option value="10:00">10:00</option>
+                        <option value="10:30">10:30</option>
+                        <option value="11:00">11:00</option>
+                        <option value="11:30">11:30</option>
+                        <option value="12:00">12:00</option>
+                        <option value="12:30">12:30</option>
+                        <option value="13:00">13:00</option>
+                        <option value="13:30">13:30</option>
+                        <option value="14:00">14:00</option>
+                        <option value="14:30">14:30</option>
+                        <option value="15:00">15:00</option>
+                        <option value="15:30">15:30</option>
+                        <option value="16:00">16:00</option>
+                        <option value="16:30">16:30</option>
+                        <option value="17:00">17:00</option>
+                        <option value="17:30">17:30</option>
+                        <option value="18:00">18:00</option>
+                        <option value="18:30">18:30</option>
+                        <option value="19:00">19:00</option>
+                        <option value="19:30">19:30</option>
+                        <option value="20:00">20:00</option>
+                        <option value="20:30">20:30</option>
+                        <option value="21:00">21:00</option>
+                        <option value="21:30">21:30</option>
+                        <option value="22:00">22:00</option>
+                        <option value="22:30">22:30</option>
+                        <option value="23:00">23:00</option>
+                        <option value="23:30">23:30</option>
+                    </select>
 
                     <br>
 
@@ -507,7 +597,7 @@
                         <i class="fa fa-close"></i>
                         Fechar
                     </button>
-                    <button type="button" class="btn btn-success">
+                    <button type="submit" class="btn btn-success">
                         <i class="fa fa-check"></i>
                         Salvar
                     </button>

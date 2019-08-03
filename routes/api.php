@@ -256,6 +256,8 @@ Route::post('/choose/{id}/{person_id}', 'Api\PollController@choose');
 
 Route::get('/sessions/{event_id}', 'Api\SessionController@list');
 
+Route::get('/session-code/{code}', 'Api\SessionController@getCode');
+
 //-------------------------- Outros ------------------------------------------------------------------------------------
 
 Route::any('/new-bug/', 'BugController@storeApp');

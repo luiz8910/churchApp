@@ -9,6 +9,8 @@ $(function(){
 
         var location = $("#td_location_" + id).text();
 
+        var session_date = $("#session_date_" + id).val();
+
         var start_time = $("#short_start_time_" + id).val();
 
         var end_time = $("#end_time_" + id).val();
@@ -21,9 +23,12 @@ $(function(){
 
         $("#modal_location").val(location);
 
-        $("#modal_start_time").val(start_time);
+        $("#modal_session_date").val(session_date);
 
-        $("#modal_end_time").val(end_time);
+        $("#modal_start_time option[value|='"+start_time+"']").attr('selected', true);
+
+        $("#modal_end_time option[value|='"+end_time+"']").attr('selected', true);
+
 
         $("#modal_description").val(description);
 
@@ -78,7 +83,15 @@ $(function(){
     $("#session_date").change(function () {
 
         verify_days();
-    })
+    });
+
+    $(".btn-delete-session").click(function () {
+
+        var id = this.id.replace('btn-delete-session-', '');
+
+        deleteSession(id);
+
+    });
 
 
 });
@@ -159,4 +172,17 @@ function verify_days()
         console.log('fail');
         console.log(e);
     })
+}
+
+function deleteSession(id)
+{
+    var url = '/session/';
+    var msg = 'A sessão foi excluída com sucesso';
+
+    if(Request(url, null, id, 'DELETE', false, msg))
+    {
+        $("#tr_" + id).remove();
+    }
+
+
 }
