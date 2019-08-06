@@ -55,7 +55,7 @@ function Request(url, data, id, method, static_page, msg)
 
         request.done(function(e){
             if(e.status){
-                SuccessMsg(static_page);
+                SuccessMsg(static_page, msg);
             }
             else{
                 ErrorMsg();

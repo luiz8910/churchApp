@@ -116,7 +116,7 @@
                                                 </td>
                                                 <td class="tr">{{$item->location}}</td>
                                                 <td class="tr">{{$item->church_id}}</td>
-                                                <td class="tr">{{date_format(date_create($item->created_at), 'd/m/Y')}}</td>
+                                                <td class="tr">{{date_format(date_create($item->created_at), 'd/m/Y H:i')}}</td>
                                                 <input type="hidden" value="{{ $item->description }}" id="input-{{ $item->id }}">
                                             </tr>
                                         @endforeach

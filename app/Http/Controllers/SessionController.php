@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Bug;
 use App\Repositories\EventRepository;
+use App\Repositories\PersonRepository;
+use App\Repositories\QuestionRepository;
 use App\Repositories\RoleRepository;
 use App\Repositories\SessionRepository;
 use App\Repositories\StateRepository;
@@ -39,15 +41,26 @@ class SessionController extends Controller
      * @var SessionService
      */
     private $service;
+    /**
+     * @var QuestionRepository
+     */
+    private $questionRepository;
+    /**
+     * @var PersonRepository
+     */
+    private $personRepository;
 
     public function __construct(SessionRepository $repository, EventRepository $eventRepository, StateRepository $stateRepository,
-                                RoleRepository $roleRepository, SessionService $service)
+                                RoleRepository $roleRepository, SessionService $service, QuestionRepository $questionRepository,
+                                PersonRepository $personRepository)
     {
         $this->repository = $repository;
         $this->eventRepository = $eventRepository;
         $this->stateRepository = $stateRepository;
         $this->roleRepository = $roleRepository;
         $this->service = $service;
+        $this->questionRepository = $questionRepository;
+        $this->personRepository = $personRepository;
     }
 
     /*
@@ -75,8 +88,10 @@ class SessionController extends Controller
 
         $event = $this->eventRepository->findByField('id', $event_id)->first();
 
+
         if($event)
         {
+
             $days = DB::table('event_person')
                 ->where([
                     'event_id' => $event_id,
@@ -112,18 +127,23 @@ class SessionController extends Controller
                     $session->end_time = date_format(date_create($session->end_time), 'H:i');
 
                     $session->session_date = date_format(date_create($session->session_date), 'd/m/Y');
+
                 }
 
                 return view('events.sessions-list',
                     compact('sessions', 'state', 'roles', 'leader', 'admin', 'notify', 'qtde', 'event', 'eventDate'));
-            } else {
+
+
+            }else {
 
                 $sessions = false;
 
                 return view('events.sessions-list',
                     compact('sessions', 'state', 'roles', 'leader', 'admin', 'notify', 'qtde', 'event', 'eventDate'));
             }
+
         }
+
         else{
 
             $bug = new Bug();
@@ -140,10 +160,9 @@ class SessionController extends Controller
             throw new ModelNotFoundException();
 
         }
-
-
-
     }
+
+
 
     public function store(Request $request, $event_id)
     {
@@ -158,8 +177,7 @@ class SessionController extends Controller
                 $data['max_capacity'] = -1;
             }
 
-            if($data['session_date'] != "")
-            {
+            if ($data['session_date'] != "") {
                 $data['session_date'] = DateTime::createFromFormat('d/m/Y', $data['session_date'])->format('Y-m-d');
 
                 $data['start_time'] = date_create($data['session_date'] . " " . $data['start_time']);
@@ -167,8 +185,7 @@ class SessionController extends Controller
                 if ($data['end_time'] != "") {
                     $data['end_time'] = date_create($data['session_date'] . " " . $data['end_time']);
                 }
-            }
-            else{
+            } else {
                 $data['start_time'] = date_create($event->eventDate . " " . $data['start_time']);
 
                 if ($data['end_time'] != "") {
@@ -226,16 +243,18 @@ class SessionController extends Controller
 
         if ($event) {
 
-            if ($this->repository->findByField('id', $session_id)->first()) {
+            if ($this->repository->findByField('id', $session_id)->first())
+            {
+
                 $data['event_id'] = $event_id;
 
                 if ($data['max_capacity'] == 0 || $data['max_capacity'] == "") {
                     $data['max_capacity'] = -1;
                 }
 
+
                 if($data['session_date'] != "")
                 {
-
                     $data['start_time'] = date_create($data['session_date'] . " " . $data['start_time']);
 
                     if ($data['end_time'] != "") {
@@ -243,8 +262,9 @@ class SessionController extends Controller
                     }
 
                     $data['session_date'] = date_create($data['session_date']);
-                }
-                else{
+
+                }else {
+
                     $data['start_time'] = date_create($event->eventDate . " " . $data['start_time']);
 
                     if ($data['end_time'] != "") {
@@ -252,7 +272,7 @@ class SessionController extends Controller
                     }
                 }
 
-                try{
+                try {
                     $this->repository->update($data, $session_id);
 
                     \DB::commit();
@@ -261,8 +281,7 @@ class SessionController extends Controller
 
                     return redirect()->back();
 
-                }catch (\Exception $e)
-                {
+                } catch (\Exception $e) {
 
                     \DB::rollBack();
 
@@ -370,15 +389,18 @@ class SessionController extends Controller
         return json_encode(['status' => false, 'msg' => 'Evento não existe']);
     }
 
-    public function modal_code($id) {
+
+    public function modal_code($id)
+    {
         $session = $this->repository->findByField('id', $id)->first();
         return view('events.session_modal_code', compact('session'));
     }
 
+    /*
+     * Id da sessão
+     */
     public function list_questions($id)
     {
-
-
         $countPerson[] = $this->countPerson();
 
         $countGroups[] = $this->countGroups();
@@ -403,32 +425,155 @@ class SessionController extends Controller
 
             if($event)
             {
+                $questions = $this->repository->findByField('session_id', $id);
 
+                if(count($questions) > 0)
+                {
+                    foreach ($questions as $q)
+                    {
+                        $person = $this->personRepository->findByField('id', $q->person_id)->first();
+
+                        if($person)
+                        {
+                            $q->person_name = $person->name;
+                        }
+                        else{
+                            $bug = new Bug();
+
+                            $bug->description = 'Person com id: ' . $q->person_id . ' não existe';
+                            $bug->platform = 'Back-end';
+                            $bug->location = 'list question SessionController.php';
+                            $bug->model = 'Question';
+                            $bug->status = 'Pendente';
+                            $bug->church_id = $this->getUserChurch();
+
+                            $bug->save();
+
+                            $q->person_name = 'Desconhecido';
+                        }
+                    }
+
+                    dd($questions);
+
+                    return view('sessions.session-list-questions', compact('questions', 'event', 'session'));
+                }
             }
 
-            $questions = json_decode(json_encode([
-                [
-                    'id' => 1,
-                    'user' => ['name' => 'Joãozinho'],
-                    'content' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad, architecto dolores eaque, eos est impedit itaque maxime minima nostrum nulla quam totam voluptas voluptatem? Aliquid atque blanditiis quaerat velit veritatis!',
-                    'like_count' => 4,
-                    'approved' => true
-                ],
-                [
-                    'id' => 2,
-                    'user' => ['name' => 'Mariazinha'],
-                    'content' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad, architecto dolores eaque, eos est impedit itaque maxime minima nostrum nulla quam totam voluptas voluptatem? Aliquid atque blanditiis quaerat velit veritatis!',
-                    'like_count' => 0,
-                    'approved' => false
-                ]
-            ])); // TODO
-
-            return view('events.session_list_questions',
+            return view('sessions.session_list_questions',
                 compact('session', 'state', 'roles', 'leader', 'admin', 'notify', 'qtde', 'event', 'questions'));
         }
 
 
     }
 
-    public function view_question($id) {}
+    public function view_question($id)
+    {
+        // TODO
+    }
+
+    public function list_quizz($id)
+    {
+        $session = $this->repository->findByField('id', $id)->first();
+
+        $countPerson[] = $this->countPerson();
+
+        $countGroups[] = $this->countGroups();
+
+        $state = $this->stateRepository->all();
+
+        $roles = $this->roleRepository->all();
+
+        $leader = $this->getLeaderRoleId();
+
+        $admin = $this->getAdminRoleId();
+
+        $notify = $this->notify();
+
+        $qtde = $notify ? count($notify) : null;
+
+        $event = $this->eventRepository->findByField('id', $session->event_id)->first();
+
+        $quizzes = json_decode(json_encode([
+            [
+                'id' => 1,
+                'order' => 1,
+                'content' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad, architecto dolores eaque, eos est impedit itaque maxime minima nostrum nulla quam totam voluptas voluptatem? Aliquid atque blanditiis quaerat velit veritatis!',
+                'alternatives' => [
+                    [
+                        'id' => 1,
+                        'content' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad, architecto dolores eaque, eos est impedit itaque maxime minima nostrum nulla quam totam voluptas voluptatem? Aliquid atque blanditiis quaerat velit veritatis!'
+                    ],
+                    [
+                        'id' => 2,
+                        'content' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad, architecto dolores eaque, eos est impedit itaque maxime minima nostrum nulla quam totam voluptas voluptatem? Aliquid atque blanditiis quaerat velit veritatis!'
+                    ],
+                    [
+                        'id' => 3,
+                        'content' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad, architecto dolores eaque, eos est impedit itaque maxime minima nostrum nulla quam totam voluptas voluptatem? Aliquid atque blanditiis quaerat velit veritatis!'
+                    ],
+                ]
+            ],
+            [
+                'id' => 2,
+                'order' => 2,
+                'content' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad, architecto dolores eaque, eos est impedit itaque maxime minima nostrum nulla quam totam voluptas voluptatem? Aliquid atque blanditiis quaerat velit veritatis!',
+                'alternatives' => [
+                    [
+                        'id' => 4,
+                        'content' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad, architecto dolores eaque, eos est impedit itaque maxime minima nostrum nulla quam totam voluptas voluptatem? Aliquid atque blanditiis quaerat velit veritatis!'
+                    ],
+                    [
+                        'id' => 5,
+                        'content' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad, architecto dolores eaque, eos est impedit itaque maxime minima nostrum nulla quam totam voluptas voluptatem? Aliquid atque blanditiis quaerat velit veritatis!'
+                    ],
+                    [
+                        'id' => 6,
+                        'content' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad, architecto dolores eaque, eos est impedit itaque maxime minima nostrum nulla quam totam voluptas voluptatem? Aliquid atque blanditiis quaerat velit veritatis!'
+                    ],
+                ]
+            ],
+        ])); // TODO
+
+        return view('events.session_list_quizz',
+            compact('session', 'state', 'roles', 'leader', 'admin', 'notify', 'qtde', 'event', 'quizzes'));
+    }
+
+    public function view_quizz_question($id)
+    {
+        // TODO
+        $question = json_decode(json_encode([
+            'id' => 1,
+            'order' => 1,
+            'content' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad, architecto dolores eaque, eos est impedit itaque maxime minima nostrum nulla quam totam voluptas voluptatem? Aliquid atque blanditiis quaerat velit veritatis!',
+            'alternatives' => [
+                [
+                    'id' => 1,
+                    'content' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad, architecto dolores eaque, eos est impedit itaque maxime minima nostrum nulla quam totam voluptas voluptatem? Aliquid atque blanditiis quaerat velit veritatis!',
+                    'choice_rate' => 10
+                ],
+                [
+                    'id' => 2,
+                    'content' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad, architecto dolores eaque, eos est impedit itaque maxime minima nostrum nulla quam totam voluptas voluptatem? Aliquid atque blanditiis quaerat velit veritatis!',
+                    'choice_rate' => 50
+                ],
+                [
+                    'id' => 3,
+                    'content' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad, architecto dolores eaque, eos est impedit itaque maxime minima nostrum nulla quam totam voluptas voluptatem? Aliquid atque blanditiis quaerat velit veritatis!',
+                    'choice_rate' => 40
+                ],
+            ]
+        ]));
+
+        return view('events.session_modal_quizz_question', compact('question'));
+    }
+
+    public function quizz_store()
+    {
+        // TODO
+    }
+
+    public function new_quizz()
+    {
+        return view('events.session_new_quizz');
+    }
 }

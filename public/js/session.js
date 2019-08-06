@@ -29,7 +29,6 @@ $(function(){
 
         $("#modal_end_time option[value|='"+end_time+"']").attr('selected', true);
 
-
         $("#modal_description").val(description);
 
         if(max_capacity == -1)
@@ -92,6 +91,20 @@ $(function(){
         deleteSession(id);
 
     });
+
+    $(".btn-deny").click(function () {
+
+        var id = this.id.replace('btn-deny-', '');
+
+        denyQuestion(id);
+    });
+
+    $('.btn-approve').click(function () {
+
+        var id = this.id.replace('btn-approve-', '');
+
+        approveQuestion(id);
+    })
 
 
 });
@@ -176,13 +189,49 @@ function verify_days()
 
 function deleteSession(id)
 {
-    var url = '/session/';
-    var msg = 'A sessão foi excluída com sucesso';
+    swal({
+        title: 'Atenção!',
+        text: 'Deseja excluir esta sessão? (Todos os dados serão perdidos)',
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonClass: 'btn-danger',
+        confirmButtonText: 'Sim, Excluir',
+        cancelButtonText: 'Cancelar',
+        closeOnConfirm: true,
+        closeOnCancel: true
 
-    if(Request(url, null, id, 'DELETE', false, msg))
-    {
-        $("#tr_" + id).remove();
-    }
+    }, function (isConfirm) {
 
+        if(isConfirm)
+        {
+            var url = '/session/';
+            var msg = 'A sessão foi excluída com sucesso';
 
+            if(Request(url, null, id, 'DELETE', false, msg))
+            {
+                $("#tr_" + id).remove();
+            }
+        }
+    });
 }
+
+function approveQuestion(id)
+{
+
+    var url = '/approve-question/';
+
+    var msg = 'A questão foi aprovada';
+
+    Request(url, null, id, 'PUT', false, msg);
+}
+
+function denyQuestion(id)
+{
+
+    var url = '/deny-question/';
+
+    var msg = 'A questão foi reprovada';
+
+    Request(url, null, id, 'PUT', false, msg);
+}
+

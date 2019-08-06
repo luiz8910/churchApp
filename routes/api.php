@@ -254,9 +254,30 @@ Route::post('/choose/{id}/{person_id}', 'Api\PollController@choose');
 
 //-------------------------- Sessões de Eventos ------------------------------------------------------------------------
 
+//Lista de Sessões por evento
 Route::get('/sessions/{event_id}', 'Api\SessionController@list');
 
+//Encontra a sessão desejada pelo código
 Route::get('/session-code/{code}', 'Api\SessionController@getCode');
+
+//-------------------------- Questões em Sessões -----------------------------------------------------------------------
+
+//Adiciona nova questão para sessão escolhida
+Route::post('/question', 'Api\QuestionController@store');
+
+/*
+ * Lista de Perguntas por sessão
+ * $session_id = id da sessão
+ * $page = número da página (deve ser maior que 1 caso informado)
+ */
+Route::get('/list-questions/{session_id}/{page?}', 'Api\QuestionController@index');
+
+// Usado para dar like numa pergunta. ID da questão
+Route::put('/add-like/{id}', 'Api\QuestionController@add_like');
+
+// Usado para retirar like numa pergunta. ID da questão
+Route::put('/remove-like/{id}', 'Api\QuestionController@remove_like');
+
 
 //-------------------------- Outros ------------------------------------------------------------------------------------
 

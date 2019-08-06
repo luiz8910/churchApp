@@ -152,6 +152,173 @@
             </div>
         </div>
 
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Lista de Perguntas Aprovadas
+                            <span class="span-btn-minimize" id="btn-minimize-list-questions">_</span>
+                        </h3>
+
+                    </div>
+                    <div class="panel-body hide-panel" id="list-questions">
+
+                        https://beconnect.com.br/api/list-questions/{session_id}/{page?}
+                        <span class="label label-primary">GET</span>
+
+                        <br><br>
+
+                        session_id = código da sessão <span class="label label-info" style="font-size: 12px;">Inteiro</span><br>
+                        page = número da página (Opcional) <span class="label label-info" style="font-size: 12px;">Inteiro</span><br>
+
+
+                        <br><br>
+
+                        <p>Se informado número da página deve ser maior que 1</p>
+
+                        <p class="text-center">Exemplo de Retorno</p>
+
+                        <pre>
+                            Se encontrado e número de questões for maior que 0
+                            {
+                                {
+                                    "status":true,
+                                    "count":1,
+                                    "questions":[{
+                                        "id":1,"person_id":5,"session_id":3,"content":"Lorem Ipsum ?",
+                                        "status":"approved","like_count":0,"created_at":"2019-08-05 19:10:03",
+                                        "updated_at":"2019-08-06 02:30:21","deleted_at":null
+                                    }]}
+                            }
+
+                            Senão
+
+                            {"status":false,"msg": "Esta sessão não existe"}
+                        </pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Adicionar Nova Questão
+                            <span class="span-btn-minimize" id="btn-minimize-store-question">_</span>
+                        </h3>
+
+                    </div>
+                    <div class="panel-body hide-panel" id="store-question">
+
+                        https://beconnect.com.br/api/store-question/
+                        <span class="label panel-success">POST</span>
+
+                        <br><br>
+
+                        <p class="text-center">Nomes dos campos</p>
+
+                        <pre>
+                            'content', 'person_id', session_id
+                        </pre>
+
+                        <br><br>
+
+                        <p class="text-center">Exemplo de Retorno</p>
+
+                        <pre>
+                            {"status":true}
+
+                            Se algum erro retornado
+
+                            {"status":false,"msg": "Mensagem de erro aqui"}
+
+                        </pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-warning">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Adicionar Like
+                            <span class="span-btn-minimize" id="btn-minimize-add-like">_</span>
+                        </h3>
+
+                    </div>
+                    <div class="panel-body hide-panel" id="add-like">
+
+                        https://beconnect.com.br/api/add-like/{question_id}
+                        <span class="label label-warning">PUT</span>
+
+                        <br><br>
+
+                        question_id = id da questão <span class="label label-info" style="font-size: 12px;">Inteiro</span><br>
+
+                        <br><br>
+
+                        <p class="text-center">Exemplo de Retorno</p>
+
+                        <pre>
+                            Se encontrado
+                            {
+                                {"status":true}
+                            }
+
+                            Senão
+
+                            {"status":false,"msg": "Esta questão não existe"}
+                        </pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-warning">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Remover Like
+                            <span class="span-btn-minimize" id="btn-minimize-remove-like">_</span>
+                        </h3>
+
+                    </div>
+                    <div class="panel-body hide-panel" id="remove-like">
+
+                        https://beconnect.com.br/api/remove-like/{question_id}
+                        <span class="label label-warning">PUT</span>
+
+                        <br><br>
+
+                        question_id = id da questão <span class="label label-info" style="font-size: 12px;">Inteiro</span><br>
+
+                        <br><br>
+
+                        <p class="text-center">Exemplo de Retorno</p>
+
+                        <pre>
+                            Se encontrado
+                            {
+                                {"status":true}
+                            }
+
+                            Senão
+
+                            {"status":false,"msg": "Esta questão não existe"}
+                        </pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
     </div>
 </div>

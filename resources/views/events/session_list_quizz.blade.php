@@ -64,8 +64,28 @@
                                             <div class="portlet-title">
                                                 <div class="caption font-green-haze">
                                                     <i class="fa fa-user font-green-haze"></i>
-                                                    <span class="caption-subject font-green-haze bold ">Sessões - {{ $session->name }} - Perguntas</span>
+                                                    <span class="caption-subject font-green-haze bold ">Sessões - {{ $session->name }} - Quizz</span>
                                                 </div>
+
+                                                <div class="actions">
+                                                    <div class="btn-group btn-group-sm">
+                                                        @if(Auth::user()->person->role_id == $leader
+                                                        || Auth::user()->person->role_id == $admin)
+                                                            <div class="col-lg-3">
+                                                                <div class="btn-group-devided">
+                                                                    <a role="button"
+                                                                       class="btn btn-info btn-circle btn-sm"
+                                                                       href="{{ route('event.session.new_quizz') }}"
+                                                                       style="margin-top: 2px;">
+                                                                        <i class="fa fa-plus"></i>
+                                                                        <span class="hidden-xs hidden-sm">Nova Questão</span>
+                                                                    </a>
+
+                                                                </div>
+                                                            </div>
+                                                        @endif
+                                                    </div> <!-- FIM DIV .btn-group -->
+                                                </div> <!-- FIM DIV .actions -->
                                             </div> <!-- FIM DIV .portlet-title -->
 
                                             <div class="portlet-body form">
@@ -79,54 +99,37 @@
                                                                 <table class="table table-hover table-light table-striped">
                                                                     <thead>
                                                                     <tr class="uppercase">
-                                                                        <th>Usuário</th>
-                                                                        <th>Pergunta</th>
-                                                                        <th>Status</th>
-                                                                        <th>Curtidas</th>
+                                                                        <th>#</th>
+                                                                        <th>Questão</th>
                                                                         <th>Opções</th>
                                                                         <th></th>
                                                                     </tr>
                                                                     </thead>
                                                                     <tbody class="hide" id="tbody-search"></tbody>
                                                                     <tbody>
-                                                                    @foreach($questions as $question)
+                                                                    @foreach($quizzes as $quizz)
                                                                         <tr>
-                                                                            <td>
-                                                                                <a href="javascript:">
-                                                                                    <img src="/uploads/profile/noimage.png" alt=""
-                                                                                         style="width: 50px; height: 50px;">
-                                                                                    <p>{{$question->user->name}}</p>
-                                                                                </a>
-                                                                            </td>
-                                                                            <td>{{$question->content}}</td>
-                                                                            @if($question->approved)
-                                                                                <td><span class="label label-success">Aprovada</span></td>
-                                                                            @endif
-                                                                            @if(!$question->approved)
-                                                                                <td><span class="label label-danger">Não Aprovada</span></td>
-                                                                            @endif
-                                                                            <td><span class="badge">{{$question->like_count}}</span></td>
-                                                                            <td>
-                                                                                <a href="{{ route('event.session.view_question', ['id' => $question->id]) }}"
-                                                                                   class="btn btn-warning btn-sm btn-circle" title="Visualizar Pergunta"
-                                                                                   data-toggle="modal" data-target="#modal-padrao" data-remote="false"
+                                                                            <td>{{$quizz->order}}</td>
+                                                                            <td>{{$quizz->content}}</td>
+                                                                            <td class="d-flex-center">
+                                                                                <a href="{{ route('event.session.view_quizz_question', ['id' => $quizz->id]) }}"
+                                                                                   class="btn btn-warning btn-sm btn-circle"
+                                                                                   title="Visualizar Questão"
+                                                                                   data-toggle="modal"
+                                                                                   data-target="#modal-padrao"
+                                                                                   data-remote="false"
                                                                                    modal-remote="true">
                                                                                     <i class="fa fa-eye"></i>
-                                                                                    Visualizar
                                                                                 </a>
-                                                                                @if($question->approved)
-                                                                                    <button class="btn btn-danger btn-sm btn-circle">
-                                                                                        <i class="fa fa-ban"></i>
-                                                                                        Desaprovar
-                                                                                    </button>
-                                                                                @endif
-
-                                                                                @if(!$question->approved)
-                                                                                    <button class="btn btn-success btn-sm btn-circle">
-                                                                                        <i class="fa fa-thumbs-up"></i>
-                                                                                        Aprovar
-                                                                                    </button>
-                                                                                @endif
+                                                                                <a href="{{ route('event.session.view_question', ['id' => $quizz->id]) }}"
+                                                                                   class="btn btn-danger btn-sm btn-circle"
+                                                                                   title="Visualizar Pergunta"
+                                                                                   data-toggle="modal"
+                                                                                   data-target="#modal-padrao"
+                                                                                   data-remote="false"
+                                                                                   modal-remote="true">
+                                                                                    <i class="fa fa-trash"></i>
+                                                                                </a>
                                                                             </td>
                                                                         </tr>
                                                                     @endforeach

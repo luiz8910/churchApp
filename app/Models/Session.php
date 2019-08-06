@@ -22,8 +22,8 @@ class Session extends Model implements Transformable
      * @var array
      */
     protected $fillable = [
-            'event_id', 'name', 'max_capacity', 'location', 'start_time', 'end_time', 'description', 'tag',
-            'session_date', 'code'
+            'event_id', 'name', 'max_capacity', 'location', 'start_time',
+            'end_time', 'description', 'tag', 'session_date', 'code'
         ];
 
     protected $dates = ['deleted_at'];

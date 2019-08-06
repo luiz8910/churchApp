@@ -418,13 +418,25 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('session-modal-code/{id}', 'SessionController@modal_code')->name('event.session.modal_code');
 
-        Route::get('session-list-questions/{id}', 'SessionController@list_questions')->name('event.session.list_questions');
+        Route::get('session-list-questions/{id}', 'QuestionController@index')->name('event.session.list_questions');
 
         Route::get('session-view-question/{id}', 'SessionController@view_question')->name('event.session.view_question');
 
         Route::get('verify_days_session/{id}', 'SessionController@event_days');
 
         Route::delete('session/{id}', 'SessionController@delete');
+
+        Route::put('/approve-question/{id}', 'QuestionController@approve');
+
+        Route::put('/deny-question/{id}', 'QuestionController@deny');
+
+        Route::get('session-list_quizz/{id}', 'SessionController@list_quizz')->name('event.session.list_quizz');
+
+        Route::get('session-view-quizz-question/{id}', 'SessionController@view_quizz_question')->name('event.session.view_quizz_question');
+
+        Route::post('quizz/store', 'SessionController@quizz_store')->name('event.quizz_store');
+
+        Route::get('session-new-quizz', 'SessionController@new_quizz')->name('event.session.new_quizz');
 
         Route::get('check-in_manual/{event_id}/{person_id}', 'EventController@checkin_manual');
 
