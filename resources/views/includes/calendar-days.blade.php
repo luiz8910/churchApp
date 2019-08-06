@@ -53,6 +53,14 @@
                         </p>
                     </a>
 
+                    <a href="{{ route('event.sessions', ['event_id' => $allEvents[$x]->event_id]) }}"
+                       class="context-menu-p">
+                        <p>
+                            <i class="fa fa-calendar font-blue"></i>
+                            Sessões
+                        </p>
+                    </a>
+
                     <a href="{{ route('sendqr.email.all', ['event' => $allEvents[$x]->event_id]) }}"
                        class="context-menu-p">
                         <p>
