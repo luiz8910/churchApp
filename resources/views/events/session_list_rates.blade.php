@@ -64,24 +64,28 @@
                                             <div class="portlet-title">
                                                 <div class="caption font-green-haze">
                                                     <i class="fa fa-user font-green-haze"></i>
-                                                    <span class="caption-subject font-green-haze bold ">Sessões - {{ $session->name }} - Quizz</span>
+                                                    <span class="caption-subject font-green-haze bold ">Sessões - {{ $session->name }} - Avaliações</span>
                                                 </div>
 
                                                 <div class="actions">
                                                     <div class="btn-group btn-group-sm">
                                                         @if(Auth::user()->person->role_id == $leader
                                                         || Auth::user()->person->role_id == $admin)
-                                                            <div class="col-lg-3">
-                                                                <div class="btn-group-devided">
-                                                                    <a role="button"
-                                                                       class="btn btn-info btn-circle btn-sm"
-                                                                       href="{{ route('event.session.new_quizz') }}"
-                                                                       style="margin-top: 2px;">
-                                                                        <i class="fa fa-plus"></i>
-                                                                        <span class="hidden-xs hidden-sm">Nova Questão</span>
-                                                                    </a>
-
-                                                                </div>
+                                                            <div class="d-flex-center">
+                                                                <a role="button"
+                                                                   class="btn btn-info btn-circle btn-sm"
+                                                                   href="javascript:;"
+                                                                   style="margin-top: 2px;">
+                                                                    <i class="fa fa-print"></i>
+                                                                    <span class="hidden-xs hidden-sm">Imprimir/PDF</span>
+                                                                </a>
+                                                                <a role="button"
+                                                                   class="btn btn-info btn-circle btn-sm"
+                                                                   href="javascript:;"
+                                                                   style="margin-top: 2px;">
+                                                                    <i class="fa fa-file-excel-o"></i>
+                                                                    <span class="hidden-xs hidden-sm">Exportar para Excel</span>
+                                                                </a>
                                                             </div>
                                                         @endif
                                                     </div> <!-- FIM DIV .btn-group -->
@@ -99,34 +103,34 @@
                                                                 <table class="table table-hover table-light table-striped">
                                                                     <thead>
                                                                     <tr class="uppercase">
-                                                                        <th>#</th>
-                                                                        <th>Questão</th>
+                                                                        <th>Usuário</th>
+                                                                        <th>Média de Avaliações</th>
                                                                         <th>Opções</th>
                                                                         <th></th>
                                                                     </tr>
                                                                     </thead>
                                                                     <tbody class="hide" id="tbody-search"></tbody>
                                                                     <tbody>
-                                                                    @foreach($quizzes as $quizz)
+                                                                    @foreach($rates as $rate)
                                                                         <tr>
-                                                                            <td>{{$quizz->order}}</td>
-                                                                            <td>{{$quizz->content}}</td>
+                                                                            <td>
+                                                                                <a href="javascript:">
+                                                                                    <img src="/uploads/profile/noimage.png"
+                                                                                         alt=""
+                                                                                         style="width: 50px; height: 50px;">
+                                                                                    <p>{{$rate->user->name}}</p>
+                                                                                </a>
+                                                                            </td>
+                                                                            <td>{{$rate->average}}</td>
                                                                             <td class="d-flex-center">
-                                                                                <a href="{{ route('event.session.view_quizz_question', ['id' => $quizz->id]) }}"
+                                                                                <a href="{{ route('event.session.view_rate', ['user_id' => $rate->user->id, 'session_id' => $session->id]) }}"
                                                                                    class="btn btn-warning btn-sm btn-circle"
-                                                                                   title="Visualizar Questão"
+                                                                                   title="Visualizar Avaliação"
                                                                                    data-toggle="modal"
                                                                                    data-target="#modal-padrao"
                                                                                    data-remote="false"
                                                                                    modal-remote="true">
                                                                                     <i class="fa fa-eye"></i>
-                                                                                </a>
-                                                                                <a href="{{ route('event.session.delete_quizz', ['id' => $quizz->id]) }}"
-                                                                                   class="btn btn-danger btn-sm btn-circle"
-                                                                                   title="Excluir Questão"
-                                                                                   onclick="return excluir(this)"
-                                                                                   data-id="{{$quizz->id}}">
-                                                                                    <i class="fa fa-trash"></i>
                                                                                 </a>
                                                                             </td>
                                                                         </tr>
@@ -134,14 +138,10 @@
                                                                     </tbody>
                                                                 </table>
                                                                 <br>
-
                                                             </div>
-
                                                         </div>
                                                     </div>
                                                 </div>
-
-
                                             </div> <!-- FIM DIV .portlet-body form -->
                                         </div> <!-- FIM DIV .portlet light -->
                                     </div> <!-- FIM DIV .col-md-12 -->

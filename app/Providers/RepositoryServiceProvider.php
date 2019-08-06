@@ -65,6 +65,10 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(\App\Repositories\ExhibitorsRepository::class, \App\Repositories\ExhibitorsRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\SponsorRepository::class, \App\Repositories\SponsorRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\SponsorCategoryRepository::class, \App\Repositories\SponsorCategoryRepositoryEloquent::class);
+        $this->app->bind(\App\Repositories\SpeakerRepository::class, \App\Repositories\SpeakerRepositoryEloquent::class);
+        $this->app->bind(\App\Repositories\SpeakerCategoryRepository::class, \App\Repositories\SpeakerCategoryRepositoryEloquent::class);
+        $this->app->bind(\App\Repositories\ProviderRepository::class, \App\Repositories\ProviderRepositoryEloquent::class);
+        $this->app->bind(\App\Repositories\ProviderCategoryRepository::class, \App\Repositories\ProviderCategoryRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\DocumentRepository::class, \App\Repositories\DocumentRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\PollRepository::class, \App\Repositories\PollRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\PollItensRepository::class, \App\Repositories\PollItensRepositoryEloquent::class);

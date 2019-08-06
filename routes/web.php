@@ -147,6 +147,58 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::delete('/categorias-patrocinadores/{id}', 'SponsorController@delete_cat')->name('sponsors.delete.cat');
 
+        //---------------------------------- Fornecedores ------------------------------------------------------------
+
+        Route::get('/fornecedores', "ProviderController@index")->name('providers.index');
+
+        Route::get('/fornecedores_cat/{id}', "ProviderController@listByCategory")->name('providers.index.listByCat');
+
+        Route::get('/fornecedores_novo', 'ProviderController@create')->name('providers.create');
+
+        Route::get('/fornecedores_editar/{id}', 'ProviderController@edit')->name('providers.edit');
+
+        Route::post('/providers', 'ProviderController@store')->name('providers.store');
+
+        Route::put('/providers/{id}', 'ProviderController@update')->name('providers.update');
+
+        Route::delete('/providers/{id}', 'ProviderController@delete')->name('providers.delete');
+
+        //--------------------------------- Categorias de Fornecedores --------------------------------------------------
+
+        Route::get('/categorias-fornecedores', 'ProviderController@index_cat')->name('providers.index.cat');
+
+        Route::post('/categorias-fornecedores', 'ProviderController@store_cat')->name('providers.store.cat');
+
+        Route::put('/categorias-fornecedores/{id}', 'ProviderController@update_cat')->name('providers.update.cat');
+
+        Route::delete('/categorias-fornecedores/{id}', 'ProviderController@delete_cat')->name('providers.delete.cat');
+
+        //---------------------------------- Palestrantes ------------------------------------------------------------
+
+        Route::get('/palestrantes', "SpeakerController@index")->name('speakers.index');
+
+        Route::get('/palestrantes_cat/{id}', "SpeakerController@listByCategory")->name('speakers.index.listByCat');
+
+        Route::get('/palestrantes_novo', 'SpeakerController@create')->name('speakers.create');
+
+        Route::get('/palestrantes_editar/{id}', 'SpeakerController@edit')->name('speakers.edit');
+
+        Route::post('/speakers', 'SpeakerController@store')->name('speakers.store');
+
+        Route::put('/speakers/{id}', 'SpeakerController@update')->name('speakers.update');
+
+        Route::delete('/speakers/{id}', 'SpeakerController@delete')->name('speakers.delete');
+
+        //--------------------------------- Categorias de Palestrantes --------------------------------------------------
+
+        Route::get('/categorias-palestrantes', 'SpeakerController@index_cat')->name('speakers.index.cat');
+
+        Route::post('/categorias-palestrantes', 'SpeakerController@store_cat')->name('speakers.store.cat');
+
+        Route::put('/categorias-palestrantes/{id}', 'SpeakerController@update_cat')->name('speakers.update.cat');
+
+        Route::delete('/categorias-palestrantes/{id}', 'SpeakerController@delete_cat')->name('speakers.delete.cat');
+
         //---------------------------------- Documentos ----------------------------------------------------------------
 
 
@@ -437,6 +489,26 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('quizz/store', 'SessionController@quizz_store')->name('event.quizz_store');
 
         Route::get('session-new-quizz', 'SessionController@new_quizz')->name('event.session.new_quizz');
+
+        Route::get('session-delete-quizz/{id}', 'SessionController@delete_quizz')->name('event.session.delete_quizz');
+
+        Route::get('session-approve-question/{id}', 'SessionController@approve_question')->name('event.session.approve_question');
+
+        Route::get('session-unapprove-question/{id}', 'SessionController@unapprove_question')->name('event.session.unapprove_question');
+
+        Route::get('session-list-types-rates/{id}', 'SessionController@list_types_rates')->name('event.session.list_types_rates');
+
+        Route::get('session-new-type-rate/{session_id}', 'SessionController@new_type_rate')->name('event.session.new_type_rate');
+
+        Route::post('session-store-type-rate', 'SessionController@store_type_rate')->name('event.session_store_type_rate');
+
+        Route::get('session-edit-type-rate/{id}', 'SessionController@edit_type_rate')->name('event.session.edit_type_rate');
+
+        Route::get('session-delete-type-rate/{id}', 'SessionController@delete_type_rate')->name('event.session.delete_type_rate');
+
+        Route::get('session-list-rates/{id}', 'SessionController@list_rates')->name('event.session.list_rates');
+
+        Route::get('session-view-rate/{user_id}/{session_id}', 'SessionController@view_rate')->name('event.session.view_rate');
 
         Route::get('check-in_manual/{event_id}/{person_id}', 'EventController@checkin_manual');
 

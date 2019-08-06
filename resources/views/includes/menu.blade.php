@@ -154,6 +154,19 @@
                                 </a>
                             </li>
 
+                            <li>
+                                <a href="{{ route('providers.index') }}">
+                                    <i class="fa fa-institution"></i>
+                                    Fornecedores
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="{{ route('speakers.index') }}">
+                                    <i class="fa fa-microphone"></i>
+                                    Palestrantes
+                                </a>
+                            </li>
 
                             <li>
                                 <a href="{{ route('documents.index') }}">
