@@ -28,16 +28,12 @@
             </ul>
         </li>
 
-        <li>
-            <a href={{ route('docs.groups') }}>Grupos</a>
-</li>
-
 <li>
     <a href="{{ route('docs.activity') }}">Atividades Recentes</a>
 </li>
 
 <li>
-    <a href="{{ route('docs.people') }}">Pessoas e Visitantes</a>
+    <a href="{{ route('docs.people') }}">Pessoas</a>
 </li>
 
 <li>
@@ -68,6 +64,13 @@
             <li>
                 <a href="{{ route('docs.polls') }}">Enquetes</a>
             </li>
+            <li>
+                <a href="{{ route('docs.speakers') }}">Palestrantes</a>
+            </li>
+            <li>
+                <a href="{{ route('docs.providers') }}">Fornecedores</a>
+            </li>
+
         </ul>
     </div>
 

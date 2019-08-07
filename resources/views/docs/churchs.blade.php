@@ -20,7 +20,7 @@
     <div class="jumbotron">
         <div class="container">
             <h1 class="text-center">Documentação (API)</h1>
-            <p class="text-center">Lista de Igrejas</p>
+            <p class="text-center">Lista de Orgs</p>
 
         </div>
     </div>
@@ -56,7 +56,7 @@
                 <div class="panel panel-primary">
                     <div class="panel-heading">
                         <h3 class="panel-title">
-                            Lista de Todas as Igrejas
+                            Lista de Todas as Orgs
                             <span class="span-btn-minimize" id="btn-minimize-church-list">_</span>
                         </h3>
                     </div>
@@ -70,7 +70,7 @@
                         <p class="text-center">Exemplo de Retorno</p>
 
                     <pre>
-                        [{"id":1,"name":"Imel Sorocaba"},{"id":7,"name":"Igreja X"}]
+                        [{"id":1,"name":"Imel Sorocaba"},{"id":7,"name":"Org Teste"}]
                     </pre>
                     </div>
                 </div>

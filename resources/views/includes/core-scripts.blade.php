@@ -50,6 +50,7 @@
 
 <script src="../js/jquery.clever-infinite-scroll.js"></script>
 
+<script src="../assets/global/plugins/sweetalert2/sweetalert2.min.js" type="text/javascript"></script>
 
 <!-- END THEME LAYOUT SCRIPTS -->
 <!-- JS Próprio -->

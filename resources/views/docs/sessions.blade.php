@@ -175,7 +175,8 @@
 
                         <br><br>
 
-                        <p>Se informado número da página deve ser maior que 1</p>
+                        <p>Se informado número da página deve ser maior que 1,</p>
+                        <p>Se omitido então retornará todas as questões daquela sessão</p>
 
                         <p class="text-center">Exemplo de Retorno</p>
 

@@ -576,4 +576,194 @@ class SessionController extends Controller
     {
         return view('events.session_new_quizz');
     }
+
+    public function delete_quizz($id)
+    {
+        // TODO
+    }
+
+    public function approve_question($id)
+    {
+        // TODO
+    }
+
+    public function unapprove_question($id)
+    {
+        // TODO
+    }
+
+    public function list_types_rates($id)
+    {
+        // TODO
+        $session = $this->repository->findByField('id', $id)->first();
+
+        $countPerson[] = $this->countPerson();
+
+        $countGroups[] = $this->countGroups();
+
+        $state = $this->stateRepository->all();
+
+        $roles = $this->roleRepository->all();
+
+        $leader = $this->getLeaderRoleId();
+
+        $admin = $this->getAdminRoleId();
+
+        $notify = $this->notify();
+
+        $qtde = $notify ? count($notify) : null;
+
+        $event = $this->eventRepository->findByField('id', $session->event_id)->first();
+
+        $types_rates = json_decode(json_encode([
+            [
+                'id' => 1,
+                'title' => 'Lorem Ipsum'
+            ],
+        ]));
+
+        return view('events.session_list_types_rates',
+            compact('session', 'state', 'roles', 'leader', 'admin', 'notify', 'qtde', 'event', 'types_rates'));
+    }
+
+    public function new_type_rate($session_id)
+    {
+        return view('events.session_new_type_rate', compact('session_id'));
+    }
+
+    public function edit_type_rate($id)
+    {
+        // TODO
+        $type_rate = json_decode(json_encode(
+            [
+                'id' => 1,
+                'title' => 'Lorem Ipsum'
+            ]
+        ));
+
+        return view('events.session_edit_type_rate', compact('type_rate'));
+    }
+
+    public function delete_typer_rate($id)
+    {
+        // TODO
+    }
+
+    public function list_rates($id)
+    {
+        // TODO
+        $session = $this->repository->findByField('id', $id)->first();
+
+        $countPerson[] = $this->countPerson();
+
+        $countGroups[] = $this->countGroups();
+
+        $state = $this->stateRepository->all();
+
+        $roles = $this->roleRepository->all();
+
+        $leader = $this->getLeaderRoleId();
+
+        $admin = $this->getAdminRoleId();
+
+        $notify = $this->notify();
+
+        $qtde = $notify ? count($notify) : null;
+
+        $event = $this->eventRepository->findByField('id', $session->event_id)->first();
+
+        $rates = json_decode(json_encode([
+            [
+                'user' => ['name' => 'Joãozinho', 'id' => 1],
+                'average' => 4,
+                'user_rates' => [
+                    [
+                        'id' => 1,
+                        'type_rate' => ['id' => 1, 'title' => 'Lorem Ipsum'],
+                        'star_count' => 3,
+                        'comment' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad, architecto dolores eaque, eos est impedit itaque maxime minima nostrum nulla quam totam voluptas voluptatem? Aliquid atque blanditiis quaerat velit veritatis!'
+                    ],
+                    [
+                        'id' => 2,
+                        'type_rate' => ['id' => 1, 'title' => 'Lorem Ipsum'],
+                        'star_count' => 5,
+                        'comment' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad, architecto dolores eaque, eos est impedit itaque maxime minima nostrum nulla quam totam voluptas voluptatem? Aliquid atque blanditiis quaerat velit veritatis!'
+                    ]
+                ]
+            ],
+            [
+                'user' => ['name' => 'Mariazinha', 'id' => 2],
+                'average' => 3,
+                'user_rates' => [
+                    [
+                        'id' => 3,
+                        'type_rate' => ['id' => 1, 'title' => 'Lorem Ipsum'],
+                        'star_count' => 1,
+                        'comment' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad, architecto dolores eaque, eos est impedit itaque maxime minima nostrum nulla quam totam voluptas voluptatem? Aliquid atque blanditiis quaerat velit veritatis!'
+                    ],
+                    [
+                        'id' => 4,
+                        'type_rate' => ['id' => 1, 'title' => 'Lorem Ipsum'],
+                        'star_count' => 5,
+                        'comment' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad, architecto dolores eaque, eos est impedit itaque maxime minima nostrum nulla quam totam voluptas voluptatem? Aliquid atque blanditiis quaerat velit veritatis!'
+                    ]
+                ]
+            ],
+        ]));
+
+        return view('events.session_list_rates',
+            compact('session', 'state', 'roles', 'leader', 'admin', 'notify', 'qtde', 'event', 'rates'));
+    }
+
+    public function view_rate($user_id, $session_id)
+    {
+        $session = $this->repository->findByField('id', $session_id)->first();
+
+        // TODO
+        $question = json_decode(json_encode([
+            'id' => 1,
+            'order' => 1,
+            'content' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad, architecto dolores eaque, eos est impedit itaque maxime minima nostrum nulla quam totam voluptas voluptatem? Aliquid atque blanditiis quaerat velit veritatis!',
+            'alternatives' => [
+                [
+                    'id' => 1,
+                    'content' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad, architecto dolores eaque, eos est impedit itaque maxime minima nostrum nulla quam totam voluptas voluptatem? Aliquid atque blanditiis quaerat velit veritatis!',
+                    'choice_rate' => 10
+                ],
+                [
+                    'id' => 2,
+                    'content' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad, architecto dolores eaque, eos est impedit itaque maxime minima nostrum nulla quam totam voluptas voluptatem? Aliquid atque blanditiis quaerat velit veritatis!',
+                    'choice_rate' => 50
+                ],
+                [
+                    'id' => 3,
+                    'content' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad, architecto dolores eaque, eos est impedit itaque maxime minima nostrum nulla quam totam voluptas voluptatem? Aliquid atque blanditiis quaerat velit veritatis!',
+                    'choice_rate' => 40
+                ],
+            ]
+        ]));
+
+        $rate = json_decode(json_encode(
+            [
+                'user' => ['name' => 'Joãozinho', 'id' => 1],
+                'average' => 4,
+                'user_rates' => [
+                    [
+                        'id' => 1,
+                        'type_rate' => ['id' => 1, 'title' => 'Lorem Ipsum'],
+                        'star_count' => 3,
+                        'comment' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad, architecto dolores eaque, eos est impedit itaque maxime minima nostrum nulla quam totam voluptas voluptatem? Aliquid atque blanditiis quaerat velit veritatis!'
+                    ],
+                    [
+                        'id' => 2,
+                        'type_rate' => ['id' => 1, 'title' => 'Lorem Ipsum'],
+                        'star_count' => 5,
+                        'comment' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad, architecto dolores eaque, eos est impedit itaque maxime minima nostrum nulla quam totam voluptas voluptatem? Aliquid atque blanditiis quaerat velit veritatis!'
+                    ]
+                ]
+            ]
+        ));
+
+        return view('events.session_modal_view_rate', compact('rate', 'question', 'session'));
+    }
 }

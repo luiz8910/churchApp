@@ -147,13 +147,13 @@ Route::post('update-person/{person_id}', 'Api\PersonController@update');
 //------------------------- Expositores --------------------------------------------------------------------------------
 
 //Lista de Todos os expositores
-Route::get('/exhibitors', 'Api\ExhibitorsController@index');
+Route::get('/exhibitors/{event_id?}', 'Api\ExhibitorsController@index');
 
 //Lista de todos os expositores por categoria (pela id da categoria)
 Route::get('/exhibitors-by-cat/{category}', 'Api\ExhibitorsController@listByCategory');
 
 //Cadastro de Expositores
-Route::post('/exhibitors', 'Api\ExhibitorsController@store');
+Route::post('/exhibitors/{event_id?}', 'Api\ExhibitorsController@store');
 
 //Alteração de Expositores
 Route::put('/exhibitors/{id}', 'Api\ExhibitorsController@update');
@@ -164,15 +164,18 @@ Route::delete('/exhibitors/{id}', 'Api\ExhibitorsController@delete');
 //Feed Para Expositores
 Route::post('/exhibitors-feed/', 'FeedController@exhibitorsFeed');
 
+//Detalhes de um Expositor
+Route::get('/exhibitor/{id}', 'Api\ExhibitorsController@show');
+
 
 
 //------------------------ Categorias de Expositores -------------------------------------------------------------------
 
 //Lista de todas as Categorias
-Route::get('/exhibitors-categories', 'Api\ExhibitorsController@index_cat');
+Route::get('/exhibitors-categories/{event_id?}', 'Api\ExhibitorsController@index_cat');
 
 //Cadastro de Categoria
-Route::post('/exhibitors-categories', 'Api\ExhibitorsController@store_cat');
+Route::post('/exhibitors-categories/{event_id?}', 'Api\ExhibitorsController@store_cat');
 
 //Alteração de Categoria
 Route::put('/exhibitors-categories/{category}', 'Api\ExhibitorsController@update_cat');
@@ -181,18 +184,16 @@ Route::put('/exhibitors-categories/{category}', 'Api\ExhibitorsController@update
 Route::delete('/exhibitors-categories/{category}', 'Api\ExhibitorsController@delete_cat');
 
 
-
-
 //------------------------ Patrocinadores ------------------------------------------------------------------------------
 
 //Lista de Todos os Patrocinadores
-Route::get('/sponsors', 'Api\SponsorController@index');
+Route::get('/sponsors/{event_id?}', 'Api\SponsorController@index');
 
 //Lista de todos os Patrocinadores por categoria (pela id da categoria)
 Route::get('/sponsors-by-cat/{category}', 'Api\SponsorController@listByCategory');
 
 //Cadastro de Patrocinadores
-Route::post('/sponsors', 'Api\SponsorController@store');
+Route::post('/sponsors/', 'Api\SponsorController@store');
 
 //Alteração de Patrocinadores
 Route::put('/sponsors/{id}', 'Api\SponsorController@update');
@@ -200,21 +201,93 @@ Route::put('/sponsors/{id}', 'Api\SponsorController@update');
 //Exclusão de Patrocinadores
 Route::delete('/sponsors/{id}', 'Api\SponsorController@delete');
 
+//Detalhes de um Expositor
+Route::get('/sponsor/{id}', 'Api\SponsorController@show');
 
 
 //------------------------ Categorias de Patrocinadores ----------------------------------------------------------------
 
 //Lista de todas as Categorias
-Route::get('/sponsors-categories', 'Api\SponsorController@index_cat');
+Route::get('/sponsors-categories/{event_id?}', 'Api\SponsorController@index_cat');
 
 //Cadastro de Categoria
-Route::post('/sponsors-categories', 'Api\SponsorController@store_cat');
+Route::post('/sponsors-categories/{event_id?}', 'Api\SponsorController@store_cat');
 
 //Alteração de Categoria
 Route::put('/sponsors-categories/{category}', 'Api\SponsorController@update_cat');
 
 //Exclusão de Categoria
 Route::delete('/sponsors-categories/{category}', 'Api\SponsorController@delete_cat');
+
+//------------------------ Palestrantes --------------------------------------------------------------------------------
+
+//Lista de Todos os Palestrantes
+Route::get('/speakers/{event_id?}', 'Api\SpeakerController@index');
+
+//Lista de todos os Palestrantes por categoria (pela id da categoria)
+Route::get('/speakers-by-cat/{category}', 'Api\SpeakerController@listByCategory');
+
+//Cadastro de Palestrantes
+Route::post('/speakers/', 'Api\SpeakerController@store');
+
+//Alteração de Palestrantes
+Route::put('/speakers/{id}', 'Api\SpeakerController@update');
+
+//Exclusão de Palestrantes
+Route::delete('/speakers/{id}', 'Api\SpeakerController@delete');
+
+//Detalhes de um Palestrante
+Route::get('/speaker/{id}', 'Api\SpeakerController@show');
+
+
+//------------------------ Categorias de Palestrantes ------------------------------------------------------------------
+
+//Lista de todas as Categorias
+Route::get('/speakers-categories/{event_id?}', 'Api\SpeakerController@index_cat');
+
+//Cadastro de Categoria
+Route::post('/speakers-categories/{event_id?}', 'Api\SpeakerController@store_cat');
+
+//Alteração de Categoria
+Route::put('/speakers-categories/{category}', 'Api\SpeakerController@update_cat');
+
+//Exclusão de Categoria
+Route::delete('/speakers-categories/{category}', 'Api\SpeakerController@delete_cat');
+
+//------------------------ Fornecedores --------------------------------------------------------------------------------
+
+//Lista de Todos os Fornecedores
+Route::get('/providers/{event_id?}', 'Api\ProviderController@index');
+
+//Lista de todos os Fornecedores por categoria (pela id da categoria)
+Route::get('/providers-by-cat/{category}', 'Api\ProviderController@listByCategory');
+
+//Cadastro de Fornecedores
+Route::post('/providers/', 'Api\ProviderController@store');
+
+//Alteração de Fornecedores
+Route::put('/providers/{id}', 'Api\ProviderController@update');
+
+//Exclusão de Fornecedores
+Route::delete('/providers/{id}', 'Api\ProviderController@delete');
+
+//Detalhes de um Expositor
+Route::get('/provider/{id}', 'Api\ProviderController@show');
+
+
+//------------------------ Categorias de Fornecedores ------------------------------------------------------------------
+
+//Lista de todas as Categorias
+Route::get('/providers-categories/{event_id?}', 'Api\ProviderController@index_cat');
+
+//Cadastro de Categoria
+Route::post('/providers-categories/{event_id?}', 'Api\ProviderController@store_cat');
+
+//Alteração de Categoria
+Route::put('/providers-categories/{category}', 'Api\ProviderController@update_cat');
+
+//Exclusão de Categoria
+Route::delete('/providers-categories/{category}', 'Api\ProviderController@delete_cat');
 
 
 //---------------------------------- Documentos ------------------------------------------------------------------------

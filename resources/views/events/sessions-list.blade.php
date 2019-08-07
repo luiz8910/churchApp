@@ -202,6 +202,14 @@
                                                                                class="btn btn-warning btn-sm btn-circle" title="Listar Quizz">
                                                                                 <i class="fa fa-check-square"></i>
                                                                             </a>
+                                                                            <a href="{{ route('event.session.list_types_rates', ['id' => $item->id]) }}"
+                                                                               class="btn btn-warning btn-sm btn-circle" title="Listar Tipos de Avaliações">
+                                                                                <i class="fa fa-star"></i>
+                                                                            </a>
+                                                                            <a href="{{ route('event.session.list_rates', ['id' => $item->id]) }}"
+                                                                               class="btn btn-warning btn-sm btn-circle" title="Listar Avaliações">
+                                                                                <i class="fa fa-comments"></i>
+                                                                            </a>
                                                                         </td>
                                                                     </tr>
 

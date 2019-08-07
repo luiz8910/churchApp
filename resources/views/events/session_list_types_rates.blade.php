@@ -64,7 +64,7 @@
                                             <div class="portlet-title">
                                                 <div class="caption font-green-haze">
                                                     <i class="fa fa-user font-green-haze"></i>
-                                                    <span class="caption-subject font-green-haze bold ">Sessões - {{ $session->name }} - Quizz</span>
+                                                    <span class="caption-subject font-green-haze bold ">Sessões - {{ $session->name }} - Tipos de Avaliações</span>
                                                 </div>
 
                                                 <div class="actions">
@@ -75,10 +75,10 @@
                                                                 <div class="btn-group-devided">
                                                                     <a role="button"
                                                                        class="btn btn-info btn-circle btn-sm"
-                                                                       href="{{ route('event.session.new_quizz') }}"
+                                                                       href="{{ route('event.session.new_type_rate', ['session_id' => $session->id]) }}"
                                                                        style="margin-top: 2px;">
                                                                         <i class="fa fa-plus"></i>
-                                                                        <span class="hidden-xs hidden-sm">Nova Questão</span>
+                                                                        <span class="hidden-xs hidden-sm">Novo Tipo de Avaliação</span>
                                                                     </a>
 
                                                                 </div>
@@ -99,33 +99,27 @@
                                                                 <table class="table table-hover table-light table-striped">
                                                                     <thead>
                                                                     <tr class="uppercase">
-                                                                        <th>#</th>
-                                                                        <th>Questão</th>
+                                                                        <th>Título</th>
                                                                         <th>Opções</th>
                                                                         <th></th>
                                                                     </tr>
                                                                     </thead>
                                                                     <tbody class="hide" id="tbody-search"></tbody>
                                                                     <tbody>
-                                                                    @foreach($quizzes as $quizz)
+                                                                    @foreach($types_rates as $type_rate)
                                                                         <tr>
-                                                                            <td>{{$quizz->order}}</td>
-                                                                            <td>{{$quizz->content}}</td>
+                                                                            <td>{{$type_rate->title}}</td>
                                                                             <td class="d-flex-center">
-                                                                                <a href="{{ route('event.session.view_quizz_question', ['id' => $quizz->id]) }}"
+                                                                                <a href="{{ route('event.session.edit_type_rate', ['id' => $type_rate->id]) }}"
                                                                                    class="btn btn-warning btn-sm btn-circle"
-                                                                                   title="Visualizar Questão"
-                                                                                   data-toggle="modal"
-                                                                                   data-target="#modal-padrao"
-                                                                                   data-remote="false"
-                                                                                   modal-remote="true">
-                                                                                    <i class="fa fa-eye"></i>
+                                                                                   title="Editar Tipo de Avaliação">
+                                                                                    <i class="fa fa-edit"></i>
                                                                                 </a>
-                                                                                <a href="{{ route('event.session.delete_quizz', ['id' => $quizz->id]) }}"
+                                                                                <a href="{{ route('event.session.delete_type_rate', ['id' => $type_rate->id]) }}"
                                                                                    class="btn btn-danger btn-sm btn-circle"
-                                                                                   title="Excluir Questão"
+                                                                                   title="Excluir Tipo de Avaliação"
                                                                                    onclick="return excluir(this)"
-                                                                                   data-id="{{$quizz->id}}">
+                                                                                   data-id="{{$type_rate->id}}">
                                                                                     <i class="fa fa-trash"></i>
                                                                                 </a>
                                                                             </td>
@@ -134,14 +128,10 @@
                                                                     </tbody>
                                                                 </table>
                                                                 <br>
-
                                                             </div>
-
                                                         </div>
                                                     </div>
                                                 </div>
-
-
                                             </div> <!-- FIM DIV .portlet-body form -->
                                         </div> <!-- FIM DIV .portlet light -->
                                     </div> <!-- FIM DIV .col-md-12 -->

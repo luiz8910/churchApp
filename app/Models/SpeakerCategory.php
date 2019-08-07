@@ -8,11 +8,11 @@ use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
 /**
- * Class Sponsor.
+ * Class SpeakerCategory.
  *
  * @package namespace App\Models;
  */
-class Sponsor extends Model implements Transformable
+class SpeakerCategory extends Model implements Transformable
 {
     use TransformableTrait, SoftDeletes;
 
@@ -21,8 +21,8 @@ class Sponsor extends Model implements Transformable
      *
      * @var array
      */
-    protected $fillable = ['name', 'logo', 'description', 'category_id', 'site', 'tel', 'email', 'zipCode',
-        'street', 'number', 'neighborhood', 'city', 'state', 'event_id'];
+    protected $fillable = ['name'];
 
     protected $dates = ['deleted_at'];
+
 }

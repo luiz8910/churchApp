@@ -785,3 +785,67 @@ $(".modal").on("show.bs.modal", function (e) {
         });
     }
 });
+
+function excluir(obj) {
+    var link = $(obj).attr('href');
+    var id = $(obj).attr('data-id');
+
+    swal({
+        title: "Você tem certeza?",
+        text: "Você não poderá mais recuperar este registro!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonClass: "btn-danger",
+        confirmButtonText: "Sim, excluir",
+        cancelButtonText: "Não, cancelar",
+        closeOnConfirm: false,
+        closeOnCancel: false
+    }).then(
+        function () {
+            $.ajax({
+                url: link,
+                data: {'id': id},
+                type: 'POST',
+                dataType: 'json',
+                success: function (response) {
+                    if (response == 1) {
+                        swal({
+                            title: "Deletado!",
+                            text: "O registro foi excluído com sucesso.",
+                            type: "success"
+                        }).then(function () {
+                            location.reload()
+                        });
+                    } else {
+                        swal("Erro", "Ocorreu algum erro ao tentar excluir este registro, tente novamente.", "error");
+                    }
+                    ;
+                },
+                error: function (response) {
+                    if (response == 1) {
+                        swal({
+                            title: "Deletado!",
+                            text: "O registro foi excluído com sucesso.",
+                            type: "success"
+                        }).then(function () {
+                            location.reload()
+                        });
+                    } else {
+                        swal("Erro", "Ocorreu algum erro ao tentar excluir este registro, tente novamente.", "error");
+                    }
+                    ;
+                }
+            });
+        }, function (dismiss) {
+            // dismiss can be 'cancel', 'overlay', 'close', 'timer'
+//            if (dismiss === 'cancel') {
+//                swal(
+//                    'Cancelled',
+//                    'Your imaginary file is safe :)',
+//                    'error'
+//                );
+//            }
+        });
+
+    return false;
+}

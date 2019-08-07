@@ -42,7 +42,7 @@
 
                 <li class="menu-dropdown classic-menu-dropdown ">
                     <a href="{{ route('person.index') }}" class="nav-link  ">
-                        <i class="icon-bar-chart"></i> Pessoas
+                        <i class="fa fa-users"></i> Pessoas
                         <span class="badge badge-success">
                             @if(isset($countPerson)){{ $countPerson[0][0] }} @else 0 @endif
                         </span> <!-- Qtde de Adultos cadastrados -->
@@ -154,6 +154,19 @@
                                 </a>
                             </li>
 
+                            <li>
+                                <a href="{{ route('providers.index') }}">
+                                    <i class="fa fa-institution"></i>
+                                    Fornecedores
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="{{ route('speakers.index') }}">
+                                    <i class="fa fa-microphone"></i>
+                                    Palestrantes
+                                </a>
+                            </li>
 
                             <li>
                                 <a href="{{ route('documents.index') }}">

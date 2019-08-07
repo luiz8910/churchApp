@@ -28,6 +28,8 @@
 <link href="../assets/global/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
 <link href="../assets/global/plugins/select2/css/select2-bootstrap.min.css" rel="stylesheet" type="text/css" />
 
+<link href="../assets/global/plugins/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+
 <!-- END PAGE LEVEL PLUGINS -->
 <!-- BEGIN THEME GLOBAL STYLES -->
 <link href="../assets/global/css/components.min.css" rel="stylesheet" id="style_components" type="text/css" />
