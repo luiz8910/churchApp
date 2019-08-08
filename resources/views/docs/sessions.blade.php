@@ -92,7 +92,8 @@
                                         "description":"Eu preciso de Café",
                                         "tag":null,"created_at":"2019-04-03 14:07:59",
                                         "updated_at":"2019-04-03 14:07:59",
-                                        "deleted_at":null
+                                        "deleted_at":null,
+                                        "check_in": 25
                                     }
                                 ]
                             }

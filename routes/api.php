@@ -106,9 +106,8 @@ Route::any('/checkin-all/', 'Api\EventController@checkInPeopleAPP');
 
 Route::get('/is-sub/{event_id}/{person_id}', 'Api\EventController@isSub');
 
-
-
-
+//Check-in em Sessões
+Route::post('/checkin-session', 'Api\SessionController@add_check_in');
 
 //------------------------- Grupos -------------------------------------------------------------------------------------
 
