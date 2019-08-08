@@ -352,6 +352,8 @@ Route::put('/add-like/{id}/{person_id}', 'Api\QuestionController@add_like');
 Route::put('/remove-like/{id}/{person_id}', 'Api\QuestionController@remove_like');
 
 
+
+
 //-------------------------- Outros ------------------------------------------------------------------------------------
 
 Route::any('/new-bug/', 'BugController@storeApp');

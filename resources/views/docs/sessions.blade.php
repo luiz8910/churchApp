@@ -325,6 +325,94 @@
             </div>
         </div>
 
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Adicionar Feedback da sessão
+                            <span class="span-btn-minimize" id="btn-minimize-store-fb-session">_</span>
+                        </h3>
+
+                    </div>
+                    <div class="panel-body hide-panel" id="store-fb-session">
+
+                        https://beconnect.com.br/api/store-fb-session/
+                        <span class="label panel-success">POST</span>
+
+                        <br><br>
+
+                        <p class="text-center">Nomes dos campos</p>
+
+                        <pre>
+                            'type_feedback', 'rating', 'comment', 'person_id', session_id
+                        </pre>
+
+                        <br><br>
+
+                        <p class="text-center">Exemplo de Retorno</p>
+
+                        <pre>
+                            {"status":true}
+
+                            Se algum erro retornado
+
+                            {"status":false,"msg": "Mensagem de erro aqui"}
+
+                        </pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Lista de Tipos de Avaliação
+                            <span class="span-btn-minimize" id="btn-minimize-types-fb-session">_</span>
+                        </h3>
+
+                    </div>
+                    <div class="panel-body hide-panel" id="types-fb-session">
+
+                        https://beconnect.com.br/api/types-fb-session/{session_id}
+                        <span class="label label-primary">GET</span>
+
+                        <br><br>
+
+                        session_id = id da sessão <span class="label label-info" style="font-size: 12px;">Inteiro</span><br>
+
+
+                        <br><br>
+
+                        <p class="text-center">Exemplo de Retorno</p>
+
+                        <pre>
+                            Se encontrado
+                            {
+                                "status":true,
+                                "count": 5
+                                "types": [{
+                                    id: 1, type: O que vc achou desta sessão?, session_id: 1
+                            }
+
+                            Se não houver tipos de avaliação para a sessão
+                            {
+                                "status": true,
+                                "count": 0
+                            }
+
+                            Senão
+
+                            {"status":false,"msg": "Mensagem de erro aqui"}
+                        </pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
     </div>
 </div>
