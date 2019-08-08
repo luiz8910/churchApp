@@ -335,7 +335,7 @@ Route::get('/session-code/{code}', 'Api\SessionController@getCode');
 //-------------------------- Questões em Sessões -----------------------------------------------------------------------
 
 //Adiciona nova questão para sessão escolhida
-Route::post('/question', 'Api\QuestionController@store');
+Route::post('/store-question', 'Api\QuestionController@store');
 
 /*
  * Lista de Perguntas por sessão
