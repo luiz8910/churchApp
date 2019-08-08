@@ -351,7 +351,13 @@ Route::put('/add-like/{id}/{person_id}', 'Api\QuestionController@add_like');
 // Usado para retirar like numa pergunta. ID da questão
 Route::put('/remove-like/{id}/{person_id}', 'Api\QuestionController@remove_like');
 
+//-------------------------- Feedback de Sessões -----------------------------------------------------------------------
 
+//Adiciona novo feedback de sessão
+Route::post('/store-fb-session/', 'Api\FeedbackSessionController@store');
+
+//Recupera lista de tipos de avaliação
+Route::get('/types-fb-session/{session_id}', 'Api\FeedbackSessionController@listTypes');
 
 
 //-------------------------- Outros ------------------------------------------------------------------------------------
