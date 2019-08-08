@@ -22,6 +22,7 @@ License: You must have a valid license purchased only from themeforest(the above
 <head>
     @include('includes.head-edit')
     <link href="../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet" type="text/css" />
+    <link href="../../assets/global/plugins/bootstrap-color-picker/css/bootstrap-colorpicker.min.css" rel="stylesheet" type="text/css" />
 
             <!-- BEGIN PAGE LEVEL PLUGINS -->
     {{--<link href="../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet"
@@ -1131,7 +1132,8 @@ License: You must have a valid license purchased only from themeforest(the above
 
 
                                             @include('includes.address-edit')
-
+                                            <br><br>
+                                            @include('includes.event-app-config')
                                             <br><br>
 
                                             @if($payment)
@@ -1829,6 +1831,7 @@ License: You must have a valid license purchased only from themeforest(the above
 @include('includes.footer')
 
 @include('includes.core-scripts-edit')
+<script src="../../assets/global/plugins/bootstrap-color-picker/js/bootstrap-colorpicker.min.js" type="text/javascript"></script>
 
 {{--<script src="../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js" type="text/javascript"></script>--}}
 {{--<script src="../../assets/global/plugins/moment.min.js" type="text/javascript"></script>--}}
