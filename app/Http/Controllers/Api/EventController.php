@@ -854,6 +854,7 @@ class EventController extends Controller
     {
         $data = $request->only(['person_id', 'event_id', 'value']);
 
+
         if(!isset($data['person_id']) || $data['person_id'] == '')
         {
             return json_encode(['status' => false, 'msg' => 'Campo person_id é nulo ou não existe']);
@@ -869,7 +870,7 @@ class EventController extends Controller
             return json_encode(['status' => false, 'msg' => 'Campo value é nulo ou não existe']);
         }
 
-        if($data['value'] != 0 && $data['value'] != 1)
+        if($data['value'] < 0 || $data['value'] > 1)
         {
             return json_encode(['status' => false, 'msg' => 'Campo value pode ser 0 ou 1']);
         }
@@ -942,7 +943,7 @@ class EventController extends Controller
             return json_encode(['status' => false, 'msg' => 'Campo value é nulo ou não existe']);
         }
 
-        if($data['value'] != 0 && $data['value'] != 1)
+        if($data['value'] < 0 || $data['value'] > 1)
         {
             return json_encode(['status' => false, 'msg' => 'Campo value pode ser 0 ou 1']);
         }
