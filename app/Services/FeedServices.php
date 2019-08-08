@@ -306,7 +306,7 @@ class FeedServices
 
     public function eventFeed($event_id)
     {
-        $event = $this->repository->$this->repository->findWhere([
+        $event = $this->repository->findWhere([
             'model' => 'session',
             'model_id' => $event_id,
         ]);
