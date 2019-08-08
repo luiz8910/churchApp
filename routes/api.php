@@ -359,6 +359,9 @@ Route::post('/store-fb-session/', 'Api\FeedbackSessionController@store');
 //Recupera lista de tipos de avaliação
 Route::get('/types-fb-session/{session_id}', 'Api\FeedbackSessionController@listTypes');
 
+//Verificar se a pessoa já avaliou a sessão
+Route::get('/rating-person/{person_id}/{session_id}', 'Api\FeedbackSessionController@rating_person');
+
 
 //-------------------------- Outros ------------------------------------------------------------------------------------
 

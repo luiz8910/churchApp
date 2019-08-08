@@ -413,6 +413,52 @@
             </div>
         </div>
 
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Verifica se a pessoa já avaliou a sessão
+                            <span class="span-btn-minimize" id="btn-minimize-rating_person">_</span>
+                        </h3>
+
+                    </div>
+                    <div class="panel-body hide-panel" id="rating_person">
+
+                        https://beconnect.com.br/api/rating-person/{person_id}/{session_id}
+                        <span class="label label-primary">GET</span>
+
+                        <br><br>
+
+                        person_id = id da pessoa <span class="label label-info" style="font-size: 12px;">Inteiro</span><br>
+                        session_id = id da sessão <span class="label label-info" style="font-size: 12px;">Inteiro</span><br>
+
+
+                        <br><br>
+
+                        <p class="text-center">Exemplo de Retorno</p>
+
+                        <pre>
+                            Se a pessoa já realizou
+                            {
+                                "status":true,
+                                "rating": 1
+                            }
+
+                            Senão
+                            {
+                                "status": true,
+                                "rating": 0
+                            }
+
+                            Erros
+
+                            {"status":false,"msg": "Mensagem de erro aqui"}
+                        </pre>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </div>
 </div>

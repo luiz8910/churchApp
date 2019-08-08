@@ -69,4 +69,19 @@ class FeedbackSessionController extends Controller
         return count($type) > 0 ? json_encode(['status' => true, 'count' => count($type), 'type' => $type])
             : json_encode(['status' => true, 'count' => 0]);
     }
+
+    public function rating_person($person_id, $session_id)
+    {
+        $exists = $this->repository->findWhere([
+            'session_id' => $session_id,
+            'person_id' => $person_id
+        ]);
+
+        if(count($exists) > 0)
+        {
+            return json_encode(['status' => true, 'rating' => 1]);
+        }
+
+        return json_encode(['status' => true, 'rating' => 0]);
+    }
 }
