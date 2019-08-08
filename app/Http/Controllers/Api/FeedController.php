@@ -59,7 +59,7 @@ class FeedController extends Controller
             return json_encode(['status' => true, 'feeds' => $feeds]);
         }
 
-        return json_encode(['status' => false, 'count' => 0]);
+        return json_encode(['status' => true, 'count' => 0]);
     }
 
     public function sessionFeeds($session_id, $page = null)
@@ -93,7 +93,7 @@ class FeedController extends Controller
             return json_encode(['status' => true, 'feeds' => $feeds]);
         }
 
-        return json_encode(['status' => false, 'count' => 0]);
+        return json_encode(['status' => true, 'count' => 0]);
     }
 
     public function add_sessionFeed(Request $request)

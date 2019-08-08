@@ -865,7 +865,7 @@ class EventController extends Controller
             return json_encode(['status' => false, 'msg' => 'Campo event_id é nulo ou não existe']);
         }
 
-        if(!isset($data['value']) || $data['value'] == '')
+        if(!isset($data['value']))
         {
             return json_encode(['status' => false, 'msg' => 'Campo value é nulo ou não existe']);
         }
@@ -888,30 +888,36 @@ class EventController extends Controller
 
                     unset($data['value']);
 
-                    $id = $this->listRepository->findWhere(
+                    $list = $this->listRepository->findWhere(
                         [
                             'person_id' => $data['person_id'],
                             'event_id' => $data['event_id']
-                        ])->first()->id;
+                        ])->first();
 
-                    try{
-
-                        DB::beginTransaction();
-
-                        if($this->listRepository->update($data, $id))
-                        {
-                            DB::commit();
-
-                            return json_encode(['status' => true]);
-                        }
-
-                    }catch (\Exception $e)
+                    if($list)
                     {
-                        DB::rollBack();
+                        $id = $list->id;
 
-                        return json_encode(['status' => false, 'msg' => $e->getMessage()]);
+                        try{
+
+                            DB::beginTransaction();
+
+                            if($this->listRepository->update($data, $id))
+                            {
+                                DB::commit();
+
+                                return json_encode(['status' => true]);
+                            }
+
+                        }catch (\Exception $e)
+                        {
+                            DB::rollBack();
+
+                            return json_encode(['status' => false, 'msg' => $e->getMessage()]);
+                        }
                     }
 
+                    return json_encode(['status' => false, 'msg' => 'Esta pessoa não está inscrita no evento']);
 
                 }
 

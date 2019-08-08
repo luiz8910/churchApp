@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Repositories\ItensRepository;
+use App\Repositories\PollItensRepository;
 use App\Repositories\PollAnswerRepository;
+use App\Http\Controllers\Controller;
 
 /**
  * 
@@ -13,7 +14,7 @@ class PollController extends Controller
 	private $answerRepository;
 	private $itensRepository;
 
-	function __construct(ItensRepository $itensRepository, PollAnswerRepository $answerRepository)
+	function __construct(PollItensRepository $itensRepository, PollAnswerRepository $answerRepository)
 	{
 		$this->answerRepository = $answerRepository;
 		$this->itensRepository = $itensRepository;
@@ -27,7 +28,7 @@ class PollController extends Controller
     public function choose($id, $person_id)
     {
 
-        $item = $this->itensRepository->findByField('id')->first();
+        $item = $this->itensRepository->findByField('id', $id)->first();
 
         $data['polls_id'] = $item->polls_id;
 
