@@ -343,13 +343,13 @@ Route::post('/question', 'Api\QuestionController@store');
  * $session_id = id da sessão
  * $page = número da página (deve ser maior que 1 caso informado)
  */
-Route::get('/list-questions/{session_id}/{page?}', 'Api\QuestionController@index');
+Route::get('/list-questions/{session_id}/{person_id?}/{page?}', 'Api\QuestionController@index');
 
 // Usado para dar like numa pergunta. ID da questão
-Route::put('/add-like/{id}', 'Api\QuestionController@add_like');
+Route::put('/add-like/{id}/{person_id}', 'Api\QuestionController@add_like');
 
 // Usado para retirar like numa pergunta. ID da questão
-Route::put('/remove-like/{id}', 'Api\QuestionController@remove_like');
+Route::put('/remove-like/{id}/{person_id}', 'Api\QuestionController@remove_like');
 
 
 //-------------------------- Outros ------------------------------------------------------------------------------------

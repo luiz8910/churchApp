@@ -164,12 +164,13 @@
                     </div>
                     <div class="panel-body hide-panel" id="list-questions">
 
-                        https://beconnect.com.br/api/list-questions/{session_id}/{page?}
+                        https://beconnect.com.br/api/list-questions/{session_id}/{person_id?}/{page?}
                         <span class="label label-primary">GET</span>
 
                         <br><br>
 
                         session_id = código da sessão <span class="label label-info" style="font-size: 12px;">Inteiro</span><br>
+                        person_id = id da pessoa que está consultando as perguntas (Opcional) <span class="label label-info" style="font-size: 12px;">Inteiro</span><br>
                         page = número da página (Opcional) <span class="label label-info" style="font-size: 12px;">Inteiro</span><br>
 
 
@@ -177,6 +178,8 @@
 
                         <p>Se informado número da página deve ser maior que 1,</p>
                         <p>Se omitido então retornará todas as questões daquela sessão</p>
+
+                        <p><strong>Se liked == 1 então a pessoa curtiu a pergunta</strong></p>
 
                         <p class="text-center">Exemplo de Retorno</p>
 
@@ -189,7 +192,7 @@
                                     "questions":[{
                                         "id":1,"person_id":5,"session_id":3,"content":"Lorem Ipsum ?",
                                         "status":"approved","like_count":0,"created_at":"2019-08-05 19:10:03",
-                                        "updated_at":"2019-08-06 02:30:21","deleted_at":null
+                                        "updated_at":"2019-08-06 02:30:21","deleted_at":null, liked: 1
                                     }]}
                             }
 
@@ -256,12 +259,13 @@
                     </div>
                     <div class="panel-body hide-panel" id="add-like">
 
-                        https://beconnect.com.br/api/add-like/{question_id}
+                        https://beconnect.com.br/api/add-like/{question_id}/{person_id}
                         <span class="label label-warning">PUT</span>
 
                         <br><br>
 
                         question_id = id da questão <span class="label label-info" style="font-size: 12px;">Inteiro</span><br>
+                        person_id = id da pessoa que está curtindo a questão<span class="label label-info" style="font-size: 12px;">Inteiro</span><br>
 
                         <br><br>
 
@@ -294,12 +298,13 @@
                     </div>
                     <div class="panel-body hide-panel" id="remove-like">
 
-                        https://beconnect.com.br/api/remove-like/{question_id}
+                        https://beconnect.com.br/api/remove-like/{question_id}/{person_id}
                         <span class="label label-warning">PUT</span>
 
                         <br><br>
 
                         question_id = id da questão <span class="label label-info" style="font-size: 12px;">Inteiro</span><br>
+                        person_id = id da pessoa que está curtindo a questão<span class="label label-info" style="font-size: 12px;">Inteiro</span><br>
 
                         <br><br>
 

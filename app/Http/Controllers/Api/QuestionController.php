@@ -38,9 +38,13 @@ class QuestionController extends Controller
     }
 
     /*
-     * Lista de Perguntas para a sessão escolhida (limitada ás primeiras 10 questões)
+     * Lista de Perguntas para a sessão escolhida
+     * Se valor de $page for informado então haverá
+     * paginação limitada a 10 usuários.
+     * Se $person_id for informado, retornará se a pessoa
+     * já deu like na questão.
      */
-    public function index($session_id, $page = null)
+    public function index($session_id, $person_id = null, $page = null)
     {
         $session = $this->sessionRepository->findByField('id', $session_id)->first();
 
@@ -60,6 +64,7 @@ class QuestionController extends Controller
                         'deleted_at' => null
 
                     ])->orderBy('like_count', 'desc')->offset($offset)->limit(10)->get();
+
             }
             else{
 
@@ -78,6 +83,32 @@ class QuestionController extends Controller
                 return json_encode(['status' => true, 'count' => 0]);
             }
             else{
+
+                if($person_id)
+                {
+                    $person = $this->personRepository->findByField('id', $person_id)->first();
+
+                    if($person)
+                    {
+                        foreach ($questions as $q)
+                        {
+                            $like_exists = DB::table('like_person')
+                                ->where([
+                                    'person_id' => $person_id,
+                                    'question_id' => $q->id,
+                                ])->first();
+
+                            if($like_exists)
+                            {
+                                $q->liked = $like_exists->liked;
+                            }
+                            else{
+
+                                $q->liked = 0;
+                            }
+                        }
+                    }
+                }
 
                 return json_encode(['status' => true, 'count' => count($questions), 'questions' => $questions]);
             }
@@ -161,44 +192,98 @@ class QuestionController extends Controller
     /*
      * $id = id da questão
      */
-    public function add_like($id)
+    public function add_like($id, $person_id)
     {
         $question = $this->repository->findByField('id', $id)->first();
 
         if($question)
         {
-            $x['like_count'] = $question->like_count;
+            $person = $this->personRepository->findByField('id', $person_id)->first();
 
-            $x['like_count']++;
-
-            try{
-                $this->repository->update($x, $id);
-
-                \DB::commit();
-
-                return json_encode(['status' => true]);
-
-            }catch (\Exception $e)
+            if($person)
             {
-                \DB::rollBack();
+                $like_exists = DB::table('like_person')
+                    ->where([
+                        'person_id' => $person_id,
+                        'question_id' => $id,
+                    ])->first();
 
-                $session = $this->repository->findByField('id', $question->session_id)->first();
+                if($like_exists)
+                {
+                    if($like_exists->liked == 1)
+                    {
+                        return json_encode(['status' => false, 'Este usuário ja curtiu esta questão.']);
+                    }
+                }
 
-                $event = $this->eventRepository->findByField('id', $session->event_id)->first();
+                $x['like_count'] = $question->like_count;
 
-                $bug = new Bug();
+                $x['like_count']++;
 
-                $bug->description = $e->getMessage();
-                $bug->platform = 'App';
-                $bug->location = 'add_like() Api\QuestionController.php';
-                $bug->model = 'Question';
-                $bug->status = 'Pendente';
-                $bug->church_id = $event->church_id;
+                try{
+                    if($this->repository->update($x, $id))
+                    {
 
-                $bug->save();
+                        if($like_exists)
+                        {
+                            DB::table('like_person')
+                                ->where([
+                                    'person_id' => $person_id,
+                                    'question_id' => $id,
+                                ])->update(['liked' => 1]);
+                        }
+                        else{
+                            DB::table('like_person')
+                                ->insert([
+                                    'liked' => 1,
+                                    'person_id' => $person_id,
+                                    'question_id' => $id
+                                ]);
+                        }
 
-                return json_encode(['status' => false, 'msg' => $e->getMessage()]);
+                        \DB::commit();
+
+                        return json_encode(['status' => true]);
+
+                    }
+
+
+                }catch (\Exception $e)
+                {
+                    \DB::rollBack();
+
+                    $session = $this->repository->findByField('id', $question->session_id)->first();
+
+                    $event = $this->eventRepository->findByField('id', $session->event_id)->first();
+
+                    $bug = new Bug();
+
+                    $bug->description = $e->getMessage();
+                    $bug->platform = 'App';
+                    $bug->location = 'add_like() Api\QuestionController.php';
+                    $bug->model = 'Question';
+                    $bug->status = 'Pendente';
+                    $bug->church_id = $event->church_id;
+
+                    $bug->save();
+
+                    return json_encode(['status' => false, 'msg' => $e->getMessage()]);
+                }
             }
+
+
+            $bug = new Bug();
+
+            $bug->description = 'Person id: ' . $id . ' não existe';
+            $bug->platform = 'App';
+            $bug->location = 'add_like() Api\QuestionController.php';
+            $bug->model = 'Question';
+            $bug->status = 'Pendente';
+            $bug->church_id = 0;
+
+            $bug->save();
+
+            return json_encode(['status' => false, 'msg' => 'Essa pessoa não existe']);
 
         }
 
@@ -220,47 +305,89 @@ class QuestionController extends Controller
     /*
      * $id = id da questão
      */
-    public function remove_like($id)
+    public function remove_like($id, $person_id)
     {
         $question = $this->repository->findByField('id', $id)->first();
 
         if($question)
         {
-            $x['like_count'] = $question->like_count;
+            $person = $this->personRepository->findByField('id', $person_id)->first();
 
-            if($x['like_count'] > 0)
+            if($person)
             {
-                $x['like_count']--;
+                $like_exists = DB::table('like_person')
+                    ->where([
+                        'person_id' => $person_id,
+                        'question_id' => $id,
+                    ])->first();
 
-                try{
-                    $this->repository->update($x, $id);
-
-                    \DB::commit();
-
-                    return json_encode(['status' => true]);
-
-                }catch (\Exception $e)
+                if($like_exists)
                 {
-                    \DB::rollBack();
+                    if ($like_exists->liked == 0)
+                    {
+                        return json_encode([
+                            'status' => false,
+                            'msg' => 'Não é possível remover uma pergunta que não foi curtida.'
+                        ]);
+                    }
+                }
 
-                    $session = $this->repository->findByField('id', $question->session_id)->first();
+                $x['like_count'] = $question->like_count;
 
-                    $event = $this->eventRepository->findByField('id', $session->event_id)->first();
+                if($x['like_count'] > 0)
+                {
+                    $x['like_count']--;
 
-                    $bug = new Bug();
+                    try{
+                        if($this->repository->update($x, $id))
+                        {
+                            if($like_exists)
+                            {
+                                DB::table('like_person')
+                                    ->where([
+                                        'person_id' => $person_id,
+                                        'question_id' => $id,
+                                    ])->update(['liked' => 0]);
+                            }
+                            else{
+                                DB::table('like_person')
+                                    ->insert([
+                                        'liked' => 0,
+                                        'person_id' => $person_id,
+                                        'question_id' => $id
+                                    ]);
+                            }
+                        }
 
-                    $bug->description = $e->getMessage();
-                    $bug->platform = 'App';
-                    $bug->location = 'remove_like() Api\QuestionController.php';
-                    $bug->model = 'Question';
-                    $bug->status = 'Pendente';
-                    $bug->church_id = $event->church_id;
+                        \DB::commit();
 
-                    $bug->save();
+                        return json_encode(['status' => true]);
 
-                    return json_encode(['status' => false, 'msg' => $e->getMessage()]);
+                    }catch (\Exception $e)
+                    {
+                        \DB::rollBack();
+
+                        $session = $this->repository->findByField('id', $question->session_id)->first();
+
+                        $event = $this->eventRepository->findByField('id', $session->event_id)->first();
+
+                        $bug = new Bug();
+
+                        $bug->description = $e->getMessage();
+                        $bug->platform = 'App';
+                        $bug->location = 'remove_like() Api\QuestionController.php';
+                        $bug->model = 'Question';
+                        $bug->status = 'Pendente';
+                        $bug->church_id = $event->church_id;
+
+                        $bug->save();
+
+                        return json_encode(['status' => false, 'msg' => $e->getMessage()]);
+                    }
                 }
             }
+
+
         }
         else{
             $bug = new Bug();

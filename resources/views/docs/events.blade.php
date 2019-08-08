@@ -189,9 +189,14 @@
                               +"deleted_at": null,
                               +"lat": "-23.479", <---- latitude
                               +"lng": "-47.455", <---- longitude
-                              +"imgEvent_bg": "uploads\/event\/33-Evento de Teste.jpg"
+                              +"imgEvent_bg": "uploads\/event\/33-Evento de Teste.jpg",
+                              +"public_url": '[link aqui],
+                              +'certified_hours': 2,
+                              +'value_money': 100,
+                              +'installments': 3,
+                              +'primary_color': #428df5,
+                              +'secondary_color': #63f542
                             }
-
 
                     </pre>
                     </div>
