@@ -109,7 +109,7 @@ class SessionController extends Controller
              */
             if(count($days) == 1)
             {
-                $eventDate = $days->eventDate;
+                $eventDate = $days[0]->eventDate;
             }
 
 
