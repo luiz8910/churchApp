@@ -309,7 +309,7 @@
                                                                         </span>
 
                                                                         <input type="text" class="form-control" name="session_date" id="session_date" required
-                                                                               value="@if(old('session_date')) {{ old('session_date') }} @else @if($eventDate) {{ $eventDate }} @endif @endif" readonly>
+                                                                               value="@if(old('session_date')) {{ old('session_date') }} @else @if($eventDate) {{$eventDate}} @endif @endif" readonly>
                                                                     </div>
                                                                 </div>
                                                             </div>

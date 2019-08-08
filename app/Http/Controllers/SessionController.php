@@ -109,7 +109,7 @@ class SessionController extends Controller
              */
             if(count($days) == 1)
             {
-                $eventDate = $days[0]->eventDate;
+                $eventDate = date_format(date_create($days[0]->eventDate), 'd/m/Y');
             }
 
 
@@ -178,7 +178,7 @@ class SessionController extends Controller
             }
 
             if ($data['session_date'] != "") {
-                $data['session_date'] = DateTime::createFromFormat('d/m/Y', $data['session_date'])->format('Y-m-d');
+                $data['session_date'] = DateTime::createFromFormat('d/m/Y', trim($data['session_date']))->format('Y-m-d');
 
                 $data['start_time'] = date_create($data['session_date'] . " " . $data['start_time']);
 
