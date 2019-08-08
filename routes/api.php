@@ -365,10 +365,10 @@ Route::get('/rating-person/{person_id}/{session_id}', 'Api\FeedbackSessionContro
 //-------------------------- Feed --------------------------------------------------------------------------------------
 
 //Recupera feeds de uma sessão
-Route::get('/feeds-session/{session_id}', 'Api\FeedController@sessionFeeds');
+Route::get('/feeds-session/{session_id}/{page?}', 'Api\FeedController@sessionFeeds');
 
 //Recupera feeds de um evento
-Route::get('/feeds-event/{event_id}', 'Api\FeedController@eventFeeds');
+Route::get('/feeds-event/{event_id}/{page?}', 'Api\FeedController@eventFeeds');
 
 //Adiciona novo feed a uma sessão
 Route::post('/feeds-session', 'Api\FeedController@add_sessionFeed');

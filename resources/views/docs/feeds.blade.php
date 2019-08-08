@@ -66,13 +66,18 @@
                     </div>
                     <div class="panel-body hide-panel" id="feeds-session">
 
-                        https://beconnect.com.br/api/feeds-session/{session_id}
+                        https://beconnect.com.br/api/feeds-session/{session_id}/{page?}
                         <span class="label label-primary">GET</span>
 
                         <br><br>
 
-                        session_id = id da sessão <span class="label label-info" style="font-size: 12px;">Inteiro</span><br>
+                        session_id = id da sessão <span class="label label-info" style="font-size: 12px;">Inteiro</span><br><br>
+                        page = número da página (Opcional) <span class="label label-info" style="font-size: 12px;">Inteiro</span><br>
 
+
+                        <br><br>
+
+                        <p><strong>Número da página se informado deve ser maior que 1</strong></p>
 
                         <br><br>
 
@@ -112,13 +117,18 @@
                     </div>
                     <div class="panel-body hide-panel" id="feeds-event">
 
-                        https://beconnect.com.br/api/feeds-event/{event_id}
+                        https://beconnect.com.br/api/feeds-event/{event_id}/{page?}
                         <span class="label label-primary">GET</span>
 
                         <br><br>
 
-                        event_id = id da sessão <span class="label label-info" style="font-size: 12px;">Inteiro</span><br>
+                        event_id = id da sessão <span class="label label-info" style="font-size: 12px;">Inteiro</span><br><br>
+                        page = número da página (Opcional) <span class="label label-info" style="font-size: 12px;">Inteiro</span><br>
 
+
+                        <br><br>
+
+                        <p><strong>Número da página se informado deve ser maior que 1</strong></p>
 
                         <br><br>
 
@@ -168,7 +178,7 @@
                         <p class="text-center">Nomes dos campos</p>
 
                         <pre>
-                            'session_id', 'text'
+                            'session_id', 'title', 'text'
                         </pre>
 
                         <br><br>
@@ -208,7 +218,7 @@
                         <p class="text-center">Nomes dos campos</p>
 
                         <pre>
-                            'event_id', 'text'
+                            'event_id', 'title', 'text'
                         </pre>
 
                         <br><br>

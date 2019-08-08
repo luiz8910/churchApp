@@ -8,6 +8,7 @@ use App\Repositories\FeedRepository;
 use App\Repositories\PersonRepository;
 use App\Services\FeedServices;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class FeedController extends Controller
 {
@@ -27,25 +28,69 @@ class FeedController extends Controller
         $this->feedServices = $feedServices;
     }
 
-    public function eventFeeds($event_id)
+    public function eventFeeds($event_id, $page = null)
     {
-        $feed = $this->feedServices->eventFeed($event_id);
-
-        if($feed)
+        if($page && $page > 1)
         {
-            return json_encode(['status' => true, 'feeds' => $feed]);
+            $offset = $page - 1;
+
+            $offset = ($offset * 10) + 1;
+
+            $feeds = DB::table('feeds')
+                ->where([
+                    'model_id' => $event_id,
+                    'model' => 'event'
+
+                ])->orderBy('created_at', 'desc')->offset($offset)->limit(10)->get();
+        }
+        else{
+
+            $feeds = DB::table('feeds')
+                ->where([
+                    'model_id' => $event_id,
+                    'model' => 'event'
+
+                ])->orderBy('created_at', 'desc')->limit(10)->get();
+        }
+
+
+        if(count($feeds) > 0)
+        {
+            return json_encode(['status' => true, 'feeds' => $feeds]);
         }
 
         return json_encode(['status' => false, 'count' => 0]);
     }
 
-    public function sessionFeeds($session_id)
+    public function sessionFeeds($session_id, $page = null)
     {
-        $feed = $this->feedServices->sessionFeed($session_id);
-
-        if($feed)
+        if($page && $page > 1)
         {
-            return json_encode(['status' => true, 'feeds' => $feed]);
+            $offset = $page - 1;
+
+            $offset = ($offset * 10) + 1;
+
+            $feeds = DB::table('feeds')
+                ->where([
+                    'model_id' => $session_id,
+                    'model' => 'session'
+
+                ])->orderBy('created_at', 'desc')->offset($offset)->limit(10)->get();
+        }
+        else{
+
+            $feeds = DB::table('feeds')
+                ->where([
+                    'model_id' => $session_id,
+                    'model' => 'session'
+
+                ])->orderBy('created_at', 'desc')->limit(10)->get();
+        }
+
+
+        if(count($feeds) > 0)
+        {
+            return json_encode(['status' => true, 'feeds' => $feeds]);
         }
 
         return json_encode(['status' => false, 'count' => 0]);
@@ -60,6 +105,7 @@ class FeedController extends Controller
         $data['text'] = $text;*/
 
         try{
+
             $data['model'] = 'session';
             $data['model_id'] = $data['session_id'];
 
