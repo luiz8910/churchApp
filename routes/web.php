@@ -862,6 +862,10 @@ Route::group(['middleware' => 'auth'], function () {
         return view('docs.providers');
     })->name('docs.providers');
 
+    Route::get('docs/feeds', function (){
+        return view('docs.feeds');
+    })->name('docs.feeds');
+
 
 //Login Twitter
 //Route::get('auth/twitter', 'Auth\RegisterController@redirectToTwitterProvider');

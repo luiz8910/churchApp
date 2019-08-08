@@ -29,7 +29,7 @@
         </li>
 
 <li>
-    <a href="{{ route('docs.activity') }}">Atividades Recentes</a>
+    <a href="{{ route('docs.feeds') }}">Feeds</a>
 </li>
 
 <li>

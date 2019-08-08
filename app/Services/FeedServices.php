@@ -12,6 +12,7 @@ namespace App\Services;
 use App\Repositories\EventRepository;
 use App\Repositories\FeedRepository;
 use App\Repositories\PersonRepository;
+use App\Repositories\SessionRepository;
 use App\Traits\ConfigTrait;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -31,13 +32,18 @@ class FeedServices
      * @var EventRepository
      */
     private $eventRepository;
+    /**
+     * @var SessionRepository
+     */
+    private $sessionRepository;
 
     public function __construct(FeedRepository $repository, PersonRepository $personRepository,
-                                EventRepository $eventRepository)
+                                EventRepository $eventRepository, SessionRepository $sessionRepository)
     {
         $this->repository = $repository;
         $this->personRepository = $personRepository;
         $this->eventRepository = $eventRepository;
+        $this->sessionRepository = $sessionRepository;
     }
 
     public function newFeed($notif_range, $text, $link = null, $expires_in = null, $model = null,
@@ -123,10 +129,6 @@ class FeedServices
 
     }
 
-    public function eventFeed($event, $id)
-    {
-
-    }
 
     public function people($people, $id)
     {
@@ -300,5 +302,35 @@ class FeedServices
         }
 
 
+    }
+
+    public function eventFeed($event_id)
+    {
+        $event = $this->repository->$this->repository->findWhere([
+            'model' => 'session',
+            'model_id' => $event_id,
+        ]);
+
+        if(count($event) > 0)
+        {
+            return $event;
+        }
+
+        return false;
+    }
+
+    public function sessionFeed($session_id)
+    {
+        $feed = $this->repository->findWhere([
+            'model' => 'session',
+            'model_id' => $session_id,
+        ]);
+
+        if(count($feed) > 0)
+        {
+            return $feed;
+        }
+
+        return false;
     }
 }

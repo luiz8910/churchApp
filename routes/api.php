@@ -362,6 +362,21 @@ Route::get('/types-fb-session/{session_id}', 'Api\FeedbackSessionController@list
 Route::get('/rating-person/{person_id}/{session_id}', 'Api\FeedbackSessionController@rating_person');
 
 
+//-------------------------- Feed --------------------------------------------------------------------------------------
+
+//Recupera feeds de uma sessão
+Route::get('/feeds-session/{session_id}', 'Api\FeedController@sessionFeeds');
+
+//Recupera feeds de um evento
+Route::get('/feeds-event/{event_id}', 'Api\FeedController@eventFeeds');
+
+//Adiciona novo feed a uma sessão
+Route::post('/feeds-session', 'Api\FeedController@add_sessionFeed');
+
+//Adiciona novo feed a um evento
+Route::post('/feeds-event', 'Api\FeedController@add_eventFeed');
+
+
 //-------------------------- Outros ------------------------------------------------------------------------------------
 
 Route::any('/new-bug/', 'BugController@storeApp');
