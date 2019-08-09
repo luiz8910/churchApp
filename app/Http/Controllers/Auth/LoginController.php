@@ -128,7 +128,7 @@ class LoginController extends Controller
     {
         $email = $request->get('email');
 
-        $church = $request->get('church');
+        //$church = $request->get('church');
 
         $data['email'] = $email;
 
@@ -204,7 +204,7 @@ class LoginController extends Controller
 
             $user = User::where('email', $email)->first();
 
-            if($user && $user->church_id == $church)
+            if($user)
             {
                 $person = $this->personRepository->find($user->person->id);
 
