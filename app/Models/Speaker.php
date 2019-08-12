@@ -21,6 +21,6 @@ class Speaker extends Model implements Transformable
      * @var array
      */
     protected $fillable = ['name', 'photo', 'description', 'category_id', 'site', 'tel', 'email', 'zipCode',
-        'street', 'number', 'neighborhood', 'city', 'state', 'event_id'];
+        'street', 'number', 'neighborhood', 'city', 'state', 'event_id', 'company'];
 
 }

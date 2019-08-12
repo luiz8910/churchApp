@@ -215,6 +215,7 @@
                                                             <tbody>
                                                             @foreach($model as $item)
 
+
                                                                 <tr id="tr-{{ $item[$columns[0]] }}">
                                                                     @if(!isset($doc))
                                                                         <td><img src="{{ $item[$columns[1]] }}"
@@ -228,16 +229,41 @@
 
                                                                         </td>
 
-                                                                        <td> {{ $item[$columns[3]] }} </td>
-                                                                        <td> {{ $item[$columns[4]] }} </td>
-                                                                        <td> {{ $item[$columns[5]] }}</td>
+                                                                        @if(count($columns) > 3)
+                                                                            <td>{{ $item[$columns[3]] }}</td>
+                                                                        @endif
+
+                                                                        @if(count($columns) > 4)
+                                                                            <td>{{ $item[$columns[4]] }}</td>
+                                                                        @endif
+
+                                                                        @if(count($columns) > 5)
+                                                                            <td>{{ $item[$columns[5]] }}</td>
+                                                                        @endif
 
                                                                         @else
-                                                                            <td>{{ $item[$columns[1]] }}</td>
 
-                                                                            <td> {{ $item[$columns[2]] }} </td>
-                                                                            <td> {{ $item[$columns[3]] }} </td>
-                                                                            <td> {{ $item[$columns[4]] }}</td>
+                                                                            @if(count($columns) > 1)
+                                                                                <td>{{ $item[$columns[1]] }}</td>
+                                                                            @endif
+
+                                                                            @if(count($columns) > 2)
+                                                                                <td>{{ $item[$columns[2]] }}</td>
+                                                                            @endif
+
+                                                                            @if(count($columns) > 3)
+                                                                                <td>{{ $item[$columns[3]] }}</td>
+                                                                            @endif
+
+                                                                            @if(count($columns) > 4)
+                                                                                <td>{{ $item[$columns[4]] }}</td>
+                                                                            @endif
+
+                                                                            @if(count($columns) > 5)
+                                                                                <td>{{ $item[$columns[5]] }}</td>
+                                                                            @endif
+
+
                                                                     @endif
 
                                                                     @if(isset($deleted))

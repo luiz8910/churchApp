@@ -43,7 +43,7 @@ class SpeakerController extends Controller
     }
 
     //Lista de todos os palestrantes
-    public function index($event_id)
+    public function index($event_id = null)
     {
         if($event_id)
         {
@@ -87,39 +87,41 @@ class SpeakerController extends Controller
             }
         }
 
-            $th = ['Foto', 'Nome', 'Empresa', ''];
+        //dd($model);
 
-            $columns = ['id', 'foto', 'name', 'company'];
+        $th = ['Foto', 'Nome', 'Empresa', ''];
 
-            $title = "Palestrantes";
+        $columns = ['id', 'photo', 'name', 'company'];
 
-            $table = 'speakers';
+        $title = "Palestrantes";
 
-            $text_delete = "Deseja excluir o palestrante selecionado?";
+        $table = 'speakers';
 
-            $buttons = (object) [
-                [
-                    'name' => 'Palestrante',
-                    'route' => 'speakers.create',
-                    'modal' => null,
-                    'icon' => 'fa fa-plus'
-                ],
-                [
-                    'name' => 'Categoria',
-                    'route' => null,
-                    'modal' => 'modal_NewCat',
-                    'icon' => 'fa fa-plus'
-                ],
-                [
-                    'name' => 'Lista',
-                    'route' => null,
-                    'modal' => 'modal_list_cat',
-                    'icon' => 'fa fa-list'
-                ]
-            ];
+        $text_delete = "Deseja excluir o palestrante selecionado?";
 
-            return view('custom.index', compact('model', 'model_cat', 'th',
-                'buttons', 'title', 'table', 'columns', 'text_delete'));
+        $buttons = (object) [
+            [
+                'name' => 'Palestrante',
+                'route' => 'speakers.create',
+                'modal' => null,
+                'icon' => 'fa fa-plus'
+            ],
+            [
+                'name' => 'Categoria',
+                'route' => null,
+                'modal' => 'modal_NewCat',
+                'icon' => 'fa fa-plus'
+            ],
+            [
+                'name' => 'Lista',
+                'route' => null,
+                'modal' => 'modal_list_cat',
+                'icon' => 'fa fa-list'
+            ]
+        ];
+
+        return view('custom.index', compact('model', 'model_cat', 'th',
+            'buttons', 'title', 'table', 'columns', 'text_delete'));
 
 
     }
@@ -152,21 +154,9 @@ class SpeakerController extends Controller
 
         $people = $this->personRepository->findByField('church_id', $this->getUserChurch());
 
-        $sp = DB::table('speaker_person')
-            ->where([
-                'speaker_id' => $id
-            ])->first();
-
-        if(count($sp) == 1)
-        {
-            $sp = $sp->person_id;
-        }
-        else{
-            $sp = false;
-        }
 
         return view('speakers.edit', compact('categories', 'state', 'no_zip_button',
-            'model', 'id', 'people', 'sp'));
+            'model', 'id', 'people'));
     }
 
 
@@ -242,6 +232,17 @@ class SpeakerController extends Controller
 
             $request->session()->flash('error.msg', 'Um erro ocorreu, tente novamente mais tarde');
 
+            $bug = new Bug();
+
+            $bug->description = $e->getMessage();
+            $bug->platform = 'Back-end';
+            $bug->model = 'Speaker';
+            $bug->location = 'Line: ' .$e->getLine() . ' store() SpeakerController.php';
+            $bug->status = 'Pendente';
+            $bug->church_id = $this->getUserChurch();
+
+            $bug->save();
+
             return redirect()->route('speakers.create');
         }
 
@@ -290,9 +291,9 @@ class SpeakerController extends Controller
 
             $this->repository->update($data, $id);
 
-            DB::commit();
+            \DB::commit();
 
-            if($data['responsible'] != "")
+            if(isset($data['responsible']))
             {
                 $sp = DB::table('speaker_person')
                     ->where('speaker_id', $id)
@@ -332,14 +333,6 @@ class SpeakerController extends Controller
 
 
             }
-            else{
-
-                DB::table('speaker_person')
-                    ->where('speaker_id', $id)
-                    ->delete();
-
-            }
-
 
 
             if($redirect)
@@ -357,9 +350,20 @@ class SpeakerController extends Controller
 
         }catch (\Exception $e)
         {
-            DB::rollback();
+            \DB::rollback();
 
             $request->session()->flash('error.msg', 'Um erro ocorreu, tente novamente mais tarde');
+
+            $bug = new Bug();
+
+            $bug->description = $e->getMessage();
+            $bug->platform = 'Back-end';
+            $bug->model = 'Speaker';
+            $bug->location = 'Line: ' .$e->getLine() . ' update() SpeakerController.php';
+            $bug->status = 'Pendente';
+            $bug->church_id = $this->getUserChurch();
+
+            $bug->save();
 
             return redirect()->route('speakers.index');
         }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Events\AgendaEvent;
 use App\Events\PersonEvent;
 use App\Http\Requests\PersonCreateRequest;
+use App\Jobs\qrCodeAll;
 use App\Jobs\Test;
 use App\Mail\ForLeaders;
 use App\Models\Event;
@@ -2711,6 +2712,26 @@ class PersonController extends Controller
         }
 
         return redirect()->route('person.index');
+    }
+
+    public function generateQrAll()
+    {
+        $people = $personRepository->all();
+
+        $i = 0;
+
+        foreach ($people as $person)
+        {
+
+            $i++;
+
+            if($i == 100)
+            {
+                break;
+            }
+        }
+
+        qrCodeAll::dispatch();
     }
 
 
