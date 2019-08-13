@@ -104,6 +104,25 @@ $(function(){
         var id = this.id.replace('btn-approve-', '');
 
         approveQuestion(id);
+    });
+
+
+    $(".btn-itens").click(function () {
+
+        var id = this.id.replace('btn-itens-', '');
+
+        var request = $.ajax({
+            url: 'getAnswers/' + id,
+            method: 'GET',
+            dataType: 'json'
+        });
+
+        request.done(function (e) {
+            if(e.status)
+            {
+
+            }
+        })
     })
 
 

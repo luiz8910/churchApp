@@ -115,21 +115,24 @@ License: You must have a valid license purchased only from themeforest(the above
                                         </div>
                                     </div>
                                     <div class="portlet-body form">
-                                        {!! Form::open(['route' => 'event.quizz_store', 'method' => 'POST', 'role' => 'form', 'id' => 'form']) !!}
+                                        {!! Form::open(['route' => 'event.session.poll.store', 'method' => 'POST', 'role' => 'form', 'id' => 'form']) !!}
                                         <div class="form-body">
+
                                             <legend>Questão do Quizz</legend>
+
                                             <div class="form-group">
-                                            <textarea name="content" cols="30" rows="10"
-                                                      class="form-control"></textarea>
+                                                <textarea name="content" cols="30" rows="10" class="form-control"></textarea>
                                             </div>
 
+                                            <input type="hidden" id="session_id" name="session_id" value="{{ $session->id }}">
+
                                             <legend>Alternativas</legend>
+
                                             <div class="list-group">
                                                 <div class="list-group-item alternative_template alternative">
                                                     <div class="row">
                                                         <div class="col-xs-11">
-                    <textarea name="alternative_content[]"
-                              class="alternative_content"></textarea>
+                                                            <textarea name="alternative_content[]" class="alternative_content"></textarea>
                                                         </div>
                                                         <div class="col-xs-1">
                                                             <button onclick="removeAlternative(this)" type="button"

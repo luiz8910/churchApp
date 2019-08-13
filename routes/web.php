@@ -482,13 +482,13 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::put('/deny-question/{id}', 'QuestionController@deny');
 
-        Route::get('session-list_quizz/{id}', 'SessionController@list_quizz')->name('event.session.list_quizz');
+        Route::get('session-list_quizz/{id}', 'PollController@index')->name('event.session.poll.index');
 
         Route::get('session-view-quizz-question/{id}', 'SessionController@view_quizz_question')->name('event.session.view_quizz_question');
 
-        Route::post('quizz/store', 'SessionController@quizz_store')->name('event.quizz_store');
+        Route::post('quizz-store', 'PollController@store')->name('event.session.poll.store');
 
-        Route::get('session-new-quizz', 'SessionController@new_quizz')->name('event.session.new_quizz');
+        Route::get('session-new-quizz/{session_id}', 'PollController@create')->name('event.session.poll.create');
 
         Route::get('session-delete-quizz/{id}', 'SessionController@delete_quizz')->name('event.session.delete_quizz');
 

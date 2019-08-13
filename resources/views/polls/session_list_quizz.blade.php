@@ -64,7 +64,7 @@
                                             <div class="portlet-title">
                                                 <div class="caption font-green-haze">
                                                     <i class="fa fa-user font-green-haze"></i>
-                                                    <span class="caption-subject font-green-haze bold ">Sessões - {{ $session->name }} - Quizz</span>
+                                                    <span class="caption-subject font-green-haze bold ">Sessões - {{ $session->name }} - Quiz</span>
                                                 </div>
 
                                                 <div class="actions">
@@ -75,10 +75,10 @@
                                                                 <div class="btn-group-devided">
                                                                     <a role="button"
                                                                        class="btn btn-info btn-circle btn-sm"
-                                                                       href="{{ route('event.session.new_quizz') }}"
+                                                                       href="{{ route('event.session.poll.create', ['session_id' => $session->id]) }}"
                                                                        style="margin-top: 2px;">
                                                                         <i class="fa fa-plus"></i>
-                                                                        <span class="hidden-xs hidden-sm">Nova Questão</span>
+                                                                        <span class="hidden-xs hidden-sm">Novo Quiz</span>
                                                                     </a>
 
                                                                 </div>
@@ -107,25 +107,25 @@
                                                                     </thead>
                                                                     <tbody class="hide" id="tbody-search"></tbody>
                                                                     <tbody>
-                                                                    @foreach($quizzes as $quizz)
+                                                                    @foreach($polls as $poll)
                                                                         <tr>
-                                                                            <td>{{$quizz->order}}</td>
-                                                                            <td>{{$quizz->content}}</td>
+                                                                            <td>{{$poll->order}}</td>
+                                                                            <td>{{$poll->content}}</td>
                                                                             <td class="d-flex-center">
-                                                                                <a href="{{ route('event.session.view_quizz_question', ['id' => $quizz->id]) }}"
-                                                                                   class="btn btn-warning btn-sm btn-circle"
+                                                                                <a href="{{ route('event.session.view_quizz_question', ['id' => $poll->id]) }}"
+                                                                                   class="btn btn-warning btn-sm btn-circle btn-itens"
                                                                                    title="Visualizar Questão"
                                                                                    data-toggle="modal"
                                                                                    data-target="#modal-padrao"
                                                                                    data-remote="false"
-                                                                                   modal-remote="true">
+                                                                                   modal-remote="true" id="btn-itens-{{ $poll->id }}">
                                                                                     <i class="fa fa-eye"></i>
                                                                                 </a>
-                                                                                <a href="{{ route('event.session.delete_quizz', ['id' => $quizz->id]) }}"
+                                                                                <a href="{{ route('event.session.delete_quizz', ['id' => $poll->id]) }}"
                                                                                    class="btn btn-danger btn-sm btn-circle"
                                                                                    title="Excluir Questão"
                                                                                    onclick="return excluir(this)"
-                                                                                   data-id="{{$quizz->id}}">
+                                                                                   data-id="{{$poll->id}}">
                                                                                     <i class="fa fa-trash"></i>
                                                                                 </a>
                                                                             </td>
@@ -147,6 +147,9 @@
                                     </div> <!-- FIM DIV .col-md-12 -->
                                 </div> <!-- FIM DIV .row -->
                             </div> <!-- FIM DIV .page-content-inner -->
+
+
+
                         </div> <!-- FIM DIV .container -->
                     </div> <!-- FIM DIV .page-content -->
                 </div> <!-- FIM DIV .page-content-wrapper -->

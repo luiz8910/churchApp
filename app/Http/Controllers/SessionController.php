@@ -312,6 +312,15 @@ class SessionController extends Controller
         return redirect()->back();
     }
 
+
+    /*
+     * $id da sessão
+     */
+    public function delete($id)
+    {
+
+    }
+
     public function check_in_list($id)
     {
         $session = $this->repository->findByField('id', $id)->first();

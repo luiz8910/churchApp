@@ -21,7 +21,10 @@ class Poll extends Model implements Transformable
      *
      * @var array
      */
-    protected $fillable = ['name', 'event_id', 'church_id', 'created_by', 'deleted_by', 'expires_in', 'expires_in_time', 'status', 'deleted_at'];
+    protected $fillable = [
+        'name', 'event_id', 'church_id', 'created_by', 'deleted_by', 'expires_in',
+        'expires_in_time', 'status', 'session_id', 'content', 'order'];
+
 
     protected $dates = ['deleted_at'];
 

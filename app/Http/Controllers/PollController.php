@@ -7,42 +7,48 @@ use App\Repositories\PersonRepository;
 use App\Repositories\PollItensRepository;
 use App\Repositories\PollRepository;
 use App\Repositories\PollAnswerRepository;
+use App\Repositories\RoleRepository;
+use App\Repositories\SessionRepository;
 use App\Traits\ConfigTrait;
+use App\Traits\CountRepository;
 use App\Traits\DateRepository;
+use App\Traits\NotifyRepository;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class PollController extends Controller
 {
-    use ConfigTrait, DateRepository;
-    /**
-     * @var PollRepository
-     */
+    use ConfigTrait, DateRepository, NotifyRepository, CountRepository;
+
+
     private $repository;
-    /**
-     * @var PollItensRepository
-     */
+
     private $itensRepository;
-    /**
-     * @var EventRepository
-     */
+
     private $eventRepository;
-    /**
-     * @var PersonRepository
-     */
+
     private $personRepository;
 
     private $answerRepository;
 
-    public function __construct(PollRepository $repository, PollItensRepository $itensRepository,
-                                EventRepository $eventRepository, PersonRepository $personRepository, PollAnswerRepository $answerRepository)
+    private $sessionRepository;
+    /**
+     * @var RoleRepository
+     */
+    private $roleRepository;
+
+    public function __construct(PollRepository $repository, PollItensRepository $itensRepository, SessionRepository $sessionRepository,
+                                EventRepository $eventRepository, PersonRepository $personRepository,
+                                PollAnswerRepository $answerRepository, RoleRepository $roleRepository)
     {
         $this->repository = $repository;
         $this->itensRepository = $itensRepository;
         $this->eventRepository = $eventRepository;
         $this->personRepository = $personRepository;
         $this->answerRepository = $answerRepository;
+        $this->sessionRepository = $sessionRepository;
+        $this->roleRepository = $roleRepository;
     }
 
 
@@ -51,7 +57,7 @@ class PollController extends Controller
      * @param null $event_id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index($event_id = null)
+    public function indexOld($event_id = null)
     {
         $org = $this->getUserChurch();
 
@@ -130,6 +136,34 @@ class PollController extends Controller
     }
 
 
+    public function index($session_id)
+    {
+        $session = $this->sessionRepository->findByField('id', $session_id)->first();
+
+        $countPerson[] = $this->countPerson();
+
+        $countGroups[] = $this->countGroups();
+
+        $roles = $this->roleRepository->all();
+
+        $leader = $this->getLeaderRoleId();
+
+        $admin = $this->getAdminRoleId();
+
+        $notify = $this->notify();
+
+        $qtde = $notify ? count($notify) : null;
+
+        if($session)
+        {
+            $polls = $this->repository->findByField('session_id', $session_id);
+
+            $event = $this->eventRepository->findByField('id', $session->event_id)->first();
+
+            return view('polls.session_list_quizz',
+                compact('session', 'state', 'roles', 'leader', 'admin', 'notify', 'qtde', 'event', 'polls'));
+        }
+    }
 
 
 
@@ -206,21 +240,49 @@ class PollController extends Controller
     }
 
 
-
-
-
-    public function create()
+    public function create($session_id)
     {
         $events = $this->eventRepository->findByField('church_id', $this->getUserChurch());
 
-        return view('polls.create', compact('events'));
+        $session = $this->sessionRepository->findByField('id', $session_id)->first();
+
+        if($session)
+        {
+            return view('polls.session_new_quizz', compact('events', 'session'));
+        }
+
     }
 
 
-
-
-
     public function store(Request $request)
+    {
+
+        $data = $request->all();
+
+        $poll['session_id'] = $data['session_id'];
+        $poll['content'] = $data['content'];
+
+        $person_id = \Auth::user()->person->id;
+
+        $data['created_by'] = $person_id;
+
+        $id = $this->repository->create($poll)->id;
+
+        foreach ($data['alternative_content'] as $d)
+        {
+            if($d != "")
+            {
+                $x['description'] = $d;
+                $x['polls_id'] = $id;
+                $this->itensRepository->create($x);
+            }
+        }
+
+        return redirect()->route('event.session.poll.index', ['id' => $data['session_id']]);
+    }
+
+
+    public function storeOld(Request $request)
     {
         $data = $request->only(['name', 'event_id', 'expires_in', 'expires_in_time']);
 
@@ -343,13 +405,9 @@ class PollController extends Controller
     }
 
 
-
-
-
-
     public function edit($id)
     {
-        $events = $this->eventRepository->findByField('church_id', $this->getUserChurch());
+        /*$events = $this->eventRepository->findByField('church_id', $this->getUserChurch());
 
         $model = $this->repository->findByField('id', $id)->first();
 
@@ -357,7 +415,7 @@ class PollController extends Controller
 
         $itens = $itens->sortByDesc('id');
 
-        if(count($model) == 1)
+        if($model)
         {
             $model->expires_in_time = date_format(date_create($model->expires_in), 'H:i');
 
@@ -366,12 +424,29 @@ class PollController extends Controller
             return view('polls.edit', compact('model', 'events', 'itens'));
         }
 
-        return redirect()->back();
+        return redirect()->back();*/
+
+        $session = $this->sessionRepository->findByField('id', $id)->first();
+
+        $countPerson[] = $this->countPerson();
+
+        $countGroups[] = $this->countGroups();
+
+        $roles = $this->roleRepository->all();
+
+        $leader = $this->getLeaderRoleId();
+
+        $admin = $this->getAdminRoleId();
+
+        $notify = $this->notify();
+
+        $qtde = $notify ? count($notify) : null;
+
+        if($session)
+        {
+
+        }
     }
-
-
-
-
 
 
 
