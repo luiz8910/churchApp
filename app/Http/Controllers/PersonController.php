@@ -2714,24 +2714,18 @@ class PersonController extends Controller
         return redirect()->route('person.index');
     }
 
-    public function generateQrAll()
+    public function generateQrAll($offset)
     {
-        $people = $personRepository->all();
-
-        $i = 0;
+        $people = DB::table('people')->offset($offset)->limit(500)->get();
 
         foreach ($people as $person)
         {
 
-            $i++;
+            $this->qrServices->generateQrCode($person->id);
 
-            if($i == 100)
-            {
-                break;
-            }
         }
 
-        qrCodeAll::dispatch();
+        //qrCodeAll::dispatch();
     }
 
 
@@ -2744,7 +2738,9 @@ class PersonController extends Controller
 
         return redirect()->route('index');
 
-        /*$person = Person::where(['id' => 632])->first();
+        /*
+
+        $person = Person::where(['id' => 632])->first();
 
         $user = new User();
 
