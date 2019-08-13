@@ -2714,9 +2714,9 @@ class PersonController extends Controller
         return redirect()->route('person.index');
     }
 
-    public function generateQrAll($offset)
+    public function generateQrAll($offset, $limit)
     {
-        $people = DB::table('people')->offset($offset)->limit(500)->get();
+        $people = DB::table('people')->offset($offset)->limit($limit)->get();
 
         foreach ($people as $person)
         {

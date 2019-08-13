@@ -901,7 +901,7 @@ Route::get('email-qr-all/{event_id}', 'EventController@sendQREmailAll')->name('s
 
 Route::get('generate-qr/{person_id}', 'EventController@generateQr');
 
-Route::get('generate-qr-all/{offset}', 'PersonController@generateQrAll');
+Route::get('generate-qr-all/{offset}/{limit}', 'PersonController@generateQrAll');
 
 Route::get('teste-zap/', 'EventController@testezap');
 
