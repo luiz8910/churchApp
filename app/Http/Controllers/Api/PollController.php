@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Repositories\PersonRepository;
 use App\Repositories\PollItensRepository;
 use App\Repositories\PollAnswerRepository;
 use App\Http\Controllers\Controller;
 use App\Repositories\PollRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 /**
  * 
@@ -15,17 +17,19 @@ class PollController extends Controller
 {
 	private $answerRepository;
 	private $itensRepository;
+    private $personRepository;
     /**
      * @var PollRepository
      */
     private $repository;
 
     function __construct(PollRepository $repository, PollItensRepository $itensRepository,
-                         PollAnswerRepository $answerRepository)
+                         PollAnswerRepository $answerRepository, PersonRepository $personRepository)
 	{
 		$this->answerRepository = $answerRepository;
 		$this->itensRepository = $itensRepository;
         $this->repository = $repository;
+        $this->personRepository = $personRepository;
     }
 
 	
@@ -96,9 +100,29 @@ class PollController extends Controller
     /*
      * Lista quiz por sessão
      */
-    public function index($session_id)
+    public function index($session_id, $person_id = null)
     {
         $polls = $this->repository->findByField('session_id', $session_id);
+
+        if($person_id) {
+            $person = $this->personRepository->findByField('id', $person_id)->first();
+
+            if($person) {
+                foreach ($polls as $p) {
+                    $vote_exists = DB::table('poll_answers')
+                        ->where([
+                            'person_id' => $person_id,
+                            'polls_id' => $p->id,
+                        ])->first();
+
+                    if($vote_exists) {
+                        $p->voted = $vote_exists->item_id;
+                    } else{
+                        $p->voted = 0;
+                    }
+                }
+            }
+        }
 
         if(count($polls) > 0)
         {

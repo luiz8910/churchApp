@@ -18,6 +18,7 @@ use App\Traits\ConfigTrait;
 use App\Traits\DateRepository;
 use App\Traits\FormatGoogleMaps;
 use App\Traits\NotifyRepository;
+use Auth;
 use Event;
 use Illuminate\Http\Request;
 //use Illuminate\Support\Facades\Request;
@@ -865,7 +866,7 @@ class EventController extends Controller
             return json_encode(['status' => false, 'msg' => 'Campo event_id é nulo ou não existe']);
         }
 
-        if(!isset($data['value']))
+        if(!array_key_exists('value', $data))
         {
             return json_encode(['status' => false, 'msg' => 'Campo value é nulo ou não existe']);
         }
@@ -944,7 +945,7 @@ class EventController extends Controller
             return json_encode(['status' => false, 'msg' => 'Campo event_id é nulo ou não existe']);
         }
 
-        if(!isset($data['value']) || $data['value'] == '')
+        if(!array_key_exists('value', $data) || $data['value'] === '')
         {
             return json_encode(['status' => false, 'msg' => 'Campo value é nulo ou não existe']);
         }
@@ -967,11 +968,18 @@ class EventController extends Controller
 
                     unset($data['value']);
 
-                    $id = $this->listRepository->findWhere(
-                        [
-                            'person_id' => $data['person_id'],
-                            'event_id' => $data['event_id']
-                        ])->first()->id;
+                    $id = null;
+                    $params = [
+                        'person_id' => $data['person_id'],
+                        'event_id' => $data['event_id']
+                    ];
+                    $res = $this->listRepository->findWhere($params)->first();
+                    if ($res) {
+                        $id = $res->id;
+                    } else {
+                        $params['sub_by'] = isset(Auth::user()->person) ? Auth::user()->person->id : 0;
+                        $id = $this->listRepository->create($params)->id;
+                    }
 
                     try{
 
