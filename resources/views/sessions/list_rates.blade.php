@@ -111,14 +111,14 @@
                                                                     </thead>
                                                                     <tbody class="hide" id="tbody-search"></tbody>
                                                                     <tbody>
-                                                                    @foreach($rates as $rate)
+                                                                    @foreach($feedback_session as $feed)
                                                                         <tr>
                                                                             <td>
                                                                                 <a href="javascript:">
                                                                                     <img src="/uploads/profile/noimage.png"
                                                                                          alt=""
                                                                                          style="width: 50px; height: 50px;">
-                                                                                    <p>{{$rate->user->name}}</p>
+                                                                                    <p>{{$feed->person}}</p>
                                                                                 </a>
                                                                             </td>
                                                                             <td>{{$rate->average}}</td>

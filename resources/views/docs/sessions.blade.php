@@ -339,7 +339,7 @@
                     <div class="panel-body hide-panel" id="store-fb-session">
 
                         https://beconnect.com.br/api/store-fb-session/
-                        <span class="label panel-success">POST</span>
+                        <span class="label label-success">POST</span>
 
                         <br><br>
 

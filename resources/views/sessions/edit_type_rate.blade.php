@@ -115,28 +115,31 @@ License: You must have a valid license purchased only from themeforest(the above
                                         </div>
                                     </div>
                                     <div class="portlet-body form">
-                                        {!! Form::open(['route' => 'event.session_store_type_rate', 'method' => 'POST', 'role' => 'form', 'id' => 'form']) !!}
-                                        <input type="hidden" name="id" value="{{$type_rate->id}}">
+                                        <form action="{{ route('event.session.update_type', ['id' => $type->id]) }}" method="POST" role="form" id="form">
+                                            {{ method_field('PUT') }}
+                                            {{ csrf_field() }}
 
-                                        <div class="form-body">
-                                            <div class="form-group">
-                                                <label for="title">Título</label>
-                                                <input type="text" name="title" placeholder="Título"
-                                                       class="form-control" value="{{$type_rate->title}}">
-                                            </div>
-                                        </div>
-                                        <div class="form-actions">
-                                            {!! Form::submit('Enviar', ['class' => 'btn blue', 'id' => 'btn-submit']) !!}
-                                            <div class="progress" style="display: none;">
-                                                <div class="progress-bar progress-bar-striped active" role="progressbar"
-                                                     aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"
-                                                     style="width: 100%">
-                                                    Enviando...
-                                                    <span class="sr-only">Enviando...</span>
+                                        <input type="hidden" name="id" value="{{$type->id}}">
+
+                                            <div class="form-body">
+                                                <div class="form-group">
+                                                    <label for="title">Título</label>
+                                                    <input type="text" name="type" placeholder="Título"
+                                                           class="form-control" value="{{$type->type}}">
                                                 </div>
                                             </div>
-                                        </div>
-                                        {!! Form::close() !!}
+                                            <div class="form-actions">
+                                                {!! Form::submit('Enviar', ['class' => 'btn blue', 'id' => 'btn-submit']) !!}
+                                                <div class="progress" style="display: none;">
+                                                    <div class="progress-bar progress-bar-striped active" role="progressbar"
+                                                         aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"
+                                                         style="width: 100%">
+                                                        Enviando...
+                                                        <span class="sr-only">Enviando...</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                                 <!-- END SAMPLE FORM PORTLET-->

@@ -44,6 +44,9 @@ class FeedbackSessionController extends Controller
     }
 
 
+    /*
+     * Lista por avaliações por sessão
+     */
     public function index($session_id)
     {
         $session = $this->sessionRepository->findByField('id', $session_id)->first();
@@ -69,10 +72,105 @@ class FeedbackSessionController extends Controller
 
             if($event)
             {
-                return view('session.list_types_rates',
-                    compact('session', 'state', 'roles', 'leader', 'admin',
+                $feedback_session = $this->repository->findByField('session_id', $session_id);
+
+                if(count($feedback_session) > 0)
+                {
+                    foreach ($feedback_session as $item)
+                    {
+                        $type = $this->typeRepository->findByField('id', $item->type_feedback)->first();
+
+                        if($type)
+                        {
+                            $item->type = $type->type;
+                        }
+
+                        $person = $this->personRepository->findByField('id', $item->person_id)->first();
+
+                        if($person)
+                        {
+                            $item->person = $person->name;
+                        }
+                    }
+                }
+
+                return view('sessions.list_rates',
+                    compact('session', 'roles', 'leader', 'admin',
                         'notify', 'qtde', 'event', 'feedback_session'));
             }
         }
+    }
+
+    /*
+     * Lista tipos de avaliação por sessão
+     */
+    public function list_types_rates($session_id)
+    {
+        $countPerson[] = $this->countPerson();
+
+        $countGroups[] = $this->countGroups();
+
+        $roles = $this->roleRepository->all();
+
+        $leader = $this->getLeaderRoleId();
+
+        $admin = $this->getAdminRoleId();
+
+        $notify = $this->notify();
+
+        $qtde = $notify ? count($notify) : null;
+
+        $session = $this->sessionRepository->findByField('id', $session_id)->first();
+
+        if($session)
+        {
+            $event = $this->eventRepository->findByField('id', $session->event_id)->first();
+
+            if($event)
+            {
+                $types = $this->typeRepository->findByField('session_id', $session_id);
+
+                return view('sessions.list_types_rates',
+                    compact('session', 'roles', 'leader', 'admin',
+                        'notify', 'qtde', 'event', 'types'));
+            }
+        }
+    }
+
+    public function create_type($session_id)
+    {
+        return view('sessions.new_type_rate', compact('session_id'));
+    }
+
+    public function edit_type($id)
+    {
+        $type = $this->typeRepository->findByField('id', $id)->first();
+
+        return view('sessions.edit_type_rate', compact('type'));
+    }
+
+
+    public function store_type(Request $request)
+    {
+        $data = $request->all();
+
+        $this->typeRepository->create($data);
+
+        $request->session()->flash('success.msg', 'Avaliação criada com sucesso');
+
+        return redirect()->route('event.session.list_types_rates', ['id' => $data['session_id']]);
+    }
+
+    public function update_type(Request $request, $id)
+    {
+        $data = $request->all();
+
+        $data['session_id'] = $this->typeRepository->findByField('id', $id)->first()->session_id;
+
+        $this->typeRepository->update($data, $id);
+
+        $request->session()->flash('success.msg', 'Avaliação editada com sucesso');
+
+        return redirect()->route('event.session.list_types_rates', ['id' => $data['session_id']]);
     }
 }

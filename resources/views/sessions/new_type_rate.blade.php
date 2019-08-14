@@ -115,13 +115,13 @@ License: You must have a valid license purchased only from themeforest(the above
                                         </div>
                                     </div>
                                     <div class="portlet-body form">
-                                        {!! Form::open(['route' => 'event.session_store_type_rate', 'method' => 'POST', 'role' => 'form', 'id' => 'form']) !!}
+                                        {!! Form::open(['route' => 'event.session.store_type', 'method' => 'POST', 'role' => 'form', 'id' => 'form']) !!}
                                         <input type="hidden" name="session_id" value="{{$session_id}}">
 
                                         <div class="form-body">
                                             <div class="form-group">
                                                 <label for="title">Título</label>
-                                                <input type="text" name="title" placeholder="Título"
+                                                <input type="text" name="type" placeholder="Título"
                                                        class="form-control">
                                             </div>
                                         </div>

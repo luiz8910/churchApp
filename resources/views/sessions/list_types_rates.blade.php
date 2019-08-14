@@ -81,6 +81,8 @@
                                                                         <span class="hidden-xs hidden-sm">Novo Tipo de Avaliação</span>
                                                                     </a>
 
+                                                                    <a href="{{ route('event.session') }}"></a>
+
                                                                 </div>
                                                             </div>
                                                         @endif
@@ -106,20 +108,20 @@
                                                                     </thead>
                                                                     <tbody class="hide" id="tbody-search"></tbody>
                                                                     <tbody>
-                                                                    @foreach($types_rates as $type_rate)
+                                                                    @foreach($types as $type)
                                                                         <tr>
-                                                                            <td>{{$type_rate->title}}</td>
+                                                                            <td>{{$type->type}}</td>
                                                                             <td class="d-flex-center">
-                                                                                <a href="{{ route('event.session.edit_type_rate', ['id' => $type_rate->id]) }}"
+                                                                                <a href="{{ route('event.session.edit_type', ['id' => $type->id]) }}"
                                                                                    class="btn btn-warning btn-sm btn-circle"
                                                                                    title="Editar Tipo de Avaliação">
                                                                                     <i class="fa fa-edit"></i>
                                                                                 </a>
-                                                                                <a href="{{ route('event.session.delete_type_rate', ['id' => $type_rate->id]) }}"
+                                                                                <a href="{{ route('event.session.delete_type_rate', ['id' => $type->id]) }}"
                                                                                    class="btn btn-danger btn-sm btn-circle"
                                                                                    title="Excluir Tipo de Avaliação"
                                                                                    onclick="return excluir(this)"
-                                                                                   data-id="{{$type_rate->id}}">
+                                                                                   data-id="{{$type->id}}">
                                                                                     <i class="fa fa-trash"></i>
                                                                                 </a>
                                                                             </td>

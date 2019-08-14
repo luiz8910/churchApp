@@ -498,17 +498,19 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('session-unapprove-question/{id}', 'SessionController@unapprove_question')->name('event.session.unapprove_question');
 
-        Route::get('session-list-types-rates/{id}', 'SessionController@list_types_rates')->name('event.session.list_types_rates');
+        Route::get('session-list-types-rates/{id}', 'FeedbackSessionController@list_types_rates')->name('event.session.list_types_rates');
 
-        Route::get('session-new-type-rate/{session_id}', 'SessionController@new_type_rate')->name('event.session.new_type_rate');
+        Route::get('session-new-type-rate/{session_id}', 'FeedbackSessionController@create_type')->name('event.session.new_type_rate');
 
-        Route::post('session-store-type-rate', 'SessionController@store_type_rate')->name('event.session_store_type_rate');
+        Route::get('session-edit-type-rate/{id}', 'FeedbackSessionController@edit_type')->name('event.session.edit_type');
 
-        Route::get('session-edit-type-rate/{id}', 'SessionController@edit_type_rate')->name('event.session.edit_type_rate');
+        Route::post('session-store-type-rate', 'FeedbackSessionController@store_type')->name('event.session.store_type');
+
+        Route::put('session-update-type-rate/{id}', 'FeedbackSessionController@update_type')->name('event.session.update_type');
 
         Route::get('session-delete-type-rate/{id}', 'SessionController@delete_type_rate')->name('event.session.delete_type_rate');
 
-        Route::get('session-list-rates/{id}', 'SessionController@list_rates')->name('event.session.list_rates');
+        Route::get('session-feedback/{id}', 'FeedbackSessionController@index')->name('event.session.feedback');
 
         Route::get('session-view-rate/{user_id}/{session_id}', 'SessionController@view_rate')->name('event.session.view_rate');
 

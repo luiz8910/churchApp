@@ -206,7 +206,7 @@
                                                                                class="btn btn-warning btn-sm btn-circle" title="Listar Tipos de Avaliações">
                                                                                 <i class="fa fa-star"></i>
                                                                             </a>
-                                                                            <a href="{{ route('event.session.list_rates', ['id' => $item->id]) }}"
+                                                                            <a href="{{ route('event.session.feedback', ['id' => $item->id]) }}"
                                                                                class="btn btn-warning btn-sm btn-circle" title="Listar Avaliações">
                                                                                 <i class="fa fa-comments"></i>
                                                                             </a>
