@@ -281,6 +281,36 @@ class PollController extends Controller
         return redirect()->route('event.session.poll.index', ['id' => $data['session_id']]);
     }
 
+    /*
+     * Recupera as respostas do quiz
+     */
+    public function answers($id)
+    {
+        $answer = DB::table('poll_answers')
+                        ->where(['polls_id' => $id])
+                        ->distinct()
+                        ->select('item_id')
+                        ->get();
+
+
+        $count_ans = $this->answerRepository->findByField('polls_id', $id);
+
+
+        if(count($answer) > 0)
+        {
+            foreach ($answer as $a)
+            {
+                $a->text = $this->itensRepository->find($a->item_id)->description;
+
+                $a->count = count($this->answerRepository->findByField('item_id', $a->item_id));
+            }
+
+            return json_encode(['status' => true, 'count_itens' => count($count_ans), 'answers' => $answer]);
+
+        }
+
+
+    }
 
     public function storeOld(Request $request)
     {

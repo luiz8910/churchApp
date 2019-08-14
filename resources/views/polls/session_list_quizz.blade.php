@@ -112,13 +112,10 @@
                                                                             <td>{{$poll->order}}</td>
                                                                             <td>{{$poll->content}}</td>
                                                                             <td class="d-flex-center">
-                                                                                <a href="{{ route('event.session.view_quizz_question', ['id' => $poll->id]) }}"
+                                                                                <a href="javascript:"
                                                                                    class="btn btn-warning btn-sm btn-circle btn-itens"
                                                                                    title="Visualizar Questão"
-                                                                                   data-toggle="modal"
-                                                                                   data-target="#modal-padrao"
-                                                                                   data-remote="false"
-                                                                                   modal-remote="true" id="btn-itens-{{ $poll->id }}">
+                                                                                   id="btn-itens-{{ $poll->id }}">
                                                                                     <i class="fa fa-eye"></i>
                                                                                 </a>
                                                                                 <a href="{{ route('event.session.delete_quizz', ['id' => $poll->id]) }}"
@@ -148,7 +145,58 @@
                                 </div> <!-- FIM DIV .row -->
                             </div> <!-- FIM DIV .page-content-inner -->
 
+                            <div class="page-content-inner">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="portlet light">
+                                            <div class="portlet-title">
+                                                <div class="caption font-green-haze">
+                                                    <i class="fa fa-users font-green-haze"></i>
+                                                    <span class="caption-subject font-green-haze bold ">Votos</span>
+                                                </div>
 
+                                                <div class="actions">
+
+                                                </div> <!-- FIM DIV .actions -->
+                                            </div> <!-- FIM DIV .portlet-title -->
+
+                                            <div class="portlet-body form">
+
+
+                                                <div class="check-in">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+
+                                                            <div class="table-scrollable table-scrollable-borderless table-striped">
+                                                                <table class="table table-hover table-light table-striped">
+                                                                    <thead>
+                                                                    <tr class="uppercase">
+                                                                        <th>#</th>
+                                                                        <th>Alternativas</th>
+                                                                        <th>Quantidade</th>
+                                                                        <th>%</th>
+                                                                        <th></th>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody class="hide" id="tbody-search"></tbody>
+                                                                    <tbody id="tbody-details">
+
+                                                                    </tbody>
+                                                                </table>
+                                                                <br>
+
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                            </div> <!-- FIM DIV .portlet-body form -->
+                                        </div> <!-- FIM DIV .portlet light -->
+                                    </div> <!-- FIM DIV .col-md-12 -->
+                                </div> <!-- FIM DIV .row -->
+                            </div> <!-- FIM DIV .page-content-inner -->
 
                         </div> <!-- FIM DIV .container -->
                     </div> <!-- FIM DIV .page-content -->

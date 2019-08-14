@@ -486,6 +486,8 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('session-view-quizz-question/{id}', 'SessionController@view_quizz_question')->name('event.session.view_quizz_question');
 
+        Route::get('/getAnswers/{id}', 'PollController@answers');
+
         Route::post('quizz-store', 'PollController@store')->name('event.session.poll.store');
 
         Route::get('session-new-quizz/{session_id}', 'PollController@create')->name('event.session.poll.create');

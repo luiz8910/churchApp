@@ -314,14 +314,26 @@ Route::get('/doc-search/{input}', 'Api\DocumentsController@search');
 
 
 
-//---------------------------------- Enquetes --------------------------------------------------------------------------
+//---------------------------------- Enquetes(Quiz) --------------------------------------------------------------------
 
 /*
  * Escolhe uma alternativa da enquete.
  * $id = id da alternativa escolhida, $person_id = id da pessoa que respondeu
  */
 
-Route::post('/choose/{id}/{person_id}', 'Api\PollController@choose');
+Route::post('/choose/{id}', 'Api\PollController@choose');
+
+/*
+ * $id = id do quiz
+ * Lista alternativas de um quiz
+ */
+Route::get('list-itens/{id}', 'Api\PollController@list_itens');
+
+/*
+ * $id = id da sessão
+ * Lista quiz por sessão
+ */
+Route::get('quizz/{id}', 'Api\PollController@index');
 
 
 //-------------------------- Sessões de Eventos ------------------------------------------------------------------------

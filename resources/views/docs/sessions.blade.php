@@ -461,6 +461,131 @@
             </div>
         </div>
 
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Responder Quiz
+                            <span class="span-btn-minimize" id="btn-minimize-choose">_</span>
+                        </h3>
+                    </div>
+
+                    <div class="panel-body hide-panel" id="choose">
+
+                        https://beconnect.com.br/api/choose/{id}
+                        <span class="label label-success">POST</span>
+
+                        <br><br>
+                        id = id do item escolhido <span class="label label-info" style="font-size: 12px;">Inteiro</span> <br><br>
+
+
+                        <br><br>
+
+                        <p class="text-center">Campos</p>
+
+                        <pre>
+                            'person_id'
+                        </pre>
+
+                        <p class="text-center">Exemplo de Retorno</p>
+
+                        <pre>
+
+
+                        {"status":true}
+
+                        ou
+
+                        {"status":false, 'msg': Erro}
+                    </pre>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Lista de Itens
+                            <span class="span-btn-minimize" id="btn-minimize-list-itens">_</span>
+                        </h3>
+                    </div>
+
+                    <div class="panel-body hide-panel" id="list-itens">
+
+                        https://beconnect.com.br/api/list-itens/{id}
+                        <span class="label label-primary">GET</span>
+
+                        <br><br>
+                        id = id do quiz <span class="label label-info" style="font-size: 12px;">Inteiro</span> <br><br>
+
+
+                        <br><br>
+
+
+                        <p class="text-center">Exemplo de Retorno</p>
+
+                        <pre>
+
+
+                        {"status":true, itens: itens aqui}
+
+                        ou
+
+                        {"status":false, 'msg': Erro}
+                    </pre>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Lista de Quiz por sessão
+                            <span class="span-btn-minimize" id="btn-minimize-quizz">_</span>
+                        </h3>
+                    </div>
+
+                    <div class="panel-body hide-panel" id="quizz">
+
+                        https://beconnect.com.br/api/quizz/{id}
+                        <span class="label label-primary">GET</span>
+
+                        <br><br>
+                        id = id da sessão <span class="label label-info" style="font-size: 12px;">Inteiro</span> <br><br>
+
+
+                        <br><br>
+
+
+                        <p class="text-center">Exemplo de Retorno</p>
+
+                        <pre>
+
+
+                        {"status":true, quizz: quizz aqui}
+
+                        ou
+
+                        {"status":false, 'msg': Erro}
+                    </pre>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
     </div>
 </div>
 

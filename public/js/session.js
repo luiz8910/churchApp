@@ -111,19 +111,40 @@ $(function(){
 
         var id = this.id.replace('btn-itens-', '');
 
+
         var request = $.ajax({
-            url: 'getAnswers/' + id,
+            url: '/getAnswers/' + id,
             method: 'GET',
             dataType: 'json'
         });
 
+        $("#tbody-details tr").remove();
+
         request.done(function (e) {
             if(e.status)
             {
+                var append = '';
+
+                for (var i = 0; i < e.answers.length; i++)
+                {
+                    var percent = parseFloat(e.answers[i].count / e.count_itens);
+
+                    percent *= 100;
+
+                    append = ''+
+                        '<tr>' +
+                        '<td></td>'+
+                        '<td>'+e.answers[i].text+'</td>'+
+                        '<td>'+e.answers[i].count+'</td>'+
+                        '<td>'+ percent.toFixed(2) +'%</td>'+
+                        '</tr>';
+
+                    $("#tbody-details").append(append);
+                }
 
             }
         })
-    })
+    });
 
 
 });

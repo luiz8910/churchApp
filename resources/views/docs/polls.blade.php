@@ -52,15 +52,15 @@
                 <div class="panel panel-primary">
                     <div class="panel-heading">
                         <h3 class="panel-title">
-                            Responder Enquete
+                            Responder Quiz
                             <span class="span-btn-minimize" id="btn-minimize-choose">_</span>
                         </h3>
                     </div>
 
                     <div class="panel-body hide-panel" id="choose">
 
-                        https://beconnect.com.br/api/choose/{id}/{person_id}
-                        <span class="label label-primary">GET</span>
+                        https://beconnect.com.br/api/choose/{id}
+                        <span class="label label-primary">POST</span>
 
                         <br><br>
                         id = id do item escolhido <span class="label label-info" style="font-size: 12px;">Inteiro</span> <br><br>
@@ -68,6 +68,12 @@
 
 
                         <br><br>
+
+                        <p class="text-center">Campos</p>
+
+                        <pre>
+                            'person_id'
+                        </pre>
 
                         <p class="text-center">Exemplo de Retorno</p>
 
@@ -78,7 +84,7 @@
 
                         ou
 
-                        {"status":false}
+                        {"status":false, 'msg': Erro}
                     </pre>
 
                     </div>
