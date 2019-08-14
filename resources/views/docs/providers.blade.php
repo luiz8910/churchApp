@@ -53,7 +53,7 @@
                     <div class="panel-heading">
                         <h3 class="panel-title">
                             Lista de Fornecedores
-                            <span class="span-btn-minimize" id="btn-minimize-speakers">_</span>
+                            <span class="span-btn-minimize" id="btn-minimize-providers">_</span>
                         </h3>
                     </div>
 

@@ -111,7 +111,7 @@ class ProviderController extends Controller
 
         $people = $this->personRepository->findByField('church_id', $this->getUserChurch());
 
-        $sp = DB::table('provider_person')
+        /*$sp = DB::table('provider_person')
             ->where([
                 'provider_id' => $id
             ])->first();
@@ -122,7 +122,7 @@ class ProviderController extends Controller
         }
         else{
             $sp = false;
-        }
+        }*/
 
         return view('providers.edit', compact('categories', 'state', 'no_zip_button',
             'model', 'id', 'people', 'sp'));
@@ -240,18 +240,18 @@ class ProviderController extends Controller
 
             $redirect = false;
 
-            if(isset($data['new-responsible-provider']))
+            /*if(isset($data['new-responsible-provider']))
             {
                 $redirect = true;
 
                 unset($data['new-responsible-provider']);
-            }
+            }*/
 
             $this->repository->update($data, $id);
 
             \DB::commit();
 
-            if($data['responsible'] != "")
+            /*if($data['responsible'] != "")
             {
                 $sp = DB::table('provider_person')
                     ->where('provider_id', $id)
@@ -297,7 +297,7 @@ class ProviderController extends Controller
                     ->where('provider_id', $id)
                     ->delete();
 
-            }
+            }*/
 
 
 

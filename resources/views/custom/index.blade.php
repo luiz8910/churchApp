@@ -216,6 +216,7 @@
                                                             @foreach($model as $item)
 
 
+
                                                                 <tr id="tr-{{ $item[$columns[0]] }}">
                                                                     @if(!isset($doc))
                                                                         <td><img src="{{ $item[$columns[1]] }}"

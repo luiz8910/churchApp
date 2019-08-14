@@ -462,7 +462,7 @@ class SessionController extends Controller
                         }
                     }
 
-                    dd($questions);
+
 
                     return view('sessions.session-list-questions', compact('questions', 'event', 'session'));
                 }
@@ -653,7 +653,7 @@ class SessionController extends Controller
         return view('events.session_edit_type_rate', compact('type_rate'));
     }
 
-    public function delete_typer_rate($id)
+    public function delete_type_rate($id)
     {
         // TODO
     }

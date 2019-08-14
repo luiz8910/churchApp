@@ -846,10 +846,6 @@ Route::group(['middleware' => 'auth'], function () {
         return view('docs.documents');
     })->name('docs.documents');
 
-    Route::get('docs/enquetes', function(){
-        return view('docs.polls');
-    })->name('docs.polls');
-
     Route::get('docs/config', function(){
         return view('docs.config');
     })->name('docs.config');

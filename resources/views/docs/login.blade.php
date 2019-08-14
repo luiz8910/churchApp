@@ -116,17 +116,17 @@
 
         <div class="row">
             <div class="col-md-12">
-                <div class="panel panel-primary">
+                <div class="panel panel-success">
                     <div class="panel-heading">
                         <h3 class="panel-title">
-                            Recuperação de Senha e envio de código
+                            Recuperação de Senha
                             <span class="span-btn-minimize" id="btn-minimize-recover-password">_</span>
                         </h3>
                     </div>
                     <div class="panel-body hide-panel" id="recover-password">
 
-                        https://beconnect.com.br/api/recover-password/{email}
-                        <span class="label label-primary">GET</span>
+                        https://beconnect.com.br/api/sendPassword/{email}
+                        <span class="label label-success">POST</span>
 
                         <br><br>
 
@@ -140,7 +140,7 @@
 
                         <pre>
 
-                            Envia um email para o usuário com um código para digitar no app
+                            Envia um email para o usuário
 
                             <br>
 

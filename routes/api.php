@@ -52,6 +52,8 @@ Route::post('/new-password', 'Auth\LoginController@newPassword');
 
 Route::get('/getUserRoleByEmail/{email?}', 'Auth\LoginController@getUserRoleByEmail');
 
+Route::post("/sendPassword/{email}", "UsersController@sendPassword")->name('recover.password');
+
 
 
 

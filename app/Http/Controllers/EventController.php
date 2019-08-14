@@ -2137,7 +2137,7 @@ class EventController extends Controller
                     $this->personRepository->update($p, $person->id);
 
                     if (!$this->userRepository->findByField('email', $p['email'])->first()) {
-                        $this->createUserLogin($x['person_id'], $this->randomPassword(), $p['email'], $event->church_id);
+                        $this->createUserLogin($x['person_id'], 'secret', $p['email'], $event->church_id);
                     }
                 } else {
                     $p['role_id'] = 2;
@@ -2148,7 +2148,7 @@ class EventController extends Controller
 
                     $x['person_id'] = $this->personRepository->create($p)->id;
 
-                    $this->createUserLogin($x['person_id'], $this->randomPassword(), $p['email'], $event->church_id);
+                    $this->createUserLogin($x['person_id'], 'secret', $p['email'], $event->church_id);
                 }
 
                 $this->qrServices->generateQrCode($x['person_id']);
