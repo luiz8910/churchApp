@@ -2156,7 +2156,8 @@ class EventController extends Controller
                 //Verifica se o cliente ja pagou pela inscrição
                 $pay_exists = $this->paymentRepository->findWhere([
                     'person_id' => $x['person_id'],
-                    'event_id' => $event_id
+                    'event_id' => $event_id,
+                    'status' => 4
                 ]);
 
                 /*
