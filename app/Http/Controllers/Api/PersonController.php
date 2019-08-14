@@ -490,7 +490,7 @@ class PersonController extends Controller
             }
         }
 
-        if(!isset($data['value']) || $data['value'] == "")
+        if(!array_key_exists('value', $data) || $data['value'] === '')
         {
             return json_encode(['status' => false, 'msg' => 'Campo value não foi definido, valor deve ser 1 ou 0']);
         }

@@ -333,7 +333,7 @@ Route::get('list-itens/{id}', 'Api\PollController@list_itens');
  * $id = id da sessão
  * Lista quiz por sessão
  */
-Route::get('quizz/{id}', 'Api\PollController@index');
+Route::get('quizz/{id}/{person_id}', 'Api\PollController@index');
 
 
 //-------------------------- Sessões de Eventos ------------------------------------------------------------------------

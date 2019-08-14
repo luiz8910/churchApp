@@ -36,11 +36,11 @@ class ProviderController extends Controller
 
             if($event)
             {
-                $speakers = $this->repository->findByField('event_id', $event_id);
+                $providers = $this->repository->findByField('event_id', $event_id);
 
-                if(count($speakers) > 0)
+                if(count($providers) > 0)
                 {
-                    return json_encode(['status' => true, 'count' => count($speakers), 'speakers' => $speakers]);
+                    return json_encode(['status' => true, 'count' => count($providers), 'providers' => $providers]);
                 }
                 else{
 
@@ -61,11 +61,11 @@ class ProviderController extends Controller
         }
         else{
 
-            $speakers = $this->repository->all();
+            $providers = $this->repository->all();
 
-            if(count($speakers) > 0)
+            if(count($providers) > 0)
             {
-                foreach ($speakers as $item)
+                foreach ($providers as $item)
                 {
                     if($item->event_id)
                     {
@@ -73,7 +73,7 @@ class ProviderController extends Controller
                         $item->event_name = $event ? $event->name : '';
                     }
                 }
-                return json_encode(['status' => true, 'count' => count($speakers), 'speakers' => $speakers]);
+                return json_encode(['status' => true, 'count' => count($providers), 'providers' => $providers]);
             }
             else{
 
@@ -87,11 +87,11 @@ class ProviderController extends Controller
      */
     public function show($id)
     {
-        $speaker = $this->repository->findByField('id', $id)->first();
+        $provider = $this->repository->findByField('id', $id)->first();
 
-        if($speaker)
+        if($provider)
         {
-            return json_encode(['status' => true, 'speaker' => $speaker]);
+            return json_encode(['status' => true, 'provider' => $provider]);
         }
 
         return json_encode(['status' => false, 'msg' => 'Este Palestrante não existe']);
@@ -205,9 +205,9 @@ class ProviderController extends Controller
     {
         $data = $request->all();
 
-        $speaker = $this->repository->findByField('id', $id)->first();
+        $provider = $this->repository->findByField('id', $id)->first();
 
-        if($speaker)
+        if($provider)
         {
             if($data['name'] == "" || !isset($data['name']))
             {
@@ -342,11 +342,11 @@ class ProviderController extends Controller
      */
     public function listByCategory($category_id)
     {
-        $speakers = $this->repository->findByField('category_id', $category_id);
+        $providers = $this->repository->findByField('category_id', $category_id);
 
-        if(count($speakers) > 0)
+        if(count($providers) > 0)
         {
-            return json_encode(['status' => true, 'count' => count($speakers), 'speakers' => $speakers]);
+            return json_encode(['status' => true, 'count' => count($providers), 'providers' => $providers]);
         }
 
         return json_encode(['status' => true, 'count' => 0]);
@@ -607,13 +607,13 @@ class ProviderController extends Controller
         if($cat)
         {
 
-            $speakers = \DB::table('speakers')
+            $providers = \DB::table('providers')
                 ->where([
                     'category_id' => $id
                 ])
                 ->update(['category_id' => '']);
 
-            if($speakers)
+            if($providers)
             {
                 try{
 
