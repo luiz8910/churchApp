@@ -83,7 +83,6 @@ class PaymentMail implements ShouldQueue
                         Mail::to($user)->send(new Payment_Status($this->url, $this->url_img,
                             $this->p1, $this->p2, $this->subject, $person, $this->event_id));
 
-                        $qrServices->generateQrCode($person->id);
 
                         $eventServices->subEvent($this->event_id, $person->id);
 

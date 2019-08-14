@@ -2151,6 +2151,8 @@ class EventController extends Controller
                     $this->createUserLogin($x['person_id'], $this->randomPassword(), $p['email'], $event->church_id);
                 }
 
+                $this->qrServices->generateQrCode($x['person_id']);
+
                 //Verifica se o cliente ja pagou pela inscrição
                 $pay_exists = $this->paymentRepository->findWhere([
                     'person_id' => $x['person_id'],
