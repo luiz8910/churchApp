@@ -81,8 +81,6 @@
                                                                         <span class="hidden-xs hidden-sm">Novo Tipo de Avaliação</span>
                                                                     </a>
 
-                                                                    <a href="{{ route('event.session') }}"></a>
-
                                                                 </div>
                                                             </div>
                                                         @endif

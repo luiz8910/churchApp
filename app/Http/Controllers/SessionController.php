@@ -130,7 +130,7 @@ class SessionController extends Controller
 
                 }
 
-                return view('events.sessions-list',
+                return view('sessions.sessions-list',
                     compact('sessions', 'state', 'roles', 'leader', 'admin', 'notify', 'qtde', 'event', 'eventDate'));
 
 
@@ -138,7 +138,7 @@ class SessionController extends Controller
 
                 $sessions = false;
 
-                return view('events.sessions-list',
+                return view('sessions.sessions-list',
                     compact('sessions', 'state', 'roles', 'leader', 'admin', 'notify', 'qtde', 'event', 'eventDate'));
             }
 
