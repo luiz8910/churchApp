@@ -413,8 +413,19 @@ class PaymentServices
                     $pay['antiFraude_score'] = json_decode($json)->antifraude->score;
                     $pay['antiFraude_recommendation'] = json_decode($json)->antifraude->recommendation;*/
 
+                    $exists = $this->paymentRepository->findWhere([
+                       'person_id' => $pay['person_id'],
+                        'event_id' => $pay['event_id']
+                    ])->first();
 
-                    $this->paymentRepository->create($pay);
+                    if($exists)
+                    {
+                        $this->paymentRepository->update($pay, $exists->id);
+                    }
+                    else{
+                        $this->paymentRepository->create($pay);
+                    }
+
 
                     \DB::commit();
 
@@ -426,7 +437,7 @@ class PaymentServices
 
                     $bug = new Bug();
 
-                    $bug->description = $e->getMessage();
+                    $bug->description = $e->getMessage() . 'person_id: ' . $person->id;
                     $bug->platform = 'Back-end';
                     $bug->location = 'line ' . $e->getLine() . ' createTransaction() PaymentServices.php';
                     $bug->model = '4all';
