@@ -2218,14 +2218,7 @@ class EventController extends Controller
 
                         $p2 = '';
 
-                        if($event_id == 99)
-                        {
-                            PaymentApproved::dispatch($x, $event_id, $data);
-                        }
-                        else{
-                            $this->paymentServices->createTransaction($x, $event_id);
-                        }
-
+                        $this->paymentServices->createTransaction($x, $event_id);
 
                         PaymentMail::dispatch($li_0, $li_1, $li_2, $li_3, $li_4,
                             $li_5, $url, $url_img, $subject, $p1, $p2, $x, $event_id)
