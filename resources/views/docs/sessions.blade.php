@@ -66,12 +66,13 @@
                     </div>
                     <div class="panel-body hide-panel" id="sessions">
 
-                        https://beconnect.com.br/api/sessions/{event_id}
+                        https://beconnect.com.br/api/sessions/{event_id}/{person_id?}
                         <span class="label label-primary">GET</span>
 
                         <br><br>
 
                         event_id = id do evento <span class="label label-info" style="font-size: 12px;">Inteiro</span><br>
+                        person_id = id da pessoa (opcional) <span class="label label-info" style="font-size: 12px;">Inteiro</span><br>
 
 
                         <br><br>
@@ -93,7 +94,63 @@
                                         "tag":null,"created_at":"2019-04-03 14:07:59",
                                         "updated_at":"2019-04-03 14:07:59",
                                         "deleted_at":null,
-                                        "check_in": 25
+                                        "check_in": 25,
+                                        "person_check": 1 ou 0
+                                    }
+                                ]
+                            }
+
+                            senão houver sessões
+
+                            {"status":false,"msg": "Não há sessões para o evento selecionado"}
+                        </pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Detalhes de uma sessão
+                            <span class="span-btn-minimize" id="btn-minimize-sessions-show">_</span>
+                        </h3>
+
+                    </div>
+                    <div class="panel-body hide-panel" id="sessions-show">
+
+                        https://beconnect.com.br/api/session-show/{session_id}/{person_id?}
+                        <span class="label label-primary">GET</span>
+
+                        <br><br>
+
+                        session_id = id da sessão <span class="label label-info" style="font-size: 12px;">Inteiro</span><br>
+                        person_id = id da pessoa (opcional) <span class="label label-info" style="font-size: 12px;">Inteiro</span><br>
+
+
+                        <br><br>
+
+                        <p class="text-center">Exemplo de Retorno</p>
+
+                        <pre>
+                            {"status":true,
+                                "session":[
+                                    {
+                                        "id":1,
+                                        "event_id":7,
+                                        "name":"Café",
+                                        "max_capacity":-1, (Se capacidade máxima = -1, então não há limitações)
+                                        "location":"Refeitório",
+                                        "start_time":"2019-04-06 08:00:00",
+                                        "end_time":"2019-04-06 08:30:00",
+                                        "description":"Eu preciso de Café",
+                                        "tag":null,"created_at":"2019-04-03 14:07:59",
+                                        "updated_at":"2019-04-03 14:07:59",
+                                        "deleted_at":null,
+                                        "check_in": 25,
+                                        "person_check": 1 ou 0
                                     }
                                 ]
                             }

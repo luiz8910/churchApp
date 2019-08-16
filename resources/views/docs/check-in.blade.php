@@ -324,6 +324,49 @@
             </div>
         </div>
 
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Retirar Check-in de Sessão
+                            <span class="span-btn-minimize" id="btn-minimize-uncheckin-session">_</span>
+                        </h3>
+                    </div>
+
+                    <div class="panel-body hide-panel" id="uncheckin-session">
+
+                        https://beconnect.com.br/api/uncheckin-session/
+                        <span class="label label-success">POST</span>
+
+
+                        <br><br>
+
+                        <p class="text-center">Nomes dos campos</p>
+
+                        <pre>
+                            'person_id', 'session_id'
+                        </pre>
+
+                        <br><br>
+
+                        <p class="text-center">Exemplo de Retorno</p>
+
+                        <pre>
+
+                            {"status":true}
+
+                            Se acontecer algum erro
+
+                            {"status":false, "msg": 'Mensagem de erro aqui'}
+
+                        </pre>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 

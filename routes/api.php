@@ -111,6 +111,8 @@ Route::get('/is-sub/{event_id}/{person_id}', 'Api\EventController@isSub');
 //Check-in em Sessões
 Route::post('/checkin-session', 'Api\SessionController@add_check_in');
 
+Route::post('/uncheckin-session', 'Api\SessionController@remove_check_in');
+
 //------------------------- Grupos -------------------------------------------------------------------------------------
 
 Route::get('groups/{church}', 'Api\GroupController@groupListApp');
@@ -341,7 +343,10 @@ Route::get('quizz/{id}/{person_id}', 'Api\PollController@index');
 //-------------------------- Sessões de Eventos ------------------------------------------------------------------------
 
 //Lista de Sessões por evento
-Route::get('/sessions/{event_id}', 'Api\SessionController@list');
+Route::get('/sessions/{event_id}/{person_id?}', 'Api\SessionController@list');
+
+//Detalhes de uma Sessão
+Route::get('/session-show/{session_id}/{person_id?}', 'Api\SessionController@show');
 
 //Encontra a sessão desejada pelo código
 Route::get('/session-code/{code}', 'Api\SessionController@getCode');
