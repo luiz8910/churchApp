@@ -56,8 +56,8 @@ class SessionController extends Controller
                     {
                         $exists = DB::table('session_checks')
                             ->where([
-                                'session_id' => $data['session_id'],
-                                'person_id' => $data['person_id']
+                                'session_id' => $s->id,
+                                'person_id' => $person_id
                             ])->first();
 
                         if($exists)
