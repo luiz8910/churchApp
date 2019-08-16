@@ -95,7 +95,8 @@
                                         "updated_at":"2019-04-03 14:07:59",
                                         "deleted_at":null,
                                         "check_in": 25,
-                                        "person_check": 1 ou 0
+                                        "person_check": 1 ou 0,
+                                        "speaker_id": 3
                                     }
                                 ]
                             }
@@ -150,7 +151,8 @@
                                         "updated_at":"2019-04-03 14:07:59",
                                         "deleted_at":null,
                                         "check_in": 25,
-                                        "person_check": 1 ou 0
+                                        "person_check": 1 ou 0,
+                                        "speaker_id": 3
                                     }
                                 ]
                             }

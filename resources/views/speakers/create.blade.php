@@ -180,7 +180,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                             <div class="row">
 
-                                                <div class="col-md-6">
+                                                <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Nome</label>
                                                         <div class="input-group">
@@ -195,7 +195,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-6">
+                                                <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Empresa</label>
                                                         <div class="input-group">
@@ -203,12 +203,44 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 <i class="fa fa-building font-blue"></i>
                                                             </span>
                                                             <input type="text" name="company" class="form-control"
-                                                                   placeholder="Empresa do Palestrante" required
+                                                                   placeholder="Empresa do Palestrante"
                                                                    value="{{ old('company') }}">
 
                                                         </div>
                                                     </div>
                                                 </div>
+
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Evento</label>
+                                                        <div class="input-group">
+
+
+                                                            @if(count($events) == 0)
+                                                                <a href="{{ route('event.create') }}">Clique aqui e cadastre seu primeiro evento</a>
+
+                                                            @else
+                                                                <span class="input-group-addon">
+                                                                    <i class="fa fa-calendar font-blue"></i>
+                                                                </span>
+
+                                                                <select name="event_id" id="event_id" class="select2 form-control" required>
+                                                                    <option value="" selected></option>
+                                                                    <optgroup label="Eventos">
+                                                                        @foreach($events as $event)
+                                                                            <option value="{{ $event->id }}">{{ $event->name }}</option>
+                                                                        @endforeach
+                                                                    </optgroup>
+                                                                </select>
+                                                            @endif
+
+
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
                                             </div>
                                             <hr>
                                             <br>

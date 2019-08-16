@@ -8,6 +8,7 @@ use App\Repositories\PersonRepository;
 use App\Repositories\QuestionRepository;
 use App\Repositories\RoleRepository;
 use App\Repositories\SessionRepository;
+use App\Repositories\SpeakerRepository;
 use App\Repositories\StateRepository;
 use App\Services\SessionService;
 use App\Traits\ConfigTrait;
@@ -49,10 +50,14 @@ class SessionController extends Controller
      * @var PersonRepository
      */
     private $personRepository;
+    /**
+     * @var SpeakerRepository
+     */
+    private $speakerRepository;
 
     public function __construct(SessionRepository $repository, EventRepository $eventRepository, StateRepository $stateRepository,
                                 RoleRepository $roleRepository, SessionService $service, QuestionRepository $questionRepository,
-                                PersonRepository $personRepository)
+                                PersonRepository $personRepository, SpeakerRepository $speakerRepository)
     {
         $this->repository = $repository;
         $this->eventRepository = $eventRepository;
@@ -61,6 +66,7 @@ class SessionController extends Controller
         $this->service = $service;
         $this->questionRepository = $questionRepository;
         $this->personRepository = $personRepository;
+        $this->speakerRepository = $speakerRepository;
     }
 
     /*
@@ -91,6 +97,7 @@ class SessionController extends Controller
 
         if($event)
         {
+            $speakers = $this->speakerRepository->findByField('event_id', $event_id);
 
             $days = DB::table('event_person')
                 ->where([
@@ -131,7 +138,7 @@ class SessionController extends Controller
                 }
 
                 return view('sessions.sessions-list',
-                    compact('sessions', 'state', 'roles', 'leader', 'admin', 'notify', 'qtde', 'event', 'eventDate'));
+                    compact('sessions', 'state', 'roles', 'leader', 'admin', 'notify', 'qtde', 'event', 'eventDate', 'speakers'));
 
 
             }else {
@@ -139,7 +146,7 @@ class SessionController extends Controller
                 $sessions = false;
 
                 return view('sessions.sessions-list',
-                    compact('sessions', 'state', 'roles', 'leader', 'admin', 'notify', 'qtde', 'event', 'eventDate'));
+                    compact('sessions', 'state', 'roles', 'leader', 'admin', 'notify', 'qtde', 'event', 'eventDate', 'speakers'));
             }
 
         }

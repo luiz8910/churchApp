@@ -84,14 +84,16 @@ class SpeakerController extends Controller
             {
                 $item->category_name = $this->categoriesRepository->findByField('id', $item->category_id)->first()
                     ? $this->categoriesRepository->findByField('id', $item->category_id)->first()->name : "Sem Categoria";
+
+                $item->event_name = $item->event_id ? $this->eventRepository->findByField('id', $item->event_id)->first()->name : '';
             }
         }
 
         //dd($model);
 
-        $th = ['Foto', 'Nome', 'Empresa', ''];
+        $th = ['Foto', 'Nome', 'Empresa', 'Evento', ''];
 
-        $columns = ['id', 'photo', 'name', 'company'];
+        $columns = ['id', 'photo', 'name', 'company', 'event_name'];
 
         $title = "Palestrantes";
 
@@ -131,32 +133,22 @@ class SpeakerController extends Controller
     {
         $categories = $this->categoriesRepository->all();
 
-        $state = $this->stateRepository->all();
+        //$people = $this->personRepository->findByField('church_id', $this->getUserChurch());
 
-        //Variável para retirar o botão de "Inserir CEP da organização"
-        $no_zip_button = true;
+        $events = $this->eventRepository->findByField('church_id', $this->getUserChurch());
 
-        $people = $this->personRepository->findByField('church_id', $this->getUserChurch());
-
-        return view('speakers.create', compact('categories', 'state', 'no_zip_button', 'people'));
+        return view('speakers.create', compact('categories', 'events'));
     }
 
     public function edit($id)
     {
         $categories = $this->categoriesRepository->all();
 
-        $state = $this->stateRepository->all();
-
-        //Variável para retirar o botão de "Inserir CEP da organização"
-        $no_zip_button = true;
-
         $model = $this->repository->findByField('id', $id)->first();
 
-        $people = $this->personRepository->findByField('church_id', $this->getUserChurch());
+        $events = $this->eventRepository->findByField('church_id', $this->getUserChurch());
 
-
-        return view('speakers.edit', compact('categories', 'state', 'no_zip_button',
-            'model', 'id', 'people'));
+        return view('speakers.edit', compact('categories', 'model', 'id', 'events'));
     }
 
 
@@ -187,14 +179,6 @@ class SpeakerController extends Controller
 
             }
 
-            $redirect = false;
-
-            if(isset($data['new-responsible-speaker']))
-            {
-                $redirect = true;
-
-                unset($data['new-responsible-speaker']);
-            }
 
             if(isset($data['photo']))
             {
@@ -209,22 +193,14 @@ class SpeakerController extends Controller
                 $data['photo'] = $imgName;
             }
 
-            $id = $this->repository->create($data)->id;
+            $this->repository->create($data)->id;
 
             \DB::commit();
 
-            if($redirect)
-            {
-                $request->session()->put('new-responsible-speaker', $id);
+            $request->session()->flash('success.msg', 'O Palestrante foi cadastrado com sucesso');
 
-                return redirect()->route('person.create');
-            }
-            else
-            {
-                $request->session()->flash('success.msg', 'O Palestrante foi cadastrado com sucesso');
+            return redirect()->route('speakers.index');
 
-                return redirect()->route('speakers.index');
-            }
 
         }catch(\Exception $e)
         {
@@ -267,9 +243,9 @@ class SpeakerController extends Controller
 
             }
 
-            if(isset($data['foto']))
+            if(isset($data['photo']))
             {
-                $file = $request->file('foto');
+                $file = $request->file('photo');
 
                 $name = $data['name'];
 
@@ -277,76 +253,16 @@ class SpeakerController extends Controller
 
                 $file->move('uploads/speakers/', $imgName);
 
-                $data['foto'] = $imgName;
-            }
-
-            $redirect = false;
-
-            if(isset($data['new-responsible-speaker']))
-            {
-                $redirect = true;
-
-                unset($data['new-responsible-speaker']);
+                $data['photo'] = $imgName;
             }
 
             $this->repository->update($data, $id);
 
             \DB::commit();
 
-            if(isset($data['responsible']))
-            {
-                $sp = DB::table('speaker_person')
-                    ->where('speaker_id', $id)
-                    ->first();
+            $request->session()->flash('success.msg', 'O Palestrante foi atualizado com sucesso');
 
-                //dd($data['responsible']);
-
-                if(count($sp) == 1)
-                {
-                    if($sp->person_id != $data['responsible'])
-                    {
-                        DB::table('speaker_person')
-                            ->where('speaker_id', $id)
-                            ->delete();
-
-                        DB::table('speaker_person')
-                            ->insert([
-                                'speaker_id' => $id,
-                                'person_id' => $data['responsible'],
-                                'created_at' => Carbon::now(),
-                                'updated_at' => Carbon::now(),
-                                'deleted_at' => null
-                            ]);
-
-                    }
-                }else{
-                    DB::table('speaker_person')
-                        ->insert([
-                            'speaker_id' => $id,
-                            'person_id' => $data['responsible'],
-                            'created_at' => Carbon::now(),
-                            'updated_at' => Carbon::now(),
-                            'deleted_at' => null
-                        ]);
-                }
-
-
-
-            }
-
-
-            if($redirect)
-            {
-                $request->session()->put('new-responsible-speaker', $id);
-
-                return redirect()->route('person.create');
-            }
-            else
-            {
-                $request->session()->flash('success.msg', 'O Palestrante foi atualizado com sucesso');
-
-                return redirect()->route('speakers.index');
-            }
+            return redirect()->route('speakers.index');
 
         }catch (\Exception $e)
         {

@@ -245,7 +245,7 @@
                                                         <input type="hidden" value="{{ $event->id }}" id="event_id">
 
                                                         <div class="row">
-                                                            <div class="col-md-4">
+                                                            <div class="col-md-8">
                                                                 <div class="form-group">
                                                                     <label for="" class="control-label">Nome da Sessão</label>
                                                                     <div class="input-group">
@@ -260,21 +260,7 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-4">
-                                                                <div class="form-group">
-                                                                    <label for="" class="control-label">Local</label>
-                                                                    <div class="input-group">
-                                                            <span class="input-group-addon">
-                                                                <i class="fa fa-globe font-blue"></i>
-                                                            </span>
 
-                                                                        <input type="text" name="location" id="location" class="form-control"
-                                                                               autocomplete="new-pass"
-                                                                               placeholder="Ex: Auditório Principal, Sala de Reuniões, Refeitório"
-                                                                               value="{{ old('location') }}">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
 
                                                             <div class="col-md-4">
                                                                 <div class="form-group">
@@ -291,6 +277,52 @@
                                                                                class="form-control number">
                                                                     </div>
 
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row">
+                                                            <div class="col-md-8">
+                                                                <div class="form-group">
+                                                                    <label for="speakers" class="control-label">
+                                                                        Palestrantes ({{ count($speakers) }} no total)
+                                                                    </label>
+                                                                    <div class="input-group">
+                                                                        <span class="input-group-addon">
+                                                                            <i class="fa fa-microphone font-blue"></i>
+                                                                        </span>
+
+                                                                        <input type="hidden" value="Selecione um usuário" id="placeholder-select2">
+
+                                                                        @if(count($speakers) == 0)
+                                                                            <input type="text" placeholder="Não há palestrantes para este evento" class="form-control" readonly>
+                                                                        @else
+                                                                            <select name="speaker_id" id="speakers" class="select2 form-control">
+                                                                                <option value="">Selecione</option>
+                                                                                <optgroup label="Palestrantes">
+                                                                                    @foreach($speakers as $item)
+                                                                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                                                                    @endforeach
+                                                                                </optgroup>
+                                                                            </select>
+                                                                        @endif
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <label for="" class="control-label">Local</label>
+                                                                    <div class="input-group">
+                                                                        <span class="input-group-addon">
+                                                                            <i class="fa fa-globe font-blue"></i>
+                                                                        </span>
+
+                                                                        <input type="text" name="location" id="location" class="form-control"
+                                                                               autocomplete="new-pass"
+                                                                               placeholder="Ex: Auditório Principal, Sala de Reuniões, Refeitório"
+                                                                               value="{{ old('location') }}">
+                                                                        </div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -632,6 +664,8 @@
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
 <script src="assets/pages/scripts/table-datatables-buttons.min.js" type="text/javascript"></script>
 <!-- END PAGE LEVEL SCRIPTS -->
+<script src="assets/global/plugins/select2/js/select2.full.js" type="text/javascript"></script>
+<script src="assets/pages/scripts/components-select2.js" type="text/javascript"></script>
 </body>
 
 </html>
