@@ -71,6 +71,13 @@ class SessionController extends Controller
                     }
                 }
 
+                $s->speakers = DB::table('session_speakers')
+                    ->where([
+                        'session_id' => $s->id
+                    ])->select('speaker_id')->get();
+
+
+
             }
 
             return json_encode(['status' => true, 'sessions' => $sessions]);
@@ -186,6 +193,11 @@ class SessionController extends Controller
 
             if($person)
             {
+                $session->speakers = DB::table('session_speakers')
+                    ->where([
+                        'session_id' => $s->id
+                    ])->select('speaker_id')->get();
+
                 $exists = DB::table('session_checks')
                     ->where([
                         'session_id' => $data['session_id'],

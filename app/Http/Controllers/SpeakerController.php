@@ -193,7 +193,9 @@ class SpeakerController extends Controller
                 $data['photo'] = $imgName;
             }
 
-            $this->repository->create($data)->id;
+
+
+            $this->repository->create($data);
 
             \DB::commit();
 

@@ -14,6 +14,7 @@ use App\Services\SessionService;
 use App\Traits\ConfigTrait;
 use App\Traits\CountRepository;
 use App\Traits\NotifyRepository;
+use Carbon\Carbon;
 use DateTime;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
@@ -204,7 +205,22 @@ class SessionController extends Controller
 
             try {
 
-                $this->repository->create($data);
+                if(isset($data['speaker_id']))
+                {
+                    $speaker_id = $data['speaker_id'];
+
+                    unset($data['speaker_id']);
+                }
+
+                $id = $this->repository->create($data)->id;
+
+                DB::table('session_speakers')
+                    ->insert([
+                        'session_id' => $id,
+                        'speaker_id' => $speaker_id,
+                        'created_at' => Carbon::now(),
+                        'updated_at' => Carbon::now()
+                    ]);
 
                 \DB::commit();
 

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddSpeakerSession extends Migration
+class AddSpeakersSession extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,11 @@ class AddSpeakerSession extends Migration
      */
     public function up()
     {
-        Schema::table('sessions', function (Blueprint $table){
-            $table->integer('speaker_id')->nullable();
+        Schema::table('session_speakers', function (Blueprint $table){
+            $table->increments('id');
+            $table->integer('session_id');
+            $table->integer('speaker_id');
+            $table->timestamps();
         });
     }
 
@@ -25,8 +28,6 @@ class AddSpeakerSession extends Migration
      */
     public function down()
     {
-        Schema::table('sessions', function (Blueprint $table){
-            $table->dropColumn('speaker_id');
-        });
+        Schema::drop('session_speakers');
     }
 }
