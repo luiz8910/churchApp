@@ -13,7 +13,7 @@ class AddSpeakersSession extends Migration
      */
     public function up()
     {
-        Schema::table('session_speakers', function (Blueprint $table){
+        Schema::create('session_speakers', function (Blueprint $table){
             $table->increments('id');
             $table->integer('session_id');
             $table->integer('speaker_id');
