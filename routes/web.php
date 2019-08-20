@@ -189,6 +189,8 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::delete('/speakers/{id}', 'SpeakerController@delete')->name('speakers.delete');
 
+        Route::get('/getSpeakers/{id}', 'SessionController@getSpeakers');
+
         //--------------------------------- Categorias de Palestrantes --------------------------------------------------
 
         Route::get('/categorias-palestrantes', 'SpeakerController@index_cat')->name('speakers.index.cat');

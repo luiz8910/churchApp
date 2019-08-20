@@ -39,6 +39,8 @@ $(function(){
         $("#modal_max_capacity").val(max_capacity);
 
         $("#session-id").val(id);
+
+
     });
 
 
@@ -148,6 +150,28 @@ $(function(){
 
 
 });
+
+function getSpeakers(id)
+{
+    var request = $.ajax({
+        url: '/getSpeakers/' + id,
+        method: 'GET',
+        dataType: 'json'
+    });
+
+    request.done(function (e) {
+        if(e.status)
+        {
+            speakers = array();
+
+            for (var i = 0; i < e.speakers; i++)
+            {
+
+            }
+        }
+    })
+}
+
 
 function verifyHours(end_time)
 {

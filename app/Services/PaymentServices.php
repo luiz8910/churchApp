@@ -116,7 +116,7 @@ class PaymentServices
     }
 
     //1ª Função no fluxo de pagamentos
-    public function prepareCard($data)
+    public function prepareCard($data, $person_id = null)
     {
         $card = $this->creditCardRepository->findByField('card_number', $data['credit_card_number'])->first();
 
@@ -175,7 +175,7 @@ class PaymentServices
                 {
                     $bug = new Bug();
 
-                    $bug->description = $e->getMessage();
+                    $bug->description = $e->getMessage() . ' id da pessoa: ' . $person_id;
                     $bug->platform = 'Back-end';
                     $bug->location = 'prepareCard() PaymentServices.php';
                     $bug->model = '4all';
@@ -437,7 +437,7 @@ class PaymentServices
 
                     $bug = new Bug();
 
-                    $bug->description = $e->getMessage() . 'person_id: ' . $person->id;
+                    $bug->description = $e->getMessage() . ' id da pessoa: ' . $person->id;
                     $bug->platform = 'Back-end';
                     $bug->location = 'line ' . $e->getLine() . ' createTransaction() PaymentServices.php';
                     $bug->model = '4all';

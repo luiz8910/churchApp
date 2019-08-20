@@ -520,6 +520,26 @@ class SessionController extends Controller
 
     }
 
+
+    /*
+     * Retorna os palestrantes para a sessão escolhida
+     */
+    public function getSpeakers($id)
+    {
+        $speakers = DB::table('session_speakers')
+                        ->where([
+                            'session_id' => $id
+                        ])->get();
+
+        if(count($speakers) > 0)
+        {
+            return json_encode(['status' => true, 'count' => count($speakers), 'speakers' => $speakers]);
+        }
+
+        return json_encode(['status' => false, 'count' => 0]);
+
+    }
+
     public function view_question($id)
     {
         // TODO

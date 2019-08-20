@@ -2165,7 +2165,7 @@ class EventController extends Controller
                  * não pagou pela inscrição
                  */
                 if (count($pay_exists) == 0) {
-                    $json_data = $this->paymentServices->prepareCard($data);
+                    $json_data = $this->paymentServices->prepareCard($data, $x['person_id']);
 
                     $response_status = json_decode($json_data)->response_status;
 
@@ -2244,8 +2244,6 @@ class EventController extends Controller
                         //CheckCardToken::dispatch($x, $event_id);
 
 
-                    } else {
-                        dd($response_status);
                     }
                 } //Se já pagou
                 else {
@@ -2257,11 +2255,11 @@ class EventController extends Controller
                 return redirect()->back();
 
             } catch (\Exception $e) {
-                DB::rollBack();
+                \DB::rollBack();
 
                 $bug = new Bug();
 
-                $bug->description = $e->getMessage();
+                $bug->description = $e->getMessage() . ' id do usuário: ' . $x['person_id'];
                 $bug->platform = 'Back-end';
                 $bug->location = 'line ' . $e->getLine() . ' payment() EventController.php';
                 $bug->model = '4all';
