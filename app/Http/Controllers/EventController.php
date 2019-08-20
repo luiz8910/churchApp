@@ -2259,7 +2259,9 @@ class EventController extends Controller
 
                 $bug = new Bug();
 
-                $bug->description = $e->getMessage() . ' id do usuário: ' . $x['person_id'];
+                $msg = isset($x) ? $e->getMessage() . ' id do usuário: ' . $x['person_id'] : $e->getMessage();
+
+                $bug->description = $msg;
                 $bug->platform = 'Back-end';
                 $bug->location = 'line ' . $e->getLine() . ' payment() EventController.php';
                 $bug->model = '4all';
