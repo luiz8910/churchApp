@@ -170,7 +170,7 @@
                                                                 <th> Código Pagamento </th>
                                                                 <th> Valor </th>
                                                                 <th> Usuário </th>
-                                                                <th> Forma Pagamento </th>
+                                                                <th> Email </th>
                                                                 <th> Evento </th>
                                                                 <th> Status </th>
                                                                 <th></th>
@@ -189,7 +189,7 @@
                                                                                     {{ $pay->person_name }}
                                                                                 </a>
                                                                             </td>
-                                                                            <td>Cartão de Crédito</td>
+                                                                            <td>{{ $pay->email }}</td>
                                                                             <td>
                                                                                 <a href="{{ route('event.edit', ['event' => $pay->event_id]) }}">
                                                                                     {{ $pay->event_name }}

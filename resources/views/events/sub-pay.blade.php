@@ -55,7 +55,7 @@
                 <div class="col-sm-7 mr-sm-auto ml-sm-5">
                     <h6 class="color-grape">CONFIRME SUA INSCRIÇÃO</h6>
                     @include('includes.messages')
-                    <p class="inner-text">Escolha o método de pagamento</p>
+                    <p class="inner-text" style="font-size: 15px !important;"><strong>Pagamento: Apenas com Cartão de Crédito</strong></p>
 
                     <div class="row hidden-sm-up mb-3">
                         <div class="col">
@@ -116,6 +116,7 @@
                                        name="email" value="{{ old('email') }}"required/>
                                 <span>Email</span>
                             </label>
+                            <p><strong>É permitida a compra de apenas um ingresso por email</strong></p>
                         </div>
 
                         <div class="form-group p-relative {{ $errors->has('cel') ? ' has-error' : '' }}">

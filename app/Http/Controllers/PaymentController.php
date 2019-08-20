@@ -92,6 +92,7 @@ class PaymentController extends Controller
                         if($person)
                         {
                             $payment->person_name = $person->name;
+                            $payment->email = $person->email;
                         }
 
                         $payment->event_name = $event->name;
@@ -134,6 +135,7 @@ class PaymentController extends Controller
                     if($person)
                     {
                         $payment->person_name = $person->name;
+                        $payment->email = $person->email;
                     }
 
                     $event = $this->eventRepository->findByField('id', $payment->event_id)->first();

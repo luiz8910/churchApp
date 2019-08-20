@@ -180,7 +180,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                             <div class="row">
 
-                                                <div class="col-md-4">
+                                                <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Nome</label>
                                                         <div class="input-group">
@@ -195,7 +195,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-4">
+                                                <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Empresa</label>
                                                         <div class="input-group">
@@ -209,8 +209,11 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         </div>
                                                     </div>
                                                 </div>
+                                            </div>
 
-                                                <div class="col-md-4">
+                                            <div class="row">
+
+                                                <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Evento</label>
                                                         <div class="input-group">
@@ -235,6 +238,28 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             @endif
 
 
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Categoria</label>
+                                                        <div class="input-group">
+
+                                                            <span class="input-group-addon">
+                                                                <i class="fa fa-sort-alpha-desc font-blue"></i>
+                                                            </span>
+
+                                                            <select name="category_id" id="category_id" class="select2 form-control" required>
+                                                                <option value="" selected></option>
+                                                                <optgroup label="Categorias de Palestrantes">
+                                                                    @foreach($categories as $cat)
+                                                                        <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                                                                    @endforeach
+                                                                </optgroup>
+                                                            </select>
 
                                                         </div>
                                                     </div>

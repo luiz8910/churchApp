@@ -281,6 +281,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                style="display: none;"></i>
                                                             <i class="fa fa-exclamation font-red" id="icon-error-email"
                                                                style="display: none;"></i>
+
                                                         </div>
 
                                                         <span class="help-block" id="invalidEmail"

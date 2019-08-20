@@ -174,7 +174,9 @@ class SessionController extends Controller
 
     public function store(Request $request, $event_id)
     {
-        $data = $request->all();
+        $data = $request->except(['speaker_id']);
+
+        $speakers = $request->get('speaker_id');
 
         $event = $this->eventRepository->findByField('id', $event_id)->first();
 
@@ -205,22 +207,22 @@ class SessionController extends Controller
 
             try {
 
-                if(isset($data['speaker_id']))
-                {
-                    $speaker_id = $data['speaker_id'];
-
-                    unset($data['speaker_id']);
-                }
-
                 $id = $this->repository->create($data)->id;
 
-                DB::table('session_speakers')
-                    ->insert([
-                        'session_id' => $id,
-                        'speaker_id' => $speaker_id,
-                        'created_at' => Carbon::now(),
-                        'updated_at' => Carbon::now()
-                    ]);
+                if($id)
+                {
+
+                    foreach ($speakers as $speaker)
+                    {
+                        DB::table('session_speakers')
+                            ->insert([
+                                'session_id' => $id,
+                                'speaker_id' => $speaker,
+                                'created_at' => Carbon::now(),
+                                'updated_at' => Carbon::now()
+                            ]);
+                    }
+                }
 
                 \DB::commit();
 
@@ -258,9 +260,11 @@ class SessionController extends Controller
 
     public function update(Request $request, $event_id)
     {
-        $data = $request->except(['session-id']);
+        $data = $request->except(['session-id', 'speaker_id']);
 
         $session_id = $request->get('session-id');
+
+        $speakers = $request->get('speaker_id');
 
         $event = $this->eventRepository->findByField('id', $event_id)->first();
 
@@ -296,6 +300,24 @@ class SessionController extends Controller
                 }
 
                 try {
+                    if(count($speakers) > 0)
+                    {
+                        DB::table('session_speakers')
+                            ->where([
+                                'session_id' => $session_id,
+                            ])->delete();
+
+                        foreach ($speakers as $speaker)
+                        {
+                            DB::table('session_speakers')
+                                ->insert([
+                                    'session_id' => $session_id,
+                                    'speaker_id' => $speaker
+                                ]);
+                        }
+
+                    }
+
                     $this->repository->update($data, $session_id);
 
                     \DB::commit();

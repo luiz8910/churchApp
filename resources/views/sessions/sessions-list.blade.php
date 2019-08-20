@@ -10,12 +10,12 @@
 <!-- BEGIN HEAD -->
 
 <head>
-@include('includes.head')
+@include('includes.head-edit')
 <!-- BEGIN PAGE LEVEL PLUGINS -->
-    <link href="assets/global/plugins/datatables/datatables.min.css" rel="stylesheet" type="text/css"/>
-    <link href="assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css" rel="stylesheet"
+    <link href="../../assets/global/plugins/datatables/datatables.min.css" rel="stylesheet" type="text/css"/>
+    <link href="../../assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css" rel="stylesheet"
           type="text/css"/>
-    <link href="assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet"
+    <link href="../../assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet"
           type="text/css"/>
     <!-- END PAGE LEVEL PLUGINS -->
 </head>
@@ -219,6 +219,8 @@
                                                                     <input type="hidden" id="max_capacity_{{ $item->id }}" value="{{ $item->max_capacity}}">
                                                                     <input type="hidden" id="description_{{ $item->id }}" value="{{ $item->description}}">
 
+
+
                                                                 @endforeach
 
                                                                 </tbody>
@@ -297,12 +299,16 @@
                                                                         @if(count($speakers) == 0)
                                                                             <input type="text" placeholder="Não há palestrantes para este evento" class="form-control" readonly>
                                                                         @else
-                                                                            <select name="speaker_id" id="speakers" class="select2 form-control">
+                                                                            <select name="speaker_id[]" id="speakers" class="select2 form-control" multiple>
                                                                                 <option value="">Selecione</option>
                                                                                 <optgroup label="Palestrantes">
+
                                                                                     @foreach($speakers as $item)
+
                                                                                         <option value="{{ $item->id }}">{{ $item->name }}</option>
+
                                                                                     @endforeach
+
                                                                                 </optgroup>
                                                                             </select>
                                                                         @endif
@@ -527,6 +533,23 @@
 
                     <br>
 
+                    <label for="speaker_id" class="control-label">Palestrantes</label>
+                    <select name="speaker_id[]" id="speaker_id" multiple class="form-control select2">
+                        <optgroup label="Palestrantes">
+
+                            @foreach($speakers as $speaker)
+
+                                <option value="{{ $speaker->id }}">
+                                    {{ $speaker->name }}
+                                </option>
+
+                            @endforeach
+
+                        </optgroup>
+                    </select>
+
+                    <br>
+
                     <label for="" class="control-label">Data da Sessão</label>
                     <div class="input-group date @if(!$eventDate) date-picker @endif" data-date-format="dd/mm/yyyy" data-date-start-date="+0d">
 
@@ -653,19 +676,19 @@
 
 <!-- END CONTAINER -->
 @include('includes.footer')
-@include('includes.core-scripts')
+@include('includes.core-scripts-edit')
 <!-- BEGIN PAGE LEVEL PLUGINS -->
-<script src="assets/global/scripts/datatable.js" type="text/javascript"></script>
-<script src="assets/global/plugins/datatables/datatables.min.js" type="text/javascript"></script>
-<script src="assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js"
+<script src="../../assets/global/scripts/datatable.js" type="text/javascript"></script>
+<script src="../../assets/global/plugins/datatables/datatables.min.js" type="text/javascript"></script>
+<script src="../../assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js"
         type="text/javascript"></script>
-<script src="assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
+<script src="../../assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
 <!-- END PAGE LEVEL PLUGINS -->
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
-<script src="assets/pages/scripts/table-datatables-buttons.min.js" type="text/javascript"></script>
+<script src="../../assets/pages/scripts/table-datatables-buttons.min.js" type="text/javascript"></script>
 <!-- END PAGE LEVEL SCRIPTS -->
-<script src="assets/global/plugins/select2/js/select2.full.js" type="text/javascript"></script>
-<script src="assets/pages/scripts/components-select2.js" type="text/javascript"></script>
+<script src="../../assets/global/plugins/select2/js/select2.full.js" type="text/javascript"></script>
+<script src="../../assets/pages/scripts/components-select2.js" type="text/javascript"></script>
 </body>
 
 </html>
