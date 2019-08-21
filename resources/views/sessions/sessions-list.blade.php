@@ -360,11 +360,13 @@
                                                                     <i class="fa fa-calendar"></i>
                                                                 </button>
                                                             </span>
+                                                                        <input type="text" name="start_time" id="start_time" class="form-control number" required maxlength="5">
 
-                                                                        <select name="start_time" id="start_time" class="form-control" required
+                                                                        {{--<select name="start_time" id="start_time" class="form-control" required
                                                                                 value="{{ old('start_time') }}">
                                                                             <option value="">Selecione</option>
                                                                             <option value="06:00">06:00</option>
+
                                                                             <option value="06:30">06:30</option>
                                                                             <option value="07:00">07:00</option>
                                                                             <option value="07:30">07:30</option>
@@ -400,7 +402,7 @@
                                                                             <option value="22:30">22:30</option>
                                                                             <option value="23:00">23:00</option>
                                                                             <option value="23:30">23:30</option>
-                                                                        </select>
+                                                                        </select>--}}
 
                                                                     </div>
                                                                     <small id="error-start-time" style="color: red; display: none;">
@@ -413,12 +415,14 @@
                                                                     <label for="" class="control-label">Término</label>
                                                                     <div class="input-group date timepicker-24" data-date-format="dd/mm/yyyy"
                                                                          data-date-start-date="+0d">
-                                                            <span class="input-group-btn">
-                                                                <button class="btn default" type="button">
-                                                                    <i class="fa fa-calendar"></i>
-                                                                </button>
-                                                            </span>
-                                                                        <select name="end_time" id="end_time" class="form-control"
+                                                                        <span class="input-group-btn">
+                                                                            <button class="btn default" type="button">
+                                                                                <i class="fa fa-calendar"></i>
+                                                                            </button>
+                                                                        </span>
+
+                                                                        <input type="text" name="end_time" id="end_time" class="form-control number" maxlength="5">
+                                                                        {{--<select name="end_time" id="end_time" class="form-control"
                                                                                 value="{{ old('end_time') }}">
                                                                             <option value="">Selecione</option>
 
@@ -458,7 +462,7 @@
                                                                             <option value="22:30">22:30</option>
                                                                             <option value="23:00">23:00</option>
                                                                             <option value="23:30">23:30</option>
-                                                                        </select>
+                                                                        </select>--}}
                                                                     </div>
                                                                     <small id="error-end-time" style="color: red; display: none;">
                                                                         Horário de término não pode ser menor que o ínicio
