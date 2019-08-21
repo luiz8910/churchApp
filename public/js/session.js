@@ -3,6 +3,8 @@ $(function(){
     //Usado para montar o modal de edição de sessão
     $(".btn-edit-session").click(function () {
 
+        resetSpeakers();
+
         $("#edit-session").css('display', 'none');
 
         var id = this.id.replace('btn-edit-session-', '');
@@ -44,18 +46,18 @@ $(function(){
 
         getSpeakers(id);
 
-        var str = localStorage.getItem('str');
+        var str = localStorage.getItem('str') ? localStorage.getItem('str') : null;
 
-        var names = localStorage.getItem('name');
+        var names = localStorage.getItem('name') ? localStorage.getItem('name') : null;
 
         console.log(names);
 
-        var speakers = str.split(',');
-
-        var n = names.split(',');
-
-        if(speakers)
+        if(names && str)
         {
+            var speakers = str.split(',');
+
+            var n = names.split(',');
+
             for (var i = 0; i < speakers.length; i++)
             {
                 $("#speakers option[value|='"+speakers[i]+"']").attr('selected', true);
@@ -71,6 +73,8 @@ $(function(){
         }
 
         $("#edit-session").css('display', 'block');
+
+
 
     });
 
@@ -181,19 +185,21 @@ $(function(){
 
 });
 
-
+resetSpeakers();
 
 function getSpeakers(id)
 {
+
+
     var request = $.ajax({
         url: '/getSpeakers/' + id,
         method: 'GET',
-        dataType: 'json'
+        dataType: 'json',
+        async: false
     });
 
     var speakers_id = [];
     var speakers_name = [];
-    var str = '';
 
     request.done(function (e) {
         if(e.status)
@@ -225,7 +231,11 @@ function getSpeakers(id)
 
 function resetSpeakers()
 {
-    $("#speaker_id option[value]").attr('selected', false);
+    $("#speaker_id option[value]").attr('selected', null);
+
+    $(".select2-selection__choice").remove();
+
+    localStorage.clear();
 }
 
 

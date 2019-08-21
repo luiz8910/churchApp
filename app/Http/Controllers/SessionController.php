@@ -212,16 +212,20 @@ class SessionController extends Controller
                 if($id)
                 {
 
-                    foreach ($speakers as $speaker)
+                    if($speakers)
                     {
-                        DB::table('session_speakers')
-                            ->insert([
-                                'session_id' => $id,
-                                'speaker_id' => $speaker,
-                                'created_at' => Carbon::now(),
-                                'updated_at' => Carbon::now()
-                            ]);
+                        foreach ($speakers as $speaker)
+                        {
+                            DB::table('session_speakers')
+                                ->insert([
+                                    'session_id' => $id,
+                                    'speaker_id' => $speaker,
+                                    'created_at' => Carbon::now(),
+                                    'updated_at' => Carbon::now()
+                                ]);
+                        }
                     }
+
                 }
 
                 \DB::commit();
@@ -304,7 +308,7 @@ class SessionController extends Controller
                 try {
 
 
-                    if(count($speakers) > 0)
+                    if($speakers)
                     {
                         DB::table('session_speakers')
                             ->where([
