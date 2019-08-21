@@ -136,7 +136,7 @@
 
                             <label class="has-float-label" aria-label="cpf">
                                 <input class="form-control cpf" type="text" placeholder="CPF" name="cpf"
-                                       value="{{ old('cpf') }}" required maxlength="11"/>
+                                       value="{{ old('cpf') }}" required maxlength="11" autocomplete="new-password"/>
                                 <span>CPF</span>
                             </label>
 
