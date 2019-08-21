@@ -134,7 +134,7 @@ class SessionController extends Controller
 
                     $session->end_time = date_format(date_create($session->end_time), 'H:i');
 
-                    $session->session_date = date_format(date_create($session->session_date), 'd/m/Y');
+                    $session->session_date = date_format(date_create($start_time), 'd/m/Y');
 
                 }
 
@@ -279,16 +279,18 @@ class SessionController extends Controller
                     $data['max_capacity'] = -1;
                 }
 
+                //dd($data);
 
                 if($data['session_date'] != "")
                 {
-                    $data['start_time'] = date_create($data['session_date'] . " " . $data['start_time']);
+                    $data['session_date'] = DateTime::createFromFormat('d/m/Y', trim($data['session_date']))->format('Y-m-d');
+                    $data['start_time'] = date_create($data['session_date'] . $data['start_time']);
+
 
                     if ($data['end_time'] != "") {
                         $data['end_time'] = date_create($data['session_date'] . " " . $data['end_time']);
                     }
 
-                    $data['session_date'] = date_create($data['session_date']);
 
                 }else {
 
@@ -300,6 +302,8 @@ class SessionController extends Controller
                 }
 
                 try {
+
+
                     if(count($speakers) > 0)
                     {
                         DB::table('session_speakers')
@@ -309,6 +313,7 @@ class SessionController extends Controller
 
                         foreach ($speakers as $speaker)
                         {
+
                             DB::table('session_speakers')
                                 ->insert([
                                     'session_id' => $session_id,
@@ -322,7 +327,7 @@ class SessionController extends Controller
 
                     \DB::commit();
 
-                    $request->session()->flash('success.msg', 'A sessão foi incluída com sucesso');
+                    $request->session()->flash('success.msg', 'A sessão foi alterado com sucesso');
 
                     return redirect()->back();
 
@@ -533,6 +538,16 @@ class SessionController extends Controller
 
         if(count($speakers) > 0)
         {
+            foreach ($speakers as $speaker)
+            {
+                $s = $this->speakerRepository->findByField('id', $speaker->speaker_id)->first();
+
+                if($s)
+                {
+                    $speaker->speaker_name = $s->name;
+                }
+            }
+
             return json_encode(['status' => true, 'count' => count($speakers), 'speakers' => $speakers]);
         }
 

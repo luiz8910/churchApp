@@ -3,13 +3,15 @@ $(function(){
     //Usado para montar o modal de edição de sessão
     $(".btn-edit-session").click(function () {
 
+        $("#edit-session").css('display', 'none');
+
         var id = this.id.replace('btn-edit-session-', '');
 
         var name = $("#td_name_" + id).text();
 
         var location = $("#td_location_" + id).text();
 
-        var session_date = $("#session_date_" + id).val();
+        var session_date = $("#session_date_" + id).val(); console.log(session_date);
 
         var start_time = $("#short_start_time_" + id).val();
 
@@ -40,6 +42,35 @@ $(function(){
 
         $("#session-id").val(id);
 
+        getSpeakers(id);
+
+        var str = localStorage.getItem('str');
+
+        var names = localStorage.getItem('name');
+
+        console.log(names);
+
+        var speakers = str.split(',');
+
+        var n = names.split(',');
+
+        if(speakers)
+        {
+            for (var i = 0; i < speakers.length; i++)
+            {
+                $("#speakers option[value|='"+speakers[i]+"']").attr('selected', true);
+
+                var append = '<li class="select2-selection__choice" title="'+n[i]+'">' +
+                    '<span class="select2-selection__choice__remove" role="presentation">×</span>' +
+                    ''+n[i]+'' +
+                    '</li>'
+
+                $(".select2-selection__rendered").append(append);
+            }
+
+        }
+
+        $("#edit-session").css('display', 'block');
 
     });
 
@@ -148,8 +179,9 @@ $(function(){
         })
     });
 
-
 });
+
+
 
 function getSpeakers(id)
 {
@@ -159,17 +191,41 @@ function getSpeakers(id)
         dataType: 'json'
     });
 
+    var speakers_id = [];
+    var speakers_name = [];
+    var str = '';
+
     request.done(function (e) {
         if(e.status)
         {
-            speakers = array();
 
-            for (var i = 0; i < e.speakers; i++)
+
+            for (var i = 0; i < e.speakers.length; i++)
             {
-
+                speakers_id.push(e.speakers[i].speaker_id);
+                speakers_name.push(e.speakers[i].speaker_name);
             }
+
+            localStorage.setItem('str', speakers_id);
+
+            localStorage.setItem('name', speakers_name);
+
         }
-    })
+
+
+    });
+
+    request.fail(function (e) {
+        console.log('fail');
+        console.log(e);
+    });
+
+
+}
+
+function resetSpeakers()
+{
+    $("#speaker_id option[value]").attr('selected', false);
 }
 
 

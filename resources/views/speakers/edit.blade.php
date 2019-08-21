@@ -164,7 +164,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                                             <textarea name="description" class="form-control"
                                                                       placeholder="Descrição do Palestrante" rows="6"
-                                                                      required>{{ $model->description }}</textarea>
+                                                                      >{{ $model->description }}</textarea>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -195,7 +195,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 <i class="fa fa-building font-blue"></i>
                                                             </span>
                                                             <input type="text" name="company" class="form-control"
-                                                                   placeholder="Empresa do Palestrante" required
+                                                                   placeholder="Empresa do Palestrante"
                                                                    value="{{ $model->company }}">
 
                                                         </div>

@@ -192,6 +192,9 @@ class SpeakerController extends Controller
 
                 $data['photo'] = $imgName;
             }
+            else{
+                $data['photo'] = 'uploads/profile/noimage.png';
+            }
 
             $this->repository->create($data);
 
@@ -254,6 +257,8 @@ class SpeakerController extends Controller
                 $file->move('uploads/speakers/', $imgName);
 
                 $data['photo'] = $imgName;
+            }else{
+                $data['photo'] = 'uploads/profile/noimage.png';
             }
 
             $this->repository->update($data, $id);

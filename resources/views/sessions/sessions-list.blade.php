@@ -181,8 +181,7 @@
                                                                                 <i class="fa fa-users"></i>
                                                                             </a>
                                                                             <button class="btn btn-success btn-sm btn-circle btn-edit-session"
-                                                                                    title="Editar" id="btn-edit-session-{{ $item->id }}"
-                                                                                    data-toggle="modal" data-target="#edit-session">
+                                                                                    title="Editar" id="btn-edit-session-{{ $item->id }}">
                                                                                 <i class="fa fa-pencil"></i>
                                                                             </button>
                                                                             <button class="btn btn-danger btn-sm btn-circle btn-delete-session"
@@ -494,6 +493,266 @@
                                                 </div>
 
 
+                                                <div id="edit-session" style="display: none;">
+                                                    <br><br>
+                                                    <div class="caption caption-md">
+                                                        <i class="icon-globe theme-font hide"></i>
+                                                        <span class="caption-subject font-blue-madison bold uppercase">Sessões de Eventos</span>
+                                                    </div>
+                                                    <hr>
+                                                    <br>
+
+
+                                                    <form action="{{ route('event.session.update', ['event_id' => $event->id]) }}" method="POST" id="modal-form">
+                                                        {{ method_field('PUT') }}
+                                                        {{ csrf_field() }}
+
+                                                        <input type="hidden" id="session-id" name="session-id">
+
+                                                        <div class="row">
+                                                            <div class="col-md-8">
+                                                                <div class="form-group">
+                                                                    <label for="" class="control-label">Nome da Sessão</label>
+                                                                    <div class="input-group">
+                                                            <span class="input-group-addon">
+                                                                <i class="fa fa-calendar font-blue"></i>
+                                                            </span>
+
+                                                                        <input type="text" name="name" id="modal_name" class="form-control"
+                                                                               autocomplete="new-password" required
+                                                                               placeholder="Ex: Coffee Break, Introdução, Sessão de Perguntas"
+                                                                               value="">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <label for="max_capacity" class="control-label">Capacidade Máxima</label>
+                                                                    <div class="input-group">
+                                                            <span class="input-group-addon">
+                                                                <i class="fa fa-user font-blue"></i>
+                                                            </span>
+
+
+                                                                        <input type="text" name="max_capacity" id="modal_max_capacity"
+                                                                               value=""
+                                                                               placeholder="Deixe em Branco quando não houver limite"
+                                                                               class="form-control number">
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row">
+                                                            <div class="col-md-8">
+                                                                <div class="form-group">
+                                                                    <label for="speakers" class="control-label">
+                                                                        Palestrantes ({{ count($speakers) }} no total)
+                                                                    </label>
+                                                                    <div class="input-group">
+                                                                        <span class="input-group-addon">
+                                                                            <i class="fa fa-microphone font-blue"></i>
+                                                                        </span>
+
+                                                                        <input type="hidden" value="Selecione um usuário" id="placeholder-select2">
+
+                                                                        @if(count($speakers) == 0)
+                                                                            <input type="text" placeholder="Não há palestrantes para este evento" class="form-control" readonly>
+                                                                        @else
+                                                                            <select name="speaker_id[]" id="speakers" class="select2 form-control" multiple>
+                                                                                <option value="">Selecione</option>
+                                                                                <optgroup label="Palestrantes">
+
+                                                                                    @foreach($speakers as $item)
+
+                                                                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
+
+                                                                                    @endforeach
+
+                                                                                </optgroup>
+                                                                            </select>
+                                                                        @endif
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <label for="" class="control-label">Local</label>
+                                                                    <div class="input-group">
+                                                                        <span class="input-group-addon">
+                                                                            <i class="fa fa-globe font-blue"></i>
+                                                                        </span>
+
+                                                                        <input type="text" name="location" id="modal_location" class="form-control"
+                                                                               autocomplete="new-pass"
+                                                                               placeholder="Ex: Auditório Principal, Sala de Reuniões, Refeitório"
+                                                                               value="">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row">
+                                                            <div class="col-md-4">
+                                                                <div class="form-group @if(Session::has('invalidDate')) has-error @endif ">
+                                                                    <label>Data</label>
+                                                                    <div class="input-group date @if(!$eventDate) date-picker @endif" data-date-format="dd/mm/yyyy"
+                                                                         data-date-start-date="+0d">
+
+                                                                        <span class="input-group-btn">
+                                                                            <button class="btn default" type="button">
+                                                                                <i class="fa fa-calendar font-blue"></i>
+                                                                            </button>
+                                                                        </span>
+
+                                                                        <input type="text" class="form-control" name="session_date" id="modal_session_date" required
+                                                                               value="@if($eventDate) {{$eventDate}} @endif" readonly>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <label for="" class="control-label">Início</label>
+                                                                    <div class="input-group timepicker timepicker-24">
+                                                            <span class="input-group-btn">
+                                                                <button class="btn default" type="button">
+                                                                    <i class="fa fa-calendar"></i>
+                                                                </button>
+                                                            </span>
+
+                                                                        <select name="start_time" id="modal_start_time" class="form-control" required>
+                                                                            <option value="">Selecione</option>
+                                                                            <option value="06:00">06:00</option>
+                                                                            <option value="06:30">06:30</option>
+                                                                            <option value="07:00">07:00</option>
+                                                                            <option value="07:30">07:30</option>
+                                                                            <option value="08:00">08:00</option>
+                                                                            <option value="08:30">08:30</option>
+                                                                            <option value="09:00">09:00</option>
+                                                                            <option value="09:30">09:30</option>
+                                                                            <option value="10:00">10:00</option>
+                                                                            <option value="10:30">10:30</option>
+                                                                            <option value="11:00">11:00</option>
+                                                                            <option value="11:30">11:30</option>
+                                                                            <option value="12:00">12:00</option>
+                                                                            <option value="12:30">12:30</option>
+                                                                            <option value="13:00">13:00</option>
+                                                                            <option value="13:30">13:30</option>
+                                                                            <option value="14:00">14:00</option>
+                                                                            <option value="14:30">14:30</option>
+                                                                            <option value="15:00">15:00</option>
+                                                                            <option value="15:30">15:30</option>
+                                                                            <option value="16:00">16:00</option>
+                                                                            <option value="16:30">16:30</option>
+                                                                            <option value="17:00">17:00</option>
+                                                                            <option value="17:30">17:30</option>
+                                                                            <option value="18:00">18:00</option>
+                                                                            <option value="18:30">18:30</option>
+                                                                            <option value="19:00">19:00</option>
+                                                                            <option value="19:30">19:30</option>
+                                                                            <option value="20:00">20:00</option>
+                                                                            <option value="20:30">20:30</option>
+                                                                            <option value="21:00">21:00</option>
+                                                                            <option value="21:30">21:30</option>
+                                                                            <option value="22:00">22:00</option>
+                                                                            <option value="22:30">22:30</option>
+                                                                            <option value="23:00">23:00</option>
+                                                                            <option value="23:30">23:30</option>
+                                                                        </select>
+
+                                                                    </div>
+                                                                    <small id="error-start-time" style="color: red; display: none;">
+                                                                        Selecione o início antes do término
+                                                                    </small>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <label for="" class="control-label">Término</label>
+                                                                    <div class="input-group date timepicker-24" data-date-format="dd/mm/yyyy"
+                                                                         data-date-start-date="+0d">
+                                                            <span class="input-group-btn">
+                                                                <button class="btn default" type="button">
+                                                                    <i class="fa fa-calendar"></i>
+                                                                </button>
+                                                            </span>
+                                                                        <select name="end_time" id="modal_end_time" class="form-control">
+                                                                            <option value="">Selecione</option>
+
+                                                                            <option value="06:00">06:00</option>
+                                                                            <option value="06:30">06:30</option>
+                                                                            <option value="07:00">07:00</option>
+                                                                            <option value="07:30">07:30</option>
+                                                                            <option value="08:00">08:00</option>
+                                                                            <option value="08:30">08:30</option>
+                                                                            <option value="09:00">09:00</option>
+                                                                            <option value="09:30">09:30</option>
+                                                                            <option value="10:00">10:00</option>
+                                                                            <option value="10:30">10:30</option>
+                                                                            <option value="11:00">11:00</option>
+                                                                            <option value="11:30">11:30</option>
+                                                                            <option value="12:00">12:00</option>
+                                                                            <option value="12:30">12:30</option>
+                                                                            <option value="13:00">13:00</option>
+                                                                            <option value="13:30">13:30</option>
+                                                                            <option value="14:00">14:00</option>
+                                                                            <option value="14:30">14:30</option>
+                                                                            <option value="15:00">15:00</option>
+                                                                            <option value="15:30">15:30</option>
+                                                                            <option value="16:00">16:00</option>
+                                                                            <option value="16:30">16:30</option>
+                                                                            <option value="17:00">17:00</option>
+                                                                            <option value="17:30">17:30</option>
+                                                                            <option value="18:00">18:00</option>
+                                                                            <option value="18:30">18:30</option>
+                                                                            <option value="19:00">19:00</option>
+                                                                            <option value="19:30">19:30</option>
+                                                                            <option value="20:00">20:00</option>
+                                                                            <option value="20:30">20:30</option>
+                                                                            <option value="21:00">21:00</option>
+                                                                            <option value="21:30">21:30</option>
+                                                                            <option value="22:00">22:00</option>
+                                                                            <option value="22:30">22:30</option>
+                                                                            <option value="23:00">23:00</option>
+                                                                            <option value="23:30">23:30</option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <small id="error-end-time" style="color: red; display: none;">
+                                                                        Horário de término não pode ser menor que o ínicio
+                                                                    </small>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <label for="" class="control-label">Descrição</label>
+                                                                    <textarea name="description" class="form-control" value=""
+                                                                              placeholder="Entre com a Descrição da Sessão" id="modal_description"
+                                                                              rows="5"></textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <br><br>
+                                                        <button id="btn-submit-session" type="submit" class="btn btn-success btn-outline">
+                                                            <i class="fa fa-check"></i>
+                                                            Enviar
+                                                        </button>
+                                                        <button id="clear-fields" type="button" class="btn btn-default">
+                                                            <i class="fa fa-paint-brush"></i>
+                                                            Limpar
+                                                        </button>
+
+                                                    </form>
+
+                                                </div>
                                             </div> <!-- FIM DIV .portlet-body form -->
                                         </div> <!-- FIM DIV .portlet light -->
                                     </div> <!-- FIM DIV .col-md-12 -->
@@ -508,7 +767,7 @@
 </div> <!-- FIM DIV .page-wrapper -->
 
 
-<div class="modal fade" id="edit-session" tabindex="-1" role="dialog" aria-labelledby="edit-session">
+{{--<div class="modal fade" id="edit-session" tabindex="-1" role="dialog" aria-labelledby="edit-session">
     <div class="modal-dialog" role="document">
         <form action="{{ route('event.session.update', ['event_id' => $event->id]) }}" method="POST" id="modal-form">
             {{ method_field('PUT') }}
@@ -533,9 +792,39 @@
 
                     <br>
 
-                    <label for="speaker_id" class="control-label">Palestrantes</label>
-                    <select name="speaker_id[]" id="speaker_id" multiple class="form-control select2">
-                        <optgroup label="Palestrantes">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table-scrollable table-scrollable-borderless table-striped">
+                                <table class="table table-hover table-light table-striped">
+                                    <thead>
+                                    <tr class="uppercase">
+                                        <th> Nome</th>
+                                        <th> Opções</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Teste</td>
+                                            <td>
+                                                <div class="col-md-4">
+                                                    <a href="javascript:" class="btn btn-success btn-sm btn-circle">
+                                                        <i class="fa fa-plus"></i>
+                                                    </a>
+                                                </div>
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    --}}{{--<select name="speaker_id[]" id="speaker_id" multiple class="form-control">
+
 
                             @foreach($speakers as $speaker)
 
@@ -545,8 +834,7 @@
 
                             @endforeach
 
-                        </optgroup>
-                    </select>
+                    </select>--}}{{--
 
                     <br>
 
@@ -660,7 +948,7 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="resetSpeakers()">
                         <i class="fa fa-close"></i>
                         Fechar
                     </button>
@@ -672,7 +960,7 @@
             </div>
         </form>
     </div>
-</div>
+</div>--}}
 
 <!-- END CONTAINER -->
 @include('includes.footer')

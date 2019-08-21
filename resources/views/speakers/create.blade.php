@@ -165,7 +165,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                                             <textarea name="description" class="form-control"
                                                                       id="description"
-                                                                      placeholder="Descrição do Palestrante" required
+                                                                      placeholder="Descrição do Palestrante"
                                                                       style="height: 125px;">
                                                                 {{ old('description') }}
                                                             </textarea>
