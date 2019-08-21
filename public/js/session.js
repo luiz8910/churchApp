@@ -74,7 +74,9 @@ $(function(){
 
         $("#edit-session").css('display', 'block');
 
-
+        $('html, body').animate({
+            scrollTop: $("#edit-session").offset().top
+        }, 2000);
 
     });
 
