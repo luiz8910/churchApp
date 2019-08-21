@@ -98,7 +98,12 @@ class SessionController extends Controller
 
         if($event)
         {
-            $speakers = $this->speakerRepository->findByField('event_id', $event_id);
+            //$speakers = $this->speakerRepository->findByField('event_id', $event_id);
+
+            $speakers = DB::table('speakers')
+                        ->where(['deleted_at' => null])
+                        ->orderBy('name')
+                        ->get();
 
             $days = DB::table('event_person')
                 ->where([

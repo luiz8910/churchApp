@@ -83,6 +83,10 @@ $(function(){
     $('#btn-new-session').click(function () {
 
         $('#new-session').css('display', 'block');
+
+        $('html, body').animate({
+            scrollTop: $("#new-session").offset().top
+        }, 2000);
     });
 
     //Limpa o form de criação de nova sessão
