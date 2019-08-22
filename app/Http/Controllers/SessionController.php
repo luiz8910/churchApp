@@ -77,6 +77,10 @@ class SessionController extends Controller
     {
         $sessions = $this->repository->findByField('event_id', $event_id);
 
+//        $sessions = DB::table('sessions')
+//                    ->where(['event_id' => $event_id])
+//                    ->paginate(10);
+
         $countPerson[] = $this->countPerson();
 
         $countGroups[] = $this->countGroups();
@@ -98,7 +102,6 @@ class SessionController extends Controller
 
         if($event)
         {
-            //$speakers = $this->speakerRepository->findByField('event_id', $event_id);
 
             $speakers = DB::table('speakers')
                         ->where(['deleted_at' => null])

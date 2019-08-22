@@ -29,9 +29,13 @@ $(function(){
 
         $("#modal_session_date").val(session_date);
 
-        $("#modal_start_time option[value|='"+start_time+"']").attr('selected', true);
+        //$("#modal_start_time option[value|='"+start_time+"']").attr('selected', true);
 
-        $("#modal_end_time option[value|='"+end_time+"']").attr('selected', true);
+        //$("#modal_end_time option[value|='"+end_time+"']").attr('selected', true);
+
+        $("#modal_start_time").val(start_time);
+
+        $("#modal_end_time").val(end_time);
 
         $("#modal_description").val(description);
 
@@ -49,8 +53,6 @@ $(function(){
         var str = localStorage.getItem('str') ? localStorage.getItem('str') : null;
 
         var names = localStorage.getItem('name') ? localStorage.getItem('name') : null;
-
-        console.log(names);
 
         if(names && str)
         {
