@@ -77,7 +77,9 @@ class SessionController extends Controller
     {
 
         $sessions = DB::table('sessions')
-                    ->where(['event_id' => $event_id])
+                    ->where([
+                        'event_id' => $event_id,
+                        'deleted_at' => null])
                     ->orderBy('start_time')
                     ->orderBy('session_date')
                     ->paginate(10);
@@ -85,8 +87,6 @@ class SessionController extends Controller
         $countPerson[] = $this->countPerson();
 
         $countGroups[] = $this->countGroups();
-
-        $state = $this->stateRepository->all();
 
         $roles = $this->roleRepository->all();
 
@@ -381,7 +381,36 @@ class SessionController extends Controller
      */
     public function delete($id)
     {
+        if($this->repository->findByField('id', $id)->first())
+        {
+            try{
 
+                $this->repository->delete($id);
+
+                \DB::commit();
+
+                return json_encode(['status' => true]);
+
+            }catch (\Exception $e){
+
+                \DB::rollBack();
+
+                $bug = new Bug();
+
+                $bug->description = $e->getMessage();
+                $bug->platform = 'Back-end';
+                $bug->model = 'Session';
+                $bug->location = 'Linha: ' . $e->getLine() . ' delete() SessionController.php';
+                $bug->status = 'Pendente';
+                $bug->church_id = $this->getUserChurch();
+
+                $bug->save();
+
+                return json_encode(['status' => false, 'msg' => 'Um erro ocorreu, verifique os logs']);
+            }
+        }
+
+        return json_encode(['status' => false, 'msg' => 'Sessão não encontrada']);
     }
 
     public function check_in_list($id)
@@ -476,8 +505,6 @@ class SessionController extends Controller
         $countPerson[] = $this->countPerson();
 
         $countGroups[] = $this->countGroups();
-
-        $state = $this->stateRepository->all();
 
         $roles = $this->roleRepository->all();
 

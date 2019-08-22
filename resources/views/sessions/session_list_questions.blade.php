@@ -92,8 +92,6 @@
                                                                             <tr class="uppercase">
                                                                                 <th>Usuário</th>
                                                                                 <th>Pergunta</th>
-                                                                                <th>Status</th>
-                                                                                <th>Curtidas</th>
                                                                                 <th>Opções</th>
                                                                                 <th></th>
                                                                             </tr>
@@ -107,29 +105,11 @@
                                                                                 <tr>
                                                                                     <td>
                                                                                         <a href="javascript:">
-                                                                                            <img src="/uploads/profile/noimage.png" alt=""
-                                                                                                 style="width: 50px; height: 50px;">
                                                                                             <p>{{$question->person_name}}</p>
                                                                                         </a>
                                                                                     </td>
-                                                                                    <td>{{ $question->content }}</td>
+                                                                                    <td style="max-width: 400px;">{{ $question->content }}</td>
 
-
-                                                                                    <td>
-                                                                                        @if($question->status == 'approved')
-
-                                                                                            <span class="label label-success">Aprovada</span>
-
-                                                                                        @elseif($question->status == 'denied')
-
-                                                                                            <span class="label label-danger">Não Aprovada</span>
-
-                                                                                        @else
-                                                                                            <span class="label label-warning">Pendente</span>
-                                                                                        @endif
-                                                                                    </td>
-
-                                                                                    <td><span class="badge">{{$question->like_count}}</span></td>
 
                                                                                     <td>
                                                                                         <a href="{{ route('event.session.view_question', ['id' => $question->id]) }}"
@@ -137,30 +117,29 @@
                                                                                            data-toggle="modal" data-target="#modal-padrao" data-remote="false"
                                                                                            modal-remote="true">
                                                                                             <i class="fa fa-eye"></i>
-                                                                                            Visualizar
                                                                                         </a>
                                                                                         @if($question->status == 'approved')
                                                                                             <button class="btn btn-danger btn-sm btn-circle btn-deny"
-                                                                                                    id="btn-deny-{{ $question->id }}">
+                                                                                                    id="btn-deny-{{ $question->id }}" title="Reprovar Pergunta">
                                                                                                 <i class="fa fa-ban"></i>
                                                                                             </button>
                                                                                         @endif
 
                                                                                         @if($question->status == 'pending')
                                                                                             <button class="btn btn-success btn-sm btn-circle btn-approve"
-                                                                                                    id="btn-approve-{{ $question->id }}">
+                                                                                                    id="btn-approve-{{ $question->id }}" title="Aprovar Pergunta">
                                                                                                 <i class="fa fa-thumbs-up"></i>
                                                                                             </button>
 
                                                                                             <button class="btn btn-danger btn-sm btn-circle btn-deny"
-                                                                                                    id="btn-deny-{{ $question->id }}">
+                                                                                                    id="btn-deny-{{ $question->id }}" title="Reprovar Perguntar">
                                                                                                 <i class="fa fa-ban"></i>
                                                                                             </button>
                                                                                         @endif
 
                                                                                         @if($question->status == 'denied')
                                                                                             <button class="btn btn-success btn-sm btn-circle btn-approve"
-                                                                                                    id="btn-approve-{{ $question->id }}">
+                                                                                                    id="btn-approve-{{ $question->id }}" title="Aprovar Pergunta">
                                                                                                 <i class="fa fa-thumbs-up"></i>
                                                                                             </button>
                                                                                         @endif
@@ -188,7 +167,6 @@
                                                                             <tr class="uppercase">
                                                                                 <th>Usuário</th>
                                                                                 <th>Pergunta</th>
-                                                                                <th>Status</th>
                                                                                 <th>Curtidas</th>
                                                                                 <th>Opções</th>
                                                                                 <th></th>
@@ -201,27 +179,10 @@
                                                                                 <tr>
                                                                                     <td>
                                                                                         <a href="javascript:">
-                                                                                            <img src="/uploads/profile/noimage.png" alt=""
-                                                                                                 style="width: 50px; height: 50px;">
                                                                                             <p>{{$question->person_name}}</p>
                                                                                         </a>
                                                                                     </td>
-                                                                                    <td>{{ $question->content }}</td>
-
-
-                                                                                    <td>
-                                                                                        @if($question->status == 'approved')
-
-                                                                                            <span class="label label-success">Aprovada</span>
-
-                                                                                        @elseif($question->status == 'denied')
-
-                                                                                            <span class="label label-danger">Não Aprovada</span>
-
-                                                                                        @else
-                                                                                            <span class="label label-warning">Pendente</span>
-                                                                                        @endif
-                                                                                    </td>
+                                                                                    <td style="max-width: 350px;">{{ $question->content }}</td>
 
                                                                                     <td><span class="badge">{{$question->like_count}}</span></td>
 
@@ -231,30 +192,29 @@
                                                                                            data-toggle="modal" data-target="#modal-padrao" data-remote="false"
                                                                                            modal-remote="true">
                                                                                             <i class="fa fa-eye"></i>
-                                                                                            Visualizar
                                                                                         </a>
                                                                                         @if($question->status == 'approved')
                                                                                             <button class="btn btn-danger btn-sm btn-circle btn-deny"
-                                                                                                    id="btn-deny-{{ $question->id }}">
+                                                                                                    id="btn-deny-{{ $question->id }}" title="Reprovar Pergunta">
                                                                                                 <i class="fa fa-ban"></i>
                                                                                             </button>
                                                                                         @endif
 
                                                                                         @if($question->status == 'pending')
                                                                                             <button class="btn btn-success btn-sm btn-circle btn-approve"
-                                                                                                    id="btn-approve-{{ $question->id }}">
+                                                                                                    id="btn-approve-{{ $question->id }}" title="Aprovar Pergunta">
                                                                                                 <i class="fa fa-thumbs-up"></i>
                                                                                             </button>
 
                                                                                             <button class="btn btn-danger btn-sm btn-circle btn-deny"
-                                                                                                    id="btn-deny-{{ $question->id }}">
+                                                                                                    id="btn-deny-{{ $question->id }}" title="Reprovar Pergunta">
                                                                                                 <i class="fa fa-ban"></i>
                                                                                             </button>
                                                                                         @endif
 
                                                                                         @if($question->status == 'denied')
                                                                                             <button class="btn btn-success btn-sm btn-circle btn-approve"
-                                                                                                    id="btn-approve-{{ $question->id }}">
+                                                                                                    id="btn-approve-{{ $question->id }}" title="Aprovar Pergunta">
                                                                                                 <i class="fa fa-thumbs-up"></i>
                                                                                             </button>
                                                                                         @endif
@@ -282,8 +242,6 @@
                                                                             <tr class="uppercase">
                                                                                 <th>Usuário</th>
                                                                                 <th>Pergunta</th>
-                                                                                <th>Status</th>
-                                                                                <th>Curtidas</th>
                                                                                 <th>Opções</th>
                                                                                 <th></th>
                                                                             </tr>
@@ -297,29 +255,11 @@
                                                                                 <tr>
                                                                                     <td>
                                                                                         <a href="javascript:">
-                                                                                            <img src="/uploads/profile/noimage.png" alt=""
-                                                                                                 style="width: 50px; height: 50px;">
                                                                                             <p>{{$question->person_name}}</p>
                                                                                         </a>
                                                                                     </td>
-                                                                                    <td>{{ $question->content }}</td>
+                                                                                    <td style="max-width: 350px;">{{ $question->content }}</td>
 
-
-                                                                                    <td>
-                                                                                        @if($question->status == 'approved')
-
-                                                                                            <span class="label label-success">Aprovada</span>
-
-                                                                                        @elseif($question->status == 'denied')
-
-                                                                                            <span class="label label-danger">Não Aprovada</span>
-
-                                                                                        @else
-                                                                                            <span class="label label-warning">Pendente</span>
-                                                                                        @endif
-                                                                                    </td>
-
-                                                                                    <td><span class="badge">{{$question->like_count}}</span></td>
 
                                                                                     <td>
                                                                                         <a href="{{ route('event.session.view_question', ['id' => $question->id]) }}"
@@ -327,30 +267,29 @@
                                                                                            data-toggle="modal" data-target="#modal-padrao" data-remote="false"
                                                                                            modal-remote="true">
                                                                                             <i class="fa fa-eye"></i>
-                                                                                            Visualizar
                                                                                         </a>
                                                                                         @if($question->status == 'approved')
                                                                                             <button class="btn btn-danger btn-sm btn-circle btn-deny"
-                                                                                                    id="btn-deny-{{ $question->id }}">
+                                                                                                    id="btn-deny-{{ $question->id }}" title="Reprovar Pergunta">
                                                                                                 <i class="fa fa-ban"></i>
                                                                                             </button>
                                                                                         @endif
 
                                                                                         @if($question->status == 'pending')
                                                                                             <button class="btn btn-success btn-sm btn-circle btn-approve"
-                                                                                                    id="btn-approve-{{ $question->id }}">
+                                                                                                    id="btn-approve-{{ $question->id }}" title="Aprovar Pergunta">
                                                                                                 <i class="fa fa-thumbs-up"></i>
                                                                                             </button>
 
                                                                                             <button class="btn btn-danger btn-sm btn-circle btn-deny"
-                                                                                                    id="btn-deny-{{ $question->id }}">
+                                                                                                    id="btn-deny-{{ $question->id }}" title="Reprovar Pergunta">
                                                                                                 <i class="fa fa-ban"></i>
                                                                                             </button>
                                                                                         @endif
 
                                                                                         @if($question->status == 'denied')
                                                                                             <button class="btn btn-success btn-sm btn-circle btn-approve"
-                                                                                                    id="btn-approve-{{ $question->id }}">
+                                                                                                    id="btn-approve-{{ $question->id }}" title="Aprovar Pergunta">
                                                                                                 <i class="fa fa-thumbs-up"></i>
                                                                                             </button>
                                                                                         @endif

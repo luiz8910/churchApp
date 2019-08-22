@@ -171,10 +171,19 @@
                                                                 <tbody>
                                                                 @foreach($sessions as $item)
                                                                     <tr id="tr_{{ $item->id }}">
-                                                                        <td id="td_name_{{ $item->id }}">{{ $item->name }}</td>
-                                                                        <td id="td_location_{{ $item->id }}">{{ $item->location }}</td>
-                                                                        <td id="td_start_time_{{ $item->id }}">{{ $item->start_time }}</td>
+
+                                                                        <td id="td_name_{{ $item->id }}" style="max-width: 350px;">
+                                                                            {{ $item->name }}
+                                                                        </td>
+                                                                        <td id="td_location_{{ $item->id }}">
+                                                                            {{ $item->location }}
+                                                                        </td>
+                                                                        <td id="td_start_time_{{ $item->id }}">
+                                                                            {{ $item->start_time }}
+                                                                        </td>
+
                                                                         <input type="hidden" id="session_date_{{ $item->id }}" value="{{ $item->session_date }}">
+
                                                                         <td>
                                                                             <a href="{{ route('event.session.check_in_list', ['id' => $item->id]) }}"
                                                                                class="btn btn-info btn-sm btn-circle" title="Inscritos">

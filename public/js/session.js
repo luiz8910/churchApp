@@ -213,7 +213,6 @@ function getSpeakers(id)
         if(e.status)
         {
 
-
             for (var i = 0; i < e.speakers.length; i++)
             {
                 speakers_id.push(e.speakers[i].speaker_id);

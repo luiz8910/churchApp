@@ -16,6 +16,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\PersonEvent' => [
             'App\Listeners\EventPersonListener',
         ],
+        'App\Events\PendingQuestion' => [
+            'App\Listeners\PendingQuestionListener'
+        ]
     ];
 
     /**
