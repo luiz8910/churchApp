@@ -74,7 +74,10 @@ class QuestionController extends Controller
 
             if($event)
             {
-                $pending = $this->repository->findByField('status','pending');
+                $pending = $this->repository->findWhere([
+                                                'status' => 'pending',
+                                                'session_id' => $session_id
+                                    ]);
 
                 if(count($pending) > 0)
                 {
@@ -89,7 +92,9 @@ class QuestionController extends Controller
                     }
                 }
 
-                $approved = $this->repository->findByField('status','approved');
+                $approved = $this->repository->findWhere([
+                    'status' => 'approved',
+                    'session_id' => $session_id]);
 
                 if(count($approved) > 0)
                 {
@@ -104,7 +109,9 @@ class QuestionController extends Controller
                     }
                 }
 
-                $denied = $this->repository->findByField('status','denied');
+                $denied = $this->repository->findWhere([
+                    'status' => 'denied',
+                    'session_id' => $session_id]);
 
                 if(count($denied) > 0)
                 {

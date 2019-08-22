@@ -74,6 +74,8 @@ $(function(){
 
         }
 
+        $('#new-session').css('display', 'none');
+
         $("#edit-session").css('display', 'block');
 
         $('html, body').animate({
@@ -85,6 +87,8 @@ $(function(){
 
     //Exibe o form de criação de nova sessão
     $('#btn-new-session').click(function () {
+
+        $("#edit-session").css('display', 'none');
 
         $('#new-session').css('display', 'block');
 
