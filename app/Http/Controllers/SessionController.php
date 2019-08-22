@@ -75,11 +75,12 @@ class SessionController extends Controller
      */
     public function list($event_id)
     {
-        $sessions = $this->repository->findByField('event_id', $event_id);
 
-//        $sessions = DB::table('sessions')
-//                    ->where(['event_id' => $event_id])
-//                    ->paginate(10);
+        $sessions = DB::table('sessions')
+                    ->where(['event_id' => $event_id])
+                    ->orderBy('start_time')
+                    ->orderBy('session_date')
+                    ->paginate(10);
 
         $countPerson[] = $this->countPerson();
 

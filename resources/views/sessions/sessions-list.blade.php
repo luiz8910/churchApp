@@ -225,6 +225,9 @@
                                                                 </tbody>
                                                             </table>
                                                             <br>
+                                                            <div class="pull-right" id="pagination">
+                                                                {{ $sessions->links() }}
+                                                            </div>
 
                                                         </div>
                                                 @endif
