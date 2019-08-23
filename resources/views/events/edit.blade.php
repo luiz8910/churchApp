@@ -1133,7 +1133,11 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                             @include('includes.address-edit')
                                             <br><br>
-                                            @include('includes.event-app-config')
+
+                                            @if($org->white_label)
+                                                @include('includes.event-app-config')
+                                            @endif
+
                                             <br><br>
 
                                             @if($payment)

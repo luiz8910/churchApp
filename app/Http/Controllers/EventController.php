@@ -1037,7 +1037,7 @@ class EventController extends Controller
             'model', 'location', 'notify', 'qtde', 'eventDays', 'eventFrequency', 'check',
             'eventPeople', 'group', 'groups', 'sub', 'canCheckIn', 'createdBy_id', 'createdBy',
             'nextEventDate', 'leader', 'preposicao', 'frequencies', 'church_id', 'leader',
-            'admin', 'sessions', 'local', 'org_name', 'payment'));
+            'admin', 'sessions', 'local', 'org_name', 'payment', 'org'));
     }
 
     public function update(Request $request, $id)

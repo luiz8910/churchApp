@@ -5,24 +5,35 @@
 <hr><br>
 
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-4">
         <div class="form-group">
             <label>Cor Primária</label>
             <div class="input-group colorpicker-component">
                 <span class="input-group-addon"><i></i></span>
-                <input class="form-control" name="app_primary_color" type="text"
-                       value="@if(isset($org)){{ $org->app_primary_color }}@else{{ old('app_primary_color', '#000000') }}@endif">
+                <input class="form-control" name="primary_color" type="text"
+                       value="{{ $model->primary_color }}">
             </div>
         </div>
     </div>
 
-    <div class="col-md-6">
+    <div class="col-md-4">
         <div class="form-group">
             <label>Cor Secundária</label>
             <div class="input-group colorpicker-component">
                 <span class="input-group-addon"><i></i></span>
-                <input class="form-control" name="app_secondary_color" type="text"
-                       value="@if(isset($org)){{ $org->app_secondary_color }}@else{{ old('app_secondary_color', '#000000') }}@endif">
+                <input class="form-control" name="secondary_color" type="text"
+                       value="{{ $model->secondary_color }}">
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="form-group">
+            <label>Cor Terciária</label>
+            <div class="input-group colorpicker-component">
+                <span class="input-group-addon"><i></i></span>
+                <input class="form-control" name="tertiary_color" type="text"
+                       value="{{ $model->tertiary_color }}">
             </div>
         </div>
     </div>
