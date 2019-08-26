@@ -19,7 +19,7 @@ class Event extends Model implements Transformable
         'allDay', 'day_2', 'church_id', 'street', 'neighborhood',
         'city', 'zipCode', 'state', 'number', 'imgEvent_bg', 'imgEvent',
         'public_url', 'certified_hours', 'value_money', 'installments',
-        'primary_color', 'secondary_color', 'tertiary_color', 'logoEvent'
+        'primary_color', 'secondary_color', 'tertiary_color', 'logoEvent', 'status'
     ];
 
     public function group()

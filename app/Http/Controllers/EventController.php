@@ -2003,8 +2003,15 @@ class EventController extends Controller
                         $split_name = true;
                     }
 
+                    if($event->status == 'active' || $event->status === null)
+                    {
+                        return view('events.sub-pay', compact('event', 'church', 'split_name', 'abrv'));
+                    }
+                    elseif($event->status == 'canceled'){
 
-                    return view('events.sub-pay', compact('event', 'church', 'split_name', 'abrv'));
+                        return view('errors.canceled');
+                    }
+
                 }
 
                 return view('events.sub', compact('event', 'church'));
