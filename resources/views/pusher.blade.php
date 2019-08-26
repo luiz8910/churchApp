@@ -9,6 +9,7 @@
     <div class="content">
         <h1>Laravel 5 and Pusher is fun!</h1>
         <ul id="messages" class="list-group">
+            <li><h3 id="text"></h3></li>
         </ul>
     </div>
 </div>
@@ -22,18 +23,17 @@
     });
 
     //Subscribe to the channel we specified in our Laravel Event
-    var channel = pusher.subscribe('my-channel');
+    var channel = pusher.subscribe('new-question');
 
     //Bind a function to a Event (the full Laravel class)
-    channel.bind('App\\Events\\PersonEvent', addMessage);
+    channel.bind('App\\Events\\Question', function (data) {
+        console.log(data);
+        $("#text").text('Teste');
 
-    function addMessage(data) {
-        var listItem = $("<li class='list-group-item'></li>");
-        listItem.html(data.person[0]);
-        $('#messages').prepend(listItem);
 
-        console.log(data.person);
-    }
+    });
+
+
 </script>
 </body>
 </html>

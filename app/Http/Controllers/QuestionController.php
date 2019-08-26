@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bug;
+use App\Models\Question;
 use App\Repositories\EventRepository;
 use App\Repositories\PersonRepository;
 use App\Repositories\QuestionRepository;
@@ -48,6 +49,22 @@ class QuestionController extends Controller
         $this->eventRepository = $eventRepository;
         $this->personRepository = $personRepository;
         $this->roleRepository = $roleRepository;
+    }
+
+    public function testEvent()
+    {
+        //$question = Question::find(3);
+
+        try{
+            event(new \App\Events\Question('teste'));
+
+        }catch (\Exception $e)
+        {
+            dd($e);
+        }
+
+
+        return 'evento foi disparado';
     }
 
     public function index($session_id)

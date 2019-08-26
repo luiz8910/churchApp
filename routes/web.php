@@ -474,6 +474,10 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('session-list-questions/{id}', 'QuestionController@index')->name('event.session.list_questions');
 
+
+        Route::get('testEvent', 'QuestionController@testEvent');
+
+
         Route::get('session-view-question/{id}', 'SessionController@view_question')->name('event.session.view_question');
 
         Route::get('verify_days_session/{id}', 'SessionController@event_days');

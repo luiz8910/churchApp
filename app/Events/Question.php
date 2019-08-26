@@ -2,7 +2,6 @@
 
 namespace App\Events;
 
-use App\Models\Question;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -10,15 +9,13 @@ use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 
-class PendingQuestion implements ShouldBroadcast
+class Question implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
-    /**
-     * @var Question
-     */
-    public $question;
 
+    public $question;
     /**
      * Create a new event instance.
      *
@@ -26,7 +23,6 @@ class PendingQuestion implements ShouldBroadcast
      */
     public function __construct($question)
     {
-        //
         $this->question = $question;
     }
 
@@ -37,7 +33,6 @@ class PendingQuestion implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        //return new Channel('pending-question');
-        return ['pending-question'];
+        return ['new-question'];
     }
 }

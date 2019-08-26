@@ -65,6 +65,7 @@
                                                 <div class="caption font-green-haze">
                                                     <i class="fa fa-user font-green-haze"></i>
                                                     <span class="caption-subject font-green-haze bold ">Sessões - {{ $session->name }} - Perguntas</span>
+                                                    <input type="hidden" id="session_id" value="{{ $session->id }}">
                                                 </div>
                                             </div> <!-- FIM DIV .portlet-title -->
 
@@ -97,7 +98,7 @@
                                                                             </tr>
                                                                             </thead>
                                                                             <tbody class="hide" id="tbody-search"></tbody>
-                                                                            <tbody>
+                                                                            <tbody id="tbody_pending">
 
                                                                             @foreach($pending as $question)
 
@@ -173,7 +174,7 @@
                                                                             </tr>
                                                                             </thead>
                                                                             <tbody class="hide" id="tbody-search"></tbody>
-                                                                            <tbody>
+                                                                            <tbody id="tbody_approved">
                                                                             @foreach($approved as $question)
 
                                                                                 <tr>
@@ -247,7 +248,7 @@
                                                                             </tr>
                                                                             </thead>
                                                                             <tbody class="hide" id="tbody-search"></tbody>
-                                                                            <tbody>
+                                                                            <tbody id="tbody_denied">
 
                                                                             @foreach($denied as $question)
 
@@ -338,6 +339,25 @@
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
 <script src="../assets/pages/scripts/table-datatables-buttons.min.js" type="text/javascript"></script>
 <!-- END PAGE LEVEL SCRIPTS -->
+
+<script>
+    var pusher = new Pusher('9f86933032dbae833b7d', {encrypted: true});
+
+    var channel = pusher.subscribe('new-question');
+
+    channel.bind('App\\Events\\Question', function (data) {
+        console.log('event');
+        alert('aqui');
+    });
+
+    function newPendingQ()
+    {
+        console.log('aqui');
+        //console.log(data);
+    }
+
+</script>
+
 </body>
 
 </html>
