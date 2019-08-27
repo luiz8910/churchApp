@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Mail\Certificate;
+use App\Mail\messages;
 use App\Mail\welcome;
 use App\Mail\welcome_sub;
 use App\Models\Event;
@@ -200,6 +201,18 @@ class MessageServices
             ->send(new welcome_sub(
                 $user, $url, $event, $qrCode
             ));
+
+        return true;
+    }
+
+    public function sendMessageEmail($person)
+    {
+        $url = $this->getUrl();
+
+        $user = $person->user;
+
+        Mail::to($user)
+            ->send(new messages($person, $url));
 
         return true;
     }

@@ -56,6 +56,9 @@
                     <h6 class="color-grape">CONFIRME SUA INSCRIÇÃO</h6>
                     @include('includes.messages')
                     <p class="inner-text" style="font-size: 15px !important;"><strong>Pagamento: Apenas com Cartão de Crédito</strong></p>
+                    <p class="inner-text" style="font-size: 15px !important;">
+                        <strong>Pagamento no local do evento: Cartão de Crédito e Débito (Sujeito a disponibilidade de vagas)</strong>
+                    </p>
 
                     <div class="row hidden-sm-up mb-3">
                         <div class="col">

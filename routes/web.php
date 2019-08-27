@@ -714,6 +714,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('show-certificate/{event_id}/{person_id}', 'EventController@showCertificate');
 
+    Route::get('sendEmailMessage/{event_id}', 'EventController@sendEmailMessage');
+
     // Fim Admin site
 
     Route::get('/events-ajax', 'EventController@getListEvents');

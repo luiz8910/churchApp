@@ -9,6 +9,7 @@ use App\Jobs\CheckCardToken;
 use App\Jobs\Messages;
 use App\Jobs\PaymentApproved;
 use App\Jobs\PaymentMail;
+use App\Jobs\sendEmailMessages;
 use App\Jobs\SendQrEmail;
 use App\Jobs\Test;
 use App\Jobs\Teste;
@@ -2737,6 +2738,16 @@ class EventController extends Controller
             ])->get();
 
         dd($list);
+    }
+
+    public function sendEmailMessage($event_id)
+    {
+        $event = $this->repository->findByField('id', $event_id)->first();
+
+        if($event)
+        {
+            sendEmailMessages::dispatch($event_id);
+        }
     }
 
     public function generateQr($person_id)
