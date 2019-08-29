@@ -786,6 +786,8 @@ $(".modal").on("show.bs.modal", function (e) {
     }
 });
 
+
+
 function excluir(obj) {
     var link = $(obj).attr('href');
     var id = $(obj).attr('data-id');

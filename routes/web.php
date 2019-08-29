@@ -808,6 +808,10 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('bug-solved/{id}', 'BugController@bug_solved');
 
+    //Informação sobre Internet Explorer
+    Route::get('ie', function (){
+        return view('errors.ie');
+    });
 
     //Documentação da API
     Route::get('docs', function(){

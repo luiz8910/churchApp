@@ -8,6 +8,14 @@ body {
   margin: 0;
 }
 
+.title-ie{
+  text-align: center;
+  font-size: 100px;
+  margin-top: 50px;
+  margin-bottom: -180px;
+  color: #ff6f68;
+}
+
 #notfound {
   position: relative;
   height: 100vh;
@@ -52,6 +60,8 @@ body {
   background-clip: text;
   text-transform: uppercase;
 }
+
+
 
 .notfound h2 {
   font-family: 'Kanit', sans-serif;

@@ -244,4 +244,11 @@
 </div>
 @include('includes.core-scripts')
 <script src="../js/site.js"></script>
+<script src="../js/errors.js"></script>
 @include('includes.footer-site')
+<script>
+
+    //Verifica se o navegador é internet explorer
+    isIE();
+
+</script>
