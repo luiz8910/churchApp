@@ -1,0 +1,33 @@
+.dynamic-tr{
+
+    -webkit-animation-name: question;  /* Safari 4.0 - 8.0 */
+    -webkit-animation-duration: 1s;  /* Safari 4.0 - 8.0 */
+    -webkit-animation-fill-mode: forwards; /* Safari 4.0 - 8.0 */
+    -webkit-animation-iteration-count: 2; /* Safari 4.0 - 8.0 */
+    animation-name: question;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+    border-bottom: 1px solid #F2F5F8;
+    animation-iteration-count: 2;
+}
+
+.modal-p{
+    font-size: 30px;
+    font-weight: 300;
+}
+
+.modal-title{
+    font-size: 30px !important;
+}
+
+@keyframes question {
+    from { top: 0; background-color: #7b7d77;}
+    to { background-color: #fafafa; }
+}
+
+
+@-webkit-keyframes question{
+    from { top: 0; background-color: #7b7d77;}
+    to { background-color: #fafafa; }
+}
+

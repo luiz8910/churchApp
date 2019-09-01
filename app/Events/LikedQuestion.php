@@ -9,13 +9,12 @@ use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 
-class Question implements ShouldBroadcast
+class LikedQuestion implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
-
     public $question;
+
     /**
      * Create a new event instance.
      *
@@ -23,6 +22,7 @@ class Question implements ShouldBroadcast
      */
     public function __construct($question)
     {
+        //
         $this->question = $question;
     }
 
@@ -33,6 +33,6 @@ class Question implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return ['new-question'];
+        return ['like'];
     }
 }

@@ -14,6 +14,7 @@ use App\Traits\ConfigTrait;
 use App\Traits\CountRepository;
 use App\Traits\NotifyRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class QuestionController extends Controller
 {
@@ -53,10 +54,17 @@ class QuestionController extends Controller
 
     public function testEvent()
     {
-        //$question = Question::find(3);
 
         try{
-            event(new \App\Events\Question('teste'));
+            $question = \DB::table('questions')->where('id', 2)->first();
+
+            $person_name = $this->personRepository->findByField('id', $question->person_id)->first()->name;
+
+            $question->person_name = $person_name;
+
+            //dd($question);
+
+            event(new \App\Events\Question($question));
 
         }catch (\Exception $e)
         {
@@ -109,9 +117,14 @@ class QuestionController extends Controller
                     }
                 }
 
-                $approved = $this->repository->findWhere([
-                    'status' => 'approved',
-                    'session_id' => $session_id]);
+                $approved = DB::table('questions')
+                            ->where([
+                                'status' => 'approved',
+                                'session_id' => $session_id])
+                            ->orderBy('like_count', 'desc')
+                            //->limit(10)
+                            ->get();
+
 
                 if(count($approved) > 0)
                 {

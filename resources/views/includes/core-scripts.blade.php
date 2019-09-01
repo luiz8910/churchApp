@@ -69,10 +69,9 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.debug.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/autonumeric@4.1.0"></script>
-<script src="https://js.pusher.com/4.0/pusher.min.js"></script>
 
 
-<script>
+{{--<script>
 
         //instantiate a Pusher object with our Credential's key
         var pusher = new Pusher('9f86933032dbae833b7d', {
@@ -171,4 +170,4 @@
 
 
 
-</script>
+</script>--}}

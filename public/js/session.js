@@ -141,19 +141,7 @@ $(function(){
 
     });
 
-    $(".btn-deny").click(function () {
 
-        var id = this.id.replace('btn-deny-', '');
-
-        denyQuestion(id);
-    });
-
-    $('.btn-approve').click(function () {
-
-        var id = this.id.replace('btn-approve-', '');
-
-        approveQuestion(id);
-    });
 
 
     $(".btn-itens").click(function () {
@@ -356,24 +344,6 @@ function deleteSession(id)
     });
 }
 
-function approveQuestion(id)
-{
 
-    var url = '/approve-question/';
-
-    var msg = 'A questão foi aprovada';
-
-    Request(url, null, id, 'PUT', false, msg);
-}
-
-function denyQuestion(id)
-{
-
-    var url = '/deny-question/';
-
-    var msg = 'A questão foi reprovada';
-
-    Request(url, null, id, 'PUT', false, msg);
-}
 
 

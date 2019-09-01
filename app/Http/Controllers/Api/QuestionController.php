@@ -145,11 +145,22 @@ class QuestionController extends Controller
                     $data['status'] = 'pending';
 
                     try{
-                        $this->repository->create($data);
+                        $id = $this->repository->create($data)->id;
 
-                        \DB::commit();
+                        if($id)
+                        {
+                            $question = \DB::table('questions')->where('id', $id)->first();
 
-                        return json_encode(['status' => true]);
+                            $person_name = $this->personRepository->findByField('id', $question->person_id)->first()->name;
+
+                            $question->person_name = $person_name;
+
+                            event(new \App\Events\Question($question));
+
+                            \DB::commit();
+
+                            return json_encode(['status' => true]);
+                        }
 
                     }catch (\Exception $e)
                     {
@@ -212,7 +223,7 @@ class QuestionController extends Controller
                 {
                     if($like_exists->liked == 1)
                     {
-                        return json_encode(['status' => false, 'Este usuário ja curtiu esta questão.']);
+                        return json_encode(['status' => false, 'Este usuário já curtiu esta questão.']);
                     }
                 }
 
@@ -240,6 +251,14 @@ class QuestionController extends Controller
                                     'question_id' => $id
                                 ]);
                         }
+
+                        $question = \DB::table('questions')->where('id', $id)->first();
+
+                        $person_name = $this->personRepository->findByField('id', $question->person_id)->first()->name;
+
+                        $question->person_name = $person_name;
+
+                        event(new \App\Events\LikedQuestion($question));
 
                         \DB::commit();
 

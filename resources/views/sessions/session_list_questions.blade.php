@@ -17,6 +17,10 @@
           type="text/css"/>
     <link href="../assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet"
           type="text/css"/>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+    <link rel="stylesheet" href="../css/question.css">
     <!-- END PAGE LEVEL PLUGINS -->
 </head>
 <!-- END HEAD -->
@@ -103,20 +107,18 @@
                                                                             @foreach($pending as $question)
 
 
-                                                                                <tr>
+                                                                                <tr class="">
                                                                                     <td>
                                                                                         <a href="javascript:">
                                                                                             <p>{{$question->person_name}}</p>
                                                                                         </a>
                                                                                     </td>
-                                                                                    <td style="max-width: 400px;">{{ $question->content }}</td>
+                                                                                    <td style="max-width: 400px;" id="td-text-{{ $question->id }}">{{ $question->content }}</td>
 
 
                                                                                     <td>
-                                                                                        <a href="{{ route('event.session.view_question', ['id' => $question->id]) }}"
-                                                                                           class="btn btn-warning btn-sm btn-circle" title="Visualizar Pergunta"
-                                                                                           data-toggle="modal" data-target="#modal-padrao" data-remote="false"
-                                                                                           modal-remote="true">
+                                                                                        <a href="javascript:"
+                                                                                           class="btn btn-warning btn-sm btn-circle" title="Visualizar Pergunta" onclick="view({{ $question->id }});">
                                                                                             <i class="fa fa-eye"></i>
                                                                                         </a>
                                                                                         @if($question->status == 'approved')
@@ -177,21 +179,20 @@
                                                                             <tbody id="tbody_approved">
                                                                             @foreach($approved as $question)
 
-                                                                                <tr>
+                                                                                <tr id="tr-question-{{ $question->id }}">
                                                                                     <td>
                                                                                         <a href="javascript:">
                                                                                             <p>{{$question->person_name}}</p>
                                                                                         </a>
                                                                                     </td>
-                                                                                    <td style="max-width: 350px;">{{ $question->content }}</td>
+                                                                                    <td style="max-width: 350px;" id="td-text-{{ $question->id }}">{{ $question->content }}</td>
 
-                                                                                    <td><span class="badge">{{$question->like_count}}</span></td>
+                                                                                    <td><span class="badge like-count" id="like-count-{{ $question->id }}">{{$question->like_count}}</span></td>
 
                                                                                     <td>
-                                                                                        <a href="{{ route('event.session.view_question', ['id' => $question->id]) }}"
+                                                                                        <a href="javascript:"
                                                                                            class="btn btn-warning btn-sm btn-circle" title="Visualizar Pergunta"
-                                                                                           data-toggle="modal" data-target="#modal-padrao" data-remote="false"
-                                                                                           modal-remote="true">
+                                                                                           onclick="view({{ $question->id }});">
                                                                                             <i class="fa fa-eye"></i>
                                                                                         </a>
                                                                                         @if($question->status == 'approved')
@@ -259,14 +260,13 @@
                                                                                             <p>{{$question->person_name}}</p>
                                                                                         </a>
                                                                                     </td>
-                                                                                    <td style="max-width: 350px;">{{ $question->content }}</td>
+                                                                                    <td style="max-width: 350px;" id="td-text-{{ $question->id }}">{{ $question->content }}</td>
 
 
                                                                                     <td>
-                                                                                        <a href="{{ route('event.session.view_question', ['id' => $question->id]) }}"
+                                                                                        <a href="javascript:"
                                                                                            class="btn btn-warning btn-sm btn-circle" title="Visualizar Pergunta"
-                                                                                           data-toggle="modal" data-target="#modal-padrao" data-remote="false"
-                                                                                           modal-remote="true">
+                                                                                           onclick="view({{ $question->id }});">
                                                                                             <i class="fa fa-eye"></i>
                                                                                         </a>
                                                                                         @if($question->status == 'approved')
@@ -340,23 +340,10 @@
 <script src="../assets/pages/scripts/table-datatables-buttons.min.js" type="text/javascript"></script>
 <!-- END PAGE LEVEL SCRIPTS -->
 
-<script>
-    var pusher = new Pusher('9f86933032dbae833b7d', {encrypted: true});
+<script src="https://js.pusher.com/3.1/pusher.min.js"></script>
 
-    var channel = pusher.subscribe('new-question');
-
-    channel.bind('App\\Events\\Question', function (data) {
-        console.log('event');
-        alert('aqui');
-    });
-
-    function newPendingQ()
-    {
-        console.log('aqui');
-        //console.log(data);
-    }
-
-</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script src="../../js/question.js"></script>
 
 </body>
 
