@@ -122,11 +122,11 @@ $(function () {
 
 
     //Pesquisa de Inscritos
-    $("#btn-search-check").click(function () {
-
-        $("#div_search").css('display', 'block');
+    $(".btn-search-check").click(function () {
 
         $("#row_sub").css('display', 'none');
+
+        $("#div_search").css('display', 'block');
 
         $("#input-search-check").trigger('focus');
     });

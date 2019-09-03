@@ -716,6 +716,10 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('sendEmailMessage/{event_id}', 'EventController@sendEmailMessage');
 
+    Route::get('teste-sub', function (){
+        return view('teste-sub');
+    });
+
     // Fim Admin site
 
     Route::get('/events-ajax', 'EventController@getListEvents');

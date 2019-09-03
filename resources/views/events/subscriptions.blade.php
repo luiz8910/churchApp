@@ -92,8 +92,6 @@ License: You must have a valid license purchased only from themeforest(the above
                                     </span>
                                     <span class="caption-helper"></span>
 
-
-
                                 </div>
 
                                 {{--<div class="clearfix"
@@ -252,7 +250,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             </a>
                                                         </li>
                                                         <li>
-                                                            <a href="javascript:" class="tool-action" id="btn-search-check">
+                                                            <a href="javascript:" class="tool-action btn-search-check">
                                                                 <i class="fa fa-search font-blue"></i>
                                                                 Pesquisar
                                                             </a>
@@ -277,7 +275,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                         </div>
 
                                         <div class="col-md-1 hidden-sm hidden-xs">
-                                            <a href="javascript:" type="button" class="btn btn-info btn-sm btn-circle" id="btn-search-check" style="margin-left: -16px;">
+                                            <a href="javascript:" type="button" class="btn btn-info btn-sm btn-circle btn-search-check" style="margin-left: -16px;">
                                                 <i class="fa fa-search"></i>
                                                 Pesquisar
                                             </a>

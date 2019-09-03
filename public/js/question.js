@@ -104,7 +104,6 @@ function new_like(data)
 
     toastr.success('Reorganizando as questões', 'Carregando nova lista', options);
 
-
     var shuffle = '<tr class="dynamic-tr" id="tr-question-'+data.id+'">' +
         '<td>' +
         '<a href="javascript:">'+
@@ -121,8 +120,6 @@ function new_like(data)
 
     var like_count = $(".like-count");
     var len_likes = like_count.length;
-
-    console.log("shuffle: " + shuffle);
 
 
     for (var i = 0; i < len_likes; i++)
