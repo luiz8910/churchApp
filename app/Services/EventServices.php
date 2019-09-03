@@ -848,8 +848,8 @@ class EventServices
                 ->where([
                     'event_id' => $id,
                     'person_id' => $person,
-                    'eventDate' => date_format($date, "Y-m-d"),
-                    ['event_date', '<=', $date],
+                    //'eventDate' => date_format($date, "Y-m-d"),
+                    //['event_date', '<=', $date],
                 ])
                 ->first();
 
@@ -861,8 +861,8 @@ class EventServices
                 ->where([
                     'event_id' => $id,
                     'person_id' => $person,
-                    'eventDate' => date_format($date, "Y-m-d"),
-                    ['event_date', '<=', $date],
+                    //'eventDate' => date_format($date, "Y-m-d"),
+                    //['event_date', '<=', $date],
                     //['end_event_date', '>', $date]
                 ])
                 ->first();
@@ -2323,6 +2323,7 @@ class EventServices
 
                 if($event)
                 {
+                    $today = date_format(date_create(), 'Y-m-d');
 
                     if($event->endTime == "")
                     {
