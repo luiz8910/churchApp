@@ -2012,6 +2012,10 @@ class EventController extends Controller
 
                         return view('errors.canceled');
                     }
+                    elseif($event->status == 'closed'){
+
+                        return view('errors.canceled');
+                    }
 
                 }
 

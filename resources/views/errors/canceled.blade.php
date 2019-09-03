@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-    <title>Evento Cancelado</title>
+    <title>Evento</title>
 
     <link href="../assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
 
@@ -37,10 +37,11 @@
             <h1 class="hidden-xs hidden-sm">Atenção</h1>
             <h1 class="hidden-md hidden-lg" style="font-size: 50px !important;">Atenção</h1>
         </div>
-        <h2>Este evento foi cancelado</h2>
-        <p>Se você efetuou algum pagamento, estaremos realizando seu estorno.
-        <p>Dúvidas sobre pagamentos e devoluções? Mande um email para <a href="mailto:contato@beconnect.com.br?Subject=Estorno%20Pagamento">contato@beconnect.com.br</a></p>
+        <h2>As inscrições estão encerradas.</h2>
+        <p>Você deseja participar? Compareça ao local para efetuar sua inscrição, aceitaremos apenas cartão de débito ou crédito.</p>
+        <p>Dúvidas sobre pagamentos e devoluções? Mande um email para <a href="mailto:contato@beconnect.com.br">contato@beconnect.com.br</a></p>
         <p>Outros esclarecimentos contatar o parque tecnológico através do <a href="tel:+55-1533162323">(15) 3316-2323</a></p>
+        <p>Avenida Itavuvu, 11.777</p>
         <div class="notfound-social">
             <a href="#"><i class="fa fa-facebook"></i></a>
             <a href="#"><i class="fa fa-twitter"></i></a>
@@ -49,7 +50,7 @@
         </div>
     </div>
 </div>
-
+<script src="../assets/global/plugins/jquery.min.js" type="text/javascript"></script>
 <script src="../assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
 
 </body><!-- This templates was made by Colorlib (https://colorlib.com) -->

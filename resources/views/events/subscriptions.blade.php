@@ -213,7 +213,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                         {{ csrf_field() }}
 
 
-                                        <div class="col-md-9 col-sm-6 col-xs-6">
+                                        {{--<div class="col-md-9 col-sm-6 col-xs-6">
 
                                             <select class="form-control select2" id="subUser" name="person_id" required>
                                                 <option></option>
@@ -224,13 +224,13 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         </option>
                                                     @endforeach
                                                 </optgroup>
-                                                {{--<optgroup label="Grupos">
+                                                --}}{{--<optgroup label="Grupos">
                                                     <option value="">grupo teste</option>
-                                                </optgroup>--}}
+                                                </optgroup>--}}{{--
                                             </select>
 
 
-                                        </div>
+                                        </div>--}}
 
                                         <div class="col-md-3 col-xs-3">
                                             <div class="actions hidden-md hidden-lg">
@@ -260,7 +260,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                             </div>
 
                                         </div>
-                                        <div class="col-xs-3">
+                                        {{--<div class="col-xs-3">
                                             <button type="submit" class="btn btn-success btn-sm btn-circle" style="margin-left: -20px;">
                                                 <i class="fa fa-sign-in"></i>
                                                 Inscrever
@@ -279,14 +279,14 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <i class="fa fa-search"></i>
                                                 Pesquisar
                                             </a>
-                                        </div>
+                                        </div>--}}
 
                                         </form>
                                     </div>
                                 </div>
 
 
-                                <div id="div_search" style="display: none;">
+                                <div id="div_search" style="display: block;">
                                     <br>
 
                                     <div class="row">
@@ -299,11 +299,17 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                                 <span class="input-group-btn">
 
-                                                <button class="btn btn-default" type="button" id="close-search">
+                                                    <button class="btn btn-default" type="button" id="btn-search-sub">
 
-                                                    <i class="fa fa-close font-green"></i>
+                                                        <i class="fa fa-search font-green"></i>
 
-                                                </button>
+                                                    </button>
+
+                                                    <button class="btn btn-default" type="button" id="close-search">
+
+                                                        <i class="fa fa-close font-green"></i>
+
+                                                    </button>
 
                                                 </span>
 

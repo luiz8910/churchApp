@@ -133,7 +133,7 @@ $(function () {
 
     $("#close-search").click(function () {
 
-        $("#div_search").css('display', 'none');
+        //$("#div_search").css('display', 'none');
 
         $("#row_sub").css('display', 'block');
 
@@ -151,7 +151,7 @@ $(function () {
             }
 
         })
-        .keypress(function (e) {
+        /*.keypress(function (e) {
 
 
             //Verifica se apenas letras foram digitadas
@@ -170,7 +170,35 @@ $(function () {
                 return false;
             }
 
-    });
+    })*/;
+
+    $("#btn-search-sub").click(function () {
+
+        $("#row_sub").css('display', 'none');
+
+        $("#div_search").css('display', 'block');
+
+        $("#input-search-check").trigger('focus');
+
+        var input = $("#input-search-check").val();
+
+        //Verifica se apenas letras foram digitadas
+        if(isString(input))
+        {
+            var length_input_search = input.length;
+
+            if(length_input_search >= 2)
+            {
+                console.log(input);
+
+                findSubUsers(input);
+            }
+        }
+        else{
+
+            return false;
+        }
+    })
     //Fim Pesquisa Inscritos
 
 
@@ -317,7 +345,9 @@ function generateCertificate(id, person_id)
 function findSubUsers(e)
 {
 
-    var input = $("#input-search-check").val() + e.key;
+    console.log(e);
+    //var input = $("#input-search-check").val() + e.key;
+    var input = $("#input-search-check").val();
     var event_id = $('#event-id').val();
 
     var request = $.ajax({
