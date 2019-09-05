@@ -10,12 +10,12 @@
 <!-- BEGIN HEAD -->
 
 <head>
-@include('includes.head')
+@include('includes.head-edit')
 <!-- BEGIN PAGE LEVEL PLUGINS -->
-    <link href="assets/global/plugins/datatables/datatables.min.css" rel="stylesheet" type="text/css"/>
-    <link href="assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css" rel="stylesheet"
+    <link href="../../assets/global/plugins/datatables/datatables.min.css" rel="stylesheet" type="text/css"/>
+    <link href="../../assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css" rel="stylesheet"
           type="text/css"/>
-    <link href="assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet"
+    <link href="../../assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet"
           type="text/css"/>
     <!-- END PAGE LEVEL PLUGINS -->
 </head>
@@ -94,6 +94,7 @@
                                                 <div class="check-in">
                                                     <div class="row">
                                                         <div class="col-md-12">
+                                                            <input type="hidden" id="person_id" value="{{ $person_id }}">
 
                                                             <div class="table-scrollable table-scrollable-borderless table-striped">
                                                                 <table class="table table-hover table-light table-striped">
@@ -118,11 +119,9 @@
                                                                                    id="btn-itens-{{ $poll->id }}">
                                                                                     <i class="fa fa-eye"></i>
                                                                                 </a>
-                                                                                <a href="{{ route('event.session.delete_quizz', ['id' => $poll->id]) }}"
-                                                                                   class="btn btn-danger btn-sm btn-circle"
-                                                                                   title="Excluir Questão"
-                                                                                   onclick="return excluir(this)"
-                                                                                   data-id="{{$poll->id}}">
+                                                                                <a href="javascript:"
+                                                                                   class="btn btn-danger btn-sm btn-circle btn-del"
+                                                                                   title="Excluir Questão" id="btn-del-{{$poll->id}}">
                                                                                     <i class="fa fa-trash"></i>
                                                                                 </a>
                                                                             </td>
@@ -209,16 +208,17 @@
 
 <!-- END CONTAINER -->
 @include('includes.footer')
-@include('includes.core-scripts')
+@include('includes.core-scripts-edit')
 <!-- BEGIN PAGE LEVEL PLUGINS -->
-<script src="assets/global/scripts/datatable.js" type="text/javascript"></script>
-<script src="assets/global/plugins/datatables/datatables.min.js" type="text/javascript"></script>
-<script src="assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js"
+<script src="../../assets/global/scripts/datatable.js" type="text/javascript"></script>
+<script src="../../assets/global/plugins/datatables/datatables.min.js" type="text/javascript"></script>
+<script src="../../assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js"
         type="text/javascript"></script>
-<script src="assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
+<script src="../../assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
 <!-- END PAGE LEVEL PLUGINS -->
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
-<script src="assets/pages/scripts/table-datatables-buttons.min.js" type="text/javascript"></script>
+<script src="../../assets/pages/scripts/table-datatables-buttons.min.js" type="text/javascript"></script>
+<script src="../../js/polls.js"></script>
 <!-- END PAGE LEVEL SCRIPTS -->
 </body>
 

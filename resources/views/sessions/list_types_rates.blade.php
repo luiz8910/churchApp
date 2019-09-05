@@ -10,7 +10,7 @@
 <!-- BEGIN HEAD -->
 
 <head>
-@include('includes.head')
+@include('includes.head-edit')
 <!-- BEGIN PAGE LEVEL PLUGINS -->
     <link href="assets/global/plugins/datatables/datatables.min.css" rel="stylesheet" type="text/css"/>
     <link href="assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css" rel="stylesheet"
@@ -115,11 +115,9 @@
                                                                                    title="Editar Tipo de Avaliação">
                                                                                     <i class="fa fa-edit"></i>
                                                                                 </a>
-                                                                                <a href="{{ route('event.session.delete_type_rate', ['id' => $type->id]) }}"
-                                                                                   class="btn btn-danger btn-sm btn-circle"
-                                                                                   title="Excluir Tipo de Avaliação"
-                                                                                   onclick="return excluir(this)"
-                                                                                   data-id="{{$type->id}}">
+                                                                                <a href="javascript:"
+                                                                                   class="btn btn-danger btn-sm btn-circle btn-del"
+                                                                                   title="Excluir Tipo de Avaliação" id="btn-del-{{$type->id}}">
                                                                                     <i class="fa fa-trash"></i>
                                                                                 </a>
                                                                             </td>
@@ -148,16 +146,17 @@
 
 <!-- END CONTAINER -->
 @include('includes.footer')
-@include('includes.core-scripts')
+@include('includes.core-scripts-edit')
 <!-- BEGIN PAGE LEVEL PLUGINS -->
-<script src="assets/global/scripts/datatable.js" type="text/javascript"></script>
-<script src="assets/global/plugins/datatables/datatables.min.js" type="text/javascript"></script>
-<script src="assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js"
+<script src="../../assets/global/scripts/datatable.js" type="text/javascript"></script>
+<script src="../../assets/global/plugins/datatables/datatables.min.js" type="text/javascript"></script>
+<script src="../../assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js"
         type="text/javascript"></script>
-<script src="assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
+<script src="../../assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
 <!-- END PAGE LEVEL PLUGINS -->
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
-<script src="assets/pages/scripts/table-datatables-buttons.min.js" type="text/javascript"></script>
+<script src="../../assets/pages/scripts/table-datatables-buttons.min.js" type="text/javascript"></script>
+<script src="../../js/type-rates.js"></script>
 <!-- END PAGE LEVEL SCRIPTS -->
 </body>
 

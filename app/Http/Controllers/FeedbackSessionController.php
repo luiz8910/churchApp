@@ -12,6 +12,7 @@ use App\Traits\ConfigTrait;
 use App\Traits\CountRepository;
 use App\Traits\NotifyRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class FeedbackSessionController extends Controller
 {
@@ -172,5 +173,33 @@ class FeedbackSessionController extends Controller
         $request->session()->flash('success.msg', 'Avaliação editada com sucesso');
 
         return redirect()->route('event.session.list_types_rates', ['id' => $data['session_id']]);
+    }
+
+    public function delete_type($id)
+    {
+        $type = $this->typeRepository->findByField('id', $id)->first();
+
+        if($type)
+        {
+            \DB::beginTransaction();
+
+            try{
+                DB::table('feedback_sessions')
+                    ->where(['type_feedback' => $id])
+                    ->delete();
+
+                $this->typeRepository->delete($id);
+
+                \DB::commit();
+
+                return json_encode(['status' => true]);
+
+            }catch (\Exception $e)
+            {
+                \DB::rollBack();
+
+                return json_encode(['status' => false, 'msg' => $e->getMessage()]);
+            }
+        }
     }
 }

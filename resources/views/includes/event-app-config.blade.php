@@ -4,40 +4,80 @@
 </div>
 <hr><br>
 
-<div class="row">
-    <div class="col-md-4">
-        <div class="form-group">
-            <label>Cor Primária</label>
-            <div class="input-group colorpicker-component">
-                <span class="input-group-addon"><i></i></span>
-                <input class="form-control" name="primary_color" type="text"
-                       value="{{ $model->primary_color }}">
+@if (\Request::is('edit/*'))
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label>Cor Primária</label>
+                <div class="input-group colorpicker-component">
+                    <span class="input-group-addon"><i></i></span>
+                    <input class="form-control" name="primary_color" type="text"
+                           value="{{ $model->primary_color }}">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="form-group">
+                <label>Cor Secundária</label>
+                <div class="input-group colorpicker-component">
+                    <span class="input-group-addon"><i></i></span>
+                    <input class="form-control" name="secondary_color" type="text"
+                           value="{{ $model->secondary_color }}">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="form-group">
+                <label>Cor Terciária</label>
+                <div class="input-group colorpicker-component">
+                    <span class="input-group-addon"><i></i></span>
+                    <input class="form-control" name="tertiary_color" type="text"
+                           value="{{ $model->tertiary_color }}">
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="col-md-4">
-        <div class="form-group">
-            <label>Cor Secundária</label>
-            <div class="input-group colorpicker-component">
-                <span class="input-group-addon"><i></i></span>
-                <input class="form-control" name="secondary_color" type="text"
-                       value="{{ $model->secondary_color }}">
-            </div>
-        </div>
-    </div>
+    @else
 
-    <div class="col-md-4">
-        <div class="form-group">
-            <label>Cor Terciária</label>
-            <div class="input-group colorpicker-component">
-                <span class="input-group-addon"><i></i></span>
-                <input class="form-control" name="tertiary_color" type="text"
-                       value="{{ $model->tertiary_color }}">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label>Cor Primária</label>
+                <div class="input-group colorpicker-component">
+                    <span class="input-group-addon"><i></i></span>
+                    <input class="form-control" name="primary_color" type="text"
+                           value="">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="form-group">
+                <label>Cor Secundária</label>
+                <div class="input-group colorpicker-component">
+                    <span class="input-group-addon"><i></i></span>
+                    <input class="form-control" name="secondary_color" type="text"
+                           value="">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="form-group">
+                <label>Cor Terciária</label>
+                <div class="input-group colorpicker-component">
+                    <span class="input-group-addon"><i></i></span>
+                    <input class="form-control" name="tertiary_color" type="text"
+                           value="">
+                </div>
             </div>
         </div>
     </div>
-</div>
+@endif
+
 
 <script type="text/javascript">
     window.onload = function () {

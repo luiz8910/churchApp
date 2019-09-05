@@ -154,6 +154,8 @@ class PollController extends Controller
 
         $qtde = $notify ? count($notify) : null;
 
+        $person_id = \Auth::user()->person->id;
+
         if($session)
         {
             $polls = $this->repository->findByField('session_id', $session_id);
@@ -161,7 +163,8 @@ class PollController extends Controller
             $event = $this->eventRepository->findByField('id', $session->event_id)->first();
 
             return view('polls.session_list_quizz',
-                compact('session', 'state', 'roles', 'leader', 'admin', 'notify', 'qtde', 'event', 'polls'));
+                compact('session', 'state', 'roles', 'leader', 'admin', 'notify', 'qtde',
+                    'event', 'polls', 'person_id'));
         }
     }
 
@@ -378,31 +381,45 @@ class PollController extends Controller
 
     public function delete($id, $person_id)
     {
-        $d['deleted_at'] = Carbon::now();
+        \DB::beginTransaction();
 
-        $d['status'] = 'deactivated';
+        try{
 
-        $d['deleted_by'] = $person_id;
+            $d['deleted_at'] = Carbon::now();
 
-        $itens = DB::table('poll_itens')->where('polls_id', $id)->select('id')->get();
+            $d['status'] = 'deactivated';
 
-        $ids = [];
+            $d['deleted_by'] = $person_id;
 
-        foreach ($itens as $item)
+            $itens = DB::table('poll_itens')->where('polls_id', $id)->select('id')->get();
+
+            $ids = [];
+
+            foreach ($itens as $item)
+            {
+                $ids[] = $item->id;
+            }
+
+            DB::table('poll_answers')->whereIn('item_id', $ids)->update(['deleted_at' => Carbon::now()]);
+
+            DB::table('poll_itens')->where('polls_id', $id)->update(['deleted_at' => Carbon::now()]);
+
+            if($this->repository->update($d, $id))
+            {
+                \DB::commit();
+
+                return json_encode([
+                    'status' => true,
+                ]);
+            }
+
+        }catch (\Exception $e)
         {
-            $ids[] = $item->id;
+            \DB::rollBack();
+
+            return json_encode(['status' => false, 'msg' => $e->getMessage()]);
         }
 
-        DB::table('poll_answers')->whereIn('item_id', $ids)->update(['deleted_at' => Carbon::now()]);
-
-        DB::table('poll_itens')->where('polls_id', $id)->update(['deleted_at' => Carbon::now()]);
-
-        if($this->repository->update($d, $id))
-        {
-            return json_encode([
-                'status' => true,
-            ]);
-        }
 
         return json_encode([
             'status' => false

@@ -712,6 +712,33 @@ License: You must have a valid license purchased only from themeforest(the above
                                             </div>
 
                                             <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Título</label>
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon">
+                                                                <i class="fa fa-user font-blue"></i>
+                                                            </span>
+                                                            <input type="text" name="title" id="title" class="form-control" autocomplete="new-password"
+                                                                   placeholder="Título do evento" value="{{ $model->title }}">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Subtítulo</label>
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon">
+                                                                <i class="fa fa-user font-blue"></i>
+                                                            </span>
+                                                            <input type="text" name="subtitle" id="subtitle" class="form-control" autocomplete="new-password"
+                                                                   placeholder="Subtítulo do evento" value="{{ $model->subtitle }}">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group @if(Session::has('invalidDate')) has-error @endif ">
                                                         <label>Data do Próximo/Primeiro Encontro</label>

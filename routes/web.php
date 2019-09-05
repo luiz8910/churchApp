@@ -514,7 +514,7 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::put('session-update-type-rate/{id}', 'FeedbackSessionController@update_type')->name('event.session.update_type');
 
-        Route::get('session-delete-type-rate/{id}', 'SessionController@delete_type_rate')->name('event.session.delete_type_rate');
+        Route::delete('session-delete-type-rate/{id}', 'FeedbackSessionController@delete_type')->name('event.session.delete_type_rate');
 
         Route::get('session-feedback/{id}', 'FeedbackSessionController@index')->name('event.session.feedback');
 
