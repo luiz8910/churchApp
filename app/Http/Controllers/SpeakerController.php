@@ -91,9 +91,9 @@ class SpeakerController extends Controller
 
         //dd($model);
 
-        $th = ['Foto', 'Nome', 'Empresa', 'Evento', ''];
+        $th = ['Foto', 'Nome', 'País', 'Evento', ''];
 
-        $columns = ['id', 'photo', 'name', 'company', 'event_name'];
+        $columns = ['id', 'photo', 'name', 'country', 'event_name'];
 
         $title = "Palestrantes";
 
@@ -258,7 +258,17 @@ class SpeakerController extends Controller
 
                 $data['photo'] = $imgName;
             }else{
-                $data['photo'] = 'uploads/profile/noimage.png';
+
+                $img_exists = $this->repository->findWhere([
+                                                    ['photo', '<>', 'uploads/profile/noimage.png'],
+                                                    'id' => $id
+                                                        ])->first();
+
+                if(!$img_exists)
+                {
+                    $data['photo'] = 'uploads/profile/noimage.png';
+                }
+
             }
 
             $this->repository->update($data, $id);

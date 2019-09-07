@@ -25,6 +25,7 @@ License: You must have a valid license purchased only from themeforest(the above
     <link href="../assets/global/plugins/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet"
           type="text/css"/>
     <link href="../assets/pages/css/profile.min.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="../css/speaker.css">
 </head>
 <!-- END HEAD -->
 
@@ -187,20 +188,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label>Empresa</label>
-                                                        <div class="input-group">
-                                                            <span class="input-group-addon">
-                                                                <i class="fa fa-building font-blue"></i>
-                                                            </span>
-                                                            <input type="text" name="company" class="form-control"
-                                                                   placeholder="Empresa do Palestrante"
-                                                                   value="{{ $model->company }}">
-
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                @include('includes.countries')
 
                                             </div>
 
@@ -893,6 +881,7 @@ License: You must have a valid license purchased only from themeforest(the above
 <script src="../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js" type="text/javascript"></script>
 <script src="../assets/global/plugins/bootstrap-select/js/bootstrap-select.min.js" type="text/javascript"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.repeater/1.2.1/jquery.repeater.min.js"></script>
+<script src="../../js/speaker.js"></script>
 <script>
     $(document).ready(function () {
         $('.repeater').repeater({
