@@ -84,7 +84,7 @@ class SessionController extends Controller
                 $s->speakers = DB::table('session_speakers')
                     ->where([
                         'session_id' => $s->id
-                    ])->select('speaker_id')->get();
+                    ])->get();
 
 
 
