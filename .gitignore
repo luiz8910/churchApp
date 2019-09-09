@@ -7,7 +7,6 @@ Homestead.yaml
 .env
 /public/uploads
 /public/qrcodes
-
 *.lock
 *.sql
 /package-lock.json
