@@ -52,6 +52,8 @@ class SessionController extends Controller
 
         if(count($sessions) > 0)
         {
+            $speakers = []; $sp_id = [];
+
             foreach ($sessions as $s)
             {
                 $qtde = $this->check_in->findByField('session_id', $s->id);
@@ -81,11 +83,20 @@ class SessionController extends Controller
                     }
                 }
 
-                $s->speakers = DB::table('session_speakers')
+                $speakers = DB::table('session_speakers')
                     ->where([
                         'session_id' => $s->id
-                    ])->get();
+                    ])->select('speaker_id')->get();
 
+
+                foreach ($speakers as $speaker) {
+                    $sp_id[] = $speaker->speaker_id;
+                }
+
+
+                $s->speakers = DB::table('speakers')
+                                            ->whereIn('id', $sp_id)
+                                            ->get();
 
 
             }
