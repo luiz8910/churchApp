@@ -21,6 +21,8 @@ $(function(){
 
         var description = $("#description_" + id).val();
 
+        var category = $("#category_" + id).val();
+
         var max_capacity = $("#max_capacity_" + id).val();
 
         $("#modal_name").val(name.trim());
@@ -38,6 +40,8 @@ $(function(){
         $("#modal_end_time").val(end_time);
 
         $("#modal_description").val(description);
+
+        $("#modal_category").val(category.trim());
 
         if(max_capacity == -1)
         {

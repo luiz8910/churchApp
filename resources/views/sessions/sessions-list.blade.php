@@ -226,6 +226,7 @@
                                                                     <input type="hidden" id="end_time_{{ $item->id }}" value="{{ $item->end_time}}">
                                                                     <input type="hidden" id="max_capacity_{{ $item->id }}" value="{{ $item->max_capacity}}">
                                                                     <input type="hidden" id="description_{{ $item->id }}" value="{{ $item->description}}">
+                                                                    <input type="hidden" id="category_{{ $item->id }}" value="{{ $item->category}}">
 
 
 
@@ -295,7 +296,7 @@
                                                         </div>
 
                                                         <div class="row">
-                                                            <div class="col-md-8">
+                                                            <div class="col-md-4">
                                                                 <div class="form-group">
                                                                     <label for="speakers" class="control-label">
                                                                         Palestrantes ({{ count($speakers) }} no total)
@@ -323,6 +324,22 @@
                                                                                 </optgroup>
                                                                             </select>
                                                                         @endif
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <label for="" class="control-label">Abordagem (categoria)</label>
+                                                                    <div class="input-group">
+                                                                        <span class="input-group-addon">
+                                                                            <i class="fa fa-globe font-blue"></i>
+                                                                        </span>
+
+                                                                        <input type="text" name="category" id="category" class="form-control"
+                                                                               autocomplete="new-pass"
+                                                                               placeholder="Ex: Prática, Aula Teórica"
+                                                                               value="{{ old('category') }}">
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -563,7 +580,7 @@
                                                         </div>
 
                                                         <div class="row">
-                                                            <div class="col-md-8">
+                                                            <div class="col-md-4">
                                                                 <div class="form-group">
                                                                     <label for="speakers" class="control-label">
                                                                         Palestrantes ({{ count($speakers) }} no total)
@@ -591,6 +608,22 @@
                                                                                 </optgroup>
                                                                             </select>
                                                                         @endif
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <label for="" class="control-label">Abordagem (categoria)</label>
+                                                                    <div class="input-group">
+                                                                        <span class="input-group-addon">
+                                                                            <i class="fa fa-globe font-blue"></i>
+                                                                        </span>
+
+                                                                        <input type="text" name="category" id="modal_category" class="form-control"
+                                                                               autocomplete="new-pass"
+                                                                               placeholder="Ex: Prática, Aula Teórica"
+                                                                               value="{{ old('category') }}">
                                                                     </div>
                                                                 </div>
                                                             </div>
