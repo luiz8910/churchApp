@@ -69,7 +69,13 @@
                         <pre>
 
 
-                        {"status":true, "count": 10, "speakers": [lista de Patrocinadores aqui]}
+                        {"status":true, "count": 10, "speakers": [{"id":2,"name":"Teste","description":"Teste palestrante ",
+                            "site":null,"tel":null,"email":null,"zipCode":null,"street":null,"number":null,
+                            "neighborhood":null,"city":null,"state":null,"photo":"uploads\/speakers\/Teste.jpg",
+                            "category_id":null,"event_id":101,"created_at":"2019-08-16 20:37:29",
+                            "updated_at":"2019-08-16 20:37:29","deleted_at":null,"company":"Teste LTDA", country: Brasil},}
+
+                            Opcionalmente é possível pegar a bandeira do país, localizada em /public/images/countries/[nome_do_pais].png
                     </pre>
 
                     </div>

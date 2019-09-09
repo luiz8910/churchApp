@@ -193,7 +193,7 @@ Route::delete('/exhibitors-categories/{category}', 'Api\ExhibitorsController@del
 Route::get('/sponsors/{event_id?}', 'Api\SponsorController@index');
 
 //Lista de todos os Patrocinadores por categoria (pela id da categoria)
-Route::get('/sponsors-by-cat/{category}', 'Api\SponsorController@listByCategory');
+Route::get('/sponsors-cat/{category}', 'Api\SponsorController@listByCategory');
 
 //Cadastro de Patrocinadores
 Route::post('/sponsors/', 'Api\SponsorController@store');
@@ -337,7 +337,7 @@ Route::get('list-itens/{id}', 'Api\PollController@list_itens');
  * $id = id da sessão
  * Lista quiz por sessão
  */
-Route::get('quizz/{id}/{person_id}', 'Api\PollController@index');
+Route::get('quizz/{id}/{person_id?}', 'Api\PollController@index');
 
 
 //-------------------------- Sessões de Eventos ------------------------------------------------------------------------

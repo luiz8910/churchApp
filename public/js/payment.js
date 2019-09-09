@@ -1,5 +1,5 @@
-const anElement = new AutoNumeric('#value_money', $("#value_money").val()).brazilian();
 
+const anElement = new AutoNumeric('#value_money', $("#value_money").val()).brazilian();
 
 
 $(function () {
@@ -58,5 +58,16 @@ $(function () {
 
         $("#installments").append(append);
     });
+
+
+    $("#check_payment-slip").click(function () {
+        if($("#check_payment-slip").is(':checked'))
+        {
+            $("#payment-slip").css('display', 'block');
+        }
+        else{
+            $("#payment-slip").css('display', 'none');
+        }
+    })
 
 });

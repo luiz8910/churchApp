@@ -185,10 +185,46 @@
                     </li>
 
                     <li class="menu-dropdown mega-menu-dropdown">
-                        <a href="{{ route('payment.index') }}">
+                        <a href="javascript:">
                             <i class="fa fa-credit-card"></i>
                             Pagamentos
                         </a>
+
+                        <ul class="dropdown-menu pull-left">
+                            <li >
+                                <a href="{{ route('payment.index') }}" >
+                                    <i class="fa fa-credit-card"></i>
+                                    Pagamentos Efetuados
+                                </a>
+                            </li>
+
+                            <li class="dropdown-submenu">
+                                <a href="javascript:" class="nav-link nav-toggle">
+                                    <i class="fa fa-lock"></i>
+                                    Links
+
+                                </a>
+                                <ul class="dropdown-menu pull-left">
+                                    <li>
+                                        <a href="{{ route('new.url.payment') }}">
+                                            <i class="fa fa-plus"></i>
+                                            Novo link
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:">
+                                            <i class="fa fa-lock"></i>
+                                            Lista de Links
+                                        </a>
+                                    </li>
+
+                                </ul>
+
+                            </li>
+
+                        </ul>
+
+
                     </li>
 
                 @endif
