@@ -175,12 +175,6 @@
                                 </a>
                             </li>
 
-                            <li>
-                                <a href="{{ route('polls.index') }}">
-                                    <i class="fa fa-info-circle"></i>
-                                    Enquetes
-                                </a>
-                            </li>
                         </ul>
                     </li>
 

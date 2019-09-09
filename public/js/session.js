@@ -13,7 +13,7 @@ $(function(){
 
         var location = $("#td_location_" + id).text();
 
-        var session_date = $("#session_date_" + id).val(); console.log(session_date);
+        var session_date = $("#session_date_" + id).val();
 
         var start_time = $("#short_start_time_" + id).val();
 
@@ -23,9 +23,9 @@ $(function(){
 
         var max_capacity = $("#max_capacity_" + id).val();
 
-        $("#modal_name").val(name);
+        $("#modal_name").val(name.trim());
 
-        $("#modal_location").val(location);
+        $("#modal_location").val(location.trim());
 
         $("#modal_session_date").val(session_date);
 
