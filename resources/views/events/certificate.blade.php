@@ -171,7 +171,6 @@
             <img src="./images/certificate_sponsor_1.png" alt="Sponsor" class="img-responsive"/>
             <img src="./images/certificate_sponsor_2.png" alt="Sponsor" class="img-responsive"/>
             <img src="./images/certificate_sponsor_3.png" alt="Sponsor" class="img-responsive"/>
-            <img src="./images/certificate_sponsor_4.png" alt="Sponsor" class="img-responsive"/>
         </div>
     </div>
 </div>
