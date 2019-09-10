@@ -98,7 +98,9 @@ class SessionController extends Controller
                                             ->whereIn('id', $sp_id)
                                             ->get();
 
-
+                foreach ($s->speakers as $speakerIndex => $speaker) {
+                    $s->speakers[$speakerIndex]->photo = 'https://beconnect.com.br/' . $s->speakers[$speakerIndex]->photo;
+                }
             }
 
             return json_encode(['status' => true, 'sessions' => $sessions]);
