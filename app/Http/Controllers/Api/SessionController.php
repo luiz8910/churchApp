@@ -103,7 +103,7 @@ class SessionController extends Controller
                 }
             }
 
-            return json_encode(['status' => true, 'sessions' => $sessions, 'teste' => true]);
+            return json_encode(['status' => true, 'sessions' => $sessions]);
         }
 
         return json_encode(['status' => false, 'msg' => 'Não há sessões para o evento selecionado']);
