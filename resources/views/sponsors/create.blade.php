@@ -291,7 +291,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                             @include('includes.address-create')
 
-                                            <br>
+                                            {{--<br>
                                             <div class="caption caption-md">
                                                 <i class="icon-globe theme-font hide"></i>
                                                 <span class="caption-subject font-blue-madison bold uppercase">Adicionar Responsável</span>
@@ -330,7 +330,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <div id="div-responsible">
 
                                                 </div>
-                                            </div>
+                                            </div>--}}
                                         </div>
 
 

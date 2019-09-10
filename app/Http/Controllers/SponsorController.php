@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bug;
 use App\Repositories\PersonRepository;
 use App\Repositories\SponsorCategoryRepository;
 use App\Repositories\SponsorRepository;
@@ -20,9 +21,7 @@ class SponsorController extends Controller
     private $repository;
    
     private $stateRepository;
-    /**
-     * @var PersonRepository
-     */
+
     private $personRepository;
 
     public function __construct(SponsorCategoryRepository $categoriesRepository, SponsorRepository $repository,
@@ -118,7 +117,7 @@ class SponsorController extends Controller
                 'sponsor_id' => $id
             ])->first();
 
-        if(count($sp) == 1)
+        if($sp)
         {
             $sp = $sp->person_id;
         }
@@ -147,6 +146,7 @@ class SponsorController extends Controller
         try{
             $data = $request->all();
 
+
             $verifyFields = $this->verifyRequiredFields($data, 'sponsor');
 
             if($verifyFields)
@@ -158,14 +158,16 @@ class SponsorController extends Controller
 
             }
 
-            $redirect = false;
+
+
+            /*$redirect = false;
 
             if(isset($data['new-responsible-sponsor']))
             {
                 $redirect = true;
 
                 unset($data['new-responsible-sponsor']);
-            }
+            }*/
 
             if(isset($data['logo']))
             {
@@ -182,26 +184,37 @@ class SponsorController extends Controller
 
             $id = $this->repository->create($data)->id;
 
-            DB::commit();
+            \DB::commit();
 
-            if($redirect)
+            /*if($redirect)
             {
                 $request->session()->put('new-responsible-sponsor', $id);
 
                 return redirect()->route('person.create');
-            }
-            else
-            {
-                $request->session()->flash('success.msg', 'O Patrocinador foi cadastrado com sucesso');
+            }*/
 
-                return redirect()->route('sponsors.index');
-            }
+
+            $request->session()->flash('success.msg', 'O Patrocinador foi cadastrado com sucesso');
+
+            return redirect()->route('sponsors.index');
+
 
         }catch(\Exception $e)
         {
-            DB::rollback();
+            \DB::rollBack();
 
             $request->session()->flash('error.msg', 'Um erro ocorreu, tente novamente mais tarde');
+
+            $bug = new Bug();
+
+            $bug->description = $e->getMessage();
+            $bug->model = 'Sponsor';
+            $bug->location = 'Line: ' . $e->getLine() . ' store() SponsorController.php';
+            $bug->platform = 'Back-end';
+            $bug->status = 'Pendente';
+            $bug->church_id = $this->getUserChurch();
+
+            $bug->save();
 
             return redirect()->route('sponsors.create');
         }
@@ -240,20 +253,20 @@ class SponsorController extends Controller
                 $data['logo'] = $imgName;
             }
 
-            $redirect = false;
+            /*$redirect = false;
 
             if(isset($data['new-responsible-sponsor']))
             {
                 $redirect = true;
 
                 unset($data['new-responsible-sponsor']);
-            }
+            }*/
 
             $this->repository->update($data, $id);
 
-            DB::commit();
+            \DB::commit();
 
-            if($data['responsible'] != "")
+            /*if($data['responsible'] != "")
             {
                 $sp = DB::table('sponsor_person')
                     ->where('sponsor_id', $id)
@@ -308,19 +321,29 @@ class SponsorController extends Controller
                 $request->session()->put('new-responsible-sponsor', $id);
 
                 return redirect()->route('person.create');
-            }
-            else
-            {
-                $request->session()->flash('success.msg', 'O Patrocinador foi atualizado com sucesso');
+            }*/
 
-                return redirect()->route('sponsors.index');
-            }
+            $request->session()->flash('success.msg', 'O Patrocinador foi atualizado com sucesso');
+
+            return redirect()->route('sponsors.index');
+
 
         }catch (\Exception $e)
         {
-            DB::rollback();
+            \DB::rollBack();
 
             $request->session()->flash('error.msg', 'Um erro ocorreu, tente novamente mais tarde');
+
+            $bug = new Bug();
+
+            $bug->description = $e->getMessage();
+            $bug->model = 'Sponsor';
+            $bug->location = 'Line: ' . $e->getLine() . ' update() SponsorController.php';
+            $bug->platform = 'Back-end';
+            $bug->status = 'Pendente';
+            $bug->church_id = $this->getUserChurch();
+
+            $bug->save();
 
             return redirect()->route('sponsors.index');
         }
