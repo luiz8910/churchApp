@@ -189,6 +189,7 @@ return [
         \App\Providers\RepositoryServiceProvider::class,
 
         Barryvdh\DomPDF\ServiceProvider::class,
+        Berkayk\OneSignal\OneSignalServiceProvider::class
     ],
 
     /*
@@ -242,7 +243,8 @@ return [
         'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
         'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
         'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
-        'PDF' => Barryvdh\DomPDF\Facade::class
+        'PDF' => Barryvdh\DomPDF\Facade::class,
+        'OneSignal' => Berkayk\OneSignal\OneSignalFacade::class
     ],
 
 ];
