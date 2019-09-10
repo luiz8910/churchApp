@@ -161,7 +161,7 @@
 
             {{--@endforeach--}}
 
-                <div class="col-xs-6">
+                <div class="col-xs-12">
                     <p class="no-margin"><b> Me. Eng. Flávio Guerhardt</b></p>
                     <p class="no-margin">Diretor Executivo - PTS</p>
                 </div>
