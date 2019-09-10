@@ -133,7 +133,7 @@ class FeedController extends Controller
 
             OneSignalFacade::sendNotificationUsingTags(
                 $data['text'],
-                array(["key" => "event_id", "relation" => "=", "value" => $data['event_id']])
+                array(["field" => "tag", "key" => "event_id", "relation" => "=", "value" => $data['event_id']])
             );
 
             unset($data['event_id']);
