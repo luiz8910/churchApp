@@ -27,7 +27,8 @@
     "barryvdh/laravel-dompdf": "^0.8.4",
     "ext-json": "*",
     "twilio/sdk": "^5.34",
-    "pusher/pusher-php-server": "^4.0"
+    "pusher/pusher-php-server": "^4.0",
+    "berkayk/onesignal-laravel": "^1.0"
   },
   "require-dev": {
     "fzaninotto/faker": "~1.4",

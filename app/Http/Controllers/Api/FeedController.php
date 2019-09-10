@@ -7,6 +7,7 @@ use App\Repositories\EventRepository;
 use App\Repositories\FeedRepository;
 use App\Repositories\PersonRepository;
 use App\Services\FeedServices;
+use Berkayk\OneSignal\OneSignalFacade;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -129,6 +130,11 @@ class FeedController extends Controller
         try{
             $data['model'] = 'event';
             $data['model_id'] = $data['event_id'];
+
+            OneSignalFacade::sendNotificationUsingTags(
+                $data['text'],
+                array(["key" => "event_id", "relation" => "=", "value" => $data['event_id']])
+            );
 
             unset($data['event_id']);
 
