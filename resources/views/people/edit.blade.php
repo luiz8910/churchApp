@@ -395,7 +395,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             <?php $deleteForm = $item->id; ?>
                                                             <td>
 
-                                                                <a href="javascript" class="btn btn-sm blue btn-circle event-certificate"
+                                                                <a href="javascript:" class="btn btn-sm blue btn-circle event-certificate"
                                                                             id="event-certificate-{{ $item->id }}">
                                                                     <i class="fa fa-envelope"></i>
                                                                     Certificado por Email

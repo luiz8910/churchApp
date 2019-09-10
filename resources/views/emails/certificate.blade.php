@@ -74,7 +74,7 @@
                 <div class="row" style="margin-bottom: 2rem">
                     <div class="col-xs-12 bg-white" style="padding: 5rem 5rem 0 5rem">
                         <h1>Olá {{ $person->name }},</h1>
-                        <p>Você participou do evento <strong style="color: black">#MADEINSOROCABA</strong></p>
+                        <p>Você participou do evento <strong style="color: black">2° Coworking com Miguel Falabella</strong></p>
                         <p>Faça o download do seu certificado no botão abaixo</p>
                         <a href="https://beconnect.com.br/download-certificate/{{ $event->id }}/{{ $person->id }}"
                            class="btn-outline btn btn-block">Download</a>

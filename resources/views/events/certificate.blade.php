@@ -152,18 +152,19 @@
         <p class="text-center">Carga horária do evento: <b>{{ $event->certified_hours }} horas</b>.</p>
         <div class="row text-center">
 
-            @foreach($resp as $item)
+            {{--@foreach($resp as $item)--}}
 
-                <div class="col-xs-{{ $col_size }}">
-                    <p class="no-margin"><b>{{ $item->abbreviation }} {{ $item->name }}</b></p>
-                    <p class="no-margin">{{ $item->special_role }}</p>
-                </div>
+                {{--<div class="col-xs-{{ $col_size }}">--}}
+                    {{--<p class="no-margin"><b>{{ $item->abbreviation }} {{ $item->name }}</b></p>--}}
+                    {{--<p class="no-margin">{{ $item->special_role }}</p>--}}
+                {{--</div>--}}
 
-            @endforeach
-                {{--<div class="col-xs-6">
+            {{--@endforeach--}}
+
+                <div class="col-xs-6">
                     <p class="no-margin"><b> Me. Eng. Flávio Guerhardt</b></p>
                     <p class="no-margin">Diretor Executivo - PTS</p>
-                </div>--}}
+                </div>
         </div>
 
         <div class="text-center">

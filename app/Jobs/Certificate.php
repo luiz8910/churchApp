@@ -50,6 +50,7 @@ class Certificate implements ShouldQueue
 
         if($event)
         {
+            // Se informado então o envio de certificado é para uma pessoa
             if($this->person_id)
             {
                 $person = $personRepository->findByField('id', $this->person_id)->first();
@@ -66,6 +67,7 @@ class Certificate implements ShouldQueue
                 }
             }
 
+            //Aqui será enviado o certificado para todos os presentes
             else{
 
                 $i = 0;
