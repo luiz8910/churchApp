@@ -226,7 +226,7 @@
                                                                     <input type="hidden" id="end_time_{{ $item->id }}" value="{{ $item->end_time}}">
                                                                     <input type="hidden" id="max_capacity_{{ $item->id }}" value="{{ $item->max_capacity}}">
                                                                     <input type="hidden" id="description_{{ $item->id }}" value="{{ $item->description}}">
-                                                                    <input type="hidden" id="category_{{ $item->id }}" value="{{ $item->category}}">
+                                                                    <input type="hidden" id="category_{{ $item->id }}" value="{{ $item->tag}}">
 
 
 
@@ -339,7 +339,7 @@
                                                                         <input type="text" name="tag" id="category" class="form-control"
                                                                                autocomplete="new-pass"
                                                                                placeholder="Ex: Prática, Aula Teórica"
-                                                                               value="{{ old('category') }}">
+                                                                               value="{{ old('tag') }}">
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -623,7 +623,7 @@
                                                                         <input type="text" name="tag" id="modal_category" class="form-control"
                                                                                autocomplete="new-pass"
                                                                                placeholder="Ex: Prática, Aula Teórica"
-                                                                               value="{{ old('category') }}">
+                                                                               value="{{ old('tag') }}">
                                                                     </div>
                                                                 </div>
                                                             </div>
