@@ -159,28 +159,28 @@
                             <div class="row mobile-flex-column" style="display: flex; align-items: center">
                                 <div class="col-xs-4" style="width: 33%; padding-right: 1%;">
                                     <br><br>
-                                    <a href="{{ $url }}">
-                                        <img src="{{ $url_img }}" alt="BeConnect" class="img-responsive"/>
-                                    </a>
+{{--                                    <a href="{{ $url }}">--}}
+{{--                                        <img src="{{ $url_img }}" alt="BeConnect" class="img-responsive"/>--}}
+{{--                                    </a>--}}
                                 </div>
                                 <div class="col-xs-8" style="width: 77%">
                                     <div class="row">
                                         <div class="col-xs-12 text-center">
                                             <h4><b>Baixe o App:</b></h4>
-                                        </div>
-                                        <div style="display: flex">
-                                            <div class="col-xs-6">
-                                                <a href="{{ $android_url }}">
-                                                    <img src="https://beconnect.com.br/images/play_store_red.png"
-                                                         alt="Google Play" class="img-responsive">
-                                                </a>
-                                            </div>
-                                            <div class="col-xs-6">
-                                                <a href="{{ $apple_url }}">
-                                                    <img src="https://beconnect.com.br/images/Download_on_the_App_Store_Badge_PTBR_RGB_wht_100317.png"
-                                                         alt="App Store"
-                                                         class="img-responsive">
-                                                </a>
+                                            <div style="display: flex">
+                                                <div class="col-xs-6">
+                                                    <a href="{{ $android_url }}">
+                                                        <img src="https://beconnect.com.br/images/play_store_red.png"
+                                                             alt="Google Play" class="img-responsive" style="max-width: 200px">
+                                                    </a>
+                                                </div>
+                                                <div class="col-xs-6">
+                                                    <a href="{{ $apple_url }}">
+                                                        <img src="https://beconnect.com.br/images/Download_on_the_App_Store_Badge_PTBR_RGB_wht_100317.png"
+                                                             alt="App Store"
+                                                             class="img-responsive" style="max-width: 200px">
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
