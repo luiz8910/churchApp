@@ -157,7 +157,7 @@
 
                                                     <div class="form-body">
 
-                                                        <form action="{{ route('config.person.contacts') }}" method="POST" enctype="multipart/form-data">
+                                                        <form action="{{ route('import.people') }}" method="POST" enctype="multipart/form-data">
                                                             <input type="file" id="file_input" name="file" style="display: none;">
 
                                                             <button type="submit" hidden id="btn-submit-plan"></button>

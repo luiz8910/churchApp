@@ -43,6 +43,8 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::post("/addPlan", "ConfigController@addPlan")->name('config.person.contacts.example');
 
+        Route::post('/import-migs', 'PersonController@import')->name('import.people');
+
         Route::get("/addPlan", "ConfigController@addPlanView")->name('config.addPlan');
 
         Route::get('/downloadPlan', 'ConfigController@downloadPlan')->name('download.plan');

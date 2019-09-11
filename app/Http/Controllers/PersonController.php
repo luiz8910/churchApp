@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Events\AgendaEvent;
 use App\Events\PersonEvent;
 use App\Http\Requests\PersonCreateRequest;
+use App\Imports\PeopleImport;
 use App\Jobs\qrCodeAll;
 use App\Jobs\Test;
 use App\Mail\ForLeaders;
@@ -1736,6 +1737,13 @@ class PersonController extends Controller
         $this->uploadComplete($name, $qtde);
     }
 
+    public function import(Request $request)
+    {
+        Excel::import(new PeopleImport, $request->file('file'));
+
+        return redirect()->back();
+    }
+
     public function getSimpleContact(Request $request)
     {
         ini_set('max_execution_time', '60');
@@ -1888,6 +1896,14 @@ class PersonController extends Controller
                         $data['cel'] = $item->Telefone;
 
                         $tel = 'Telefone';
+                    }
+                    elseif (isset($item->celular))
+                    {
+                        $data['cel'] = $item->celular;
+                    }
+                    elseif (isset($item->Celular))
+                    {
+                        $data['cel'] = $item->Celular;
                     }
                     else{
 

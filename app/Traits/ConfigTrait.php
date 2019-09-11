@@ -59,6 +59,17 @@ trait ConfigTrait
         return false;
     }
 
+    public function formatPhoneNumber($number)
+    {
+        $number = str_replace('(', '', $number);
+        $number = str_replace(')', '', $number);
+        $number = str_replace('-', '', $number);
+        $number = str_replace(' ', '', $number);
+        $number = '55' . $number;
+
+        return $number;
+    }
+
     public function getPusherKeyTrait()
     {
         $key = env("PUSHER_KEY");
