@@ -2,9 +2,12 @@
 
 namespace App\Jobs;
 
+use App\Mail\welcome_sub_migs;
 use App\Models\Person;
 use App\Repositories\ChurchRepository;
+use App\Repositories\EventRepository;
 use App\Repositories\ImportRepository;
+use App\Repositories\PersonRepository;
 use App\Services\EventServices;
 use App\Traits\ConfigTrait;
 use App\Traits\PeopleTrait;
@@ -16,6 +19,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class Import implements ShouldQueue
@@ -40,13 +44,13 @@ class Import implements ShouldQueue
      *
      * @return void
      */
-    public function handle(EventServices $eventServices)
+    public function handle(EventServices $eventServices, EventRepository $eventRepository, PersonRepository $personRepository)
     {
         if($this->row[3] == 'Inscrito')
         {
-            $user_exists = DB::table('people')
-                ->where(['email' => $this->row[1]])
-                ->first();
+            $password = false;
+
+            $user_exists = $personRepository->findByField('email', $this->row[1])->first();
 
 
             //Se o email não for encontrado então o usuário não existe
@@ -65,13 +69,15 @@ class Import implements ShouldQueue
 
                 $password = $this->randomPassword(6);
 
-                $this->createUserLogin($person->id, $password, $this->row[1], $this->row[4]);
+                $user = $this->createUserLogin($person->id, $password, $this->row[1], $this->row[4]);
 
                 $id = $person->id;
 
             }
             else{
                 $id = $user_exists->id;
+
+                $user = $user_exists->user;
             }
 
             /*$path = 'qrcodes/'.$id.'.png';
@@ -82,7 +88,21 @@ class Import implements ShouldQueue
 
             QrCode::format('png')->size(1000)->generate($id, $path);*/
 
-            $eventServices->subEvent($this->row[5], $id);
+            $url = 'https://migs.med.br/2019';
+
+            $event = $eventRepository->findByField('id', $this->row[5])->first();
+
+            if($event)
+            {
+                Mail::to($user)
+                    ->send(new welcome_sub_migs(
+                        $user, $url, $event, $password
+                    ));
+
+
+                $eventServices->subEvent($this->row[5], $id);
+            }
+
 
         }
     }

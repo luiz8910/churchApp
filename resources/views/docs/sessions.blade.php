@@ -97,7 +97,7 @@
                                         "check_in": 25,
                                         "person_check": 1 ou 0,
                                         "speaker_id": 3,
-                                        "category": Categoria da sessão
+                                        "tag": Categoria da sessão
                                     }
                                 ]
                             }

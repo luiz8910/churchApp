@@ -336,7 +336,7 @@
                                                                             <i class="fa fa-globe font-blue"></i>
                                                                         </span>
 
-                                                                        <input type="text" name="category" id="category" class="form-control"
+                                                                        <input type="text" name="tag" id="category" class="form-control"
                                                                                autocomplete="new-pass"
                                                                                placeholder="Ex: Prática, Aula Teórica"
                                                                                value="{{ old('category') }}">
@@ -620,7 +620,7 @@
                                                                             <i class="fa fa-globe font-blue"></i>
                                                                         </span>
 
-                                                                        <input type="text" name="category" id="modal_category" class="form-control"
+                                                                        <input type="text" name="tag" id="modal_category" class="form-control"
                                                                                autocomplete="new-pass"
                                                                                placeholder="Ex: Prática, Aula Teórica"
                                                                                value="{{ old('category') }}">

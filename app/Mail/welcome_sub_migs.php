@@ -8,7 +8,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class welcome_sub extends Mailable
+class welcome_sub_migs extends Mailable
 {
     use Queueable, SerializesModels;
     /**
@@ -28,22 +28,21 @@ class welcome_sub extends Mailable
 
     public $android_url;
 
-    public $qrCode;
+    public $password;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(User $user, $url, $event, $qrCode)
+    public function __construct(User $user, $url, $event, $password)
     {
         $this->user = $user;
         $this->url = $url;
         $this->event = $event;
-        $this->qrCode = $qrCode;
         $this->apple_url = 'https://itunes.apple.com/app/id1475992800';
         $this->android_url = 'https://play.google.com/store/apps/details?id=com.br.beconnect.migs';
-
+        $this->password = $password;
     }
 
     /**
@@ -53,12 +52,12 @@ class welcome_sub extends Mailable
      */
     public function build()
     {
-        $text = "Bem vindo ao Beconnect";
 
+        $text = 'Bem vindo ao MIGS 2019';
 
         return $this
             ->from('contato@beconnect.com.br')
             ->subject($text)
-            ->view("emails.welcome-sub");
+            ->view("emails.welcome-sub-migs");
     }
 }
