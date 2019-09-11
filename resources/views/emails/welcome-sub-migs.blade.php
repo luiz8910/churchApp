@@ -120,8 +120,8 @@
             <div class="col-xs-12 col-sm-8 col-sm-offset-2">
                 <div class="row" style="margin-bottom: 2rem">
                     <div class="col-xs-12 bg-white content-padding">
-                        <h1>Olá @if(isset($user->person)){{ $user->person->name }} @endif,</h1>
-                        <p>Seu cadastro foi realizado no {{ $event->name }}</p>
+                        <h1>Bem vindo @if(isset($user->person)){{ $user->person->name }} @endif,</h1>
+                        <p>Seu cadastro foi realizado no app {{ $event->name }}</p>
 
                         @if($password)
                             <p>Sua senha é: {{ $password }}</p>
@@ -139,9 +139,11 @@
                         @endif
                         <br>
 
+                        <p></p>
+
                         <p>Em caso de dúvidas envie um email para contato@beconnect.com.br.</p>
 
-
+                        <p>Acesse um dos links abaixo e baixe o app:</p>
                         <p>
                             Atenciosamente,<br/>
                             Equipe MIGS
@@ -159,28 +161,28 @@
                         <div class="row mobile-flex-column" style="display: flex; align-items: center">
                             <div class="col-xs-4" style="width: 33%; padding-right: 1%;">
                                 <br><br>
-                                <a href="{{ $url }}">
-                                    <img src="{{ $event->logoEvent }}" alt="BeConnect" class="img-responsive"/>
-                                </a>
+                            {{-- <a href="{{ $url }}">--}}
+                            {{-- <img src="{{ $url_img }}" alt="BeConnect" class="img-responsive"/>--}}
+                            {{-- </a>--}}
                             </div>
                             <div class="col-xs-8" style="width: 77%">
                                 <div class="row">
                                     <div class="col-xs-12 text-center">
                                         <h4><b>Baixe o App:</b></h4>
-                                    </div>
-                                    <div style="display: flex">
-                                        <div class="col-xs-6">
-                                            <a href="{{ $android_url }}">
-                                                <img src="https://beconnect.com.br/images/play_store_red.png"
-                                                     alt="Google Play" class="img-responsive">
-                                            </a>
-                                        </div>
-                                        <div class="col-xs-6">
-                                            <a href="{{ $apple_url }}">
-                                                <img src="https://beconnect.com.br/images/Download_on_the_App_Store_Badge_PTBR_RGB_wht_100317.png"
-                                                     alt="App Store"
-                                                     class="img-responsive">
-                                            </a>
+                                        <div style="display: flex">
+                                            <div class="col-xs-6">
+                                                <a href="{{ $android_url }}">
+                                                    <img src="https://beconnect.com.br/images/play_store_red.png"
+                                                         alt="Google Play" class="img-responsive" style="max-width: 200px">
+                                                </a>
+                                            </div>
+                                            <div class="col-xs-6">
+                                                <a href="{{ $apple_url }}">
+                                                    <img src="https://beconnect.com.br/images/Download_on_the_App_Store_Badge_PTBR_RGB_wht_100317.png"
+                                                         alt="App Store"
+                                                         class="img-responsive" style="max-width: 200px">
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

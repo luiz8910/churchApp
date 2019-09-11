@@ -47,11 +47,17 @@ class SpeakerController extends Controller
     {
         if($event_id)
         {
+
             $event = $this->eventRepository->findByField('id', $event_id)->first();
 
             if($event)
             {
-                $model = $this->repository->findByField('event_id', $event_id);
+                $model = DB::table('speakers')
+                    ->where([
+                        'deleted_at' => null,
+                        'event_id' => $event_id])
+                    ->orderBy('name')
+                    ->get();
             }
             else{
                 $bug = new Bug();
@@ -73,15 +79,32 @@ class SpeakerController extends Controller
 
         }
         else{
-            $model = $this->repository->all();
+
+            /*$model = DB::table('speakers')
+                            ->where(['deleted_at' => null])
+                            ->orderBy('name')
+                            ->get();*/
+
+            $model = $this->repository->orderBy('name')->all();
+
         }
 
         $model_cat = $this->categoriesRepository->all();
 
         if(count($model) > 0)
         {
+            /*$model->map(function ($m){
+                $m->category_name = $this->categoriesRepository->findByField('id', $m->category_id)->first()
+                    ? $this->categoriesRepository->findByField('id', $m->category_id)->first()->name : "Sem Categoria";
+
+                $m->event_name = $m->event_id ? $this->eventRepository->findByField('id', $m->event_id)->first()->name : '';
+
+                return $m;
+            });*/
+
             foreach ($model as $item)
             {
+
                 $item->category_name = $this->categoriesRepository->findByField('id', $item->category_id)->first()
                     ? $this->categoriesRepository->findByField('id', $item->category_id)->first()->name : "Sem Categoria";
 
