@@ -124,6 +124,7 @@
                         <p>Seu cadastro foi realizado no app {{ $event->name }}</p>
 
                         @if($password)
+                            <br>
                             <p>Sua senha é: {{ $password }}</p>
                             {{--<a href="{{ $url }}"
                                class="btn btn-outline" target="_blank">Acessar o Sistema</a>
@@ -145,14 +146,13 @@
 
                     </div>
 
-                    <br><br>
                     <div class="col-xs-12 bg-gray footer-content">
                         <p><strong>Este e-mail foi enviado a <b>{{ $user->person->email }}</b>. Para garantir o correto recebimento
                             de nossos e-mails, adicione-nos a
                             sua lista de e-mails seguros.</strong></p>
                     </div>
 
-                    <p>Em caso de dúvidas envie um email para contato@beconnect.com.br.</p>
+
 
                     <div class="col-xs-12 bg-white app-content">
                         <div class="row mobile-flex-column" style="display: flex; align-items: center">
@@ -186,6 +186,8 @@
                             </div>
                         </div>
                     </div>
+
+                    <p>Em caso de dúvidas envie um email para contato@beconnect.com.br.</p>
                 </div>
             </div>
         </div>
