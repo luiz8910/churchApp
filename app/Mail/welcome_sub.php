@@ -41,8 +41,8 @@ class welcome_sub extends Mailable
         $this->url = $url;
         $this->event = $event;
         $this->qrCode = $qrCode;
-        $this->apple_url = 'https://itunes.apple.com/app/id1430220715';
-        $this->android_url = 'https://play.google.com/store/apps/details?id=com.br.beconnect';
+        $this->apple_url = 'https://itunes.apple.com/app/id1475992800';
+        $this->android_url = 'https://play.google.com/store/apps/details?id=com.br.beconnect.migs';
 
     }
 
