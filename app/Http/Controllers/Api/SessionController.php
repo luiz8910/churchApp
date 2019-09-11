@@ -52,10 +52,14 @@ class SessionController extends Controller
 
         if(count($sessions) > 0)
         {
-            $speakers = []; $sp_id = [];
+
 
             foreach ($sessions as $s)
             {
+                $sp_id = [];
+
+                $speakers = [];
+
                 $qtde = $this->check_in->findByField('session_id', $s->id);
 
                 $s->check_in = count($qtde);
@@ -96,6 +100,7 @@ class SessionController extends Controller
 
                 $s->speakers = DB::table('speakers')
                                             ->whereIn('id', $sp_id)
+                                            ->orderBy('name')
                                             ->get();
 
                 foreach ($s->speakers as $speakerIndex => $speaker) {
