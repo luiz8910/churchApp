@@ -35,7 +35,7 @@ class SpeakerController extends Controller
 
             if($event)
             {
-                $speakers = $this->repository->findByField('event_id', $event_id);
+                $speakers = $this->repository->orderBy('name')->findByField('event_id', $event_id);
 
                 if(count($speakers) > 0)
                 {
@@ -60,7 +60,7 @@ class SpeakerController extends Controller
         }
         else{
 
-            $speakers = $this->repository->all();
+            $speakers = $this->repository->orderBy('name')->all();
 
             if(count($speakers) > 0)
             {

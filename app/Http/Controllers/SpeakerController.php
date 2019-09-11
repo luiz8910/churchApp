@@ -52,12 +52,8 @@ class SpeakerController extends Controller
 
             if($event)
             {
-                $model = DB::table('speakers')
-                    ->where([
-                        'deleted_at' => null,
-                        'event_id' => $event_id])
-                    ->orderBy('name')
-                    ->get();
+
+                $model = $this->repository->orderBy('name')->findByField('event_id', $event_id);
             }
             else{
                 $bug = new Bug();

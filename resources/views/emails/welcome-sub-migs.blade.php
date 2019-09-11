@@ -24,7 +24,7 @@
         }
 
         .bg-gray {
-            background: #EEEEEE
+            background: #EEEEEE !important;
         }
 
         .bg-white {
@@ -141,21 +141,18 @@
 
                         <p></p>
 
-                        <p>Em caso de dúvidas envie um email para contato@beconnect.com.br.</p>
-
-                        <p>Acesse um dos links abaixo e baixe o app:</p>
-                        <p>
-                            Atenciosamente,<br/>
-                            Equipe MIGS
-                        </p>
+                        <p>Clique nos botões abaixo e baixe o app do evento:</p>
 
                     </div>
 
+                    <br><br>
                     <div class="col-xs-12 bg-gray footer-content">
-                        <p>Este e-mail foi enviado a <b>{{ $user->person->email }}</b>. Para garantir o correto recebimento
+                        <p><strong>Este e-mail foi enviado a <b>{{ $user->person->email }}</b>. Para garantir o correto recebimento
                             de nossos e-mails, adicione-nos a
-                            sua lista de e-mails seguros.</p>
+                            sua lista de e-mails seguros.</strong></p>
                     </div>
+
+                    <p>Em caso de dúvidas envie um email para contato@beconnect.com.br.</p>
 
                     <div class="col-xs-12 bg-white app-content">
                         <div class="row mobile-flex-column" style="display: flex; align-items: center">
