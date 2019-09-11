@@ -10,7 +10,7 @@
 <!-- BEGIN HEAD -->
 
 <head>
-    @include('includes.head')
+    @include('includes.head-edit')
             <!-- BEGIN PAGE LEVEL PLUGINS -->
     <link href="assets/global/plugins/datatables/datatables.min.css" rel="stylesheet" type="text/css"/>
     <link href="assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css" rel="stylesheet"
@@ -344,18 +344,18 @@
 
 <!-- END CONTAINER -->
 @include('includes.footer')
-@include('includes.core-scripts')
+@include('includes.core-scripts-edit')
         <!-- BEGIN PAGE LEVEL PLUGINS -->
-<script src="assets/global/scripts/datatable.js" type="text/javascript"></script>
-<script src="assets/global/plugins/datatables/datatables.min.js" type="text/javascript"></script>
-<script src="assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js"
+<script src="../../assets/global/scripts/datatable.js" type="text/javascript"></script>
+<script src="../../assets/global/plugins/datatables/datatables.min.js" type="text/javascript"></script>
+<script src="../../assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js"
         type="text/javascript"></script>
-<script src="assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
+<script src="../../assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
 <!-- END PAGE LEVEL PLUGINS -->
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
-<script src="assets/pages/scripts/table-datatables-buttons.min.js" type="text/javascript"></script>
-<script src="js/exhibitors.js" type="text/javascript"></script>
-<script src="js/custom.js" type="text/javascript"></script>
+<script src="../../assets/pages/scripts/table-datatables-buttons.min.js" type="text/javascript"></script>
+<script src="../../js/exhibitors.js" type="text/javascript"></script>
+<script src="../../js/custom.js" type="text/javascript"></script>
 <!-- END PAGE LEVEL SCRIPTS -->
 
 @if(isset($model_cat))
