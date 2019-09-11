@@ -120,7 +120,7 @@
                 <div class="row" style="margin-bottom: 2rem">
                     <div class="col-xs-12 bg-white content-padding">
                         <h1>Olá @if(isset($user->person)){{ $user->person->name }} @endif,</h1>
-                        <p>Seu cadastro foi realizado no Beconnect</p>
+                        <p>Seu cadastro foi realizado no {{ $event->name }}</p>
 
                         @if(isset($password))
                             <p>Sua senha é: {{ $password }}</p>
@@ -130,10 +130,10 @@
                         @endif
 
                         <p>Você foi inscrito no Evento: {{ $event->name }}</p>
-                        <p>No dia do evento ({{ date_format(date_create($event->eventDate), 'd/m') }})
-                            acesse o app Beconnect com seu email e exiba seu QR Code na entrada para realizar o check-in
-                            ou exiba QR Code abaixo:</p>
-                        <img src="{{ $qrCode }}" alt="" style="width: 95%; height: 50%;">
+{{--                        <p>No dia do evento ({{ date_format(date_create($event->eventDate), 'd/m') }})--}}
+{{--                            acesse o app Beconnect com seu email e exiba seu QR Code na entrada para realizar o check-in--}}
+{{--                            ou exiba QR Code abaixo:</p>--}}
+{{--                        <img src="{{ $qrCode }}" alt="" style="width: 95%; height: 50%;">--}}
 
                         <br>
 
