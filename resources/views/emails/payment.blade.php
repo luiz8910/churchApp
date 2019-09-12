@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Pagamentos BeConnect</title>
+    <title>Pagamentos {{ $event->name }}</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Tell the browser to be responsive to screen width -->
@@ -112,7 +112,7 @@
         <div class="row">
             <div class="col-xs-12 text-center">
                 <a href="{{ $url }}">
-                    <img src="{{ $url_img }}" alt="BeConnect" class="img-responsive logo"/>
+                    <img src="{{ $event->logoEvent }}" alt="{{ $event->name }}" class="img-responsive logo"/>
                 </a>
             </div>
 
@@ -174,7 +174,7 @@
                             <div class="col-xs-4" style="width: 33%; padding-right: 1%;">
                                 <br><br>
                                 <a href="{{ $url }}">
-                                    <img src="{{ $url_img }}" alt="BeConnect" class="img-responsive"/>
+                                    <img src="{{ $url_img }}" alt="{{ $event->name }}" class="img-responsive"/>
                                 </a>
                             </div>
                             <div class="col-xs-8" style="width: 77%">
