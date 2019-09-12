@@ -21,7 +21,7 @@ $(function(){
     });
 
     $(".btn-clock").click(function () {
-        console.log('clock');
+
         var id = this.id.replace('btn-clock-', "");
 
         sweetExpirePoll(id);
@@ -230,6 +230,31 @@ function view(id)
 
 
             $('#modal-padrao').modal('show');
+
+            //getAnswers(id);
+        }
+    });
+
+    request.fail(function (e) {
+        console.log('fail');
+        console.log(e);
+    })
+}
+
+function getAnswers(id)
+{
+    var request = $.ajax({
+        url: '/getAnswers/' + id,
+        method: 'GET',
+        dataType: 'json'
+    });
+
+    console.log(id);
+
+    request.done(function (e) {
+        if(e.status)
+        {
+            console.log(e);
         }
     });
 

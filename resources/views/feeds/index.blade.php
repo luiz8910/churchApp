@@ -75,7 +75,7 @@
 																</a>
                                                                 <ul class="dropdown-menu pull-right" id="sample_3_tools">
                                                                     <li>
-                                                                        <a href="javascript:;" data-toggle="modal" data-target="#newFeed">
+                                                                        <a href="javascript:;" data-toggle="modal" data-target="#new_feed">
                                                                             <i class="fa fa-rss font-purple" aria-hidden="true"></i>
                                                                             Feeds
                                                                         </a>
@@ -227,7 +227,7 @@
 
 															</div>
 
-															@if(!$sessions)
+															@if(!$feeds)
 																<p>Não há feeds para o evento selecionado</p>
 
 															@else
@@ -255,19 +255,14 @@
                                                                                         <i class="fa fa-users"></i>
                                                                                     </a>--}}
 
-																					<button class="btn btn-danger btn-sm btn-circle btn-delete-session"
-																							title="Excluir" id="btn-delete-session-{{ $item->id }}">
+																					<button class="btn btn-danger btn-sm btn-circle btn-delete-feed"
+																							title="Excluir" id="btn-delete-feed-{{ $item->id }}">
 																						<i class="fa fa-trash"></i>
 																					</button>
 																				</td>
 																			</tr>
 
-																			<input type="hidden" id="short_start_time_{{ $item->id }}"
-																				   value="{{ $item->short_start_time}}">
-																			<input type="hidden" id="end_time_{{ $item->id }}" value="{{ $item->end_time}}">
-																			<input type="hidden" id="max_capacity_{{ $item->id }}" value="{{ $item->max_capacity}}">
-																			<input type="hidden" id="description_{{ $item->id }}" value="{{ $item->description}}">
-																			<input type="hidden" id="category_{{ $item->id }}" value="{{ $item->tag}}">
+
 
 
 
@@ -276,18 +271,14 @@
 																		</tbody>
 																	</table>
 																	<br>
-																	<div class="pull-right" id="pagination">
-																		{{ $sessions->links() }}
-																	</div>
+
 
 																</div>
 														@endif
 														<!-- FIM DIV .table-scrollable table-scrollable-borderless -->
 														</div> <!-- FIM DIV .portlet-body-config -->
 
-														<div class="pull-right">
-                                                            {{ $feeds->links() }}
-                                                        </div>
+
 													</div> <!-- FIM DIV .portlet-body.form -->
 												</div> <!-- FIM DIV .portlet.light -->
 											</div> <!-- FIM DIV .col-md-12 -->
@@ -303,16 +294,77 @@
 
 		<!-- END CONTAINER -->
 		@include('includes.footer')
-		@include('includes.core-scripts')
+		@include('includes.core-scripts-edit')
 		<!-- BEGIN PAGE LEVEL PLUGINS -->
-		<script src="assets/global/scripts/datatable.js" type="text/javascript"></script>
-		<script src="assets/global/plugins/datatables/datatables.min.js" type="text/javascript"></script>
-		<script src="assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
-		<script src="assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
+		<script src="../../assets/global/scripts/datatable.js" type="text/javascript"></script>
+		<script src="../../assets/global/plugins/datatables/datatables.min.js" type="text/javascript"></script>
+		<script src="../../assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
+		<script src="../../assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
 		<!-- END PAGE LEVEL PLUGINS -->
 		<!-- BEGIN PAGE LEVEL SCRIPTS -->
-		<script src="assets/pages/scripts/table-datatables-buttons.min.js" type="text/javascript"></script>
+		<script src="../../assets/pages/scripts/table-datatables-buttons.min.js" type="text/javascript"></script>
+		<script src="../../js/feed.js"></script>
 		<!-- END PAGE LEVEL SCRIPTS -->
+
+
+		<div class="modal fade" tabindex="-1" role="dialog" id="new_feed">
+			<div class="modal-dialog" role="document">
+				<form action="{{ route('store.event.feed') }}" method="POST">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							<h4 class="modal-title">Novo Feed</h4>
+						</div>
+						<div class="modal-body">
+
+							<br><br>
+
+							<div id="div-events">
+								<label for="event_id">Eventos</label>
+								<span id="span-feed-event" class="font-red" style="display: none;">Selecione um evento abaixo</span>
+								<select name="event_id" id="event_id" class="form-control" required>
+									<option value="">Selecione</option>
+									@foreach($events as $event)
+										<option value="{{ $event->id }}">{{ $event->name }}</option>
+									@endforeach
+								</select>
+							</div>
+
+							<br><br>
+							<label for="">Título</label>
+							<input type="text" class="form-control" placeholder="Título do seu feed" name="title">
+
+							<br><br>
+							<label for="feed-text">Mensagem</label>
+							<span id="span-feed-text" class="font-red" style="display: none;">Digite uma mensagem abaixo</span>
+							<textarea class="form-control" rows="10" type="text" id="feed-text" name="text" required></textarea>
+
+							<!--<br>
+                            <label for="expires_in">Validade do Feed</label>
+                            <select name="expires_in" id="expires_in" class="form-control">
+                                <option value="">Selecione</option>
+                                <option value="1">1 Dia</option>
+                                <option value="2">1 Semana</option>
+                                <option value="3">1 Mês</option>
+                            </select>-->
+
+
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">
+								<i class="fa fa-close"></i>
+								Fechar
+							</button>
+							<button type="submit" class="btn btn-success">
+								<i class="fa fa-check"></i>
+								Enviar
+							</button>
+						</div>
+					</div><!-- /.modal-content -->
+				</form>
+
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
 	</body>
 
 </html>

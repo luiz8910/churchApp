@@ -17,6 +17,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
+use Berkayk\OneSignal\OneSignalFacade;
 
 class FeedController extends Controller
 {
@@ -83,9 +84,12 @@ class FeedController extends Controller
 
         $role = $this->getUserRole();
 
-        $feeds = $this->feedServices->feeds();
 
-        $feeds = $this->paginate($feeds->toArray(), 5)->setPath('');
+        $feeds = $this->repository->findByField('model', 'event');
+
+
+
+        //$feeds = $this->paginate($feeds->toArray(), 5)->setPath('');
 
         $events = $this->eventRepository->findByField('church_id', $church_id);
 
@@ -306,13 +310,25 @@ class FeedController extends Controller
 
             $this->repository->create($data);
 
-
-
-            return json_encode(['status' => true]);
+            return redirect()->back();
 
         }catch (\Exception $e)
         {
             return json_encode(['status' => false, 'msg' => $e->getMessage()]);
+        }
+
+    }
+
+    public function delete($id)
+    {
+        try{
+            $this->repository->delete($id);
+
+            return json_encode(['status' => true]);
+
+        }catch (\Exception $e){
+
+            return json_encode(['status' => false]);
         }
 
     }

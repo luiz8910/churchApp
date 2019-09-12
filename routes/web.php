@@ -71,6 +71,8 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get("/feeds", "FeedController@index")->name('feeds.index');
 
+        Route::delete('/delete-feed/{id}', 'FeedController@delete');
+
         //Relatórios
 
         Route::get('/relatorios-eventos', "ReportController@index")->name('report.index');
@@ -499,6 +501,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/getAnswers/{id}', 'PollController@answers');
 
         Route::post('quizz-store', 'PollController@store')->name('event.session.poll.store');
+
+        Route::post('store_feed', 'FeedController@add_eventFeed')->name('store.event.feed');
+
 
         Route::get('session-new-quizz/{session_id}', 'PollController@create')->name('event.session.poll.create');
 
