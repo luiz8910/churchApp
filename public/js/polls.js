@@ -26,6 +26,13 @@ $(function(){
 
         sweetExpirePoll(id);
     });
+
+    $(".btn-itens").click(function () {
+        var id = this.id.replace('btn-itens-', "");
+
+
+        view(id);
+    })
 });
 
 
@@ -191,5 +198,43 @@ function sweetDeleteItem(id)
         if(isConfirm){
             deleteItem(id);
         }
+    })
+}
+
+function view(id)
+{
+
+    var request = $.ajax({
+        url: '/view-poll/' + id,
+        method: 'GET',
+        dataType: 'json'
+    });
+
+    request.done(function (e) {
+
+        $(".footer-itens h3").remove();
+        $(".footer-itens br").remove();
+
+        if(e.status)
+        {
+            $('.modal-p').css('font-size', '30px').text(e.content);
+
+            var append = '';
+
+            for (var i = 0; i < e.itens.length; i++)
+            {
+                append = '<h3>'+e.itens[i].description+'</h3><br>';
+
+                $(".footer-itens").append(append);
+            }
+
+
+            $('#modal-padrao').modal('show');
+        }
+    });
+
+    request.fail(function (e) {
+        console.log('fail');
+        console.log(e);
     })
 }

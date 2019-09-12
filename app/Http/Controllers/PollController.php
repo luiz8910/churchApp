@@ -701,9 +701,19 @@ class PollController extends Controller
     }
 
 
+    public function view($id)
+    {
+        $poll = $this->repository->findByField('id', $id)->first();
 
+        if($poll)
+        {
+            $content = $poll->content;
 
+            $itens = $this->itensRepository->findByField('polls_id', $id);
 
+            return json_encode(['status' => true, 'content' => $content, 'itens' => $itens]);
+        }
+    }
 
 
 }

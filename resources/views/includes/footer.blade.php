@@ -25,6 +25,7 @@
             </div>
             <div class="modal-body" id="modal-padrao-body">
                 <p class="modal-p"></p>
+                <div class="footer-itens"><br><br></div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>

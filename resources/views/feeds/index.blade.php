@@ -211,81 +211,81 @@
 
 													<div class="portlet-body form">
 														<div class="portlet-body-config">
-															<div class="mt-element-list">
-																<div class="mt-list-head list-default green-haze">
-																	<div class="row">
-																		<div class="col-xs-8">
-																			<div class="list-head-title-container">
-																				<h5 class="list-title sbold">Lista de Feeds</h5>
-																				<div class="list-date">Clique no olho para desabilitar o feed</div>
-																			</div>
-																		</div>
-																		<div class="col-xs-4">
-																			<div class="list-head-summary-container">
-																				<div class="list-pending">
-																					<div class="badge badge-default list-count">3</div>
-																					<div class="list-label">Hoje</div>
-																				</div>
-																				<div class="list-done">
-																					<div class="list-count badge badge-default last">20</div>
-																					<div class="list-label">Mês</div>
-																				</div>
-																			</div>
-																		</div>
-																	</div>
-																</div>
-																<div class="mt-list-container list-default">
-
-																	<ul class="feeds">
-																		@foreach($feeds as $feed)
-																			<li class="mt-list-item">
-																				<div class="list-icon-container done">
-																					<a href="javascript:;">
-																						<i class="fa fa-eye"></i>
-																					</a>
-																				</div>
-																				<div class="list-datetime"> {{ $feed->data }} </div>
-																				<div class="list-item-content">
-																					<h3 class="uppercase bold">
-																						<a href="@if(isset($feed->link )) {{ $feed->link }}
-                                                                                                @else javascript:; @endif
-																						">{{ $feed->model }}</a>
-																					</h3>
-																					<p>{{ $feed->text }}</p>
-																				</div>
-																			</li>
-																		@endforeach
-
-																	</ul>
-
-
-
-
-                                                                    <nav aria-label="Page navigation" style="display: none;">
-                                                                        <ul class="pagination">
-                                                                            <li>
-                                                                                <a href="#" aria-label="Previous">
-                                                                                    <span aria-hidden="true">&laquo;</span>
-                                                                                </a>
-                                                                            </li>
-                                                                            <li><a href="/feeds?page=1">1</a></li>
-                                                                            <li><a href="/feeds?page=2">2</a></li>
-                                                                            <li><a href="/feeds?page=3">3</a></li>
-                                                                            <li>
-                                                                                <a href="" aria-label="Next" id="next">
-                                                                                    <span aria-hidden="true">&raquo;</span>
-                                                                                </a>
-                                                                            </li>
-                                                                        </ul>
-                                                                    </nav>
-
-
+															<div class="col-md-12">
+																<div class="div-loading" id="loading-results">
+																	<i class="fa fa-refresh fa-spin fa-5x fa-fw"
+																	   id="icon-loading-cep">
+																	</i>
+																	<p class="text-center" id="p-loading-cep">
+																		Carregando ...
+																	</p>
 																</div>
 
+																<p class="text-center" id="p-zero" style="display: none;">
+																	Nenhum resultado
+																</p>
 
 															</div>
+
+															@if(!$sessions)
+																<p>Não há feeds para o evento selecionado</p>
+
+															@else
+																<div class="table-scrollable table-scrollable-borderless table-striped">
+																	<table class="table table-hover table-light table-striped">
+																		<thead>
+																		<tr class="uppercase">
+																			<th>Título</th>
+																			<th> Texto</th>
+																			<th> Opções</th>
+																			<th></th>
+																		</tr>
+																		</thead>
+																		<tbody class="hide" id="tbody-search"></tbody>
+																		<tbody>
+																		@foreach($feeds as $item)
+																			<tr id="tr_{{ $item->id }}">
+
+																				<td>{{ $item->title }}</td>
+																				<td>{{ $item->text }}</td>
+
+																				<td>
+																					{{--<a href="{{ route('event.session.check_in_list', ['id' => $item->id]) }}"
+                                                                                       class="btn btn-info btn-sm btn-circle" title="Inscritos">
+                                                                                        <i class="fa fa-users"></i>
+                                                                                    </a>--}}
+
+																					<button class="btn btn-danger btn-sm btn-circle btn-delete-session"
+																							title="Excluir" id="btn-delete-session-{{ $item->id }}">
+																						<i class="fa fa-trash"></i>
+																					</button>
+																				</td>
+																			</tr>
+
+																			<input type="hidden" id="short_start_time_{{ $item->id }}"
+																				   value="{{ $item->short_start_time}}">
+																			<input type="hidden" id="end_time_{{ $item->id }}" value="{{ $item->end_time}}">
+																			<input type="hidden" id="max_capacity_{{ $item->id }}" value="{{ $item->max_capacity}}">
+																			<input type="hidden" id="description_{{ $item->id }}" value="{{ $item->description}}">
+																			<input type="hidden" id="category_{{ $item->id }}" value="{{ $item->tag}}">
+
+
+
+																		@endforeach
+
+																		</tbody>
+																	</table>
+																	<br>
+																	<div class="pull-right" id="pagination">
+																		{{ $sessions->links() }}
+																	</div>
+
+																</div>
+														@endif
+														<!-- FIM DIV .table-scrollable table-scrollable-borderless -->
 														</div> <!-- FIM DIV .portlet-body-config -->
-                                                        <div class="pull-right">
+
+														<div class="pull-right">
                                                             {{ $feeds->links() }}
                                                         </div>
 													</div> <!-- FIM DIV .portlet-body.form -->

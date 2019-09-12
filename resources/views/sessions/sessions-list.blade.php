@@ -185,10 +185,10 @@
                                                                         <input type="hidden" id="session_date_{{ $item->id }}" value="{{ $item->session_date }}">
 
                                                                         <td>
-                                                                            <a href="{{ route('event.session.check_in_list', ['id' => $item->id]) }}"
+                                                                            {{--<a href="{{ route('event.session.check_in_list', ['id' => $item->id]) }}"
                                                                                class="btn btn-info btn-sm btn-circle" title="Inscritos">
                                                                                 <i class="fa fa-users"></i>
-                                                                            </a>
+                                                                            </a>--}}
                                                                             <button class="btn btn-success btn-sm btn-circle btn-edit-session"
                                                                                     title="Editar" id="btn-edit-session-{{ $item->id }}">
                                                                                 <i class="fa fa-pencil"></i>

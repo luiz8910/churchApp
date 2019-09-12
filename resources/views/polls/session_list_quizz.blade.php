@@ -110,7 +110,7 @@
                                                                     <tbody>
                                                                     @foreach($polls as $poll)
                                                                         <tr>
-                                                                            <td>{{$poll->order}}</td>
+
                                                                             <td>{{$poll->content}}</td>
                                                                             <td class="d-flex-center">
                                                                                 <a href="javascript:"

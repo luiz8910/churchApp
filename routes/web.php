@@ -492,6 +492,8 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('session-list_quizz/{id}', 'PollController@index')->name('event.session.poll.index');
 
+        Route::get('/view-poll/{id}', 'PollController@view');
+
         Route::get('session-view-quizz-question/{id}', 'SessionController@view_quizz_question')->name('event.session.view_quizz_question');
 
         Route::get('/getAnswers/{id}', 'PollController@answers');

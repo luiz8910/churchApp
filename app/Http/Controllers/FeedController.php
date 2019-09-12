@@ -288,4 +288,32 @@ class FeedController extends Controller
 
         return json_encode(['status' => false]);
     }
+
+    public function add_eventFeed(Request $request)
+    {
+        $data = $request->all();
+
+        try{
+            $data['model'] = 'event';
+            $data['model_id'] = $data['event_id'];
+
+            OneSignalFacade::sendNotificationUsingTags(
+                $data['text'],
+                array(["field" => "tag", "key" => "event_id", "relation" => "=", "value" => $data['event_id']])
+            );
+
+            unset($data['event_id']);
+
+            $this->repository->create($data);
+
+
+
+            return json_encode(['status' => true]);
+
+        }catch (\Exception $e)
+        {
+            return json_encode(['status' => false, 'msg' => $e->getMessage()]);
+        }
+
+    }
 }
