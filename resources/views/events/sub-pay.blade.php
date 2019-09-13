@@ -25,10 +25,10 @@
                     <div class="card-price text-xs-center h-normal mx-auto">
                         <div class="card-block">
 
-                            <h4 class="card-title">{{ $event->name }}</h4>
+                            <h4 class="card-title">@if($event->id == 101) Instituto Invida @else{{ $event->name }} @endif</h4>
 
 
-                            <p class="card-subtitle">{{ $church->name }}</p>
+                            {{--<p class="card-subtitle">{{ $church->name }}</p>--}}
                         </div>
                         <div class="col-12 px-0">
                             <hr/>
@@ -68,11 +68,11 @@
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="card-block">
-                                            
-                                            <h4 class="card-title">{{ $event->name }}</h4>
+
+                                            <h4 class="card-title">@if($event->id == 101) Instituto Invida @else{{ $event->name }} @endif</h4>
                                             
 
-                                            <p class="card-subtitle">{{ $church->name }}</p>
+                                            {{--<p class="card-subtitle">{{ $church->name }}</p>--}}
                                         </div>
                                     </div>
                                     <div class="col-auto ml-auto">
