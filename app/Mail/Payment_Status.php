@@ -38,7 +38,7 @@ class Payment_Status extends Mailable
     {
 
         $this->url = $url;
-        $this->url_img = $url_img;
+        $this->url_img = 'https://migs.med.br/2019/wp-content/uploads/2019/03/MIGS2019_curva_OK.png';
         $this->apple_url = $apple_url ? $apple_url : 'https://itunes.apple.com/app/id1430220715';
         $this->android_url = $android_url ? $android_url : 'https://play.google.com/store/apps/details?id=com.br.beconnect';
         $this->p1 = $p1;
