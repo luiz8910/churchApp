@@ -1998,11 +1998,7 @@ class EventController extends Controller
 
             if ($church) {
                 if ($church->payment && $event->value_money) {
-                    if (strlen($event->name) > 20) {
-                        $abrv = '2º Coworking - Miguel Falabella';
 
-                        $split_name = true;
-                    }
 
                     if($event->status == 'active' || $event->status === null)
                     {

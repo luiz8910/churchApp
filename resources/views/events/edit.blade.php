@@ -1889,7 +1889,9 @@ License: You must have a valid license purchased only from themeforest(the above
 <script src="../../js/os.js"></script>
 <script src="../../js/payment.js"></script>
 
-
+<script>
+    const anElement = new AutoNumeric('#value_money', $("#value_money").val()).brazilian();
+</script>
 <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjTs0nbQbEecUygnKpThLfzRKES8nKS0A&callback=initMap"></script>
 

@@ -1,5 +1,5 @@
 
-const anElement = new AutoNumeric('#value_money', $("#value_money").val()).brazilian();
+//
 
 
 $(function () {
@@ -68,6 +68,118 @@ $(function () {
         else{
             $("#payment-slip").css('display', 'none');
         }
-    })
+    });
+
+
+    $("#course-1").click(function () {
+
+        var header = $("#header-value-money");
+
+        var input = $("#input-header-m").val();
+
+        var value = 0;
+
+        if($("#course-1").is(':checked'))
+        {
+            value = parseFloat(input);
+
+            value += 250.00;
+
+            $("#input-header-m").val(value);
+
+            header.text('R$' + value);
+
+            $("#span-total").text('R$' + value);
+        }
+        else{
+
+            value = parseFloat(input);
+
+            value -= 250.00;
+
+            $("#input-header-m").val(value);
+
+            header.text('R$' + value);
+
+            $("#span-total").text('R$' + value);
+
+        }
+
+
+    });
+
+    $("#course-2").click(function () {
+
+        var header = $("#header-value-money");
+
+        var input = $("#input-header-m").val();
+
+        var value = 0;
+
+        if($("#course-2").is(':checked'))
+        {
+            value = parseFloat(input);
+
+            value += 250.00;
+
+            $("#input-header-m").val(value);
+
+            header.text('R$' + value);
+
+            $("#span-total").text('R$' + value);
+        }
+        else{
+
+            value = parseFloat(input);
+
+            value -= 250.00;
+
+            $("#input-header-m").val(value);
+
+            header.text('R$' + value);
+
+            $("#span-total").text('R$' + value);
+
+        }
+
+
+    });
+
+    $("#course-3").click(function () {
+
+        var header = $("#header-value-money");
+
+        var input = $("#input-header-m").val();
+
+        var value = 0;
+
+        if($("#course-3").is(':checked'))
+        {
+            value = parseFloat(input);
+
+            value += 250.00;
+
+            $("#input-header-m").val(value);
+
+            header.text('R$' + value);
+
+            $("#span-total").text('R$' + value);
+        }
+        else{
+
+            value = parseFloat(input);
+
+            value -= 250.00;
+
+            $("#input-header-m").val(value);
+
+            header.text('R$' + value);
+
+            $("#span-total").text('R$' + value);
+
+        }
+
+
+    });
 
 });

@@ -24,13 +24,9 @@
                     <h6 class="color-white pb-3"></h6>
                     <div class="card-price text-xs-center h-normal mx-auto">
                         <div class="card-block">
-                            @if(isset($split_name))
 
-                                <h4 class="card-title">{{ $abrv }}</h4>
+                            <h4 class="card-title">{{ $event->name }}</h4>
 
-                            @else
-                                <h4 class="card-title">{{ $event->name }}</h4>
-                            @endif
 
                             <p class="card-subtitle">{{ $church->name }}</p>
                         </div>
@@ -43,7 +39,12 @@
                             </ul>
                         </div>
                         <div class="card-header">
-                            <h3 class="display-2"><span class="currency">R$</span>{{ number_format($event->value_money, 2, ',', '') }}</h3>
+                            @if($event->id == 23)
+                                <h3 class="display-2" id="header-value-money"><span class="currency" >R$</span>0,00</h3>
+                                <input type="text" value="0" id="input-header-m">
+                            @else
+                                <h3 class="display-2"><span class="currency">R$</span>{{ number_format($event->value_money, 2, ',', '') }}</h3>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -56,9 +57,6 @@
                     <h6 class="color-grape">CONFIRME SUA INSCRIÇÃO</h6>
                     @include('includes.messages')
                     <p class="inner-text" style="font-size: 15px !important;"><strong>Pagamento: Apenas com Cartão de Crédito</strong></p>
-                    <p class="inner-text" style="font-size: 15px !important;">
-                        <strong>Pagamento no local do evento: Cartão de Crédito e Débito (Sujeito a disponibilidade de vagas)</strong>
-                    </p>
 
                     <div class="row hidden-sm-up mb-3">
                         <div class="col">
@@ -66,13 +64,9 @@
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="card-block">
-                                            @if(isset($split_name))
-
-                                                <h4 class="card-title">{{ $abrv }}</h4>
-
-                                            @else
-                                                <h4 class="card-title">{{ $event->name }}</h4>
-                                            @endif
+                                            
+                                            <h4 class="card-title">{{ $event->name }}</h4>
+                                            
 
                                             <p class="card-subtitle">{{ $church->name }}</p>
                                         </div>
@@ -89,9 +83,10 @@
 
                     <form class="form-dark" action="{{ route('event.payment', ['event_id' => $event->id]) }}" method="POST">
 
-                        <div class="form-group d-flex justify-content-between align-items-center border-bottom">
+                        <div class="form-group justify-content-between align-items-center border-bottom">
+                            {{--<div class="form-group d-flex justify-content-between align-items-center border-bottom">--}}
 
-                            <select class="form-control border-0" name="installments" required>
+                            {{--<select class="form-control border-0" name="installments" required>
                                 <option value="">Selecione um parcelamento</option>
                                 <option value="1" selected>1x á vista</option>
                                 @if($event->installments > 1)
@@ -101,7 +96,41 @@
                                         </option>
                                     @endfor
                                 @endif
-                            </select>
+                            </select>--}}
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label class="custom-control custom-checkbox" >
+                                        <input type="checkbox" class="custom-control-input" id="course-1">
+                                        <span class="custom-control-indicator"><i class="fas fa-check"></i></span>
+                                        <span class="custom-control-description">Cirurgia Minimamente Invasiva Oncológica Gastrointestinal</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label class="custom-control custom-checkbox" >
+                                        <input type="checkbox" class="custom-control-input" id="course-2">
+                                        <span class="custom-control-indicator"><i class="fas fa-check"></i></span>
+                                        <span class="custom-control-description">
+                                                    Endometriose, Uroginecologia e Ginecologia Minimamente Invasiva
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label class="custom-control custom-checkbox" >
+                                        <input type="checkbox" class="custom-control-input" id="course-3">
+                                        <span class="custom-control-indicator"><i class="fas fa-check"></i></span>
+                                        <span class="custom-control-description">Medicina Esportiva</span>
+                                    </label>
+                                </div>
+                            </div>
+
 
                         </div>
 
@@ -206,7 +235,11 @@
 
                         <div class="form-group d-flex flex-column flex-sm-row justify-content-between align-items-sm-center border-bottom">
                             <span class="fs-22">Total sem juros</span>
-                            <span class="font-weight-bold fs-22">R$ {{ number_format($event->value_money, 2, ',', ' ') }}</span>
+                            @if($event->id == 23)
+                                <span class="font-weight-bold fs-22" id="span-total">R$ 0,00</span>
+                            @else
+                                <span class="font-weight-bold fs-22">R$ {{ number_format($event->value_money, 2, ',', ' ') }}</span>
+                            @endif
                         </div>
 
                         <div class="form-group pt-3 d-flex justify-content-between align-items-baseline">
@@ -232,19 +265,20 @@
             </div>
         </div>
 
-        <div class="hidden-sm-up col-12 transparent-grape pb-5">
+        {{--<div class="hidden-sm-up col-12 transparent-grape pb-5">
             <div class="row text-center">
                 <div class="col">
                     <h6 class="color-white mt-5 pb-3 text-center">JÁ TEM UMA CONTA?</h6>
                     <a href="{{ url('/login') }}" class="btn btn-primary">FAZER LOGIN</a>
                 </div>
             </div>
-        </div>
+        </div>--}}
     </div>
 </div>
 @include('includes.core-scripts')
 <script src="../js/site.js"></script>
 <script src="../js/errors.js"></script>
+<script src="../js/payment.js"></script>
 @include('includes.footer-site')
 <script>
 
