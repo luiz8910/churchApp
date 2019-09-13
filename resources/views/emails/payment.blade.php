@@ -128,14 +128,12 @@
                                 <li>{{ $li_0 }}</li>
                                 <li>{{ $li_1 }}</li>
                                 <li>{{ $li_2 }}</li>
-                                <li>{{ $li_3 }}</li>
+                                {{--<li>{{ $li_3 }}</li>--}}
                                 <li>{{ $li_4 }}</li>
-                                <li>{{ $li_5 }}</li>
+                                {{--<li>{{ $li_5 }}</li>--}}
                             </ul>
                         @endif
-                        @if($qrCode)
-                            <a href="{{ $qrCode }}">Clique aqui para ver seu QrCode</a>
-                        @endif
+
                         {{--<li>Estado do Pagamento: Em Análise.</li>
                         <li>Método de Pagamento: Cartão de Crédito.</li>
                         <li>Últimos 4 dígitos do cartão: 4321.</li>
@@ -158,7 +156,7 @@
                         </p>
 
                         <p>
-                            Equipe Beconnect
+                            Equipe MIGS
                         </p>
 
                     </div>

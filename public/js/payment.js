@@ -182,4 +182,22 @@ $(function () {
 
     });
 
+    $("#form-sub-pay").submit(function (event) {
+
+        var input = $("#input-header-m").val();
+
+        if(parseInt(input) === 0)
+        {
+            event.preventDefault();
+
+            $("#form-courses").css('border', '1px solid red');
+
+            $("#select-course").css('display', 'block');
+
+            $('html, body').animate({
+                scrollTop: $("body").offset().top
+            }, 2000);
+        }
+    })
+
 });

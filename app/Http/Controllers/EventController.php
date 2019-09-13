@@ -20,6 +20,7 @@ use App\Models\EventSubscribedList;
 use App\Models\RecentEvents;
 use App\Models\User;
 use App\Repositories\ChurchRepository;
+use App\Repositories\CourseDescRepository;
 use App\Repositories\CreditCardRepository;
 use App\Repositories\CreditCardRepositoryEloquent;
 use App\Repositories\EventSubscribedListRepository;
@@ -150,6 +151,10 @@ class EventController extends Controller
      * @var PaymentRepository
      */
     private $paymentRepository;
+    /**
+     * @var CourseDescRepository
+     */
+    private $courseRepository;
 
     /**
      * EventController constructor.
@@ -174,7 +179,7 @@ class EventController extends Controller
                                 EventSubscribedListRepository $listRepository, PeopleServices $peopleServices,
                                 MessageServices $messageServices, ResponsibleRepository $responsibleRepository,
                                 PaymentServices $paymentServices, CreditCardRepository $creditCardRepository,
-                                PaymentRepository $paymentRepository)
+                                PaymentRepository $paymentRepository, CourseDescRepository $courseRepository)
     {
         $this->repository = $repository;
         $this->stateRepository = $stateRepositoryTrait;
@@ -197,6 +202,7 @@ class EventController extends Controller
         $this->paymentServices = $paymentServices;
         $this->creditCardRepository = $creditCardRepository;
         $this->paymentRepository = $paymentRepository;
+        $this->courseRepository = $courseRepository;
     }
 
 
@@ -2126,10 +2132,34 @@ class EventController extends Controller
     {
         $event = $this->repository->findByField('id', $event_id)->first();
 
+        $value = null;
 
         if ($event) {
             try {
                 $data = $request->all();
+
+                if($event_id == 101)
+                {
+                    $value = $data['input-total'];
+
+                    $courses = [];
+
+                    if(isset($data['course-1']))
+                    {
+                        $courses[] = 'Cirurgia Minimamente Invasiva Oncológica Gastrointestinal';
+                    }
+
+                    if(isset($data['course-2']))
+                    {
+                        $courses[] = 'Endometriose, Uroginecologia e Ginecologia Minimamente Invasiva';
+                    }
+
+                    if(isset($data['course-3']))
+                    {
+                        $courses[] = 'Medicina Esportiva';
+                    }
+                }
+
 
                 $p['name'] = $data['name'];
                 $p['email'] = $data['email'];
@@ -2209,8 +2239,8 @@ class EventController extends Controller
 
                         $li_0 = 'Estado do Pagamento: Processado (pago)';
                         $li_1 = 'Método de Pagamento: Cartão de Crédito';
-                        $li_2 = 'Últimos 4 dígitos do cartão: ' . substr($data['credit_card_number'], 11, 4);
-                        $li_3 = 'Valor da Transação: R$' . $event->value_money;
+                        $li_2 = 'Últimos 4 dígitos do cartão: ' . substr($data['credit_card_number'], 12, 4);
+                        $li_3 = 'Valor da Transação: R$' . $value ? 'R$'.$value : $event->value_money;
                         $li_4 = 'Parcelamento: ' . $data['installments'] == 1 ? 'Á vista' :
                             $data['installments'] . 'x de R$' . $event->value_money / $data['installments'];
                         $li_5 = 'Código da Transação: ' . $x["metaId"];
@@ -2226,11 +2256,36 @@ class EventController extends Controller
 
                         $p2 = '';
 
-                        $this->paymentServices->createTransaction($x, $event_id);
+                        if ($event_id == 101)
+                        {
+                            DB::table('course_descs')
+                                    ->where('person_id', $x['person_id'])
+                                    ->delete();
 
-                        PaymentMail::dispatch($li_0, $li_1, $li_2, $li_3, $li_4,
-                            $li_5, $url, $url_img, $subject, $p1, $p2, $x, $event_id)
-                            ->delay(now()->addMinutes(3));
+                            foreach ($courses as $item)
+                            {
+                                $c['description'] = $item;
+                                $c['person_id'] = $x['person_id'];
+
+                                $this->courseRepository->create($c);
+                            }
+
+                        }
+
+                        $this->paymentServices->createTransaction($x, $event_id, $value);
+
+                        if(isset($courses))
+                        {
+                            PaymentMail::dispatch($li_0, $li_1, $li_2, $li_3, $li_4,
+                                $li_5, $url, $url_img, $subject, $p1, $p2, $x, $event_id, $courses)
+                                ->delay(now()->addMinutes(1));
+                        }
+                        else{
+                            PaymentMail::dispatch($li_0, $li_1, $li_2, $li_3, $li_4,
+                                $li_5, $url, $url_img, $subject, $p1, $p2, $x, $event_id)
+                                ->delay(now()->addMinutes(3));
+                        }
+
 
                         $request->session()->flash('success.msg', 'Um email será enviado para ' .
                             $data['email'] . ' com informações sobre o pagamento');

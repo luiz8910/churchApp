@@ -345,7 +345,7 @@ class PaymentServices
     }
 
     //5ª Função no fluxo de pagamentos
-    public function createTransaction($data, $event_id)
+    public function createTransaction($data, $event_id, $total = null)
     {
         $url = "/createTransaction";
 
@@ -356,6 +356,14 @@ class PaymentServices
 
         if($event && $person)
         {
+            if($total)
+            {
+                $value = $total * 100;
+            }
+            else{
+                $value = $event->value_money * 100;
+            }
+
             $response = $this->client->request('POST', $this->payment_url() . $url, ['json' => [
 
                     "headers" => [
@@ -364,7 +372,7 @@ class PaymentServices
                     ],
 
                     "merchantKey" => $this->getMerchantKey(),
-                    "amount" => $event->value_money * 100,
+                    "amount" => $value,
                     "metaId" => $data['metaId'],
 
 
@@ -381,7 +389,7 @@ class PaymentServices
                         "paymentMode" => 1,
                         "installmentType" => $data['installments'] > 1 ? 2 : 1,
                         "installments" => $data['installments'],
-                        "amount" => $event->value_money * 100,
+                        "amount" => $value,
                     ],
 
                     "customerInfo" => [

@@ -39,9 +39,9 @@
                             </ul>
                         </div>
                         <div class="card-header">
-                            @if($event->id == 23)
+                            @if($event->id == 101)
                                 <h3 class="display-2" id="header-value-money"><span class="currency" >R$</span>0,00</h3>
-                                <input type="text" value="0" id="input-header-m">
+
                             @else
                                 <h3 class="display-2"><span class="currency">R$</span>{{ number_format($event->value_money, 2, ',', '') }}</h3>
                             @endif
@@ -55,8 +55,12 @@
             <div class="row">
                 <div class="col-sm-7 mr-sm-auto ml-sm-5">
                     <h6 class="color-grape">CONFIRME SUA INSCRIÇÃO</h6>
+
                     @include('includes.messages')
+
                     <p class="inner-text" style="font-size: 15px !important;"><strong>Pagamento: Apenas com Cartão de Crédito</strong></p>
+
+                    <p id="select-course" style="color:red; display: none;">Selecione pelo menos um curso</p>
 
                     <div class="row hidden-sm-up mb-3">
                         <div class="col">
@@ -81,12 +85,12 @@
                         </div>
                     </div>
 
-                    <form class="form-dark" action="{{ route('event.payment', ['event_id' => $event->id]) }}" method="POST">
+                    <form class="form-dark" action="{{ route('event.payment', ['event_id' => $event->id]) }}" method="POST" id="form-sub-pay">
 
-                        <div class="form-group justify-content-between align-items-center border-bottom">
+                        <div class="form-group justify-content-between align-items-center border-bottom" id="form-courses">
                             {{--<div class="form-group d-flex justify-content-between align-items-center border-bottom">--}}
 
-                            {{--<select class="form-control border-0" name="installments" required>
+                            <select class="form-control border-0" name="installments" required style="display: none;">
                                 <option value="">Selecione um parcelamento</option>
                                 <option value="1" selected>1x á vista</option>
                                 @if($event->installments > 1)
@@ -96,12 +100,14 @@
                                         </option>
                                     @endfor
                                 @endif
-                            </select>--}}
+                            </select>
+
+                            <input type="hidden" value="0" id="input-header-m" name="input-total">
 
                             <div class="row">
                                 <div class="col-md-12">
                                     <label class="custom-control custom-checkbox" >
-                                        <input type="checkbox" class="custom-control-input" id="course-1">
+                                        <input type="checkbox" class="custom-control-input" id="course-1" name="course-1">
                                         <span class="custom-control-indicator"><i class="fas fa-check"></i></span>
                                         <span class="custom-control-description">Cirurgia Minimamente Invasiva Oncológica Gastrointestinal</span>
                                     </label>
@@ -111,7 +117,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <label class="custom-control custom-checkbox" >
-                                        <input type="checkbox" class="custom-control-input" id="course-2">
+                                        <input type="checkbox" class="custom-control-input" id="course-2" name="course-2">
                                         <span class="custom-control-indicator"><i class="fas fa-check"></i></span>
                                         <span class="custom-control-description">
                                                     Endometriose, Uroginecologia e Ginecologia Minimamente Invasiva
@@ -124,7 +130,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <label class="custom-control custom-checkbox" >
-                                        <input type="checkbox" class="custom-control-input" id="course-3">
+                                        <input type="checkbox" class="custom-control-input" id="course-3" name="course-3">
                                         <span class="custom-control-indicator"><i class="fas fa-check"></i></span>
                                         <span class="custom-control-description">Medicina Esportiva</span>
                                     </label>
@@ -136,7 +142,7 @@
 
                         <div class="form-group">
                             <label class="has-float-label" aria-label="Nome">
-                                <input class="form-control" type="text" placeholder="Nome"
+                                <input class="form-control" type="text" placeholder="Nome" required
                                        name="name" value="{{ old('name') }}"/>
                                 <span>Nome</span>
                             </label>
@@ -148,7 +154,7 @@
                                        name="email" value="{{ old('email') }}"required/>
                                 <span>Email</span>
                             </label>
-                            <p><strong>É permitida a compra de apenas um ingresso por email</strong></p>
+                            @if($event->id != 101)<p><strong>É permitida a compra de apenas um ingresso por email</strong></p>@endif
                         </div>
 
                         <div class="form-group p-relative {{ $errors->has('cel') ? ' has-error' : '' }}">
@@ -235,7 +241,7 @@
 
                         <div class="form-group d-flex flex-column flex-sm-row justify-content-between align-items-sm-center border-bottom">
                             <span class="fs-22">Total sem juros</span>
-                            @if($event->id == 23)
+                            @if($event->id == 101)
                                 <span class="font-weight-bold fs-22" id="span-total">R$ 0,00</span>
                             @else
                                 <span class="font-weight-bold fs-22">R$ {{ number_format($event->value_money, 2, ',', ' ') }}</span>

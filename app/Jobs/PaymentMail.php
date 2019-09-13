@@ -32,13 +32,14 @@ class PaymentMail implements ShouldQueue
     public $li_3;
     public $li_4;
     public $li_5;
+    public $li_6;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($li_0, $li_1, $li_2, $li_3, $li_4, $li_5, $url, $url_img, $subject, $p1, $p2, $x, $event_id)
+    public function __construct($li_0, $li_1, $li_2, $li_3, $li_4, $li_5, $url, $url_img, $subject, $p1, $p2, $x, $event_id, $li_6 = null)
     {
         //
         $this->li_0 = $li_0;
@@ -54,7 +55,7 @@ class PaymentMail implements ShouldQueue
         $this->p2 = $p2;
         $this->x = $x;
         $this->event_id = $event_id;
-
+        $this->li_6 = $li_6;
     }
 
     /**
@@ -80,9 +81,8 @@ class PaymentMail implements ShouldQueue
 
                     if($event)
                     {
-                        Mail::to($user)->send(new Payment_Status($this->url, $this->url_img,
-                            $this->p1, $this->p2, $this->subject, $person, $this->event_id));
-
+                        /*Mail::to($user)->send(new Payment_Status($this->url, $this->url_img,
+                            $this->p1, $this->p2, $this->subject, $person, $this->event_id));*/
 
                         $eventServices->subEvent($this->event_id, $person->id);
 
@@ -94,9 +94,22 @@ class PaymentMail implements ShouldQueue
 
                         $qrCode = 'https://beconnect.com.br/qrcodes/' . $person->id . '.png';
 
-                        Mail::to($user)->send(new Payment_Status($this->url, $this->url_img,
-                            $this->p1, $this->p2, $this->subject, $person, $this->event_id, $qrCode,
-                            $this->li_0, $this->li_1, $this->li_2, $this->li_3, $this->li_4, $this->li_5));
+                        if($this->li_6)
+                        {
+                            $this->subject = 'Seu pagamento foi aprovado';
+
+                            $this->p1 = 'Você adquiriu os cursos: ' . implode(' - ', $this->li_6);
+
+                            Mail::to($user)->send(new Payment_Status($this->url, $this->url_img,
+                                $this->p1, $this->p2, $this->subject, $person, $this->event_id, $event,
+                                $this->li_0, $this->li_1, $this->li_2, $this->li_3, $this->li_4, $this->li_5));
+                        }
+                        else{
+                            Mail::to($user)->send(new Payment_Status($this->url, $this->url_img,
+                                $this->p1, $this->p2, $this->subject, $person, $this->event_id, $event, $qrCode,
+                                $this->li_0, $this->li_1, $this->li_2, $this->li_3, $this->li_4, $this->li_5));
+                        }
+
 
                         \DB::commit();
                     }

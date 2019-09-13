@@ -26,21 +26,23 @@ class Payment_Status extends Mailable
     public $li_3;
     public $li_4;
     public $li_5;
+    public $li_6;
+    public $event;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($url, $url_img, $p1, $p2, $subject, $person, $event_id, $qrCode = null,
-                                $li_0 = null, $li_1 = null, $li_2 = null, $li_3 = null, $li_4 = null, $li_5 = null,
+    public function __construct($url, $url_img, $p1, $p2, $subject, $person, $event_id, $event, $qrCode = null,
+                                $li_0 = null, $li_1 = null, $li_2 = null, $li_3 = null, $li_4 = null, $li_5 = null, $li_6 = null,
                                 $android_url = null, $apple_url = null)
     {
 
         $this->url = $url;
         $this->url_img = 'https://migs.med.br/2019/wp-content/uploads/2019/03/MIGS2019_curva_OK.png';
-        $this->apple_url = $apple_url ? $apple_url : 'https://itunes.apple.com/app/id1430220715';
-        $this->android_url = $android_url ? $android_url : 'https://play.google.com/store/apps/details?id=com.br.beconnect';
+        $this->apple_url = $apple_url ? $apple_url : 'https://itunes.apple.com/app/id1475992800';
+        $this->android_url = $android_url ? $android_url : 'https://play.google.com/store/apps/details?id=com.br.migs';
         $this->p1 = $p1;
         $this->p2 = $p2;
         $this->subject = $subject;
@@ -53,6 +55,8 @@ class Payment_Status extends Mailable
         $this->li_3 = $li_3;
         $this->li_4 = $li_4;
         $this->li_5 = $li_5;
+        $this->li_6 = $li_6;
+        $this->event = $event;
     }
 
     /**
