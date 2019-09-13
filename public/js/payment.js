@@ -74,6 +74,7 @@ $(function () {
     $("#course-1").click(function () {
 
         var header = $("#header-value-money");
+        var header_m = $("#header-value-money-mob");
 
         var input = $("#input-header-m").val();
 
@@ -88,6 +89,7 @@ $(function () {
             $("#input-header-m").val(value);
 
             header.text('R$' + value);
+            header_m.text('R$' + value);
 
             $("#span-total").text('R$' + value);
         }
@@ -98,6 +100,7 @@ $(function () {
             value -= 250.00;
 
             $("#input-header-m").val(value);
+            header_m.text('R$' + value);
 
             header.text('R$' + value);
 
@@ -111,6 +114,7 @@ $(function () {
     $("#course-2").click(function () {
 
         var header = $("#header-value-money");
+        var header_m = $("#header-value-money-mob");
 
         var input = $("#input-header-m").val();
 
@@ -125,6 +129,7 @@ $(function () {
             $("#input-header-m").val(value);
 
             header.text('R$' + value);
+            header_m.text('R$' + value);
 
             $("#span-total").text('R$' + value);
         }
@@ -137,6 +142,7 @@ $(function () {
             $("#input-header-m").val(value);
 
             header.text('R$' + value);
+            header_m.text('R$' + value);
 
             $("#span-total").text('R$' + value);
 
@@ -148,6 +154,7 @@ $(function () {
     $("#course-3").click(function () {
 
         var header = $("#header-value-money");
+        var header_m = $("#header-value-money-mob");
 
         var input = $("#input-header-m").val();
 
@@ -162,6 +169,7 @@ $(function () {
             $("#input-header-m").val(value);
 
             header.text('R$' + value);
+            header_m.text('R$' + value);
 
             $("#span-total").text('R$' + value);
         }
@@ -174,6 +182,7 @@ $(function () {
             $("#input-header-m").val(value);
 
             header.text('R$' + value);
+            header_m.text('R$' + value);
 
             $("#span-total").text('R$' + value);
 

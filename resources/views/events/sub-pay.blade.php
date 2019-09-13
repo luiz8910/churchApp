@@ -77,7 +77,12 @@
                                     </div>
                                     <div class="col-auto ml-auto">
                                         <div class="card-header">
-                                            <h3 class="display-2"><span class="currency">R$</span>{{ number_format($event->value_money, 2, ',', '') }}</h3>
+                                            @if($event->id == 101)
+                                                <h3 class="display-2" id="header-value-money-mob"><span class="currency" >R$</span>0,00</h3>
+
+                                            @else
+                                                <h3 class="display-2"><span class="currency">R$</span>{{ number_format($event->value_money, 2, ',', '') }}</h3>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
