@@ -693,6 +693,24 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::post('/new-church', 'ChurchController@store')->name('new.church');
 
+        Route::get('/invoice/{id?}', 'InvoiceController@index')->name('invoice.index');
+
+        Route::get('/invoice-print/{id}', 'InvoiceController@print')->name('invoice.print');
+
+        Route::get('/invoice-create', 'InvoiceController@create')->name('invoice.create');
+
+        Route::get('/invoice-edit', 'InvoiceController@edit')->name('invoice.edit');
+
+        Route::post('/invoice', 'InvoiceController@store')->name('invoice.store');
+
+        Route::put('/invoice/{id}', 'InvoiceController@update')->name('invoice.update');
+
+        Route::delete('/invoice/{id}', 'InvoiceController@delete')->name('invoice.delete');
+
+        Route::get('/invoice-resend/{id}', 'InvoiceController@resend')->name('invoice.resend');
+
+        Route::get('/get_info_org/{id}', 'InvoiceController@get_info_org');
+
     });
 
     Route::get('/url/{public_url}', 'EventController@subUrl');
@@ -823,6 +841,10 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('bug-solved/{id}', 'BugController@bug_solved');
 
+    Route::get('/loading', function(){
+        return view('includes.loading');
+    });
+
     //Informação sobre Internet Explorer
     Route::get('ie', function (){
         return view('errors.ie');
@@ -917,6 +939,7 @@ Route::get('/map', function(){
 
     dd($obj->results[0]->geometry->location);
 });
+
 
 Route::get('getListSubEvent/{event_id}', 'EventController@listEvent');
 

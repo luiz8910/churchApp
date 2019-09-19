@@ -58,6 +58,7 @@
 
                     @include('includes.messages')
 
+
                     <p class="inner-text" style="font-size: 15px !important;"><strong>Pagamento: Apenas com Cartão de Crédito</strong></p>
 
                     <p id="select-course" style="color:red; display: none;">Selecione pelo menos um curso</p>

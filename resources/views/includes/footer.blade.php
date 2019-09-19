@@ -8,7 +8,7 @@
                 <a target="_blank" href="javascript:;">Beconnect</a> &nbsp;&nbsp;
             </div>
         </div>
-        <div class="scroll-to-top">
+        <div class="scroll-to-top hidden-print">
             <i class="icon-arrow-up"></i>
         </div>
         <!-- END INNER FOOTER -->

@@ -46,29 +46,40 @@
             <ul class="nav navbar-nav">
 
                 <li class="menu-dropdown mega-menu-dropdown  ">
-                    <a href="{{ route('admin.home') }}">Início
+                    <a href="{{ route('admin.home') }}">
+                        <i class="fa fa-home"></i> Início
                     </a>
                 </li>
 
                 <li class="menu-dropdown classic-menu-dropdown ">
-                    <a href="{{ route('admin.plans') }}"> Planos
+                    <a href="{{ route('admin.plans') }}">
+                        <i class="fa fa-file-text-o"></i> Planos
                         <span class="arrow"></span>
                     </a>
 
                 </li>
 
                 <li class="menu-dropdown classic-menu-dropdown ">
-                    <a href="{{ route('admin.features') }}"> Características
+                    <a href="{{ route('admin.features') }}">
+                        <i class="fa fa-info"></i> Características
                         <span class="arrow"></span>
                     </a>
 
                 </li>
 
                 <li class="menu-dropdown classic-menu-dropdown ">
-                    <a href="{{ route('admin.churches') }}"> Organizações
+                    <a href="{{ route('admin.churches') }}">
+                        <i class="fa fa-users"></i> Organizações
                         <span class="arrow"></span>
                     </a>
 
+                </li>
+
+                <li class="menu-dropdown classic-menu-dropdown">
+                    <a href="{{ route('invoice.index') }}">
+                        <i class="fa fa-credit-card"></i> Invoices
+                        <span class="arrow"></span>
+                    </a>
                 </li>
 
 
