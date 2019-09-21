@@ -95,14 +95,30 @@ class InvoiceController extends Controller
 
         $orgs = $this->churchRepository->orderBy('name')->findByField('status', 'active');
 
-        $state = $this->stateRepository->all();
-
-        return view('invoices.create', compact('name', 'orgs', 'state'));
+        return view('invoices.create', compact('name', 'orgs'));
     }
 
     public function edit($id)
     {
+        $name = 'Admin';
 
+        $orgs = $this->churchRepository->orderBy('name')->findByField('status', 'active');
+
+        $invoice = $this->repository->findByField('id', $id)->first();
+
+        if($invoice)
+        {
+
+            $events = $this->eventRepository->findByField('church_id', $invoice->customer_id);
+
+            $invoice->date = date_format(date_create($invoice->date), 'd/m/Y');
+
+            return view('invoices.edit', compact('name', 'orgs', 'invoice', 'events'));
+        }
+
+        \Session::flash('error.msg', 'Este invoice não existe');
+
+        return redirect()->route('invoice.index');
     }
 
     public function get_info_org($id)
@@ -170,7 +186,49 @@ class InvoiceController extends Controller
 
     public function update(Request $request, $id)
     {
+        $invoice = $request->only(['customer_id', 'email', 'event_id', 'date']);
 
+        $itens = $request->except(['customer_id', 'email', 'event_id', 'date', '_token', 'print']);
+
+        $invoice['date'] = date_create_from_format('d/m/Y', $invoice['date']);
+
+        if(!$invoice['event_id'])
+        {
+            unset($invoice['event_id']);
+        }
+
+        $this->repository->update($invoice, $id);
+
+        $itens_exist = $this->itensRepository->findByField('invoice_id', $id);
+
+        foreach ($itens_exist as $item)
+        {
+            $this->itensRepository->delete($item->id);
+        }
+
+        for ($i = 1; $i <= count($itens) / 3; $i++)
+        {
+            $x['invoice_id'] = $id;
+
+            $x['title'] = $itens['td_title_'.$i];
+
+            $x['description'] = $itens['td_description_'.$i];
+
+            $x['price'] = substr($itens['td_price_'.$i], 2);
+
+            $x['price'] = (float) $x['price'];
+
+            $this->itensRepository->create($x);
+        }
+
+        $request->session()->flash('success.msg', 'O Invoice foi alterado');
+
+        if($request->has('print'))
+        {
+            return redirect()->route('invoice.print', ['id' => $id]);
+        }
+
+        return redirect()->route('invoice.index');
     }
 
     public function delete($id)
@@ -237,6 +295,19 @@ class InvoiceController extends Controller
             }
         }
 
+    }
+
+
+    public function get_itens($id)
+    {
+        $invoice = $this->repository->findByField('id', $id)->first();
+
+        if($invoice)
+        {
+            $itens = $this->itensRepository->findByField('invoice_id', $id);
+
+            return json_encode(['status' => true, 'itens' => $itens]);
+        }
     }
 }
 

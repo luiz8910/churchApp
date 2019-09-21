@@ -18,9 +18,7 @@ $(function(){
 
     $("#customer_id").change(function () {
 
-        var value = this.value;
-
-        get_info_org(value);
+        get_info_org(this.value);
     });
 
     $("#add_item").click(function () {
@@ -77,8 +75,11 @@ $(function(){
     $("#save_modal").click(function (e) {
 
         var id = $("#item_id").val();
+
         var title_modal = $("#title_modal").val();
+
         var price_modal = $("#price_modal").val();
+
         var description_modal = $("#description_modal").text();
 
         if(title_modal == "")
@@ -107,9 +108,9 @@ $(function(){
 
             $("#td_description_"+id).val(description_modal);
 
-            $("#input-price_"+id).val(price_modal);
+            $("#input_price_"+id).val(price_modal);
 
-            $("#input-title_"+id).val(title_modal);
+            $("#input_title_"+id).val(title_modal);
 
             $("#modal_edit_item").modal('hide');
         }
@@ -225,4 +226,60 @@ function get_info_org(id)
         console.log('fail');
         console.log(e);
     });
+}
+
+get_itens();
+
+//Usado para pegar os itens no invoice
+function get_itens()
+{
+    var edit = location.href.search('edit') != -1 ? true : false;
+
+    if(edit)
+    {
+        var invoice_id = $("#invoice_id").val();
+
+        var request = $.ajax({
+            url: '/get_itens_invoice/' + invoice_id,
+            method: 'GET',
+            dataType: 'json'
+        });
+
+        request.done(function (e) {
+            if(e.status)
+            {
+                for(var i = 0; i < e.itens.length; i++)
+                {
+                    var iteration = localStorage.getItem('iteration') ? localStorage.getItem('iteration') : 0;
+
+                    iteration++;
+
+                    localStorage.setItem('iteration', iteration);
+
+
+                    $("#panel-itens").css('display', 'block');
+
+                    var prepend = '<tr id="tr_item_'+iteration+'">' +
+                        '<td id="td_title_'+iteration+'">'+e.itens[i].title+'</td>'+
+                        '<td id="td_price_'+iteration+'">'+e.itens[i].price+'</td>'+
+                        '<input type="hidden" value="'+e.itens[i].description+'" name="td_description_'+iteration+'" id="td_description_'+iteration+'">'+
+                        '<input type="hidden" value="'+e.itens[i].price+'" name="td_price_'+iteration+'" id="input_price_'+iteration+'">'+
+                        '<input type="hidden" value="'+e.itens[i].title+'" name="td_title_'+iteration+'" id="input_title_'+iteration+'">'+
+                        '<td>'+
+                        '<a href="javascript:" class="btn blue btn-sm btn-circle btn-item-list btn-edit-item" onclick="edit_item('+iteration+')"><i class="fa fa-pencil"></i></a>' +
+                        '<a href="javascript:" class="btn btn-danger btn-sm btn-circle btn-item-list btn-del-item" onclick="delete_item('+iteration+')"><i class="fa fa-trash"></i></a>'+
+                        '</td>'+
+                        '</tr>';
+
+                    $("#tbody_itens").prepend(prepend);
+                }
+
+            }
+        });
+
+        request.fail(function (e) {
+            console.log('fail');
+            console.log(e);
+        })
+    }
 }

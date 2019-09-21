@@ -130,8 +130,12 @@
                                                                     <td>{{ $invoice->date }}</td>
 
                                                                     <td>
-                                                                        <a href="{{ route('invoice.print', ['id' => $invoice->id]) }}" class="btn btn-success btn-sm btn-circle" title="Ver detalhes">
+                                                                        <a href="{{ route('invoice.print', ['id' => $invoice->id]) }}" class="btn btn-success btn-sm btn-circle" title="Imprimir">
                                                                             <i class="fa fa-print"></i>
+                                                                        </a>
+
+                                                                        <a href="{{ route('invoice.edit', ['id' => $invoice->id]) }}" class="btn green-dark btn-sm btn-circle" title="Editar Invoice">
+                                                                            <i class="fa fa-pencil"></i>
                                                                         </a>
 
                                                                         <a href="javascript:" class="btn btn-primary btn-sm btn-circle btn-resend-invoice" id="btn-resend-invoice-{{ $invoice->id }}"

@@ -617,12 +617,10 @@ Route::group(['middleware' => 'auth'], function () {
 
     //Fim Rotas Site
 
-    /*
-     * Admin do Site
-     */
-
+    //Área Administrativa
     Route::group(['middleware' => 'check.admin:6'], function (){
 
+        //Vantagens do App (Área no site)
         Route::get('/admin', 'SiteController@adminHome')->name('admin.home');
 
         Route::get('/admin-features', 'SiteController@adminFeatures')->name('admin.features');
@@ -659,6 +657,9 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('/delete-faq/{id}', 'SiteController@deleteFaq');
 
+        //Fim Vantagens
+
+        //Planos
         Route::post('/newPlan', 'AdminController@storePlan')->name('admin.new-plan');
 
         Route::post('/newPlanType', 'AdminController@newPlanType')->name('admin.new-plan-type');
@@ -675,6 +676,9 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('/delete-plan-type/{id}', 'SiteController@deletePlanType');
 
+        //Fim Planos
+
+        //Organizações (Clientes)
         Route::get('/igrejas', 'ChurchController@index')->name('admin.churches');
 
         Route::get("/delete-church/{id}", 'ChurchController@delete');
@@ -693,13 +697,18 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::post('/new-church', 'ChurchController@store')->name('new.church');
 
+        //Fim Organizações
+
+
+        //Invoice
+
         Route::get('/invoice/{id?}', 'InvoiceController@index')->name('invoice.index');
 
         Route::get('/invoice-print/{id}', 'InvoiceController@print')->name('invoice.print');
 
         Route::get('/invoice-create', 'InvoiceController@create')->name('invoice.create');
 
-        Route::get('/invoice-edit', 'InvoiceController@edit')->name('invoice.edit');
+        Route::get('/invoice-edit/{id}', 'InvoiceController@edit')->name('invoice.edit');
 
         Route::post('/invoice', 'InvoiceController@store')->name('invoice.store');
 
@@ -711,6 +720,9 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('/get_info_org/{id}', 'InvoiceController@get_info_org');
 
+        Route::get('/get_itens_invoice/{id}', 'InvoiceController@get_itens');
+
+        //End Invoice
     });
 
     Route::get('/url/{public_url}', 'EventController@subUrl');
