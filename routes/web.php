@@ -535,7 +535,7 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('/findSubUsers/{input}/{event_id}', 'EventController@findSubUsers');
 
-        Route::get('generate-certificate/{event_id}/{person_id?}', 'EventController@generateCertificate')->name('generate.certificate');
+
 
         Route::get('responsaveis', 'ResponsibleController@index')->name('responsibles.index');
 
@@ -554,6 +554,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/is-check/{id}/{person_id}', 'EventController@is_check');
 
     });
+
 
 
     Route::get('nextEvent', 'DashboardController@nextEvent');
@@ -587,7 +588,7 @@ Route::group(['middleware' => 'auth'], function () {
 });
 
 
-
+    Route::get('generate-certificate/{event_id}/{person_id?}', 'EventController@generateCertificate')->name('generate.certificate');
 
     Auth::routes();
 

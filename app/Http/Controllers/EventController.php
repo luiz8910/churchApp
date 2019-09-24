@@ -2631,21 +2631,33 @@ class EventController extends Controller
 
     public function generateCertificate($event_id, $person_id = null)
     {
-        $org_id = $this->getUserChurch();
+        $org_id = 2;//$this->getUserChurch();
 
-        if ($person_id) {
-            Certificate::dispatch($event_id, $org_id, $person_id);
+        $event = $this->repository->findByField('id', $event_id)->first();
 
-            \Session::flash('success.msg', 'O certificado está sendo enviado para o participante.');
-        } else {
-            Certificate::dispatch($event_id, $org_id);
+        if($event)
+        {
+            if ($event->certified_hours)
+            {
+                if ($person_id) {
+                    Certificate::dispatch($event_id, $org_id, $person_id);
 
-            \Session::flash('success.msg', 'O certificado está sendo enviado para os participantes, 
+                    \Session::flash('success.msg', 'O certificado está sendo enviado para o participante.');
+                } else {
+                    Certificate::dispatch($event_id, $org_id);
+
+                    \Session::flash('success.msg', 'O certificado está sendo enviado para os participantes, 
                     você receberá um email quando os envios tiverem terminado.');
+                }
+
+
+                return json_encode(['status' => true, 'msg' => 'success']);
+            }
+
+            return json_encode(['status' => false, 'msg' => 'Não é possível enviar o certificado do evento']);
         }
 
-
-        return json_encode(['status' => true]);
+        return json_encode(['status' => false, 'msg' => 'Evento não encontrado']);
 
     }
 

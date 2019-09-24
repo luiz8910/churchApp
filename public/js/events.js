@@ -286,7 +286,8 @@ function generateCertificate(id, person_id)
     var request = $.ajax({
         method: 'GET',
         url: '/certified-hours/' + id,
-        dataType: 'json'
+        dataType: 'json',
+        async: false
     });
 
     request.done(function (e) {
@@ -296,7 +297,8 @@ function generateCertificate(id, person_id)
                 var req = $.ajax({
                     url: '/is-check/' + id + '/' + person_id,
                     method: 'GET',
-                    dataType: 'json'
+                    dataType: 'json',
+                    async: false
                 });
 
                 req.done(function (e) {
@@ -312,10 +314,16 @@ function generateCertificate(id, person_id)
                             });
 
                             ajax.done(function (e) {
+
                                 if(e.status)
                                 {
                                     location.reload();
                                 }
+                            });
+
+                            ajax.fail(function (e) {
+                                console.log('fail');
+                                console.log(e);
                             });
                         }
                         else{
