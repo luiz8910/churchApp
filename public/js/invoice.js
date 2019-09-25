@@ -26,6 +26,7 @@ $(function(){
         var title = $('#title');
         var price = $("#price");
         var description = $("#description");
+        var qtde = $("#qtde");
 
         if(title.val() == "")
         {
@@ -55,9 +56,11 @@ $(function(){
             var prepend = '<tr id="tr_item_'+iteration+'">' +
                 '<td id="td_title_'+iteration+'">'+title.val()+'</td>'+
                 '<td id="td_price_'+iteration+'">'+price.val()+'</td>'+
+                '<td id="td_qtde_'+iteration+'">'+qtde.val()+'</td>'+
                 '<input type="hidden" value="'+description.val()+'" name="td_description_'+iteration+'" id="td_description_'+iteration+'">'+
                 '<input type="hidden" value="'+price.val()+'" name="td_price_'+iteration+'" id="input_price_'+iteration+'">'+
                 '<input type="hidden" value="'+title.val()+'" name="td_title_'+iteration+'" id="input_title_'+iteration+'">'+
+                '<input type="hidden" value="'+qtde.val()+'" name="td_qtde_'+iteration+'" id="input_qtde_'+iteration+'">'+
                 '<td>'+
                 '<a href="javascript:" class="btn blue btn-sm btn-circle btn-item-list btn-edit-item" onclick="edit_item('+iteration+')"><i class="fa fa-pencil"></i></a>' +
                 '<a href="javascript:" class="btn btn-danger btn-sm btn-circle btn-item-list btn-del-item" onclick="delete_item('+iteration+')"><i class="fa fa-trash"></i></a>'+
@@ -69,6 +72,7 @@ $(function(){
             title.val('');
             price.val('');
             description.val('');
+            qtde.val('');
         }
     });
 
@@ -79,6 +83,8 @@ $(function(){
         var title_modal = $("#title_modal").val();
 
         var price_modal = $("#price_modal").val();
+
+        var qtde_modal = $("#qtde_modal").val();
 
         var description_modal = $("#description_modal").text();
 
@@ -106,11 +112,15 @@ $(function(){
 
             $("#td_price_"+id).text(price_modal);
 
+            $("#td_qtde_"+id).text(qtde_modal);
+
             $("#td_description_"+id).val(description_modal);
 
             $("#input_price_"+id).val(price_modal);
 
             $("#input_title_"+id).val(title_modal);
+
+            $("#input_qtde_"+id).val(qtde_modal);
 
             $("#modal_edit_item").modal('hide');
         }
@@ -179,10 +189,12 @@ function edit_item(id)
 {
     var td_title = $("#td_title_" + id).text();
     var td_price = $("#td_price_"+ id).text();
+    var td_qtde = $("#td_qtde_"+ id).text();
     var td_desc = $("#td_description_" + id).val();
 
     $("#title_modal").val(td_title);
     $("#price_modal").val(td_price);
+    $("#qtde_modal").val(td_qtde);
     $("#description_modal").text(td_desc);
 
     $("#item_id").val(id);
@@ -262,9 +274,11 @@ function get_itens()
                     var prepend = '<tr id="tr_item_'+iteration+'">' +
                         '<td id="td_title_'+iteration+'">'+e.itens[i].title+'</td>'+
                         '<td id="td_price_'+iteration+'">'+e.itens[i].price+'</td>'+
+                        '<td id="td_qtde_'+iteration+'">'+e.itens[i].qtde+'</td>'+
                         '<input type="hidden" value="'+e.itens[i].description+'" name="td_description_'+iteration+'" id="td_description_'+iteration+'">'+
                         '<input type="hidden" value="'+e.itens[i].price+'" name="td_price_'+iteration+'" id="input_price_'+iteration+'">'+
                         '<input type="hidden" value="'+e.itens[i].title+'" name="td_title_'+iteration+'" id="input_title_'+iteration+'">'+
+                        '<input type="hidden" value="'+e.itens[i].qtde+'" name="td_qtde_'+iteration+'" id="input_qtde_'+iteration+'">'+
                         '<td>'+
                         '<a href="javascript:" class="btn blue btn-sm btn-circle btn-item-list btn-edit-item" onclick="edit_item('+iteration+')"><i class="fa fa-pencil"></i></a>' +
                         '<a href="javascript:" class="btn btn-danger btn-sm btn-circle btn-item-list btn-del-item" onclick="delete_item('+iteration+')"><i class="fa fa-trash"></i></a>'+

@@ -243,19 +243,25 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         </div>
                                                         <div class="modal-body">
                                                             <div class="row">
-                                                                <div class="col-md-6">
+                                                                <div class="col-md-4">
                                                                     <div class="form-group" id="div_title_modal">
                                                                         <input type="text" id="title_modal" class="form-control">
                                                                     </div>
                                                                 </div>
 
-                                                                <div class="col-md-6">
+                                                                <div class="col-md-4">
                                                                     <div class="form-group" id="div_price_modal">
                                                                         <input type="text" id="price_modal" class="form-control">
                                                                     </div>
 
                                                                 </div>
 
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group" id="div_qtde_modal">
+                                                                        <input type="text" id="qtde_modal" class="form-control">
+                                                                    </div>
+
+                                                                </div>
                                                             </div>
 
                                                             <input type="hidden" value="" id="item_id">
@@ -278,7 +284,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                             </div>
 
                                             <div class="row">
-                                                <div class="col-md-6">
+                                                <div class="col-md-4">
                                                     <div class="form-group" id="div_title">
                                                         <label for="">Título</label>
                                                         <div class="input-group">
@@ -290,7 +296,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-6">
+                                                <div class="col-md-4">
                                                     <div class="form-group" id="div_price">
                                                         <label for="">Preço</label>
                                                         <div class="input-group">
@@ -298,6 +304,18 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 R$
                                                             </span>
                                                             <input type="text" class="form-control number" id="price" placeholder="10,00" >
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-4">
+                                                    <div class="form-group" id="div_qtde">
+                                                        <label for="">Quantidade</label>
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon">
+                                                                R$
+                                                            </span>
+                                                            <input type="text" class="form-control number" id="qtde" placeholder="1000" >
                                                         </div>
                                                     </div>
                                                 </div>

@@ -100,7 +100,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                     <tr>
                                         <th class="invoice-title uppercase">Descrição</th>
                                         <th class="invoice-title uppercase text-center"></th>
-                                        <th class="invoice-title uppercase text-center"></th>
+                                        <th class="invoice-title uppercase text-center">Quantidade</th>
                                         <th class="invoice-title uppercase text-center">Custo</th>
                                     </tr>
                                     </thead>
@@ -112,7 +112,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <p> {{ $item->description }} </p>
                                             </td>
                                             <td class="text-center sbold"></td>
-                                            <td class="text-center sbold"></td>
+                                            <td class="text-center sbold">{{ (int)$item->qtde }}</td>
                                             <td class="text-center sbold">R$ {{ number_format($item->price, 2, ',', '.') }}</td>
                                         </tr>
                                     @endforeach

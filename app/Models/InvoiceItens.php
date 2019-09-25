@@ -22,7 +22,7 @@ class InvoiceItens extends Model implements Transformable
      * @var array
      */
     protected $fillable = [
-        'title', 'price', 'description', 'invoice_id'
+        'title', 'price', 'description', 'invoice_id', 'qtde'
     ];
 
     protected $dates = ['deleted_at'];
