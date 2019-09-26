@@ -93,6 +93,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(\App\Repositories\CourseDescRepository::class, \App\Repositories\CourseDescRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\InvoiceRepository::class, \App\Repositories\InvoiceRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\InvoiceItensRepository::class, \App\Repositories\InvoiceItensRepositoryEloquent::class);
+        $this->app->bind(\App\Repositories\EmailInvoiceRepository::class, \App\Repositories\EmailInvoiceRepositoryEloquent::class);
         //:end-bindings:
     }
 }

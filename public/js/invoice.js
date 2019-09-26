@@ -19,6 +19,10 @@ $(function(){
     $("#customer_id").change(function () {
 
         get_info_org(this.value);
+
+        $("#form_customer_id").removeClass('has-error');
+
+        $("#span_error_customer_id").css('display', 'none');
     });
 
     $("#add_item").click(function () {
@@ -62,7 +66,7 @@ $(function(){
                 '<input type="hidden" value="'+title.val()+'" name="td_title_'+iteration+'" id="input_title_'+iteration+'">'+
                 '<input type="hidden" value="'+qtde.val()+'" name="td_qtde_'+iteration+'" id="input_qtde_'+iteration+'">'+
                 '<td>'+
-                '<a href="javascript:" class="btn blue btn-sm btn-circle btn-item-list btn-edit-item" onclick="edit_item('+iteration+')"><i class="fa fa-pencil"></i></a>' +
+                '<a href="javascript:" class="btn green-dark btn-sm btn-circle btn-item-list btn-edit-item" onclick="edit_item('+iteration+')"><i class="fa fa-pencil"></i></a>' +
                 '<a href="javascript:" class="btn btn-danger btn-sm btn-circle btn-item-list btn-del-item" onclick="delete_item('+iteration+')"><i class="fa fa-trash"></i></a>'+
                 '</td>'+
                 '</tr>';
@@ -134,9 +138,117 @@ $(function(){
         $("#print_div").append(append);
 
         $("#form_create").submit();
-    })
+    });
+
+
+    $("#email").change(function () {
+        is_valid(this.value);
+
+        $("#email").val('');
+    });
+
+    $(document).keypress(function (e) {
+
+        var $email = $("#email");
+
+        if(e.which === 13 && $email.is(':focus'))
+        {
+            e.preventDefault();
+
+            return is_valid($email.val());
+        }
+
+    });
 
 });
+
+function is_valid($email)
+{
+    var org = $("#customer_id").val();
+
+    if(org)
+    {
+        $("#form_customer_id").removeClass('has-error');
+
+        $("#span_error_customer_id").css('display', 'none');
+
+        if(validateEmail($email))
+        {
+            $("#f_email").removeClass('has-error');
+
+            $("#f_span").css('display', 'none');
+
+            $("#f_span_use").css('display', 'none');
+
+            var emails = $(".selected-email");
+            var stop = false;
+
+            for(var i = 0; i < emails.length; i++)
+            {
+                if(emails[i].innerText == $email)
+                {
+                    stop = true;
+                    break;
+                }
+            }
+
+            if(!stop)
+            {
+                $("#email").val('');
+
+                email($email);
+            }
+            else{
+                $("#f_span_use").css('display', 'block');
+            }
+
+        }
+        else{
+            $("#f_email").addClass('has-error');
+
+            $("#f_span").css('display', 'block');
+        }
+
+        return true;
+    }
+    else{
+        $("#form_customer_id").addClass('has-error');
+
+        $("#span_error_customer_id").css('display', 'block');
+
+        return false;
+    }
+}
+
+//Usado para formatar o campo email
+//com varios emails que receberão o invoice
+function email(email)
+{
+    var email_iteration = localStorage.getItem('email_iteration') ? localStorage.getItem('email_iteration') : 0;
+
+    email_iteration++;
+
+    localStorage.setItem('email_iteration', email_iteration);
+
+    var append = ''+
+    '<div class="col-md-3" id="col_email_'+email_iteration+'">' +
+        '<div class="form-group">' +
+            '<div class="input-group input-icon right">' +
+                '<span class="input-group-addon">' +
+                    '<span class="selected-email">'+email+'</span> <span class="x-del-email" onclick="remove_column('+email_iteration+')">x</span>' +
+                    '<input type="hidden" name="email_'+email_iteration+'" value="'+email+'">'+
+                '</span>' +
+            '</div>' +
+        '</div>' +
+    '</div>';
+
+    $("#row_email").append(append);
+}
+
+function remove_column(id)
+{
+    $("#col_email_"+id).remove();
+}
 
 function delete_invoice(id)
 {
@@ -202,6 +314,10 @@ function edit_item(id)
     $("#modal_edit_item").modal('show');
 }
 
+/*
+ * Recupera os dados da org selecionada
+ * e preenche o campo email e evento
+*/
 function get_info_org(id)
 {
     $("#event_id option").remove();
@@ -227,7 +343,12 @@ function get_info_org(id)
 
             if(e.org.email)
             {
-                $("#email").val(e.org.email);
+                var email = $("#email");
+
+                email.val(e.org.email);
+
+                email.trigger('change');
+
             }
 
 
@@ -240,9 +361,7 @@ function get_info_org(id)
     });
 }
 
-get_itens();
-
-//Usado para pegar os itens no invoice
+//Usado para pegar os itens no invoice, somente no edit invoice
 function get_itens()
 {
     var edit = location.href.search('edit') != -1 ? true : false;
@@ -280,7 +399,7 @@ function get_itens()
                         '<input type="hidden" value="'+e.itens[i].title+'" name="td_title_'+iteration+'" id="input_title_'+iteration+'">'+
                         '<input type="hidden" value="'+e.itens[i].qtde+'" name="td_qtde_'+iteration+'" id="input_qtde_'+iteration+'">'+
                         '<td>'+
-                        '<a href="javascript:" class="btn blue btn-sm btn-circle btn-item-list btn-edit-item" onclick="edit_item('+iteration+')"><i class="fa fa-pencil"></i></a>' +
+                        '<a href="javascript:" class="btn green-dark btn-sm btn-circle btn-item-list btn-edit-item" onclick="edit_item('+iteration+')"><i class="fa fa-pencil"></i></a>' +
                         '<a href="javascript:" class="btn btn-danger btn-sm btn-circle btn-item-list btn-del-item" onclick="delete_item('+iteration+')"><i class="fa fa-trash"></i></a>'+
                         '</td>'+
                         '</tr>';
@@ -297,3 +416,45 @@ function get_itens()
         })
     }
 }
+
+function validateEmail(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+}
+
+function get_emails()
+{
+    var edit = location.href.search('edit') != -1 ? true : false;
+
+    if(edit)
+    {
+        var invoice_id = $("#invoice_id").val();
+
+        var request = $.ajax({
+            url: '/get_emails_invoice/' + invoice_id,
+            method: 'GET',
+            dataType: 'json'
+        });
+
+        request.done(function (e) {
+            if(e.status)
+            {
+                var $email = $("#email");
+
+                for (var i = 0; i < e.emails.length; i++)
+                {
+                    $email.val(e.emails[i].email);
+                    $email.trigger('change');
+                }
+            }
+        });
+
+        request.fail(function (e) {
+            console.log('fail');
+            console.log(e);
+        });
+    }
+}
+
+get_itens();
+get_emails();

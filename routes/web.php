@@ -723,6 +723,8 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('/get_itens_invoice/{id}', 'InvoiceController@get_itens');
 
+        Route::get('/get_emails_invoice/{id}', 'InvoiceController@get_emails');
+
         //End Invoice
     });
 

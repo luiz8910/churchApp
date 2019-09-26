@@ -24,6 +24,8 @@ License: You must have a valid license purchased only from themeforest(the above
     <link href="../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet" type="text/css" />
     <link href="../assets/global/plugins/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" type="text/css"/>
     <link href="../assets/pages/css/profile.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Slab&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/invoice.css">
     <style>
         .btn-item-list{
             margin-top: -5px;
@@ -98,7 +100,13 @@ License: You must have a valid license purchased only from themeforest(the above
                                 <div class="portlet-title">
                                     <div class="caption font-red-sunglo">
                                         <i class="fa fa-user font-red-sunglo"></i>
-                                        <span class="caption-subject bold uppercase"> Novo Invoice</span>
+                                        <span class="caption-subject bold uppercase">
+                                            @if($route == 'create')
+                                                Novo Invoice
+                                            @else
+                                                Editar Invoice
+                                            @endif
+                                        </span>
                                     </div>
                                     <!--<div class="actions">
                                         <div class="btn-group">
@@ -131,8 +139,13 @@ License: You must have a valid license purchased only from themeforest(the above
                                 <?php $i = 0; ?>
                                 <div class="portlet-body form">
 
+                                    @if($route == 'create')
+                                        <form action="{{ route('invoice.store') }}" method="POST" id="form_create">
+                                    @else
+                                        <form action="{{ route('invoice.update', ['id' => $invoice->id]) }}" method="POST" id="form_create">
+                                        {{ method_field('PUT') }}
+                                    @endif
 
-                                    <form action="{{ route('invoice.store') }}" method="POST" id="form_create">
                                         {{ csrf_field() }}
 
                                         <div class="form-body">
@@ -140,41 +153,61 @@ License: You must have a valid license purchased only from themeforest(the above
                                             <div class="row">
 
                                                 <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label>Nome do Cliente (Org)</label>
+                                                    <div class="form-group" id="form_customer_id">
+                                                        <label>Nome do Cliente (Org)
+                                                            <span id="span_error_customer_id" style="color:red; display: none;">Selecione o campo Nome do Cliente!</span>
+                                                        </label>
                                                         <select name="customer_id" id="customer_id" class="form-control select2" required>
                                                             <option value="">Selecione</option>
                                                             @foreach($orgs as $org)
-                                                                <option value="{{ $org->id }}">{{ $org->name }}</option>
+                                                                <option value="{{ $org->id }}"
+                                                                @if($route == 'edit')
+                                                                    @if($invoice->customer_id == $org->id) selected @endif
+                                                                        @endif>
+                                                                    {{ $org->name }}
+                                                                </option>
                                                             @endforeach
                                                         </select>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-md-6">
-                                                    <div class="form-group" id="form-email">
-                                                        <label>Email</label>
-                                                        <div class="input-group input-icon right">
-                                                                <span class="input-group-addon">
-                                                                    <i class="fa fa-envelope font-blue" id="icon-email"></i>
-                                                                </span>
-                                                            <input type="text" name="email" id="email" class="form-control"
-                                                                   placeholder="email@dominio.com" value="{{ old('email') }}" required>
-                                                        </div>
+                                                    <div class="form-group">
+                                                        <label for="exampleInputPassword1">Referência (Evento)</label>
+                                                        <select name="event_id" id="event_id" class="form-control select2">
+                                                            @if($route == 'edit')
+                                                                <option value="">Selecione</option>
+                                                                @foreach($events as $event)
+                                                                    <option value="{{ $event->id }}" @if($event->id == $invoice->event_id) selected @endif>{{ $event->name }}</option>
+                                                                @endforeach
+                                                            @endif
+                                                        </select>
                                                     </div>
-
-
                                                 </div>
+
+
                                             </div>
+
+
 
                                             <div class="row">
 
                                                 <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label for="exampleInputPassword1">Referência (Evento)</label>
-                                                        <select name="event_id" id="event_id" class="form-control select2"></select>
+                                                    <div class="form-group" id="f_email">
+                                                        <label>Email
+                                                            <span id="f_span" style="color:red; display: none;">Preencha um email válido</span>
+                                                            <span id="f_span_use" style="color:red; display: none;">Este email já está sendo usado</span>
+                                                        </label>
+                                                        <div class="input-group input-icon right">
+                                                            <span class="input-group-addon">
+                                                                <i class="fa fa-envelope font-blue"></i>
+                                                            </span>
+                                                            <input type="text" id="email" class="form-control"
+                                                                   placeholder="email@dominio.com" value="" autocomplete="new-password">
+                                                        </div>
                                                     </div>
                                                 </div>
+
 
 
                                                 <div class="col-md-6">
@@ -185,11 +218,13 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                     <i class="fa fa-calendar font-blue"></i>
                                                                 </span>
                                                             <input type="text" class="form-control input-date" name="date" autocomplete="new-password"
-                                                                   placeholder="dd/mm/aaaa" maxlength="10" value="{{ old('date') }}">
+                                                                   placeholder="dd/mm/aaaa" maxlength="10" value="@if($route == 'edit'){{ $invoice->date }}@endif">
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
+
+                                            <div class="row" id="row_email"></div>
 
                                             <br><br>
 
@@ -213,10 +248,15 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 <tr>
                                                                     <th>Título</th>
                                                                     <th>Valor</th>
+                                                                    <th>Qtde</th>
                                                                     <th>Opções</th>
                                                                 </tr>
 
                                                             </thead>
+
+                                                            @if($route == 'edit')
+                                                                <input type="hidden" id="invoice_id" value="{{ $invoice->id }}">
+                                                            @endif
 
                                                             <tbody id="tbody_itens">
                                                             </tbody>
@@ -238,12 +278,14 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             <div class="row">
                                                                 <div class="col-md-4">
                                                                     <div class="form-group" id="div_title_modal">
+                                                                        <label for="title_modal">Título</label>
                                                                         <input type="text" id="title_modal" class="form-control">
                                                                     </div>
                                                                 </div>
 
                                                                 <div class="col-md-4">
                                                                     <div class="form-group" id="div_price_modal">
+                                                                        <label for="price_modal">Preço</label>
                                                                         <input type="text" id="price_modal" class="form-control">
                                                                     </div>
 
@@ -251,11 +293,11 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                                                 <div class="col-md-4">
                                                                     <div class="form-group" id="div_qtde_modal">
+                                                                        <label for="qtde_modal">Quantidade</label>
                                                                         <input type="text" id="qtde_modal" class="form-control">
                                                                     </div>
 
                                                                 </div>
-
                                                             </div>
 
                                                             <input type="hidden" value="" id="item_id">
@@ -263,6 +305,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             <div class="row">
                                                                 <div class="col-md-12">
                                                                     <div class="form-group">
+                                                                        <label for="description_modal">Descrição</label>
                                                                         <textarea id="description_modal" cols="30" rows="10" style="width: 100%;"></textarea>
                                                                     </div>
                                                                 </div>

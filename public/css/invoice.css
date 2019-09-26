@@ -1,0 +1,10 @@
+.x-del-email{
+    font-weight: 100;
+    float:right;
+    cursor: pointer;
+}
+
+.selected-email{
+    font-family: 'Josefin Slab', serif;
+}
+

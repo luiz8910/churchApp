@@ -218,6 +218,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 <tr>
                                                                     <th>Título</th>
                                                                     <th>Valor</th>
+                                                                    <th>Qtde</th>
                                                                     <th>Opções</th>
                                                                 </tr>
 
@@ -245,12 +246,14 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             <div class="row">
                                                                 <div class="col-md-4">
                                                                     <div class="form-group" id="div_title_modal">
+                                                                        <label for="title_modal">Título</label>
                                                                         <input type="text" id="title_modal" class="form-control">
                                                                     </div>
                                                                 </div>
 
                                                                 <div class="col-md-4">
                                                                     <div class="form-group" id="div_price_modal">
+                                                                        <label for="price_modal">Preço</label>
                                                                         <input type="text" id="price_modal" class="form-control">
                                                                     </div>
 
@@ -258,6 +261,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                                                 <div class="col-md-4">
                                                                     <div class="form-group" id="div_qtde_modal">
+                                                                        <label for="qtde_modal">Quantidade</label>
                                                                         <input type="text" id="qtde_modal" class="form-control">
                                                                     </div>
 
@@ -269,6 +273,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             <div class="row">
                                                                 <div class="col-md-12">
                                                                     <div class="form-group">
+                                                                        <label for="description_modal">Descrição</label>
                                                                         <textarea id="description_modal" cols="30" rows="10" style="width: 100%;"></textarea>
                                                                     </div>
                                                                 </div>

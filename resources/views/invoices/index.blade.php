@@ -125,7 +125,11 @@
 
                                                                     <td>R${{ $invoice->total_price }}</td>
 
-                                                                    <td>@if(isset($invoice->event_name)) {{ $invoice->event_name }} @else - @endif</td>
+                                                                    <td title="{{ $invoice->event_name }}">
+                                                                        @if(isset($invoice->event_name))
+                                                                            {{ substr($invoice->event_name, 0, 20) }}
+                                                                        @else - @endif
+                                                                    </td>
 
                                                                     <td>{{ $invoice->date }}</td>
 

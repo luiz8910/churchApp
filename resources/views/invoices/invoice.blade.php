@@ -89,8 +89,12 @@ License: You must have a valid license purchased only from themeforest(the above
                                 <p class="invoice-desc inv-address">{{ $org->street }}, {{ $org->number }} - {{ $org->city }}, {{ $org->state }}</p>
                             </div>
                             <div class="col-xs-3">
-                                <h2 class="invoice-title uppercase">Enviar para</h2>
-                                <p class="invoice-desc inv-address">{{ $invoice->email }}</p>
+                                <h2 class="invoice-title uppercase">Contato</h2>
+                                <?php $i = 0; ?>
+                                @foreach($emails as $email)
+                                    <p class="invoice-desc inv-address" @if($i > 0) style="margin-top: -15px;" @endif>{{ $email->email }}</p>
+                                    <?php $i++; ?>
+                                @endforeach
                             </div>
                         </div>
                         <div class="row invoice-body">

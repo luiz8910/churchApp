@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Repositories\ChurchRepository;
+use App\Repositories\EmailInvoiceRepository;
 use App\Repositories\EventRepository;
 use App\Repositories\InvoiceItensRepository;
 use App\Repositories\InvoiceRepository;
@@ -25,10 +26,15 @@ class InvoiceController extends Controller
      * @var InvoiceItensRepository
      */
     private $itensRepository;
+    /**
+     * @var EmailInvoiceRepository
+     */
+    private $emailInvoiceRepository;
 
     public function __construct(InvoiceRepository $repository, EventRepository $eventRepository,
                                 ChurchRepository $churchRepository, PersonRepository $personRepository,
-                                StateRepository $stateRepository, InvoiceItensRepository $itensRepository)
+                                StateRepository $stateRepository, InvoiceItensRepository $itensRepository,
+                                EmailInvoiceRepository $emailInvoiceRepository)
     {
 
         $this->repository = $repository;
@@ -37,6 +43,7 @@ class InvoiceController extends Controller
         $this->personRepository = $personRepository;
         $this->stateRepository = $stateRepository;
         $this->itensRepository = $itensRepository;
+        $this->emailInvoiceRepository = $emailInvoiceRepository;
     }
 
     public function index($org_id = null)
@@ -95,7 +102,9 @@ class InvoiceController extends Controller
 
         $orgs = $this->churchRepository->orderBy('name')->findByField('status', 'active');
 
-        return view('invoices.create', compact('name', 'orgs'));
+        $route = 'create';
+
+        return view('invoices.create', compact('name', 'orgs', 'route'));
     }
 
     public function edit($id)
@@ -106,14 +115,15 @@ class InvoiceController extends Controller
 
         $invoice = $this->repository->findByField('id', $id)->first();
 
+        $route = 'edit';
+
         if($invoice)
         {
-
             $events = $this->eventRepository->findByField('church_id', $invoice->customer_id);
 
             $invoice->date = date_format(date_create($invoice->date), 'd/m/Y');
 
-            return view('invoices.edit', compact('name', 'orgs', 'invoice', 'events'));
+            return view('invoices.create', compact('name', 'orgs', 'invoice', 'events', 'route'));
         }
 
         \Session::flash('error.msg', 'Este invoice não existe');
@@ -145,9 +155,9 @@ class InvoiceController extends Controller
     public function store(Request $request)
     {
 
-        $invoice = $request->only(['customer_id', 'email', 'event_id', 'date']);
+        $invoice = $request->only(['customer_id', 'event_id', 'date']);
 
-        $itens = $request->except(['customer_id', 'email', 'event_id', 'date', '_token', 'print']);
+        $itens = $request->except(['customer_id', 'event_id', 'date', '_token', 'print']);
 
         $invoice['date'] = date_create_from_format('d/m/Y', $invoice['date']);
 
@@ -158,19 +168,56 @@ class InvoiceController extends Controller
 
         $invoice_id = $this->repository->create($invoice)->id;
 
-        for ($i = 1; $i <= count($itens) / 3; $i++)
+        $stop = false;
+        $i = 1;
+
+        while(!$stop)
         {
-            $x['invoice_id'] = $invoice_id;
+            if(isset($itens['td_title_'.$i]))
+            {
+                $x['invoice_id'] = $invoice_id;
 
-            $x['title'] = $itens['td_title_'.$i];
+                $x['title'] = $itens['td_title_'.$i];
 
-            $x['description'] = $itens['td_description_'.$i];
+                $x['description'] = $itens['td_description_'.$i];
 
-            $x['price'] = substr($itens['td_price_'.$i], 2);
+                $x['price'] = substr($itens['td_price_'.$i], 2);
 
-            $x['price'] = (float) $x['price'];
+                $x['price'] = (float) $x['price'];
 
-            $this->itensRepository->create($x);
+                $x['qtde'] = $itens['td_qtde_'.$i];
+
+                $this->itensRepository->create($x);
+
+                unset($x);
+
+                $i++;
+            }
+            else{
+                $stop = true;
+            }
+
+        }
+
+        $stop_email = false;
+        $e = 1;
+
+        while (!$stop_email)
+        {
+            if(isset($itens['email_'.$e]))
+            {
+                $em['email'] = $itens['email_'.$e];
+                $em['invoice_id'] = $invoice_id;
+
+                $this->emailInvoiceRepository->create($em);
+
+                unset($em);
+
+                $e++;
+            }
+            else{
+                $stop_email = true;
+            }
         }
 
         $request->session()->flash('success.msg', 'O Invoice foi criado');
@@ -186,11 +233,12 @@ class InvoiceController extends Controller
 
     public function update(Request $request, $id)
     {
-        $invoice = $request->only(['customer_id', 'email', 'event_id', 'date']);
+        $invoice = $request->only(['customer_id', 'event_id', 'date']);
 
-        $itens = $request->except(['customer_id', 'email', 'event_id', 'date', '_token', 'print']);
+        $itens = $request->except(['customer_id', 'event_id', 'date', '_token', 'print']);
 
         $invoice['date'] = date_create_from_format('d/m/Y', $invoice['date']);
+
 
         if(!$invoice['event_id'])
         {
@@ -206,19 +254,62 @@ class InvoiceController extends Controller
             $this->itensRepository->delete($item->id);
         }
 
-        for ($i = 1; $i <= count($itens) / 3; $i++)
+        $stop = false;
+        $i = 1;
+
+        while(!$stop)
         {
-            $x['invoice_id'] = $id;
+            if(isset($itens['td_title_'.$i]))
+            {
+                $x['invoice_id'] = $id;
 
-            $x['title'] = $itens['td_title_'.$i];
+                $x['title'] = $itens['td_title_' . $i];
 
-            $x['description'] = $itens['td_description_'.$i];
+                $x['description'] = $itens['td_description_' . $i];
 
-            $x['price'] = substr($itens['td_price_'.$i], 2);
+                $x['price'] = substr($itens['td_price_' . $i], 2);
 
-            $x['price'] = (float) $x['price'];
+                $x['price'] = (float)$x['price'];
 
-            $this->itensRepository->create($x);
+                $x['qtde'] = $itens['td_qtde_' . $i];
+
+                $this->itensRepository->create($x);
+
+                unset($x);
+
+                $i++;
+            }
+            else{
+                $stop = true;
+            }
+        }
+
+        $emails_exist = $this->emailInvoiceRepository->findByField('invoice_id', $id);
+
+        foreach ($emails_exist as $item)
+        {
+            $this->emailInvoiceRepository->delete($item->id);
+        }
+
+        $stop_email = false;
+        $e = 1;
+
+        while (!$stop_email)
+        {
+            if(isset($itens['email_'.$e]))
+            {
+                $em['email'] = $itens['email_'.$e];
+                $em['invoice_id'] = $id;
+
+                $this->emailInvoiceRepository->create($em);
+
+                unset($em);
+
+                $e++;
+            }
+            else{
+                $stop_email = true;
+            }
         }
 
         $request->session()->flash('success.msg', 'O Invoice foi alterado');
@@ -245,6 +336,13 @@ class InvoiceController extends Controller
                 foreach ($itens as $item)
                 {
                     $this->itensRepository->delete($item->id);
+                }
+
+                $emails = $this->emailInvoiceRepository->findByField('invoice_id', $id);
+
+                foreach ($emails as $email)
+                {
+                    $this->emailInvoiceRepository->delete($email->id);
                 }
 
                 $this->repository->delete($id);
@@ -291,7 +389,9 @@ class InvoiceController extends Controller
                     $total_price += $item->price;
                 }
 
-                return view('invoices.invoice', compact('name', 'invoice', 'org', 'total_price', 'itens'));
+                $emails = $this->emailInvoiceRepository->findByField('invoice_id', $invoice->id);
+
+                return view('invoices.invoice', compact('name', 'invoice', 'org', 'total_price', 'itens', 'emails'));
             }
         }
 
@@ -308,6 +408,22 @@ class InvoiceController extends Controller
 
             return json_encode(['status' => true, 'itens' => $itens]);
         }
+
+        return json_encode(['status' => false, 'msg' => 'Este invoice não existe', 'statusCode' => 404]);
+    }
+
+    public function get_emails($id)
+    {
+        $invoice = $this->repository->findByField('id', $id)->first();
+
+        if($invoice)
+        {
+            $emails = $this->emailInvoiceRepository->findByField('invoice_id', $id);
+
+            return json_encode(['status' => true, 'emails' => $emails]);
+        }
+
+        return json_encode(['status' => false, 'msg' => 'Este invoice não existe', 'statusCode' => 404]);
     }
 }
 
