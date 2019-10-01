@@ -430,7 +430,12 @@ License: You must have a valid license purchased only from themeforest(the above
 
 <script>
     const anElement = new AutoNumeric('#price', $("#price").val()).brazilian();
-    const anElement2 = new AutoNumeric('#price_modal', $("#price_modal").val()).brazilian();
+
+    if(!isEdit())
+    {
+        const anElement2 = new AutoNumeric('#price_modal', $("#price_modal").val()).brazilian();
+    }
+
 </script>
 
 </body>

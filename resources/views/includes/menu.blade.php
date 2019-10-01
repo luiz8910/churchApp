@@ -206,7 +206,7 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="javascript:">
+                                        <a href="{{ route('url.list') }}">
                                             <i class="fa fa-lock"></i>
                                             Lista de Links
                                         </a>

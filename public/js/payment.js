@@ -207,6 +207,6 @@ $(function () {
                 scrollTop: $("body").offset().top
             }, 2000);
         }
-    })
+    });
 
 });

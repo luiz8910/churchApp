@@ -130,176 +130,183 @@ License: You must have a valid license purchased only from themeforest(the above
                                     </div>-->
                                 </div>
                                 <div class="portlet-body form">
-                                    <form action="">
-                                    <div class="form-body">
+                                    <form action="{{ route('store.url') }}" method="POST">
+                                        {{ csrf_field() }}
+                                        <div class="form-body">
 
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label>Nome</label>
-                                                    <div class="input-group">
-                                                            <span class="input-group-addon">
-                                                                <i class="fa fa-user font-blue"></i>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Nome</label>
+                                                        <div class="input-group">
+                                                                <span class="input-group-addon">
+                                                                    <i class="fa fa-user font-blue"></i>
+                                                                </span>
+                                                            <input type="text" name="name" id="name" class="form-control" autocomplete="new-password"
+                                                                   placeholder="Nome da inscrição, curso ou palestra" value="{{ old('name') }}">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6" id="frequency">
+                                                    <div class="form-group">
+                                                        <label>Eventos participantes</label>
+                                                        <div class="input-icon input-icon-sm">
+                                                            <i class="fa fa-briefcase font-blue"></i>
+                                                            <select class="form-control select2" id="events" name="events" multiple required>
+                                                                @foreach($events as $event)
+                                                                    <option value="{{ $event->id }}">{{ $event->name }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="row">
+
+
+                                                <div class="col-md-6 col-sm-12">
+                                                    <div class="form-group @if(Session::has('invalidDate')) has-error @endif ">
+                                                        <label>Expira em:</label>
+                                                        <div class="input-group date date-picker" data-date-format="dd/mm/yyyy" data-date-start-date="+0d">
+
+                                                            <span class="input-group-btn">
+                                                                <button class="btn default" type="button">
+                                                                    <i class="fa fa-calendar font-blue"></i>
+                                                                </button>
                                                             </span>
-                                                        <input type="text" name="name" id="name" class="form-control" autocomplete="new-password"
-                                                               placeholder="Nome da inscrição, curso ou palestra" value="{{ old('name') }}">
+                                                            <input type="text" class="form-control" name="expires_in" id="expires_in" value="{{ old('expires_in') }}" readonly>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Valor</label>
+                                                        <div class="input-group">
+                                                                <span class="input-group-addon">
+                                                                    <i class="fa fa-credit-card font-blue"></i>
+                                                                </span>
+                                                            <input type="text" name="value_money" id="value_money" class="form-control number" autocomplete="new-password"
+                                                                   placeholder="Valor da inscrição" value="{{ old('value_money') }}">
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6" id="frequency">
-                                                <div class="form-group">
-                                                    <label>Eventos participantes</label>
-                                                    <div class="input-icon input-icon-sm">
-                                                        <i class="fa fa-briefcase font-blue"></i>
-                                                        <select class="form-control select2" id="events" name="events[]" multiple required>
-                                                            @foreach($events as $event)
-                                                                <option value="{{ $event->id }}">{{ $event->name }}</option>
-                                                            @endforeach
-                                                        </select>
+
+                                            <div class="row">
+
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label>Link para acesso</label>
+                                                        <div class="input-group">
+                                                                <span class="input-group-addon">
+                                                                    <i class="fa fa-lock font-blue"> </i>
+                                                                    https://beconnect.com.br/url/
+                                                                </span>
+                                                            <input type="text" name="url" id="url" class="form-control" autocomplete="new-password"
+                                                                   placeholder="Link do evento" value="{{ old('url') }}">
+                                                        </div>
                                                     </div>
                                                 </div>
+
+
                                             </div>
 
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-md-8">
-                                                <div class="form-group">
-                                                    <label>Link para acesso</label>
-                                                    <div class="input-group">
-                                                            <span class="input-group-addon">
-                                                                <i class="fa fa-lock font-blue"> </i>
-                                                                https://beconnect.com.br/url/
-                                                            </span>
-                                                        <input type="text" name="url" id="url" class="form-control" autocomplete="new-password"
-                                                               placeholder="Link do evento" value="{{ old('url') }}">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label>Valor</label>
-                                                    <div class="input-group">
-                                                            <span class="input-group-addon">
-                                                                <i class="fa fa-credit-card font-blue"></i>
-                                                            </span>
-                                                        <input type="text" name="value_money" id="value_money" class="form-control number" autocomplete="new-password"
-                                                               placeholder="Valor da inscrição" value="{{ old('value_money') }}">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-md-6 col-sm-12">
-                                                <div class="form-group @if(Session::has('invalidDate')) has-error @endif ">
-                                                    <label>Expira em:</label>
-                                                    <div class="input-group date date-picker" data-date-format="dd/mm/yyyy" data-date-start-date="+0d">
-
-                                                        <span class="input-group-btn">
-                                                            <button class="btn default" type="button">
-                                                                <i class="fa fa-calendar font-blue"></i>
-                                                            </button>
-                                                        </span>
-                                                        <input type="text" class="form-control" name="expires_in" id="expires_in" value="{{ old('expires_in') }}" readonly>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <br><br>
-
-                                        <div class="caption caption-md">
-                                            <i class="fa fa-credit-card font-blue"></i>
-                                            <span class="caption-subject font-blue-madison bold uppercase">Métodos de Pagamentos</span>
-                                        </div>
-                                        <hr><br>
-
-
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <span class="help-block">
-                                                        <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
-                                                            <input type="checkbox" name="credit-card" id="credit-card" class="checkboxes" value="1" checked disabled/>
-                                                            <span></span>Cartão de Crédito
-                                                        </label>
-                                                    </span>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <span class="help-block">
-                                                        <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
-                                                            <input type="checkbox" name="payment-slip" id="check_payment-slip" class="checkboxes" value="1"/>
-                                                            <span></span>Boleto
-                                                        </label>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-
-                                        <div id="payment-slip" style="display: none;">
                                             <br><br>
 
                                             <div class="caption caption-md">
-                                                <i class="fa fa-barcode"></i>
-                                                <span class="caption-subject font-blue-madison bold uppercase">Informações do boleto</span>
+                                                <i class="fa fa-credit-card font-blue"></i>
+                                                <span class="caption-subject font-blue-madison bold uppercase">Métodos de Pagamentos</span>
                                             </div>
                                             <hr><br>
 
+
                                             <div class="row">
-                                                <div class="col-md-6 col-sm-12">
-                                                    <div class="form-group @if(Session::has('invalidDate')) has-error @endif ">
-                                                        <label>Data de Vencimento</label>
-                                                        <div class="input-group date date-picker" data-date-format="dd/mm/yyyy" data-date-start-date="+0d">
-
-                                                        <span class="input-group-btn">
-                                                            <button class="btn default" type="button">
-                                                                <i class="fa fa-calendar font-blue"></i>
-                                                            </button>
-                                                        </span>
-                                                            <input type="text" class="form-control" name="dueDate" id="dueDate" value="{{ old('dueDate') }}" readonly required>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-6 col-sm-12">
+                                                <div class="col-md-4">
                                                     <div class="form-group">
-                                                        <label>Expira em (dias)</label>
-                                                        <div class="input-group">
-                                                            <span class="input-group-addon">
-                                                                <i class="fa fa-clock-o font-blue"></i>
-                                                            </span>
-                                                            <input type="text" name="daysToExpire" id="daysToExpire" class="form-control number" autocomplete="new-password"
-                                                                   placeholder="valores válidos: 15, 30" value="{{ old('daysToExpire') }}">
-                                                        </div>
+                                                        <span class="help-block">
+                                                            <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                                                <input type="checkbox" name="credit-card" id="credit-card" class="checkboxes" value="1" checked disabled/>
+                                                                <span></span>Cartão de Crédito
+                                                            </label>
+                                                        </span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <span class="help-block">
+                                                            <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                                                <input type="checkbox" name="payment-slip" id="check_payment-slip" class="checkboxes" value="1"/>
+                                                                <span></span>Boleto
+                                                            </label>
+                                                        </span>
                                                     </div>
                                                 </div>
                                             </div>
 
+
+
+                                            <div id="payment-slip" style="display: none;">
+                                                <br><br>
+
+                                                <div class="caption caption-md">
+                                                    <i class="fa fa-barcode"></i>
+                                                    <span class="caption-subject font-blue-madison bold uppercase">Informações do boleto</span>
+                                                </div>
+                                                <hr><br>
+
+                                                <div class="row">
+                                                    <div class="col-md-6 col-sm-12">
+                                                        <div class="form-group @if(Session::has('invalidDate')) has-error @endif ">
+                                                            <label>Data de Vencimento</label>
+                                                            <div class="input-group date date-picker" data-date-format="dd/mm/yyyy" data-date-start-date="+0d">
+
+                                                            <span class="input-group-btn">
+                                                                <button class="btn default" type="button">
+                                                                    <i class="fa fa-calendar font-blue"></i>
+                                                                </button>
+                                                            </span>
+                                                                <input type="text" class="form-control" name="dueDate" id="dueDate" value="{{ old('dueDate') }}" readonly required>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-6 col-sm-12">
+                                                        <div class="form-group">
+                                                            <label>Expira em (dias)</label>
+                                                            <div class="input-group">
+                                                                <span class="input-group-addon">
+                                                                    <i class="fa fa-clock-o font-blue"></i>
+                                                                </span>
+                                                                <input type="text" name="daysToExpire" id="daysToExpire" class="form-control number" autocomplete="new-password"
+                                                                       placeholder="valores válidos: 15, 30" value="{{ old('daysToExpire') }}">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
                                         </div>
 
-                                    </div>
-
-                                    <div class="form-actions">
-                                        <button type="submit" class="btn btn-primary btn-block" id="btn-submit">
-                                            <i class="fa fa-check"></i>
-                                            Cadastrar novo Link
-                                        </button>
-                                        <div class="progress" style="display: none;">
-                                            <div class="progress-bar progress-bar-striped active" role="progressbar"
-                                                 aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-                                                Enviando...
-                                                <span class="sr-only">Enviando...</span>
+                                        <div class="form-actions">
+                                            <button type="submit" class="btn btn-primary btn-block" id="btn-submit">
+                                                <i class="fa fa-check"></i>
+                                                Cadastrar novo Link
+                                            </button>
+                                            <div class="progress" style="display: none;">
+                                                <div class="progress-bar progress-bar-striped active" role="progressbar"
+                                                     aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                                                    Enviando...
+                                                    <span class="sr-only">Enviando...</span>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
                                     </form>
                                 </div>
                             </div>

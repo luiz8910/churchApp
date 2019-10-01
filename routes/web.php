@@ -732,7 +732,15 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('/url', 'EventController@subFromUrl')->name('event.url.sub');
 
-    Route::get('nova-url', 'PaymentController@new_url')->name('new.url.payment');
+    Route::get('links', 'UrlController@index')->name('url.list');
+
+    Route::get('nova-url', 'UrlController@new_url')->name('new.url.payment');
+
+    Route::post('store-url', 'UrlController@store')->name('store.url');
+
+    Route::put('update-url/{id}', 'UrlController@update')->name('update.url');
+
+    Route::delete('/delete-url/{id}', 'UrlController@delete');
 
     Route::post('/payment/{event_id}', 'EventController@payment')->name('event.payment');
 

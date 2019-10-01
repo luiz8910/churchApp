@@ -283,6 +283,10 @@ function delete_invoice(id)
             setTimeout(function () {
                 $("#tr_"+id).remove();
             }, 2000);
+
+            setTimeout(function () {
+                $(".confirm").trigger('click');
+            }, 4000);
         }
 
     });
@@ -364,9 +368,8 @@ function get_info_org(id)
 //Usado para pegar os itens no invoice, somente no edit invoice
 function get_itens()
 {
-    var edit = location.href.search('edit') != -1 ? true : false;
 
-    if(edit)
+    if(isEdit())
     {
         var invoice_id = $("#invoice_id").val();
 
@@ -424,9 +427,8 @@ function validateEmail(email) {
 
 function get_emails()
 {
-    var edit = location.href.search('edit') != -1 ? true : false;
 
-    if(edit)
+    if(isEdit())
     {
         var invoice_id = $("#invoice_id").val();
 
@@ -454,6 +456,12 @@ function get_emails()
             console.log(e);
         });
     }
+}
+
+//Usado para verificar se a pagina de edição está aberta
+function isEdit()
+{
+    return location.href.search('edit') != -1 ? true : false;
 }
 
 get_itens();

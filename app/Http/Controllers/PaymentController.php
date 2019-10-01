@@ -169,25 +169,7 @@ class PaymentController extends Controller
     }
 
 
-    public function new_url()
-    {
-        $countPerson[] = $this->countPerson();
 
-        $countGroups[] = $this->countGroups();
-
-        $leader = $this->getLeaderRoleId();
-
-        $admin = $this->getAdminRoleId();
-
-        $notify = $this->notify();
-
-        $qtde = $notify ? count($notify) : 0;
-
-        $events = $this->eventRepository->findByField('church_id', $this->getUserChurch());
-
-        return view('payments.new-url', compact('events', 'countPerson', 'countGroups',
-            'leader', 'admin', 'qtde'));
-    }
 
     public function store_new_url()
     {

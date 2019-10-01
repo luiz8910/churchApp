@@ -1094,22 +1094,26 @@ class EventController extends Controller
 
             $data["city"] = ucwords($data["city"]);
 
-            if ($data['public_url'] == "" && $event->public_url != "") {
+            if ($data['public_url'] == "" && $event->public_url != "")
+            {
                 $data['public_url'] = $event->public_url;
             }
 
             //Verificar url do evento
-            if ($this->eventServices->checkUrlEvent($data['public_url'], $id)) {
+            if ($this->eventServices->checkUrlEvent($data['public_url'], $id))
+            {
                 $request->session()->flash('error.msg', 'Url ja está em uso, mude o nome do evento');
 
                 return redirect()->back()->withInput();
             }
 
-            if ($data['certified_hours'] == "") {
+            if ($data['certified_hours'] == "")
+            {
                 $data['certified_hours'] = 0;
             }
 
-            if (isset($data['value_money'])) {
+            if (isset($data['value_money']))
+            {
                 $data['value_money'] = substr($data['value_money'], 2);
 
                 $data['value_money'] = str_replace('.', '', $data['value_money']);
@@ -2135,6 +2139,7 @@ class EventController extends Controller
         $value = null;
 
         if ($event) {
+
             try {
                 $data = $request->all();
 

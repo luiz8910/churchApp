@@ -239,7 +239,6 @@ class InvoiceController extends Controller
 
         $invoice['date'] = date_create_from_format('d/m/Y', $invoice['date']);
 
-
         if(!$invoice['event_id'])
         {
             unset($invoice['event_id']);
@@ -257,6 +256,8 @@ class InvoiceController extends Controller
         $stop = false;
         $i = 1;
 
+
+
         while(!$stop)
         {
             if(isset($itens['td_title_'.$i]))
@@ -267,15 +268,15 @@ class InvoiceController extends Controller
 
                 $x['description'] = $itens['td_description_' . $i];
 
-                $x['price'] = substr($itens['td_price_' . $i], 2);
+                //$x['price'] = substr($itens['td_price_' . $i], 2);
 
-                $x['price'] = (float)$x['price'];
+                //$x['price'] = (float) $x['price'];
+
+                $x['price'] = (float) $itens['td_price_'.$i];
 
                 $x['qtde'] = $itens['td_qtde_' . $i];
 
                 $this->itensRepository->create($x);
-
-                unset($x);
 
                 $i++;
             }
@@ -302,8 +303,6 @@ class InvoiceController extends Controller
                 $em['invoice_id'] = $id;
 
                 $this->emailInvoiceRepository->create($em);
-
-                unset($em);
 
                 $e++;
             }
@@ -390,6 +389,8 @@ class InvoiceController extends Controller
                 }
 
                 $emails = $this->emailInvoiceRepository->findByField('invoice_id', $invoice->id);
+
+
 
                 return view('invoices.invoice', compact('name', 'invoice', 'org', 'total_price', 'itens', 'emails'));
             }

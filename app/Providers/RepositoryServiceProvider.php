@@ -81,7 +81,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(\App\Repositories\SessionRepository::class, \App\Repositories\SessionRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\FeedbackRepository::class, \App\Repositories\FeedbackRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\AllowedPaymentsRepository::class, \App\Repositories\AllowedPaymentsRepositoryEloquent::class);
-        $this->app->bind(\App\Repositories\PaymentsMethodsRepository::class, \App\Repositories\PaymentsMethodsRepositoryEloquent::class);
+        $this->app->bind(\App\Repositories\PaymentMethodsRepository::class, \App\Repositories\PaymentMethodsRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\QuestionRepository::class, \App\Repositories\QuestionRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\FeedbackSessionRepository::class, \App\Repositories\FeedbackSessionRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\FeedbackSessionTypeRepository::class, \App\Repositories\FeedbackSessionTypeRepositoryEloquent::class);
@@ -94,6 +94,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(\App\Repositories\InvoiceRepository::class, \App\Repositories\InvoiceRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\InvoiceItensRepository::class, \App\Repositories\InvoiceItensRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\EmailInvoiceRepository::class, \App\Repositories\EmailInvoiceRepositoryEloquent::class);
+        $this->app->bind(\App\Repositories\UrlItensRepository::class, \App\Repositories\UrlItensRepositoryEloquent::class);
         //:end-bindings:
     }
 }

@@ -59,7 +59,7 @@ License: You must have a valid license purchased only from themeforest(the above
                             <div class="col-md-7 col-xs-6">
                                 <div class="invoice-logo">
                                     <img src="../logo/Horizontal.png" class="img-responsive" alt="" style="width: 70%;"/>
-                                    <h1 class="uppercase"</h1>
+                                    <h1 class="uppercase"></h1>
                                 </div>
                             </div>
                             <div class="col-md-5 col-xs-6">
@@ -113,7 +113,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                         <tr>
                                             <td>
                                                 <h3>{{ $item->title }}</h3>
-                                                <p> {{ $item->description }} </p>
+                                                <p class="desc"> {{ $item->description }} </p>
                                             </td>
                                             <td class="text-center sbold"></td>
                                             <td class="text-center sbold">{{ (int)$item->qtde }}</td>
@@ -177,6 +177,7 @@ License: You must have a valid license purchased only from themeforest(the above
 <!-- END INNER FOOTER -->
 <!-- END FOOTER -->
 @include('includes.core-scripts-edit')
+<script src="../../js/invoice.js"></script>
 <!-- END THEME LAYOUT SCRIPTS -->
 </body>
 
