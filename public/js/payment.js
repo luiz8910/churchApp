@@ -71,20 +71,25 @@ $(function () {
     });
 
 
-    $("#course-1").click(function () {
+    $(".course").click(function () {
+
+        var id = this.id.replace('course-', '');
 
         var header = $("#header-value-money");
+
         var header_m = $("#header-value-money-mob");
 
         var input = $("#input-header-m").val();
 
         var value = 0;
 
-        if($("#course-1").is(':checked'))
+        var price = $("#course-value-"+id).val();
+
+        if($("#course-"+id).is(':checked'))
         {
             value = parseFloat(input);
 
-            value += 250.00;
+            value += parseFloat(price);
 
             $("#input-header-m").val(value);
 
@@ -92,12 +97,15 @@ $(function () {
             header_m.text('R$' + value);
 
             $("#span-total").text('R$' + value);
+
+            installments(value);
+
         }
         else{
 
             value = parseFloat(input);
 
-            value -= 250.00;
+            value -= parseFloat(price);
 
             $("#input-header-m").val(value);
             header_m.text('R$' + value);
@@ -106,86 +114,7 @@ $(function () {
 
             $("#span-total").text('R$' + value);
 
-        }
-
-
-    });
-
-    $("#course-2").click(function () {
-
-        var header = $("#header-value-money");
-        var header_m = $("#header-value-money-mob");
-
-        var input = $("#input-header-m").val();
-
-        var value = 0;
-
-        if($("#course-2").is(':checked'))
-        {
-            value = parseFloat(input);
-
-            value += 250.00;
-
-            $("#input-header-m").val(value);
-
-            header.text('R$' + value);
-            header_m.text('R$' + value);
-
-            $("#span-total").text('R$' + value);
-        }
-        else{
-
-            value = parseFloat(input);
-
-            value -= 250.00;
-
-            $("#input-header-m").val(value);
-
-            header.text('R$' + value);
-            header_m.text('R$' + value);
-
-            $("#span-total").text('R$' + value);
-
-        }
-
-
-    });
-
-    $("#course-3").click(function () {
-
-        var header = $("#header-value-money");
-        var header_m = $("#header-value-money-mob");
-
-        var input = $("#input-header-m").val();
-
-        var value = 0;
-
-        if($("#course-3").is(':checked'))
-        {
-            value = parseFloat(input);
-
-            value += 250.00;
-
-            $("#input-header-m").val(value);
-
-            header.text('R$' + value);
-            header_m.text('R$' + value);
-
-            $("#span-total").text('R$' + value);
-        }
-        else{
-
-            value = parseFloat(input);
-
-            value -= 250.00;
-
-            $("#input-header-m").val(value);
-
-            header.text('R$' + value);
-            header_m.text('R$' + value);
-
-            $("#span-total").text('R$' + value);
-
+            installments(value);
         }
 
 
@@ -210,3 +139,42 @@ $(function () {
     });
 
 });
+
+function installments(value)
+{
+    $("#installments option").remove();
+
+    var append = '';
+
+    if(value == 0)
+    {
+        append = '<option value="" selected>Selecione um parcelamento</option>';
+    }
+    else{
+        var max = $("#max_installments").val();
+
+        value = parseFloat(value);
+
+        if(max > 1)
+        {
+
+            for (var i = 1; i <= max; i++)
+            {
+                if(i === 1)
+                {
+                    append += '<option value="'+i+'" selected>1x de '+value.toFixed(2)+'</option>';
+                }
+                else{
+                    append += '<option value="'+i+'">'+i+'x de '+(value / i).toFixed(2)+'</option>';
+                }
+
+            }
+        }
+        else{
+
+            append = '<option value="1" selected>'+value+'</option>';
+        }
+    }
+
+    $("#installments").append(append);
+}

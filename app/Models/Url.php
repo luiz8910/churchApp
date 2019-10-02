@@ -21,7 +21,7 @@ class Url extends Model implements Transformable
      * @var array
      */
     protected $fillable = [
-        'name', 'url', 'value_money', 'expires_in', 'pay_method'
+        'name', 'url', 'value_money', 'expires_in', 'pay_method', 'installments', 'church_id'
     ];
 
 }

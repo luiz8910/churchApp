@@ -29,6 +29,8 @@ use App\Repositories\PaymentRepository;
 use App\Repositories\ResponsibleRepository;
 use App\Repositories\RoleRepository;
 use App\Repositories\SessionRepository;
+use App\Repositories\UrlItensRepository;
+use App\Repositories\UrlRepository;
 use App\Repositories\VisitorRepository;
 use App\Services\AgendaServices;
 use App\Services\ChurchServices;
@@ -155,6 +157,14 @@ class EventController extends Controller
      * @var CourseDescRepository
      */
     private $courseRepository;
+    /**
+     * @var UrlRepository
+     */
+    private $urlRepository;
+    /**
+     * @var UrlItensRepository
+     */
+    private $urlItensRepository;
 
     /**
      * EventController constructor.
@@ -179,7 +189,8 @@ class EventController extends Controller
                                 EventSubscribedListRepository $listRepository, PeopleServices $peopleServices,
                                 MessageServices $messageServices, ResponsibleRepository $responsibleRepository,
                                 PaymentServices $paymentServices, CreditCardRepository $creditCardRepository,
-                                PaymentRepository $paymentRepository, CourseDescRepository $courseRepository)
+                                PaymentRepository $paymentRepository, CourseDescRepository $courseRepository,
+                                UrlRepository $urlRepository, UrlItensRepository $urlItensRepository)
     {
         $this->repository = $repository;
         $this->stateRepository = $stateRepositoryTrait;
@@ -203,6 +214,8 @@ class EventController extends Controller
         $this->creditCardRepository = $creditCardRepository;
         $this->paymentRepository = $paymentRepository;
         $this->courseRepository = $courseRepository;
+        $this->urlRepository = $urlRepository;
+        $this->urlItensRepository = $urlItensRepository;
     }
 
 
@@ -1999,9 +2012,9 @@ class EventController extends Controller
     /*
      * View para inscrição via Url pública
      */
-    public function subUrl($url)
+    public function subUrl($url_param)
     {
-        $event = $this->eventServices->checkUrlEvent($url);
+        $event = $this->eventServices->checkUrlEvent($url_param);
 
         if ($event) {
             $church = $this->churchRepository->findByField('id', $event->church_id)->first();
@@ -2030,8 +2043,32 @@ class EventController extends Controller
 
             return 'Nenhuma Organização Encontrada';
         }
+        else{
 
-        return 'Nenhum Evento Encontrado';
+            $url = $this->urlRepository->findByField('url', $url_param)->first();
+
+            if($url)
+            {
+                $itens = $this->urlItensRepository->findByField('url_id', $url->id);
+
+                foreach ($itens as $item)
+                {
+                    $event_item = $this->repository->findByField('id', $item->event_id)->first();
+
+                    if($event_item)
+                    {
+                        $item->event_name = $event_item->name;
+
+                        $item->value_money = $event_item->value_money;
+                    }
+                }
+
+                return view('events.url-pay', compact('url', 'itens'));
+            }
+
+        }
+
+        return 'Nenhum Evento ou link Encontrado';
 
     }
 

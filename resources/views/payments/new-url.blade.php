@@ -152,7 +152,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         <label>Eventos participantes</label>
                                                         <div class="input-icon input-icon-sm">
                                                             <i class="fa fa-briefcase font-blue"></i>
-                                                            <select class="form-control select2" id="events" name="events" multiple required>
+                                                            <select class="form-control select2" id="events" name="events[]" multiple required>
                                                                 @foreach($events as $event)
                                                                     <option value="{{ $event->id }}">{{ $event->name }}</option>
                                                                 @endforeach
@@ -190,7 +190,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                     <i class="fa fa-credit-card font-blue"></i>
                                                                 </span>
                                                             <input type="text" name="value_money" id="value_money" class="form-control number" autocomplete="new-password"
-                                                                   placeholder="Valor da inscrição" value="{{ old('value_money') }}">
+                                                                   placeholder="Valor da inscrição" value="{{ old('value_money') }}" disabled>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -198,7 +198,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                             <div class="row">
 
-                                                <div class="col-md-12">
+                                                <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Link para acesso</label>
                                                         <div class="input-group">
@@ -207,12 +207,30 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                     https://beconnect.com.br/url/
                                                                 </span>
                                                             <input type="text" name="url" id="url" class="form-control" autocomplete="new-password"
-                                                                   placeholder="Link do evento" value="{{ old('url') }}">
+                                                                   placeholder="Link do evento" value="{{ old('url') }}" required>
                                                         </div>
                                                     </div>
                                                 </div>
 
-
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="installments">Parcelamento</label>
+                                                        <select name="installments" id="installments" class="form-control">
+                                                            <option value="1" selected>1x á vista</option>
+                                                            <option value="2">2x</option>
+                                                            <option value="3">3x</option>
+                                                            <option value="4">4x</option>
+                                                            <option value="5">5x</option>
+                                                            <option value="6">6x</option>
+                                                            <option value="7">7x</option>
+                                                            <option value="8">8x</option>
+                                                            <option value="9">9x</option>
+                                                            <option value="10">10x</option>
+                                                            <option value="11">11x</option>
+                                                            <option value="12">12x</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
                                             </div>
 
                                             <br><br>

@@ -7,6 +7,8 @@ use App\Repositories\CreditCardRepository;
 use App\Repositories\EventRepository;
 use App\Repositories\PaymentRepository;
 use App\Repositories\PersonRepository;
+use App\Repositories\UrlItensRepository;
+use App\Repositories\UrlRepository;
 use App\Traits\PeopleTrait;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
@@ -34,9 +36,18 @@ class PaymentServices
      * @var PaymentRepository
      */
     private $paymentRepository;
+    /**
+     * @var UrlRepository
+     */
+    private $urlRepository;
+    /**
+     * @var UrlItensRepository
+     */
+    private $urlItensRepository;
 
     public function __construct(CreditCardRepository $creditCardRepository, EventRepository $eventRepository,
-                                PersonRepository $personRepository, PaymentRepository $paymentRepository)
+                                PersonRepository $personRepository, PaymentRepository $paymentRepository,
+                                UrlRepository $urlRepository, UrlItensRepository $urlItensRepository)
     {
 
         $this->creditCardRepository = $creditCardRepository;
@@ -44,6 +55,8 @@ class PaymentServices
         $this->eventRepository = $eventRepository;
         $this->personRepository = $personRepository;
         $this->paymentRepository = $paymentRepository;
+        $this->urlRepository = $urlRepository;
+        $this->urlItensRepository = $urlItensRepository;
     }
 
 
@@ -345,26 +358,27 @@ class PaymentServices
     }
 
     //5ª Função no fluxo de pagamentos
-    public function createTransaction($data, $event_id, $total = null)
+    public function createTransaction($data, $event_id = null, $total = null, $url_id = null)
     {
         $url = "/createTransaction";
 
-        $event = $this->eventRepository->findByField('id', $event_id)->first();
-
         $person = $this->personRepository->findByField('id', $data['person_id'])->first();
 
-
-        if($event && $person)
+        if($event_id)
         {
-            if($total)
-            {
-                $value = $total * 100;
-            }
-            else{
-                $value = $event->value_money * 100;
-            }
+            $event = $this->eventRepository->findByField('id', $event_id)->first();
 
-            $response = $this->client->request('POST', $this->payment_url() . $url, ['json' => [
+            if($event && $person)
+            {
+                if($total)
+                {
+                    $value = $total * 100;
+                }
+                else{
+                    $value = $event->value_money * 100;
+                }
+
+                $response = $this->client->request('POST', $this->payment_url() . $url, ['json' => [
 
                     "headers" => [
                         "Content-Type" => "application/json",
@@ -383,7 +397,7 @@ class PaymentServices
                     ],*/
 
                     "paymentMethod" => [
-                        "softDescriptor" => "MIGS",
+                        "softDescriptor" => "BRICKS",
                         "cardNonce" => $data['card_nonce'],
                         "cardBrandId" => $data['brandId'],
                         "paymentMode" => 1,
@@ -402,71 +416,194 @@ class PaymentServices
 
 
                 ]
-            ]);
+                ]);
 
-            if($response->getStatusCode() == 200)
-            {
-                try{
-                    $json = $response->getBody()->read(2048);
-
-
-                    $pay['transactionId'] = json_decode($json)->transactionId;
-                    $pay['status'] = json_decode($json)->status;
-                    $pay['metaId'] = $data['metaId'];
-                    $pay['person_id'] = $person->id;
-                    $pay['event_id'] = $event_id;
-                    $pay['church_id'] = $event->church_id;
-                    /*$pay['antiFraude_success'] = json_decode($json)->antifraude->success;
-                    $pay['antiFraude_validator'] = json_decode($json)->antifraude->validator;
-                    $pay['antiFraude_score'] = json_decode($json)->antifraude->score;
-                    $pay['antiFraude_recommendation'] = json_decode($json)->antifraude->recommendation;*/
-
-                    $exists = $this->paymentRepository->findWhere([
-                       'person_id' => $pay['person_id'],
-                        'event_id' => $pay['event_id']
-                    ])->first();
-
-                    if($exists)
-                    {
-                        $this->paymentRepository->update($pay, $exists->id);
-                    }
-                    else{
-                        $this->paymentRepository->create($pay);
-                    }
-
-
-                    \DB::commit();
-
-                    return true;
-
-                }catch (\Exception $e)
+                if($response->getStatusCode() == 200)
                 {
-                    \DB::rollBack();
+                    try{
+                        $json = $response->getBody()->read(2048);
 
+
+                        $pay['transactionId'] = json_decode($json)->transactionId;
+                        $pay['status'] = json_decode($json)->status;
+                        $pay['metaId'] = $data['metaId'];
+                        $pay['person_id'] = $person->id;
+                        $pay['event_id'] = $event_id;
+                        $pay['church_id'] = $event->church_id;
+                        /*$pay['antiFraude_success'] = json_decode($json)->antifraude->success;
+                        $pay['antiFraude_validator'] = json_decode($json)->antifraude->validator;
+                        $pay['antiFraude_score'] = json_decode($json)->antifraude->score;
+                        $pay['antiFraude_recommendation'] = json_decode($json)->antifraude->recommendation;*/
+
+                        $exists = $this->paymentRepository->findWhere([
+                            'person_id' => $pay['person_id'],
+                            'event_id' => $pay['event_id']
+                        ])->first();
+
+                        if($exists)
+                        {
+                            $this->paymentRepository->update($pay, $exists->id);
+                        }
+                        else{
+                            $this->paymentRepository->create($pay);
+                        }
+
+
+                        \DB::commit();
+
+                        return true;
+
+                    }catch (\Exception $e)
+                    {
+                        \DB::rollBack();
+
+                        $bug = new Bug();
+
+                        $bug->description = $e->getMessage() . ' id da pessoa: ' . $person->id;
+                        $bug->platform = 'Back-end';
+                        $bug->location = 'line ' . $e->getLine() . ' createTransaction() PaymentServices.php';
+                        $bug->model = '4all';
+                        $bug->status = 'Pendente';
+
+                        $bug->save();
+                    }
+
+                }
+                else{
                     $bug = new Bug();
 
-                    $bug->description = $e->getMessage() . ' id da pessoa: ' . $person->id;
+                    $bug->description = $response->getReasonPhrase() . ' Código: ' . $response->getStatusCode();
                     $bug->platform = 'Back-end';
-                    $bug->location = 'line ' . $e->getLine() . ' createTransaction() PaymentServices.php';
+                    $bug->location = 'createTransaction() PaymentServices.php';
                     $bug->model = '4all';
                     $bug->status = 'Pendente';
 
                     $bug->save();
+
+                }
+            }
+        }
+
+
+
+        if($url_id)
+        {
+            $url_model = $this->urlRepository->findByField('id', $url_id)->first();
+
+
+            if($url_model && $person)
+            {
+                if($total)
+                {
+                    $value = $total * 100;
                 }
 
-            }
-            else{
-                $bug = new Bug();
+                $response = $this->client->request('POST', $this->payment_url() . $url, ['json' => [
 
-                $bug->description = $response->getReasonPhrase() . ' Código: ' . $response->getStatusCode();
-                $bug->platform = 'Back-end';
-                $bug->location = 'createTransaction() PaymentServices.php';
-                $bug->model = '4all';
-                $bug->status = 'Pendente';
+                    "headers" => [
+                        "Content-Type" => "application/json",
+                        "Accept" => "application/json",
+                    ],
 
-                $bug->save();
+                    "merchantKey" => $this->getMerchantKey(),
+                    "amount" => $value,
+                    "metaId" => $data['metaId'],
 
-            }
+
+                    /*"interestRules" => [
+                        "min" => 1,
+                        "max" => $event->installments,
+                        "percentual" => 0
+                    ],*/
+
+                    "paymentMethod" => [
+                        "softDescriptor" => "BRICKS",
+                        "cardNonce" => $data['card_nonce'],
+                        "cardBrandId" => $data['brandId'],
+                        "paymentMode" => 1,
+                        "installmentType" => $data['installments'] > 1 ? 2 : 1,
+                        "installments" => $data['installments'],
+                        "amount" => $value,
+                    ],
+
+                    "customerInfo" => [
+                        "fullName" => $person->name,
+                        "cpf" => $person->cpf,
+                        "phoneNumber" => $person->cel,
+                        "birthday" => date_format(date_create($person->dateBirth), 'Y-m-d'),
+                        "emailAddress" => $person->email,
+                    ],
+
+
+                ]
+                ]);
+
+                if($response->getStatusCode() == 200)
+                {
+                    try{
+                        $json = $response->getBody()->read(2048);
+
+
+                        $pay['transactionId'] = json_decode($json)->transactionId;
+                        $pay['status'] = json_decode($json)->status;
+                        $pay['metaId'] = $data['metaId'];
+                        $pay['person_id'] = $person->id;
+                        $pay['url_id'] = $url_id;
+                        $pay['church_id'] = $url_model->church_id;
+                        /*$pay['antiFraude_success'] = json_decode($json)->antifraude->success;
+                        $pay['antiFraude_validator'] = json_decode($json)->antifraude->validator;
+                        $pay['antiFraude_score'] = json_decode($json)->antifraude->score;
+                        $pay['antiFraude_recommendation'] = json_decode($json)->antifraude->recommendation;*/
+
+                        $exists = $this->paymentRepository->findWhere([
+                            'person_id' => $pay['person_id'],
+                            'url_id' => $pay['url_id']
+                        ])->first();
+
+                        if($exists)
+                        {
+                            $this->paymentRepository->update($pay, $exists->id);
+                        }
+                        else{
+                            $this->paymentRepository->create($pay);
+                        }
+
+
+                        \DB::commit();
+
+                        return true;
+
+                    }catch (\Exception $e)
+                    {
+                        \DB::rollBack();
+
+                        $bug = new Bug();
+
+                        $bug->description = $e->getMessage() . ' id da pessoa: ' . $person->id;
+                        $bug->platform = 'Back-end';
+                        $bug->location = 'line ' . $e->getLine() . ' createTransaction() PaymentServices.php';
+                        $bug->model = '4all';
+                        $bug->status = 'Pendente';
+                        $bug->church_id = 0;
+
+                        $bug->save();
+                    }
+
+                }
+                else{
+                    $bug = new Bug();
+
+                    $bug->description = $response->getReasonPhrase() . ' Código: ' . $response->getStatusCode();
+                    $bug->platform = 'Back-end';
+                    $bug->location = 'createTransaction() PaymentServices.php';
+                    $bug->model = '4all';
+                    $bug->status = 'Pendente';
+                    $bug->church_id = 0;
+
+                    $bug->save();
+
+                }
+        }
         }
 
         return false;
