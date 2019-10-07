@@ -530,4 +530,9 @@ class UrlController extends Controller
         throw new NotFoundHttpException();
     }
 
+
+    public function getPaymentMethods()
+    {
+        return $this->paymentServices->getPaymentMethods();
+    }
 }

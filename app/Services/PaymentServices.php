@@ -442,6 +442,12 @@ class PaymentServices
 
                             $pay_slip['id'] = json_decode($json)->id;
                             $pay_slip['uuid'] = json_decode($json)->uuid;
+                            $pay_slip['bank'] = json_decode($json)->bank;
+                            $pay_slip['bar_code'] = json_decode($json)->bar_code;
+                            $pay_slip['typeable_line'] = json_decode($json)->typeable_line;
+                            $pay_slip['our_number'] = json_decode($json)->our_number;
+
+                            $this->paymentSlipRepository->update($pay_slip, $slip->id);
 
                             $exists = $this->paymentRepository->findWhere([
                                 'person_id' => $pay['person_id'],
@@ -469,7 +475,7 @@ class PaymentServices
 
                             $bug->description = $e->getMessage() . ' id da pessoa: ' . $person->id;
                             $bug->platform = 'Back-end';
-                            $bug->location = 'line ' . $e->getLine() . ' createTransaction() PaymentServices.php';
+                            $bug->location = 'line ' . $e->getLine() . ' create_payment_slip() PaymentServices.php';
                             $bug->model = '4all';
                             $bug->status = 'Pendente';
                             $bug->church_id = 0;
@@ -764,6 +770,28 @@ class PaymentServices
             $pass[] = $alphabet[$n];
         }
         return implode($pass); //turn the array into a string
+    }
+
+    public function getPaymentMethods()
+    {
+        $response = $this->client->request('POST', $this->payment_url() . '/getPaymentMethods', ['json' => [
+
+            "headers" => [
+                "Content-Type" => "application/json",
+                "Accept" => "application/json",
+            ],
+
+            "merchantKey" => $this->getMerchantKey()
+        ]]);
+
+        if($response->getStatusCode() == 200)
+        {
+            $json = $response->getBody()->read(2048);
+
+            dd( json_decode($json)->resume);
+        }
+
+        return false;
     }
 
 }

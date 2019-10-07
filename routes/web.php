@@ -746,6 +746,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('/payment-url/{url_id}', 'UrlController@payment')->name('event.payment.url');
 
+    Route::get('/getPaymentMethods', 'UrlController@getPaymentMethods');
+
     Route::get('/4all', 'EventController@teste4all');
 
     Route::get('check_transaction', 'EventController@check_transaction');
