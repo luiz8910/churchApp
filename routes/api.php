@@ -384,16 +384,22 @@ Route::get('/rating-person/{person_id}/{session_id}', 'Api\FeedbackSessionContro
 //-------------------------- Feed --------------------------------------------------------------------------------------
 
 //Recupera feeds de uma sessão
-Route::get('/feeds-session/{session_id}/{page?}', 'Api\FeedController@sessionFeeds');
+Route::get('/feeds-session/{session_id}/{person_id?}/{page?}', 'Api\FeedController@sessionFeeds');
 
 //Recupera feeds de um evento
-Route::get('/feeds-event/{event_id}/{page?}', 'Api\FeedController@eventFeeds');
+Route::get('/feeds-event/{event_id}/{person_id?}/{page?}', 'Api\FeedController@eventFeeds');
 
 //Adiciona novo feed a uma sessão
 Route::post('/feeds-session', 'Api\FeedController@add_sessionFeed');
 
 //Adiciona novo feed a um evento
 Route::post('/feeds-event', 'Api\FeedController@add_eventFeed');
+
+// Usado para dar like no feed. ID do feed
+Route::put('/add-like-feed/{id}/{person_id}', 'Api\FeedController@add_like');
+
+// Usado para retirar like no feed. ID do feed
+Route::put('/remove-like-feed/{id}/{person_id}', 'Api\FeedController@remove_like');
 
 
 //-------------------------- Outros ------------------------------------------------------------------------------------

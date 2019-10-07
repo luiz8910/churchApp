@@ -12,10 +12,10 @@
 <head>
 @include('includes.head')
 <!-- BEGIN PAGE LEVEL PLUGINS -->
-    <link href="assets/global/plugins/datatables/datatables.min.css" rel="stylesheet" type="text/css"/>
-    <link href="assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css" rel="stylesheet"
+    <link href="../../assets/global/plugins/datatables/datatables.min.css" rel="stylesheet" type="text/css"/>
+    <link href="../../assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css" rel="stylesheet"
           type="text/css"/>
-    <link href="assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet"
+    <link href="../../assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet"
           type="text/css"/>
     <!-- END PAGE LEVEL PLUGINS -->
 </head>
@@ -177,26 +177,26 @@
                                                             <tbody class="hide" id="tbody-search"></tbody>
                                                             <tbody>
 
-                                                            @if($urls)
-                                                                @foreach($urls as $url)
-                                                                    <tr>
-                                                                        <td>{{ $url->name }}</td>
-                                                                        <td>https://beconnect.com.br/url/{{ $url->url }}</td>
-                                                                        <td>
-                                                                            {{ $url->expires_in }}
-                                                                        </td>
-                                                                        <td>{{ $url->payment_method }}</td>
-                                                                        <td>
-                                                                            <a href="javascript:" class="btn btn-circle btn-info btn-sm">
-                                                                                <i class="fa fa-pencil"></i>
-                                                                            </a>
-                                                                            <a href="javascript:" class="btn btn-danger btn-sm btn-circle">
-                                                                                <i class="fa fa-trash"></i>
-                                                                            </a>
-                                                                        </td>
-                                                                    </tr>
-                                                                @endforeach
-                                                            @endif
+                                                                @if($urls)
+                                                                    @foreach($urls as $url)
+                                                                        <tr id="tr_{{ $url->id }}">
+                                                                            <td>{{ $url->name }}</td>
+                                                                            <td>https://beconnect.com.br/url/{{ $url->url }}</td>
+                                                                            <td>
+                                                                                {{ $url->expires_in }}
+                                                                            </td>
+                                                                            <td>{{ $url->payment_method }}</td>
+                                                                            <td>
+                                                                                <a href="javascript:" class="btn btn-circle btn-primary btn-sm">
+                                                                                    <i class="fa fa-pencil"></i>
+                                                                                </a>
+                                                                                <a href="javascript:" class="btn btn-danger btn-sm btn-circle" onclick="delete_url({!! $url->id !!})">
+                                                                                    <i class="fa fa-trash"></i>
+                                                                                </a>
+                                                                            </td>
+                                                                        </tr>
+                                                                    @endforeach
+                                                                @endif
                                                             </tbody>
                                                         </table>
                                                         <br>
@@ -243,17 +243,18 @@
 
 <!-- END CONTAINER -->
 @include('includes.footer')
-@include('includes.core-scripts')
+@include('includes.core-scripts-edit')
 <!-- BEGIN PAGE LEVEL PLUGINS -->
-<script src="assets/global/scripts/datatable.js" type="text/javascript"></script>
-<script src="assets/global/plugins/datatables/datatables.min.js" type="text/javascript"></script>
-<script src="assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js"
+<script src="../assets/global/scripts/datatable.js" type="text/javascript"></script>
+<script src="../assets/global/plugins/datatables/datatables.min.js" type="text/javascript"></script>
+<script src="../assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js"
         type="text/javascript"></script>
-<script src="assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
+<script src="../assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
 <!-- END PAGE LEVEL PLUGINS -->
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
-<script src="assets/pages/scripts/table-datatables-buttons.min.js" type="text/javascript"></script>
+<script src="../assets/pages/scripts/table-datatables-buttons.min.js" type="text/javascript"></script>
 <!-- END PAGE LEVEL SCRIPTS -->
+<script src="../js/payment.js"></script>
 </body>
 
 </html>

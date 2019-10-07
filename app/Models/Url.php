@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
@@ -13,7 +14,7 @@ use Prettus\Repository\Traits\TransformableTrait;
  */
 class Url extends Model implements Transformable
 {
-    use TransformableTrait;
+    use TransformableTrait, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -23,5 +24,7 @@ class Url extends Model implements Transformable
     protected $fillable = [
         'name', 'url', 'value_money', 'expires_in', 'pay_method', 'installments', 'church_id'
     ];
+
+    protected $dates = ['deleted_at'];
 
 }

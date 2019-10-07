@@ -66,12 +66,13 @@
                     </div>
                     <div class="panel-body hide-panel" id="feeds-session">
 
-                        https://beconnect.com.br/api/feeds-session/{session_id}/{page?}
+                        https://beconnect.com.br/api/feeds-session/{session_id}/{person_id?}/{page?}
                         <span class="label label-primary">GET</span>
 
                         <br><br>
 
                         session_id = id da sessão <span class="label label-info" style="font-size: 12px;">Inteiro</span><br><br>
+                        person_id = id da pessoa <span class="label label-info" style="font-size: 12px;">Inteiro</span><br><br>
                         page = número da página (Opcional) <span class="label label-info" style="font-size: 12px;">Inteiro</span><br>
 
 
@@ -91,6 +92,7 @@
                                         "model": "session",
                                         "session_id":7,
                                         "text":"Texto do Feed",
+                                        "like_count": 0,
                                         "created_at": "2019-08-08 16:00"
                                     }
                                 ]
@@ -117,12 +119,13 @@
                     </div>
                     <div class="panel-body hide-panel" id="feeds-event">
 
-                        https://beconnect.com.br/api/feeds-event/{event_id}/{page?}
+                        https://beconnect.com.br/api/feeds-event/{event_id}/{person_id?}/{page?}
                         <span class="label label-primary">GET</span>
 
                         <br><br>
 
                         event_id = id da sessão <span class="label label-info" style="font-size: 12px;">Inteiro</span><br><br>
+                        person_id = id da pessoa <span class="label label-info" style="font-size: 12px;">Inteiro</span><br><br>
                         page = número da página (Opcional) <span class="label label-info" style="font-size: 12px;">Inteiro</span><br>
 
 
@@ -142,6 +145,7 @@
                                         "model": "event",
                                         "session_id":7,
                                         "text":"Texto do Feed",
+                                        "like_count": 0,
                                         "created_at": "2019-08-08 16:00"
                                     }
                                 ]
@@ -232,6 +236,84 @@
 
                             {"status":false,"msg": "Mensagem de erro aqui"}
 
+                        </pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-warning">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Adicionar Like
+                            <span class="span-btn-minimize" id="btn-minimize-add-like-feed">_</span>
+                        </h3>
+
+                    </div>
+                    <div class="panel-body hide-panel" id="add-like-feed">
+
+                        https://beconnect.com.br/api/add-like-feed/{feed_id}/{person_id}
+                        <span class="label label-warning">PUT</span>
+
+                        <br><br>
+
+                        feed_id = id da questão <span class="label label-info" style="font-size: 12px;">Inteiro</span><br>
+                        person_id = id da pessoa que está curtindo o feed<span class="label label-info" style="font-size: 12px;">Inteiro</span><br>
+
+                        <br><br>
+
+                        <p class="text-center">Exemplo de Retorno</p>
+
+                        <pre>
+                            Se encontrado
+                            {
+                                {"status":true}
+                            }
+
+                            Senão
+
+                            {"status":false,"msg": "Este feed não existe"}
+                        </pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-warning">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Remover Like
+                            <span class="span-btn-minimize" id="btn-minimize-remove-like-feed">_</span>
+                        </h3>
+
+                    </div>
+                    <div class="panel-body hide-panel" id="remove-like-feed">
+
+                        https://beconnect.com.br/api/remove-like-feed/{feed_id}/{person_id}
+                        <span class="label label-warning">PUT</span>
+
+                        <br><br>
+
+                        feed_id = id do feed <span class="label label-info" style="font-size: 12px;">Inteiro</span><br>
+                        person_id = id da pessoa que está curtindo o feed<span class="label label-info" style="font-size: 12px;">Inteiro</span><br>
+
+                        <br><br>
+
+                        <p class="text-center">Exemplo de Retorno</p>
+
+                        <pre>
+                            Se encontrado
+                            {
+                                {"status":true}
+                            }
+
+                            Senão
+
+                            {"status":false,"msg": "Este feed não existe"}
                         </pre>
                     </div>
                 </div>

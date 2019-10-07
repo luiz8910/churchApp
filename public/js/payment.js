@@ -136,7 +136,63 @@ $(function () {
                 scrollTop: $("body").offset().top
             }, 2000);
         }
+
+        //Se o método de pagamento == cartão de crédito
+        if($("#pay_method").val() == 2)
+        {
+            //Verificar se o campo holder_name no cartão está preenchido
+
+            //Verificar se o campo credit_card_number está preenchido
+
+            //Verificar se o campo expires_in está preenchido
+
+            //Verificar se o campo cvc está preenchido
+        }
+
     });
+
+    $("#dueDate").change(function () {
+
+        $("#form-dueDate").removeClass('has-error');
+
+        $("#span-dueDate").css('display', 'none');
+
+    });
+
+    $("#form-store-url").submit(function (event) {
+
+        if($("#check_payment-slip").is(':checked'))
+        {
+            var due_date = $("#dueDate").val();
+
+            if (due_date == "")
+            {
+                event.preventDefault();
+
+                $("#form-dueDate").addClass('has-error');
+
+                $("#span-dueDate").css('display', 'block');
+            }
+        }
+    });
+
+
+    $("#pay_method").change(function () {
+
+        if(this.value == 2)
+        {
+            $("#installments").css('display', 'block');
+
+            $("#credit_card_div").css('display', 'block');
+        }
+        else{
+            $("#installments").css('display', 'none');
+
+            $("#credit_card_div").css('display', 'none');
+        }
+    })
+
+
 
 });
 
@@ -177,4 +233,56 @@ function installments(value)
     }
 
     $("#installments").append(append);
+
+}
+
+function delete_url(id)
+{
+
+    swal({
+        title: 'Atenção',
+        text: 'Deseja excluir esta url?',
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sim, Exclua',
+        confirmButtonClass: "btn-danger",
+        cancelButtonText: 'Não',
+        closeOnConfirm: false
+
+    },
+        function (isConfirm) {
+
+        if(isConfirm)
+        {
+            var msg = 'A url foi excluída com sucesso';
+
+
+            var request = $.ajax({
+                url: '/delete-url/' + id,
+                method: 'DELETE',
+                dataType: 'json'
+            });
+
+            request.done(function (e) {
+                if(e.status)
+                {
+                    $("#tr_"+id).remove();
+
+                    swal('Sucesso!!!', msg, 'success');
+
+                    setTimeout(function () {
+                        $(".confirm").trigger('click');
+                    }, 4000);
+                }
+            });
+
+            request.fail(function (e) {
+                console.log('fail');
+                console.log(e);
+            })
+
+
+        }
+    })
+
 }

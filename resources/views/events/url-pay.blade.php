@@ -56,7 +56,13 @@
                     @include('includes.messages')
 
 
-                    <p class="inner-text" style="font-size: 15px !important;"><strong>Pagamento: Apenas com Cartão de Crédito</strong></p>
+                    <p class="inner-text" style="font-size: 15px !important;">
+                        @if($url->pay_method == 1)
+                            <strong>Pagamento: Cartão de Crédito ou Boleto</strong>
+                        @elseif($url->pay_method == 2)
+                            <strong>Pagamento: Apenas com Cartão de Crédito</strong>
+                        @endif
+                    </p>
 
                     <p id="select-course" style="color:red; display: none;">Selecione pelo menos um curso</p>
 
@@ -91,8 +97,6 @@
                         <div class="form-group justify-content-between align-items-center border-bottom" id="form-courses">
                             {{--<div class="form-group d-flex justify-content-between align-items-center border-bottom">--}}
 
-
-
                             @foreach($itens as $item)
                                 <div class="row">
                                     <div class="col-md-12">
@@ -109,7 +113,15 @@
 
                             <br>
 
-                            <select class="form-control border-0" name="installments" id="installments" required>
+                            <select class="form-control border-0" name="pay_method" id="pay_method" required>
+                                <option value="">Selecione um método de pagamento</option>
+                                <option value="1">Boleto</option>
+                                <option value="2">Cartão de Crédito</option>
+                            </select>
+
+                            <br>
+
+                            <select class="form-control border-0" name="installments" id="installments" required style="display: none;">
                                 <option value="">Selecione um parcelamento</option>
                                 {{--<option value="1" selected>1x á vista</option>
                                 @if($url->installments > 1)
@@ -139,7 +151,7 @@
                         <div class="form-group">
                             <label class="has-float-label" aria-label="Email">
                                 <input class="form-control" type="email" placeholder="Email"
-                                       name="email" value="{{ old('email') }}"required/>
+                                       name="email" value="{{ old('email') }}" required/>
                                 <span>Email</span>
                             </label>
                             {{--<p><strong>É permitida a compra de apenas um ingresso por email</strong></p>--}}
@@ -184,48 +196,51 @@
                             @endif
                         </div>
 
-                        <div class="form-group">
-                            <label class="has-float-label" aria-label="Nome no cartão">
-                                <input class="form-control" type="text"
-                                       placeholder="Nome no cartão" name="holder_name" value="{{ old('holder_name') }}" required/>
-                                <span>Nome no cartão</span>
-                            </label>
-                        </div>
+                        <div id="credit_card_div">
+                            <div class="form-group">
+                                <label class="has-float-label" aria-label="Nome no cartão">
+                                    <input class="form-control" type="text"
+                                           placeholder="Nome no cartão" name="holder_name" value="{{ old('holder_name') }}" />
+                                    <span>Nome no cartão</span>
+                                </label>
+                            </div>
 
-                        <div class="form-group">
-                            <label class="has-float-label" aria-label="Número do cartão de crédito">
-                                <input class="form-control number" id="credit_card_number" type="text"
-                                       placeholder="Número do cartão de crédito"
-                                       name="credit_card_number" maxlength="16" value="{{ old('credit_card_number') }}" required/>
-                                <span>Número do cartão de crédito</span>
+                            <div class="form-group">
+                                <label class="has-float-label" aria-label="Número do cartão de crédito">
+                                    <input class="form-control number" id="credit_card_number" type="text"
+                                           placeholder="Número do cartão de crédito"
+                                           name="credit_card_number" maxlength="16" value="{{ old('credit_card_number') }}" />
+                                    <span>Número do cartão de crédito</span>
 
-                            </label>
-                            <span style="color: red; display: none;" id="span-error-number"></span>
-                            <input type="hidden" id="company" name="company">
-                        </div>
+                                </label>
+                                <span style="color: red; display: none;" id="span-error-number"></span>
+                                <input type="hidden" id="company" name="company">
+                            </div>
 
-                        <div class="row">
-                            <div class="col-sm-9">
-                                <div class="form-group">
-                                    <label class="has-float-label" aria-label="Data de expiração">
-                                        <input class="form-control number" type="text" id="expire_date"
-                                               placeholder="mm/AA" value="{{ old('expires_in') }}"
-                                               maxlength="5" name="expires_in" required />
-                                        <span>Data de expiração (mm/AA) </span>
-                                    </label>
-                                    <span style="color: red; display: none;" id="span-error"></span>
+                            <div class="row">
+                                <div class="col-sm-9">
+                                    <div class="form-group">
+                                        <label class="has-float-label" aria-label="Data de expiração">
+                                            <input class="form-control number" type="text" id="expire_date"
+                                                   placeholder="mm/AA" value="{{ old('expires_in') }}"
+                                                   maxlength="5" name="expires_in"  />
+                                            <span>Data de expiração (mm/AA) </span>
+                                        </label>
+                                        <span style="color: red; display: none;" id="span-error"></span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label class="has-float-label" aria-label="CVC">
+                                            <input class="form-control number" type="text"
+                                                   placeholder="CVC" name="cvc" value="{{ old('cvc') }}" />
+                                            <span>CVC</span>
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                    <label class="has-float-label" aria-label="CVC">
-                                        <input class="form-control number" type="text"
-                                               placeholder="CVC" name="cvc" value="{{ old('cvc') }}" required/>
-                                        <span>CVC</span>
-                                    </label>
-                                </div>
-                            </div>
                         </div>
+
 
                         <div class="form-group d-flex flex-column flex-sm-row justify-content-between align-items-sm-center border-bottom">
                             <span class="fs-22">Total sem juros</span>

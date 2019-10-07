@@ -12,7 +12,8 @@ class Feed extends Model implements Transformable
 
     protected $fillable = [
         'church_id', 'notification_range', 'model', 'model_id',
-        'text', 'icon_id', 'show', 'feed_type', 'expires_in', 'link', 'title'
+        'text', 'icon_id', 'show', 'feed_type', 'expires_in',
+        'link', 'title', 'like_count'
     ];
 
 }

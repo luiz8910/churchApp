@@ -130,7 +130,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                     </div>-->
                                 </div>
                                 <div class="portlet-body form">
-                                    <form action="{{ route('store.url') }}" method="POST">
+                                    <form action="{{ route('store.url') }}" method="POST" id="form-store-url">
                                         {{ csrf_field() }}
                                         <div class="form-body">
 
@@ -279,8 +279,8 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                                 <div class="row">
                                                     <div class="col-md-6 col-sm-12">
-                                                        <div class="form-group @if(Session::has('invalidDate')) has-error @endif ">
-                                                            <label>Data de Vencimento</label>
+                                                        <div class="form-group" id="form-dueDate">
+                                                            <label>Data de Vencimento <span id="span-dueDate" style="color:red; display: none;"> Preencha a data de Vencimento</span></label>
                                                             <div class="input-group date date-picker" data-date-format="dd/mm/yyyy" data-date-start-date="+0d">
 
                                                             <span class="input-group-btn">
@@ -288,7 +288,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                     <i class="fa fa-calendar font-blue"></i>
                                                                 </button>
                                                             </span>
-                                                                <input type="text" class="form-control" name="dueDate" id="dueDate" value="{{ old('dueDate') }}" readonly required>
+                                                                <input type="text" class="form-control" name="dueDate" id="dueDate" value="{{ old('dueDate') }}" readonly>
                                                             </div>
 
                                                         </div>
@@ -302,7 +302,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                     <i class="fa fa-clock-o font-blue"></i>
                                                                 </span>
                                                                 <input type="text" name="daysToExpire" id="daysToExpire" class="form-control number" autocomplete="new-password"
-                                                                       placeholder="valores válidos: 15, 30" value="{{ old('daysToExpire') }}">
+                                                                       placeholder="valores válidos: 15, 30" value="@if(old('daysToExpire')){{ old('daysToExpire') }} @else 15 @endif">
                                                             </div>
                                                         </div>
                                                     </div>

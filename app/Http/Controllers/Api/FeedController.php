@@ -29,7 +29,7 @@ class FeedController extends Controller
         $this->feedServices = $feedServices;
     }
 
-    public function eventFeeds($event_id, $page = null)
+    public function eventFeeds($event_id, $person_id = null, $page = null)
     {
         if($page && $page > 1)
         {
@@ -57,13 +57,40 @@ class FeedController extends Controller
 
         if(count($feeds) > 0)
         {
+            if($person_id)
+            {
+                $person = $this->personRepository->findByField('id', $person_id)->first();
+
+                if($person)
+                {
+                    foreach ($feeds as $f)
+                    {
+                        $like_exists = DB::table('like_feed')
+                            ->where([
+                                'person_id' => $person_id,
+                                'feed_id' => $f->id,
+                            ])->first();
+
+                        if($like_exists)
+                        {
+                            $f->liked = $like_exists->liked;
+                        }
+                        else{
+
+                            $f->liked = 0;
+                        }
+                    }
+                }
+            }
+
+
             return json_encode(['status' => true, 'feeds' => $feeds]);
         }
 
         return json_encode(['status' => true, 'count' => 0]);
     }
 
-    public function sessionFeeds($session_id, $page = null)
+    public function sessionFeeds($session_id, $person_id = null, $page = null)
     {
         if($page && $page > 1)
         {
@@ -91,6 +118,32 @@ class FeedController extends Controller
 
         if(count($feeds) > 0)
         {
+            if($person_id)
+            {
+                $person = $this->personRepository->findByField('id', $person_id)->first();
+
+                if($person)
+                {
+                    foreach ($feeds as $f)
+                    {
+                        $like_exists = DB::table('like_feed')
+                            ->where([
+                                'person_id' => $person_id,
+                                'feed_id' => $f->id,
+                            ])->first();
+
+                        if($like_exists)
+                        {
+                            $f->liked = $like_exists->liked;
+                        }
+                        else{
+
+                            $f->liked = 0;
+                        }
+                    }
+                }
+            }
+
             return json_encode(['status' => true, 'feeds' => $feeds]);
         }
 
@@ -147,5 +200,229 @@ class FeedController extends Controller
             return json_encode(['status' => false, 'msg' => $e->getMessage()]);
         }
 
+    }
+
+    /*
+     * $id = id do feed
+     */
+    public function add_like($id, $person_id)
+    {
+        $feed = $this->repository->findByField('id', $id)->first();
+
+        if($feed)
+        {
+            $person = $this->personRepository->findByField('id', $person_id)->first();
+
+            if($person)
+            {
+                $like_exists = DB::table('like_feed')
+                    ->where([
+                        'person_id' => $person_id,
+                        'feed_id' => $id,
+                    ])->first();
+
+                if($like_exists)
+                {
+                    if($like_exists->liked == 1)
+                    {
+                        return json_encode(['status' => false, 'Este usuário já curtiu este feed.']);
+                    }
+                }
+
+                $x['like_count'] = $feed->like_count;
+
+                $x['like_count']++;
+
+                try{
+                    if($this->repository->update($x, $id))
+                    {
+
+                        if($like_exists)
+                        {
+                            DB::table('like_feed')
+                                ->where([
+                                    'person_id' => $person_id,
+                                    'feed_id' => $id,
+                                ])->update(['liked' => 1]);
+                        }
+                        else{
+                            DB::table('like_feed')
+                                ->insert([
+                                    'liked' => 1,
+                                    'person_id' => $person_id,
+                                    'feed_id' => $id
+                                ]);
+                        }
+
+                        /*$feed = \DB::table('questions')->where('id', $id)->first();
+
+                        $person_name = $this->personRepository->findByField('id', $feed->person_id)->first()->name;
+
+                        $feed->person_name = $person_name;
+
+                        event(new \App\Events\LikedQuestion($feed));*/
+
+                        \DB::commit();
+
+                        return json_encode(['status' => true]);
+
+                    }
+
+
+                }catch (\Exception $e)
+                {
+                    \DB::rollBack();
+
+                    $session = $this->repository->findByField('id', $feed->session_id)->first();
+
+                    $event = $this->eventRepository->findByField('id', $session->event_id)->first();
+
+                    $bug = new Bug();
+
+                    $bug->description = $e->getMessage();
+                    $bug->platform = 'App';
+                    $bug->location = 'add_like() Api\FeedController.php';
+                    $bug->model = 'Feed';
+                    $bug->status = 'Pendente';
+                    $bug->church_id = $event->church_id;
+
+                    $bug->save();
+
+                    return json_encode(['status' => false, 'msg' => $e->getMessage()]);
+                }
+            }
+
+
+            $bug = new Bug();
+
+            $bug->description = 'Person id: ' . $id . ' não existe';
+            $bug->platform = 'App';
+            $bug->location = 'add_like() Api\FeedController.php';
+            $bug->model = 'Feed';
+            $bug->status = 'Pendente';
+            $bug->church_id = 0;
+
+            $bug->save();
+
+            return json_encode(['status' => false, 'msg' => 'Essa pessoa não existe']);
+
+        }
+
+        $bug = new Bug();
+
+        $bug->description = 'Feed id: ' . $id . ' não existe';
+        $bug->platform = 'App';
+        $bug->location = 'add_like() Api\FeedController.php';
+        $bug->model = 'Feed';
+        $bug->status = 'Pendente';
+        $bug->church_id = 0;
+
+        $bug->save();
+
+        return json_encode(['status' => false, 'msg' => 'Este feed não existe']);
+
+    }
+
+    /*
+     * $id = id da questão
+     */
+    public function remove_like($id, $person_id)
+    {
+        $feed = $this->repository->findByField('id', $id)->first();
+
+        if($feed)
+        {
+            $person = $this->personRepository->findByField('id', $person_id)->first();
+
+            if($person)
+            {
+                $like_exists = DB::table('like_feed')
+                    ->where([
+                        'person_id' => $person_id,
+                        'feed_id' => $id,
+                    ])->first();
+
+                if($like_exists)
+                {
+                    if ($like_exists->liked == 0)
+                    {
+                        return json_encode([
+                            'status' => false,
+                            'msg' => 'Este usuário ainda não curtiu o feed.'
+                        ]);
+                    }
+                }
+
+                $x['like_count'] = $feed->like_count;
+
+                if($x['like_count'] > 0)
+                {
+                    $x['like_count']--;
+
+                    try{
+                        if($this->repository->update($x, $id))
+                        {
+                            if($like_exists)
+                            {
+                                DB::table('like_feed')
+                                    ->where([
+                                        'person_id' => $person_id,
+                                        'feed_id' => $id,
+                                    ])->update(['liked' => 0]);
+                            }
+                            else{
+                                DB::table('like_feed')
+                                    ->insert([
+                                        'liked' => 0,
+                                        'person_id' => $person_id,
+                                        'feed_id' => $id
+                                    ]);
+                            }
+                        }
+
+                        \DB::commit();
+
+                        return json_encode(['status' => true]);
+
+                    }catch (\Exception $e)
+                    {
+                        \DB::rollBack();
+
+                        $session = $this->repository->findByField('id', $feed->session_id)->first();
+
+                        $event = $this->eventRepository->findByField('id', $session->event_id)->first();
+
+                        $bug = new Bug();
+
+                        $bug->description = $e->getMessage();
+                        $bug->platform = 'App';
+                        $bug->location = 'remove_like() Api\FeedController.php';
+                        $bug->model = 'Feed';
+                        $bug->status = 'Pendente';
+                        $bug->church_id = $event->church_id;
+
+                        $bug->save();
+
+                        return json_encode(['status' => false, 'msg' => $e->getMessage()]);
+                    }
+                }
+            }
+
+
+        }
+        else{
+            $bug = new Bug();
+
+            $bug->description = 'Feed id: ' . $id . ' não existe';
+            $bug->platform = 'App';
+            $bug->location = 'remove_like() Api\FeedController.php';
+            $bug->model = 'Feed';
+            $bug->status = 'Pendente';
+            $bug->church_id = 0;
+
+            $bug->save();
+
+            return json_encode(['status' => false, 'msg' => 'Este feed não existe']);
+        }
     }
 }

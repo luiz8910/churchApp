@@ -122,3 +122,13 @@ input[type="submit"]:hover{
         float: none;
     }
 }
+
+.span-pay_method{
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.span-pay_method img{
+    width: 30px;
+
+}

@@ -21,7 +21,7 @@ class PaymentSlip extends Model implements Transformable
      * @var array
      */
     protected $fillable = [
-        'uuid', 'bank', 'due_date', 'bar_code', 'typeable_line', 'our_number', 'daysToExpire'
+        'uuid', 'bank', 'due_date', 'bar_code', 'typeable_line', 'our_number', 'daysToExpire', 'event_id', 'url_id'
     ];
 
 }

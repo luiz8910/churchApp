@@ -6,6 +6,7 @@ use App\Models\Bug;
 use App\Repositories\CreditCardRepository;
 use App\Repositories\EventRepository;
 use App\Repositories\PaymentRepository;
+use App\Repositories\PaymentSlipRepository;
 use App\Repositories\PersonRepository;
 use App\Repositories\UrlItensRepository;
 use App\Repositories\UrlRepository;
@@ -44,10 +45,15 @@ class PaymentServices
      * @var UrlItensRepository
      */
     private $urlItensRepository;
+    /**
+     * @var PaymentSlipRepository
+     */
+    private $paymentSlipRepository;
 
     public function __construct(CreditCardRepository $creditCardRepository, EventRepository $eventRepository,
                                 PersonRepository $personRepository, PaymentRepository $paymentRepository,
-                                UrlRepository $urlRepository, UrlItensRepository $urlItensRepository)
+                                UrlRepository $urlRepository, UrlItensRepository $urlItensRepository,
+                                PaymentSlipRepository $paymentSlipRepository)
     {
 
         $this->creditCardRepository = $creditCardRepository;
@@ -57,6 +63,7 @@ class PaymentServices
         $this->paymentRepository = $paymentRepository;
         $this->urlRepository = $urlRepository;
         $this->urlItensRepository = $urlItensRepository;
+        $this->paymentSlipRepository = $paymentSlipRepository;
     }
 
 
@@ -357,6 +364,141 @@ class PaymentServices
         }
     }
 
+
+    public function create_payment_slip($data, $event_id = null, $total = null, $url_id = null)
+    {
+        $url = "/createTransaction";
+
+        $person = $this->personRepository->findByField('id', $data['person_id'])->first();
+
+        if($url_id)
+        {
+            $url_model = $this->urlRepository->findByField('id', $url_id)->first();
+
+
+            if($url_model && $person)
+            {
+                if($total)
+                {
+                    $value = $total * 100;
+                }
+
+                $slip = $this->paymentSlipRepository->findByField('url_id', $url_id)->first();
+
+                if($slip)
+                {
+                    $response = $this->client->request('POST', $this->payment_url() . $url, ['json' => [
+
+                        "headers" => [
+                            "Content-Type" => "application/json",
+                            "Accept" => "application/json",
+                        ],
+
+                        "merchantKey" => $this->getMerchantKey(),
+                        "amount" => $value,
+                        "metaId" => $data['metaId'],
+
+
+                        /*"interestRules" => [
+                            "min" => 1,
+                            "max" => $event->installments,
+                            "percentual" => 0
+                        ],*/
+
+                        "paymentMethod" => [
+                            "softDescriptor" => "BRICKS",
+                            "paymentMode" => 3,
+
+                            "paymentSlip" => [
+                                "dueDate" => $slip->dueDate,
+                                "daysToExpire" => $slip->daysToExpire
+                            ],
+                        ],
+
+                        "customerInfo" => [
+                            "fullName" => $person->name,
+                            "cpf" => $person->cpf,
+                            "phoneNumber" => $person->cel,
+                            "birthday" => date_format(date_create($person->dateBirth), 'Y-m-d'),
+                            "emailAddress" => $person->email,
+                        ],
+
+
+                    ]
+                    ]);
+
+                    if($response->getStatusCode() == 200)
+                    {
+                        try{
+                            $json = $response->getBody()->read(2048);
+
+
+                            $pay['transactionId'] = json_decode($json)->transactionId;
+                            $pay['status'] = json_decode($json)->status;
+                            $pay['metaId'] = $data['metaId'];
+                            $pay['person_id'] = $person->id;
+                            $pay['url_id'] = $url_id;
+                            $pay['church_id'] = $url_model->church_id;
+
+                            $pay_slip['id'] = json_decode($json)->id;
+                            $pay_slip['uuid'] = json_decode($json)->uuid;
+
+                            $exists = $this->paymentRepository->findWhere([
+                                'person_id' => $pay['person_id'],
+                                'url_id' => $pay['url_id']
+                            ])->first();
+
+                            if($exists)
+                            {
+                                $this->paymentRepository->update($pay, $exists->id);
+                            }
+                            else{
+                                $this->paymentRepository->create($pay);
+                            }
+
+
+                            \DB::commit();
+
+                            return true;
+
+                        }catch (\Exception $e)
+                        {
+                            \DB::rollBack();
+
+                            $bug = new Bug();
+
+                            $bug->description = $e->getMessage() . ' id da pessoa: ' . $person->id;
+                            $bug->platform = 'Back-end';
+                            $bug->location = 'line ' . $e->getLine() . ' createTransaction() PaymentServices.php';
+                            $bug->model = '4all';
+                            $bug->status = 'Pendente';
+                            $bug->church_id = 0;
+
+                            $bug->save();
+                        }
+
+                    }
+                    else{
+                        $bug = new Bug();
+
+                        $bug->description = $response->getReasonPhrase() . ' Código: ' . $response->getStatusCode();
+                        $bug->platform = 'Back-end';
+                        $bug->location = 'create_payment_slip() PaymentServices.php';
+                        $bug->model = '4all';
+                        $bug->status = 'Pendente';
+                        $bug->church_id = 0;
+
+                        $bug->save();
+
+                    }
+                }
+
+
+            }
+        }
+    }
+
+
     //5ª Função no fluxo de pagamentos
     public function createTransaction($data, $event_id = null, $total = null, $url_id = null)
     {
@@ -603,7 +745,7 @@ class PaymentServices
                     $bug->save();
 
                 }
-        }
+            }
         }
 
         return false;
