@@ -736,11 +736,15 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('nova-url', 'UrlController@new_url')->name('new.url.payment');
 
+    Route::get('editar-url/{id}', 'UrlController@edit_url')->name('edit.url.payment');
+
     Route::post('store-url', 'UrlController@store')->name('store.url');
 
     Route::put('update-url/{id}', 'UrlController@update')->name('update.url');
 
     Route::delete('/delete-url/{id}', 'UrlController@delete');
+
+    Route::get('/get-itens-url/{id}', 'UrlController@getItens');
 
     Route::post('/payment/{event_id}', 'EventController@payment')->name('event.payment');
 

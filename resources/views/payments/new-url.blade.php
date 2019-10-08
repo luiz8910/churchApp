@@ -130,7 +130,12 @@ License: You must have a valid license purchased only from themeforest(the above
                                     </div>-->
                                 </div>
                                 <div class="portlet-body form">
-                                    <form action="{{ route('store.url') }}" method="POST" id="form-store-url">
+                                    @if(isset($id))
+                                        <form action="{{ route('update.url', ['id' => $id]) }}" method="POST" id="form-store-url">
+                                            {{ method_field('PUT') }}
+                                    @else
+                                        <form action="{{ route('store.url') }}" method="POST" id="form-store-url">
+                                    @endif
                                         {{ csrf_field() }}
                                         <div class="form-body">
 
@@ -143,22 +148,51 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                     <i class="fa fa-user font-blue"></i>
                                                                 </span>
                                                             <input type="text" name="name" id="name" class="form-control" autocomplete="new-password"
-                                                                   placeholder="Nome da inscrição, curso ou palestra" value="{{ old('name') }}">
+                                                                   placeholder="Nome da inscrição, curso ou palestra" value="@if(isset($id)){{ $url->name }}@else{{ old('name') }}@endif">
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6" id="frequency">
-                                                    <div class="form-group">
-                                                        <label>Eventos participantes</label>
-                                                        <div class="input-icon input-icon-sm">
-                                                            <i class="fa fa-briefcase font-blue"></i>
-                                                            <select class="form-control select2" id="events" name="events[]" multiple required>
-                                                                @foreach($events as $event)
-                                                                    <option value="{{ $event->id }}">{{ $event->name }}</option>
-                                                                @endforeach
-                                                            </select>
+
+                                                <input type="hidden" id="url_id" value="@if(isset($id)){{ $id }}@endif">
+
+
+                                                <div class="col-md-6" >
+                                                    @if(isset($id))
+                                                        <i class="fa fa-spin fa-spinner fa-pulse fa-3x fa-fw" style="margin-top: 25px; margin-left: 20%;" id="loading-events"></i>
+                                                        <label id="loading-events-label">Carregando Eventos...</label>
+
+                                                        <div class="form-group" id="events_sell" style="display: none;">
+
+                                                            <label>Produto/Serviço à venda</label>
+                                                            <div class="input-icon input-icon-sm">
+
+
+                                                                <select class="form-control select2" id="events" name="events[]" multiple required>
+
+                                                                    @foreach($events as $event)
+                                                                        <option value="{{ $event->id }}">{{ $event->name }}</option>
+                                                                    @endforeach
+                                                                </select>
+
+                                                            </div>
                                                         </div>
-                                                    </div>
+                                                    @else
+                                                        <div class="form-group">
+
+                                                            <label>Produto/Serviço à venda</label>
+                                                            <div class="input-icon input-icon-sm">
+                                                                <i class="fa fa-briefcase font-blue"></i>
+
+                                                                <select class="form-control select2" id="events" name="events[]" multiple required>
+
+                                                                    @foreach($events as $event)
+                                                                        <option value="{{ $event->id }}">{{ $event->name }}</option>
+                                                                    @endforeach
+                                                                </select>
+
+                                                            </div>
+                                                        </div>
+                                                    @endif
                                                 </div>
 
                                             </div>
@@ -176,27 +210,12 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                     <i class="fa fa-calendar font-blue"></i>
                                                                 </button>
                                                             </span>
-                                                            <input type="text" class="form-control" name="expires_in" id="expires_in" value="{{ old('expires_in') }}" readonly>
+                                                            <input type="text" class="form-control" name="expires_in" id="expires_in"
+                                                                   value="@if(isset($id)){{ $url->expires_in }}@else{{ old('expires_in') }}@endif" readonly>
                                                         </div>
 
                                                     </div>
                                                 </div>
-
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label>Valor</label>
-                                                        <div class="input-group">
-                                                                <span class="input-group-addon">
-                                                                    <i class="fa fa-credit-card font-blue"></i>
-                                                                </span>
-                                                            <input type="text" name="value_money" id="value_money" class="form-control number" autocomplete="new-password"
-                                                                   placeholder="Valor da inscrição" value="{{ old('value_money') }}" disabled>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="row">
 
                                                 <div class="col-md-6">
                                                     <div class="form-group">
@@ -207,14 +226,18 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                     https://beconnect.com.br/url/
                                                                 </span>
                                                             <input type="text" name="url" id="url" class="form-control" autocomplete="new-password"
-                                                                   placeholder="Link do evento" value="{{ old('url') }}" required>
+                                                                   placeholder="Link do evento" value="@if(isset($id)){{ $url->url }}@else{{ old('url') }}@endif" required>
                                                         </div>
                                                     </div>
                                                 </div>
+                                            </div>
+
+                                            <div class="row">
 
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="installments">Parcelamento</label>
+                                                        <input type="hidden" value="{{ $url->installments }}" id="input-installments">
                                                         <select name="installments" id="installments" class="form-control">
                                                             <option value="1" selected>1x á vista</option>
                                                             <option value="2">2x</option>
@@ -231,6 +254,28 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         </select>
                                                     </div>
                                                 </div>
+
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="installments_tax">Parcelamento com juros</label>
+                                                        <select name="installments_tax" id="installments_tax" class="form-control">
+                                                            <option value="0" selected>Não se Aplica</option>
+                                                            <option value="2">2x</option>
+                                                            <option value="3">3x</option>
+                                                            <option value="4">4x</option>
+                                                            <option value="5">5x</option>
+                                                            <option value="6">6x</option>
+                                                            <option value="7">7x</option>
+                                                            <option value="8">8x</option>
+                                                            <option value="9">9x</option>
+                                                            <option value="10">10x</option>
+                                                            <option value="11">11x</option>
+                                                            <option value="12">12x</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
                                             </div>
 
                                             <br><br>

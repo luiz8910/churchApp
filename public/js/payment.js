@@ -196,6 +196,10 @@ $(function () {
 
 });
 
+verifyInstallments();
+verifyEvents();
+
+
 function installments(value)
 {
     $("#installments option").remove();
@@ -285,4 +289,62 @@ function delete_url(id)
         }
     })
 
+}
+
+function verifyInstallments()
+{
+    if(location.pathname.search('edit') != -1)
+    {
+        var installments = $("#input-installments").val();
+
+        $('#installments option[value|="'+installments+'"]').attr('selected', true);
+    }
+}
+
+function verifyEvents()
+{
+    if(location.pathname.search('edit') != -1)
+    {
+        var id = $("#url_id").val();
+
+        var request = $.ajax({
+            url: '/get-itens-url/' + id,
+            method: 'GET',
+            dataType: 'json'
+        });
+
+        request.done(function (e) {
+            if(e.status)
+            {
+                var append = '';
+
+                for (var i = 0; i < e.itens.length; i++)
+                {
+                    $("#events option").each(function () {
+                        if($(this).val() == e.itens[i].event_id)
+                        {
+                            $(this).attr('selected', true);
+                            console.log(e.itens[i].event_id);
+
+                            append += '<li class="select2-selection__choice" title="'+e.itens[i].event_name+'"><span class="select2-selection__choice__remove" role="presentation">×</span>'+e.itens[i].event_name+'</li>'
+
+                        }
+                    });
+                }
+
+                $(".select2-selection__rendered").prepend(append);
+
+                $("#loading-events").css('display', 'none');
+                $("#loading-events-label").css('display', 'none');
+
+                $("#events_sell").css('display', 'block');
+
+            }
+        });
+
+        request.fail(function (e) {
+            console.log('fail');
+            console.log(e);
+        });
+    }
 }

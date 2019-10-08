@@ -138,6 +138,37 @@ class UrlController extends Controller
             'leader', 'admin', 'qtde'));
     }
 
+    public function edit_url($id)
+    {
+        $countPerson[] = $this->countPerson();
+
+        $countGroups[] = $this->countGroups();
+
+        $leader = $this->getLeaderRoleId();
+
+        $admin = $this->getAdminRoleId();
+
+        $notify = $this->notify();
+
+        $qtde = $notify ? count($notify) : 0;
+
+        $events = $this->eventRepository->findByField('church_id', $this->getUserChurch());
+
+        $url = $this->repository->findByField('id', $id)->first();
+
+        if($url)
+        {
+            $url->expires_in = !$url->expires_in ?: date_format(date_create($url->expires_in), 'd/m/Y');
+
+            $itens = $this->itensRepository->findByField('url_id', $id);
+
+            return view('payments.new-url', compact('events', 'countPerson', 'countGroups',
+                'leader', 'admin', 'qtde', 'id', 'itens', 'url'));
+        }
+
+
+    }
+
     public function store(Request $request)
     {
 
@@ -223,7 +254,90 @@ class UrlController extends Controller
 
     public function update(Request $request, $id)
     {
+        try{
+            $data = $request->all(); dd($data);
 
+            $url = $this->repository->findByField('id', $id)->first();
+
+            if($url)
+            {
+                $data['pay_method'] = isset($data['dueDate']) ? 1 : 2;
+
+                if($data['expires_in'])
+                {
+                    $data['expires_in'] .= ' 23:59';
+
+                    $data['expires_in'] = date_create_from_format('d/m/Y H:i', $data['expires_in']);
+                }
+
+                $data['value_money'] = isset($data['value_money']) ? $data['value_money'] : 0.00;
+
+                $data['church_id'] = $this->getUserChurch();
+
+                $this->repository->update($data, $id);
+
+                $itens = $this->itensRepository->findByField('url_id', $id);
+
+                foreach ($itens as $item)
+                {
+                    $this->itensRepository->delete($item->id);
+                }
+
+                foreach ($data['events'] as $event)
+                {
+                    $x['event_id'] = $event;
+                    $x['url_id'] = $id;
+
+                    $this->itensRepository->create($x);
+                }
+
+                if(isset($data['dueDate']) && isset($data['payment_slip']))
+                {
+                    $boleto['due_date'] = date_create_from_format('d/m/Y', $data['dueDate']);
+                    $boleto['daysToExpire'] = $data['daysToExpire'] ? $data['daysToExpire'] : 0;
+                    $boleto['url_id'] = $id;
+
+                    $payment_slip = $this->paymentSlipRepository->findByField('url_id', $id)->first();
+
+                    if($payment_slip)
+                    {
+                        $this->paymentSlipRepository->update($boleto, $payment_slip->id);
+                    }
+                }
+                elseif(!isset($data['payment_slip']))
+                {
+                    $payment_slip = $this->paymentSlipRepository->findByField('url_id', $id)->first();
+
+                    if($payment_slip)
+                    {
+                        $this->paymentSlipRepository->delete($payment_slip->id);
+                    }
+
+                }
+
+                $request->session()->flash('success.msg', 'O link foi alterado com sucesso');
+            }
+
+
+            return redirect()->route('url.list');
+
+        }catch (\Exception $e)
+        {
+            $bug = new Bug();
+
+            $bug->description = $e->getMessage();
+            $bug->platform = 'Back-end';
+            $bug->location = 'Line: ' .$e->getLine(). ' update() UrlController.php';
+            $bug->model = 'Url';
+            $bug->status = 'Pendente';
+            $bug->church_id = $this->getUserChurch();
+
+            $bug->save();
+
+            $request->session()->flash('error.msg', 'Um erro ocorreu, tente novamente mais tarde');
+
+            return redirect()->back()->withInput();
+        }
     }
 
 
@@ -244,12 +358,22 @@ class UrlController extends Controller
             }
 
 
-
             return json_encode(['status' => false, 'msg' => 'Esta url não foi encontrada']);
 
         }catch (\Exception $e)
         {
            \DB::rollBack();
+
+            $bug = new Bug();
+
+            $bug->description = $e->getMessage();
+            $bug->platform = 'Back-end';
+            $bug->location = 'Line: ' .$e->getLine(). ' delete() UrlController.php';
+            $bug->model = 'Url';
+            $bug->status = 'Pendente';
+            $bug->church_id = $this->getUserChurch();
+
+            $bug->save();
 
            return json_encode(['status' => false]);
         }
@@ -528,6 +652,37 @@ class UrlController extends Controller
         }
 
         throw new NotFoundHttpException();
+    }
+
+    public function getItens($id)
+    {
+        $url = $this->repository->findByField('id', $id)->first();
+
+        if($url)
+        {
+            $itens = $this->itensRepository->findByField('url_id', $id);
+
+            foreach ($itens as $item)
+            {
+                $event_name = $this->eventRepository->findByField('id', $item->event_id)->first();
+
+                $item->event_name = !$event_name ?: $event_name->name;
+            }
+
+            return json_encode(['status' => true, 'itens' => $itens]);
+        }
+
+        $bug = new Bug();
+
+        $bug->description = 'Nenhuma url encontrada com id: ' . $id;
+        $bug->platform = 'Back-end';
+        $bug->location = 'getItens() UrlController.php';
+        $bug->model = '4all';
+        $bug->status = 'Pendente';
+
+        $bug->save();
+
+        return json_encode(['status' => false]);
     }
 
 

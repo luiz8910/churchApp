@@ -187,7 +187,7 @@
                                                                             </td>
                                                                             <td>{{ $url->payment_method }}</td>
                                                                             <td>
-                                                                                <a href="javascript:" class="btn btn-circle btn-primary btn-sm">
+                                                                                <a href="{{ route('edit.url.payment', ['id' => $url->id])}}" class="btn btn-circle btn-primary btn-sm">
                                                                                     <i class="fa fa-pencil"></i>
                                                                                 </a>
                                                                                 <a href="javascript:" class="btn btn-danger btn-sm btn-circle" onclick="delete_url({!! $url->id !!})">
