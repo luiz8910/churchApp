@@ -340,7 +340,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             <span class="input-group-addon font-blue">
                                                                 R$
                                                             </span>
-                                                            <input type="text" class="form-control number" id="price" placeholder="10,00" >
+                                                            <input type="text" class="form-control money" id="price" placeholder="10,00" >
                                                         </div>
                                                     </div>
                                                 </div>
@@ -425,16 +425,16 @@ License: You must have a valid license purchased only from themeforest(the above
 <!-- END CONTAINER -->
 @include('includes.footer')
 
-@include('includes.core-scripts')
+@include('includes.core-scripts-edit')
 <script src="../js/invoice.js"></script>
 
 <script>
-    const anElement = new AutoNumeric('#price', $("#price").val()).brazilian();
+    /*const anElement = new AutoNumeric('#price', $("#price").val()).brazilian();
 
     if(!isEdit())
     {
         const anElement2 = new AutoNumeric('#price_modal', $("#price_modal").val()).brazilian();
-    }
+    }*/
 
 </script>
 

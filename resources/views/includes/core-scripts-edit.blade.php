@@ -79,6 +79,7 @@
 <script src="../../js/events.js"></script>
 <script src="../../js/session.js"></script>
 <script src="../../js/person.js"></script>
+<script src="../../js/regex.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/autonumeric@4.1.0"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.debug.js"></script>

@@ -9,6 +9,7 @@ use App\Repositories\InvoiceItensRepository;
 use App\Repositories\InvoiceRepository;
 use App\Repositories\PersonRepository;
 use App\Repositories\StateRepository;
+use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
 
 class InvoiceController extends Controller
@@ -220,6 +221,37 @@ class InvoiceController extends Controller
             }
         }
 
+
+        /*unset($invoice);
+
+        $invoice = $this->repository->findByField('id', $invoice_id)->first();
+
+        $folder_name = $this->churchRepository->findByField('id', $invoice->customer_id)->first()->alias ?
+            $this->churchRepository->findByField('id', $invoice->customer_id)->first()->alias : $invoice->customer_id;
+
+        $org = $this->churchRepository->findByField('id', $invoice->customer_id)->first();
+
+        $invoice->date = date_format(date_create($invoice->date), 'm/Y');
+
+        if($org)
+        {
+            $itens = $this->itensRepository->findByField('invoice_id', $invoice->id);
+
+            $total_price = 0;
+
+            foreach ($itens as $item)
+            {
+                $total_price += $item->price;
+            }
+
+            $emails = $this->emailInvoiceRepository->findByField('invoice_id', $invoice->id);
+        }
+
+        $name = 'Admin';
+
+        PDF::loadView('invoices.invoice',
+            compact('name', 'invoice', 'org', 'total_price', 'itens', 'emails'))->save('uploads/invoices.'.$folder_name.'.'.$invoice->id);*/
+
         $request->session()->flash('success.msg', 'O Invoice foi criado');
 
         if($request->has('print'))
@@ -310,6 +342,38 @@ class InvoiceController extends Controller
                 $stop_email = true;
             }
         }
+
+
+
+        /*unset($invoice);
+
+        $invoice = $this->repository->findByField('id', $id)->first();
+
+        $folder_name = $this->churchRepository->findByField('id', $invoice->customer_id)->first()->alias ?
+            $this->churchRepository->findByField('id', $invoice->customer_id)->first()->alias : $invoice->customer_id;
+
+        $org = $this->churchRepository->findByField('id', $invoice->customer_id)->first();
+
+        $invoice->date = date_format(date_create($invoice->date), 'm/Y');
+
+        if($org)
+        {
+            $itens = $this->itensRepository->findByField('invoice_id', $invoice->id);
+
+            $total_price = 0;
+
+            foreach ($itens as $item)
+            {
+                $total_price += $item->price;
+            }
+
+            $emails = $this->emailInvoiceRepository->findByField('invoice_id', $invoice->id);
+        }
+
+        $name = 'Admin';
+
+        PDF::loadView('invoices.invoice',
+            compact('name', 'invoice', 'org', 'total_price', 'itens', 'emails'))->save('uploads/invoices.'.$folder_name.'.'.$invoice->id);*/
 
         $request->session()->flash('success.msg', 'O Invoice foi alterado');
 
@@ -425,6 +489,24 @@ class InvoiceController extends Controller
         }
 
         return json_encode(['status' => false, 'msg' => 'Este invoice não existe', 'statusCode' => 404]);
+    }
+
+    /*
+     * $id = invoice_id
+     */
+    public function sendMail($id)
+    {
+        $invoice = $this->repository->findByField('id', $id)->first();
+
+        if($invoice)
+        {
+            $subject = 'Sua fatura Beconnect';
+
+            $text = '<p>Sua fatura Beconnect chegou e aqui está anexada.</p>
+                    <br><br><p>Em caso de dúvidas responda este email.</p>';
+
+
+        }
     }
 }
 
