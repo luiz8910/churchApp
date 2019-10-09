@@ -184,7 +184,7 @@ class InvoiceController extends Controller
 
                 $itens['td_price_'.$i] = str_replace(',', '.',$itens['td_price_'.$i]);
 
-                $x['price'] = (float) $x['price'];
+                $x['price'] = (float) $itens['td_price_'.$i];
 
                 $x['qtde'] = $itens['td_qtde_'.$i] ? (float) $itens['td_qtde_'.$i] : 0.00;
 
