@@ -182,7 +182,7 @@ class InvoiceController extends Controller
 
                 $x['description'] = $itens['td_description_'.$i];
 
-                $x['price'] = substr($itens['td_price_'.$i], 2);
+                $itens['td_price_'.$i] = str_replace(',', '.',$itens['td_price_'.$i]);
 
                 $x['price'] = (float) $x['price'];
 
@@ -302,7 +302,7 @@ class InvoiceController extends Controller
 
                 //$x['price'] = substr($itens['td_price_' . $i], 2);
 
-                //$x['price'] = (float) $x['price'];
+                $itens['td_price_'.$i] = str_replace(',', '.',$itens['td_price_'.$i]);
 
                 $x['price'] = (float) $itens['td_price_'.$i];
 
