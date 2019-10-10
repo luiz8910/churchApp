@@ -344,8 +344,7 @@ class InvoiceController extends Controller
         }
 
 
-
-        /*unset($invoice);
+        unset($invoice);
 
         $invoice = $this->repository->findByField('id', $id)->first();
 
@@ -372,8 +371,13 @@ class InvoiceController extends Controller
 
         $name = 'Admin';
 
-        PDF::loadView('invoices.invoice',
-            compact('name', 'invoice', 'org', 'total_price', 'itens', 'emails'))->save('uploads/invoices.'.$folder_name.'.'.$invoice->id);*/
+        if(!file_exists('uploads/invoices/'.$folder_name))
+        {
+            mkdir('uploads/invoices/'.$folder_name);
+        }
+
+        PDF::loadView('invoices.pdf',
+            compact('name', 'invoice', 'org', 'total_price', 'itens', 'emails'))->save('uploads/invoices/'.$folder_name.'/'.$invoice->id.'.pdf');
 
         $request->session()->flash('success.msg', 'O Invoice foi alterado');
 
@@ -456,7 +460,7 @@ class InvoiceController extends Controller
 
 
 
-                return view('invoices.invoice', compact('name', 'invoice', 'org', 'total_price', 'itens', 'emails'));
+                return view('invoices.pdf', compact('name', 'invoice', 'org', 'total_price', 'itens', 'emails'));
             }
         }
 
