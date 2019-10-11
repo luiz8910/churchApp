@@ -2224,13 +2224,26 @@ class EventServices
                     'event_id' => $event_id,
                     'person_id' => $person_id
 
-                ])->delete();
+                ])->update(['deleted_at' => Carbon::now()]);
 
             return true;
         }
 
 
         return false;
+
+    }
+
+    /*
+     * Get unsubscribed users from $event_id
+     * and list of money back to people
+     */
+    public function money_back_list($event_id)
+    {
+        return DB::table('event_subscribed_lists')
+                    ->where(['event_id' => $event_id])
+                    ->whereNotNull('deleted_at')
+                    ->get();
 
     }
 

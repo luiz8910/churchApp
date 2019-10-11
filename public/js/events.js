@@ -16,6 +16,18 @@ $(function () {
         })
     });*/
 
+    $(document).keypress(function (e) {
+
+        var input = $("#input-search-check");
+
+        if(e.which === 13 && input.is(':focus'))
+        {
+            e.preventDefault();
+
+            $("#btn-search-sub").trigger('click');
+        }
+
+    });
 
 
     $("#submit-form-people-check").click(function () {
@@ -61,6 +73,8 @@ $(function () {
 
         var event = $("#event-id").val();
 
+        $(this).text('').append('<i class="fa fa-trash"></i> Excluindo...').attr('disabled', true);
+
         swal({
             title: 'Atenção',
             text: 'Deseja Desinscrever este usuário?',
@@ -75,13 +89,37 @@ $(function () {
         }, function (isConfirm) {
             if (isConfirm) {
 
-                $("#progress-danger").css("display", "block");
+                var msg = 'O Usuário foi desinscrito do evento';
 
-                UnsubscribeUser(person, event);
+                var request = $.ajax({
+                    url: '/delete-sub/' + person + '/' + event,
+                    method: 'GET',
+                    dataType: 'json'
+                });
 
-                swal("Sucesso!", "O usuário foi desinscrito do evento", "success");
+                request.done(function (e) {
+                    if(e.status)
+                    {
+                        swal('Sucesso', msg, 'success');
 
-                location.reload();
+                        $("#tr-"+person).remove();
+
+                        setTimeout(function () {
+                            $(".confirm").trigger('click');
+                        }, 3000);
+
+                        var sub = parseInt($("#span-sub").text());
+
+                        sub--;
+
+                        $("#span-sub").text(sub);
+                    }
+                })
+
+
+            }
+            else{
+                $("#btn-person-"+person).text('').append('<i class="fa fa-trash"></i> Excluir').attr('disabled', false);
             }
 
         });

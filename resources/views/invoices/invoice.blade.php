@@ -65,14 +65,15 @@ License: You must have a valid license purchased only from themeforest(the above
                             <div class="col-md-5 col-xs-6">
                                 <div class="company-address">
                                     <span class="bold uppercase">Beconnect Eventos</span>
-                                    <br/> Rua Hungria, 1240
-                                    <br/> Pinheiros, São Paulo, SP
+                                    <br/> R. Gravi, 211
+                                    <br/> Saúde, São Paulo, SP
                                     <br/>
                                     <span class="bold"></span> (11) 99310-5830
                                     <br/>
                                     <span class="bold"></span> contato@beconnect.com.br
                                     <br/>
-                                    <span class="bold"></span> beconnect.com.br </div>
+                                    <span class="bold"></span> beconnect.com.br
+                                </div>
                             </div>
                         </div>
                         <div class="row invoice-cust-add">

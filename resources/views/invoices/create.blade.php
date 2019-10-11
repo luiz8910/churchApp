@@ -152,7 +152,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                             <div class="row">
 
-                                                <div class="col-md-6">
+                                                <div class="col-md-6 chargeback">
                                                     <div class="form-group" id="form_customer_id">
                                                         <label>Nome do Cliente (Org)
                                                             <span id="span_error_customer_id" style="color:red; display: none;">Selecione o campo Nome do Cliente!</span>
@@ -171,9 +171,10 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-6">
+
+                                                <div class="col-md-6 chargeback">
                                                     <div class="form-group">
-                                                        <label for="exampleInputPassword1">Referência (Evento)</label>
+                                                        <label for="event_id">Referência (Evento)</label>
                                                         <select name="event_id" id="event_id" class="form-control select2">
                                                             @if($route == 'edit')
                                                                 <option value="">Selecione</option>
@@ -182,6 +183,19 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 @endforeach
                                                             @endif
                                                         </select>
+                                                    </div>
+                                                </div>
+
+                                                <br>
+
+                                                <div class="col-md-4" id="check-chargeback" style="display: none;">
+                                                    <div class="form-group">
+                                                        <span class="help-block">
+                                                            <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                                                <input type="checkbox" name="chargeback" id="chargeback" class="checkboxes" value="1"/>
+                                                                <span></span>Incluir Cancelamentos?
+                                                            </label>
+                                                        </span>
                                                     </div>
                                                 </div>
 

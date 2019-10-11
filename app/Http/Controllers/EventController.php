@@ -1969,9 +1969,9 @@ class EventController extends Controller
      * */
     public function UnsubUser($person_id, $event_id)
     {
-        $this->eventServices->UnsubUser($person_id, $event_id);
+        $result = $this->eventServices->UnsubUser($person_id, $event_id);
 
-        return json_encode(['status' => 'true']);
+        return json_encode(['status' => $result]);
     }
 
 

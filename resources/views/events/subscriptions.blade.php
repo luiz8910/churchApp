@@ -20,10 +20,10 @@ License: You must have a valid license purchased only from themeforest(the above
 <!-- BEGIN HEAD -->
 
 <head>
-@include('includes.head')
+@include('includes.head-edit')
 
-<link href="../assets/global/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
-<link href="../assets/global/plugins/select2/css/select2-bootstrap.min.css" rel="stylesheet" type="text/css" />
+<link href=".././assets/global/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
+<link href=".././assets/global/plugins/select2/css/select2-bootstrap.min.css" rel="stylesheet" type="text/css" />
 <!-- BEGIN PAGE LEVEL PLUGINS -->
 {{--<link href="../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet"
       type="text/css"/>
@@ -209,8 +209,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
                             <div class="portlet-body">
                                 <div class="row">
-                                    <form action="{{ route('event.addMembers', ['event' => $event->id]) }}" method="POST">
-                                        {{ csrf_field() }}
+
 
 
                                         {{--<div class="col-md-9 col-sm-6 col-xs-6">
@@ -260,14 +259,14 @@ License: You must have a valid license purchased only from themeforest(the above
                                             </div>
 
                                         </div>
-                                        {{--<div class="col-xs-3">
-                                            <button type="submit" class="btn btn-success btn-sm btn-circle" style="margin-left: -20px;">
+                                        <div class="col-xs-3">
+                                            <button type="submit" class="btn btn-success btn-sm btn-circle" style="margin-left: -20px; display: none;">
                                                 <i class="fa fa-sign-in"></i>
                                                 Inscrever
                                             </button>
                                         </div>
 
-                                        <div class="col-md-1 hidden-sm hidden-xs">
+                                        {{--<div class="col-md-1 hidden-sm hidden-xs">
                                             <a href="{{ route('event.edit', ['event' => $event]) }}" type="button" class="btn btn-danger btn-sm btn-circle">
                                                 <i class="fa fa-arrow-left"></i>
                                                 Voltar
@@ -281,7 +280,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                             </a>
                                         </div>--}}
 
-                                        </form>
+
                                     </div>
                                 </div>
 
@@ -293,9 +292,28 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                         <div class="col-md-9">
 
+                                            <div id="sub-user" style="display: none;">
+                                                <form action="{{ route('event.addMembers', ['event' => $event->id]) }}" method="POST">
+                                                    {{ csrf_field() }}
+                                                    <select class="form-control select2" id="" name="person_id" >
+                                                        <option value=""></option>
+                                                        <optgroup label="Pessoas">
+                                                            @foreach($people as $item)
+                                                                <option value="{{ $item->id }}">
+                                                                    {{ $item->name }}
+                                                                </option>
+                                                            @endforeach
+                                                        </optgroup>
+                                                    </select>
+                                                </form>
+                                            </div>
+
+
                                             <div class="input-group">
 
-                                                <input type="text" class="form-control" id="input-search-check" placeholder="Digite pelo menos 3 carecteres">
+                                                <input type="text" class="form-control" id="input-search-check" placeholder="Digite pelo menos 3 caracteres">
+
+
 
                                                 <span class="input-group-btn">
 
@@ -309,6 +327,10 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                                         <i class="fa fa-close font-green"></i>
 
+                                                    </button>
+
+                                                    <button class="btn btn-default" type="button" id="btn-add-member">
+                                                        <i class="fa fa-sign-in"></i>
                                                     </button>
 
                                                 </span>
@@ -496,10 +518,10 @@ License: You must have a valid license purchased only from themeforest(the above
 
 @include('includes.footer')
 
-@include('includes.core-scripts')
+@include('includes.core-scripts-edit')
 
-<script src="../assets/global/plugins/select2/js/select2.full.js" type="text/javascript"></script>
-<script src="../assets/pages/scripts/components-select2.js" type="text/javascript"></script>
+<script src="../../assets/global/plugins/select2/js/select2.full.js" type="text/javascript"></script>
+<script src="../../assets/pages/scripts/components-select2.js" type="text/javascript"></script>
 
 <script type="text/javascript">
     $(".select2-allow-clear").select2();

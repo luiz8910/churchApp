@@ -640,7 +640,7 @@
         <hr class="line"/>
     </div>
 
-    <small>R. Hungria, 1240 - Pinheiros, São Paulo - SP, 07797-040</small>
+    <small>R. Gravi, 211 - Saúde, São Paulo - SP, 04143-050</small>
 </div>
 
 <script src="../js/site.js" type="text/javascript"></script>

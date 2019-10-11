@@ -160,6 +160,15 @@ $(function(){
 
     });
 
+    $("#event_id").change(function () {
+
+        $(".chargeback").removeClass('col-md-6').addClass('col-md-4');
+
+        $("#check-chargeback").css('display', 'block');
+    });
+
+
+
 });
 
 function is_valid($email)
@@ -464,5 +473,19 @@ function isEdit()
     return location.href.search('edit') != -1 ? true : false;
 }
 
+function verifyEvent()
+{
+    if(isEdit() && $("#event_id").val() != "")
+    {
+        $(".chargeback").removeClass('col-md-6').addClass('col-md-4');
+
+        $("#check-chargeback").css('display', 'block');
+
+        $("#chargeback").trigger('click');
+    }
+}
+
 get_itens();
 get_emails();
+verifyEvent();
+

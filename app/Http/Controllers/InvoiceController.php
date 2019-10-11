@@ -9,6 +9,7 @@ use App\Repositories\InvoiceItensRepository;
 use App\Repositories\InvoiceRepository;
 use App\Repositories\PersonRepository;
 use App\Repositories\StateRepository;
+use App\Services\EventServices;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
 
@@ -31,11 +32,15 @@ class InvoiceController extends Controller
      * @var EmailInvoiceRepository
      */
     private $emailInvoiceRepository;
+    /**
+     * @var EventServices
+     */
+    private $eventServices;
 
     public function __construct(InvoiceRepository $repository, EventRepository $eventRepository,
                                 ChurchRepository $churchRepository, PersonRepository $personRepository,
                                 StateRepository $stateRepository, InvoiceItensRepository $itensRepository,
-                                EmailInvoiceRepository $emailInvoiceRepository)
+                                EmailInvoiceRepository $emailInvoiceRepository, EventServices $eventServices)
     {
 
         $this->repository = $repository;
@@ -45,6 +50,7 @@ class InvoiceController extends Controller
         $this->stateRepository = $stateRepository;
         $this->itensRepository = $itensRepository;
         $this->emailInvoiceRepository = $emailInvoiceRepository;
+        $this->eventServices = $eventServices;
     }
 
     public function index($org_id = null)
@@ -124,7 +130,7 @@ class InvoiceController extends Controller
 
             $invoice->date = date_format(date_create($invoice->date), 'd/m/Y');
 
-            return view('invoices.create', compact('name', 'orgs', 'invoice', 'events', 'route'));
+            return view('invoices.create', compact('name', 'orgs', 'invoice', 'events', 'route', 'id'));
         }
 
         \Session::flash('error.msg', 'Este invoice não existe');
@@ -165,6 +171,15 @@ class InvoiceController extends Controller
         if(!$invoice['event_id'])
         {
             unset($invoice['event_id']);
+        }
+
+        $chargeback = false;
+
+        if(isset($itens['chargeback']))
+        {
+            $chargeback = true;
+
+            unset($itens['chargeback']);
         }
 
         $invoice_id = $this->repository->create($invoice)->id;
@@ -218,6 +233,29 @@ class InvoiceController extends Controller
             }
             else{
                 $stop_email = true;
+            }
+        }
+
+        if($chargeback)
+        {
+            $list = $this->eventServices->money_back_list($invoice['event_id']);
+
+            foreach ($list as $item)
+            {
+                $person = $this->personRepository->findByField('id', $item->person_id)->first();
+
+                $event = $this->eventRepository->findByField('id', $invoice['event_id'])->first();
+
+                if($person)
+                {
+                    $x['title'] = $person->name;
+                    $x['description'] = 'Reembolso feito dia '. date_format(date_create($item->deleted_at), 'd/m/Y');
+                    $x['price'] = $event->value_money * -1;
+                    $x['invoice_id'] = $invoice_id;
+
+
+                    $this->itensRepository->create($x);
+                }
             }
         }
 
@@ -276,6 +314,15 @@ class InvoiceController extends Controller
             unset($invoice['event_id']);
         }
 
+        $chargeback = false;
+
+        if(isset($itens['chargeback']))
+        {
+            $chargeback = true;
+
+            unset($itens['chargeback']);
+        }
+
         $this->repository->update($invoice, $id);
 
         $itens_exist = $this->itensRepository->findByField('invoice_id', $id);
@@ -287,7 +334,6 @@ class InvoiceController extends Controller
 
         $stop = false;
         $i = 1;
-
 
 
         while(!$stop)
@@ -343,6 +389,28 @@ class InvoiceController extends Controller
             }
         }
 
+        if($chargeback)
+        {
+            $list = $this->eventServices->money_back_list($invoice['event_id']);
+
+            foreach ($list as $item)
+            {
+                 $person = $this->personRepository->findByField('id', $item->person_id)->first();
+
+                 $event = $this->eventRepository->findByField('id', $invoice['event_id'])->first();
+
+                 if($person)
+                 {
+                     $x['title'] = $person->name;
+                     $x['description'] = 'Reembolso feito dia '. date_format(date_create($item->deleted_at), 'd/m/Y');
+                     $x['price'] = $event->value_money * -1;
+                     $x['invoice_id'] = $id;
+
+
+                     $this->itensRepository->create($x);
+                 }
+            }
+        }
 
         unset($invoice);
 
@@ -460,7 +528,7 @@ class InvoiceController extends Controller
 
 
 
-                return view('invoices.pdf', compact('name', 'invoice', 'org', 'total_price', 'itens', 'emails'));
+                return view('invoices.invoice', compact('name', 'invoice', 'org', 'total_price', 'itens', 'emails'));
             }
         }
 
