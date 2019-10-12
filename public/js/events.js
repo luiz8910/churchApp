@@ -79,57 +79,7 @@ $(function () {
 
         var event = $("#event-id").val();
 
-        $(this).text('').append('<i class="fa fa-trash"></i> Excluindo...').attr('disabled', true);
-
-        swal({
-            title: 'Atenção',
-            text: 'Deseja Desinscrever este usuário?',
-            type: 'warning',
-            showCancelButton: true,
-            confirmButtonClass: "btn-danger",
-            confirmButtonText: "Sim, Excluir",
-            cancelButtonText: "Não",
-            closeOnConfirm: true,
-            closeOnCancel: true
-
-        }, function (isConfirm) {
-            if (isConfirm) {
-
-                var msg = 'O Usuário foi desinscrito do evento';
-
-                var request = $.ajax({
-                    url: '/delete-sub/' + person + '/' + event,
-                    method: 'GET',
-                    dataType: 'json'
-                });
-
-                request.done(function (e) {
-                    if(e.status)
-                    {
-                        swal('Sucesso', msg, 'success');
-
-                        $("#tr-"+person).remove();
-
-                        setTimeout(function () {
-                            $(".confirm").trigger('click');
-                        }, 3000);
-
-                        var sub = parseInt($("#span-sub").text());
-
-                        sub--;
-
-                        $("#span-sub").text(sub);
-                    }
-                })
-
-
-            }
-            else{
-                $("#btn-person-"+person).text('').append('<i class="fa fa-trash"></i> Excluir').attr('disabled', false);
-            }
-
-        });
-
+        unsubUser(event, person);
     });
 
 
@@ -673,7 +623,65 @@ function peopleCheckIn(array, event) {
 
 function unsubUser(event_id, person_id)
 {
+    $("#btn-person-"+person_id).text('').append('<i class="fa fa-trash"></i> Excluindo...').attr('disabled', true);
+
     swal({
+        title: 'Atenção',
+        text: 'Deseja Desinscrever este usuário?',
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonClass: "btn-danger",
+        confirmButtonText: "Sim, Excluir",
+        cancelButtonText: "Não",
+        closeOnConfirm: true,
+        closeOnCancel: true
+
+    }, function (isConfirm) {
+        if (isConfirm) {
+
+            var msg = 'O Usuário foi desinscrito do evento';
+
+            var request = $.ajax({
+                url: '/delete-sub/' + person_id + '/' + event_id,
+                method: 'GET',
+                dataType: 'json'
+            });
+
+            request.done(function (e) {
+                if(e.status)
+                {
+                    swal('Sucesso', msg, 'success');
+
+                    $("#tr-"+person_id).remove();
+
+                    setTimeout(function () {
+                        $(".confirm").trigger('click');
+
+                    }, 3000);
+
+                    var sub = parseInt($("#span-sub").text());
+
+                    sub--;
+
+                    $("#span-sub").text(sub);
+
+                    setTimeout(function () {
+                        $("#close-search").trigger('click');
+
+                    }, 4000);
+                }
+            })
+
+
+        }
+        else{
+            $("#btn-person-"+person_id).text('').append('<i class="fa fa-trash"></i> Excluir').attr('disabled', false);
+        }
+
+    });
+
+
+    /*swal({
         title: 'Atenção',
         text: 'Deseja Desinscrever este usuário?',
         type: 'warning',
@@ -696,5 +704,5 @@ function unsubUser(event_id, person_id)
             location.reload();
         }
 
-    });
+    });*/
 }
