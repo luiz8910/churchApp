@@ -26,6 +26,12 @@ $(function () {
 
             $("#btn-search-sub").trigger('click');
         }
+        else if(e.which === 27 && input.is(':focus'))
+        {
+            console.log('ESC');
+
+            $("#close-search").trigger('click');
+        }
 
     });
 
@@ -158,6 +164,14 @@ $(function () {
 
     });
 
+    $("#btn-add-member").click(function () {
+        $("#sub-user").css('display', 'block');
+    });
+
+    $("#close-add-members").click(function () {
+        $("#sub-user").css('display', 'none');
+    })
+
 
     //Pesquisa de Inscritos
     $(".btn-search-check").click(function () {
@@ -220,22 +234,15 @@ $(function () {
 
         var input = $("#input-search-check").val();
 
-        //Verifica se apenas letras foram digitadas
-        if(isString(input))
+        var length_input_search = input.length;
+
+        if(length_input_search >= 2)
         {
-            var length_input_search = input.length;
+            console.log(input);
 
-            if(length_input_search >= 2)
-            {
-                console.log(input);
-
-                findSubUsers(input);
-            }
+            findSubUsers(input);
         }
-        else{
 
-            return false;
-        }
     })
     //Fim Pesquisa Inscritos
 

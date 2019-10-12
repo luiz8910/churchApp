@@ -2426,6 +2426,7 @@ class EventController extends Controller
         }
 
 
+        //Find subscribed users by name.
         $person_sub = DB::table('people')
             ->where(
                 [
@@ -2436,6 +2437,72 @@ class EventController extends Controller
             )
             ->whereIn('id', $arr)
             ->get();
+
+        //If no results was returned, searches for subscribed users by email.
+        if(count($person_sub) == 0)
+        {
+            $person_sub = DB::table('people')
+                ->where(
+                    [
+                        ['email', 'like', $input . '%'],
+                        ['deleted_at', '=', null],
+                        'status' => 'active'
+                    ]
+                )
+                ->whereIn('id', $arr)
+                ->get();
+        }
+
+        //If no results was returned, searches for subscribed users by phone number.
+        if(count($person_sub) == 0)
+        {
+            $person_sub = DB::table('people')
+                ->where(
+                    [
+                        ['cel', 'like', $input . '%'],
+                        ['deleted_at', '=', null],
+                        'status' => 'active'
+                    ]
+                )
+                ->whereIn('id', $arr)
+                ->get();
+        }
+
+        //If no results was returned, searches for subscribed users by cpf number.
+        if(count($person_sub) == 0)
+        {
+            $person_sub = DB::table('people')
+                ->where(
+                    [
+                        ['cpf', 'like', $input . '%'],
+                        ['deleted_at', '=', null],
+                        'status' => 'active'
+                    ]
+                )
+                ->whereIn('id', $arr)
+                ->get();
+        }
+
+        //If no results was returned, searches for subscribed users by transaction code (metaId).
+        if(count($person_sub) == 0)
+        {
+            $payment = $this->paymentRepository->findWhere(['metaId' => $input, 'event_id' => $event_id])->first();
+
+            if($payment)
+            {
+                $person_sub = DB::table('people')
+                    ->where(
+                        [
+                            'id' => $payment->person_id,
+                            ['deleted_at', '=', null],
+                            'status' => 'active'
+                        ]
+                    )
+                    ->whereIn('id', $arr)
+                    ->get();
+            }
+
+        }
 
 
         $check = 'check-in';

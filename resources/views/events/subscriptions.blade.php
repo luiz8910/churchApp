@@ -289,25 +289,50 @@ License: You must have a valid license purchased only from themeforest(the above
                                     <br>
 
                                     <div class="row">
+                                        <div id="sub-user" style="display: none;">
+                                            <form action="{{ route('event.addMembers', ['event' => $event->id]) }}" method="POST">
+                                                {{ csrf_field() }}
+                                                <div class="col-md-9">
+
+                                                    <div class="form-group">
+
+                                                        <select class="form-control select2" id="" name="person_id" >
+                                                            <option value=""></option>
+                                                            <optgroup label="Pessoas">
+                                                                @foreach($people as $item)
+                                                                    <option value="{{ $item->id }}">
+                                                                        {{ $item->name }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </optgroup>
+                                                        </select>
+
+
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <button class="btn btn-success" type="submit" style="margin-left: -20px;">
+                                                            <i class="fa fa-sign-in"></i>
+                                                        </button>
+                                                        <button class="btn btn-default" type="button" id="close-add-members">
+                                                            <i class="fa fa-close"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+
+                                            </form>
+                                        </div>
+
+
+
+                                    </div>
+
+                                    <div class="row">
 
                                         <div class="col-md-9">
-
-                                            <div id="sub-user" style="display: none;">
-                                                <form action="{{ route('event.addMembers', ['event' => $event->id]) }}" method="POST">
-                                                    {{ csrf_field() }}
-                                                    <select class="form-control select2" id="" name="person_id" >
-                                                        <option value=""></option>
-                                                        <optgroup label="Pessoas">
-                                                            @foreach($people as $item)
-                                                                <option value="{{ $item->id }}">
-                                                                    {{ $item->name }}
-                                                                </option>
-                                                            @endforeach
-                                                        </optgroup>
-                                                    </select>
-                                                </form>
-                                            </div>
-
 
                                             <div class="input-group">
 
@@ -329,8 +354,8 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                                     </button>
 
-                                                    <button class="btn btn-default" type="button" id="btn-add-member">
-                                                        <i class="fa fa-sign-in"></i>
+                                                    <button class="btn btn-default" type="button" id="btn-add-member" title="Nova Inscrição">
+                                                        <i class="fa fa-sign-in font-green"></i>
                                                     </button>
 
                                                 </span>
