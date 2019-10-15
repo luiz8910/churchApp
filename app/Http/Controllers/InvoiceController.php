@@ -157,6 +157,7 @@ class InvoiceController extends Controller
 
     public function store(Request $request)
     {
+        set_time_limit(60);
 
         $invoice = $request->only(['customer_id', 'event_id', 'date']);
 
@@ -358,6 +359,8 @@ class InvoiceController extends Controller
 
     public function update(Request $request, $id)
     {
+        set_time_limit(60);
+
         $invoice = $request->only(['customer_id', 'event_id', 'date']);
 
         $itens = $request->except(['customer_id', 'event_id', 'date', '_token', 'print']);
