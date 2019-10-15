@@ -5,42 +5,37 @@ namespace App\Http\Controllers;
 use App\Repositories\ChurchRepository;
 use App\Repositories\EmailInvoiceRepository;
 use App\Repositories\EventRepository;
+use App\Repositories\EventSubscribedListRepository;
 use App\Repositories\InvoiceItensRepository;
 use App\Repositories\InvoiceRepository;
 use App\Repositories\PersonRepository;
 use App\Repositories\StateRepository;
 use App\Services\EventServices;
+use App\Traits\ConfigTrait;
 use Barryvdh\DomPDF\Facade as PDF;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class InvoiceController extends Controller
 {
+    use ConfigTrait;
 
     private $repository;
     private $eventRepository;
     private $churchRepository;
     private $personRepository;
-    /**
-     * @var StateRepository
-     */
     private $stateRepository;
-    /**
-     * @var InvoiceItensRepository
-     */
     private $itensRepository;
-    /**
-     * @var EmailInvoiceRepository
-     */
     private $emailInvoiceRepository;
-    /**
-     * @var EventServices
-     */
     private $eventServices;
+    private $listRepository;
 
     public function __construct(InvoiceRepository $repository, EventRepository $eventRepository,
                                 ChurchRepository $churchRepository, PersonRepository $personRepository,
                                 StateRepository $stateRepository, InvoiceItensRepository $itensRepository,
-                                EmailInvoiceRepository $emailInvoiceRepository, EventServices $eventServices)
+                                EmailInvoiceRepository $emailInvoiceRepository, EventServices $eventServices,
+                                EventSubscribedListRepository $listRepository)
     {
 
         $this->repository = $repository;
@@ -51,6 +46,7 @@ class InvoiceController extends Controller
         $this->itensRepository = $itensRepository;
         $this->emailInvoiceRepository = $emailInvoiceRepository;
         $this->eventServices = $eventServices;
+        $this->listRepository = $listRepository;
     }
 
     public function index($org_id = null)
@@ -240,6 +236,27 @@ class InvoiceController extends Controller
         {
             $list = $this->eventServices->money_back_list($invoice['event_id']);
 
+            //How many users we have in a particular event
+            $sub = $this->listRepository->findByField('event_id', $invoice['event_id']);
+
+            //$ql means qtde_list
+            $ql['title'] = 'Quantidade de Reembolsos';
+            $ql['price'] = 0;
+            $ql['qtde'] = count($list);
+            $ql['description'] = 'Quantidade de Reembolsos pedidos: ' . count($list);
+            $ql['invoice_id'] = $invoice_id;
+
+            $this->itensRepository->create($ql);
+
+            //$qs means qtde_sub
+            $qs['title'] = 'Quantidade de Pagamentos';
+            $qs['price'] = 0;
+            $qs['qtde'] = count($sub);
+            $qs['description'] = 'Quantidade de Pagamento Efetuados: ' . count($sub);
+            $qs['invoice_id'] = $invoice_id;
+
+            $this->itensRepository->create($qs);
+
             foreach ($list as $item)
             {
                 $person = $this->personRepository->findByField('id', $item->person_id)->first();
@@ -248,13 +265,51 @@ class InvoiceController extends Controller
 
                 if($person)
                 {
-                    $x['title'] = $person->name;
-                    $x['description'] = 'Reembolso feito dia '. date_format(date_create($item->deleted_at), 'd/m/Y');
-                    $x['price'] = $event->value_money * -1;
-                    $x['invoice_id'] = $invoice_id;
 
+                    $x['title'] = $person->name;
+
+                    $x['price'] = $event->value_money * -1;
+
+                    $x['invoice_id'] = $id;
+
+                    $x['qtde'] = -1;
+
+                    $x['description'] = '<p>Reembolso feito dia '. date_format(date_create($item->deleted_at), 'd/m/Y') .'</p>';
+                    $x['description'] .= '<p>Email: ' .$person->email .'</p>';
+                    $x['description'] .= '<p>Telefone: ' .$this->formatPhoneInvoice($person->cel).'</p>';
 
                     $this->itensRepository->create($x);
+
+                }
+            }
+
+
+
+            foreach ($sub as $item)
+            {
+                $person = $this->personRepository->findByField('id', $item->person_id)->first();
+
+                $event = $this->eventRepository->findByField('id', $invoice['event_id'])->first();
+
+                if($person)
+                {
+
+                    $x['title'] = $person->name;
+
+                    $x['price'] = $event->value_money;
+
+                    $x['invoice_id'] = $id;
+
+                    $x['qtde'] = -1;
+
+                    $x['description'] = '<p>Pagamento feito dia '. date_format(date_create($item->created_at), 'd/m/Y') .'</p>';
+                    $x['description'] .= '<p>Email: ' .$person->email .'</p>';
+                    $x['description'] .= '<p>Telefone: ' .$this->formatPhoneInvoice($person->cel) .'</p>';
+
+                    $this->itensRepository->create($x);
+
+
+
                 }
             }
         }
@@ -325,12 +380,11 @@ class InvoiceController extends Controller
 
         $this->repository->update($invoice, $id);
 
-        $itens_exist = $this->itensRepository->findByField('invoice_id', $id);
 
-        foreach ($itens_exist as $item)
-        {
-            $this->itensRepository->delete($item->id);
-        }
+        DB::table('invoice_itens')
+            ->where(['invoice_id' => $id])
+            ->update(['deleted_at' => Carbon::now()]);
+
 
         $stop = false;
         $i = 1;
@@ -363,6 +417,8 @@ class InvoiceController extends Controller
             }
         }
 
+
+
         $emails_exist = $this->emailInvoiceRepository->findByField('invoice_id', $id);
 
         foreach ($emails_exist as $item)
@@ -393,6 +449,40 @@ class InvoiceController extends Controller
         {
             $list = $this->eventServices->money_back_list($invoice['event_id']);
 
+            $sub = $this->listRepository->findByField('event_id', $invoice['event_id']);
+
+            $qtde_list = $this->itensRepository->findWhere(['title' => 'Quantidade de Reembolsos', 'invoice_id' => $id])->first();
+
+            if($qtde_list)
+            {
+                $this->itensRepository->delete($qtde_list->id);
+            }
+
+            $qtde_sub = $this->itensRepository->findWhere(['title' => 'Quantidade de Pagamentos', 'invoice_id' => $id])->first();
+
+            if($qtde_sub)
+            {
+                $this->itensRepository->delete($qtde_sub->id);
+            }
+
+            //$ql means qtde_list
+            $ql['title'] = 'Quantidade de Reembolsos';
+            $ql['price'] = 0;
+            $ql['qtde'] = count($list);
+            $ql['description'] = 'Quantidade de Reembolsos pedidos: ' . count($list);
+            $ql['invoice_id'] = $id;
+
+            $this->itensRepository->create($ql);
+
+            //$qs means qtde_sub
+            $qs['title'] = 'Quantidade de Pagamentos';
+            $qs['price'] = 0;
+            $qs['qtde'] = count($sub);
+            $qs['description'] = 'Quantidade de Pagamento Efetuados: ' . count($sub);
+            $qs['invoice_id'] = $id;
+
+            $this->itensRepository->create($qs);
+
             foreach ($list as $item)
             {
                  $person = $this->personRepository->findByField('id', $item->person_id)->first();
@@ -401,14 +491,67 @@ class InvoiceController extends Controller
 
                  if($person)
                  {
-                     $x['title'] = $person->name;
-                     $x['description'] = 'Reembolso feito dia '. date_format(date_create($item->deleted_at), 'd/m/Y');
-                     $x['price'] = $event->value_money * -1;
-                     $x['invoice_id'] = $id;
+                     $exist = $this->itensRepository->findWhere(
+                         [
+                             'title' => $person->name,
+                             'invoice_id' => $id
+                         ])->first();
+
+                     if(!$exist)
+                     {
+                         $x['title'] = $person->name;
+
+                         $x['price'] = $event->value_money * -1;
+
+                         $x['invoice_id'] = $id;
+
+                         $x['qtde'] = -1;
+
+                         $x['description'] = '<p>Reembolso feito dia '. date_format(date_create($item->deleted_at), 'd/m/Y') .'</p>';
+                         $x['description'] .= '<p>Email: ' .$person->email .'</p>';
+                         $x['description'] .= '<p>Telefone: ' .$this->formatPhoneInvoice($person->cel).'</p>';
+
+                         $this->itensRepository->create($x);
+                     }
 
 
-                     $this->itensRepository->create($x);
                  }
+            }
+
+
+            foreach ($sub as $item)
+            {
+                $person = $this->personRepository->findByField('id', $item->person_id)->first();
+
+                $event = $this->eventRepository->findByField('id', $invoice['event_id'])->first();
+
+                if($person)
+                {
+                    $exist = $this->itensRepository->findWhere(
+                        [
+                            'title' => $person->name,
+                            'invoice_id' => $id
+                        ])->first();
+
+                    if(!$exist)
+                    {
+                        $x['title'] = $person->name;
+
+                        $x['price'] = $event->value_money;
+
+                        $x['invoice_id'] = $id;
+
+                        $x['qtde'] = -1;
+
+                        $x['description'] = '<p>Pagamento feito dia '. date_format(date_create($item->created_at), 'd/m/Y') .'</p>';
+                        $x['description'] .= '<p>Email: ' .$person->email .'</p>';
+                        $x['description'] .= '<p>Telefone: ' .$this->formatPhoneInvoice($person->cel) .'</p>';
+
+                        $this->itensRepository->create($x);
+                    }
+
+
+                }
             }
         }
 

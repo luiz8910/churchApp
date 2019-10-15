@@ -114,10 +114,14 @@ License: You must have a valid license purchased only from themeforest(the above
                                         <tr>
                                             <td>
                                                 <h3>{{ $item->title }}</h3>
-                                                <p class="desc"> {{ $item->description }} </p>
+                                                @if(strpos($item->description, '/') == 0)
+                                                    <p class="desc">{{ $item->description }}</p>
+                                                @else
+                                                    <?php echo $item->description; ?>
+                                                @endif
                                             </td>
                                             <td class="text-center sbold"></td>
-                                            <td class="text-center sbold">{{ (int)$item->qtde }}</td>
+                                            <td class="text-center sbold">@if((int)$item->qtde == -1) {{ 'NA' }} @else {{ (int)$item->qtde }} @endif</td>
                                             <td class="text-center sbold">R$ {{ number_format($item->price, 2, ',', '.') }}</td>
                                         </tr>
                                     @endforeach

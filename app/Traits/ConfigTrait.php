@@ -70,6 +70,40 @@ trait ConfigTrait
         return $number;
     }
 
+    public function formatPhoneInvoice($number)
+    {
+        $pos = strpos($number, '55');
+
+        if($pos == 0)
+        {
+            $number = substr_replace($number, '', 0, 2);
+
+            $number = '(' . $number;
+
+            //$number = (15997454531
+            $ddd = substr($number, 0, 3);
+            //$ddd = (15
+
+            $ddd = $ddd . ') ';
+            //$ddd = (15)
+
+            $number = $ddd . substr($number, 3);
+            //$number = (15) 997454531
+
+            $part_number = substr($number, 0, 10);
+            //$part_number = (15) 99745
+
+            $f_number = substr($number, 10);
+            //$f_number = 4531
+
+            $number = $part_number . '-' . $f_number;
+            //$number = (15) 99745-4531
+        }
+
+
+        return $number;
+    }
+
     public function getPusherKeyTrait()
     {
         $key = env("PUSHER_KEY");

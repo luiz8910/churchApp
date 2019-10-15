@@ -193,7 +193,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         <span class="help-block">
                                                             <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
                                                                 <input type="checkbox" name="chargeback" id="chargeback" class="checkboxes" value="1"/>
-                                                                <span></span>Incluir Cancelamentos?
+                                                                <span></span>Incluir Reembolsos e Pagantes?
                                                             </label>
                                                         </span>
                                                     </div>
