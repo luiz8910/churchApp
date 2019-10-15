@@ -359,7 +359,7 @@ class InvoiceController extends Controller
 
     public function update(Request $request, $id)
     {
-        set_time_limit(60);
+        set_time_limit(120);
 
         $invoice = $request->only(['customer_id', 'event_id', 'date']);
 
