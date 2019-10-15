@@ -270,7 +270,7 @@ class InvoiceController extends Controller
 
                     $x['price'] = $event->value_money * -1;
 
-                    $x['invoice_id'] = $id;
+                    $x['invoice_id'] = $invoice_id;
 
                     $x['qtde'] = -1;
 
@@ -298,7 +298,7 @@ class InvoiceController extends Controller
 
                     $x['price'] = $event->value_money;
 
-                    $x['invoice_id'] = $id;
+                    $x['invoice_id'] = $invoice_id;
 
                     $x['qtde'] = -1;
 
