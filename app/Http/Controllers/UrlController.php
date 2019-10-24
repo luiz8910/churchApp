@@ -103,7 +103,7 @@ class UrlController extends Controller
 
         $qtde = $notify ? count($notify) : 0;
 
-        $urls = $this->repository->all();
+        $urls = $this->repository->findByField('church_id', $this->getUserChurch());
 
         foreach ($urls as $url) {
 
